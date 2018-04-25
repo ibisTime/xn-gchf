@@ -72,19 +72,4 @@
 		<property name="paginableDAO" ref="sysConfigDAOImpl"/>
 	</bean>	
 	
-	<bean id="brandBO" class="com.cdkj.gchf.bo.impl.BrandBOImpl">
-		<property name="paginableDAO" ref="brandDAOImpl" />
-	</bean>
-	<bean id="cuserBO" class="com.cdkj.gchf.bo.impl.CUserBOImpl">
-		<property name="paginableDAO" ref="cuserDAOImpl"/>
-	</bean>	
-	<bean id="carBO" class="com.cdkj.gchf.bo.impl.CarBOImpl">
-		<property name="paginableDAO" ref="carDAOImpl"/>
-	</bean>	
-	<bean id="seriesBO" class="com.cdkj.gchf.bo.impl.SeriesBOImpl">
-		<property name="paginableDAO" ref="seriesDAOImpl"/>
-	</bean>	
-	<bean id="carOrderBO" class="com.cdkj.gchf.bo.impl.CarOrderBOImpl">
-		<property name="paginableDAO" ref="carOrderDAOImpl"/>
-	</bean>	
 </beans>

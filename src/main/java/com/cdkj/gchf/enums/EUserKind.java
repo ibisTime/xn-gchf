@@ -14,7 +14,8 @@ package com.cdkj.gchf.enums;
  * @history:
  */
 public enum EUserKind {
-    Customer("C", "C端用户"), Merchant("B", "B端用户"), Plat("P", "平台用户");
+    Plat("P", "平台用户"), Bank("B", "银行用户"), Owner("O", "业主单位"), Supervise("S",
+            "监管端");
 
     EUserKind(String code, String value) {
         this.code = code;

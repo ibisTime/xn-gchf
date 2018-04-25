@@ -90,13 +90,14 @@ public class UserBOImpl extends PaginableBOImpl<User> implements IUserBO {
     }
 
     @Override
-    public void refreshLoginPwd(String userId, String loginPwd) {
-        if (StringUtils.isNotBlank(userId)) {
-            User data = new User();
-            data.setLoginPwd(MD5Util.md5(loginPwd));
-            data.setLoginPwdStrength(PwdUtil.calculateSecurityLevel(loginPwd));
-            userDAO.updateLoginPwd(data);
-        }
+    public void refreshLoginPwd(User data, String loginPwd, String updater,
+            String remark) {
+        data.setLoginPwd(MD5Util.md5(loginPwd));
+        data.setLoginPwdStrength(PwdUtil.calculateSecurityLevel(loginPwd));
+        data.setUpdater(updater);
+        data.setUpdateDatetime(new Date());
+        data.setRemark(remark);
+        userDAO.updateLoginPwd(data);
     }
 
     @Override

@@ -33,7 +33,8 @@ public interface IUserBO extends IPaginableBO<User> {
     // 验证登录密码:拿loginPwd进行MD5后与数据库中userId得数据库支付密码比对
     public void checkLoginPwd(String userId, String loginPwd);
 
-    public void refreshLoginPwd(String userId, String loginPwd);
+    public void refreshLoginPwd(User data, String loginPwd, String updater,
+            String remark);
 
     public void refreshPhoto(String userId, String photo);
 

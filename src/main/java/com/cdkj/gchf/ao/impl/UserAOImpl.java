@@ -18,6 +18,7 @@ import com.cdkj.gchf.common.PwdUtil;
 import com.cdkj.gchf.core.OrderNoGenerater;
 import com.cdkj.gchf.domain.SYSRole;
 import com.cdkj.gchf.domain.User;
+import com.cdkj.gchf.dto.req.XN631070Req;
 import com.cdkj.gchf.enums.EUser;
 import com.cdkj.gchf.enums.EUserStatus;
 import com.cdkj.gchf.exception.BizException;
@@ -32,15 +33,18 @@ public class UserAOImpl implements IUserAO {
     private ISYSRoleBO sysRoleBO;
 
     @Override
-    public String doAddUser(String loginName, String loginPwd, String mobile) {
+    public String doAddUser(XN631070Req req) {
         User data = new User();
         String userId = OrderNoGenerater.generate("U");
         data.setUserId(userId);
-        data.setLoginName(loginName);
-        data.setLoginPwd(MD5Util.md5(loginPwd));
-        data.setLoginPwdStrength(PwdUtil.calculateSecurityLevel(loginPwd));
-        data.setCreateDatetme(new Date());
+        data.setLoginName(req.getMobile());
+        data.setMobile(req.getMobile());
+        data.setLoginPwd(MD5Util.md5(req.getLoginPwd()));
+        data.setLoginPwdStrength(
+            PwdUtil.calculateSecurityLevel(req.getLoginPwd()));
 
+        data.setCreateDatetme(new Date());
+        data.setRemark(req.getRemark());
         userBO.saveUser(data);
         return userId;
     }
@@ -98,8 +102,8 @@ public class UserAOImpl implements IUserAO {
         }
         // 验证当前登录密码是否正确
         userBO.checkLoginPwd(userId, oldLoginPwd);
-        // 重置
-        userBO.refreshLoginPwd(userId, newLoginPwd);
+        // // 重置
+        // userBO.refreshLoginPwd(userId, newLoginPwd);
         // 发送短信
         User user = userBO.getUser(userId);
         // if (!EUserKind.Plat.getCode().equals(user.getKind())) {
@@ -112,11 +116,13 @@ public class UserAOImpl implements IUserAO {
 
     @Override
     @Transactional
-    public void doResetLoginPwdByOss(String adminId, String adminLoginPwd,
-            String userId, String loginPwd) {
-        // 验证当前登录密码是否正确
-        userBO.checkLoginPwd(adminId, adminLoginPwd);
-        userBO.refreshLoginPwd(userId, loginPwd);
+    public void doResetLoginPwdByOss(String userId, String loginPwd,
+            String updater, String remark) {
+        User data = userBO.getUser(userId);
+        if (data.getLoginPwd().equals(MD5Util.md5(loginPwd))) {
+            throw new BizException("li01006", "新登录密码不能与原有密码重复");
+        }
+        userBO.refreshLoginPwd(data, loginPwd, updater, remark);
     }
 
     @Override
@@ -149,7 +155,7 @@ public class UserAOImpl implements IUserAO {
         // && PhoneUtil.isMobile(mobile)) {
         // // 发送短信
         // smsOutBO.sendSmsOut(mobile,
-        // "尊敬的" + PhoneUtil.hideMobile(mobile) + smsContent, "805091");
+        // "尊敬的" + PhoneUtil.hideMobile(mobile) + smsContent, "631075");
         // }
     }
 

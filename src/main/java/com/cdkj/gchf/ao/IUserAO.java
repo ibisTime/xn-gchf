@@ -6,6 +6,7 @@ import org.springframework.stereotype.Component;
 
 import com.cdkj.gchf.bo.base.Paginable;
 import com.cdkj.gchf.domain.User;
+import com.cdkj.gchf.dto.req.XN631070Req;
 
 @Component
 public interface IUserAO {
@@ -41,8 +42,8 @@ public interface IUserAO {
             String newLoginPwd);
 
     // 管理员重置用户密码
-    public void doResetLoginPwdByOss(String adminId, String adminLoginPwd,
-            String userId, String loginPwd);
+    public void doResetLoginPwdByOss(String userId, String loginPwd,
+            String updater, String remark);
 
     // 修改头像
     public void doModifyPhoto(String userId, String photo);
@@ -53,6 +54,6 @@ public interface IUserAO {
 
     public User getUser(String code);
 
-    public String doAddUser(String loginName, String loginPwd, String mobile);
+    public String doAddUser(XN631070Req req);
 
 }

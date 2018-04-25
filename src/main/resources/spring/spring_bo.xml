@@ -87,4 +87,8 @@
 	<bean id="carOrderBO" class="com.cdkj.gchf.bo.impl.CarOrderBOImpl">
 		<property name="paginableDAO" ref="carOrderDAOImpl"/>
 	</bean>	
+	
+	<bean id="companyBO" class="com.cdkj.gchf.bo.impl.CompanyBOImpl">
+		<property name="paginableDAO" ref="companyDAOImpl"/>
+	</bean>	
 </beans>

@@ -26,6 +26,8 @@
 		<typeAlias alias="series" type="com.cdkj.gchf.domain.Series" />
 		<typeAlias alias="car" type="com.cdkj.gchf.domain.Car" />
 		<typeAlias alias="carorder" type="com.cdkj.gchf.domain.CarOrder" />
+		
+		<typeAlias alias="company" type="com.cdkj.gchf.domain.Company" />
 	</typeAliases>
 </configuration>
 

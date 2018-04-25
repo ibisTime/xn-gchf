@@ -119,6 +119,7 @@
 		,m.parent_code
 		,m.type
 		,m.order_no
+		,m.updater
 		,m.remark
 		FROM
 		tsys_menu_role t INNER JOIN tsys_menu m

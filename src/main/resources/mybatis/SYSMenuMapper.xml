@@ -53,7 +53,11 @@
 		FROM
 		tsys_menu t
 		<include refid="where_condition"/>
-		order by t.code
+		<trim prefix="ORDER BY ">
+			<if test="order != null and order != '' ">
+				${order}
+			</if>
+		</trim>	
 	</select>
 
 	<select id="select_sysMenu_count" parameterType="sysMenu" resultType="java.lang.Long">

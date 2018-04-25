@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.cdkj.loan.dao.IUserSettingsDAO">
+<mapper namespace="com.cdkj.gchf.dao.IUserSettingsDAO">
 
-    <resultMap id="UserSettings_DB_Result" type="com.cdkj.loan.domain.UserSettings">
+    <resultMap id="UserSettings_DB_Result" type="com.cdkj.gchf.domain.UserSettings">
         <result column="id" property="id"/>
         <result column="user_id" property="userId"/>
         <result column="type" property="type"/>
@@ -26,7 +26,7 @@
         </trim>
     </sql>
 
-    <select id="select_UserSettings" parameterType="com.cdkj.loan.domain.UserSettings"
+    <select id="select_UserSettings" parameterType="com.cdkj.gchf.domain.UserSettings"
             resultMap="UserSettings_DB_Result">
         SELECT
         t.id
@@ -45,13 +45,13 @@
         </trim>
     </select>
 
-    <select id="select_UserSettings_count" parameterType="com.cdkj.loan.domain.UserSettings"
+    <select id="select_UserSettings_count" parameterType="com.cdkj.gchf.domain.UserSettings"
             resultType="java.lang.Long">
         SELECT count(1) FROM tstd_user_settings t
         <include refid="where_condition"/>
     </select>
 
-    <insert id="insert_UserSettings" parameterType="com.cdkj.loan.domain.UserSettings">
+    <insert id="insert_UserSettings" parameterType="com.cdkj.gchf.domain.UserSettings">
         INSERT INTO
             tstd_user_settings (
                 id
@@ -71,7 +71,7 @@
         )
     </insert>
 
-    <update id="update_UserSettings" parameterType="com.cdkj.loan.domain.UserSettings">
+    <update id="update_UserSettings" parameterType="com.cdkj.gchf.domain.UserSettings">
         UPDATE tstd_user_settings
         SET
             user_id           = #{userId}
@@ -82,7 +82,7 @@
         WHERE id = #{id}
     </update>
 
-    <delete id="delete" parameterType="com.cdkj.loan.domain.UserSettings">
+    <delete id="delete" parameterType="com.cdkj.gchf.domain.UserSettings">
         DELETE FROM tstd_user_settings
         WHERE user_id = #{userId} and type = #{type}
     </delete>

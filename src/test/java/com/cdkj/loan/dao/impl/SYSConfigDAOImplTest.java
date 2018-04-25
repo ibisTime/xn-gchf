@@ -6,8 +6,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-import com.cdkj.loan.dao.ISYSConfigDAO;
-import com.cdkj.loan.domain.SYSConfig;
+import com.cdkj.gchf.dao.ISYSConfigDAO;
+import com.cdkj.gchf.domain.SYSConfig;
 
 import java.util.List;
 

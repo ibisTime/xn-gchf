@@ -5,8 +5,8 @@ import java.util.Date;
 import org.junit.Test;
 import org.unitils.spring.annotation.SpringBeanByType;
 
-import com.cdkj.loan.dao.ISYSDictDAO;
-import com.cdkj.loan.domain.SYSDict;
+import com.cdkj.gchf.dao.ISYSDictDAO;
+import com.cdkj.gchf.domain.SYSDict;
 
 public class ISysDictDAOTest extends ADAOTest {
 

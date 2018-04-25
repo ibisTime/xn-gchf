@@ -44,7 +44,7 @@ public class CompanyBOImpl extends PaginableBOImpl<Company>
         if (data != null) {
             if (data.getCode() == null) {
                 code = OrderNoGenerater
-                    .generate(EGeneratePrefix.Brand.getCode());
+                    .generate(EGeneratePrefix.Company.getCode());
                 data.setCode(code);
             }
             companyDAO.insert(data);

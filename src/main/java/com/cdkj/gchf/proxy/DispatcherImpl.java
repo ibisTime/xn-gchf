@@ -12,7 +12,7 @@ public class DispatcherImpl implements IDispatcher {
             String operator) {
         String result = null;
         // 加载配置文件,proxy实例化
-        String classname = "com.cdkj.loan.api.impl.XNOther";
+        String classname = "com.cdkj.gchf.api.impl.XNOther";
         ReturnMessage rm = new ReturnMessage();
         try {
             // ConfigDescribe configDescribe = ConfigLoader.loadConfig();
@@ -22,7 +22,7 @@ public class DispatcherImpl implements IDispatcher {
              * (codeList.contains(transcode)) { classname =
              * "com.cdkj.coin.api.impl.XN" + transcode; } }
              */
-            classname = "com.cdkj.loan.api.impl.XN" + transcode;
+            classname = "com.cdkj.gchf.api.impl.XN" + transcode;
             IProcessor processor = (IProcessor) ReflectUtil
                 .getInstance(classname);
             // 接口调用

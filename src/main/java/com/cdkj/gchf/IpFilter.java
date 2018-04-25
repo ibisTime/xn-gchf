@@ -17,6 +17,7 @@ import com.cdkj.gchf.core.ConfigLoader;
 public class IpFilter implements Filter {
 
     public IpFilter() {
+
     }
 
     @Override

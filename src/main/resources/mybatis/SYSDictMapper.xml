@@ -32,6 +32,7 @@
 			</if>
 		</trim>
 	</sql>
+	
 	<select id="select_sysDict" parameterType="sysDict" resultMap="sysDict_DB_Result">
 		SELECT
 		id

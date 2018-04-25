@@ -64,6 +64,11 @@
 		FROM
 		tsys_menu_role t
 		<include refid="where_condition"/>
+		<trim prefix="ORDER BY ">
+			<if test="order != null and order != '' ">
+				${order}
+			</if>
+		</trim>	
 	</select>
 
 	<select id="select_sysMenuRole_count" parameterType="sysMenuRole" resultType="java.lang.Long">

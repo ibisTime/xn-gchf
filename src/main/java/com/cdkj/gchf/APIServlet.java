@@ -27,6 +27,7 @@ import com.cdkj.gchf.proxy.IDispatcher;
  * @history:
  */
 public class APIServlet extends HttpServlet {
+
     static Logger logger = Logger.getLogger(APIServlet.class);
 
     /** 

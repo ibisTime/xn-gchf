@@ -17,6 +17,9 @@ public class User extends ABaseDO {
     // 用户Id
     private String userId;
 
+    // 类型
+    private String type;
+
     // 头像
     private String photo;
 
@@ -32,11 +35,17 @@ public class User extends ABaseDO {
     // 登录密码强度
     private String loginPwdStrength;
 
+    // 推荐人
+    private String userRefree;
+
     // 注册时间
     private Date createDatetme;
 
     // 角色编号
     private String roleCode;
+
+    // 部门编号
+    private String departmentCode;
 
     // 更新人
     private String updater;
@@ -55,6 +64,7 @@ public class User extends ABaseDO {
 
     private Date createDatetimeEnd;
 
+    // 登录名等模糊查询
     private String keyword;
 
     public void setUserId(String userId) {
@@ -175,6 +185,30 @@ public class User extends ABaseDO {
 
     public void setKeyword(String keyword) {
         this.keyword = keyword;
+    }
+
+    public String getDepartmentCode() {
+        return departmentCode;
+    }
+
+    public void setDepartmentCode(String departmentCode) {
+        this.departmentCode = departmentCode;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
+    }
+
+    public String getUserRefree() {
+        return userRefree;
+    }
+
+    public void setUserRefree(String userRefree) {
+        this.userRefree = userRefree;
     }
 
 }

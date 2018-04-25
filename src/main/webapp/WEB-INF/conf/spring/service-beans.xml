@@ -8,7 +8,7 @@
         http://www.springframework.org/schema/context/spring-context-3.0.xsd">
 
 
-	<context:component-scan base-package="com.cdkj.loan"/>
+	<context:component-scan base-package="com.cdkj.gchf"/>
 	<context:annotation-config />
 	
 </beans>

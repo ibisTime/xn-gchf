@@ -4,13 +4,20 @@
 <mapper namespace="com.cdkj.gchf.dao.IUserDAO">
 	<resultMap id="user_DB_Result" type="user">
 		<result column="user_id" property="userId" />
+		<result column="type" property="type" />
 		<result column="photo" property="photo" />
 		<result column="login_name" property="loginName" />
 		<result column="mobile" property="mobile" />
+		
 		<result column="login_pwd" property="loginPwd" />
 		<result column="login_pwd_strength" property="loginPwdStrength" />
+		<result column="user_refree" property="userRefree" />
 		<result column="create_datetime" property="createDatetime" />
 		<result column="role_code" property="roleCode" />
+		
+		<result column="department_code" property="departmentCode" />
+		<result column="updater" property="updater" />
+		<result column="update_datetime" property="updateDatetime" />
 		<result column="status" property="status" />
 		<result column="remark" property="remark" />
 	</resultMap>
@@ -32,7 +39,6 @@
 			<if test="roleCode != null and roleCode != '' ">
 				AND t.role_code = #{roleCode}
 			</if>
-			
 			<if test="keyword != null and keyword != '' ">
 				AND t.login_name like "%"#{keyword}"%" OR  t.mobile like "%"#{keyword}"%"
 			</if>
@@ -49,15 +55,22 @@
 	<select id="select_user" parameterType="user" resultMap="user_DB_Result">
 		SELECT
 		t.user_id
+		,t.type
 		,t.photo
 		,t.login_name
 		,t.mobile
+		
+		,t.user_refree
 		,t.create_datetme
 		,t.role_code
+		,t.department_code
+		,t.updater
+		
+		,t.update_datetime
 		,t.status
 		,t.remark
 		FROM
-		tht_user t
+		thf_user t 
 		<include refid="where_condition" />
 		<trim prefix="ORDER BY ">
 			<if test="order != null and order != '' ">
@@ -68,40 +81,54 @@
 
 	<select id="select_user_count" parameterType="user"
 		resultType="java.lang.Long">
-		SELECT count(1) FROM tht_user t
+		SELECT count(1) FROM thf_user t
 		<include refid="where_condition" />
 	</select>
 
 	<insert id="insert_user" parameterType="user">
 		INSERT INTO
-		tht_user(
-		userId
+		thf_user(
+		user_id
+		,type
 		,photo
-		,loginName
+		,login_name
 		,mobile
-		,loginPwd
-		,loginPwdStrength
-		,createDatetme
-		,roleCode
+		
+		,login_pwd
+		,login_pwd_strength
+		,user_refree
+		,create_datetme
+		,role_code
+		
+		,department_code
+		,updater
+		,update_datetime
 		,status
 		,remark
 		)
 		VALUES(
 		#{userId}
+		,#{type}
 		,#{photo}
 		,#{loginName}
 		,#{mobile}
+		
 		,#{loginPwd}
 		,#{loginPwdStrength}
+		,#{userRefree}
 		,#{createDatetme}
 		,#{roleCode}
+		
+		,#{departmentCode}
+		,#{updater}
+		,#{updateDatetime}
 		,#{status}
 		,#{remark}
 		)
 	</insert>
 
 	<update id="update_user" parameterType="user">
-		UPDATE tht_user
+		UPDATE thf_user
 		SET
 		photo = #{photo}
 		,loginName = #{loginName}
@@ -117,7 +144,7 @@
 	
 		
 	<update id="update_status" parameterType="user">
-		UPDATE tht_user
+		UPDATE thf_user
 		SET
 		status = #{status}
 		,updater = #{updater}
@@ -128,16 +155,19 @@
 
 
 	<update id="update_login_pwd" parameterType="user">
-		UPDATE tht_user
+		UPDATE thf_user
 		SET
-		 login_pwd = #{loginPwd}
+		login_pwd = #{loginPwd}
 		,login_pwd_strength = #{loginPwdStrength}
+		,updater = #{updater}
+		,update_datetime = #{updateDatetime}
+		,remark = #{remark}
 		WHERE
 		user_id = #{userId}	
 	</update>	
 
 	<update id="update_role" parameterType="user">
-		UPDATE tht_user
+		UPDATE thf_user
 		SET
 		 role_code = #{roleCode}
 		 ,updater = #{updater}
@@ -149,7 +179,7 @@
 	
 		
 	<update id="update_mobile" parameterType="user">
-		UPDATE tht_user
+		UPDATE thf_user
 		SET
 		mobile = #{mobile}
 		WHERE
@@ -158,7 +188,7 @@
 
 
 	<update id="update_user_photo" parameterType="user">
-		UPDATE txb_user
+		UPDATE thf_user
 		SET
 		photo = #{photo}
 		WHERE user_id = #{userId}

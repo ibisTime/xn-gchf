@@ -72,9 +72,10 @@
 		<property name="paginableDAO" ref="sysConfigDAOImpl"/>
 	</bean>	
 	
-	<bean id="brandBO" class="com.cdkj.gchf.bo.impl.BrandBOImpl">
-		<property name="paginableDAO" ref="brandDAOImpl" />
+		<bean id="departmentBO" class="com.cdkj.gchf.bo.impl.DepartmentBOImpl">
+		<property name="paginableDAO" ref="departmentDAOImpl"/>
 	</bean>
+<<<<<<< HEAD
 	<bean id="cuserBO" class="com.cdkj.gchf.bo.impl.CUserBOImpl">
 		<property name="paginableDAO" ref="cuserDAOImpl"/>
 	</bean>	
@@ -91,4 +92,6 @@
 	<bean id="companyBO" class="com.cdkj.gchf.bo.impl.CompanyBOImpl">
 		<property name="paginableDAO" ref="companyDAOImpl"/>
 	</bean>	
+=======
+>>>>>>> refs/remotes/origin/master
 </beans>

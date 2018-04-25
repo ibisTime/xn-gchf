@@ -2,30 +2,30 @@
 <!DOCTYPE configuration PUBLIC "-//mybatis.org//DTD Config 3.0//EN" "http://mybatis.org/dtd/mybatis-3-config.dtd">
 <configuration>
 	<typeAliases>
-		<typeAlias alias="user" type="com.cdkj.loan.domain.User" />
-		<typeAlias alias="blacklist" type="com.cdkj.loan.domain.Blacklist" />
-		<typeAlias alias="userRelation" type="com.cdkj.loan.domain.UserRelation" />
-		<typeAlias alias="cNavigate" type="com.cdkj.loan.domain.CNavigate" />
-		<typeAlias alias="fieldTimes" type="com.cdkj.loan.domain.FieldTimes" />
-		<typeAlias alias="sysMenu" type="com.cdkj.loan.domain.SYSMenu" />
-		<typeAlias alias="sysRole" type="com.cdkj.loan.domain.SYSRole" />
-		<typeAlias alias="sysMenuRole" type="com.cdkj.loan.domain.SYSMenuRole" />
+		<typeAlias alias="user" type="com.cdkj.gchf.domain.User" />
+		<typeAlias alias="blacklist" type="com.cdkj.gchf.domain.Blacklist" />
+		<typeAlias alias="userRelation" type="com.cdkj.gchf.domain.UserRelation" />
+		<typeAlias alias="cNavigate" type="com.cdkj.gchf.domain.CNavigate" />
+		<typeAlias alias="fieldTimes" type="com.cdkj.gchf.domain.FieldTimes" />
+		<typeAlias alias="sysMenu" type="com.cdkj.gchf.domain.SYSMenu" />
+		<typeAlias alias="sysRole" type="com.cdkj.gchf.domain.SYSRole" />
+		<typeAlias alias="sysMenuRole" type="com.cdkj.gchf.domain.SYSMenuRole" />
 
-		<typeAlias alias="account" type="com.cdkj.loan.domain.Account" />
-		<typeAlias alias="jour" type="com.cdkj.loan.domain.Jour" />
-		<typeAlias alias="exchangeCurrency" type="com.cdkj.loan.domain.ExchangeCurrency" />
-		<typeAlias alias="charge" type="com.cdkj.loan.domain.Charge" />
-		<typeAlias alias="withdraw" type="com.cdkj.loan.domain.Withdraw" />
-		<typeAlias alias="hlOrder" type="com.cdkj.loan.domain.HLOrder" />
+		<typeAlias alias="account" type="com.cdkj.gchf.domain.Account" />
+		<typeAlias alias="jour" type="com.cdkj.gchf.domain.Jour" />
+		<typeAlias alias="exchangeCurrency" type="com.cdkj.gchf.domain.ExchangeCurrency" />
+		<typeAlias alias="charge" type="com.cdkj.gchf.domain.Charge" />
+		<typeAlias alias="withdraw" type="com.cdkj.gchf.domain.Withdraw" />
+		<typeAlias alias="hlOrder" type="com.cdkj.gchf.domain.HLOrder" />
 		
-		<typeAlias alias="sysDict" type="com.cdkj.loan.domain.SYSDict" />
-		<typeAlias alias="sysConfig" type="com.cdkj.loan.domain.SYSConfig" />
+		<typeAlias alias="sysDict" type="com.cdkj.gchf.domain.SYSDict" />
+		<typeAlias alias="sysConfig" type="com.cdkj.gchf.domain.SYSConfig" />
 		
-		<typeAlias alias="cuser" type="com.cdkj.loan.domain.CUser" />
-		<typeAlias alias="brand" type="com.cdkj.loan.domain.Brand" />
-		<typeAlias alias="series" type="com.cdkj.loan.domain.Series" />
-		<typeAlias alias="car" type="com.cdkj.loan.domain.Car" />
-		<typeAlias alias="carorder" type="com.cdkj.loan.domain.CarOrder" />
+		<typeAlias alias="cuser" type="com.cdkj.gchf.domain.CUser" />
+		<typeAlias alias="brand" type="com.cdkj.gchf.domain.Brand" />
+		<typeAlias alias="series" type="com.cdkj.gchf.domain.Series" />
+		<typeAlias alias="car" type="com.cdkj.gchf.domain.Car" />
+		<typeAlias alias="carorder" type="com.cdkj.gchf.domain.CarOrder" />
 	</typeAliases>
 </configuration>
 

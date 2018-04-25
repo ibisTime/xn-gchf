@@ -5,8 +5,8 @@ import java.util.Date;
 import org.junit.Test;
 import org.unitils.spring.annotation.SpringBeanByType;
 
-import com.cdkj.loan.dao.ISYSConfigDAO;
-import com.cdkj.loan.domain.SYSConfig;
+import com.cdkj.gchf.dao.ISYSConfigDAO;
+import com.cdkj.gchf.domain.SYSConfig;
 
 public class ISYSConfigDAOTest extends ADAOTest {
 

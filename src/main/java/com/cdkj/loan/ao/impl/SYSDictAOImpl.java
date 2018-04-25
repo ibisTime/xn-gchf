@@ -18,7 +18,7 @@ import com.cdkj.loan.ao.ISYSDictAO;
 import com.cdkj.loan.bo.ISYSDictBO;
 import com.cdkj.loan.bo.base.Paginable;
 import com.cdkj.loan.domain.SYSDict;
-import com.cdkj.loan.dto.req.XN630030Req;
+import com.cdkj.loan.dto.req.XN631000Req;
 import com.cdkj.loan.enums.EDictType;
 
 /** 
@@ -32,7 +32,7 @@ public class SYSDictAOImpl implements ISYSDictAO {
     ISYSDictBO sysDictBO;
 
     @Override
-    public Long addSecondDict(XN630030Req req) {
+    public Long addSecondDict(XN631000Req req) {
         String parentKey = req.getParentKey();
         String key = req.getDkey();
         sysDictBO.checkKeys(parentKey, key);

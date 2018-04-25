@@ -13,7 +13,7 @@ public interface IUserAO {
     static final String DEFAULT_ORDER_COLUMN = "user_id";
 
     // 用户登录
-    public String doLogin(String loginName, String loginPwd);
+    public String doLogin(String loginName, String loginPwd, String kind);
 
     // 注销/激活用户
     public void doCloseOpen(String userId, String updater, String remark);

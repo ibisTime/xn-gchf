@@ -37,7 +37,11 @@
 		FROM
 		tsys_role t
 		<include refid="where_condition" />
-		order by t.update_datetime desc
+		<trim prefix="ORDER BY ">
+			<if test="order != null and order != '' ">
+				${order}
+			</if>
+		</trim>	
 	</select>
 
 	<select id="select_sysRole_count" parameterType="sysRole" resultType="java.lang.Long">

@@ -10,6 +10,8 @@ package com.cdkj.loan.http;
 
 import java.util.Properties;
 
+import org.apache.log4j.Logger;
+
 import com.cdkj.loan.common.PropertiesUtil;
 import com.cdkj.loan.core.RegexUtils;
 import com.cdkj.loan.exception.BizException;
@@ -20,13 +22,15 @@ import com.cdkj.loan.exception.BizException;
  * @history:
  */
 public class BizConnecter {
+    private static Logger logger = Logger.getLogger(BizConnecter.class);
+
     public static final String YES = "0";
 
-    public static final String CTQ_URL = PropertiesUtil.Config.CTQ_URL;
+    public static final String ACCOUNT_URL = PropertiesUtil.Config.ACCOUNT_URL;
 
     public static final String SMS_URL = PropertiesUtil.Config.SMS_URL;
 
-    public static final String CERTI_URL = PropertiesUtil.Config.CERTI_URL;
+    public static final String IDENTIFY_URL = PropertiesUtil.Config.IDENTIFY_URL;
 
     public static final String POST_URL = "...";
 
@@ -42,6 +46,7 @@ public class BizConnecter {
             Properties formProperties = new Properties();
             formProperties.put("code", code);
             formProperties.put("json", json);
+            System.out.println("code:" + code + ";json:" + json);
             resJson = PostSimulater.requestPostForm(getPostUrl(code),
                 formProperties);
         } catch (Exception e) {
@@ -50,6 +55,9 @@ public class BizConnecter {
         // 开始解析响应json
         String errorCode = RegexUtils.find(resJson, "errorCode\":\"(.+?)\"", 1);
         String errorInfo = RegexUtils.find(resJson, "errorInfo\":\"(.+?)\"", 1);
+        logger.info("request:code<" + code + ">  json<" + json
+                + ">\nresponse:errorCode<" + errorCode + ">  errorInfo<"
+                + errorInfo + ">");
         if (YES.equalsIgnoreCase(errorCode)) {
             data = RegexUtils.find(resJson, "data\":(.*)\\}", 1);
         } else {
@@ -60,12 +68,14 @@ public class BizConnecter {
 
     private static String getPostUrl(String code) {
         String postUrl = POST_URL;
-        if (code.startsWith("626") || "625917".equals(code)) {
-            postUrl = CTQ_URL;
-        } else if (code.startsWith("798")) {
-            postUrl = CERTI_URL;
-        } else if (code.startsWith("804")) {
+        if (code.startsWith("799") || code.startsWith("804")) {
             postUrl = SMS_URL;
+        } else if (code.contains("798")) {
+            postUrl = IDENTIFY_URL;
+        } else if (code.startsWith("802") || code.startsWith("002")) {
+            postUrl = ACCOUNT_URL;
+        } else {
+            postUrl = POST_URL;
         }
         return postUrl;
     }

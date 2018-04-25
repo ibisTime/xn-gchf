@@ -12,7 +12,7 @@ import java.util.List;
 
 import com.cdkj.loan.bo.base.Paginable;
 import com.cdkj.loan.domain.SYSDict;
-import com.cdkj.loan.dto.req.XN630030Req;
+import com.cdkj.loan.dto.req.XN631000Req;
 
 /** 
  * @author: haiqingzheng 
@@ -22,7 +22,7 @@ import com.cdkj.loan.dto.req.XN630030Req;
 public interface ISYSDictAO {
     static String DEFAULT_ORDER_COLUMN = "id";
 
-    public Long addSecondDict(XN630030Req req);
+    public Long addSecondDict(XN631000Req req);
 
     public void dropSYSDict(Long id);
 

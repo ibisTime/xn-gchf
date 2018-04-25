@@ -72,4 +72,7 @@
 		<property name="paginableDAO" ref="sysConfigDAOImpl"/>
 	</bean>	
 	
+		<bean id="departmentBO" class="com.cdkj.gchf.bo.impl.DepartmentBOImpl">
+		<property name="paginableDAO" ref="departmentDAOImpl"/>
+	</bean>
 </beans>

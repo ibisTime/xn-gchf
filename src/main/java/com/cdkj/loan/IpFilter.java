@@ -11,8 +11,8 @@ import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 
-import com.cdkj.loan.core.ConfigDescribe;
-import com.cdkj.loan.core.ConfigLoader;
+import com.cdkj.loan.common.ConfigDescribe;
+import com.cdkj.loan.common.ConfigLoader;
 
 public class IpFilter implements Filter {
 

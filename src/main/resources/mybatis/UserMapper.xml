@@ -171,7 +171,18 @@
 		SET
 		 role_code = #{roleCode}
 		 ,updater = #{updater}
-		 ,updater_datetime = #{updaterDatetime}
+		 ,update_datetime = #{updateDatetime}
+		 ,remark = #{remark}
+		WHERE
+		user_id = #{userId}	
+	</update>	
+	
+	<update id="update_department" parameterType="department">
+		UPDATE thf_user
+		SET
+		 department_code = #{departmentCode}
+		 ,updater = #{updater}
+		 ,update_datetime = #{updateDatetime}
 		 ,remark = #{remark}
 		WHERE
 		user_id = #{userId}	

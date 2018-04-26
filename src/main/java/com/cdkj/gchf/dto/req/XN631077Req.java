@@ -1,27 +1,22 @@
 package com.cdkj.gchf.dto.req;
 
-import org.hibernate.validator.constraints.NotBlank;
-
 /**
  * @author: xieyj 
  * @since: 2016年9月17日 下午3:58:52 
  * @history:
  */
-public class XN631074Req {
+public class XN631077Req {
 
     // 用户编号(必填)
-    @NotBlank(message = "用户编号不能为空")
     private String userId;
 
-    // 登录密码(必填)
-    @NotBlank(message = "新登录密码不能为空")
-    private String newLoginPwd;
+    // 部门编号(必填)
+    private String departmentCode;
 
     // 更新人(必填)
-    @NotBlank(message = "更新人不能为空")
     private String updater;
 
-    // 备注必填)
+    // 备注(选填)
     private String remark;
 
     public String getUserId() {
@@ -32,12 +27,12 @@ public class XN631074Req {
         this.userId = userId;
     }
 
-    public String getNewLoginPwd() {
-        return newLoginPwd;
+    public String getDepartmentCode() {
+        return departmentCode;
     }
 
-    public void setNewLoginPwd(String newLoginPwd) {
-        this.newLoginPwd = newLoginPwd;
+    public void setDepartmentCode(String departmentCode) {
+        this.departmentCode = departmentCode;
     }
 
     public String getUpdater() {
@@ -55,5 +50,4 @@ public class XN631074Req {
     public void setRemark(String remark) {
         this.remark = remark;
     }
-
 }

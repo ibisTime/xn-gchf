@@ -43,6 +43,7 @@
 		<include refid="where_condition" />
 	</select>
 	
+	
 	<insert id="insert_company" parameterType="company">
 		INSERT INTO
 		thf_company(

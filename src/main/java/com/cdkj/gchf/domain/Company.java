@@ -17,6 +17,9 @@ public class Company extends ABaseDO {
 
     private Date createDatetime; // 创建时间
 
+    // ***********db********
+    private String keyword;
+
     public String getCode() {
         return code;
     }
@@ -39,6 +42,14 @@ public class Company extends ABaseDO {
 
     public void setCreateDatetime(Date createDatetime) {
         this.createDatetime = createDatetime;
+    }
+
+    public String getKeyword() {
+        return keyword;
+    }
+
+    public void setKeyword(String keyword) {
+        this.keyword = keyword;
     }
 
 }

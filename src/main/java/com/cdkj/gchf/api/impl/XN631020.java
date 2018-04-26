@@ -11,6 +11,7 @@ import com.cdkj.gchf.exception.ParaException;
 import com.cdkj.gchf.spring.SpringContextHolder;
 
 public class XN631020 extends AProcessor {
+
     private ICompanyAO companyAO = SpringContextHolder
         .getBean(ICompanyAO.class);
 

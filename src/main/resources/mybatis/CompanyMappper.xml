@@ -11,13 +11,10 @@
 	<sql id="where_condition">
 		<trim prefix="WHERE" prefixOverrides="AND | OR">
 			<if test="code != null and code != '' ">
-				AND f.code = #{code}
+				AND t.code = #{code}
 			</if>
-			<if test="name != null and name != '' ">
-				AND f.name = #{name}
-			</if>
-			<if test="createDatetime != null and createDatetime != '' ">
-				AND f.create_datetime = #{createDatetime}
+			<if test="keyword != null and keyword != '' ">
+				AND t.name LIKE "%"#{keyword}"%" 
 			</if>
 		</trim>
 	</sql>
@@ -36,14 +33,13 @@
 			</if>
 		</trim>
 	</select>
-	
+
 	<select id="select_company_count" parameterType="company"
 		resultType="java.lang.Long">
 		SELECT count(1) FROM thf_company t
 		<include refid="where_condition" />
 	</select>
-	
-	
+
 	<insert id="insert_company" parameterType="company">
 		INSERT INTO
 		thf_company(
@@ -54,16 +50,10 @@
 		VALUES(
 		#{code}
 		,#{name}
-		,#{crateDatetime}
+		,#{createDatetime}
 		)
 	</insert>
-	
-	<delete id="delete_company" parameterType="company">
-		DELETE FROM thf_company
-		WHERE
-		code = #{code}
-	</delete>
-	
+
 	<update id="update_company" parameterType="company">
 		UPDATE thf_company
 		SET

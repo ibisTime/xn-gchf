@@ -7,7 +7,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.cdkj.gchf.bo.ICompanyBO;
-import com.cdkj.gchf.bo.base.Paginable;
 import com.cdkj.gchf.bo.base.PaginableBOImpl;
 import com.cdkj.gchf.core.OrderNoGenerater;
 import com.cdkj.gchf.dao.ICompanyDAO;
@@ -25,17 +24,6 @@ public class CompanyBOImpl extends PaginableBOImpl<Company>
     @Override
     public long getTotalCount(Company condition) {
         return companyDAO.selectTotalCount(condition);
-    }
-
-    @Override
-    public Paginable<Company> getPaginable(int start, Company condition) {
-        return null;
-    }
-
-    @Override
-    public Paginable<Company> getPaginable(int start, int pageSize,
-            Company condition) {
-        return null;
     }
 
     @Override
@@ -80,16 +68,5 @@ public class CompanyBOImpl extends PaginableBOImpl<Company>
     public void deleteCompany(Company data) {
         companyDAO.delete(data);
     }
-
-    // @Override
-    // public List<Company> queryCompanyPage(int start, int limit,
-    // Company condition) {
-    // return companyDAO.selectList(start, limit, condition);
-    // }
-    //
-    // @Override
-    // public List<Company> queryCompanylist(Company condition) {
-    // return companyDAO.selectList(condition);
-    // }
 
 }

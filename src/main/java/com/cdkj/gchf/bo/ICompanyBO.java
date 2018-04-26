@@ -17,9 +17,4 @@ public interface ICompanyBO extends IPaginableBO<Company> {
 
     public List<Company> queryCompany(Company condition);
 
-    // public List<Company> queryCompanyPage(int start, int limit,
-    // Company condition);
-    //
-    // public List<Company> queryCompanylist(Company condition);
-
 }

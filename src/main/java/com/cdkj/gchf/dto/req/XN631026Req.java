@@ -2,14 +2,20 @@ package com.cdkj.gchf.dto.req;
 
 public class XN631026Req extends APageReq {
 
-    private String name; // 公司名称
+    /** 
+     * @Fields serialVersionUID : TODO(用一句话描述这个变量表示什么) 
+     */
+    private static final long serialVersionUID = -4836535620614431430L;
 
-    public String getName() {
-        return name;
+    // 公司名称
+    private String keyword;
+
+    public String getKeyword() {
+        return keyword;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setKeyword(String keyword) {
+        this.keyword = keyword;
     }
 
 }

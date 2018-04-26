@@ -24,7 +24,7 @@ public class CompanyAOImpl implements ICompanyAO {
         Company company = new Company();
         company.setName(req.getName());
         company.setCreateDatetime(new Date());
-        return null;
+        return companyBO.saveCompany(company);
     }
 
     @Override

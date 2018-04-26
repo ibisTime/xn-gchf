@@ -18,15 +18,15 @@ import org.hibernate.validator.constraints.NotBlank;
 public class XN631016Req {
 
     // key(必填)
-    @NotBlank(message = "key不能为空")
-    private String key;
+    @NotBlank(message = "ckey不能为空")
+    private String ckey;
 
-    public String getKey() {
-        return key;
+    public String getCkey() {
+        return ckey;
     }
 
-    public void setKey(String key) {
-        this.key = key;
+    public void setCkey(String ckey) {
+        this.ckey = ckey;
     }
 
 }

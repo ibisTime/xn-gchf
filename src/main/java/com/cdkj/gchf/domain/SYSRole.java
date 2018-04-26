@@ -20,9 +20,6 @@ public class SYSRole extends ABaseDO {
     // 角色名称
     private String name;
 
-    // 角色等级
-    private String level;
-
     // 更新人
     private String updater;
 
@@ -46,14 +43,6 @@ public class SYSRole extends ABaseDO {
 
     public void setName(String name) {
         this.name = name;
-    }
-
-    public String getLevel() {
-        return level;
-    }
-
-    public void setLevel(String level) {
-        this.level = level;
     }
 
     public String getUpdater() {

@@ -76,75 +76,75 @@ public class SYSConfigBOImpl extends PaginableBOImpl<SYSConfig>
     }
 
     @Override
-    public SYSConfig getSYSConfig(String key) {
+    public SYSConfig getSYSConfig(String ckey) {
         SYSConfig sysConfig = null;
-        if (StringUtils.isNotBlank(key)) {
+        if (StringUtils.isNotBlank(ckey)) {
             SYSConfig condition = new SYSConfig();
-            condition.setCkey(key);
+            condition.setCkey(ckey);
             List<SYSConfig> sysConfigList = sysConfigDAO.selectList(condition);
             if (CollectionUtils.isNotEmpty(sysConfigList)) {
                 sysConfig = sysConfigList.get(0);
             } else {
-                throw new BizException("xn000000", key + "对应记录不存在");
+                throw new BizException("xn000000", ckey + "对应记录不存在");
             }
         }
         return sysConfig;
     }
 
     @Override
-    public Double getDoubleValue(String key) {
+    public Double getDoubleValue(String ckey) {
         Double result = 0.0;
-        SYSConfig config = getSYSConfig(key);
+        SYSConfig config = getSYSConfig(ckey);
         try {
             result = Double.valueOf(config.getCvalue());
         } catch (Exception e) {
             logger.error(
-                "参数名为" + key + "的配置转换成Double类型发生错误, 原因：" + e.getMessage());
+                "参数名为" + ckey + "的配置转换成Double类型发生错误, 原因：" + e.getMessage());
         }
         return result;
     }
 
     @Override
-    public Integer getIntegerValue(String key) {
+    public Integer getIntegerValue(String ckey) {
         Integer result = 0;
-        SYSConfig config = getSYSConfig(key);
+        SYSConfig config = getSYSConfig(ckey);
         try {
             result = Integer.valueOf(config.getCvalue());
         } catch (Exception e) {
             logger.error(
-                "参数名为" + key + "的配置转换成Integer类型发生错误, 原因：" + e.getMessage());
+                "参数名为" + ckey + "的配置转换成Integer类型发生错误, 原因：" + e.getMessage());
         }
         return result;
     }
 
     @Override
-    public String getStringValue(String key) {
-        SYSConfig config = getSYSConfig(key);
+    public String getStringValue(String ckey) {
+        SYSConfig config = getSYSConfig(ckey);
         return config.getCvalue();
     }
 
     @Override
-    public Long getLongValue(String key) {
+    public Long getLongValue(String ckey) {
         Long result = 0L;
-        SYSConfig config = getSYSConfig(key);
+        SYSConfig config = getSYSConfig(ckey);
         try {
             result = Long.valueOf(config.getCvalue());
         } catch (Exception e) {
-            logger
-                .error("参数名为" + key + "的配置转换成Long类型发生错误, 原因：" + e.getMessage());
+            logger.error(
+                "参数名为" + ckey + "的配置转换成Long类型发生错误, 原因：" + e.getMessage());
         }
         return result;
     }
 
     @Override
-    public BigDecimal getBigDecimalValue(String key) {
+    public BigDecimal getBigDecimalValue(String ckey) {
         BigDecimal result = BigDecimal.ZERO;
-        SYSConfig config = getSYSConfig(key);
+        SYSConfig config = getSYSConfig(ckey);
         try {
             result = new BigDecimal(config.getCvalue());
         } catch (Exception e) {
             logger.error(
-                "参数名为" + key + "的配置转换成BigDecimal类型发生错误, 原因：" + e.getMessage());
+                "参数名为" + ckey + "的配置转换成BigDecimal类型发生错误, 原因：" + e.getMessage());
         }
         return result;
     }

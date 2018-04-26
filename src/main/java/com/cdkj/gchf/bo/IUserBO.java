@@ -11,7 +11,8 @@ public interface IUserBO extends IPaginableBO<User> {
     public void refreshStatus(String userId, EUserStatus status, String updater,
             String remark);
 
-    public void refreshMobile(String userId, String mobile);
+    public void refreshMobile(User user, String mobile, String updater,
+            String remark);
 
     public void refreshRole(String userId, String roleCode, String updater,
             String remark);

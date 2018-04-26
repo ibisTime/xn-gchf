@@ -31,13 +31,16 @@ public class UserBOImpl extends PaginableBOImpl<User> implements IUserBO {
     }
 
     @Override
-    public void refreshMobile(String userId, String mobile) {
-        if (StringUtils.isNotBlank(userId) && StringUtils.isNotBlank(mobile)) {
-            User data = new User();
-            data.setUserId(userId);
-            data.setMobile(mobile);
-            userDAO.updateMobile(data);
-        }
+    public void refreshMobile(User data, String mobile, String updater,
+            String remark) {
+        data.setMobile(mobile);
+        data.setMobile(mobile);
+        data.setUpdater(updater);
+        data.setUpdateDatetime(new Date());
+        data.setRemark(remark);
+
+        userDAO.updateMobile(data);
+
     }
 
     @Override
@@ -130,10 +133,11 @@ public class UserBOImpl extends PaginableBOImpl<User> implements IUserBO {
     }
 
     @Override
-    public User getUser(String code) {
+    public User getUser(String userId) {
         User data = null;
-        if (StringUtils.isNotBlank(code)) {
+        if (StringUtils.isNotBlank(userId)) {
             User condition = new User();
+            condition.setUserId(userId);
             data = userDAO.select(condition);
             if (data == null) {
                 throw new BizException("xn0000", "用户不存在");

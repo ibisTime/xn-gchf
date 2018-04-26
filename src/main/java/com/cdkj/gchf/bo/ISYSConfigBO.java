@@ -27,18 +27,18 @@ public interface ISYSConfigBO extends IPaginableBO<SYSConfig> {
 
     public Map<String, String> getConfigsMap();
 
-    public SYSConfig getSYSConfig(String key);
+    public SYSConfig getSYSConfig(String ckey);
 
     public Map<String, String> getConfigsMap(String type);
 
-    public String getStringValue(String key);
+    public String getStringValue(String ckey);
 
-    public Double getDoubleValue(String key);
+    public Double getDoubleValue(String ckey);
 
-    public Integer getIntegerValue(String key);
+    public Integer getIntegerValue(String ckey);
 
-    public Long getLongValue(String key);
+    public Long getLongValue(String ckey);
 
-    public BigDecimal getBigDecimalValue(String key);
+    public BigDecimal getBigDecimalValue(String ckey);
 
 }

@@ -38,8 +38,8 @@ public class SYSConfigAOImpl implements ISYSConfigAO {
     }
 
     @Override
-    public SYSConfig getSYSConfig(String key) {
-        return sysConfigBO.getSYSConfig(key);
+    public SYSConfig getSYSConfig(String ckey) {
+        return sysConfigBO.getSYSConfig(ckey);
     }
 
     @Override

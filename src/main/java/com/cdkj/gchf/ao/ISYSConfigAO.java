@@ -25,5 +25,5 @@ public interface ISYSConfigAO {
 
     public Map<String, String> getSYSConfigMap(String type);
 
-    public SYSConfig getSYSConfig(String key);
+    public SYSConfig getSYSConfig(String ckey);
 }

@@ -15,7 +15,7 @@ public class XN631074Req {
 
     // 登录密码(必填)
     @NotBlank(message = "新登录密码不能为空")
-    private String loginPwd;
+    private String newLoginPwd;
 
     // 更新人(必填)
     @NotBlank(message = "更新人不能为空")
@@ -32,12 +32,12 @@ public class XN631074Req {
         this.userId = userId;
     }
 
-    public String getLoginPwd() {
-        return loginPwd;
+    public String getNewLoginPwd() {
+        return newLoginPwd;
     }
 
-    public void setLoginPwd(String loginPwd) {
-        this.loginPwd = loginPwd;
+    public void setNewLoginPwd(String newLoginPwd) {
+        this.newLoginPwd = newLoginPwd;
     }
 
     public String getUpdater() {

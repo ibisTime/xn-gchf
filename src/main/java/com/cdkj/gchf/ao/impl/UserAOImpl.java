@@ -118,13 +118,13 @@ public class UserAOImpl implements IUserAO {
 
     @Override
     @Transactional
-    public void doResetLoginPwdByOss(String userId, String loginPwd,
+    public void doResetLoginPwdByOss(String userId, String newLoginPwd,
             String updater, String remark) {
         User data = userBO.getUser(userId);
-        if (data.getLoginPwd().equals(MD5Util.md5(loginPwd))) {
+        if (data.getLoginPwd().equals(MD5Util.md5(newLoginPwd))) {
             throw new BizException("li01006", "新登录密码不能与原有密码重复");
         }
-        userBO.refreshLoginPwd(data, loginPwd, updater, remark);
+        userBO.refreshLoginPwd(data, newLoginPwd, updater, remark);
     }
 
     @Override

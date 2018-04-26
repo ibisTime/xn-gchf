@@ -24,7 +24,7 @@ public class XN631074 extends AProcessor {
 
     @Override
     public Object doBusiness() throws BizException {
-        userAO.doResetLoginPwdByOss(req.getUserId(), req.getLoginPwd(),
+        userAO.doResetLoginPwdByOss(req.getUserId(), req.getNewLoginPwd(),
             req.getUpdater(), req.getRemark());
         return new BooleanRes(true);
     }

@@ -42,7 +42,7 @@ public interface IUserAO {
             String newLoginPwd);
 
     // 管理员重置用户密码
-    public void doResetLoginPwdByOss(String userId, String loginPwd,
+    public void doResetLoginPwdByOss(String userId, String newLoginPwd,
             String updater, String remark);
 
     // 修改头像

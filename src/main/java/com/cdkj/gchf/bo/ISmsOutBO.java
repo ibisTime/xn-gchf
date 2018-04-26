@@ -33,7 +33,8 @@ public interface ISmsOutBO {
      * @create: 2017年2月13日 下午3:03:50 xieyj
      * @history:
      */
-    public void sendSmsOut(String mobile, String content);
+    public void sendSmsOut(String mobile, String content, String bizType,
+            String systemCode, String companyCode);
 
     void sendEmailCaptcha(String email, String bizType);
 }

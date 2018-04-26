@@ -59,13 +59,15 @@ public class SmsOutBOImpl implements ISmsOutBO {
     }
 
     @Override
-    public void sendSmsOut(String mobile, String content) {
+    public void sendSmsOut(String mobile, String content, String bizType,
+            String systemCode, String companyCode) {
         try {
             XN804080Req req = new XN804080Req();
             req.setMobile(mobile);
             req.setContent(content);
-            req.setType("M");
-            BizConnecter.getBizData("804080", JsonUtils.object2Json(req),
+            req.setCompanyCode(companyCode);
+            req.setSystemCode(systemCode);
+            BizConnecter.getBizData(bizType, JsonUtils.object2Json(req),
                 PKCodeRes.class);
         } catch (Exception e) {
             logger.error("调用短信发送服务异常");

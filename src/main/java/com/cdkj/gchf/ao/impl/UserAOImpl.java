@@ -11,15 +11,19 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.cdkj.gchf.ao.IUserAO;
 import com.cdkj.gchf.bo.ISYSRoleBO;
+import com.cdkj.gchf.bo.ISmsOutBO;
 import com.cdkj.gchf.bo.IUserBO;
 import com.cdkj.gchf.bo.base.Paginable;
 import com.cdkj.gchf.common.MD5Util;
+import com.cdkj.gchf.common.PhoneUtil;
 import com.cdkj.gchf.common.PwdUtil;
 import com.cdkj.gchf.core.OrderNoGenerater;
 import com.cdkj.gchf.domain.SYSRole;
 import com.cdkj.gchf.domain.User;
 import com.cdkj.gchf.dto.req.XN631070Req;
+import com.cdkj.gchf.enums.ESystemCode;
 import com.cdkj.gchf.enums.EUser;
+import com.cdkj.gchf.enums.EUserKind;
 import com.cdkj.gchf.enums.EUserStatus;
 import com.cdkj.gchf.exception.BizException;
 
@@ -31,6 +35,9 @@ public class UserAOImpl implements IUserAO {
 
     @Autowired
     private ISYSRoleBO sysRoleBO;
+
+    @Autowired
+    private ISmsOutBO smsOutBO;
 
     @Override
     public String doAddUser(XN631070Req req) {
@@ -70,8 +77,8 @@ public class UserAOImpl implements IUserAO {
 
     @Override
     @Transactional
-    public void doChangeMoblie(String userId, String newMobile,
-            String smsCaptcha) {
+    public void doChangeMoblie(String userId, String newMobile, String updater,
+            String remark) {
         User user = userBO.getUser(userId);
         if (user == null) {
             throw new BizException("xn000000", "用户不存在");
@@ -82,17 +89,7 @@ public class UserAOImpl implements IUserAO {
         }
         // 验证手机号
         userBO.isMobileExist(newMobile);
-        // 短信验证码是否正确（往新手机号发送）
-        // smsOutBO.checkCaptcha(newMobile, smsCaptcha, "805061");
-        userBO.refreshMobile(userId, newMobile);
-        // 发送短信
-        // smsOutBO.sendSmsOut(oldMobile,
-        // "尊敬的" + PhoneUtil.hideMobile(oldMobile) + "用户，您于"
-        // + DateUtil.dateToStr(new Date(),
-        // DateUtil.DATA_TIME_PATTERN_1)
-        // + "提交的更改绑定手机号码服务已审核通过，现绑定手机号码为" + newMobile
-        // + "，请妥善保管您的账户相关信息。",
-        // "805061", user.getCompanyCode(), user.getSystemCode());
+        userBO.refreshMobile(user, newMobile, updater, remark);
     }
 
     @Override
@@ -108,12 +105,13 @@ public class UserAOImpl implements IUserAO {
         // userBO.refreshLoginPwd(userId, newLoginPwd);
         // 发送短信
         User user = userBO.getUser(userId);
-        // if (!EUserKind.Plat.getCode().equals(user.getKind())) {
-        // smsOutBO.sendSmsOut(user.getMobile(),
-        // "尊敬的" + PhoneUtil.hideMobile(user.getMobile())
-        // + "用户，您的登录密码修改成功。请妥善保管您的账户相关信息。",
-        // "805064", user.getCompanyCode(), user.getSystemCode());
-        // }
+        if (!EUserKind.Plat.getCode().equals(user.getType())) {
+            smsOutBO.sendSmsOut(user.getMobile(),
+                "尊敬的" + PhoneUtil.hideMobile(user.getMobile())
+                        + "用户，您的登录密码修改成功。请妥善保管您的账户相关信息。",
+                "631073", ESystemCode.GCHF.getCode(),
+                ESystemCode.GCHF.getCode());
+        }
     }
 
     @Override

@@ -9,7 +9,7 @@ import java.util.Map;
  * @history:
  */
 public enum ESystemCode {
-    COIN("CD-COIN000017", "区块链货币");
+    GCHF("CD-GCHF000025", "工程核发");
     public static Map<String, ESystemCode> getMap() {
         Map<String, ESystemCode> map = new HashMap<String, ESystemCode>();
         for (ESystemCode direction : ESystemCode.values()) {

@@ -99,7 +99,7 @@ public class WithdrawAOImpl implements IWithdrawAO {
         condition2.setParentKey(SysConstants.QX_SMS_NOTICE);
         List<SYSDict> mobiledDicts = sysDictBO.querySYSDictList(condition2);
         for (SYSDict sysDict : mobiledDicts) {
-            smsOutBO.sendSmsOut(sysDict.getDkey(), content);
+            // smsOutBO.sendSmsOut(sysDict.getDkey(), content);
         }
 
         return withdrawCode;

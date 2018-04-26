@@ -20,6 +20,7 @@
 		
 		<typeAlias alias="sysDict" type="com.cdkj.gchf.domain.SYSDict" />
 		<typeAlias alias="sysConfig" type="com.cdkj.gchf.domain.SYSConfig" />
+<<<<<<< HEAD
 
 		
 		
@@ -27,6 +28,9 @@
 
 		<typeAlias alias="department" type="com.cdkj.gchf.domain.Department" />
 
+=======
+		<typeAlias alias="department" type="com.cdkj.gchf.domain.Department" />
+>>>>>>> refs/remotes/origin/master
 	</typeAliases>
 </configuration>
 

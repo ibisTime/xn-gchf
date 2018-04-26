@@ -19,7 +19,7 @@ public class XN631022 extends AProcessor {
 
     @Override
     public Object doBusiness() throws BizException {
-        companyAO.editCompany(req);
+        companyAO.editCompany(req.getCode(), req.getName());
         return new BooleanRes(true);
     }
 

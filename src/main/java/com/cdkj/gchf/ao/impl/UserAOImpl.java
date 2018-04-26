@@ -43,15 +43,17 @@ public class UserAOImpl implements IUserAO {
         data.setLoginPwdStrength(
             PwdUtil.calculateSecurityLevel(req.getLoginPwd()));
 
-        data.setCreateDatetme(new Date());
+        data.setCreateDatetime(new Date());
+        data.setStatus(EUserStatus.NORMAL.getCode());
         data.setRemark(req.getRemark());
         userBO.saveUser(data);
         return userId;
     }
 
     @Override
-    public String doLogin(String loginName, String loginPwd) {
+    public String doLogin(String type, String loginName, String loginPwd) {
         User condition = new User();
+        condition.setType(type);
         condition.setLoginName(loginName);
         condition.setLoginPwd(MD5Util.md5(loginPwd));
 

@@ -13,9 +13,21 @@ public class XN631071Req {
     @NotBlank(message = "登录名不能为空")
     private String loginName;
 
-    // 登录密码（选填）
+    // 登录密码（必填）
     @NotBlank(message = "登录密码不能为空")
     private String loginPwd;
+
+    // 类型（必填）
+    @NotBlank(message = "类型不能为空")
+    private String type;
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
+    }
 
     public String getLoginName() {
         return loginName;

@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.cdkj.gchf.ao.IUserAO;
+import com.cdkj.gchf.bo.IDepartmentBO;
 import com.cdkj.gchf.bo.ISYSRoleBO;
 import com.cdkj.gchf.bo.ISmsOutBO;
 import com.cdkj.gchf.bo.IUserBO;
@@ -18,6 +19,7 @@ import com.cdkj.gchf.common.MD5Util;
 import com.cdkj.gchf.common.PhoneUtil;
 import com.cdkj.gchf.common.PwdUtil;
 import com.cdkj.gchf.core.OrderNoGenerater;
+import com.cdkj.gchf.domain.Department;
 import com.cdkj.gchf.domain.SYSRole;
 import com.cdkj.gchf.domain.User;
 import com.cdkj.gchf.dto.req.XN631070Req;
@@ -35,6 +37,9 @@ public class UserAOImpl implements IUserAO {
 
     @Autowired
     private ISYSRoleBO sysRoleBO;
+
+    @Autowired
+    private IDepartmentBO departmentBO;
 
     @Autowired
     private ISmsOutBO smsOutBO;
@@ -119,9 +124,6 @@ public class UserAOImpl implements IUserAO {
     public void doResetLoginPwdByOss(String userId, String newLoginPwd,
             String updater, String remark) {
         User data = userBO.getUser(userId);
-        if (data.getLoginPwd().equals(MD5Util.md5(newLoginPwd))) {
-            throw new BizException("li01006", "新登录密码不能与原有密码重复");
-        }
         userBO.refreshLoginPwd(data, newLoginPwd, updater, remark);
     }
 
@@ -150,7 +152,7 @@ public class UserAOImpl implements IUserAO {
             smsContent = "您的账号已被管理员解封,请遵守平台相关规则";
             userStatus = EUserStatus.NORMAL;
         }
-        // userBO.refreshStatus(userId, userStatus, updater, remark);
+        userBO.refreshStatus(userId, userStatus, updater, remark);
         // if (!EUserKind.Plat.getCode().equals(user.getKind())
         // && PhoneUtil.isMobile(mobile)) {
         // // 发送短信
@@ -188,9 +190,7 @@ public class UserAOImpl implements IUserAO {
             throw new BizException("li01004", "用户不存在,请先注册");
         }
         if (EUserStatus.Li_Locked.getCode().equals(user.getStatus())
-                || EUserStatus.Ren_Locked.getCode().equals(user.getStatus())
-                || EUserStatus.TO_APPROVE.getCode().equals(user.getStatus())
-                || EUserStatus.APPROVE_NO.getCode().equals(user.getStatus())) {
+                || EUserStatus.Ren_Locked.getCode().equals(user.getStatus())) {
             throw new BizException("xn805050",
                 "该账号" + EUserStatus.getMap().get(user.getStatus()).getValue()
                         + "，请联系工作人员");
@@ -235,6 +235,20 @@ public class UserAOImpl implements IUserAO {
     @Override
     public User getUser(String code) {
         return userBO.getUser(code);
+    }
+
+    @Override
+    public void doDepartmentCode(String userId, String departmentCode,
+            String updater, String remark) {
+        User user = userBO.getUser(userId);
+        if (user == null) {
+            throw new BizException("li01004", "用户不存在");
+        }
+        Department department = departmentBO.getDepartment(departmentCode);
+        if (department == null) {
+            throw new BizException("li01004", "部门不存在");
+        }
+        userBO.refreshDepartment(userId, departmentCode, updater, remark);
     }
 
 }

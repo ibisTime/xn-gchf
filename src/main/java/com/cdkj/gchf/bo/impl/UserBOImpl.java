@@ -58,6 +58,20 @@ public class UserBOImpl extends PaginableBOImpl<User> implements IUserBO {
     }
 
     @Override
+    public void refreshDepartment(String userId, String departmentCode,
+            String updater, String remark) {
+        if (StringUtils.isNotBlank(userId)) {
+            User data = new User();
+            data.setUserId(userId);
+            data.setRoleCode(departmentCode);
+            data.setUpdater(updater);
+            data.setUpdateDatetime(new Date());
+            data.setRemark(remark);
+            userDAO.updateDepartment(data);
+        }
+    }
+
+    @Override
     public void refreshStatus(String userId, EUserStatus status, String updater,
             String remark) {
         if (StringUtils.isNotBlank(userId)) {

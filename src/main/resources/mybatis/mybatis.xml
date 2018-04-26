@@ -23,7 +23,6 @@
 
 		
 		<typeAlias alias="company" type="com.cdkj.gchf.domain.Company" />
-
 		<typeAlias alias="department" type="com.cdkj.gchf.domain.Department" />
 	</typeAliases>
 </configuration>

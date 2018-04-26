@@ -39,7 +39,7 @@ public class User extends ABaseDO {
     private String userRefree;
 
     // 注册时间
-    private Date createDatetme;
+    private Date createDatetime;
 
     // 角色编号
     private String roleCode;
@@ -115,12 +115,12 @@ public class User extends ABaseDO {
         return loginPwdStrength;
     }
 
-    public void setCreateDatetme(Date createDatetme) {
-        this.createDatetme = createDatetme;
+    public Date getCreateDatetime() {
+        return createDatetime;
     }
 
-    public Date getCreateDatetme() {
-        return createDatetme;
+    public void setCreateDatetime(Date createDatetime) {
+        this.createDatetime = createDatetime;
     }
 
     public void setRoleCode(String roleCode) {

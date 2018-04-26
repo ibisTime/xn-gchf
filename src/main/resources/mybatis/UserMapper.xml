@@ -61,7 +61,7 @@
 		,t.mobile
 		
 		,t.user_refree
-		,t.create_datetme
+		,t.create_datetime
 		,t.role_code
 		,t.department_code
 		,t.updater
@@ -97,7 +97,7 @@
 		,login_pwd
 		,login_pwd_strength
 		,user_refree
-		,create_datetme
+		,create_datetime
 		,role_code
 		
 		,department_code
@@ -116,7 +116,7 @@
 		,#{loginPwd}
 		,#{loginPwdStrength}
 		,#{userRefree}
-		,#{createDatetme}
+		,#{createDatetime}
 		,#{roleCode}
 		
 		,#{departmentCode}
@@ -135,7 +135,7 @@
 		,mobile = #{mobile}
 		,loginPwd = #{loginPwd}
 		,loginPwdStrength = #{loginPwdStrength}
-		,createDatetme = #{createDatetme}
+		,createDatetime = #{createDatetime}
 		,roleCode = #{roleCode}
 		,status = #{status}
 		,remark = #{remark}

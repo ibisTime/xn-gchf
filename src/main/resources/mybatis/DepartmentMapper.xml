@@ -50,11 +50,6 @@
 		<include refid="where_condition" />
 	</select>
 
-	<delete id="delete_department" parameterType="department">
-		DELETE FROM thf_department
-		WHERE
-		code = #{code}
-	</delete>
 
 	<insert id="insert_department" parameterType="department">
 		INSERT INTO
@@ -87,8 +82,10 @@
 		WHERE code = #{code}
 	</update>
 
-	<delete id="delete_company" parameterType="company">
-		DELETE  FROM thf_department 
-		WHERE code = #{code}
+	<delete id="delete_department" parameterType="department">
+		DELETE FROM thf_department
+		WHERE
+		code = #{code}
 	</delete>
+
 </mapper>

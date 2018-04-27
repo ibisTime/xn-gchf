@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cdkj.gchf.dao.ICompanyCardDAO">
+	<resultMap id="CompanyCard_DB_Result" type="CompanyCard">
+		<result column="code" property="code" />
+		<result column="project_code" property="projectCode" />
+		<result column="project_name" property="projectName" />
+		<result column="company_code" property="companyCode" />
+		<result column="company_name" property="companyName" />
+		<result column="bank_code" property="bankCode" />
+		<result column="bank_name" property="bankName" />
+		<result column="subbranch" property="subbranch" />
+		<result column="bankcard_number" property="bankcardNumber" />
+		<result column="status" property="status" />
+		<result column="create_datetime" property="createDatetime" />
+	</resultMap>
+	<sql id="where_condition">
+		<trim prefix="WHERE" prefixOverrides="AND | OR">
+			<if test="code != null and code != '' ">
+				AND t.code = #{code}
+			</if>
+		</trim>
+	</sql>
+	<select id="select_CompanyCard" parameterType="CompanyCard" resultMap="CompanyCard_DB_Result">
+		SELECT
+		t.code
+		,t.project_code
+		,t.project_name
+		,t.company_code
+		,t.company_name
+		,t.bank_code
+		,t.bank_name
+		,t.subbranch
+		,t.bankcard_number
+		,t.status
+		,t.create_datetime
+		FROM
+		thf_company_card t
+		<include refid="where_condition" />
+		<trim prefix="ORDER BY ">
+			<if test="order != null and order != '' ">
+				t.${order}
+			</if>
+		</trim>
+	</select>
+
+	<select id="select_CompanyCard_count" parameterType="CompanyCard"
+		resultType="java.lang.Long">
+		SELECT count(1) FROM thf_company_card t
+		<include refid="where_condition" />
+	</select>
+
+	<insert id="insert_CompanyCard" parameterType="CompanyCard">
+		INSERT INTO
+		thf_company_card(
+		code
+		,project_code
+		,project_name
+		,company_code
+		,company_name
+		,bank_code
+		,bank_name
+		,subbranch
+		,bankcard_number
+		,status
+		,create_datetime
+		)
+		VALUES(
+		#{code}
+		,#{projectCode}
+		,#{projectName}
+		,#{companyCode}
+		,#{companyName}
+		,#{bankCode}
+		,#{bankName}
+		,#{subbranch}
+		,#{bankcardNumber}
+		,#{status}
+		,#{createDatetime}
+		)
+	</insert>
+
+	<update id="update_CompanyCard" parameterType="CompanyCard">
+		UPDATE thf_company_card
+		SET
+		project_code = #{projectCode}
+		,project_name = #{projectName}
+		,company_code = #{companyCode}
+		,company_name = #{companyName}
+		,bank_code = #{bankCode}
+		,bank_name = #{bankName}
+		,subbranch = #{subbranch}
+		,bankcard_number = #{bankcardNumber}
+		,status = #{status}
+		,create_datetime = #{createDatetime}
+		WHERE code = #{code}
+	</update>
+
+
+</mapper>

@@ -25,13 +25,12 @@ public class CompanyBOImpl extends PaginableBOImpl<Company>
     }
 
     @Override
-    public void removeCompany(Company data, String name) {
-        data.setName(name);
+    public void removeCompany(Company data) {
         companyDAO.delete(data);
     }
 
     @Override
-    public void refreshCompany(Company data) {
+    public void refreshCompany(Company data, String name) {
         companyDAO.update(data);
     }
 

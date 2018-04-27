@@ -9,9 +9,9 @@ public interface ICompanyBO extends IPaginableBO<Company> {
 
     public void saveCompany(Company data);
 
-    public void removeCompany(Company data, String name);
+    public void removeCompany(Company data);
 
-    public void refreshCompany(Company data);
+    public void refreshCompany(Company data, String name);
 
     public List<Company> queryCompanyList(Company condition);
 

@@ -33,7 +33,7 @@ public class XN631036 extends AProcessor {
 
         String orderColumn = req.getOrderColumn();
         if (StringUtils.isBlank(orderColumn)) {
-            orderColumn = departmentAO.DEFAULT_ORDER_COLUMN;
+            orderColumn = IDepartmentAO.DEFAULT_ORDER_COLUMN;
         }
         condition.setOrder(orderColumn, req.getOrderDir());
 

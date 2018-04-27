@@ -59,5 +59,10 @@
 		WHERE code = #{code}
 	</update>
 
+	<delete id="delete_company" parameterType="company">
+		DELETE  FROM thf_company 
+		WHERE code = #{code}
+	</delete>
+
 
 </mapper>

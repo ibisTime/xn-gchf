@@ -4,14 +4,14 @@ import java.util.List;
 
 import com.cdkj.gchf.bo.base.Paginable;
 import com.cdkj.gchf.domain.Company;
-import com.cdkj.gchf.dto.req.XN631020Req;
 import com.cdkj.gchf.dto.req.XN631022Req;
+import com.cdkj.gchf.dto.req.XN631420Req;
 
 public interface ICompanyAO {
     String DEFAULT_ORDER_COLUMN = "code";
 
     // 新增公司
-    public String addCompany(XN631020Req req);
+    public String addCompany(XN631420Req req);
 
     // 删除公司
     public void deleteCompany(String code);

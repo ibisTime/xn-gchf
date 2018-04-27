@@ -47,4 +47,9 @@ public class DepartmentDAOImpl extends AMybatisTemplate
             count, condition, Department.class);
     }
 
+    @Override
+    public int update(Department data) {
+        return super.update(NAMESPACE.concat("update_department"), data);
+    }
+
 }

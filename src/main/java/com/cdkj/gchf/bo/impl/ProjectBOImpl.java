@@ -7,7 +7,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.cdkj.gchf.bo.IProjectBO;
-import com.cdkj.gchf.bo.base.Paginable;
 import com.cdkj.gchf.bo.base.PaginableBOImpl;
 import com.cdkj.gchf.core.OrderNoGenerater;
 import com.cdkj.gchf.dao.IProjectDAO;
@@ -25,17 +24,6 @@ public class ProjectBOImpl extends PaginableBOImpl<Project>
     @Override
     public long getTotalCount(Project condition) {
         return projectDAO.selectTotalCount(condition);
-    }
-
-    @Override
-    public Paginable<Project> getPaginable(int start, Project condition) {
-        return null;
-    }
-
-    @Override
-    public Paginable<Project> getPaginable(int start, int pageSize,
-            Project condition) {
-        return null;
     }
 
     @Override
@@ -74,6 +62,17 @@ public class ProjectBOImpl extends PaginableBOImpl<Project>
     @Override
     public List<Project> queryProject(Project condition) {
         return projectDAO.selectList(condition);
+    }
+
+    @Override
+    public List<Project> queryProjectpig(int start, int pageSize,
+            Project condition) {
+        return projectDAO.selectList(condition, start, pageSize);
+    }
+
+    @Override
+    public void auditProject(Project data) {
+        projectDAO.auditProject(data);
     }
 
 }

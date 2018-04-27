@@ -5,9 +5,12 @@ import com.cdkj.gchf.domain.Project;
 
 public interface IProjectDAO extends IBaseDAO<Project> {
 
-    String NAMESPACE = IUserDAO.class.getName().concat(".");
+    String NAMESPACE = IProjectDAO.class.getName().concat(".");
 
     // 修改项目
     public int update(Project data);
+
+    // 审核项目
+    public int auditProject(Project data);
 
 }

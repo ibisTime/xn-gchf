@@ -4,28 +4,32 @@ import com.cdkj.gchf.ao.IProjectAO;
 import com.cdkj.gchf.api.AProcessor;
 import com.cdkj.gchf.common.JsonUtil;
 import com.cdkj.gchf.core.ObjValidater;
-import com.cdkj.gchf.dto.req.XN631420Req;
-import com.cdkj.gchf.dto.res.PKCodeRes;
+import com.cdkj.gchf.dto.req.XN631357Req;
 import com.cdkj.gchf.exception.BizException;
 import com.cdkj.gchf.exception.ParaException;
 import com.cdkj.gchf.spring.SpringContextHolder;
 
-public class XN631420 extends AProcessor {
+/**
+ * 角色-详情
+ * @author: xieyj 
+ * @since: 2016年4月17日 上午8:26:30 
+ * @history:
+ */
+public class XN631357 extends AProcessor {
     private IProjectAO projectAO = SpringContextHolder
         .getBean(IProjectAO.class);
 
-    private XN631420Req req = null;
+    private XN631357Req req = null;
 
     @Override
     public Object doBusiness() throws BizException {
-        return new PKCodeRes(projectAO.addProject(req));
+        return projectAO.getProject(req.getCode());
     }
 
     @Override
     public void doCheck(String inputparams, String operator)
             throws ParaException {
-        req = JsonUtil.json2Bean(inputparams, XN631420Req.class);
+        req = JsonUtil.json2Bean(inputparams, XN631357Req.class);
         ObjValidater.validateReq(req);
     }
-
 }

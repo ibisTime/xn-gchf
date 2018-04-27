@@ -1,36 +1,57 @@
 package com.cdkj.gchf.dto.req;
 
-import java.util.Date;
+import org.hibernate.validator.constraints.NotBlank;
 
-public class XN631420Req {
+public class XN631352Req {
 
+    @NotBlank(message = "编号不能为空")
+    private String code;// 编号
+
+    @NotBlank(message = "项目名称不能为空")
     private String name;// 项目名称
 
+    @NotBlank(message = "负责人编号不能为空")
     private String chargeUser;// 负责人编号
 
+    @NotBlank(message = "负责人手机号不能为空")
     private String chargeMobile;// 负责人手机号
 
-    private Date startDatetime;// 项目开始时间
+    @NotBlank(message = "项目结束时间不能为空")
+    private String endDatetime;// 项目结束时间
 
-    private Date endDatetime;// 项目结束时间
-
+    @NotBlank(message = "经度不能为空")
     private String longitude;// 经度
 
+    @NotBlank(message = "纬度不能为空")
     private String latitude;// 纬度
 
+    @NotBlank(message = "省不能为空")
     private String province;// 省
 
+    @NotBlank(message = "市不能为空")
     private String city;// 市
 
+    @NotBlank(message = "区不能为空")
     private String area;// 区
 
+    @NotBlank(message = "地址不能为空")
     private String address;// 地址
 
-    private Date salaryDatetime;// 薪资发放时间
+    @NotBlank(message = "薪资发放时间不能为空")
+    private String salaryDatetime;// 薪资发放时间
 
+    @NotBlank(message = "修改人不能为空")
     private String updater;// 修改人
 
     private String remark;// 备注
+
+    public String getCode() {
+        return code;
+    }
+
+    public void setCode(String code) {
+        this.code = code;
+    }
 
     public String getName() {
         return name;
@@ -104,27 +125,19 @@ public class XN631420Req {
         this.address = address;
     }
 
-    public Date getStartDatetime() {
-        return startDatetime;
-    }
-
-    public void setStartDatetime(Date startDatetime) {
-        this.startDatetime = startDatetime;
-    }
-
-    public Date getEndDatetime() {
+    public String getEndDatetime() {
         return endDatetime;
     }
 
-    public void setEndDatetime(Date endDatetime) {
+    public void setEndDatetime(String endDatetime) {
         this.endDatetime = endDatetime;
     }
 
-    public Date getSalaryDatetime() {
+    public String getSalaryDatetime() {
         return salaryDatetime;
     }
 
-    public void setSalaryDatetime(Date salaryDatetime) {
+    public void setSalaryDatetime(String salaryDatetime) {
         this.salaryDatetime = salaryDatetime;
     }
 

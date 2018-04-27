@@ -14,6 +14,12 @@ public class Project extends ABaseDO {
 
     private String chargeMobile;// 负责人手机号
 
+    private String bankCrandNumber;// 账户号
+
+    private String bankName;// 银行名
+
+    private String subbranch;// 开户行
+
     private Date startDatetime;// 项目开始时间
 
     private Date endDatetime;// 项目结束时间
@@ -34,11 +40,51 @@ public class Project extends ABaseDO {
 
     private String status;// 状态
 
+    private String auditor;// 审核人
+
+    private Date auditDatetime;// 审核时间
+
+    private String auditNote;// 审核备注
+
     private String updater;// 修改人
 
-    private Date update_datetime;// 修改时间
+    private Date updateDatetime;// 修改时间
 
     private String remark;// 备注
+
+    private String keyword;// 关键字
+
+    public String getAuditor() {
+        return auditor;
+    }
+
+    public void setAuditor(String auditor) {
+        this.auditor = auditor;
+    }
+
+    public Date getAuditDatetime() {
+        return auditDatetime;
+    }
+
+    public void setAuditDatetime(Date auditDatetime) {
+        this.auditDatetime = auditDatetime;
+    }
+
+    public String getAuditNote() {
+        return auditNote;
+    }
+
+    public void setAuditNote(String auditNote) {
+        this.auditNote = auditNote;
+    }
+
+    public String getKeyword() {
+        return keyword;
+    }
+
+    public void setKeyword(String keyword) {
+        this.keyword = keyword;
+    }
 
     public String getCode() {
         return code;
@@ -54,6 +100,30 @@ public class Project extends ABaseDO {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public String getBankCrandNumber() {
+        return bankCrandNumber;
+    }
+
+    public void setBankCrandNumber(String bankCrandNumber) {
+        this.bankCrandNumber = bankCrandNumber;
+    }
+
+    public String getBankName() {
+        return bankName;
+    }
+
+    public void setBankName(String bankName) {
+        this.bankName = bankName;
+    }
+
+    public String getSubbranch() {
+        return subbranch;
+    }
+
+    public void setSubbranch(String subbranch) {
+        this.subbranch = subbranch;
     }
 
     public String getChargeUser() {
@@ -160,12 +230,12 @@ public class Project extends ABaseDO {
         this.updater = updater;
     }
 
-    public Date getUpdate_datetime() {
-        return update_datetime;
+    public Date getUpdateDatetime() {
+        return updateDatetime;
     }
 
-    public void setUpdate_datetime(Date update_datetime) {
-        this.update_datetime = update_datetime;
+    public void setUpdateDatetime(Date updateDatetime) {
+        this.updateDatetime = updateDatetime;
     }
 
     public String getRemark() {

@@ -79,13 +79,16 @@
 	<update id="update_department" parameterType="department">
 		UPDATE thf_department
 		SET
-		 company_code = #{companyCode}
+		company_code = #{companyCode}
 		,name = #{name}
-		, leader = #{leader}
+		,leader = #{leader}
 		,leade_mobile = #{leadeMobile}
 		,parent_code = #{parentCode}
 		WHERE code = #{code}
 	</update>
 
-
+	<delete id="delete_company" parameterType="company">
+		DELETE  FROM thf_department 
+		WHERE code = #{code}
+	</delete>
 </mapper>

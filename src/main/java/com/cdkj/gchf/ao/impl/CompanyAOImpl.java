@@ -34,11 +34,13 @@ public class CompanyAOImpl implements ICompanyAO {
     @Override
     public void editCompany(String code, String name) {
         Company data = companyBO.getCompany(code);
-        companyBO.removeCompany(data, name);
+        companyBO.refreshCompany(data, name);
     }
 
     @Override
     public void dropCompany(String code) {
+        Company data = companyBO.getCompany(code);
+        companyBO.removeCompany(data);
     }
 
     @Override

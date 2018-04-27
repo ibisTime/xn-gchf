@@ -1,6 +1,6 @@
 package com.cdkj.gchf.api.impl;
 
-import com.cdkj.gchf.ao.ICompanyAO;
+import com.cdkj.gchf.ao.IProjectAO;
 import com.cdkj.gchf.api.AProcessor;
 import com.cdkj.gchf.common.JsonUtil;
 import com.cdkj.gchf.core.ObjValidater;
@@ -11,14 +11,14 @@ import com.cdkj.gchf.exception.ParaException;
 import com.cdkj.gchf.spring.SpringContextHolder;
 
 public class XN631420 extends AProcessor {
-    private ICompanyAO companyAO = SpringContextHolder
-        .getBean(ICompanyAO.class);
+    private IProjectAO projectAO = SpringContextHolder
+        .getBean(IProjectAO.class);
 
     private XN631420Req req = null;
 
     @Override
     public Object doBusiness() throws BizException {
-        return new PKCodeRes(companyAO.addCompany(req));
+        return new PKCodeRes(projectAO.addProject(req));
     }
 
     @Override

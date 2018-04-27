@@ -6,6 +6,5 @@ import com.cdkj.gchf.domain.Company;
 public interface ICompanyDAO extends IBaseDAO<Company> {
     String NAMESPACE = ICompanyDAO.class.getName().concat(".");
 
-    public int update(Company data);
-
+    void update(Company data);
 }

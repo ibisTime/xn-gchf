@@ -1,5 +1,7 @@
 package com.cdkj.gchf.api.impl;
 
+import org.apache.commons.lang3.StringUtils;
+
 import com.cdkj.gchf.ao.ICompanyAO;
 import com.cdkj.gchf.api.AProcessor;
 import com.cdkj.gchf.common.JsonUtil;
@@ -26,7 +28,13 @@ public class XN631025 extends AProcessor {
     @Override
     public Object doBusiness() throws BizException {
         Company condition = new Company();
-        condition.setName(req.getName());
+        condition.setKeyword(req.getKeyword());
+
+        String column = req.getOrderColumn();
+        if (StringUtils.isBlank(column)) {
+            column = ICompanyAO.DEFAULT_ORDER_COLUMN;
+        }
+        condition.setOrder(column, req.getOrderDir());
 
         int start = StringValidater.toInteger(req.getStart());
         int limit = StringValidater.toInteger(req.getLimit());

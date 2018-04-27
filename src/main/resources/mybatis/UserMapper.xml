@@ -33,6 +33,9 @@
 			<if test="mobile != null and mobile != '' ">
 				AND t.mobile = #{mobile}
 			</if>
+			<if test="type != null and type != '' ">
+				AND t.type = #{type}
+			</if>
 			<if test="loginPwd != null and loginPwd != '' ">
 				AND t.login_pwd = #{loginPwd}
 			</if>

@@ -8,6 +8,7 @@ import org.springframework.stereotype.Component;
 
 import com.cdkj.gchf.bo.IProjectBO;
 import com.cdkj.gchf.bo.base.Paginable;
+import com.cdkj.gchf.bo.base.PaginableBOImpl;
 import com.cdkj.gchf.core.OrderNoGenerater;
 import com.cdkj.gchf.dao.IProjectDAO;
 import com.cdkj.gchf.domain.Project;
@@ -15,7 +16,8 @@ import com.cdkj.gchf.enums.EGeneratePrefix;
 import com.cdkj.gchf.exception.BizException;
 
 @Component
-public class ProjectBOImpl implements IProjectBO {
+public class ProjectBOImpl extends PaginableBOImpl<Project>
+        implements IProjectBO {
 
     @Autowired
     private IProjectDAO projectDAO;

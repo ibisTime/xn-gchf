@@ -49,6 +49,7 @@ public class UserAOImpl implements IUserAO {
         User data = new User();
         String userId = OrderNoGenerater.generate("U");
         data.setUserId(userId);
+        data.setType(req.getType());
         data.setLoginName(req.getMobile());
         data.setMobile(req.getMobile());
         data.setLoginPwd(MD5Util.md5(req.getLoginPwd()));

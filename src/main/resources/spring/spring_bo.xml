@@ -79,7 +79,7 @@
 		<property name="paginableDAO" ref="companyDAOImpl"/>
 	</bean>	
 	
-	<bean id="projectBO" class="com.cdkj.gchf.bo.impl.ProjectDOImpl">
+	<bean id="projectBO" class="com.cdkj.gchf.bo.impl.ProjectBOImpl">
 		<property name="paginableDAO" ref="projectDAOImpl"/>
 	</bean>	
 </beans>

@@ -11,6 +11,7 @@ import com.cdkj.gchf.exception.ParaException;
 import com.cdkj.gchf.spring.SpringContextHolder;
 
 public class XN631022 extends AProcessor {
+
     private ICompanyAO companyAO = SpringContextHolder
         .getBean(ICompanyAO.class);
 
@@ -18,7 +19,7 @@ public class XN631022 extends AProcessor {
 
     @Override
     public Object doBusiness() throws BizException {
-        companyAO.editCompany(req);
+        companyAO.editCompany(req.getCode(), req.getName());
         return new BooleanRes(true);
     }
 

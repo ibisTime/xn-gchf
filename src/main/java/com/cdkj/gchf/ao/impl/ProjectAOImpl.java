@@ -12,8 +12,8 @@ import com.cdkj.gchf.bo.IUserBO;
 import com.cdkj.gchf.bo.base.Paginable;
 import com.cdkj.gchf.common.DateUtil;
 import com.cdkj.gchf.domain.Project;
-import com.cdkj.gchf.dto.req.XN631420Req;
-import com.cdkj.gchf.dto.req.XN631422Req;
+import com.cdkj.gchf.dto.req.XN631350Req;
+import com.cdkj.gchf.dto.req.XN631352Req;
 import com.cdkj.gchf.enums.EBoolean;
 import com.cdkj.gchf.enums.EProjectStatus;
 
@@ -27,7 +27,7 @@ public class ProjectAOImpl implements IProjectAO {
     private IUserBO userBO;
 
     @Override
-    public String addProject(XN631420Req req) {
+    public String addProject(XN631350Req req) {
         Project project = new Project();
         project.setName(req.getName());
         project.setChargeUser(req.getChargeUser());
@@ -54,7 +54,7 @@ public class ProjectAOImpl implements IProjectAO {
     }
 
     @Override
-    public void editProject(XN631422Req req) {
+    public void editProject(XN631352Req req) {
         Project project = projectBO.getProject(req.getCode());
         project.setName(req.getName());
         project.setChargeUser(req.getChargeUser());

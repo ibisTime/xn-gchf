@@ -13,7 +13,6 @@ import com.cdkj.gchf.api.AProcessor;
 import com.cdkj.gchf.common.JsonUtil;
 import com.cdkj.gchf.core.ObjValidater;
 import com.cdkj.gchf.dto.req.XN631352Req;
-import com.cdkj.gchf.dto.req.XN631422Req;
 import com.cdkj.gchf.dto.res.BooleanRes;
 import com.cdkj.gchf.exception.BizException;
 import com.cdkj.gchf.exception.ParaException;

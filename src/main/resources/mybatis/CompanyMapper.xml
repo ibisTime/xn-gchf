@@ -12,6 +12,9 @@
 			<if test="code != null and code != '' ">
 				AND t.code = #{code}
 			</if>
+			<if test="keyword != null and keyword != '' ">
+				AND t.name like "%"#{keyword}"%"
+			</if>
 		</trim>
 	</sql>
 	<select id="select_company" parameterType="company" resultMap="company_DB_Result">

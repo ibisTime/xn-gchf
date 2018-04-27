@@ -50,6 +50,12 @@
 		<include refid="where_condition" />
 	</select>
 
+	<delete id="delete_department" parameterType="department">
+		DELETE FROM thf_department
+		WHERE
+		code = #{code}
+	</delete>
+
 	<insert id="insert_department" parameterType="department">
 		INSERT INTO
 		thf_department(

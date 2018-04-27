@@ -2,10 +2,11 @@ package com.cdkj.gchf.dto.req;
 
 import org.hibernate.validator.constraints.NotBlank;
 
-public class XN631021Req {
+public class XN631427Req {
+    private static final long serialVersionUID = 5138736221155343722L;
 
-    @NotBlank(message = "编号不能为空")
-    private String code; // 编号
+    @NotBlank
+    private String code;// 编号
 
     public String getCode() {
         return code;

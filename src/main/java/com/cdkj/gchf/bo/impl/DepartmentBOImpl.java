@@ -31,6 +31,7 @@ public class DepartmentBOImpl extends PaginableBOImpl<Department>
 
     @Override
     public void refreshDepartment(Department data) {
+        departmentDAO.update(data);
     }
 
     @Override

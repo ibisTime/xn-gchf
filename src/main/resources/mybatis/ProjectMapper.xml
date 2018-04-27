@@ -1,0 +1,177 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cdkj.gchf.dao.IProjectDAO">
+	<resultMap id="project_DB_Result" type="project">
+		<result column="code" property="code" />
+		<result column="name" property="name" />
+		<result column="charge_user" property="chargeUser" />
+		<result column="charge_mobile" property="chargeMobile" />
+		<result column="start_datetime" property="startDatetime" />
+		<result column="end_datetime" property="endDatetime" />
+		<result column="longitude" property="longitude" />
+		<result column="latitude" property="latitude" />
+		<result column="province" property="province" />
+		<result column="city" property="city" />
+		<result column="area" property="area" />
+		<result column="address" property="address" />
+		<result column="salary_datetime" property="salaryDatetime" />
+		<result column="status" property="status" />
+		<result column="updater" property="updater" />
+		<result column="update_datetime" property="updateDatetime" />
+		<result column="remark" property="remark" />
+	</resultMap>
+	
+	<sql id="where_condition">
+		<trim prefix="WHERE" prefixOverrides="AND | OR">
+			<if test="code != null and code != '' ">
+				AND f.code = #{code}
+			</if>
+			<if test="name != null and name != '' ">
+				AND f.name = #{name}
+			</if>
+			<if test="chargeUser != null and chargeUser != '' ">
+				AND f.charge_user = #{chargeUser}
+			</if>
+			<if test="chargeMobile != null and chargeMobile != '' ">
+				AND f.charge_mobile = #{chargeMobile}
+			</if>
+			<if test="startDatetime != null and startDatetime != '' ">
+				AND f.start_datetime = #{startDatetime}
+			</if>
+			<if test="endDatetime != null and endDatetime != '' ">
+				AND f.end_datetime = #{endDatetime}
+			</if>
+			<if test="longitude != null and longitude != '' ">
+				AND f.longitude = #{longitude}
+			</if>
+			<if test="latitude != null and latitude != '' ">
+				AND f.latitude = #{latitude}
+			</if>
+			<if test="province != null and province != '' ">
+				AND f.province = #{province}
+			</if>
+			<if test="city != null and city != '' ">
+				AND f.city = #{city}
+			</if>
+			<if test="area != null and area != '' ">
+				AND f.area = #{area}
+			</if>
+			<if test="address != null and address != '' ">
+				AND f.address = #{address}
+			</if>
+			<if test="salaryDatetime != null and salaryDatetime != '' ">
+				AND f.salary_datetime = #{salaryDatetime}
+			</if>
+			<if test="status != null and status != '' ">
+				AND f.status = #{status}
+			</if>
+			<if test="updater != null and updater != '' ">
+				AND f.updater = #{updater}
+			</if>
+			<if test="updateDatetime != null and updateDatetime != '' ">
+				AND f.update_datetime = #{updateDatetime}
+			</if>
+			<if test="remark != null and remark != '' ">
+				AND f.remark = #{remark}
+			</if>
+		</trim>
+	</sql>
+	
+	<select id="select_project" parameterType="project" resultMap="project_DB_Result">
+		SELECT
+		t.code
+		,t.name
+		,t.charge_user
+		,t.charge_mobile
+		,t.start_datetime
+		,t.end_datetime
+		,t.longitude
+		,t.latitude
+		,t.province
+		,t.city
+		,t.area
+		,t.address
+		,t.salary_datetime
+		,t.status
+		,t.updater
+		,t.update_datetime
+		,t.remark
+		FROM
+		thf_project t
+		<include refid="where_condition" />
+		<trim prefix="ORDER BY ">
+			<if test="order != null and order != '' ">
+				t.${order}
+			</if>
+		</trim>
+	</select>
+	
+	<select id="select_project_count" parameterType="project"
+		resultType="java.lang.Long">
+		SELECT count(1) FROM thf_project t
+		<include refid="where_condition" />
+	</select>
+	
+	
+	<insert id="insert_project" parameterType="project">
+		INSERT INTO
+		thf_project(
+		code
+		,name
+		,charge_user
+		,charge_mobile
+		,start_datetime
+		,end_datetime
+		,longitude
+		,latitude
+		,province
+		,city
+		,area
+		,address
+		,salary_datetime
+		,status
+		,updater
+		,update_datetime
+		,remark
+		)
+		VALUES(
+		#{code}
+		,#{name}
+		,#{chargeUser}
+		,#{chargeMobile}
+		,#{startDatetime}
+		,#{endDatetime}
+		,#{longitude}
+		,#{latitude}
+		,#{province}
+		,#{city}
+		,#{area}
+		,#{address}
+		,#{salaryDatetime}
+		,#{status}
+		,#{updater}
+		,#{updateDatetime}
+		,#{remark}
+		)
+	</insert>
+	
+	<update id="update_project" parameterType="project">
+		UPDATE thf_project
+		SET
+		name = #{name}
+		,start_datetime = #{startDatetime}
+		,end_datetime = #{endDatetime}
+		,longitude = #{longitude}
+		,latitude = #{latitude}
+		,province = #{province}
+		,city = #{city}
+		,area = #{area}
+		,address = #{address}
+		,salary_datetime = #{salaryDatetime}
+		,status = #{status}
+		,updater = #{updater}
+		,remark = #{remark}
+		WHERE code = #{code}
+	</update>
+</mapper>

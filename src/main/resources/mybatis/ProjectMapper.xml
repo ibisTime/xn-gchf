@@ -20,6 +20,9 @@
 		<result column="address" property="address" />
 		<result column="salary_datetime" property="salaryDatetime" />
 		<result column="status" property="status" />
+		<result column="auditor" property="auditor" />
+		<result column="audit_datetime" property="auditDatetime" />
+		<result column="audit_note" property="auditNote" />
 		<result column="updater" property="updater" />
 		<result column="update_datetime" property="updateDatetime" />
 		<result column="remark" property="remark" />
@@ -69,6 +72,15 @@
 			<if test="status != null and status != '' ">
 				AND t.status = #{status}
 			</if>
+			<if test="auditor != null and auditor != '' ">
+				AND t.auditor = #{auditor}
+			</if>
+			<if test="auditDatetime != null and auditDatetime != '' ">
+				AND t.audit_datetime = #{auditDatetime}
+			</if>
+			<if test="auditNote != null and auditNote != '' ">
+				AND t.audit_note = #{auditNote}
+			</if>
 			<if test="updater != null and updater != '' ">
 				AND t.updater = #{updater}
 			</if>
@@ -79,7 +91,7 @@
 				AND t.remark = #{remark}
 			</if>
 			<if test="keyword != null and keyword != '' ">
-				AND t.name like "%"#{keyword}"%" OR  t.chargeMobile like "%"#{keyword}"%"
+				AND t.name like "%"#{keyword}"%" OR  t.charge_mobile like "%"#{keyword}"%"
 			</if>
 		</trim>
 	</sql>
@@ -103,6 +115,9 @@
 		,t.address
 		,t.salary_datetime
 		,t.status
+		,t.auditor
+		,t.audit_datetime
+		,t.audit_note
 		,t.updater
 		,t.update_datetime
 		,t.remark
@@ -129,9 +144,10 @@
 		code
 		,name
 		,charge_user
-		,t.bank_crand_number
-		,t.bank_name
-		,t.subbranch
+		,charge_mobile
+		,bank_crand_number
+		,bank_name
+		,subbranch
 		,start_datetime
 		,longitude
 		,latitude
@@ -148,6 +164,7 @@
 		#{code}
 		,#{name}
 		,#{chargeUser}
+		,#{charge_mobile}
 		,#{bankCrandNumber}
 		,#{bankName}
 		,#{subbranch}
@@ -181,6 +198,16 @@
 		,salary_datetime = #{salaryDatetime}
 		,updater = #{updater}
 		,remark = #{remark}
+		WHERE code = #{code}
+	</update>
+	
+	<update id="audit_project" parameterType="project">
+		UPDATE thf_project
+		SET
+		status = #{status}
+		,auditor = #{auditor}
+		,audit_datetime = #{auditDatetime}
+		,audit_note = #{auditNote}
 		WHERE code = #{code}
 	</update>
 </mapper>

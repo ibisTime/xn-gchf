@@ -2,7 +2,7 @@ package com.cdkj.gchf.dto.req;
 
 import java.util.Date;
 
-public class XN631425Req extends APageReq {
+public class XN631356Req extends APageReq {
 
     private static final long serialVersionUID = 5138736221155343722L;
 
@@ -15,6 +15,46 @@ public class XN631425Req extends APageReq {
     private String city;// 市
 
     private String area;// 区
+
+    private String auditor;// 审核人
+
+    private String status;// 状态
+
+    private String updater;// 更新人
+
+    private String keyword;// 关键字
+
+    public String getAuditor() {
+        return auditor;
+    }
+
+    public void setAuditor(String auditor) {
+        this.auditor = auditor;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
+    public String getUpdater() {
+        return updater;
+    }
+
+    public void setUpdater(String updater) {
+        this.updater = updater;
+    }
+
+    public String getKeyword() {
+        return keyword;
+    }
+
+    public void setKeyword(String keyword) {
+        this.keyword = keyword;
+    }
 
     public Date getStartDatetime() {
         return startDatetime;

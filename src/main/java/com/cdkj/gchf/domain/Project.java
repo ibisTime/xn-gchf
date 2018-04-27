@@ -40,13 +40,43 @@ public class Project extends ABaseDO {
 
     private String status;// 状态
 
+    private String auditor;// 审核人
+
+    private Date auditDatetime;// 审核时间
+
+    private String auditNote;// 审核备注
+
     private String updater;// 修改人
 
-    private Date update_datetime;// 修改时间
+    private Date updateDatetime;// 修改时间
 
     private String remark;// 备注
 
     private String keyword;// 关键字
+
+    public String getAuditor() {
+        return auditor;
+    }
+
+    public void setAuditor(String auditor) {
+        this.auditor = auditor;
+    }
+
+    public Date getAuditDatetime() {
+        return auditDatetime;
+    }
+
+    public void setAuditDatetime(Date auditDatetime) {
+        this.auditDatetime = auditDatetime;
+    }
+
+    public String getAuditNote() {
+        return auditNote;
+    }
+
+    public void setAuditNote(String auditNote) {
+        this.auditNote = auditNote;
+    }
 
     public String getKeyword() {
         return keyword;
@@ -200,12 +230,12 @@ public class Project extends ABaseDO {
         this.updater = updater;
     }
 
-    public Date getUpdate_datetime() {
-        return update_datetime;
+    public Date getUpdateDatetime() {
+        return updateDatetime;
     }
 
-    public void setUpdate_datetime(Date update_datetime) {
-        this.update_datetime = update_datetime;
+    public void setUpdateDatetime(Date updateDatetime) {
+        this.updateDatetime = updateDatetime;
     }
 
     public String getRemark() {

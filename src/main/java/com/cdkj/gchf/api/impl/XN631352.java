@@ -12,6 +12,7 @@ import com.cdkj.gchf.ao.IProjectAO;
 import com.cdkj.gchf.api.AProcessor;
 import com.cdkj.gchf.common.JsonUtil;
 import com.cdkj.gchf.core.ObjValidater;
+import com.cdkj.gchf.dto.req.XN631352Req;
 import com.cdkj.gchf.dto.req.XN631422Req;
 import com.cdkj.gchf.dto.res.BooleanRes;
 import com.cdkj.gchf.exception.BizException;
@@ -24,11 +25,11 @@ import com.cdkj.gchf.spring.SpringContextHolder;
  * @since: 2018年4月26日 下午8:57:48 
  * @history:
  */
-public class XN631422 extends AProcessor {
+public class XN631352 extends AProcessor {
     private IProjectAO projectAO = SpringContextHolder
         .getBean(IProjectAO.class);
 
-    private XN631422Req req = null;
+    private XN631352Req req = null;
 
     /** (StringValidater.toLong(req.getId()),
             req.getDvalue(), req.getUpdater(), req.getRemark());
@@ -46,7 +47,7 @@ public class XN631422 extends AProcessor {
     @Override
     public void doCheck(String inputparams, String operator)
             throws ParaException {
-        req = JsonUtil.json2Bean(inputparams, XN631422Req.class);
+        req = JsonUtil.json2Bean(inputparams, XN631352Req.class);
         ObjValidater.validateReq(req);
     }
 

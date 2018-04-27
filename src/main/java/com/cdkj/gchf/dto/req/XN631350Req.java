@@ -2,7 +2,7 @@ package com.cdkj.gchf.dto.req;
 
 import org.hibernate.validator.constraints.NotBlank;
 
-public class XN631420Req {
+public class XN631350Req {
 
     @NotBlank(message = "项目名称不能为空")
     private String name;// 项目名称

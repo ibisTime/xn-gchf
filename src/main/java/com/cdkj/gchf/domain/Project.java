@@ -14,6 +14,12 @@ public class Project extends ABaseDO {
 
     private String chargeMobile;// 负责人手机号
 
+    private String bankCrandNumber;// 账户号
+
+    private String bankName;// 银行名
+
+    private String subbranch;// 开户行
+
     private Date startDatetime;// 项目开始时间
 
     private Date endDatetime;// 项目结束时间
@@ -40,6 +46,16 @@ public class Project extends ABaseDO {
 
     private String remark;// 备注
 
+    private String keyword;// 关键字
+
+    public String getKeyword() {
+        return keyword;
+    }
+
+    public void setKeyword(String keyword) {
+        this.keyword = keyword;
+    }
+
     public String getCode() {
         return code;
     }
@@ -54,6 +70,30 @@ public class Project extends ABaseDO {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public String getBankCrandNumber() {
+        return bankCrandNumber;
+    }
+
+    public void setBankCrandNumber(String bankCrandNumber) {
+        this.bankCrandNumber = bankCrandNumber;
+    }
+
+    public String getBankName() {
+        return bankName;
+    }
+
+    public void setBankName(String bankName) {
+        this.bankName = bankName;
+    }
+
+    public String getSubbranch() {
+        return subbranch;
+    }
+
+    public void setSubbranch(String subbranch) {
+        this.subbranch = subbranch;
     }
 
     public String getChargeUser() {

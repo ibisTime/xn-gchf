@@ -24,18 +24,20 @@ public class ProjectAOImpl implements IProjectAO {
         Project project = new Project();
         project.setName(req.getName());
         project.setChargeUser(req.getChargeUser());
-        project.setChargeMobile(req.getChargeMobile());
-        project.setStartDatetime(req.getStartDatetime());
-        project.setEndDatetime(req.getEndDatetime());
+        project.setBankCrandNumber(req.getBankCardNumber());
+        project.setBankName(req.getBankName());
+        project.setSubbranch(req.getSubbranch());
+        project.setStartDatetime(new Date());
         project.setLongitude(req.getLongitude());
         project.setLatitude(req.getLatitude());
         project.setProvince(req.getProvince());
         project.setCity(req.getCity());
         project.setArea(req.getArea());
         project.setAddress(req.getAddress());
-        project.setSalaryDatetime(req.getSalaryDatetime());
+        // project.setSalaryDatetime(date);
         project.setUpdater(req.getUpdater());
         project.setUpdate_datetime(new Date());
+        project.setRemark(req.getRemark());
         return projectBO.saveProject(project);
     }
 
@@ -45,15 +47,14 @@ public class ProjectAOImpl implements IProjectAO {
         project.setName(req.getName());
         project.setChargeUser(req.getChargeUser());
         project.setChargeMobile(req.getChargeMobile());
-        project.setStartDatetime(req.getStartDatetime());
-        project.setEndDatetime(req.getEndDatetime());
+        // project.setEndDatetime(req.getEndDatetime());
         project.setLongitude(req.getLongitude());
         project.setLatitude(req.getLatitude());
         project.setProvince(req.getProvince());
         project.setCity(req.getCity());
         project.setArea(req.getArea());
         project.setAddress(req.getAddress());
-        project.setSalaryDatetime(req.getSalaryDatetime());
+        // project.setSalaryDatetime(req.getSalaryDatetime());
         project.setUpdater(req.getUpdater());
         project.setUpdate_datetime(new Date());
         projectBO.editProject(project);

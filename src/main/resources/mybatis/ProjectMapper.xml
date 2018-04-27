@@ -7,6 +7,9 @@
 		<result column="name" property="name" />
 		<result column="charge_user" property="chargeUser" />
 		<result column="charge_mobile" property="chargeMobile" />
+		<result column="bank_crand_number" property="bankCrandNumber" />
+		<result column="bank_name" property="bankName" />
+		<result column="subbranch" property="subbranch" />
 		<result column="start_datetime" property="startDatetime" />
 		<result column="end_datetime" property="endDatetime" />
 		<result column="longitude" property="longitude" />
@@ -25,55 +28,58 @@
 	<sql id="where_condition">
 		<trim prefix="WHERE" prefixOverrides="AND | OR">
 			<if test="code != null and code != '' ">
-				AND f.code = #{code}
+				AND t.code = #{code}
 			</if>
 			<if test="name != null and name != '' ">
-				AND f.name = #{name}
+				AND t.name = #{name}
 			</if>
 			<if test="chargeUser != null and chargeUser != '' ">
-				AND f.charge_user = #{chargeUser}
+				AND t.charge_user = #{chargeUser}
 			</if>
 			<if test="chargeMobile != null and chargeMobile != '' ">
-				AND f.charge_mobile = #{chargeMobile}
+				AND t.charge_mobile = #{chargeMobile}
 			</if>
 			<if test="startDatetime != null and startDatetime != '' ">
-				AND f.start_datetime = #{startDatetime}
+				AND t.start_datetime = #{startDatetime}
 			</if>
 			<if test="endDatetime != null and endDatetime != '' ">
-				AND f.end_datetime = #{endDatetime}
+				AND t.end_datetime = #{endDatetime}
 			</if>
 			<if test="longitude != null and longitude != '' ">
-				AND f.longitude = #{longitude}
+				AND t.longitude = #{longitude}
 			</if>
 			<if test="latitude != null and latitude != '' ">
-				AND f.latitude = #{latitude}
+				AND t.latitude = #{latitude}
 			</if>
 			<if test="province != null and province != '' ">
-				AND f.province = #{province}
+				AND t.province = #{province}
 			</if>
 			<if test="city != null and city != '' ">
-				AND f.city = #{city}
+				AND t.city = #{city}
 			</if>
 			<if test="area != null and area != '' ">
-				AND f.area = #{area}
+				AND t.area = #{area}
 			</if>
 			<if test="address != null and address != '' ">
-				AND f.address = #{address}
+				AND t.address = #{address}
 			</if>
 			<if test="salaryDatetime != null and salaryDatetime != '' ">
-				AND f.salary_datetime = #{salaryDatetime}
+				AND t.salary_datetime = #{salaryDatetime}
 			</if>
 			<if test="status != null and status != '' ">
-				AND f.status = #{status}
+				AND t.status = #{status}
 			</if>
 			<if test="updater != null and updater != '' ">
-				AND f.updater = #{updater}
+				AND t.updater = #{updater}
 			</if>
 			<if test="updateDatetime != null and updateDatetime != '' ">
-				AND f.update_datetime = #{updateDatetime}
+				AND t.update_datetime = #{updateDatetime}
 			</if>
 			<if test="remark != null and remark != '' ">
-				AND f.remark = #{remark}
+				AND t.remark = #{remark}
+			</if>
+			<if test="keyword != null and keyword != '' ">
+				AND t.name like "%"#{keyword}"%" OR  t.chargeMobile like "%"#{keyword}"%"
 			</if>
 		</trim>
 	</sql>
@@ -84,6 +90,9 @@
 		,t.name
 		,t.charge_user
 		,t.charge_mobile
+		,t.bank_crand_number
+		,t.bank_name
+		,t.subbranch
 		,t.start_datetime
 		,t.end_datetime
 		,t.longitude
@@ -120,9 +129,10 @@
 		code
 		,name
 		,charge_user
-		,charge_mobile
+		,t.bank_crand_number
+		,t.bank_name
+		,t.subbranch
 		,start_datetime
-		,end_datetime
 		,longitude
 		,latitude
 		,province
@@ -130,7 +140,6 @@
 		,area
 		,address
 		,salary_datetime
-		,status
 		,updater
 		,update_datetime
 		,remark
@@ -139,9 +148,10 @@
 		#{code}
 		,#{name}
 		,#{chargeUser}
-		,#{chargeMobile}
+		,#{bankCrandNumber}
+		,#{bankName}
+		,#{subbranch}
 		,#{startDatetime}
-		,#{endDatetime}
 		,#{longitude}
 		,#{latitude}
 		,#{province}
@@ -149,7 +159,6 @@
 		,#{area}
 		,#{address}
 		,#{salaryDatetime}
-		,#{status}
 		,#{updater}
 		,#{updateDatetime}
 		,#{remark}
@@ -160,7 +169,8 @@
 		UPDATE thf_project
 		SET
 		name = #{name}
-		,start_datetime = #{startDatetime}
+		,charge_user = #{chargeUser}  
+		,charge_mobile = #{chargeMobile}
 		,end_datetime = #{endDatetime}
 		,longitude = #{longitude}
 		,latitude = #{latitude}
@@ -169,7 +179,6 @@
 		,area = #{area}
 		,address = #{address}
 		,salary_datetime = #{salaryDatetime}
-		,status = #{status}
 		,updater = #{updater}
 		,remark = #{remark}
 		WHERE code = #{code}

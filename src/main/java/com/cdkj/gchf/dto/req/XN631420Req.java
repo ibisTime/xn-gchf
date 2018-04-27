@@ -1,36 +1,76 @@
 package com.cdkj.gchf.dto.req;
 
-import java.util.Date;
+import org.hibernate.validator.constraints.NotBlank;
 
 public class XN631420Req {
 
+    @NotBlank(message = "项目名称不能为空")
     private String name;// 项目名称
 
+    @NotBlank(message = "负责人编号不能为空")
     private String chargeUser;// 负责人编号
 
-    private String chargeMobile;// 负责人手机号
+    @NotBlank(message = "账户号不能为空")
+    private String bankCardNumber;// 账户号
 
-    private Date startDatetime;// 项目开始时间
+    @NotBlank(message = "银行名不能为空")
+    private String bankName;// 银行名
 
-    private Date endDatetime;// 项目结束时间
+    @NotBlank(message = "开户行不能为空")
+    private String subbranch;// 开户行
 
+    @NotBlank(message = "项目开始时间不能为空")
+    private String startDatetime;// 项目开始时间
+
+    @NotBlank(message = "经度不能为空")
     private String longitude;// 经度
 
+    @NotBlank(message = "纬度不能为空")
     private String latitude;// 纬度
 
+    @NotBlank(message = "省不能为空")
     private String province;// 省
 
+    @NotBlank(message = "市不能为空")
     private String city;// 市
 
+    @NotBlank(message = "区不能为空")
     private String area;// 区
 
+    @NotBlank(message = "地址不能为空")
     private String address;// 地址
 
-    private Date salaryDatetime;// 薪资发放时间
+    @NotBlank(message = "薪资发放时间不能为空")
+    private String salaryDatetime;// 薪资发放时间
 
+    @NotBlank(message = "修改人不能为空")
     private String updater;// 修改人
 
     private String remark;// 备注
+
+    public String getBankCardNumber() {
+        return bankCardNumber;
+    }
+
+    public void setBankCardNumber(String bankCardNumber) {
+        this.bankCardNumber = bankCardNumber;
+    }
+
+    public String getBankName() {
+        return bankName;
+    }
+
+    public void setBankName(String bankName) {
+        this.bankName = bankName;
+    }
+
+    public String getSubbranch() {
+        return subbranch;
+    }
+
+    public void setSubbranch(String subbranch) {
+        this.subbranch = subbranch;
+    }
 
     public String getName() {
         return name;
@@ -46,14 +86,6 @@ public class XN631420Req {
 
     public void setChargeUser(String chargeUser) {
         this.chargeUser = chargeUser;
-    }
-
-    public String getChargeMobile() {
-        return chargeMobile;
-    }
-
-    public void setChargeMobile(String chargeMobile) {
-        this.chargeMobile = chargeMobile;
     }
 
     public String getLongitude() {
@@ -104,27 +136,19 @@ public class XN631420Req {
         this.address = address;
     }
 
-    public Date getStartDatetime() {
+    public String getStartDatetime() {
         return startDatetime;
     }
 
-    public void setStartDatetime(Date startDatetime) {
+    public void setStartDatetime(String startDatetime) {
         this.startDatetime = startDatetime;
     }
 
-    public Date getEndDatetime() {
-        return endDatetime;
-    }
-
-    public void setEndDatetime(Date endDatetime) {
-        this.endDatetime = endDatetime;
-    }
-
-    public Date getSalaryDatetime() {
+    public String getSalaryDatetime() {
         return salaryDatetime;
     }
 
-    public void setSalaryDatetime(Date salaryDatetime) {
+    public void setSalaryDatetime(String salaryDatetime) {
         this.salaryDatetime = salaryDatetime;
     }
 

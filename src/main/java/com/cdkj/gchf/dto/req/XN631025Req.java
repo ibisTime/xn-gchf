@@ -1,5 +1,7 @@
 package com.cdkj.gchf.dto.req;
 
+import org.hibernate.validator.constraints.NotBlank;
+
 public class XN631025Req extends APageReq {
 
     /** 
@@ -8,6 +10,7 @@ public class XN631025Req extends APageReq {
     private static final long serialVersionUID = 220443804049353683L;
 
     // 公司名称
+    @NotBlank(message = "公司名称不能为空")
     private String keyword;
 
     public String getKeyword() {

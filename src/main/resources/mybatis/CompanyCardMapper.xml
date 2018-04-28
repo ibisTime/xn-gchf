@@ -2,7 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.cdkj.gchf.dao.ICompanyCardDAO">
-	<resultMap id="CompanyCard_DB_Result" type="CompanyCard">
+	<resultMap id="companyCard_DB_Result" type="companyCard">
 		<result column="code" property="code" />
 		<result column="project_code" property="projectCode" />
 		<result column="project_name" property="projectName" />
@@ -22,7 +22,7 @@
 			</if>
 		</trim>
 	</sql>
-	<select id="select_CompanyCard" parameterType="CompanyCard" resultMap="CompanyCard_DB_Result">
+	<select id="select_companyCard" parameterType="companyCard" resultMap="companyCard_DB_Result">
 		SELECT
 		t.code
 		,t.project_code
@@ -45,13 +45,13 @@
 		</trim>
 	</select>
 
-	<select id="select_CompanyCard_count" parameterType="CompanyCard"
+	<select id="select_companyCard_count" parameterType="companyCard"
 		resultType="java.lang.Long">
 		SELECT count(1) FROM thf_company_card t
 		<include refid="where_condition" />
 	</select>
 
-	<insert id="insert_CompanyCard" parameterType="CompanyCard">
+	<insert id="insert_companyCard" parameterType="companyCard">
 		INSERT INTO
 		thf_company_card(
 		code
@@ -81,7 +81,7 @@
 		)
 	</insert>
 
-	<update id="update_CompanyCard" parameterType="CompanyCard">
+	<update id="update_companyCard" parameterType="companyCard">
 		UPDATE thf_company_card
 		SET
 		project_code = #{projectCode}

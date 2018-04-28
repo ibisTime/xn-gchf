@@ -26,6 +26,8 @@
 		<typeAlias alias="department" type="com.cdkj.gchf.domain.Department" />
 		
 		<typeAlias alias="project" type="com.cdkj.gchf.domain.Project" />
+		<typeAlias alias="companyCard" type="com.cdkj.gchf.domain.CompanyCard" />
+		<typeAlias alias="channelBank" type="com.cdkj.gchf.domain.ChannelBank" />
 	</typeAliases>
 </configuration>
 

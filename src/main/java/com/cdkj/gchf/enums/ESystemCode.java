@@ -9,7 +9,7 @@ import java.util.Map;
  * @history:
  */
 public enum ESystemCode {
-    GCHF("CD-GCHF000025", "工程核发");
+    GCHF("CD-GCHF000020", "工程核发");
     public static Map<String, ESystemCode> getMap() {
         Map<String, ESystemCode> map = new HashMap<String, ESystemCode>();
         for (ESystemCode direction : ESystemCode.values()) {

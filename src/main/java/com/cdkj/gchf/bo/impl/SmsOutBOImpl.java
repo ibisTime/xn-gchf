@@ -10,6 +10,7 @@ import com.cdkj.gchf.dto.req.XN804082Req;
 import com.cdkj.gchf.dto.req.XN804083Req;
 import com.cdkj.gchf.dto.res.BooleanRes;
 import com.cdkj.gchf.dto.res.PKCodeRes;
+import com.cdkj.gchf.enums.ESystemCode;
 import com.cdkj.gchf.http.BizConnecter;
 import com.cdkj.gchf.http.JsonUtils;
 
@@ -28,6 +29,8 @@ public class SmsOutBOImpl implements ISmsOutBO {
             XN804081Req req = new XN804081Req();
             req.setMobile(mobile);
             req.setBizType(bizType);
+            req.setCompanyCode(ESystemCode.GCHF.getCode());
+            req.setSystemCode(ESystemCode.GCHF.getCode());
             BizConnecter.getBizData("804081", JsonUtils.object2Json(req),
                 PKCodeRes.class);
         } catch (Exception e) {
@@ -41,6 +44,8 @@ public class SmsOutBOImpl implements ISmsOutBO {
             XN804083Req req = new XN804083Req();
             req.setEmail(email);
             req.setBizType(bizType);
+            req.setCompanyCode(ESystemCode.GCHF.getCode());
+            req.setSystemCode(ESystemCode.GCHF.getCode());
             BizConnecter.getBizData("804083", JsonUtils.object2Json(req),
                 PKCodeRes.class);
         } catch (Exception e) {
@@ -54,6 +59,8 @@ public class SmsOutBOImpl implements ISmsOutBO {
         req.setMobile(mobile);
         req.setCaptcha(captcha);
         req.setBizType(bizType);
+        req.setCompanyCode(ESystemCode.GCHF.getCode());
+        req.setSystemCode(ESystemCode.GCHF.getCode());
         BizConnecter.getBizData("804082", JsonUtils.object2Json(req),
             BooleanRes.class);
     }
@@ -65,6 +72,7 @@ public class SmsOutBOImpl implements ISmsOutBO {
             XN804080Req req = new XN804080Req();
             req.setMobile(mobile);
             req.setContent(content);
+            req.setType("M");
             req.setCompanyCode(companyCode);
             req.setSystemCode(systemCode);
             BizConnecter.getBizData(bizType, JsonUtils.object2Json(req),

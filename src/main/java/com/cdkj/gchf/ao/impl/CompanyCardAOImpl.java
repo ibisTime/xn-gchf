@@ -9,6 +9,7 @@ import com.cdkj.gchf.ao.ICompanyCardAO;
 import com.cdkj.gchf.bo.ICompanyCardBO;
 import com.cdkj.gchf.bo.base.Paginable;
 import com.cdkj.gchf.domain.CompanyCard;
+import com.cdkj.gchf.dto.req.XN631362Req;
 
 @Service
 public class CompanyCardAOImpl implements ICompanyCardAO {
@@ -18,11 +19,11 @@ public class CompanyCardAOImpl implements ICompanyCardAO {
 
     @Override
     public String addCompanyCard(CompanyCard data) {
-        return companyCardBO.saveCompanyCard(data);
+        return null;
     }
 
     @Override
-    public void editCompanyCard(CompanyCard data) {
+    public void editCompanyCard(XN631362Req req) {
     }
 
     @Override

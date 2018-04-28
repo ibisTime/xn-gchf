@@ -8,10 +8,8 @@ import org.springframework.stereotype.Component;
 
 import com.cdkj.gchf.bo.IProjectBO;
 import com.cdkj.gchf.bo.base.PaginableBOImpl;
-import com.cdkj.gchf.core.OrderNoGenerater;
 import com.cdkj.gchf.dao.IProjectDAO;
 import com.cdkj.gchf.domain.Project;
-import com.cdkj.gchf.enums.EGeneratePrefix;
 import com.cdkj.gchf.exception.BizException;
 
 @Component
@@ -27,17 +25,10 @@ public class ProjectBOImpl extends PaginableBOImpl<Project>
     }
 
     @Override
-    public String saveProject(Project data) {
-        String code = null;
-        if (data != null) {
-            if (data.getCode() == null) {
-                code = OrderNoGenerater
-                    .generate(EGeneratePrefix.Project.getCode());
-                data.setCode(code);
-            }
-            projectDAO.insert(data);
-        }
-        return code;
+    public void saveProject(Project data) {
+
+        projectDAO.insert(data);
+
     }
 
     @Override

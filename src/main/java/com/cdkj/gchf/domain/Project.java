@@ -6,53 +6,75 @@ import com.cdkj.gchf.dao.base.ABaseDO;
 
 public class Project extends ABaseDO {
 
-    private String code;// 编号
+    /** 
+     * @Fields serialVersionUID : TODO(用一句话描述这个变量表示什么) 
+     */
+    private static final long serialVersionUID = 205424217452030142L;
 
-    private String name;// 项目名称
+    // 编号
+    private String code;
 
-    private String chargeUser;// 负责人编号
+    // 项目名称
+    private String name;
 
-    private String chargeMobile;// 负责人手机号
+    // 负责人编号
+    private String chargeUser;
 
-    private String bankCrandNumber;// 账户号
+    // 负责人手机号
+    private String chargeMobile;
 
-    private String bankName;// 银行名
+    // 项目开始时间
+    private Date startDatetime;
 
-    private String subbranch;// 开户行
+    // 项目结束时间
+    private Date endDatetime;
 
-    private Date startDatetime;// 项目开始时间
+    // 经度
+    private String longitude;
 
-    private Date endDatetime;// 项目结束时间
+    // 纬度
+    private String latitude;
 
-    private String longitude;// 经度
+    // 省
+    private String province;
 
-    private String latitude;// 纬度
+    // 市
+    private String city;
 
-    private String province;// 省
+    // 区
+    private String area;
 
-    private String city;// 市
+    // 地址
+    private String address;
 
-    private String area;// 区
+    // 薪资发放时间
+    private Date salaryDatetime;
 
-    private String address;// 地址
+    // 状态
+    private String status;
 
-    private Date salaryDatetime;// 薪资发放时间
+    // 审核人
+    private String auditor;
 
-    private String status;// 状态
+    // 审核时间
+    private Date auditDatetime;
 
-    private String auditor;// 审核人
+    // 审核备注
+    private String auditNote;
 
-    private Date auditDatetime;// 审核时间
+    // 修改人
+    private String updater;
 
-    private String auditNote;// 审核备注
+    // 修改时间
+    private Date updateDatetime;
 
-    private String updater;// 修改人
+    //// 备注
+    private String remark;
 
-    private Date updateDatetime;// 修改时间
+    // ************************db*****************
 
-    private String remark;// 备注
-
-    private String keyword;// 关键字
+    // 关键字
+    private String keyword;
 
     public String getAuditor() {
         return auditor;
@@ -100,30 +122,6 @@ public class Project extends ABaseDO {
 
     public void setName(String name) {
         this.name = name;
-    }
-
-    public String getBankCrandNumber() {
-        return bankCrandNumber;
-    }
-
-    public void setBankCrandNumber(String bankCrandNumber) {
-        this.bankCrandNumber = bankCrandNumber;
-    }
-
-    public String getBankName() {
-        return bankName;
-    }
-
-    public void setBankName(String bankName) {
-        this.bankName = bankName;
-    }
-
-    public String getSubbranch() {
-        return subbranch;
-    }
-
-    public void setSubbranch(String subbranch) {
-        this.subbranch = subbranch;
     }
 
     public String getChargeUser() {

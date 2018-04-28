@@ -7,9 +7,7 @@
 		<result column="name" property="name" />
 		<result column="charge_user" property="chargeUser" />
 		<result column="charge_mobile" property="chargeMobile" />
-		<result column="bank_crand_number" property="bankCrandNumber" />
-		<result column="bank_name" property="bankName" />
-		<result column="subbranch" property="subbranch" />
+		
 		<result column="start_datetime" property="startDatetime" />
 		<result column="end_datetime" property="endDatetime" />
 		<result column="longitude" property="longitude" />
@@ -102,9 +100,6 @@
 		,t.name
 		,t.charge_user
 		,t.charge_mobile
-		,t.bank_crand_number
-		,t.bank_name
-		,t.subbranch
 		,t.start_datetime
 		,t.end_datetime
 		,t.longitude
@@ -145,9 +140,6 @@
 		,name
 		,charge_user
 		,charge_mobile
-		,bank_crand_number
-		,bank_name
-		,subbranch
 		,start_datetime
 		,longitude
 		,latitude
@@ -165,9 +157,6 @@
 		,#{name}
 		,#{chargeUser}
 		,#{charge_mobile}
-		,#{bankCrandNumber}
-		,#{bankName}
-		,#{subbranch}
 		,#{startDatetime}
 		,#{longitude}
 		,#{latitude}

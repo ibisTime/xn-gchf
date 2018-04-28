@@ -6,6 +6,7 @@ import org.springframework.stereotype.Component;
 
 import com.cdkj.gchf.bo.base.Paginable;
 import com.cdkj.gchf.domain.CompanyCard;
+import com.cdkj.gchf.dto.req.XN631362Req;
 
 @Component
 public interface ICompanyCardAO {
@@ -15,7 +16,7 @@ public interface ICompanyCardAO {
 
     public void dropCompanyCard(String code);
 
-    public void editCompanyCard(CompanyCard data);
+    public void editCompanyCard(XN631362Req req);
 
     public Paginable<CompanyCard> queryCompanyCardPage(int start, int limit,
             CompanyCard condition);

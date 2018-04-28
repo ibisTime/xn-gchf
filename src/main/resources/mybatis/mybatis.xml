@@ -26,6 +26,7 @@
 		<typeAlias alias="department" type="com.cdkj.gchf.domain.Department" />
 		
 		<typeAlias alias="project" type="com.cdkj.gchf.domain.Project" />
+		<typeAlias alias="bcontract" type="com.cdkj.gchf.domain.Bcontract" />
 	</typeAliases>
 </configuration>
 

@@ -85,5 +85,8 @@
 	<bean id="bcontractBO" class="com.cdkj.gchf.bo.impl.BcontractBOImpl">
 		<property name="paginableDAO" ref="bcontractDAOImpl"/>
 	</bean>	
+	<bean id="progressBO" class="com.cdkj.gchf.bo.impl.ProgressBOImpl">
+		<property name="paginableDAO" ref="progressDAOImpl"/>
+	</bean>	
 </beans>
 

@@ -1,39 +1,28 @@
-package com.cdkj.gchf.domain;
+package com.cdkj.gchf.dto.req;
 
-import java.util.Date;
+import org.hibernate.validator.constraints.NotBlank;
 
-import com.cdkj.gchf.dao.base.ABaseDO;
+public class XN631382Req {
 
-public class Progress extends ABaseDO {
-    private static final long serialVersionUID = 1L;
-
+    @NotBlank
     private String code;// 编号
 
+    @NotBlank
     private String projectCode;// 项目编号
 
-    private String projectName;// 项目名称
+    @NotBlank
+    private String datetime;// 进度时间
 
-    private Date datetime;// 进度时间
-
+    @NotBlank
     private String description;// 工程进度描述
 
-    private String picture;// 图片
+    @NotBlank
+    private String picture;// 工程进度图片
 
+    @NotBlank
     private String updater;// 更新人
 
-    private Date updateDatetime;// 更新时间
-
     private String remark;// 备注
-
-    private String keyword;// 关键字
-
-    public String getKeyword() {
-        return keyword;
-    }
-
-    public void setKeyword(String keyword) {
-        this.keyword = keyword;
-    }
 
     public String getCode() {
         return code;
@@ -51,27 +40,11 @@ public class Progress extends ABaseDO {
         this.projectCode = projectCode;
     }
 
-    public String getProjectName() {
-        return projectName;
-    }
-
-    public void setProjectName(String projectName) {
-        this.projectName = projectName;
-    }
-
-    public Date getUpdateDatetime() {
-        return updateDatetime;
-    }
-
-    public void setUpdateDatetime(Date updateDatetime) {
-        this.updateDatetime = updateDatetime;
-    }
-
-    public Date getDatetime() {
+    public String getDatetime() {
         return datetime;
     }
 
-    public void setDatetime(Date datetime) {
+    public void setDatetime(String datetime) {
         this.datetime = datetime;
     }
 
@@ -97,10 +70,6 @@ public class Progress extends ABaseDO {
 
     public void setUpdater(String updater) {
         this.updater = updater;
-    }
-
-    public static long getSerialversionuid() {
-        return serialVersionUID;
     }
 
     public String getRemark() {

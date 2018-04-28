@@ -1,11 +1,11 @@
 package com.cdkj.gchf.dto.req;
 
-public class XN631376Req extends APageReq {
+public class XN631385Req extends APageReq {
     private static final long serialVersionUID = 5138736221155343722L;
 
     private String companyCode;// 公司编号
 
-    private String projectCode;// 项目编号
+    private String projectCode;// 工程编号
 
     private String updater;// 更新人
 

@@ -13,6 +13,12 @@ import com.cdkj.gchf.exception.BizException;
 import com.cdkj.gchf.exception.ParaException;
 import com.cdkj.gchf.spring.SpringContextHolder;
 
+/**
+ * 承包商合同列表查询
+ * @author: CYL 
+ * @since: 2018年4月28日 下午4:49:15 
+ * @history:
+ */
 public class XN631376 extends AProcessor {
     private IBcontractAO bcontractAO = SpringContextHolder
         .getBean(IBcontractAO.class);

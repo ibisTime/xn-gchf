@@ -18,7 +18,7 @@ public enum EGeneratePrefix {
                     "红蓝订单"), Charge("CZ", "充值订单"), Withdraw("QX", "取现订单"),
 
     Collection("CO", "归集订单"), Department("D", "部门编号"), Company("C",
-            "公司编号"), Project("P", "项目编号"), Bcontract("B", "承包合同");
+            "公司编号"), Project("P", "项目编号"), Bcontract("B", "承包合同"), CompanyBank("CB", "公司账户表");
 
     public static Map<String, EGeneratePrefix> getMap() {
         Map<String, EGeneratePrefix> map = new HashMap<String, EGeneratePrefix>();

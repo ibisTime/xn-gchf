@@ -31,6 +31,7 @@ public class CompanyBOImpl extends PaginableBOImpl<Company>
 
     @Override
     public void refreshCompany(Company data, String name) {
+        data.setName(name);
         companyDAO.update(data);
     }
 

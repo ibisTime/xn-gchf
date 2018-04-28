@@ -4,49 +4,69 @@ import org.hibernate.validator.constraints.NotBlank;
 
 public class XN631350Req {
 
+    // 项目名称
     @NotBlank(message = "项目名称不能为空")
-    private String name;// 项目名称
+    private String name;
 
+    // 负责人编号
     @NotBlank(message = "负责人编号不能为空")
-    private String chargeUser;// 负责人编号
+    private String chargeUser;
 
+    // 账户别称
+    @NotBlank(message = "账户别称不能为空")
+    private String bankCode;
+
+    // 账户号
     @NotBlank(message = "账户号不能为空")
-    private String bankCardNumber;// 账户号
+    private String bankCardNumber;
 
+    // 银行名
     @NotBlank(message = "银行名不能为空")
-    private String bankName;// 银行名
+    private String bankName;
 
+    // 开户行
     @NotBlank(message = "开户行不能为空")
-    private String subbranch;// 开户行
+    private String subbranch;
 
+    // 项目开始时间
     @NotBlank(message = "项目开始时间不能为空")
-    private String startDatetime;// 项目开始时间
+    private String startDatetime;
+
+    // 经度
 
     @NotBlank(message = "经度不能为空")
-    private String longitude;// 经度
+    private String longitude;
 
+    // 纬度
     @NotBlank(message = "纬度不能为空")
-    private String latitude;// 纬度
+    private String latitude;
 
+    // 省
     @NotBlank(message = "省不能为空")
-    private String province;// 省
+    private String province;
 
+    // 市
     @NotBlank(message = "市不能为空")
-    private String city;// 市
+    private String city;
 
+    // 区
     @NotBlank(message = "区不能为空")
-    private String area;// 区
+    private String area;
 
+    // 地址
     @NotBlank(message = "地址不能为空")
-    private String address;// 地址
+    private String address;
 
+    // 薪资发放时间
     @NotBlank(message = "薪资发放时间不能为空")
-    private String salaryDatetime;// 薪资发放时间
+    private String salaryDatetime;
 
+    // 修改人
     @NotBlank(message = "修改人不能为空")
-    private String updater;// 修改人
+    private String updater;
 
-    private String remark;// 备注
+    // 备注
+    private String remark;
 
     public String getBankCardNumber() {
         return bankCardNumber;
@@ -166,6 +186,14 @@ public class XN631350Req {
 
     public void setRemark(String remark) {
         this.remark = remark;
+    }
+
+    public String getBankCode() {
+        return bankCode;
+    }
+
+    public void setBankCode(String bankCode) {
+        this.bankCode = bankCode;
     }
 
 }

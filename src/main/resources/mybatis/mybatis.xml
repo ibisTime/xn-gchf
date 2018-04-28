@@ -27,6 +27,9 @@
 		
 		<typeAlias alias="project" type="com.cdkj.gchf.domain.Project" />
 		<typeAlias alias="bcontract" type="com.cdkj.gchf.domain.Bcontract" />
+	
+		<typeAlias alias="companyCard" type="com.cdkj.gchf.domain.CompanyCard" />
+		<typeAlias alias="channelBank" type="com.cdkj.gchf.domain.ChannelBank" />
 	</typeAliases>
 </configuration>
 

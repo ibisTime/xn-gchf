@@ -7,7 +7,7 @@ import com.cdkj.gchf.domain.Project;
 
 public interface IProjectBO extends IPaginableBO<Project> {
 
-    public String saveProject(Project data);
+    public void saveProject(Project data);
 
     public Project getProject(String code);
 

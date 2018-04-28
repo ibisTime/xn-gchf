@@ -3,19 +3,29 @@ package com.cdkj.gchf.ao.impl;
 import java.util.Date;
 import java.util.List;
 
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.cdkj.gchf.ao.IDepartmentAO;
 import com.cdkj.gchf.ao.IProjectAO;
+import com.cdkj.gchf.bo.ICompanyBO;
+import com.cdkj.gchf.bo.ICompanyCardBO;
 import com.cdkj.gchf.bo.IProjectBO;
 import com.cdkj.gchf.bo.IUserBO;
 import com.cdkj.gchf.bo.base.Paginable;
 import com.cdkj.gchf.common.DateUtil;
+import com.cdkj.gchf.core.OrderNoGenerater;
+import com.cdkj.gchf.domain.Company;
+import com.cdkj.gchf.domain.Department;
 import com.cdkj.gchf.domain.Project;
+import com.cdkj.gchf.domain.User;
 import com.cdkj.gchf.dto.req.XN631350Req;
 import com.cdkj.gchf.dto.req.XN631352Req;
 import com.cdkj.gchf.enums.EBoolean;
+import com.cdkj.gchf.enums.EGeneratePrefix;
 import com.cdkj.gchf.enums.EProjectStatus;
+import com.cdkj.gchf.exception.BizException;
 
 @Service
 public class ProjectAOImpl implements IProjectAO {
@@ -26,31 +36,61 @@ public class ProjectAOImpl implements IProjectAO {
     @Autowired
     private IUserBO userBO;
 
+    @Autowired
+    private ICompanyCardBO companyCardBO;
+
+    @Autowired
+    private ICompanyBO companyBO;
+
+    @Autowired
+    private IDepartmentAO departmentAO;
+
     @Override
     public String addProject(XN631350Req req) {
         Project project = new Project();
+
+        String code = OrderNoGenerater
+            .generate(EGeneratePrefix.Project.getCode());
+        project.setCode(code);
         project.setName(req.getName());
         project.setChargeUser(req.getChargeUser());
-        project
-            .setChargeMobile(userBO.getUser(req.getChargeUser()).getMobile());
-        project.setBankCrandNumber(req.getBankCardNumber());
-        project.setBankName(req.getBankName());
-        project.setSubbranch(req.getSubbranch());
+
+        User user = userBO.getUser(req.getChargeUser());
+        if (StringUtils.isNotBlank(user.getMobile())) {
+            project.setChargeMobile(user.getMobile());
+        }
+
         project.setStartDatetime(DateUtil.strToDate(req.getStartDatetime(),
             DateUtil.FRONT_DATE_FORMAT_STRING));
         project.setLongitude(req.getLongitude());
         project.setLatitude(req.getLatitude());
         project.setProvince(req.getProvince());
         project.setCity(req.getCity());
+
         project.setArea(req.getArea());
         project.setAddress(req.getAddress());
         project.setSalaryDatetime(DateUtil.strToDate(req.getSalaryDatetime(),
             DateUtil.FRONT_DATE_FORMAT_STRING));
         project.setStatus(EProjectStatus.TO_AUDIT.getCode());
         project.setUpdater(req.getUpdater());
+
         project.setUpdateDatetime(new Date());
         project.setRemark(req.getRemark());
-        return projectBO.saveProject(project);
+
+        // 添加公司账户
+        Department dpData = departmentAO
+            .getDepartment(user.getDepartmentCode());
+        if (dpData == null) {
+            throw new BizException("xn0000", "该负责人 不属于任何部门");
+        }
+        Company company = companyBO.getCompany(dpData.getCompanyCode());
+        if (company == null) {
+            throw new BizException("xn0000", "该部门 不属于任何公司");
+        }
+        companyCardBO.saveCompanyCard(code, req.getName(), company.getCode(),
+            company.getName(), req.getBankCode(), req.getBankName(),
+            req.getBankCardNumber(), req.getSubbranch());
+        return code;
     }
 
     @Override

@@ -2,7 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.cdkj.gchf.dao.IBcontractDAO">
-	<resultMap id="Bcontract_DB_Result" type="Bcontract">
+	<resultMap id="bcontract_DB_Result" type="bcontract">
 		<result column="code" property="code" />
 		<result column="project_code" property="projectCode" />
 		<result column="project_name" property="projectName" />
@@ -46,6 +46,9 @@
 			<if test="remark != null and remark != '' ">
 				AND t.remark = #{remark}
 			</if>
+			<if test="keyword != null and keyword != '' ">
+				AND t.bname like "%"#{keyword}"%" OR  t.bmobile like "%"#{keyword}"% OR  t.project_name like "%"#{keyword}"%"
+			</if>
 		</trim>
 	</sql>
 	<select id="select_bcontract" parameterType="bcontract" resultMap="bcontract_DB_Result">
@@ -61,7 +64,8 @@
 		,t.update_datetime
 		,t.remark
 		FROM
-		thf_bcontract t
+		thf_bcontract t LEFT JOIN thf_department d ON t.project_code = d.code LEFT JOIN 
+		thf_company c ON c.code = d.company_code
 		<include refid="where_condition" />
 		<trim prefix="ORDER BY ">
 			<if test="order != null and order != '' ">

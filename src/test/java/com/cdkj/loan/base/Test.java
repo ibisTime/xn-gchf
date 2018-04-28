@@ -9,23 +9,23 @@ import com.cdkj.gchf.common.DateUtil;
 
 public class Test {
     // 实体
-    private static String key = "Bcontract";
+    private static String key = "Progress";
 
     // 实体名称
-    private static String keyName = "承包商合同";
+    private static String keyName = "工程进度";
 
     // 包路径
     private static String packge = "com.cdkj.gchf.";
 
     // 表名
-    private static String dbname = "thf_bcontract";
+    private static String dbname = "thf_progress";
 
     private static String[] DBwords = { "code", "project_code", "project_name",
-            "bname", "bmobile", "content_pic", "contract_datetime", "updater",
-            "update_datetime", "remark" };
+            "datetime", "description", "picture", "updater", "update_datetime",
+            "remark" };
 
-    private static String[] DBwordsName = { "编号", "项目编号", "项目名称", "承包商名称",
-            "承包商手机号", "合同照片", "签约时间", "更新人", "更新时间", "备注" };
+    private static String[] DBwordsName = { "编号", "项目编号", "项目名称", "进度时间",
+            "工程进度描述", "工程进度图片", "更新人", "更新时间", "备注" };
 
     private static String[] DOwords = getDOwords();
 

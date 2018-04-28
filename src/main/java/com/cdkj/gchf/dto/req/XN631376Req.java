@@ -10,10 +10,6 @@ public class XN631376Req extends APageReq {
 
     private String projectCode;// 项目编号
 
-    private String dateStart;// 合同开始录入时间
-
-    private String dateEnd;// 合同结束录入时间
-
     private String updater;// 更新人
 
     private String keyword;// 关键字
@@ -32,22 +28,6 @@ public class XN631376Req extends APageReq {
 
     public void setProjectCode(String projectCode) {
         this.projectCode = projectCode;
-    }
-
-    public String getDateStart() {
-        return dateStart;
-    }
-
-    public void setDateStart(String dateStart) {
-        this.dateStart = dateStart;
-    }
-
-    public String getDateEnd() {
-        return dateEnd;
-    }
-
-    public void setDateEnd(String dateEnd) {
-        this.dateEnd = dateEnd;
     }
 
     public String getUpdater() {

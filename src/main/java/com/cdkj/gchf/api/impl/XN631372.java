@@ -2,6 +2,8 @@ package com.cdkj.gchf.api.impl;
 
 import com.cdkj.gchf.ao.IBcontractAO;
 import com.cdkj.gchf.api.AProcessor;
+import com.cdkj.gchf.common.JsonUtil;
+import com.cdkj.gchf.core.ObjValidater;
 import com.cdkj.gchf.dto.req.XN631372Req;
 import com.cdkj.gchf.dto.res.BooleanRes;
 import com.cdkj.gchf.exception.BizException;
@@ -23,8 +25,8 @@ public class XN631372 extends AProcessor {
     @Override
     public void doCheck(String inputparams, String operator)
             throws ParaException {
-        // TODO Auto-generated method stub
-
+        req = JsonUtil.json2Bean(inputparams, XN631372Req.class);
+        ObjValidater.validateReq(req);
     }
 
 }

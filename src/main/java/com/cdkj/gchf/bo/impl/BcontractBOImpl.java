@@ -47,9 +47,10 @@ public class BcontractBOImpl extends PaginableBOImpl<Bcontract>
     @Override
     public int refreshBcontract(Bcontract data) {
         int count = 0;
-        if (StringUtils.isNotBlank(data.getCode())) {
-            count = bcontractDAO.updateBcontract(data);
-        }
+        // if (StringUtils.isNotBlank(data.getCode())) {
+        // throw new BizException("xn0000", "编号不存在");
+        // }
+        count = bcontractDAO.updateBcontract(data);
         return count;
     }
 

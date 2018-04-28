@@ -8,12 +8,12 @@ import org.springframework.stereotype.Service;
 
 import com.cdkj.gchf.ao.IBcontractAO;
 import com.cdkj.gchf.bo.IBcontractBO;
+import com.cdkj.gchf.bo.IProjectBO;
 import com.cdkj.gchf.bo.base.Paginable;
 import com.cdkj.gchf.common.DateUtil;
 import com.cdkj.gchf.domain.Bcontract;
 import com.cdkj.gchf.dto.req.XN631370Req;
 import com.cdkj.gchf.dto.req.XN631372Req;
-import com.cdkj.gchf.exception.BizException;
 
 @Service
 public class BcontractAOImpl implements IBcontractAO {
@@ -21,16 +21,21 @@ public class BcontractAOImpl implements IBcontractAO {
     @Autowired
     private IBcontractBO bcontractBO;
 
+    @Autowired
+    private IProjectBO projectBO;
+
     @Override
     public String addBcontract(XN631370Req req) {
         Bcontract data = new Bcontract();
         data.setProjectCode(req.getProjectCode());
+        data.setProjectName(
+            projectBO.getProject(req.getProjectCode()).getName());
         data.setBname(req.getBname());
         data.setBmobile(req.getBmobile());
         data.setContentPic(req.getContentPic());
+
         data.setContractDatetime(DateUtil.strToDate(req.getContractDatetime(),
             DateUtil.FRONT_DATE_FORMAT_STRING));
-
         data.setUpdater(req.getUpdater());
         data.setUpdateDatetime(new Date());
         data.setRemark(req.getRemark());
@@ -39,10 +44,7 @@ public class BcontractAOImpl implements IBcontractAO {
 
     @Override
     public int editBcontract(XN631372Req req) {
-        if (!bcontractBO.equals(req.getCode())) {
-            throw new BizException("xn0000", "记录编号不存在");
-        }
-        Bcontract data = new Bcontract();
+        Bcontract data = bcontractBO.getBcontract(req.getCode());
         data.setProjectCode(req.getProjectCode());
         data.setBname(req.getBname());
         data.setBmobile(req.getBmobile());

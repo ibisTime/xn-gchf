@@ -5,25 +5,35 @@ import java.util.Date;
 import com.cdkj.gchf.dao.base.ABaseDO;
 
 public class Bcontract extends ABaseDO {
-    private String code;//
+    private String code;// 编号
 
-    private String projectCode;//
+    private String projectCode;// 项目编号
 
-    private String projectName;//
+    private String projectName;// 项目名称
 
-    private String bname;//
+    private String bname;// 承包商名称
 
-    private String bmobile;//
+    private String bmobile;// 承包商手机号
 
-    private String contentPic;//
+    private String contentPic;// 合同照片
 
-    private Date contractDatetime;//
+    private Date contractDatetime;// 签约时间
 
-    private String updater;//
+    private String updater;// 更新人
 
-    private Date updateDatetime;
+    private Date updateDatetime;// 更新时间
 
-    private String remark;
+    private String remark;// 备注
+
+    private String keyword;// 关键字
+
+    public String getKeyword() {
+        return keyword;
+    }
+
+    public void setKeyword(String keyword) {
+        this.keyword = keyword;
+    }
 
     public String getCode() {
         return code;

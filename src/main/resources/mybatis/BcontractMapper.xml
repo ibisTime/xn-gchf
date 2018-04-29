@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cdkj.gchf.dao.IBcontractDAO">
+	<resultMap id="bcontract_DB_Result" type="bcontract">
+		<result column="code" property="code" />
+		<result column="project_code" property="projectCode" />
+		<result column="project_name" property="projectName" />
+		<result column="bname" property="bname" />
+		<result column="bmobile" property="bmobile" />
+		<result column="content_pic" property="contentPic" />
+		<result column="contract_datetime" property="contractDatetime" />
+		<result column="updater" property="updater" />
+		<result column="update_datetime" property="updateDatetime" />
+		<result column="remark" property="remark" />
+	</resultMap>
+	<sql id="where_condition">
+		<trim prefix="WHERE" prefixOverrides="AND | OR">
+			<if test="code != null and code != '' ">
+				AND t.code = #{code}
+			</if>
+			<if test="projectCode != null and projectCode != '' ">
+				AND t.project_code = #{projectCode}
+			</if>
+			<if test="projectName != null and projectName != '' ">
+				AND t.project_name = #{projectName}
+			</if>
+			<if test="bname != null and bname != '' ">
+				AND t.bname = #{bname}
+			</if>
+			<if test="bmobile != null and bmobile != '' ">
+				AND t.bmobile = #{bmobile}
+			</if>
+			<if test="contentPic != null and contentPic != '' ">
+				AND t.content_pic = #{contentPic}
+			</if>
+			<if test="contractDatetime != null and contractDatetime != '' ">
+				AND t.contract_datetime = #{contractDatetime}
+			</if>
+			<if test="updater != null and updater != '' ">
+				AND t.updater = #{updater}
+			</if>
+			<if test="updateDatetime != null and updateDatetime != '' ">
+				AND t.update_datetime = #{updateDatetime}
+			</if>
+			<if test="remark != null and remark != '' ">
+				AND t.remark = #{remark}
+			</if>
+			<if test="keyword != null and keyword != '' ">
+				AND t.bname like "%"#{keyword}"%" OR  t.bmobile like "%"#{keyword}"% OR  t.project_name like "%"#{keyword}"%"
+			</if>
+		</trim>
+	</sql>
+	<select id="select_bcontract" parameterType="bcontract" resultMap="bcontract_DB_Result">
+		SELECT
+		t.code
+		,t.project_code
+		,t.project_name
+		,t.bname
+		,t.bmobile
+		,t.content_pic
+		,t.contract_datetime
+		,t.updater
+		,t.update_datetime
+		,t.remark
+		FROM
+		thf_bcontract t LEFT JOIN thf_department d ON t.project_code = d.code LEFT JOIN 
+		thf_company c ON c.code = d.company_code
+		<include refid="where_condition" />
+		<trim prefix="ORDER BY ">
+			<if test="order != null and order != '' ">
+				t.${order}
+			</if>
+		</trim>
+	</select>
+
+	<select id="select_bcontract_count" parameterType="bcontract"
+		resultType="java.lang.Long">
+		SELECT count(1) FROM thf_bcontract t
+		<include refid="where_condition" />
+	</select>
+
+	<insert id="insert_bcontract" parameterType="bcontract">
+		INSERT INTO
+		thf_bcontract(
+		code
+		,project_code
+		,project_name
+		,bname
+		,bmobile
+		,content_pic
+		,contract_datetime
+		,updater
+		,update_datetime
+		,remark
+		)
+		VALUES(
+		#{code}
+		,#{projectCode}
+		,#{projectName}
+		,#{bname}
+		,#{bmobile}
+		,#{contentPic}
+		,#{contractDatetime}
+		,#{updater}
+		,#{updateDatetime}
+		,#{remark}
+		)
+	</insert>
+
+	<update id="update_bcontract" parameterType="bcontract">
+		UPDATE thf_bcontract
+		SET
+		project_code = #{projectCode}
+		,project_name = #{projectName}
+		,bname = #{bname}
+		,bmobile = #{bmobile}
+		,content_pic = #{contentPic}
+		,contract_datetime = #{contractDatetime}
+		,updater = #{updater}
+		,remark = #{remark}
+		WHERE code = #{code}
+	</update>
+
+
+</mapper>

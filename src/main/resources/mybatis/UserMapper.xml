@@ -5,6 +5,7 @@
 	<resultMap id="user_DB_Result" type="user">
 		<result column="user_id" property="userId" />
 		<result column="type" property="type" />
+		<result column="real_name" property="realName" />
 		<result column="photo" property="photo" />
 		<result column="login_name" property="loginName" />
 		<result column="mobile" property="mobile" />
@@ -59,6 +60,7 @@
 		SELECT
 		t.user_id
 		,t.type
+		,t.real_name
 		,t.photo
 		,t.login_name
 		,t.mobile
@@ -93,6 +95,7 @@
 		thf_user(
 		user_id
 		,type
+		,real_name
 		,photo
 		,login_name
 		,mobile
@@ -112,6 +115,7 @@
 		VALUES(
 		#{userId}
 		,#{type}
+		,#{realName}
 		,#{photo}
 		,#{loginName}
 		,#{mobile}

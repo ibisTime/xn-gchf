@@ -20,6 +20,8 @@ public class User extends ABaseDO {
     // 类型
     private String type;
 
+    private String realName;
+
     // 头像
     private String photo;
 
@@ -105,6 +107,14 @@ public class User extends ABaseDO {
 
     public String getLoginPwd() {
         return loginPwd;
+    }
+
+    public String getRealName() {
+        return realName;
+    }
+
+    public void setRealName(String realName) {
+        this.realName = realName;
     }
 
     public void setLoginPwdStrength(String loginPwdStrength) {

@@ -9,6 +9,10 @@ import org.hibernate.validator.constraints.NotBlank;
  */
 public class XN631070Req {
 
+    // 真实姓名（必填）
+    @NotBlank(message = "真实姓名不能为空")
+    private String realName;
+
     // 用户类型（必填）
     @NotBlank(message = "用户类型不能为空")
     private String type;
@@ -65,6 +69,14 @@ public class XN631070Req {
 
     public void setRemark(String remark) {
         this.remark = remark;
+    }
+
+    public String getRealName() {
+        return realName;
+    }
+
+    public void setRealName(String realName) {
+        this.realName = realName;
     }
 
 }

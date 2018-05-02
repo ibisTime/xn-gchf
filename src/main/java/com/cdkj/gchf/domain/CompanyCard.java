@@ -17,17 +17,17 @@ public class CompanyCard extends ABaseDO {
     // 编号
     private String code;
 
-    // 项目编号
-    private String projectCode;
-
-    // 项目名称
-    private String projectName;
-
     // 公司编号
     private String companyCode;
 
     // 公司名称
     private String companyName;
+
+    // 项目编号
+    private String projectCode;
+
+    // 项目名称
+    private String projectName;
 
     // 银行行别
     private String bankCode;
@@ -46,6 +46,19 @@ public class CompanyCard extends ABaseDO {
 
     // 创建时间
     private Date createDatetime;
+
+    // 更新人
+    private String updater;
+
+    // 更新时间
+    private Date updateDatetime;
+
+    // 备注
+    private String remark;
+
+    // **********************db******************
+
+    private String keyword;
 
     public void setCode(String code) {
         this.code = code;
@@ -133,6 +146,38 @@ public class CompanyCard extends ABaseDO {
 
     public Date getCreateDatetime() {
         return createDatetime;
+    }
+
+    public String getKeyword() {
+        return keyword;
+    }
+
+    public void setKeyword(String keyword) {
+        this.keyword = keyword;
+    }
+
+    public String getUpdater() {
+        return updater;
+    }
+
+    public void setUpdater(String updater) {
+        this.updater = updater;
+    }
+
+    public Date getUpdateDatetime() {
+        return updateDatetime;
+    }
+
+    public void setUpdateDatetime(Date updateDatetime) {
+        this.updateDatetime = updateDatetime;
+    }
+
+    public String getRemark() {
+        return remark;
+    }
+
+    public void setRemark(String remark) {
+        this.remark = remark;
     }
 
 }

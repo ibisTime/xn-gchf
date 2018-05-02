@@ -4,6 +4,7 @@
 <mapper namespace="com.cdkj.gchf.dao.ISYSRoleDAO">
 	<resultMap id="sysRole_DB_Result" type="sysRole">
 		<result column="code" property="code" />
+		<result column="type" property="type" />
 		<result column="name" property="name" />
 		<result column="updater" property="updater" />
 		<result column="update_datetime" property="updateDatetime" />
@@ -13,6 +14,9 @@
 		<trim prefix="WHERE" prefixOverrides="AND | OR">
 			<if test="code != null and code != '' ">
 				AND t.code = #{code}
+			</if>
+			<if test="type != null and type != '' ">
+				AND t.type = #{type}
 			</if>
 			<if test="name != null and name != '' ">
 				AND t.name = #{name}
@@ -25,6 +29,7 @@
 	<select id="select_sysRole" parameterType="sysRole" resultMap="sysRole_DB_Result">
 		SELECT
 		code
+		,type
 		,name
 		,updater
 		,update_datetime
@@ -47,6 +52,7 @@
 	<insert id="insert_sysRole" parameterType="sysRole">
 		INSERT INTO tsys_role(
 		code
+		,type
 		,name
 		,updater
 		,update_datetime
@@ -54,6 +60,7 @@
 		)
 		VALUES(
 		#{code}
+		,#{type}
 		,#{name}
 		,#{updater}
 		,#{updateDatetime}

@@ -5,22 +5,30 @@
 	<resultMap id="project_DB_Result" type="project">
 		<result column="code" property="code" />
 		<result column="name" property="name" />
+		<result column="company_code" property="companyCode" />
+		<result column="company_name" property="companyName" />
 		<result column="charge_user" property="chargeUser" />
-		<result column="charge_mobile" property="chargeMobile" />
 		
+		<result column="charge_mobile" property="chargeMobile" />
 		<result column="start_datetime" property="startDatetime" />
 		<result column="end_datetime" property="endDatetime" />
+		<result column="attendance_starttime" property="attendanceStarttime" />
+		<result column="attendance_endtime" property="attendanceEndtime" />
+		
 		<result column="longitude" property="longitude" />
 		<result column="latitude" property="latitude" />
 		<result column="province" property="province" />
 		<result column="city" property="city" />
 		<result column="area" property="area" />
+		
 		<result column="address" property="address" />
+		<result column="salary_create_datetime" property="salaryCreateDatetime" />
 		<result column="salary_datetime" property="salaryDatetime" />
 		<result column="status" property="status" />
-		<result column="auditor" property="auditor" />
-		<result column="audit_datetime" property="auditDatetime" />
-		<result column="audit_note" property="auditNote" />
+		<result column="approver" property="approver" />
+	
+		<result column="approve_datetime" property="approveDatetime" />
+		<result column="approve_note" property="approveNote" />
 		<result column="updater" property="updater" />
 		<result column="update_datetime" property="updateDatetime" />
 		<result column="remark" property="remark" />
@@ -30,6 +38,9 @@
 		<trim prefix="WHERE" prefixOverrides="AND | OR">
 			<if test="code != null and code != '' ">
 				AND t.code = #{code}
+			</if>
+			<if test="companyCode != null and companyCode != '' ">
+				AND t.company_code = #{companyCode}
 			</if>
 			<if test="name != null and name != '' ">
 				AND t.name = #{name}
@@ -52,41 +63,18 @@
 			<if test="latitude != null and latitude != '' ">
 				AND t.latitude = #{latitude}
 			</if>
-			<if test="province != null and province != '' ">
-				AND t.province = #{province}
-			</if>
-			<if test="city != null and city != '' ">
-				AND t.city = #{city}
-			</if>
-			<if test="area != null and area != '' ">
-				AND t.area = #{area}
-			</if>
-			<if test="address != null and address != '' ">
-				AND t.address = #{address}
-			</if>
+			
 			<if test="salaryDatetime != null and salaryDatetime != '' ">
 				AND t.salary_datetime = #{salaryDatetime}
 			</if>
 			<if test="status != null and status != '' ">
 				AND t.status = #{status}
 			</if>
-			<if test="auditor != null and auditor != '' ">
-				AND t.auditor = #{auditor}
-			</if>
-			<if test="auditDatetime != null and auditDatetime != '' ">
-				AND t.audit_datetime = #{auditDatetime}
-			</if>
-			<if test="auditNote != null and auditNote != '' ">
-				AND t.audit_note = #{auditNote}
+			<if test="approver != null and approver != '' ">
+				AND t.approver = #{approver}
 			</if>
 			<if test="updater != null and updater != '' ">
 				AND t.updater = #{updater}
-			</if>
-			<if test="updateDatetime != null and updateDatetime != '' ">
-				AND t.update_datetime = #{updateDatetime}
-			</if>
-			<if test="remark != null and remark != '' ">
-				AND t.remark = #{remark}
 			</if>
 			<if test="keyword != null and keyword != '' ">
 				AND t.name like "%"#{keyword}"%" OR  t.charge_mobile like "%"#{keyword}"%"
@@ -98,21 +86,30 @@
 		SELECT
 		t.code
 		,t.name
+		,t.company_code
+		,t.company_name
 		,t.charge_user
+		
 		,t.charge_mobile
 		,t.start_datetime
 		,t.end_datetime
+		,t.attendance_starttime
+		,t.attendance_endtime
+		
 		,t.longitude
 		,t.latitude
 		,t.province
 		,t.city
 		,t.area
+		
 		,t.address
+		,t.salary_create_datetime
 		,t.salary_datetime
 		,t.status
-		,t.auditor
-		,t.audit_datetime
-		,t.audit_note
+		,t.approver
+		
+		,t.approve_datetime
+		,t.approve_note
 		,t.updater
 		,t.update_datetime
 		,t.remark
@@ -138,35 +135,55 @@
 		thf_project(
 		code
 		,name
+		,company_code
+		,company_name
 		,charge_user
+		
 		,charge_mobile
 		,start_datetime
+		,attendance_starttime
+		,attendance_endtime
 		,longitude
+		
 		,latitude
 		,province
 		,city
 		,area
 		,address
+		
+		,salary_create_datetime
 		,salary_datetime
+		,status
 		,updater
 		,update_datetime
+		
 		,remark
 		)
 		VALUES(
 		#{code}
 		,#{name}
+		,#{companyCode}
+		,#{companyName}
 		,#{chargeUser}
-		,#{charge_mobile}
+		
+		,#{chargeMobile}
 		,#{startDatetime}
+		,#{attendanceStarttime}
+		,#{attendanceEndtime}
 		,#{longitude}
+		
 		,#{latitude}
 		,#{province}
 		,#{city}
 		,#{area}
 		,#{address}
+		
+		,#{salaryCreateDatetime}
 		,#{salaryDatetime}
+		,#{status}
 		,#{updater}
 		,#{updateDatetime}
+		
 		,#{remark}
 		)
 	</insert>
@@ -177,26 +194,70 @@
 		name = #{name}
 		,charge_user = #{chargeUser}  
 		,charge_mobile = #{chargeMobile}
-		,end_datetime = #{endDatetime}
+		,start_datetime = #{startDatetime}
 		,longitude = #{longitude}
+		
 		,latitude = #{latitude}
 		,province = #{province}
 		,city = #{city}
 		,area = #{area}
 		,address = #{address}
+		
 		,salary_datetime = #{salaryDatetime}
+		,salary_create_datetime = #{salaryCreateDatetime}
+		,attendance_starttime = #{attendanceStarttime}
+		,attendance_endtime = #{attendanceEndtime}
 		,updater = #{updater}
+		,update_datetime = #{updateDatetime}
 		,remark = #{remark}
 		WHERE code = #{code}
 	</update>
 	
-	<update id="audit_project" parameterType="project">
+	<update id="approve_project" parameterType="project">
 		UPDATE thf_project
 		SET
 		status = #{status}
-		,auditor = #{auditor}
-		,audit_datetime = #{auditDatetime}
-		,audit_note = #{auditNote}
+		,approver = #{approver}
+		,approve_datetime = #{approveDatetime}
+		,approve_note = #{approveNote}
 		WHERE code = #{code}
 	</update>
+	
+	<update id="to_aprrove" parameterType="project">
+		UPDATE thf_project
+		SET
+		name = #{name}
+		,charge_user = #{chargeUser}  
+		,charge_mobile = #{chargeMobile}
+		,start_datetime = #{startDatetime}
+		,longitude = #{longitude}
+		
+		,latitude = #{latitude}
+		,province = #{province}
+		,city = #{city}
+		,area = #{area}
+		,address = #{address}
+		
+		,salary_datetime = #{salaryDatetime}
+		,salary_create_datetime = #{salaryCreateDatetime}
+		,attendance_starttime = #{attendanceStarttime}
+		,attendance_endtime = #{attendanceEndtime}
+		,status = #{status}
+		,updater = #{updater}
+		,update_datetime = #{updateDatetime}
+		,remark = #{remark}
+		WHERE code = #{code}
+	</update>
+	
+	<update id="project_end" parameterType="project">
+		UPDATE thf_project
+		SET
+		status = #{status}
+		,end_datetime = #{endDatetime}
+		,updater = #{updater}
+		,update_datetime = #{updateDatetime}
+		,remark = #{remark}
+		WHERE code = #{code}
+	</update>
+	
 </mapper>

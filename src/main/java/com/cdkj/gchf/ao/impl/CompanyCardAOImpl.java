@@ -1,5 +1,6 @@
 package com.cdkj.gchf.ao.impl;
 
+import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,16 +19,17 @@ public class CompanyCardAOImpl implements ICompanyCardAO {
     private ICompanyCardBO companyCardBO;
 
     @Override
-    public String addCompanyCard(CompanyCard data) {
-        return null;
-    }
-
-    @Override
     public void editCompanyCard(XN631362Req req) {
-    }
+        CompanyCard data = companyCardBO.getCompanyCard(req.getCode());
+        data.setBankCode(req.getBankCode());
+        data.setBankName(req.getBankName());
+        data.setBankcardNumber(req.getBankcardNumber());
+        data.setSubbranch(req.getSubbranch());
+        data.setUpdater(req.getUpdater());
 
-    @Override
-    public void dropCompanyCard(String code) {
+        data.setUpdateDatetime(new Date());
+        data.setRemark(req.getRemark());
+        companyCardBO.refreshCompanyCard(data);
     }
 
     @Override

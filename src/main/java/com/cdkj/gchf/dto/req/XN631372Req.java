@@ -2,41 +2,55 @@ package com.cdkj.gchf.dto.req;
 
 import org.hibernate.validator.constraints.NotBlank;
 
+/**
+ * 承包商合同修改
+ * @author: CYL 
+ * @since: 2018年4月28日 下午4:49:43 
+ * @history:
+ */
 public class XN631372Req {
 
-    @NotBlank
-    private String code;// 合同编号
+    // 合同编号
+    @NotBlank(message = "合同编号不能为空")
+    private String code;
 
-    @NotBlank
-    private String projectCode;// 项目编号
+    // 承包商名称
+    @NotBlank(message = "承包商名称不能为空")
+    private String bname;
 
-    @NotBlank
-    private String bname;// 承包商名称
+    // 承包商手机
+    @NotBlank(message = "承包商手机不能为空")
+    private String bmobile;
 
-    @NotBlank
-    private String bmobile;// 承包商手机
+    // 免冠照片
+    @NotBlank(message = "免冠照片不能为空")
+    private String pict1;
 
-    @NotBlank
-    private String contentPic;// 合同照片
+    // 手持身份证照片
+    @NotBlank(message = "手持身份证照片不能为空")
+    private String pict2;
 
-    @NotBlank
-    private String contractDatetime;// 签约时间
+    // 身份证正反照+签名
+    @NotBlank(message = "身份证正反照+签名不能为空")
+    private String pict3;
 
-    @NotBlank
-    private String updater;// 更新人
+    // 合同照片
+    @NotBlank(message = "合同照片不能为空")
+    private String contentPic;
 
-    private String remark;// 备注
+    // 签约时间
+    @NotBlank(message = "签约时间不能为空")
+    private String contractDatetime;
+
+    // 更新人
+    @NotBlank(message = "更新人不能为空")
+    private String updater;
+
+    // 备注
+    private String remark;
 
     public String getCode() {
         return code;
-    }
-
-    public String getProjectCode() {
-        return projectCode;
-    }
-
-    public void setProjectCode(String projectCode) {
-        this.projectCode = projectCode;
     }
 
     public void setCode(String code) {
@@ -89,6 +103,30 @@ public class XN631372Req {
 
     public void setRemark(String remark) {
         this.remark = remark;
+    }
+
+    public String getPict1() {
+        return pict1;
+    }
+
+    public void setPict1(String pict1) {
+        this.pict1 = pict1;
+    }
+
+    public String getPict2() {
+        return pict2;
+    }
+
+    public void setPict2(String pict2) {
+        this.pict2 = pict2;
+    }
+
+    public String getPict3() {
+        return pict3;
+    }
+
+    public void setPict3(String pict3) {
+        this.pict3 = pict3;
     }
 
 }

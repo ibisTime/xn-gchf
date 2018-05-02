@@ -3,7 +3,7 @@ package com.cdkj.gchf.domain;
 import com.cdkj.gchf.dao.base.ABaseDO;
 
 /**
-* 平台用户
+* 部门
 * @author: chenshan 
 * @since: 2018-04-25 20:49:56
 * @history:

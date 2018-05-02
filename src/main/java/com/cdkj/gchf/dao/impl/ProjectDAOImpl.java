@@ -51,8 +51,18 @@ public class ProjectDAOImpl extends AMybatisTemplate implements IProjectDAO {
     }
 
     @Override
-    public int auditProject(Project data) {
-        return super.update(NAMESPACE.concat("audit_project"), data);
+    public int approveProject(Project data) {
+        return super.update(NAMESPACE.concat("approve_project"), data);
+    }
+
+    @Override
+    public void toApprove(Project data) {
+        super.update(NAMESPACE.concat("to_aprrove"), data);
+    }
+
+    @Override
+    public void projectEnd(Project data) {
+        super.update(NAMESPACE.concat("project_end"), data);
     }
 
 }

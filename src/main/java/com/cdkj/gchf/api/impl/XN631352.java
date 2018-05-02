@@ -30,19 +30,12 @@ public class XN631352 extends AProcessor {
 
     private XN631352Req req = null;
 
-    /** (StringValidater.toLong(req.getId()),
-            req.getDvalue(), req.getUpdater(), req.getRemark());
-     * @see com.cdkj.gchf.api.IProcessor#doBusiness()
-     */
     @Override
     public Object doBusiness() throws BizException {
         projectAO.editProject(req);
         return new BooleanRes(true);
     }
 
-    /** 
-     * @see com.cdkj.gchf.api.IProcessor#doCheck(java.lang.String)
-     */
     @Override
     public void doCheck(String inputparams, String operator)
             throws ParaException {

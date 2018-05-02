@@ -4,6 +4,8 @@
 <mapper namespace="com.cdkj.gchf.dao.IProgressDAO">
 	<resultMap id="Progress_DB_Result" type="Progress">
 		<result column="code" property="code" />
+		<result column="company_code" property="companyCode" />
+		<result column="company_name" property="companyName" />
 		<result column="project_code" property="projectCode" />
 		<result column="project_name" property="projectName" />
 		<result column="datetime" property="datetime" />
@@ -21,35 +23,22 @@
 			<if test="projectCode != null and projectCode != '' ">
 				AND t.project_code = #{projectCode}
 			</if>
-			<if test="projectName != null and projectName != '' ">
-				AND t.project_name = #{projectName}
-			</if>
-			<if test="datetime != null and datetime != '' ">
-				AND t.datetime = #{datetime}
-			</if>
-			<if test="description != null and description != '' ">
-				AND t.description = #{description}
-			</if>
-			<if test="picture != null and picture != '' ">
-				AND t.picture = #{picture}
+			<if test="companyName != null and companyName != '' ">
+				AND t.company_code = #{companyName}
 			</if>
 			<if test="updater != null and updater != '' ">
 				AND t.updater = #{updater}
 			</if>
-			<if test="updateDatetime != null and updateDatetime != '' ">
-				AND t.update_datetime = #{updateDatetime}
-			</if>
-			<if test="remark != null and remark != '' ">
-				AND t.remark = #{remark}
-			</if>
 			<if test="keyword != null and keyword != '' ">
-				AND t.project_name like "%"#{keyword}"%"
+				AND t.project_name like "%"#{keyword}"%" OR t.company_name like "%"#{keyword}"%"
 			</if>
 		</trim>
 	</sql>
 	<select id="select_Progress" parameterType="Progress" resultMap="Progress_DB_Result">
 		SELECT
 		t.code
+		,t.company_code
+		,t.company_name
 		,t.project_code
 		,t.project_name
 		,t.datetime
@@ -59,8 +48,7 @@
 		,t.update_datetime
 		,t.remark
 		FROM
-		thf_progress t LEFT JOIN thf_department d ON t.project_code = d.code LEFT JOIN 
-		thf_company c ON c.code = d.company_code
+		thf_progress t 
 		<include refid="where_condition" />
 		<trim prefix="ORDER BY ">
 			<if test="order != null and order != '' ">
@@ -79,6 +67,8 @@
 		INSERT INTO
 		thf_progress(
 		code
+		,t.company_code
+		,t.company_name
 		,project_code
 		,project_name
 		,datetime
@@ -90,6 +80,8 @@
 		)
 		VALUES(
 		#{code}
+		,#{companyCode}
+		,#{companyName}
 		,#{projectCode}
 		,#{projectName}
 		,#{datetime}
@@ -104,8 +96,7 @@
 	<update id="update_Progress" parameterType="Progress">
 		UPDATE thf_progress
 		SET
-		project_code = #{projectCode}
-		,project_name = #{projectName}
+		project_name = #{projectName}
 		,datetime = #{datetime}
 		,description = #{description}
 		,picture = #{picture}

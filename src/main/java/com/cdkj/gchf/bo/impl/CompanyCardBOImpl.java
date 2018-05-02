@@ -25,7 +25,8 @@ public class CompanyCardBOImpl extends PaginableBOImpl<CompanyCard>
 
     public void saveCompanyCard(String projectCode, String projectName,
             String companyCode, String companyName, String bankCode,
-            String bankName, String bankCardNumber, String subbranch) {
+            String bankName, String bankCardNumber, String subbranch,
+            String updater, Date updateDatetime, String remark) {
         CompanyCard data = new CompanyCard();
 
         String code = OrderNoGenerater
@@ -43,6 +44,9 @@ public class CompanyCardBOImpl extends PaginableBOImpl<CompanyCard>
 
         data.setCreateDatetime(new Date());
         data.setStatus(EBankCardStatus.Normal.getCode());
+        data.setUpdater(updater);
+        data.setUpdateDatetime(updateDatetime);
+        data.setRemark(remark);
         CompanyCardDAO.insert(data);
 
     }
@@ -68,7 +72,21 @@ public class CompanyCardBOImpl extends PaginableBOImpl<CompanyCard>
             condition.setCode(code);
             data = CompanyCardDAO.select(condition);
             if (data == null) {
-                throw new BizException("xn0000", "�� ��Ų�����");
+                throw new BizException("xn0000", "公司账户不存在");
+            }
+        }
+        return data;
+    }
+
+    @Override
+    public CompanyCard getCompanyCardByProject(String projectCode) {
+        CompanyCard data = null;
+        if (StringUtils.isNotBlank(projectCode)) {
+            CompanyCard condition = new CompanyCard();
+            condition.setProjectCode(projectCode);
+            data = CompanyCardDAO.select(condition);
+            if (data == null) {
+                throw new BizException("xn0000", "公司账户不存在");
             }
         }
         return data;

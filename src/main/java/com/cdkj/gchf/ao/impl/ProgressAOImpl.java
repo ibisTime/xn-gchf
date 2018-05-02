@@ -6,11 +6,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.cdkj.gchf.ao.IProgressAO;
+import com.cdkj.gchf.bo.ICompanyBO;
+import com.cdkj.gchf.bo.IDepartmentBO;
 import com.cdkj.gchf.bo.IProgressBO;
 import com.cdkj.gchf.bo.IProjectBO;
 import com.cdkj.gchf.bo.base.Paginable;
 import com.cdkj.gchf.common.DateUtil;
 import com.cdkj.gchf.domain.Progress;
+import com.cdkj.gchf.domain.Project;
 import com.cdkj.gchf.dto.req.XN631380Req;
 import com.cdkj.gchf.dto.req.XN631382Req;
 
@@ -24,9 +27,19 @@ public class ProgressAOImpl implements IProgressAO {
     @Autowired
     private IProjectBO projectBO;
 
+    @Autowired
+    private IDepartmentBO departmentBO;
+
+    @Autowired
+    private ICompanyBO companyBO;
+
     @Override
     public String addProgress(XN631380Req req) {
         Progress data = new Progress();
+        Project project = projectBO.getProject(req.getProjectCode());
+        data.setCompanyCode(project.getCompanyCode());
+        data.setCompanyName(project.getCompanyName());
+
         data.setProjectCode(req.getProjectCode());
         data.setProjectName(
             projectBO.getProject(req.getProjectCode()).getName());

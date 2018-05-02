@@ -1,5 +1,11 @@
 package com.cdkj.gchf.dto.req;
 
+/**
+ * 工程进度分页查询
+ * @author: CYL 
+ * @since: 2018年4月28日 下午4:47:18 
+ * @history:
+ */
 public class XN631385Req extends APageReq {
     private static final long serialVersionUID = 5138736221155343722L;
 

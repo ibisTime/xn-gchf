@@ -1,0 +1,176 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cdkj.gchf.dao.IEmployDAO">
+	<resultMap id="employ_DB_Result" type="employ">
+		<result column="code" property="code" />
+		<result column="project_code" property="projectCode" />
+		<result column="project_name" property="projectName" />
+		<result column="staff_code" property="staffCode" />
+		<result column="staff_mobile" property="staffMobile" />
+		<result column="type" property="type" />
+		<result column="position" property="position" />
+		<result column="up_user" property="upUser" />
+		<result column="salary" property="salary" />
+		<result column="status" property="status" />
+		<result column="join_datetiem" property="joinDatetiem" />
+		<result column="leaving_datetime" property="leavingDatetime" />
+		<result column="start_datetime" property="startDatetime" />
+		<result column="end_datetime" property="endDatetime" />
+		<result column="updater" property="updater" />
+		<result column="update_datetime" property="updateDatetime" />
+		<result column="remark" property="remark" />
+	</resultMap>
+	
+	<sql id="where_condition">
+		<trim prefix="WHERE" prefixOverrides="AND | OR">
+			<if test="code != null and code != '' ">
+				AND t.code = #{code}
+			</if>
+			<if test="projectCode != null and projectCode != '' ">
+				AND t.project_code = #{projectCode}
+			</if>
+			<if test="type != null and type != '' ">
+				AND t.type = #{type}
+			</if>
+			<if test="upUser != null and upUser != '' ">
+				AND t.up_user = #{upUser}
+			</if>
+			<if test="updater != null and updater != '' ">
+				AND t.updater = #{updater}
+			</if>
+			<if test="status != null and status != '' ">
+				AND t.status = #{status}
+			</if>
+			
+			<if test="keyword != null and keyword != '' ">
+				AND t.staff_mobile like "%"#{keyword}"%" OR t.position  like "%"#{keyword}"%" OR 
+			</if>
+			
+		</trim>
+	</sql>
+	
+	<select id="select_employ" parameterType="employ" resultMap="employ_DB_Result">
+		SELECT
+		t.code
+		,t.project_code
+		,t.project_name
+		,t.staff_code
+		,t.staff_mobile
+		,t.type
+		,t.position
+		,t.up_user
+		,t.salary
+		,t.status
+		,t.join_datetiem
+		,t.leaving_datetime
+		,t.start_datetime
+		,t.end_datetime
+		,t.updater
+		,t.update_datetime
+		,t.remark
+		FROM
+		thf_employ t
+		<include refid="where_condition" />
+		<trim prefix="ORDER BY ">
+			<if test="order != null and order != '' ">
+				t.${order}
+			</if>
+		</trim>
+	</select>
+
+	<select id="select_employ_count" parameterType="employ"
+		resultType="java.lang.Long">
+		SELECT count(1) FROM thf_employ t
+		<include refid="where_condition" />
+	</select>
+
+	<insert id="insert_employ" parameterType="employ">
+		INSERT INTO
+		thf_employ(
+		code
+		,project_code
+		,project_name
+		,staff_code
+		,staff_mobile
+		,type
+		,position
+		,up_user
+		,salary
+		,status
+		,join_datetiem
+		,leaving_datetime
+		,start_datetime
+		,end_datetime
+		,updater
+		,update_datetime
+		,remark
+		)
+		VALUES(
+		#{code}
+		,#{projectCode}
+		,#{projectName}
+		,#{staffCode}
+		,#{staffMobile}
+		,#{type}
+		,#{position}
+		,#{upUser}
+		,#{salary}
+		,#{status}
+		,#{joinDatetiem}
+		,#{leavingDatetime}
+		,#{startDatetime}
+		,#{endDatetime}
+		,#{updater}
+		,#{updateDatetime}
+		,#{remark}
+		)
+	</insert>
+
+	<update id="update_employ" parameterType="employ">
+		UPDATE thf_employ
+		SET
+		project_code = #{projectCode}
+		,project_name = #{projectName}
+		,staff_code = #{staffCode}
+		,staff_mobile = #{staffMobile}
+		,type = #{type}
+		,position = #{position}
+		,up_user = #{upUser}
+		,salary = #{salary}
+		,status = #{status}
+		,join_datetiem = #{joinDatetiem}
+		,leaving_datetime = #{leavingDatetime}
+		,start_datetime = #{startDatetime}
+		,end_datetime = #{endDatetime}
+		,updater = #{updater}
+		,update_datetime = #{updateDatetime}
+		,remark = #{remark}
+		WHERE code = #{code}
+	</update>
+
+	<update id="to_holiday" parameterType="employ">
+			UPDATE thf_employ
+			SET
+			status = #{status}
+			,start_datetime = #{startDatetime}
+			,end_datetime = #{endDatetime}
+			,updater = #{updater}
+			,update_datetime = #{updateDatetime}
+			,remark = #{remark}
+			WHERE code = #{code}
+	</update>
+
+	<update id="leave_office" parameterType="employ">
+			UPDATE thf_employ
+			SET
+			status = #{status}
+			,leaving_datetime = #{leavingDatetime}
+			,updater = #{updater}
+			,update_datetime = #{updateDatetime}
+			,remark = #{remark}
+			WHERE code = #{code}
+	</update>
+
+
+</mapper>

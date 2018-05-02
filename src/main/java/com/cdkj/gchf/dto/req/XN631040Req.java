@@ -14,6 +14,10 @@ public class XN631040Req {
     @NotBlank(message = "角色名称不能为空")
     private String name;
 
+    // 角色类型(必填)
+    @NotBlank(message = "角色类型不能为空")
+    private String type;
+
     // 更新人(必填)
     @NotBlank(message = "更新人不能为空")
     private String updater;
@@ -43,6 +47,14 @@ public class XN631040Req {
 
     public void setRemark(String remark) {
         this.remark = remark;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
     }
 
 }

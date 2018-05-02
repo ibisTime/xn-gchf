@@ -82,11 +82,47 @@
 	<bean id="projectBO" class="com.cdkj.gchf.bo.impl.ProjectBOImpl">
 		<property name="paginableDAO" ref="projectDAOImpl"/>
 	</bean>	
+	
 	<bean id="bcontractBO" class="com.cdkj.gchf.bo.impl.BcontractBOImpl">
 		<property name="paginableDAO" ref="bcontractDAOImpl"/>
 	</bean>	
+	
 	<bean id="progressBO" class="com.cdkj.gchf.bo.impl.ProgressBOImpl">
 		<property name="paginableDAO" ref="progressDAOImpl"/>
 	</bean>	
+	
+	<bean id="companyCardBO" class="com.cdkj.gchf.bo.impl.CompanyCardBOImpl">
+		<property name="paginableDAO" ref="companyCardDAOImpl"/>
+	</bean>	
+	
+	<bean id="employBO" class="com.cdkj.gchf.bo.impl.EmployBOImpl">
+		<property name="paginableDAO" ref="employDAOImpl"/>
+	</bean>	
+	
+	<bean id="ccontractBO" class="com.cdkj.gchf.bo.impl.CcontractBOImpl">
+		<property name="paginableDAO" ref="ccontractDAOImpl"/>
+	</bean>	
+	
+	<bean id="attendanceBO" class="com.cdkj.gchf.bo.impl.AttendanceBOImpl">
+		<property name="paginableDAO" ref="attendanceDAOImpl"/>
+	</bean>	
+	
+	<bean id="staffBO" class="com.cdkj.gchf.bo.impl.StaffBOImpl">
+		<property name="paginableDAO" ref="staffDAOImpl"/>
+	</bean>	
+	
+	<bean id="messageBO" class="com.cdkj.gchf.bo.impl.MessageBOImpl">
+		<property name="paginableDAO" ref="messageDAOImpl"/>
+	</bean>	
+	
+	<bean id="salaryBO" class="com.cdkj.gchf.bo.impl.SalaryBOImpl">
+		<property name="paginableDAO" ref="salaryDAOImpl"/>
+	</bean>	
+	
+	<bean id="salaryLogBO" class="com.cdkj.gchf.bo.impl.SalaryLogBOImpl">
+		<property name="paginableDAO" ref="salaryLogDAOImpl"/>
+	</bean>	
+	
+	
 </beans>
 

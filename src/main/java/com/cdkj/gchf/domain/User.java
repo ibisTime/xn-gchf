@@ -20,6 +20,7 @@ public class User extends ABaseDO {
     // 类型
     private String type;
 
+    // 真实姓名
     private String realName;
 
     // 头像
@@ -68,6 +69,13 @@ public class User extends ABaseDO {
 
     // 登录名等模糊查询
     private String keyword;
+
+    // 公司编号
+    private String companyCode;
+
+    // 部门名称
+
+    private String departmentName;
 
     public void setUserId(String userId) {
         this.userId = userId;
@@ -219,6 +227,22 @@ public class User extends ABaseDO {
 
     public void setUserRefree(String userRefree) {
         this.userRefree = userRefree;
+    }
+
+    public String getCompanyCode() {
+        return companyCode;
+    }
+
+    public void setCompanyCode(String companyCode) {
+        this.companyCode = companyCode;
+    }
+
+    public String getDepartmentName() {
+        return departmentName;
+    }
+
+    public void setDepartmentName(String departmentName) {
+        this.departmentName = departmentName;
     }
 
 }

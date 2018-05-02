@@ -11,9 +11,9 @@ public class XN631354Req {
     private String result;// 结果
 
     @NotBlank
-    private String auditor;// 审核人
+    private String approver;// 审核人
 
-    private String remark;// 审核备注
+    private String approveNote;// 审核备注
 
     public String getCode() {
         return code;
@@ -31,20 +31,20 @@ public class XN631354Req {
         this.result = result;
     }
 
-    public String getAuditor() {
-        return auditor;
+    public String getApprover() {
+        return approver;
     }
 
-    public void setAuditor(String auditor) {
-        this.auditor = auditor;
+    public void setApprover(String approver) {
+        this.approver = approver;
     }
 
-    public String getRemark() {
-        return remark;
+    public String getApproveNote() {
+        return approveNote;
     }
 
-    public void setRemark(String remark) {
-        this.remark = remark;
+    public void setApproveNote(String approveNote) {
+        this.approveNote = approveNote;
     }
 
 }

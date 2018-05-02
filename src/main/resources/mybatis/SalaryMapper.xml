@@ -1,0 +1,157 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cdkj.gchf.dao.ISalaryDAO">
+	<resultMap id="salary_DB_Result" type="salary">
+		<result column="code" property="code" />
+		<result column="message_code" property="messageCode" />
+		<result column="staff_code" property="staffCode" />
+		<result column="project_code" property="projectCode" />
+		<result column="month" property="month" />
+		<result column="should_amount" property="shouldAmount" />
+		<result column="fact_amount" property="factAmount" />
+		<result column="pay_amount" property="payAmount" />
+		<result column="cut_amount" property="cutAmount" />
+		<result column="cut_note" property="cutNote" />
+		<result column="tax" property="tax" />
+		<result column="delay_days" property="delayDays" />
+		<result column="early_days" property="earlyDays" />
+		<result column="leaving_days" property="leavingDays" />
+		<result column="create_datetime" property="createDatetime" />
+		<result column="status" property="status" />
+		<result column="approve_user" property="approveUser" />
+		<result column="approve_datetime" property="approveDatetime" />
+		<result column="approve_not" property="approveNot" />
+		<result column="remark" property="remark" />
+		<result column="late_pay_datetime" property="latePayDatetime" />
+	</resultMap>
+	<sql id="where_condition">
+		<trim prefix="WHERE" prefixOverrides="AND | OR">
+			<if test="code != null and code != '' ">
+				AND t.code = #{code}
+			</if>
+			<if test="approveUser != null and approveUser != '' ">
+				AND t.approve_user = #{approveUser}
+			</if>
+			
+			<if test="code != null and code != '' ">
+				AND t.code = #{code}
+			</if>
+		</trim>
+	</sql>
+	<select id="select_salary" parameterType="salary" resultMap="salary_DB_Result">
+		SELECT
+		t.code
+		,t.message_code
+		,t.staff_code
+		,t.project_code
+		,t.month
+		,t.should_amount
+		,t.fact_amount
+		,t.pay_amount
+		,t.cut_amount
+		,t.cut_note
+		,t.tax
+		,t.delay_days
+		,t.early_days
+		,t.leaving_days
+		,t.create_datetime
+		,t.status
+		,t.approve_user
+		,t.approve_datetime
+		,t.approve_not
+		,t.remark
+		,t.late_pay_datetime
+		FROM
+		thf_salary t
+		<include refid="where_condition" />
+		<trim prefix="ORDER BY ">
+			<if test="order != null and order != '' ">
+				t.${order}
+			</if>
+		</trim>
+	</select>
+
+	<select id="select_salary_count" parameterType="salary"
+		resultType="java.lang.Long">
+		SELECT count(1) FROM thf_salary t
+		<include refid="where_condition" />
+	</select>
+
+	<insert id="insert_salary" parameterType="salary">
+		INSERT INTO
+		thf_salary(
+		code
+		,message_code
+		,staff_code
+		,project_code
+		,month
+		,should_amount
+		,fact_amount
+		,pay_amount
+		,cut_amount
+		,cut_note
+		,tax
+		,delay_days
+		,early_days
+		,leaving_days
+		,create_datetime
+		,status
+		,approve_user
+		,approve_datetime
+		,approve_not
+		,remark
+		,late_pay_datetime
+		)
+		VALUES(
+		#{code}
+		,#{messageCode}
+		,#{staffCode}
+		,#{projectCode}
+		,#{month}
+		,#{shouldAmount}
+		,#{factAmount}
+		,#{payAmount}
+		,#{cutAmount}
+		,#{cutNote}
+		,#{tax}
+		,#{delayDays}
+		,#{earlyDays}
+		,#{leavingDays}
+		,#{createDatetime}
+		,#{status}
+		,#{approveUser}
+		,#{approveDatetime}
+		,#{approveNot}
+		,#{remark}
+		,#{latePayDatetime}
+		)
+	</insert>
+
+	<update id="update_salary" parameterType="salary">
+		UPDATE thf_salary
+		SET
+		fact_amount = #{factAmount}
+		,cut_amount = #{cutAmount}
+		,cut_note = #{cutNote}
+		,tax = #{tax}
+		,delay_days = #{delayDays}
+		,early_days = #{earlyDays}
+		,leaving_days = #{leavingDays}
+		,create_datetime = #{createDatetime}
+		WHERE code = #{code}
+	</update>
+	
+	
+	<update id="approve_salary" parameterType="salary">
+		UPDATE thf_salary
+		SET
+		status = #{status}
+		,approve_user = #{approveUser}
+		,approveDatetime = #{approveDatetime}
+		,approve_note = #{approveNote}
+		WHERE code = #{code}
+	</update>
+
+
+</mapper>

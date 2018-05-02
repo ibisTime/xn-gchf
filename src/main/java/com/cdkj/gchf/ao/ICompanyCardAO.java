@@ -12,10 +12,6 @@ import com.cdkj.gchf.dto.req.XN631362Req;
 public interface ICompanyCardAO {
     static final String DEFAULT_ORDER_COLUMN = "code";
 
-    public String addCompanyCard(CompanyCard data);
-
-    public void dropCompanyCard(String code);
-
     public void editCompanyCard(XN631362Req req);
 
     public Paginable<CompanyCard> queryCompanyCardPage(int start, int limit,

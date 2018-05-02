@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cdkj.gchf.dao.IBankCardDAO">
+	<resultMap id="bankCard_DB_Result" type="bankCard">
+		<result column="code" property="code" />
+		<result column="staff_code" property="staffCode" />
+		<result column="staff_name" property="staffName" />
+		<result column="bank_code" property="bankCode" />
+		<result column="bank_name" property="bankName" />
+		<result column="subbranch" property="subbranch" />
+		<result column="bankcard_number" property="bankcardNumber" />
+		<result column="create_datetime" property="createDatetime" />
+		<result column="status" property="status" />
+		<result column="updater" property="updater" />
+		<result column="update_datetime" property="updateDatetime" />
+		<result column="remark" property="remark" />
+	</resultMap>
+	<sql id="where_condition">
+		<trim prefix="WHERE" prefixOverrides="AND | OR">
+			<if test="code != null and code != '' ">
+				AND t.code = #{code}
+			</if>
+		</trim>
+	</sql>
+	<select id="select_bankCard" parameterType="bankCard" resultMap="bankCard_DB_Result">
+		SELECT
+		t.code
+		,t.staff_code
+		,t.staff_name
+		,t.bank_code
+		,t.bank_name
+		,t.subbranch
+		,t.bankcard_number
+		,t.create_datetime
+		,t.status
+		,t.updater
+		,t.update_datetime
+		,t.remark
+		FROM
+		thf_bank_card t
+		<include refid="where_condition" />
+		<trim prefix="ORDER BY ">
+			<if test="order != null and order != '' ">
+				t.${order}
+			</if>
+		</trim>
+	</select>
+
+	<select id="select_bankCard_count" parameterType="bankCard"
+		resultType="java.lang.Long">
+		SELECT count(1) FROM thf_bank_card t
+		<include refid="where_condition" />
+	</select>
+
+	<insert id="insert_bankCard" parameterType="bankCard">
+		INSERT INTO
+		thf_bank_card(
+		code
+		,staff_code
+		,staff_name
+		,bank_code
+		,bank_name
+		,subbranch
+		,bankcard_number
+		,create_datetime
+		,status
+		,updater
+		,update_datetime
+		,remark
+		)
+		VALUES(
+		#{code}
+		,#{staffCode}
+		,#{staffName}
+		,#{bankCode}
+		,#{bankName}
+		,#{subbranch}
+		,#{bankcardNumber}
+		,#{createDatetime}
+		,#{status}
+		,#{updater}
+		,#{updateDatetime}
+		,#{remark}
+		)
+	</insert>
+
+	<update id="update_bankCard" parameterType="bankCard">
+		UPDATE thf_bank_card
+		SET
+		staff_code = #{staffCode}
+		,staff_name = #{staffName}
+		,bank_code = #{bankCode}
+		,bank_name = #{bankName}
+		,subbranch = #{subbranch}
+		,bankcard_number = #{bankcardNumber}
+		,create_datetime = #{createDatetime}
+		,status = #{status}
+		,updater = #{updater}
+		,update_datetime = #{updateDatetime}
+		,remark = #{remark}
+		WHERE code = #{code}
+	</update>
+
+
+</mapper>

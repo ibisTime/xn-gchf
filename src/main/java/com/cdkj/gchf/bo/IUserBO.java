@@ -17,7 +17,7 @@ public interface IUserBO extends IPaginableBO<User> {
     public void refreshRole(String userId, String roleCode, String updater,
             String remark);
 
-    public void refreshDepartment(String userId, String departmentCode,
+    public void refreshDepartment(User userId, String departmentCode,
             String updater, String remark);
 
     public void resetAdminLoginPwd(User user, String loginPwd);

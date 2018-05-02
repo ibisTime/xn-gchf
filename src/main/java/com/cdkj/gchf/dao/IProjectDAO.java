@@ -11,6 +11,10 @@ public interface IProjectDAO extends IBaseDAO<Project> {
     public int update(Project data);
 
     // 审核项目
-    public int auditProject(Project data);
+    public int approveProject(Project data);
+
+    public void toApprove(Project data);
+
+    public void projectEnd(Project data);
 
 }

@@ -24,17 +24,11 @@ import com.cdkj.gchf.exception.EBizErrorCode;
 @Component
 public class GoogleAuthBOImpl implements IGoogleAuthBO {
 
-    /** 
-     * @see com.cdkj.coin.ao.IGoogleAuthAO#generateSecretKey()
-     */
     @Override
     public String generateSecretKey() {
         return GoogleAuthenticator.generateSecretKey();
     }
 
-    /** 
-     * @see com.cdkj.coin.ao.IGoogleAuthAO#checkCode(java.lang.String, java.lang.String, java.lang.Long)
-     */
     @Override
     public void checkCode(String secret, String googleCaptcha, Long timeMsec) {
         GoogleAuthenticator ga = new GoogleAuthenticator();

@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cdkj.gchf.dao.ICcontractDAO">
+	<resultMap id="ccontract_DB_Result" type="ccontract">
+		<result column="code" property="code" />
+		<result column="project_code" property="projectCode" />
+		<result column="project_name" property="projectName" />
+		<result column="staff_code" property="staffCode" />
+		<result column="staff_mobile" property="staffMobile" />
+		<result column="content_pic" property="contentPic" />
+		<result column="contract_datetime" property="contractDatetime" />
+		<result column="updater" property="updater" />
+		<result column="update_datetime" property="updateDatetime" />
+		<result column="remark" property="remark" />
+	</resultMap>
+	
+	<sql id="where_condition">
+		<trim prefix="WHERE" prefixOverrides="AND | OR">
+			<if test="code != null and code != '' ">
+				AND t.code = #{code}
+			</if>
+			<if test="projectCode != null and projectCode != '' ">
+				AND t.project_code = #{projectCode}
+			</if>
+			<if test="updater != null and updater != '' ">
+				AND t.updater = #{updater}
+			</if>
+			<if test="keyword != null and keyword != '' ">
+				AND t.staff_mobile like "%"#{keyword}"%" OR  t.project_name like "%"#{keyword}"%"
+			</if>
+			
+		</trim>
+	</sql>
+	
+	<select id="select_ccontract" parameterType="ccontract" resultMap="ccontract_DB_Result">
+		SELECT
+		t.code
+		,t.project_code
+		,t.project_name
+		,t.staff_code
+		,t.staff_mobile
+		,t.content_pic
+		,t.contract_datetime
+		,t.updater
+		,t.update_datetime
+		,t.remark
+		FROM
+		thf_ccontract t
+		<include refid="where_condition" />
+		<trim prefix="ORDER BY ">
+			<if test="order != null and order != '' ">
+				t.${order}
+			</if>
+		</trim>
+	</select>
+
+	<select id="select_ccontract_count" parameterType="ccontract"
+		resultType="java.lang.Long">
+		SELECT count(1) FROM thf_ccontract t
+		<include refid="where_condition" />
+	</select>
+
+	<insert id="insert_ccontract" parameterType="ccontract">
+		INSERT INTO
+		thf_ccontract(
+		code
+		,project_code
+		,project_name
+		,staff_code
+		,staff_mobile
+		,content_pic
+		,contract_datetime
+		,updater
+		,update_datetime
+		,remark
+		)
+		VALUES(
+		#{code}
+		,#{projectCode}
+		,#{projectName}
+		,#{staffCode}
+		,#{staffMobile}
+		,#{contentPic}
+		,#{contractDatetime}
+		,#{updater}
+		,#{updateDatetime}
+		,#{remark}
+		)
+	</insert>
+
+	<update id="update_ccontract" parameterType="ccontract">
+		UPDATE thf_ccontract
+		SET
+		content_pic = #{contentPic}
+		,contract_datetime = #{contractDatetime}
+		,updater = #{updater}
+		,update_datetime = #{updateDatetime}
+		,remark = #{remark}
+		WHERE code = #{code}
+	</update>
+
+
+</mapper>

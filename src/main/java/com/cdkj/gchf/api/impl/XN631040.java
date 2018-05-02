@@ -27,6 +27,7 @@ public class XN631040 extends AProcessor {
     public Object doBusiness() throws BizException {
         SYSRole data = new SYSRole();
         data.setName(req.getName());
+        data.setType(req.getType());
         data.setUpdater(req.getUpdater());
         data.setRemark(req.getRemark());
         return new PKCodeRes(sysRoleAO.addSYSRole(data));

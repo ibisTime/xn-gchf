@@ -1,7 +1,5 @@
 package com.cdkj.gchf.api.impl;
 
-import java.util.Date;
-
 import org.apache.commons.lang3.StringUtils;
 
 import com.cdkj.gchf.ao.IProgressAO;
@@ -29,10 +27,11 @@ public class XN631385 extends AProcessor {
     @Override
     public Object doBusiness() throws BizException {
         Progress condition = new Progress();
+        condition.setCompanyCode(req.getCompanyCode());
         condition.setProjectCode(req.getProjectCode());
         condition.setUpdater(req.getUpdater());
-        condition.setUpdateDatetime(new Date());
         condition.setKeyword(req.getKeyword());
+
         String column = req.getOrderColumn();
         if (StringUtils.isBlank(column)) {
             column = IProgressAO.DEFAULT_ORDER_COLUMN;

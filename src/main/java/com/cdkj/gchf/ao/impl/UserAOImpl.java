@@ -220,7 +220,18 @@ public class UserAOImpl implements IUserAO {
                     .before(condition.getCreateDatetimeStart())) {
             throw new BizException("xn0000", "开始时间不能大于结束时间");
         }
-        return userBO.getPaginable(start, limit, condition);
+        Paginable<User> page = userBO.getPaginable(start, limit, condition);
+        List<User> list = page.getList();
+        for (User user : list) {
+            if (StringUtils.isNotBlank(user.getDepartmentCode())) {
+                Department department = departmentBO
+                    .getDepartment(user.getDepartmentCode());
+                user.setDepartmentName(department.getName());
+            }
+
+        }
+        page.setList(list);
+        return page;
     }
 
     @Override
@@ -231,12 +242,31 @@ public class UserAOImpl implements IUserAO {
                     .before(condition.getCreateDatetimeStart())) {
             throw new BizException("xn0000", "开始时间不能大于结束时间");
         }
-        return userBO.queryUserList(condition);
+        List<User> list = userBO.queryUserList(condition);
+        for (User user : list) {
+            if (StringUtils.isNotBlank(user.getDepartmentCode())) {
+                Department department = departmentBO
+                    .getDepartment(user.getDepartmentCode());
+                user.setDepartmentName(department.getName());
+            }
+
+        }
+
+        return list;
     }
 
     @Override
     public User getUser(String code) {
-        return userBO.getUser(code);
+        User data = userBO.getUser(code);
+        if (!EUser.ADMIN.getCode().equals(data.getLoginName())) {
+            if (StringUtils.isNotBlank(data.getDepartmentCode())) {
+                Department department = departmentBO
+                    .getDepartment(data.getDepartmentCode());
+                data.setCompanyCode(department.getCompanyCode());
+                data.setDepartmentName(department.getName());
+            }
+        }
+        return data;
     }
 
     @Override
@@ -250,7 +280,7 @@ public class UserAOImpl implements IUserAO {
         if (department == null) {
             throw new BizException("li01004", "部门不存在");
         }
-        userBO.refreshDepartment(userId, departmentCode, updater, remark);
+        userBO.refreshDepartment(user, departmentCode, updater, remark);
     }
 
 }

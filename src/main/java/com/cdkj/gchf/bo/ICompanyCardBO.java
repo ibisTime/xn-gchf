@@ -1,5 +1,6 @@
 package com.cdkj.gchf.bo;
 
+import java.util.Date;
 import java.util.List;
 
 import com.cdkj.gchf.bo.base.IPaginableBO;
@@ -17,6 +18,9 @@ public interface ICompanyCardBO extends IPaginableBO<CompanyCard> {
 
     public void saveCompanyCard(String projectCode, String projectName,
             String companyCode, String companyName, String bankCode,
-            String bankName, String bankCardNumber, String subbranch);
+            String bankName, String bankCardNumber, String subbranch,
+            String updater, Date updateDatetime, String remark);
+
+    public CompanyCard getCompanyCardByProject(String code);
 
 }

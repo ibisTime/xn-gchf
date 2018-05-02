@@ -16,7 +16,7 @@ public class XN631362Req {
 
     // （必填）账户号
     @NotBlank(message = "账户号不能为空")
-    private String bankCardNumber;
+    private String bankcardNumber;
 
     // （必填）银行代号
     @NotBlank(message = "银行代号不能为空")
@@ -30,12 +30,19 @@ public class XN631362Req {
     @NotBlank(message = "开户行不能为空")
     private String subbranch;
 
-    public String getBankCardNumber() {
-        return bankCardNumber;
+    // （必填）更新人
+    @NotBlank(message = "更新人不能为空")
+    private String updater;
+
+    // （必填）备注
+    private String remark;
+
+    public String getBankcardNumber() {
+        return bankcardNumber;
     }
 
-    public void setBankCardNumber(String bankCardNumber) {
-        this.bankCardNumber = bankCardNumber;
+    public void setBankcardNumber(String bankcardNumber) {
+        this.bankcardNumber = bankcardNumber;
     }
 
     public String getBankCode() {
@@ -68,6 +75,22 @@ public class XN631362Req {
 
     public void setSubbranch(String subbranch) {
         this.subbranch = subbranch;
+    }
+
+    public String getUpdater() {
+        return updater;
+    }
+
+    public void setUpdater(String updater) {
+        this.updater = updater;
+    }
+
+    public String getRemark() {
+        return remark;
+    }
+
+    public void setRemark(String remark) {
+        this.remark = remark;
     }
 
 }

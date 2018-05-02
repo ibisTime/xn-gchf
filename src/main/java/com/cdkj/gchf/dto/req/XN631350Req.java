@@ -4,6 +4,10 @@ import org.hibernate.validator.constraints.NotBlank;
 
 public class XN631350Req {
 
+    // 公司编号 （必填）
+    @NotBlank(message = "公司编号不能为空")
+    private String companyCode;
+
     // 项目名称
     @NotBlank(message = "项目名称不能为空")
     private String name;
@@ -18,7 +22,7 @@ public class XN631350Req {
 
     // 账户号
     @NotBlank(message = "账户号不能为空")
-    private String bankCardNumber;
+    private String bankcardNumber;
 
     // 银行名
     @NotBlank(message = "银行名不能为空")
@@ -28,12 +32,7 @@ public class XN631350Req {
     @NotBlank(message = "开户行不能为空")
     private String subbranch;
 
-    // 项目开始时间
-    @NotBlank(message = "项目开始时间不能为空")
-    private String startDatetime;
-
     // 经度
-
     @NotBlank(message = "经度不能为空")
     private String longitude;
 
@@ -57,23 +56,39 @@ public class XN631350Req {
     @NotBlank(message = "地址不能为空")
     private String address;
 
+    // 项目开始时间
+    @NotBlank(message = "项目开始时间不能为空")
+    private String startDatetime;
+
     // 薪资发放时间
     @NotBlank(message = "薪资发放时间不能为空")
     private String salaryDatetime;
+
+    // 工资条形成时间
+    @NotBlank(message = "工资条形成时间不能为空")
+    private String salaryCreateDatetime;
 
     // 修改人
     @NotBlank(message = "修改人不能为空")
     private String updater;
 
+    // 上班时间
+    @NotBlank(message = "上班时间不能为空")
+    private String attendanceStarttime;
+
+    // 下班时间
+    @NotBlank(message = "下班时间不能为空")
+    private String attendanceEndtime;
+
     // 备注
     private String remark;
 
-    public String getBankCardNumber() {
-        return bankCardNumber;
+    public String getBankcardNumber() {
+        return bankcardNumber;
     }
 
-    public void setBankCardNumber(String bankCardNumber) {
-        this.bankCardNumber = bankCardNumber;
+    public void setBankcardNumber(String bankcardNumber) {
+        this.bankcardNumber = bankcardNumber;
     }
 
     public String getBankName() {
@@ -194,6 +209,38 @@ public class XN631350Req {
 
     public void setBankCode(String bankCode) {
         this.bankCode = bankCode;
+    }
+
+    public String getCompanyCode() {
+        return companyCode;
+    }
+
+    public void setCompanyCode(String companyCode) {
+        this.companyCode = companyCode;
+    }
+
+    public String getAttendanceStarttime() {
+        return attendanceStarttime;
+    }
+
+    public void setAttendanceStarttime(String attendanceStarttime) {
+        this.attendanceStarttime = attendanceStarttime;
+    }
+
+    public String getAttendanceEndtime() {
+        return attendanceEndtime;
+    }
+
+    public void setAttendanceEndtime(String attendanceEndtime) {
+        this.attendanceEndtime = attendanceEndtime;
+    }
+
+    public String getSalaryCreateDatetime() {
+        return salaryCreateDatetime;
+    }
+
+    public void setSalaryCreateDatetime(String salaryCreateDatetime) {
+        this.salaryCreateDatetime = salaryCreateDatetime;
     }
 
 }

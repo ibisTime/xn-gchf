@@ -13,16 +13,17 @@ import org.apache.commons.lang3.StringUtils;
 import com.cdkj.gchf.ao.IProjectAO;
 import com.cdkj.gchf.api.AProcessor;
 import com.cdkj.gchf.common.JsonUtil;
+import com.cdkj.gchf.core.StringValidater;
 import com.cdkj.gchf.domain.Project;
 import com.cdkj.gchf.dto.req.XN631356Req;
 import com.cdkj.gchf.exception.BizException;
 import com.cdkj.gchf.exception.ParaException;
 import com.cdkj.gchf.spring.SpringContextHolder;
 
-/**
- * 列表查询数据字典
- * @author: CYL 
- * @since: 2018年4月27日 上午9:34:21 
+/** 
+ * 分页查询项目
+ * @author: haiqingzheng 
+ * @since: 2016年4月17日 下午7:40:47 
  * @history:
  */
 public class XN631356 extends AProcessor {
@@ -31,35 +32,30 @@ public class XN631356 extends AProcessor {
 
     private XN631356Req req = null;
 
-    /** 
-     * @see com.cdkj.gchf.api.IProcessor#doBusiness()
-     */
     @Override
     public Object doBusiness() throws BizException {
-        Project project = new Project();
-        project.setStartDatetime(req.getStartDatetime());
-        project.setEndDatetime(req.getEndDatetime());
-        project.setProvince(req.getProvince());
-        project.setCity(req.getCity());
-        project.setArea(req.getArea());
-        project.setAuditor(req.getAuditor());
-        project.setStatus(req.getStart());
-        project.setKeyword(req.getKeyword());
+        Project condition = new Project();
+        condition.setApprover(req.getApprover());
+        condition.setUpdater(req.getUpdater());
+        condition.setCompanyCode(req.getCompanyCode());
+        condition.setStatus(req.getStatus());
+        condition.setKeyword(req.getKeyword());
+
         String orderColumn = req.getOrderColumn();
         if (StringUtils.isBlank(orderColumn)) {
-            orderColumn = projectAO.DEFAULT_ORDER_COLUMN;
+            orderColumn = IProjectAO.DEFAULT_ORDER_COLUMN;
         }
-        project.setOrder(orderColumn, req.getOrderDir());
-        return projectAO.queryProjectList(project);
+        condition.setOrder(orderColumn, req.getOrderDir());
+        int start = StringValidater.toInteger(req.getStart());
+        int limit = StringValidater.toInteger(req.getLimit());
+        return projectAO.queryProjectPage(start, limit, condition);
     }
 
-    /** 
-     * @see com.cdkj.gchf.api.IProcessor#doCheck(java.lang.String)
-     */
     @Override
     public void doCheck(String inputparams, String operator)
             throws ParaException {
         req = JsonUtil.json2Bean(inputparams, XN631356Req.class);
+        StringValidater.validateNumber(req.getStart(), req.getLimit());
     }
 
 }

@@ -1,5 +1,6 @@
 package com.cdkj.gchf.bo.impl;
 
+import java.util.Date;
 import java.util.List;
 
 import org.apache.commons.lang3.StringUtils;
@@ -8,6 +9,7 @@ import org.springframework.stereotype.Component;
 
 import com.cdkj.gchf.bo.IProjectBO;
 import com.cdkj.gchf.bo.base.PaginableBOImpl;
+import com.cdkj.gchf.common.DateUtil;
 import com.cdkj.gchf.dao.IProjectDAO;
 import com.cdkj.gchf.domain.Project;
 import com.cdkj.gchf.exception.BizException;
@@ -26,7 +28,6 @@ public class ProjectBOImpl extends PaginableBOImpl<Project>
 
     @Override
     public void saveProject(Project data) {
-
         projectDAO.insert(data);
 
     }
@@ -62,8 +63,24 @@ public class ProjectBOImpl extends PaginableBOImpl<Project>
     }
 
     @Override
-    public void auditProject(Project data) {
-        projectDAO.auditProject(data);
+    public void approveProject(Project data) {
+        projectDAO.approveProject(data);
+    }
+
+    @Override
+    public void toApprove(Project data) {
+        projectDAO.toApprove(data);
+    }
+
+    @Override
+    public void projectEnd(Project data, String endDatetime, String updater,
+            String remark) {
+        data.setEndDatetime(
+            DateUtil.strToDate(endDatetime, DateUtil.FRONT_DATE_FORMAT_STRING));
+        data.setUpdater(updater);
+        data.setUpdateDatetime(new Date());
+        data.setRemark(remark);
+        projectDAO.projectEnd(data);
     }
 
 }

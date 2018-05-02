@@ -7,25 +7,42 @@ import com.cdkj.gchf.dao.base.ABaseDO;
 public class Progress extends ABaseDO {
     private static final long serialVersionUID = 1L;
 
-    private String code;// 编号
+    // 编号
+    private String code;
 
-    private String projectCode;// 项目编号
+    // 公司编号
+    private String companyCode;
 
-    private String projectName;// 项目名称
+    // 公司编号
+    private String companyName;
 
-    private Date datetime;// 进度时间
+    // 项目编号
+    private String projectCode;
 
-    private String description;// 工程进度描述
+    // 项目名称
+    private String projectName;
 
-    private String picture;// 图片
+    // 进度时间
+    private Date datetime;
 
-    private String updater;// 更新人
+    // 工程进度描述
+    private String description;
 
-    private Date updateDatetime;// 更新时间
+    // 图片
+    private String picture;
 
-    private String remark;// 备注
+    // 更新人
+    private String updater;
 
-    private String keyword;// 关键字
+    // 更新时间
+    private Date updateDatetime;
+
+    // 备注
+    private String remark;
+
+    // ****************db**************
+    // 关键字
+    private String keyword;
 
     public String getKeyword() {
         return keyword;
@@ -109,6 +126,22 @@ public class Progress extends ABaseDO {
 
     public void setRemark(String remark) {
         this.remark = remark;
+    }
+
+    public String getCompanyCode() {
+        return companyCode;
+    }
+
+    public void setCompanyCode(String companyCode) {
+        this.companyCode = companyCode;
+    }
+
+    public String getCompanyName() {
+        return companyName;
+    }
+
+    public void setCompanyName(String companyName) {
+        this.companyName = companyName;
     }
 
 }

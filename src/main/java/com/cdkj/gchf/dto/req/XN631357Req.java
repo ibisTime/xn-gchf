@@ -1,19 +1,58 @@
 package com.cdkj.gchf.dto.req;
 
-import org.hibernate.validator.constraints.NotBlank;
+public class XN631357Req extends APageReq {
 
-public class XN631357Req {
     private static final long serialVersionUID = 5138736221155343722L;
 
-    @NotBlank
-    private String code;// 编号
+    // 公司编号 （选填）
+    private String companyCode;
 
-    public String getCode() {
-        return code;
+    private String approver;// 审核人
+
+    private String status;// 状态
+
+    private String updater;// 更新人
+
+    private String keyword;// 关键字
+
+    public String getStatus() {
+        return status;
     }
 
-    public void setCode(String code) {
-        this.code = code;
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
+    public String getUpdater() {
+        return updater;
+    }
+
+    public void setUpdater(String updater) {
+        this.updater = updater;
+    }
+
+    public String getKeyword() {
+        return keyword;
+    }
+
+    public void setKeyword(String keyword) {
+        this.keyword = keyword;
+    }
+
+    public String getCompanyCode() {
+        return companyCode;
+    }
+
+    public void setCompanyCode(String companyCode) {
+        this.companyCode = companyCode;
+    }
+
+    public String getApprover() {
+        return approver;
+    }
+
+    public void setApprover(String approver) {
+        this.approver = approver;
     }
 
 }

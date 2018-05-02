@@ -57,7 +57,7 @@
 		,t.month_amount
 		,t.remark
 		FROM
-		tbf_channel_bank t
+		thf_channel_bank t
 		<include refid="where_condition" />
 		<trim prefix="ORDER BY ">
 			<if test="order != null and order != '' ">
@@ -68,13 +68,13 @@
 
 	<select id="select_channelBank_count" parameterType="channelBank"
 		resultType="java.lang.Long">
-		SELECT count(1) FROM tbf_channel_bank t
+		SELECT count(1) FROM thf_channel_bank t
 		<include refid="where_condition" />
 	</select>
 
 	<insert id="insert_channelBank" parameterType="channelBank" useGeneratedKeys="true" keyProperty="id">
 		INSERT INTO
-		tbf_channel_bank(
+		thf_channel_bank(
 		bank_code
 		,bank_name 
 		,channel_type
@@ -104,7 +104,7 @@
 	</insert>
 
 	<update id="update_channelBank" parameterType="channelBank">
-		UPDATE tbf_channel_bank
+		UPDATE thf_channel_bank
 		SET
 		bank_code = #{bankCode}
 		,bank_name  = #{bankName}
@@ -122,7 +122,7 @@
 	</update>
 	
 	<delete id="delete_channelBank" parameterType="channelBank">
-		DELETE FROM tbf_channel_bank
+		DELETE FROM thf_channel_bank
 		WHERE id = #{id}
 	</delete>
 </mapper>

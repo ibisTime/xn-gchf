@@ -23,6 +23,8 @@ public class DateUtil {
 
     public static final String DATA_TIME_PATTERN_6 = "yyyy年MM月dd日";
 
+    public static final String DATA_TIME_PATTERN_7 = "HH:mm";
+
     public static final String TIME_BEGIN = " 00:00:00";
 
     public static final String TIME_MIDDLE = " 12:00:00";
@@ -30,8 +32,8 @@ public class DateUtil {
     public static final String TIME_END = " 23:59:59";
 
     public static Date getStartDatetime(String startDate) {
-        Date repayDatetime = DateUtil.strToDate(
-            startDate + DateUtil.TIME_BEGIN, DateUtil.DATA_TIME_PATTERN_1);
+        Date repayDatetime = DateUtil.strToDate(startDate + DateUtil.TIME_BEGIN,
+            DateUtil.DATA_TIME_PATTERN_1);
         return repayDatetime;
     }
 
@@ -214,7 +216,8 @@ public class DateUtil {
      * @param format 时间格式
      * @return
      */
-    public static int daysBetween(String beginStr, String endStr, String format) {
+    public static int daysBetween(String beginStr, String endStr,
+            String format) {
         Date end = strToDate(endStr, format);
         Date begin = strToDate(beginStr, format);
         long times = end.getTime() - begin.getTime();
@@ -277,8 +280,39 @@ public class DateUtil {
         return currentDate.getTime();
     }
 
+    // 获取指定月的第一天
+    public static Date getFristDay(int month) {
+        Calendar calendar = Calendar.getInstance();
+        calendar.set(Calendar.MONTH, month);
+        calendar.set(Calendar.DAY_OF_MONTH, 1);
+        calendar.set(Calendar.HOUR_OF_DAY, 0);
+        calendar.set(Calendar.MINUTE, 0);
+        calendar.set(Calendar.SECOND, 0);
+        return calendar.getTime();
+    }
+
+    // 获取指定月的最后一天
+    public static Date getLastDay(int month) {
+        Calendar calendar = Calendar.getInstance();
+        calendar.set(Calendar.MONTH, month);
+        calendar.set(Calendar.DAY_OF_MONTH,
+            calendar.getActualMaximum(Calendar.DAY_OF_MONTH));
+        calendar.set(Calendar.HOUR_OF_DAY, 23);
+        calendar.set(Calendar.MINUTE, 59);
+        calendar.set(Calendar.SECOND, 59);
+        return calendar.getTime();
+    }
+
+    // 获取指定月的最后一天
+    public static String getNow() {
+        Calendar calendar = Calendar.getInstance();
+        int time = calendar.get(Calendar.HOUR_OF_DAY);
+        int minute = calendar.get(Calendar.MINUTE);
+        return time + ":" + minute;
+    }
+
     public static void main(String[] args) {
-        System.out.println(getEndDatetime(dateToStr(new Date(),
-            FRONT_DATE_FORMAT_STRING)));
+        System.out.println(
+            getEndDatetime(dateToStr(new Date(), FRONT_DATE_FORMAT_STRING)));
     }
 }

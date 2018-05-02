@@ -1,43 +1,36 @@
 package com.cdkj.gchf.dto.req;
 
-import java.util.Date;
+import org.hibernate.validator.constraints.NotBlank;
 
-public class XN631355Req extends APageReq {
+/**
+ * 项目结束
+ * @author: CYL 
+ * @since: 2018年4月23日 上午9:50:53 
+ * @history:
+ */
+public class XN631355Req {
 
-    private static final long serialVersionUID = 5138736221155343722L;
+    // 编号
+    @NotBlank(message = "编号不能为空")
+    private String code;
 
-    private Date startDatetime;// 项目开始时间
+    // 更新人
+    @NotBlank(message = "更新人不能为空")
+    private String updater;
 
-    private Date endDatetime;// 项目结束时间
+    // 项目结束时间
+    @NotBlank(message = "项目结束时间不能为空")
+    private String endDatetime;
 
-    private String province;// 省
+    // 备注
+    private String remark;
 
-    private String city;// 市
-
-    private String area;// 区
-
-    private String auditor;// 审核人
-
-    private String status;// 状态
-
-    private String updater;// 更新人
-
-    private String keyword;// 关键字
-
-    public String getAuditor() {
-        return auditor;
+    public String getCode() {
+        return code;
     }
 
-    public void setAuditor(String auditor) {
-        this.auditor = auditor;
-    }
-
-    public String getStatus() {
-        return status;
-    }
-
-    public void setStatus(String status) {
-        this.status = status;
+    public void setCode(String code) {
+        this.code = code;
     }
 
     public String getUpdater() {
@@ -48,52 +41,20 @@ public class XN631355Req extends APageReq {
         this.updater = updater;
     }
 
-    public String getKeyword() {
-        return keyword;
-    }
-
-    public void setKeyword(String keyword) {
-        this.keyword = keyword;
-    }
-
-    public Date getStartDatetime() {
-        return startDatetime;
-    }
-
-    public void setStartDatetime(Date startDatetime) {
-        this.startDatetime = startDatetime;
-    }
-
-    public Date getEndDatetime() {
+    public String getEndDatetime() {
         return endDatetime;
     }
 
-    public void setEndDatetime(Date endDatetime) {
+    public void setEndDatetime(String endDatetime) {
         this.endDatetime = endDatetime;
     }
 
-    public String getProvince() {
-        return province;
+    public String getRemark() {
+        return remark;
     }
 
-    public void setProvince(String province) {
-        this.province = province;
-    }
-
-    public String getCity() {
-        return city;
-    }
-
-    public void setCity(String city) {
-        this.city = city;
-    }
-
-    public String getArea() {
-        return area;
-    }
-
-    public void setArea(String area) {
-        this.area = area;
+    public void setRemark(String remark) {
+        this.remark = remark;
     }
 
 }

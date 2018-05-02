@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cdkj.gchf.dao.IStaffDAO">
+	<resultMap id="staff_DB_Result" type="staff">
+		<result column="code" property="code" />
+		<result column="name" property="name" />
+		<result column="mobile" property="mobile" />
+		<result column="id_type" property="idType" />
+		<result column="id_no" property="idNo" />
+		<result column="place" property="place" />
+		<result column="pict1" property="pict1" />
+		<result column="pict2" property="pict2" />
+		<result column="pict3" property="pict3" />
+		<result column="updater" property="updater" />
+		<result column="update_datetime" property="updateDatetime" />
+		<result column="remark" property="remark" />
+	</resultMap>
+	
+	<sql id="where_condition">
+		<trim prefix="WHERE" prefixOverrides="AND | OR">
+			<if test="code != null and code != '' ">
+				AND t.code = #{code}
+			</if>
+			<if test="updater != null and updater != '' ">
+				AND t.updater = #{updater}
+			</if>
+			<if test="keyword != null and keyword != '' ">
+				AND t.name like "%"#{keyword}"%" OR  t.mobile like "%"#{keyword}"%" OR t.id_no like "%"#{keyword}"%"
+			</if>
+		</trim>
+	</sql>
+	
+	<select id="select_staff" parameterType="staff" resultMap="staff_DB_Result">
+		SELECT
+		t.code
+		,t.name
+		,t.mobile
+		,t.id_type
+		,t.id_no
+		,t.place
+		,t.pict1
+		,t.pict2
+		,t.pict3
+		,t.updater
+		,t.update_datetime
+		,t.remark
+		FROM
+		thf_staff t
+		<include refid="where_condition" />
+		<trim prefix="ORDER BY ">
+			<if test="order != null and order != '' ">
+				t.${order}
+			</if>
+		</trim>
+	</select>
+
+	<select id="select_staff_count" parameterType="staff"
+		resultType="java.lang.Long">
+		SELECT count(1) FROM thf_staff t
+		<include refid="where_condition" />
+	</select>
+
+	<insert id="insert_staff" parameterType="staff">
+		INSERT INTO
+		thf_staff(
+		code
+		,name
+		,mobile
+		,id_type
+		,id_no
+		,place
+		,pict1
+		,pict2
+		,pict3
+		,updater
+		,update_datetime
+		,remark
+		)
+		VALUES(
+		#{code}
+		,#{name}
+		,#{mobile}
+		,#{idType}
+		,#{idNo}
+		,#{place}
+		,#{pict1}
+		,#{pict2}
+		,#{pict3}
+		,#{updater}
+		,#{updateDatetime}
+		,#{remark}
+		)
+	</insert>
+
+	<update id="update_staff" parameterType="staff">
+		UPDATE thf_staff
+		SET
+		name = #{name}
+		,mobile = #{mobile}
+		,id_type = #{idType}
+		,id_no = #{idNo}
+		,place = #{place}
+		,pict1 = #{pict1}
+		,pict2 = #{pict2}
+		,pict3 = #{pict3}
+		,updater = #{updater}
+		,update_datetime = #{updateDatetime}
+		,remark = #{remark}
+		WHERE code = #{code}
+	</update>
+
+
+</mapper>

@@ -1,0 +1,178 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cdkj.gchf.dao.IMessageDAO">
+	<resultMap id="message_DB_Result" type="message">
+		<result column="code" property="code" />
+		<result column="project_code" property="projectCode" />
+		<result column="project_name" property="projectName" />
+		<result column="bank_code" property="bankCode" />
+		<result column="bank_name" property="bankName" />
+		<result column="subbranch" property="subbranch" />
+		<result column="bankcard_number" property="bankcardNumber" />
+		<result column="title" property="title" />
+		<result column="content" property="content" />
+		<result column="create_datetime" property="createDatetime" />
+		<result column="download" property="download" />
+		<result column="status" property="status" />
+		<result column="sender" property="sender" />
+		<result column="send_datetime" property="sendDatetime" />
+		<result column="send_note" property="sendNote" />
+		<result column="handler" property="handler" />
+		<result column="handle_datetime" property="handleDatetime" />
+		<result column="handle_note" property="handleNote" />
+	</resultMap>
+	<sql id="where_condition">
+		<trim prefix="WHERE" prefixOverrides="AND | OR">
+			<if test="code != null and code != '' ">
+				AND t.code = #{code}
+			</if>
+			<if test="projectCode != null and projectCode != '' ">
+				AND t.project_code = #{projectCode}
+			</if>
+			<if test="status != null and status != '' ">
+				AND t.status = #{status}
+			</if>
+			<if test="sender != null and sender != '' ">
+				AND t.sender = #{sender}
+			</if>
+			<if test="handler != null and handler != '' ">
+				AND t.handler = #{handler}
+			</if>
+			
+			<if test="keyword != null and keyword != '' ">
+				AND t.project_name like "%"#{keyword}"%" OR t.bank_name like "%"#{keyword}"%" OR t.title like "%"#{keyword}"%"
+			</if>
+		</trim>
+	</sql>
+	<select id="select_message" parameterType="message" resultMap="message_DB_Result">
+		SELECT
+		t.code
+		,t.project_code
+		,t.project_name
+		,t.bank_code
+		,t.bank_name
+		,t.subbranch
+		,t.bankcard_number
+		,t.title
+		,t.content
+		,t.create_datetime
+		,t.download
+		,t.status
+		,t.sender
+		,t.send_datetime
+		,t.send_note
+		,t.handler
+		,t.handle_datetime
+		,t.handle_note
+		FROM
+		thf_message t
+		<include refid="where_condition" />
+		<trim prefix="ORDER BY ">
+			<if test="order != null and order != '' ">
+				t.${order}
+			</if>
+		</trim>
+	</select>
+
+	<select id="select_message_count" parameterType="message"
+		resultType="java.lang.Long">
+		SELECT count(1) FROM thf_message t
+		<include refid="where_condition" />
+	</select>
+
+	<insert id="insert_message" parameterType="message">
+		INSERT INTO
+		thf_message(
+		code
+		,project_code
+		,project_name
+		,bank_code
+		,bank_name
+		,subbranch
+		,bankcard_number
+		,title
+		,content
+		,create_datetime
+		,download
+		,status
+		,sender
+		,send_datetime
+		,send_note
+		,handler
+		,handle_datetime
+		,handle_note
+		)
+		VALUES(
+		#{code}
+		,#{projectCode}
+		,#{projectName}
+		,#{bankCode}
+		,#{bankName}
+		,#{subbranch}
+		,#{bankcardNumber}
+		,#{title}
+		,#{content}
+		,#{createDatetime}
+		,#{download}
+		,#{status}
+		,#{sender}
+		,#{sendDatetime}
+		,#{sendNote}
+		,#{handler}
+		,#{handleDatetime}
+		,#{handleNote}
+		)
+	</insert>
+
+	<update id="update_message" parameterType="message">
+		UPDATE thf_message
+		SET
+		project_code = #{projectCode}
+		,project_name = #{projectName}
+		,bank_code = #{bankCode}
+		,bank_name = #{bankName}
+		,subbranch = #{subbranch}
+		,bankcard_number = #{bankcardNumber}
+		,title = #{title}
+		,content = #{content}
+		,create_datetime = #{createDatetime}
+		,download = #{download}
+		,status = #{status}
+		,sender = #{sender}
+		,send_datetime = #{sendDatetime}
+		,send_note = #{sendNote}
+		,handler = #{handler}
+		,handle_datetime = #{handleDatetime}
+		,handle_note = #{handleNote}
+		WHERE code = #{code}
+	</update>
+
+	<update id="send_message" parameterType="message">
+		UPDATE thf_message
+		SET
+		status = #{status}
+		,sender = #{sender}
+		,send_datetime = #{sendDatetime}
+		,send_note = #{sendNote}
+		WHERE code = #{code}
+	</update>
+
+	<update id="approve_message" parameterType="message">
+		UPDATE thf_message
+		SET
+		status = #{status}
+		,handler = #{handler}
+		,handle_datetime = #{handleDatetime}
+		,handle_note = #{handleNote}
+		WHERE code = #{code}
+	</update>
+	
+	<update id="down_load" parameterType="message">
+		UPDATE thf_message
+		SET
+		down_load = #{downLoad}
+		WHERE code = #{code}
+	</update>
+
+</mapper>

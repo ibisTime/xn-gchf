@@ -4,22 +4,28 @@ import org.hibernate.validator.constraints.NotBlank;
 
 public class XN631380Req {
 
-    @NotBlank
-    private String projectCode;// 项目编号
+    // 项目编号
+    @NotBlank(message = "项目编号不能为空")
+    private String projectCode;
 
-    @NotBlank
-    private String datetime;// 进度时间
+    // 进度时间
+    @NotBlank(message = "进度时间不能为空")
+    private String datetime;
 
-    @NotBlank
-    private String description;// 工程进度描述
+    // 工程进度描述
+    @NotBlank(message = "工程进度描述不能为空")
+    private String description;
 
-    @NotBlank
-    private String picture;// 工程进度图片
+    // 工程进度图片
+    @NotBlank(message = "工程进度图片不能为空")
+    private String picture;
 
-    @NotBlank
-    private String updater;// 更新人
+    // 更新人
+    @NotBlank(message = "更新人不能为空")
+    private String updater;
 
-    private String remark;// 备注
+    // 备注
+    private String remark;
 
     public String getProjectCode() {
         return projectCode;

@@ -26,6 +26,7 @@
 			</if>
 		</trim>
 	</sql>
+	
 	<select id="select_department" parameterType="department" resultMap="department_DB_Result">
 		SELECT
 		t.code

@@ -13,11 +13,16 @@ public interface IProjectBO extends IPaginableBO<Project> {
 
     public int editProject(Project data);
 
-    public void auditProject(Project data);
+    public void approveProject(Project data);
 
     public List<Project> queryProject(Project condition);
 
     public List<Project> queryProjectpig(int start, int pageSize,
             Project condition);
+
+    public void toApprove(Project data);
+
+    public void projectEnd(Project data, String endDatetime, String updater,
+            String remark);
 
 }

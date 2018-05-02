@@ -19,6 +19,8 @@ public class XN631045Req extends APageReq {
     // 更新人(选填)
     private String updater;
 
+    private String type;
+
     public String getName() {
         return name;
     }
@@ -34,4 +36,13 @@ public class XN631045Req extends APageReq {
     public void setUpdater(String updater) {
         this.updater = updater;
     }
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
+    }
+
 }

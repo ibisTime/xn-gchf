@@ -26,8 +26,8 @@ public class XN631354 extends AProcessor {
 
     @Override
     public Object doBusiness() throws BizException {
-        projectAO.auditProject(req.getCode(), req.getResult(), req.getAuditor(),
-            req.getRemark());
+        projectAO.approveProject(req.getCode(), req.getResult(),
+            req.getApprover(), req.getApproveNote());
         return new BooleanRes(true);
     }
 

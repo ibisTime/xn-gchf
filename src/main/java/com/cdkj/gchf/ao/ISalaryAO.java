@@ -25,6 +25,7 @@ public interface ISalaryAO {
 
     public Salary getSalary(String code);
 
+    // 审核工资条
     public void approveSalary(String code, String approver, String approveNote,
             String result);
 

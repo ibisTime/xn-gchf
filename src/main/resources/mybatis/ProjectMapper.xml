@@ -260,4 +260,10 @@
 		WHERE code = #{code}
 	</update>
 	
+	<update id="to_building" parameterType="project">
+		UPDATE thf_project
+		SET
+		status = #{status}
+		WHERE code = #{code}
+	</update>
 </mapper>

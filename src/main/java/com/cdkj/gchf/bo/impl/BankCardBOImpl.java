@@ -48,23 +48,12 @@ public class BankCardBOImpl extends PaginableBOImpl<BankCard>
     }
 
     @Override
-    public int removeBankCard(String code) {
-        int count = 0;
-        if (StringUtils.isNotBlank(code)) {
-            BankCard data = new BankCard();
-            data.setCode(code);
-            count = bankCardDAO.delete(data);
-        }
-        return count;
+    public void removeBankCard(String code) {
     }
 
     @Override
-    public int refreshBankCard(BankCard data) {
-        int count = 0;
-        if (StringUtils.isNotBlank(data.getCode())) {
-            count = bankCardDAO.update(data);
-        }
-        return count;
+    public void refreshBankCard(BankCard data) {
+        bankCardDAO.update(data);
     }
 
     @Override

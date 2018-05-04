@@ -21,6 +21,22 @@
 			<if test="code != null and code != '' ">
 				AND t.code = #{code}
 			</if>
+			<if test="staffCode != null and staffCode != '' ">
+				AND t.staff_code = #{staffCode}
+			</if>
+			<if test="bankCode != null and bankCode != '' ">
+				AND t.bank_code = #{bankCode}
+			</if>
+			<if test="status != null and status != '' ">
+				AND t.status = #{status}
+			</if>
+			<if test="updater != null and updater != '' ">
+				AND t.updater = #{updater}
+			</if>
+			
+			<if test="keyword != null and updater != '' ">
+				AND t.staff_name like "%"#{keyword}"%" OR t.bank_name like "%"#{keyword}"%" OR t.bankcard_number  like "%"#{keyword}"%" t.subbranch  like "%"#{keyword}"%"    
+			</if>
 		</trim>
 	</sql>
 	<select id="select_bankCard" parameterType="bankCard" resultMap="bankCard_DB_Result">
@@ -88,14 +104,10 @@
 	<update id="update_bankCard" parameterType="bankCard">
 		UPDATE thf_bank_card
 		SET
-		staff_code = #{staffCode}
-		,staff_name = #{staffName}
-		,bank_code = #{bankCode}
+		bank_code = #{bankCode}
 		,bank_name = #{bankName}
 		,subbranch = #{subbranch}
 		,bankcard_number = #{bankcardNumber}
-		,create_datetime = #{createDatetime}
-		,status = #{status}
 		,updater = #{updater}
 		,update_datetime = #{updateDatetime}
 		,remark = #{remark}

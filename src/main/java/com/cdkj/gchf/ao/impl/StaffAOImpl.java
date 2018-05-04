@@ -45,7 +45,7 @@ public class StaffAOImpl implements IStaffAO {
 
         data.setUpdateDatetime(new Date());
         data.setRemark(req.getRemark());
-
+        staffBO.saveStaff(data);
         // 添加工资卡
         bankCardBO.addBankCard(code, req.getName(), req.getBankCode(),
             req.getBankName(), req.getBankcardNumber(), req.getSubbranch(),

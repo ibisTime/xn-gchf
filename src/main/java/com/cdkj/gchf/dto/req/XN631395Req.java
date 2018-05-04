@@ -15,12 +15,6 @@ public class XN631395Req extends APageReq {
      */
     private static final long serialVersionUID = -8582556386723542049L;
 
-    // （选填）结束时间
-    private String dateEnd;
-
-    // （选填）开始时间
-    private String dateStart;
-
     // （选填）关键字
     private String keyword;
 
@@ -30,22 +24,6 @@ public class XN631395Req extends APageReq {
 
     // （选填）状态
     private String status;
-
-    public String getDateEnd() {
-        return dateEnd;
-    }
-
-    public void setDateEnd(String dateEnd) {
-        this.dateEnd = dateEnd;
-    }
-
-    public String getDateStart() {
-        return dateStart;
-    }
-
-    public void setDateStart(String dateStart) {
-        this.dateStart = dateStart;
-    }
 
     public String getKeyword() {
         return keyword;

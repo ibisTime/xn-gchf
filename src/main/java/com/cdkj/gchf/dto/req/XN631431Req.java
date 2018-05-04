@@ -1,6 +1,10 @@
 package com.cdkj.gchf.dto.req;
 
+import java.util.List;
+
 import org.hibernate.validator.constraints.NotBlank;
+
+import com.cdkj.gchf.api.impl.XN631439Req;
 
 /**
  * 处理代发消息
@@ -20,6 +24,9 @@ public class XN631431Req {
 
     // 发送备注
     private String handleNote;
+
+    // 代发消息
+    private List<XN631439Req> payList;
 
     public String getCode() {
         return code;
@@ -43,6 +50,14 @@ public class XN631431Req {
 
     public void setHandleNote(String handleNote) {
         this.handleNote = handleNote;
+    }
+
+    public List<XN631439Req> getPayList() {
+        return payList;
+    }
+
+    public void setPayList(List<XN631439Req> payList) {
+        this.payList = payList;
     }
 
 }

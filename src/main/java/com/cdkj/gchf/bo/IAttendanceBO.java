@@ -7,7 +7,7 @@ import com.cdkj.gchf.domain.Attendance;
 
 public interface IAttendanceBO extends IPaginableBO<Attendance> {
 
-    public String saveAttendance(Attendance data);
+    public void saveAttendance(Attendance data);
 
     public int removeAttendance(String code);
 
@@ -17,6 +17,7 @@ public interface IAttendanceBO extends IPaginableBO<Attendance> {
 
     public Attendance getAttendance(String code);
 
-    public Attendance getAttendanceByProject(String projectCode);
+    public Attendance getAttendanceByProject(String projectCode,
+            String staffCode);
 
 }

@@ -21,7 +21,7 @@
 		<result column="status" property="status" />
 		<result column="approve_user" property="approveUser" />
 		<result column="approve_datetime" property="approveDatetime" />
-		<result column="approve_not" property="approveNot" />
+		<result column="approve_note" property="approveNote" />
 		<result column="remark" property="remark" />
 		<result column="late_pay_datetime" property="latePayDatetime" />
 	</resultMap>
@@ -59,7 +59,7 @@
 		,t.status
 		,t.approve_user
 		,t.approve_datetime
-		,t.approve_not
+		,t.approve_note
 		,t.remark
 		,t.late_pay_datetime
 		FROM
@@ -99,7 +99,7 @@
 		,status
 		,approve_user
 		,approve_datetime
-		,approve_not
+		,approve_note
 		,remark
 		,late_pay_datetime
 		)
@@ -122,7 +122,7 @@
 		,#{status}
 		,#{approveUser}
 		,#{approveDatetime}
-		,#{approveNot}
+		,#{approveNote}
 		,#{remark}
 		,#{latePayDatetime}
 		)
@@ -150,6 +150,15 @@
 		,approve_user = #{approveUser}
 		,approveDatetime = #{approveDatetime}
 		,approve_note = #{approveNote}
+		WHERE code = #{code}
+	</update>
+
+	<update id="pay_amount" parameterType="salary">
+		UPDATE thf_salary
+		SET
+		status = #{status}
+		,pay_amount = #{payAmount}
+		,late_pay_datetime = #{latePayDatetime}
 		WHERE code = #{code}
 	</update>
 

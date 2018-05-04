@@ -14,11 +14,11 @@
 		<context:exclude-filter type="annotation"
 			expression="org.springframework.stereotype.Controller" />
 	</context:component-scan>
-	<!-- 
 	 <bean class="org.springframework.scheduling.quartz.SchedulerFactoryBean">  
        <property name="triggers">  
            <list>
            	  <ref bean="orderTrigger"/> 
+           	  <ref bean="orderTrigger2"/> 
  		   </list>  
        </property>  
        <property name="autoStartup" value="true"/>  
@@ -27,16 +27,26 @@
 	
 	
 	<bean id="orderTrigger" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">  
-       <property name="jobDetail" ref="addRankMonthly"/>  
-       <property name="cronExpression" value="0 0 0 1 * ?"/> 0 0 0 1 * ?  每月的第一天0点执行
+       <property name="jobDetail" ref="createAttendanceDaily"/>  
+       <property name="cronExpression" value="0 2 * * * ?"/><!-- 0 0 0 1 * ?  每月的第一天0点执行 -->
 	</bean>
 	
-	<bean id="addRankMonthly" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">   
-	        <property name="targetObject" ref="rankAOImpl"/>  
-	        <property name="targetMethod" value="addRankTimer"/>  
-	        <property name="concurrent" value="true"/>  是否允许任务并发执行。当值为false时，表示必须等到前一个线程处理完毕后才再启一个新的线程 
+	<bean id="orderTrigger2" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">  
+       <property name="jobDetail" ref="createSalartMonthly"/>  
+       <property name="cronExpression" value="0 0/2 * * * ?"/><!-- 0 0 0 1 * ?  每月的第一天0点执行 -->
 	</bean>
-	-->
+	
+	<bean id="createAttendanceDaily" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">   
+	        <property name="targetObject" ref="projectAOImpl"/>  
+	        <property name="targetMethod" value="createAttendance"/>  
+	        <property name="concurrent" value="true"/> <!--   是否允许任务并发执行。当值为false时，表示必须等到前一个线程处理完毕后才再启一个新的线程 -->
+	</bean>
+	
+	<bean id="createSalartMonthly" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">   
+	        <property name="targetObject" ref="projectAOImpl"/>  
+	        <property name="targetMethod" value="createSalary"/>  
+	        <property name="concurrent" value="true"/> <!--   是否允许任务并发执行。当值为false时，表示必须等到前一个线程处理完毕后才再启一个新的线程 -->
+	</bean>
 	
 	<!-- <bean id="orderTrigger" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">  
        <property name="jobDetail" ref="doChangeOrderStatusDaily"/>  

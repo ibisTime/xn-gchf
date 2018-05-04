@@ -40,10 +40,6 @@ public class XN631410Req {
     @NotBlank(message = "更新人不能为空")
     private String updater;
 
-    // （选填）备注
-    @NotBlank(message = "备注不能为空")
-    private String remark;
-
     // （必填）银行别称
     @NotBlank(message = "银行别称不能为空")
     private String bankCode;
@@ -59,6 +55,9 @@ public class XN631410Req {
     // （必填）开户行
     @NotBlank(message = "开户行不能为空")
     private String subbranch;
+
+    // （选填）备注
+    private String remark;
 
     public String getIdType() {
         return idType;

@@ -60,7 +60,7 @@ public class CcontractAOImpl implements ICcontractAO {
     public void editCcontract(XN631402Req req) {
         Ccontract data = ccontractBO.getCcontract(req.getCode());
         data.setContentPic(req.getContentPic());
-        data.setContractDatetime(DateUtil.strToDate(req.getContratDatetime(),
+        data.setContractDatetime(DateUtil.strToDate(req.getContractDatetime(),
             DateUtil.FRONT_DATE_FORMAT_STRING));
         data.setUpdater(req.getUpdater());
         data.setUpdateDatetime(new Date());
@@ -76,12 +76,26 @@ public class CcontractAOImpl implements ICcontractAO {
     @Override
     public Paginable<Ccontract> queryCcontractPage(int start, int limit,
             Ccontract condition) {
-        return ccontractBO.getPaginable(start, limit, condition);
+        Paginable<Ccontract> page = ccontractBO.getPaginable(start, limit,
+            condition);
+        List<Ccontract> list = page.getList();
+        for (Ccontract ccontract : list) {
+            Staff staff = staffBO.getStaff(ccontract.getStaffCode());
+            ccontract.setStaffName(staff.getName());
+        }
+        page.setList(list);
+
+        return page;
     }
 
     @Override
     public List<Ccontract> queryCcontractList(Ccontract condition) {
-        return ccontractBO.queryCcontractList(condition);
+        List<Ccontract> list = ccontractBO.queryCcontractList(condition);
+        for (Ccontract ccontract : list) {
+            Staff staff = staffBO.getStaff(ccontract.getStaffCode());
+            ccontract.setStaffName(staff.getName());
+        }
+        return list;
     }
 
     @Override

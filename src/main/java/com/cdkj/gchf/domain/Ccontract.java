@@ -50,6 +50,8 @@ public class Ccontract extends ABaseDO {
 
     private Staff staff;
 
+    private String staffName;
+
     public void setCode(String code) {
         this.code = code;
     }
@@ -144,6 +146,14 @@ public class Ccontract extends ABaseDO {
 
     public void setStaff(Staff staff) {
         this.staff = staff;
+    }
+
+    public String getStaffName() {
+        return staffName;
+    }
+
+    public void setStaffName(String staffName) {
+        this.staffName = staffName;
     }
 
 }

@@ -16,7 +16,7 @@ public class XN631402Req {
 
     // （必填）签约时间
     @NotBlank(message = "签约时间不能为空")
-    private String contratDatetime;
+    private String contractDatetime;
 
     // （必填）合同照片
     @NotBlank(message = "合同照片不能为空")
@@ -37,12 +37,12 @@ public class XN631402Req {
         this.code = code;
     }
 
-    public String getContratDatetime() {
-        return contratDatetime;
+    public String getContractDatetime() {
+        return contractDatetime;
     }
 
-    public void setContratDatetime(String contratDatetime) {
-        this.contratDatetime = contratDatetime;
+    public void setContractDatetime(String contractDatetime) {
+        this.contractDatetime = contractDatetime;
     }
 
     public String getContentPic() {

@@ -15,6 +15,8 @@ import com.cdkj.gchf.bo.ICompanyBO;
 import com.cdkj.gchf.bo.ICompanyCardBO;
 import com.cdkj.gchf.bo.IEmployBO;
 import com.cdkj.gchf.bo.IProjectBO;
+import com.cdkj.gchf.bo.IReportBO;
+import com.cdkj.gchf.bo.ISalaryBO;
 import com.cdkj.gchf.bo.IUserBO;
 import com.cdkj.gchf.bo.base.Paginable;
 import com.cdkj.gchf.common.DateUtil;
@@ -26,6 +28,7 @@ import com.cdkj.gchf.domain.CompanyCard;
 import com.cdkj.gchf.domain.Department;
 import com.cdkj.gchf.domain.Employ;
 import com.cdkj.gchf.domain.Project;
+import com.cdkj.gchf.domain.Report;
 import com.cdkj.gchf.domain.Salary;
 import com.cdkj.gchf.domain.User;
 import com.cdkj.gchf.dto.req.XN631350Req;
@@ -62,6 +65,12 @@ public class ProjectAOImpl implements IProjectAO {
 
     @Autowired
     private IEmployBO employBO;
+
+    @Autowired
+    private IReportBO reportBO;
+
+    @Autowired
+    private ISalaryBO salaryBO;
 
     @Override
     public String addProject(XN631350Req req) {
@@ -157,6 +166,8 @@ public class ProjectAOImpl implements IProjectAO {
         CompanyCard companyCard = companyCardBO
             .getCompanyCardByProject(data.getCode());
         data.setCompanyCard(companyCard);
+        Report report = reportBO.getReportByProject(data.getCode());
+        data.setReport(report);
         return data;
     }
 
@@ -238,11 +249,13 @@ public class ProjectAOImpl implements IProjectAO {
     }
 
     // 定时器形成工资条
+    @Override
     public void createSalary() {
+
         Date date = new Date();
         // 获取已经开始的项目
         Project condition = new Project();
-        condition.setStatus(EProjectStatus.PASS.getCode());
+        condition.setStatus(EProjectStatus.Building.getCode());
         List<Project> list = projectBO.queryProject(condition);
         // 获取各个项目的上下班时间，形成考勤记录
         for (Project project : list) {
@@ -285,7 +298,7 @@ public class ProjectAOImpl implements IProjectAO {
                     int early = 0;
                     int delay = 0;
                     for (Attendance attendance : aList) {
-                        if (EAttendanceStatus.EarLy.getCode()
+                        if (EAttendanceStatus.TO_Start.getCode()
                             .equals(attendance.getStatus())) {
                             early = early + 1;
                         } else if (EAttendanceStatus.Later.getCode()
@@ -300,6 +313,7 @@ public class ProjectAOImpl implements IProjectAO {
                     data.setDelayDays(delay);
                     // ***********请假天数****************
 
+                    salaryBO.saveSalary(data);
                 }
             }
         }
@@ -307,19 +321,33 @@ public class ProjectAOImpl implements IProjectAO {
     }
 
     // 定时器形成考勤记录
+    @Override
     public void createAttendance() {
-        Date date = new Date();
-        // 获取已经开始的项目
+        // 审核通过，项目开始
         Project condition = new Project();
         condition.setStatus(EProjectStatus.PASS.getCode());
         List<Project> list = projectBO.queryProject(condition);
+        for (Project project : list) {
+            Date start = project.getStartDatetime();
+            Date Date = DateUtil.getTodayStart();
+            if (Date.after(start)) {
+                project.setStatus(EProjectStatus.Building.getCode());
+                projectBO.toBuilding(project);
+            }
+        }
+
+        Date date = new Date();
+        // 获取已经开始的项目
+        condition.setStatus(EProjectStatus.Building.getCode());
+        List<Project> pList = projectBO.queryProject(condition);
         // 获取各个项目的上下班时间，形成考勤记录
         Attendance data = null;
-        for (Project project : list) {
+        for (Project project : pList) {
             // 获取项目下得所有未离职员工
             Employ eCondition = new Employ();
             eCondition.setProjectCode(project.getCode());
-            eCondition.setStatus(EStaffStatus.NOT_Leave.getCode());
+            eCondition.setStatus(EStaffStatus.Work.getCode());
+            System.out.println(project.getCode());
             List<Employ> eList = employBO.queryEmployList(eCondition);
             for (Employ employ : eList) {
                 data = new Attendance();
@@ -330,20 +358,13 @@ public class ProjectAOImpl implements IProjectAO {
                 data.setProjectName(project.getName());
                 data.setStaffCode(employ.getStaffCode());
                 data.setStaffMobile(employ.getStaffMobile());
-
+                data.setStatus(EAttendanceStatus.TO_Start.getCode());
                 data.setCreateDatetime(date);
-                data.setSettleDatetime(project.getSalaryDatetime());
                 attendanceBO.saveAttendance(data);
             }
 
         }
 
-    }
-
-    public static void main(String[] args) {
-        Calendar calendar = Calendar.getInstance();
-        int day = calendar.get(Calendar.MONTH);
-        System.out.println(day);
     }
 
 }

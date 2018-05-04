@@ -45,7 +45,7 @@ public class Employ extends ABaseDO {
     private String status;
 
     // 入职时间
-    private Date joinDatetiem;
+    private Date joinDatetime;
 
     // 离职时间
     private Date leavingDatetime;
@@ -176,12 +176,12 @@ public class Employ extends ABaseDO {
         this.salary = salary;
     }
 
-    public Date getJoinDatetiem() {
-        return joinDatetiem;
+    public Date getJoinDatetime() {
+        return joinDatetime;
     }
 
-    public void setJoinDatetiem(Date joinDatetiem) {
-        this.joinDatetiem = joinDatetiem;
+    public void setJoinDatetime(Date joinDatetime) {
+        this.joinDatetime = joinDatetime;
     }
 
     public Date getLeavingDatetime() {

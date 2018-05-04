@@ -9,8 +9,11 @@ import org.springframework.stereotype.Component;
 
 import com.cdkj.gchf.bo.ISalaryBO;
 import com.cdkj.gchf.bo.base.PaginableBOImpl;
+import com.cdkj.gchf.common.DateUtil;
+import com.cdkj.gchf.core.StringValidater;
 import com.cdkj.gchf.dao.ISalaryDAO;
 import com.cdkj.gchf.domain.Salary;
+import com.cdkj.gchf.enums.ESalaryStatus;
 import com.cdkj.gchf.exception.BizException;
 
 @Component
@@ -55,12 +58,24 @@ public class SalaryBOImpl extends PaginableBOImpl<Salary> implements ISalaryBO {
     }
 
     @Override
-    public void approveSalary(Salary data, String approver, String approveNote,
-            String status) {
+    public void approveSalary(Salary data, String messageCode, String approver,
+            String approveNote, String status) {
+        data.setMessageCode(messageCode);
         data.setApproveUser(approver);
         data.setApproveDatetime(new Date());
-        data.setApproveNot(approveNote);
+        data.setApproveNote(approveNote);
         data.setStatus(status);
         salaryDAO.approveSalary(data);
+    }
+
+    @Override
+    public void payAmount(Salary salary, String payAmount,
+            String latePayDatetime) {
+        salary.setStatus(ESalaryStatus.Payed.getCode());
+        salary.setPayAmount(StringValidater.toLong(payAmount));
+        salary.setLatePayDatetime(DateUtil.strToDate(latePayDatetime,
+            DateUtil.FRONT_DATE_FORMAT_STRING));
+        salaryDAO.payAmount(salary);
+
     }
 }

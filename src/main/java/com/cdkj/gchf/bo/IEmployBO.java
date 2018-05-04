@@ -22,4 +22,6 @@ public interface IEmployBO extends IPaginableBO<Employ> {
     public void leaveOffice(Employ data, String leavingDatetime, String updater,
             String remark);
 
+    public Employ getEmployStaff(String code);
+
 }

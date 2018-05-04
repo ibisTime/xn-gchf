@@ -83,4 +83,9 @@ public class ProjectBOImpl extends PaginableBOImpl<Project>
         projectDAO.projectEnd(data);
     }
 
+    @Override
+    public void toBuilding(Project project) {
+        projectDAO.toBuilding(project);
+    }
+
 }

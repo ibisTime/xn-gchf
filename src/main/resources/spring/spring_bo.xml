@@ -123,6 +123,10 @@
 		<property name="paginableDAO" ref="salaryLogDAOImpl"/>
 	</bean>	
 	
+	<bean id="bankCardBO" class="com.cdkj.gchf.bo.impl.BankCardBOImpl">
+		<property name="paginableDAO" ref="bankCardDAOImpl"/>
+	</bean>	
+	
 	
 </beans>
 

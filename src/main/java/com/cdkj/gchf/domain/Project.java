@@ -91,7 +91,11 @@ public class Project extends ABaseDO {
     // 关键字
     private String keyword;
 
+    // 公司账户
     private CompanyCard companyCard;
+
+    // 统计
+    private Report report;
 
     public String getKeyword() {
         return keyword;
@@ -307,6 +311,14 @@ public class Project extends ABaseDO {
 
     public void setCompanyCard(CompanyCard companyCard) {
         this.companyCard = companyCard;
+    }
+
+    public Report getReport() {
+        return report;
+    }
+
+    public void setReport(Report report) {
+        this.report = report;
     }
 
 }

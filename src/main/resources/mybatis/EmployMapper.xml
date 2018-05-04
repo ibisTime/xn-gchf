@@ -13,7 +13,7 @@
 		<result column="up_user" property="upUser" />
 		<result column="salary" property="salary" />
 		<result column="status" property="status" />
-		<result column="join_datetiem" property="joinDatetiem" />
+		<result column="join_datetime" property="joinDatetime" />
 		<result column="leaving_datetime" property="leavingDatetime" />
 		<result column="start_datetime" property="startDatetime" />
 		<result column="end_datetime" property="endDatetime" />
@@ -39,9 +39,14 @@
 			<if test="updater != null and updater != '' ">
 				AND t.updater = #{updater}
 			</if>
-			<if test="status != null and status != '' ">
-				AND t.status = #{status}
-			</if>
+			<choose>
+				<when test="status == 'not_w' ">
+					AND t.status IN ('0','1')
+				</when>
+				<when test="status != null and status != '' ">
+					AND t.status = #{status}
+				</when>
+			</choose>
 			
 			<if test="keyword != null and keyword != '' ">
 				AND t.staff_mobile like "%"#{keyword}"%" OR t.position  like "%"#{keyword}"%" OR 
@@ -62,7 +67,7 @@
 		,t.up_user
 		,t.salary
 		,t.status
-		,t.join_datetiem
+		,t.join_datetime
 		,t.leaving_datetime
 		,t.start_datetime
 		,t.end_datetime
@@ -98,7 +103,7 @@
 		,up_user
 		,salary
 		,status
-		,join_datetiem
+		,join_datetime
 		,leaving_datetime
 		,start_datetime
 		,end_datetime
@@ -117,7 +122,7 @@
 		,#{upUser}
 		,#{salary}
 		,#{status}
-		,#{joinDatetiem}
+		,#{joinDatetime}
 		,#{leavingDatetime}
 		,#{startDatetime}
 		,#{endDatetime}
@@ -139,7 +144,7 @@
 		,up_user = #{upUser}
 		,salary = #{salary}
 		,status = #{status}
-		,join_datetiem = #{joinDatetiem}
+		,join_datetime = #{joinDatetime}
 		,leaving_datetime = #{leavingDatetime}
 		,start_datetime = #{startDatetime}
 		,end_datetime = #{endDatetime}
@@ -150,26 +155,26 @@
 	</update>
 
 	<update id="to_holiday" parameterType="employ">
-			UPDATE thf_employ
-			SET
-			status = #{status}
-			,start_datetime = #{startDatetime}
-			,end_datetime = #{endDatetime}
-			,updater = #{updater}
-			,update_datetime = #{updateDatetime}
-			,remark = #{remark}
-			WHERE code = #{code}
+		UPDATE thf_employ
+		SET
+		status = #{status}
+		,start_datetime = #{startDatetime}
+		,end_datetime = #{endDatetime}
+		,updater = #{updater}
+		,update_datetime = #{updateDatetime}
+		,remark = #{remark}
+		WHERE code = #{code}
 	</update>
 
 	<update id="leave_office" parameterType="employ">
-			UPDATE thf_employ
-			SET
-			status = #{status}
-			,leaving_datetime = #{leavingDatetime}
-			,updater = #{updater}
-			,update_datetime = #{updateDatetime}
-			,remark = #{remark}
-			WHERE code = #{code}
+		UPDATE thf_employ
+		SET
+		status = #{status}
+		,leaving_datetime = #{leavingDatetime}
+		,updater = #{updater}
+		,update_datetime = #{updateDatetime}
+		,remark = #{remark}
+		WHERE code = #{code}
 	</update>
 
 

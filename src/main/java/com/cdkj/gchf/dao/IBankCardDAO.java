@@ -7,5 +7,5 @@ import com.cdkj.gchf.domain.BankCard;
 public interface IBankCardDAO extends IBaseDAO<BankCard> {
     String NAMESPACE = IBankCardDAO.class.getName().concat(".");
 
-    int update(BankCard data);
+    void update(BankCard data);
 }

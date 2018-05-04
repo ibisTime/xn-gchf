@@ -17,6 +17,21 @@
 			<if test="code != null and code != '' ">
 				AND t.code = #{code}
 			</if>
+			<if test="staffCode != null and staffCode != '' ">
+				AND t.staff_code = #{staffCode}
+			</if>
+			<if test="projectCode != null and projectCode != '' ">
+				AND t.project_code = #{projectCode}
+			</if>
+			<if test="salaryCode != null and salaryCode != '' ">
+				AND t.salary_code = #{salaryCode}
+			</if>
+			<if test="type != null and type != '' ">
+				AND t.type = #{type}
+			</if>
+			<if test="handler != null and handler != '' ">
+				AND t.handler = #{handler}
+			</if>
 		</trim>
 	</sql>
 	<select id="select_salaryLog" parameterType="salaryLog" resultMap="salaryLog_DB_Result">

@@ -6,15 +6,27 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.cdkj.gchf.ao.IMessageAO;
+import com.cdkj.gchf.api.impl.XN631439Req;
 import com.cdkj.gchf.bo.IMessageBO;
+import com.cdkj.gchf.bo.ISalaryBO;
+import com.cdkj.gchf.bo.ISalaryLogBO;
 import com.cdkj.gchf.bo.base.Paginable;
+import com.cdkj.gchf.core.StringValidater;
 import com.cdkj.gchf.domain.Message;
+import com.cdkj.gchf.domain.Salary;
+import com.cdkj.gchf.enums.ESalaryLogType;
 
 @Service
 public class MessageAOImpl implements IMessageAO {
 
     @Autowired
     private IMessageBO messageBO;
+
+    @Autowired
+    private ISalaryBO salaryBO;
+
+    @Autowired
+    private ISalaryLogBO salaryLogBO;
 
     @Override
     public String addMessage(Message data) {
@@ -53,7 +65,22 @@ public class MessageAOImpl implements IMessageAO {
     }
 
     @Override
-    public void approveMessage(String code, String handler, String handleNote) {
+    public void approveMessage(String code, String handler, String handleNote,
+            List<XN631439Req> list) {
+        String type = ESalaryLogType.Normal.getCode();
+        for (XN631439Req req : list) {
+            Salary salary = salaryBO.getSalary(req.getCode());
+            if (salary.getShouldAmount() != StringValidater
+                .toLong(req.getPayAmount())) {
+                type = ESalaryLogType.Abnormal.getCode();
+            }
+            // 修改工资条信息
+            salaryBO.payAmount(salary, req.getPayAmount(),
+                req.getLatePayDatetime());
+            // 添加工资日志
+            salaryLogBO.saveSalaryLog(salary, type, handler, handleNote);
+
+        }
         Message data = messageBO.getMessage(code);
         messageBO.approveMessage(data, handler, handleNote);
     }

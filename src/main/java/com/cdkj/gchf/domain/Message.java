@@ -43,7 +43,7 @@ public class Message extends ABaseDO {
     private String content;
 
     // 创建时间
-    private String createDatetime;
+    private Date createDatetime;
 
     // 下载次数
     private Integer download;
@@ -145,12 +145,12 @@ public class Message extends ABaseDO {
         return content;
     }
 
-    public void setCreateDatetime(String createDatetime) {
-        this.createDatetime = createDatetime;
+    public Date getCreateDatetime() {
+        return createDatetime;
     }
 
-    public String getCreateDatetime() {
-        return createDatetime;
+    public void setCreateDatetime(Date createDatetime) {
+        this.createDatetime = createDatetime;
     }
 
     public Integer getDownload() {

@@ -6,9 +6,9 @@ import com.cdkj.gchf.ao.IEmployAO;
 import com.cdkj.gchf.ao.IProgressAO;
 import com.cdkj.gchf.api.AProcessor;
 import com.cdkj.gchf.common.JsonUtil;
-import com.cdkj.gchf.core.ObjValidater;
+import com.cdkj.gchf.core.StringValidater;
 import com.cdkj.gchf.domain.Employ;
-import com.cdkj.gchf.dto.req.XN631465Req;
+import com.cdkj.gchf.dto.req.XN631466Req;
 import com.cdkj.gchf.exception.BizException;
 import com.cdkj.gchf.exception.ParaException;
 import com.cdkj.gchf.spring.SpringContextHolder;
@@ -23,7 +23,7 @@ public class XN631466 extends AProcessor {
 
     private IEmployAO employAO = SpringContextHolder.getBean(IEmployAO.class);
 
-    private XN631465Req req = null;
+    private XN631466Req req = null;
 
     @Override
     public Object doBusiness() throws BizException {
@@ -47,8 +47,8 @@ public class XN631466 extends AProcessor {
     @Override
     public void doCheck(String inputparams, String operator)
             throws ParaException {
-        req = JsonUtil.json2Bean(inputparams, XN631465Req.class);
-        ObjValidater.validateReq(req);
+        req = JsonUtil.json2Bean(inputparams, XN631466Req.class);
+        StringValidater.validateBlank(req.getProjectCode());
     }
 
 }

@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cdkj.gchf.dao.IReportDAO">
+	<resultMap id="report_DB_Result" type="report">
+		<result column="code" property="code" />
+		<result column="project_code" property="projectCode" />
+		<result column="project_name" property="projectName" />
+		<result column="today_days" property="todayDays" />
+		<result column="last_month_salary" property="lastMonthSalary" />
+		<result column="next_month_salary" property="nextMonthSalary" />
+		<result column="total_salary" property="totalSalary" />
+		<result column="staff_on" property="staffOn" />
+		<result column="staff_in" property="staffIn" />
+		<result column="staff_out" property="staffOut" />
+		<result column="leaving_days" property="leavingDays" />
+		<result column="working_days" property="workingDays" />
+		<result column="remark" property="remark" />
+	</resultMap>
+	<sql id="where_condition">
+		<trim prefix="WHERE" prefixOverrides="AND | OR">
+			<if test="code != null and code != '' ">
+				AND t.code = #{code}
+			</if>
+		</trim>
+	</sql>
+	<select id="select_report" parameterType="report" resultMap="report_DB_Result">
+		SELECT
+		t.code
+		,t.project_code
+		,t.project_name
+		,t.today_days
+		,t.last_month_salary
+		,t.next_month_salary
+		,t.total_salary
+		,t.staff_on
+		,t.staff_in
+		,t.staff_out
+		,t.leaving_days
+		,t.working_days
+		,t.remark
+		FROM
+		thf_report t
+		<include refid="where_condition" />
+		<trim prefix="ORDER BY ">
+			<if test="order != null and order != '' ">
+				t.${order}
+			</if>
+		</trim>
+	</select>
+
+	<select id="select_report_count" parameterType="report"
+		resultType="java.lang.Long">
+		SELECT count(1) FROM thf_report t
+		<include refid="where_condition" />
+	</select>
+
+	<insert id="insert_report" parameterType="report">
+		INSERT INTO
+		thf_report(
+		code
+		,project_code
+		,project_name
+		,today_days
+		,last_month_salary
+		,next_month_salary
+		,total_salary
+		,staff_on
+		,staff_in
+		,staff_out
+		,leaving_days
+		,working_days
+		,remark
+		)
+		VALUES(
+		#{code}
+		,#{projectCode}
+		,#{projectName}
+		,#{todayDays}
+		,#{lastMonthSalary}
+		,#{nextMonthSalary}
+		,#{totalSalary}
+		,#{staffOn}
+		,#{staffIn}
+		,#{staffOut}
+		,#{leavingDays}
+		,#{workingDays}
+		,#{remark}
+		)
+	</insert>
+
+	<update id="update_report" parameterType="report">
+		UPDATE thf_report
+		SET
+		project_code = #{projectCode}
+		,project_name = #{projectName}
+		,today_days = #{todayDays}
+		,last_month_salary = #{lastMonthSalary}
+		,next_month_salary = #{nextMonthSalary}
+		,total_salary = #{totalSalary}
+		,staff_on = #{staffOn}
+		,staff_in = #{staffIn}
+		,staff_out = #{staffOut}
+		,leaving_days = #{leavingDays}
+		,working_days = #{workingDays}
+		,remark = #{remark}
+		WHERE code = #{code}
+	</update>
+
+
+</mapper>

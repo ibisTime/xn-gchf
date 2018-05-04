@@ -46,9 +46,8 @@ public class BankCardDAOImpl extends AMybatisTemplate implements IBankCardDAO {
     }
 
     @Override
-    public int update(BankCard data) {
-        // TODO Auto-generated method stub
-        return 0;
+    public void update(BankCard data) {
+        super.update(NAMESPACE.concat("update_bankCard"), data);
     }
 
 }

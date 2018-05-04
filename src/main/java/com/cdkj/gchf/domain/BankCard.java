@@ -50,6 +50,9 @@ public class BankCard extends ABaseDO {
     // 备注
     private String remark;
 
+    // *******************db***************
+    private String keyword;
+
     public void setCode(String code) {
         this.code = code;
     }
@@ -144,6 +147,14 @@ public class BankCard extends ABaseDO {
 
     public void setUpdateDatetime(Date updateDatetime) {
         this.updateDatetime = updateDatetime;
+    }
+
+    public String getKeyword() {
+        return keyword;
+    }
+
+    public void setKeyword(String keyword) {
+        this.keyword = keyword;
     }
 
 }

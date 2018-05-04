@@ -38,4 +38,8 @@ public interface IProjectAO {
     public void projectEnd(String code, String endDatetime, String updater,
             String remark);
 
+    void createAttendance();
+
+    void createSalary();
+
 }

@@ -42,6 +42,7 @@
 		
 		<typeAlias alias="salaryLog" type="com.cdkj.gchf.domain.SalaryLog" />
 		<typeAlias alias="ccontract" type="com.cdkj.gchf.domain.Ccontract" />
+		<typeAlias alias="report" type="com.cdkj.gchf.domain.Report" />
 		
 	</typeAliases>
 </configuration>

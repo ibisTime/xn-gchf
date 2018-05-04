@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.stereotype.Component;
 
+import com.cdkj.gchf.api.impl.XN631439Req;
 import com.cdkj.gchf.bo.base.Paginable;
 import com.cdkj.gchf.domain.Message;
 
@@ -26,7 +27,8 @@ public interface IMessageAO {
 
     public void sendMessage(String code, String sender, String sendNote);
 
-    public void approveMessage(String code, String handler, String handleNote);
+    public void approveMessage(String code, String handler, String handleNote,
+            List<XN631439Req> list);
 
     public void downLoad(String code);
 

@@ -1,5 +1,7 @@
 package com.cdkj.gchf.domain;
 
+import java.util.Date;
+
 import com.cdkj.gchf.dao.base.ABaseDO;
 
 /**
@@ -14,28 +16,28 @@ public class SalaryLog extends ABaseDO {
 
     // 编号
     private String code;
+    // 员工编号
 
-    // 工资条编号
     private String staffCode;
 
-    // 类型
+    // 项目编号
     private String projectCode;
+    // 工资条编号
 
-    // 操作人
     private String salaryCode;
 
-    // 操作时间
+    // 类型
     private String type;
 
-    // 操作描述
+    // 操作人
     private String handler;
 
-    // 员工编号
-    private String handleDatetime;
+    private Date handleDatetime;
 
-    // 项目编号
+    // 操作描述
     private String handleNote;
 
+    // 操作时间
     public void setCode(String code) {
         this.code = code;
     }
@@ -84,12 +86,12 @@ public class SalaryLog extends ABaseDO {
         this.handler = handler;
     }
 
-    public void setHandleDatetime(String handleDatetime) {
-        this.handleDatetime = handleDatetime;
+    public Date getHandleDatetime() {
+        return handleDatetime;
     }
 
-    public String getHandleDatetime() {
-        return handleDatetime;
+    public void setHandleDatetime(Date handleDatetime) {
+        this.handleDatetime = handleDatetime;
     }
 
     public void setHandleNote(String handleNote) {

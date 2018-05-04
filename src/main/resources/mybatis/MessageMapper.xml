@@ -33,6 +33,17 @@
 			<if test="status != null and status != '' ">
 				AND t.status = #{status}
 			</if>
+			<choose>
+				<when test="status == '1,2' ">
+					AND t.status = '1' OR t.status = '2'
+				</when>
+				<when test="status != null and status != '' ">
+					AND t.status = #{status}
+				</when>
+				<otherwise>
+					AND 1 = 1
+				</otherwise>
+			</choose>
 			<if test="sender != null and sender != '' ">
 				AND t.sender = #{sender}
 			</if>

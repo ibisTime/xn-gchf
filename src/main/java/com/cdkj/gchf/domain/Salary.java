@@ -69,7 +69,7 @@ public class Salary extends ABaseDO {
     private Date approveDatetime;
 
     // 审核说明
-    private String approveNot;
+    private String approveNote;
 
     // 备注
     private String remark;
@@ -80,6 +80,12 @@ public class Salary extends ABaseDO {
     // **********db***************
 
     private String keyword;
+
+    // 工资卡
+    private BankCard bankCard;
+
+    // 公司账户
+    private CompanyCard companyCard;
 
     public void setCode(String code) {
         this.code = code;
@@ -145,12 +151,12 @@ public class Salary extends ABaseDO {
         return approveUser;
     }
 
-    public void setApproveNot(String approveNot) {
-        this.approveNot = approveNot;
+    public void setApproveNote(String approveNote) {
+        this.approveNote = approveNote;
     }
 
-    public String getApproveNot() {
-        return approveNot;
+    public String getApproveNote() {
+        return approveNote;
     }
 
     public void setRemark(String remark) {
@@ -255,6 +261,22 @@ public class Salary extends ABaseDO {
 
     public void setKeyword(String keyword) {
         this.keyword = keyword;
+    }
+
+    public BankCard getBankCard() {
+        return bankCard;
+    }
+
+    public void setBankCard(BankCard bankCard) {
+        this.bankCard = bankCard;
+    }
+
+    public CompanyCard getCompanyCard() {
+        return companyCard;
+    }
+
+    public void setCompanyCard(CompanyCard companyCard) {
+        this.companyCard = companyCard;
     }
 
 }

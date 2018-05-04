@@ -20,13 +20,8 @@ public class AttendanceBOImpl extends PaginableBOImpl<Attendance>
     @Autowired
     private IAttendanceDAO attendanceDAO;
 
-    public String saveAttendance(Attendance data) {
-        String code = null;
-        if (data != null) {
-            data.setCode(code);
-            attendanceDAO.insert(data);
-        }
-        return code;
+    public void saveAttendance(Attendance data) {
+        attendanceDAO.insert(data);
     }
 
     @Override
@@ -68,9 +63,11 @@ public class AttendanceBOImpl extends PaginableBOImpl<Attendance>
     }
 
     @Override
-    public Attendance getAttendanceByProject(String projectCode) {
+    public Attendance getAttendanceByProject(String projectCode,
+            String staffCode) {
         Attendance condition = new Attendance();
         condition.setProjectCode(projectCode);
+        condition.setStaffCode(staffCode);
         List<Attendance> list = attendanceDAO.selectList(condition);
         if (CollectionUtils.isEmpty(list)) {
             throw new BizException("xn0000", "该项目未生成考勤表");

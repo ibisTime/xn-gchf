@@ -48,6 +48,10 @@ public class EmployAOImpl implements IEmployAO {
         data.setCode(code);
         data.setProjectCode(req.getProjectCode());
         Project project = projectBO.getProject(req.getProjectCode());
+        // if (!EProjectStatus.Building.getCode().equals(project.getStatus())) {
+        // throw new BizException("xn0000", "该项目未在进行中");
+        // }
+
         data.setProjectName(project.getName());
         data.setStaffCode(req.getStaffCode());
 
@@ -59,8 +63,9 @@ public class EmployAOImpl implements IEmployAO {
 
         userBO.getUser(req.getUpUser());
         data.setUpUser(req.getUpUser());
-        data.setJoinDatetiem(DateUtil.strToDate(req.getJoinDatetime(),
+        data.setJoinDatetime(DateUtil.strToDate(req.getJoinDatetime(),
             DateUtil.FRONT_DATE_FORMAT_STRING));
+        data.setStatus(EStaffStatus.Work.getCode());
         data.setUpdater(req.getUpdater());
         data.setUpdateDatetime(new Date());
         data.setRemark(req.getRemark());
@@ -71,14 +76,16 @@ public class EmployAOImpl implements IEmployAO {
     @Override
     public void toHoliday(XN631461Req req) {
         Employ data = employBO.getEmploy(req.getCode());
-        if (EStaffStatus.Work.getCode().equals(data.getStatus())) {
+        if (!EStaffStatus.Work.getCode().equals(data.getStatus())) {
             throw new BizException("xn0000", "该员工不是在职状态");
         }
         Date start = DateUtil.strToDate(req.getStartDatetime(),
             DateUtil.DATA_TIME_PATTERN_1);
         Date end = DateUtil.strToDate(req.getEndDatetime(),
             DateUtil.DATA_TIME_PATTERN_1);
-
+        if (start == null || end == null) {
+            throw new BizException("xn0000", "时间格式不正确");
+        }
         if (start.after(end)) {
             throw new BizException("xn0000", "开始时间不能大于结束时间");
         }
@@ -99,11 +106,6 @@ public class EmployAOImpl implements IEmployAO {
         if (EStaffStatus.Leave.getCode().equals(data.getStatus())) {
             throw new BizException("xn0000", "该员工已经离职");
         }
-        if (DateUtil
-            .strToDate(leavingDatetime, DateUtil.FRONT_DATE_FORMAT_STRING)
-            .after(new Date())) {
-            throw new BizException("xn0000", "请输入正确的离职时间");
-        }
         employBO.leaveOffice(data, leavingDatetime, updater, remark);
     }
 
@@ -120,17 +122,37 @@ public class EmployAOImpl implements IEmployAO {
     @Override
     public Paginable<Employ> queryEmployPage(int start, int limit,
             Employ condition) {
-        return employBO.getPaginable(start, limit, condition);
+        Paginable<Employ> page = employBO.getPaginable(start, limit, condition);
+        List<Employ> list = page.getList();
+        for (Employ employ : list) {
+            Staff staff = staffBO.getStaff(employ.getStaffCode());
+            employ.setStaff(staff);
+        }
+        page.setList(list);
+        return page;
     }
 
     @Override
     public List<Employ> queryEmployList(Employ condition) {
-        return employBO.queryEmployList(condition);
+        List<Employ> list = employBO.queryEmployList(condition);
+        for (Employ employ : list) {
+            Staff staff = staffBO.getStaff(employ.getStaffCode());
+            employ.setStaff(staff);
+        }
+        return list;
     }
 
     @Override
     public Employ getEmploy(String code) {
-        return employBO.getEmploy(code);
+        Employ data = employBO.getEmploy(code);
+        Staff staff = staffBO.getStaff(data.getStaffCode());
+        data.setStaff(staff);
+        return data;
+    }
+
+    public static void main(String[] args) {
+        DateUtil.strToDate("2018-05-17", DateUtil.FRONT_DATE_FORMAT_STRING)
+            .after(new Date());
     }
 
 }

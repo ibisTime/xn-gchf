@@ -29,9 +29,14 @@
 			<if test="staffCode != null and staffCode != '' ">
 				AND t.staff_code = #{staffCode}
 			</if>
-			<if test="status != null and status != '' ">
-				AND t.status = #{status}
-			</if>
+			<choose>
+				<when test="status == 'not_n' ">
+					AND t.status IN ('1','2','3')
+				</when>
+				<when test="status != null and status != '' ">
+					AND t.status = #{status}
+				</when>
+			</choose>
 			
 			<if test="keyword != null and keyword != '' ">
 				AND t.staff_mobile like "%"#{keyword}"%"
@@ -53,7 +58,7 @@
 		,t.settle_datetime
 		,t.remark
 		FROM
-		thf_bank_attendance t
+		thf_attendance t
 		<include refid="where_condition" />
 		<trim prefix="ORDER BY ">
 			<if test="order != null and order != '' ">
@@ -64,13 +69,13 @@
 
 	<select id="select_attendance_count" parameterType="attendance"
 		resultType="java.lang.Long">
-		SELECT count(1) FROM thf_bank_attendance t
+		SELECT count(1) FROM thf_attendance t
 		<include refid="where_condition" />
 	</select>
 
 	<insert id="insert_attendance" parameterType="attendance">
 		INSERT INTO
-		thf_bank_attendance(
+		thf_attendance(
 		code
 		,project_code
 		,project_name
@@ -99,7 +104,7 @@
 	</insert>
 
 	<update id="update_attendance" parameterType="attendance">
-		UPDATE thf_bank_attendance
+		UPDATE thf_attendance
 		SET
 		project_code = #{projectCode}
 		,project_name = #{projectName}

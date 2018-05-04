@@ -81,4 +81,18 @@ public class EmployBOImpl extends PaginableBOImpl<Employ> implements IEmployBO {
         return data;
     }
 
+    @Override
+    public Employ getEmployStaff(String staffCode) {
+        Employ data = null;
+        if (StringUtils.isNotBlank(staffCode)) {
+            Employ condition = new Employ();
+            condition.setStaffCode(staffCode);
+            data = employDAO.select(condition);
+            if (data == null) {
+                throw new BizException("xn0000", "该雇佣信息不存在");
+            }
+        }
+        return data;
+    }
+
 }

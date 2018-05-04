@@ -17,7 +17,10 @@ public interface ISalaryBO extends IPaginableBO<Salary> {
 
     public Salary getSalary(String code);
 
-    public void approveSalary(Salary data, String approver, String approveNote,
-            String status);
+    public void approveSalary(Salary data, String messageCode, String approver,
+            String approveNote, String status);
+
+    public void payAmount(Salary salary, String payAmount,
+            String latePayDatetime);
 
 }

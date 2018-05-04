@@ -26,7 +26,7 @@ public class XN631431 extends AProcessor {
     @Override
     public Object doBusiness() throws BizException {
         messageAO.approveMessage(req.getCode(), req.getHandler(),
-            req.getHandleNote());
+            req.getHandleNote(), req.getPayList());
         return new BooleanRes(true);
     }
 

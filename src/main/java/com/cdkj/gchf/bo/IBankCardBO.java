@@ -8,9 +8,9 @@ import com.cdkj.gchf.domain.BankCard;
 
 public interface IBankCardBO extends IPaginableBO<BankCard> {
 
-    public int removeBankCard(String code);
+    public void removeBankCard(String code);
 
-    public int refreshBankCard(BankCard data);
+    public void refreshBankCard(BankCard data);
 
     public List<BankCard> queryBankCardList(BankCard condition);
 

@@ -12,6 +12,7 @@ import com.cdkj.gchf.bo.ICompanyBO;
 import com.cdkj.gchf.bo.IProjectBO;
 import com.cdkj.gchf.bo.base.Paginable;
 import com.cdkj.gchf.common.DateUtil;
+import com.cdkj.gchf.common.PhoneUtil;
 import com.cdkj.gchf.domain.Bcontract;
 import com.cdkj.gchf.domain.Company;
 import com.cdkj.gchf.dto.req.XN631370Req;
@@ -31,6 +32,7 @@ public class BcontractAOImpl implements IBcontractAO {
 
     @Override
     public String addBcontract(XN631370Req req) {
+        PhoneUtil.checkMobile(req.getBmobile());
         Bcontract data = new Bcontract();
         Company company = companyBO.getCompany(req.getCompanyCode());
         data.setCompanyCode(req.getCompanyCode());
@@ -56,6 +58,7 @@ public class BcontractAOImpl implements IBcontractAO {
 
     @Override
     public int editBcontract(XN631372Req req) {
+        PhoneUtil.checkMobile(req.getBmobile());
         Bcontract data = bcontractBO.getBcontract(req.getCode());
         data.setBname(req.getBname());
         data.setBmobile(req.getBmobile());

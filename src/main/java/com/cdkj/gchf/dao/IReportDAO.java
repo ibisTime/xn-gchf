@@ -5,5 +5,7 @@ import com.cdkj.gchf.domain.Report;
 
 //dao层 
 public interface IReportDAO extends IBaseDAO<Report> {
-	String NAMESPACE = IReportDAO.class.getName().concat(".");
+    String NAMESPACE = IReportDAO.class.getName().concat(".");
+
+    void update(Report data);
 }

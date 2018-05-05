@@ -27,4 +27,8 @@ public interface IProjectBO extends IPaginableBO<Project> {
 
     public void toBuilding(Project project);
 
+    public void stopProject(Project data, String updater, String remark);
+
+    public void restartProject(Project data, String updater, String remark);
+
 }

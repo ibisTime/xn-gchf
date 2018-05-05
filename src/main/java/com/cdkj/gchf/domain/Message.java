@@ -73,6 +73,10 @@ public class Message extends ABaseDO {
 
     private String keyword;
 
+    private String sendName;
+
+    private String handleName;
+
     public void setCode(String code) {
         this.code = code;
     }
@@ -223,6 +227,22 @@ public class Message extends ABaseDO {
 
     public void setKeyword(String keyword) {
         this.keyword = keyword;
+    }
+
+    public String getSendName() {
+        return sendName;
+    }
+
+    public void setSendName(String sendName) {
+        this.sendName = sendName;
+    }
+
+    public String getHandleName() {
+        return handleName;
+    }
+
+    public void setHandleName(String handleName) {
+        this.handleName = handleName;
     }
 
 }

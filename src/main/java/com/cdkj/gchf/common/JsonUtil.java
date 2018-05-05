@@ -13,7 +13,7 @@ public class JsonUtil {
         }
         T t = null;
         try {
-            Gson gson = new  GsonBuilder().setDateFormat("HH:mm:ss").create();
+            Gson gson = new GsonBuilder().setDateFormat("HH:mm:ss").create();
             t = (T) gson.fromJson(json, clazz);
         } catch (Exception e) {
             throw new ParaException("830xxx", "json2Bean不正确:" + e.getMessage());

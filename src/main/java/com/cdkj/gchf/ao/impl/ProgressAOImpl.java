@@ -6,18 +6,18 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.cdkj.gchf.ao.IProgressAO;
-import com.cdkj.gchf.bo.ICompanyBO;
-import com.cdkj.gchf.bo.IDepartmentBO;
 import com.cdkj.gchf.bo.IProgressBO;
 import com.cdkj.gchf.bo.IProjectBO;
+import com.cdkj.gchf.bo.IUserBO;
 import com.cdkj.gchf.bo.base.Paginable;
 import com.cdkj.gchf.common.DateUtil;
 import com.cdkj.gchf.domain.Progress;
 import com.cdkj.gchf.domain.Project;
+import com.cdkj.gchf.domain.User;
 import com.cdkj.gchf.dto.req.XN631380Req;
 import com.cdkj.gchf.dto.req.XN631382Req;
+import com.cdkj.gchf.enums.EUser;
 
-//CHECK ��鲢��ע�� 
 @Service
 public class ProgressAOImpl implements IProgressAO {
 
@@ -28,10 +28,7 @@ public class ProgressAOImpl implements IProgressAO {
     private IProjectBO projectBO;
 
     @Autowired
-    private IDepartmentBO departmentBO;
-
-    @Autowired
-    private ICompanyBO companyBO;
+    private IUserBO userBO;
 
     @Override
     public String addProgress(XN631380Req req) {
@@ -69,16 +66,44 @@ public class ProgressAOImpl implements IProgressAO {
     @Override
     public Paginable<Progress> queryProgressPage(int start, int limit,
             Progress condition) {
-        return progressBO.getPaginable(start, limit, condition);
+        Paginable<Progress> page = progressBO.getPaginable(start, limit,
+            condition);
+        List<Progress> list = page.getList();
+        String updateName = null;
+        for (Progress progress : list) {
+            updateName = getName(progress.getUpdater());
+            progress.setUpdateName(updateName);
+        }
+        page.setList(list);
+        return page;
     }
 
     @Override
     public List<Progress> queryProgressList(Progress condition) {
-        return progressBO.queryProgressList(condition);
+        List<Progress> list = progressBO.queryProgressList(condition);
+        String updateName = null;
+        for (Progress progress : list) {
+            updateName = getName(progress.getUpdater());
+            progress.setUpdateName(updateName);
+        }
+        return list;
     }
 
     @Override
     public Progress getProgress(String code) {
+        Progress data = progressBO.getProgress(code);
+        String updateName = getName(data.getUpdater());
+        data.setUpdateName(updateName);
         return progressBO.getProgress(code);
+    }
+
+    private String getName(String userId) {
+        User user = userBO.getUserName(userId);
+        String name = EUser.ADMIN.getCode();
+        if (!EUser.ADMIN.getCode().equals(user.getLoginName())) {
+            name = user.getRealName();
+        }
+        return name;
+
     }
 }

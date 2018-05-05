@@ -28,12 +28,12 @@
 	
 	<bean id="orderTrigger" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">  
        <property name="jobDetail" ref="createAttendanceDaily"/>  
-       <property name="cronExpression" value="0 2 * * * ?"/><!-- 0 0 0 1 * ?  每月的第一天0点执行 -->
+       <property name="cronExpression" value="0 10 0 * * ?"/><!-- 0 0 0 1 * ?  每月的第一天0点执行 -->
 	</bean>
 	
 	<bean id="orderTrigger2" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">  
        <property name="jobDetail" ref="createSalartMonthly"/>  
-       <property name="cronExpression" value="0 0/2 * * * ?"/><!-- 0 0 0 1 * ?  每月的第一天0点执行 -->
+       <property name="cronExpression" value="0 5 0 * * ?"/><!-- 0 0 0 1 * ?  每月的第一天0点执行 -->
 	</bean>
 	
 	<bean id="createAttendanceDaily" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">   

@@ -4,8 +4,6 @@ import java.util.List;
 
 import org.hibernate.validator.constraints.NotBlank;
 
-import com.cdkj.gchf.api.impl.XN631439Req;
-
 /**
  * 处理代发消息
  * @author: nyc 

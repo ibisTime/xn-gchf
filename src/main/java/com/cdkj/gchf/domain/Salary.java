@@ -87,6 +87,9 @@ public class Salary extends ABaseDO {
     // 公司账户
     private CompanyCard companyCard;
 
+    // 月累积薪资
+    private Long totalFactAmount;
+
     public void setCode(String code) {
         this.code = code;
     }
@@ -277,6 +280,14 @@ public class Salary extends ABaseDO {
 
     public void setCompanyCard(CompanyCard companyCard) {
         this.companyCard = companyCard;
+    }
+
+    public Long getTotalFactAmount() {
+        return totalFactAmount;
+    }
+
+    public void setTotalFactAmount(Long totalFactAmount) {
+        this.totalFactAmount = totalFactAmount;
     }
 
 }

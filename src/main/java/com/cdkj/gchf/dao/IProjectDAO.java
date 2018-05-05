@@ -19,4 +19,8 @@ public interface IProjectDAO extends IBaseDAO<Project> {
 
     public void toBuilding(Project project);
 
+    public void stopProject(Project data);
+
+    public void restartProject(Project data);
+
 }

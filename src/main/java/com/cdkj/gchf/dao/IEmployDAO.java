@@ -12,4 +12,8 @@ public interface IEmployDAO extends IBaseDAO<Employ> {
     void toHoliday(Employ data);
 
     void leaveOffice(Employ data);
+
+    long getSalaryCount(Employ condition);
+
+    void updateStatus(Employ data);
 }

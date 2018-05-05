@@ -48,9 +48,11 @@ public class Ccontract extends ABaseDO {
 
     private String keyword;
 
-    private Staff staff;
-
     private String staffName;
+
+    private String updateName;
+
+    private Staff Staff;
 
     public void setCode(String code) {
         this.code = code;
@@ -140,20 +142,28 @@ public class Ccontract extends ABaseDO {
         this.keyword = keyword;
     }
 
-    public Staff getStaff() {
-        return staff;
-    }
-
-    public void setStaff(Staff staff) {
-        this.staff = staff;
-    }
-
     public String getStaffName() {
         return staffName;
     }
 
     public void setStaffName(String staffName) {
         this.staffName = staffName;
+    }
+
+    public String getUpdateName() {
+        return updateName;
+    }
+
+    public void setUpdateName(String updateName) {
+        this.updateName = updateName;
+    }
+
+    public Staff getStaff() {
+        return Staff;
+    }
+
+    public void setStaff(Staff staff) {
+        Staff = staff;
     }
 
 }

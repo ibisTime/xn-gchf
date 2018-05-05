@@ -1,5 +1,7 @@
 package com.cdkj.gchf.dao;
 
+import java.util.List;
+
 import com.cdkj.gchf.dao.base.IBaseDAO;
 import com.cdkj.gchf.domain.Salary;
 
@@ -12,4 +14,11 @@ public interface ISalaryDAO extends IBaseDAO<Salary> {
     void approveSalary(Salary data);
 
     void payAmount(Salary data);
+
+    long getTotalSalaryCount(Salary condition);
+
+    List<Salary> queryTotalSalaryList(Salary condition);
+
+    List<Salary> queryTotalSalaryPage(int pageNO, int pageSize,
+            Salary condition);
 }

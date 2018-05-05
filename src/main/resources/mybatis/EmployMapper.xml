@@ -8,15 +8,19 @@
 		<result column="project_name" property="projectName" />
 		<result column="staff_code" property="staffCode" />
 		<result column="staff_mobile" property="staffMobile" />
+		
 		<result column="type" property="type" />
 		<result column="position" property="position" />
 		<result column="up_user" property="upUser" />
 		<result column="salary" property="salary" />
 		<result column="status" property="status" />
+		
 		<result column="join_datetime" property="joinDatetime" />
 		<result column="leaving_datetime" property="leavingDatetime" />
 		<result column="start_datetime" property="startDatetime" />
 		<result column="end_datetime" property="endDatetime" />
+		<result column="days" property="days" />
+		
 		<result column="updater" property="updater" />
 		<result column="update_datetime" property="updateDatetime" />
 		<result column="remark" property="remark" />
@@ -40,7 +44,7 @@
 				AND t.updater = #{updater}
 			</if>
 			<choose>
-				<when test="status == 'not_w' ">
+				<when test="status == 'not_l' ">
 					AND t.status IN ('0','1')
 				</when>
 				<when test="status != null and status != '' ">
@@ -62,15 +66,19 @@
 		,t.project_name
 		,t.staff_code
 		,t.staff_mobile
+		
 		,t.type
 		,t.position
 		,t.up_user
 		,t.salary
 		,t.status
+		
 		,t.join_datetime
 		,t.leaving_datetime
 		,t.start_datetime
 		,t.end_datetime
+		,t.days
+		
 		,t.updater
 		,t.update_datetime
 		,t.remark
@@ -84,9 +92,17 @@
 		</trim>
 	</select>
 
+
+	
 	<select id="select_employ_count" parameterType="employ"
 		resultType="java.lang.Long">
 		SELECT count(1) FROM thf_employ t
+		<include refid="where_condition" />
+	</select>
+
+	<select id="select_salary_count" parameterType="employ"
+		resultType="java.lang.Long">
+		SELECT count(t.salary) FROM thf_employ t
 		<include refid="where_condition" />
 	</select>
 
@@ -104,9 +120,6 @@
 		,salary
 		,status
 		,join_datetime
-		,leaving_datetime
-		,start_datetime
-		,end_datetime
 		,updater
 		,update_datetime
 		,remark
@@ -123,9 +136,6 @@
 		,#{salary}
 		,#{status}
 		,#{joinDatetime}
-		,#{leavingDatetime}
-		,#{startDatetime}
-		,#{endDatetime}
 		,#{updater}
 		,#{updateDatetime}
 		,#{remark}
@@ -158,8 +168,10 @@
 		UPDATE thf_employ
 		SET
 		status = #{status}
+		,days = #{days}
 		,start_datetime = #{startDatetime}
 		,end_datetime = #{endDatetime}
+		,days = days
 		,updater = #{updater}
 		,update_datetime = #{updateDatetime}
 		,remark = #{remark}
@@ -177,5 +189,11 @@
 		WHERE code = #{code}
 	</update>
 
+	<update id="update_status" parameterType="employ">
+		UPDATE thf_employ
+		SET
+		status = #{status}
+		WHERE code = #{code}
+	</update>
 
 </mapper>

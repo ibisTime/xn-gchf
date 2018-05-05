@@ -33,7 +33,7 @@ public class UserBOImpl extends PaginableBOImpl<User> implements IUserBO {
     @Override
     public void refreshMobile(User data, String mobile, String updater,
             String remark) {
-        data.setMobile(mobile);
+        data.setLoginName(mobile);
         data.setMobile(mobile);
         data.setUpdater(updater);
         data.setUpdateDatetime(new Date());
@@ -170,6 +170,17 @@ public class UserBOImpl extends PaginableBOImpl<User> implements IUserBO {
         } else {
             throw new BizException("jd00001", "原登录密码错误");
         }
+    }
+
+    @Override
+    public User getUserName(String userId) {
+        User data = null;
+        if (StringUtils.isNotBlank(userId)) {
+            User condition = new User();
+            condition.setUserId(userId);
+            data = userDAO.select(condition);
+        }
+        return data;
     }
 
 }

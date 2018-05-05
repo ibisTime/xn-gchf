@@ -10,6 +10,7 @@ import com.cdkj.gchf.ao.IStaffAO;
 import com.cdkj.gchf.bo.IBankCardBO;
 import com.cdkj.gchf.bo.IStaffBO;
 import com.cdkj.gchf.bo.base.Paginable;
+import com.cdkj.gchf.common.PhoneUtil;
 import com.cdkj.gchf.core.OrderNoGenerater;
 import com.cdkj.gchf.domain.BankCard;
 import com.cdkj.gchf.domain.Staff;
@@ -28,6 +29,7 @@ public class StaffAOImpl implements IStaffAO {
 
     @Override
     public String addStaff(XN631410Req req) {
+        PhoneUtil.checkMobile(req.getMobile());
         Staff data = new Staff();
         String code = OrderNoGenerater
             .generate(EGeneratePrefix.Staff.getCode());
@@ -55,6 +57,7 @@ public class StaffAOImpl implements IStaffAO {
 
     @Override
     public void editStaff(XN631412Req req) {
+        PhoneUtil.checkMobile(req.getMobile());
         Staff data = staffBO.getStaff(req.getCode());
         data.setIdType(req.getIdType());
         data.setIdNo(req.getIdNo());

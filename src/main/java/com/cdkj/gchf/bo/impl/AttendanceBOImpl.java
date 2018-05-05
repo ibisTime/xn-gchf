@@ -9,6 +9,7 @@ import org.springframework.stereotype.Component;
 
 import com.cdkj.gchf.bo.IAttendanceBO;
 import com.cdkj.gchf.bo.base.PaginableBOImpl;
+import com.cdkj.gchf.common.DateUtil;
 import com.cdkj.gchf.dao.IAttendanceDAO;
 import com.cdkj.gchf.domain.Attendance;
 import com.cdkj.gchf.exception.BizException;
@@ -73,5 +74,24 @@ public class AttendanceBOImpl extends PaginableBOImpl<Attendance>
             throw new BizException("xn0000", "该项目未生成考勤表");
         }
         return list.get(0);
+    }
+
+    @Override
+    public void toStart(Attendance data, String status) {
+        data.setStartDatetime(DateUtil.getNow());
+        data.setStatus(status);
+        attendanceDAO.toStart(data);
+    }
+
+    @Override
+    public void toEnd(Attendance data, String status) {
+        data.setEndDatetime(DateUtil.getNow());
+        data.setStatus(status);
+        attendanceDAO.toEnd(data);
+    }
+
+    @Override
+    public void updateStatus(Attendance data) {
+        attendanceDAO.updateStatus(data);
     }
 }

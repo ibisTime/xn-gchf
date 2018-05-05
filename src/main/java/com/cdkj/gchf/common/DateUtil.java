@@ -311,8 +311,60 @@ public class DateUtil {
         return time + ":" + minute;
     }
 
-    public static void main(String[] args) {
-        System.out.println(
-            getEndDatetime(dateToStr(new Date(), FRONT_DATE_FORMAT_STRING)));
+    // 获取当前月份
+    public static int getMonth() {
+        Calendar calendar = Calendar.getInstance();
+        return calendar.get(Calendar.MONTH) + 1;
     }
+
+    /**
+     * 比较两个时间是否相等
+     *  -1  开始小于结束
+     *  0 等于
+     *  1 大于
+     * @param args 
+     * @create: 2018年5月5日 下午2:26:44 nyc
+     * @history:
+     */
+
+    public static boolean compare(String str1, String str2, String pattern) {
+        boolean flag = false;
+        Date date1 = DateUtil.strToDate(str1, pattern);
+        Date date2 = DateUtil.strToDate(str2, pattern);
+        if (-1 == date1.compareTo(date2)) {
+            flag = true;
+        }
+        return flag;
+    }
+
+    /**
+     * >=6小时 视为0.5天,其余均视为1天
+     * @param start
+     * @param end
+     * @return 
+     * @create: 2018年5月5日 下午5:30:39 nyc
+     * @history:
+     */
+    public static double getHolidays(Date startDatetime, Date endDatetime) {
+        double days = 1.0;
+        int times = (int) ((endDatetime.getTime() - startDatetime.getTime())
+                / 60 / 60 / 1000);
+        if (times <= 6) {
+            days = 0.5;
+        }
+
+        return days;
+    }
+
+    public static void main(String[] args) {
+        Date startDate = DateUtil.strToDate("2018-5-20 12:00:00",
+            DateUtil.DATA_TIME_PATTERN_1);
+        Date endDate = DateUtil.strToDate("2018-5-21 12:00:00",
+            DateUtil.DATA_TIME_PATTERN_1);
+        long times = endDate.getTime() - startDate.getTime();
+
+        System.out.println(times / 60 / 60 / 1000 / 24);
+
+    }
+
 }

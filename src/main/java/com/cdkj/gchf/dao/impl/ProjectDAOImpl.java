@@ -70,4 +70,14 @@ public class ProjectDAOImpl extends AMybatisTemplate implements IProjectDAO {
         super.update(NAMESPACE.concat("to_building"), data);
     }
 
+    @Override
+    public void stopProject(Project data) {
+        super.update(NAMESPACE.concat("stop_project"), data);
+    }
+
+    @Override
+    public void restartProject(Project data) {
+        super.update(NAMESPACE.concat("restart_project"), data);
+    }
+
 }

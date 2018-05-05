@@ -1,39 +1,38 @@
 package com.cdkj.gchf.api.impl;
 
-import com.cdkj.gchf.ao.IAttendanceAO;
+import com.cdkj.gchf.ao.IProjectAO;
 import com.cdkj.gchf.api.AProcessor;
 import com.cdkj.gchf.common.JsonUtil;
 import com.cdkj.gchf.core.ObjValidater;
-import com.cdkj.gchf.dto.req.XN631390Req;
+import com.cdkj.gchf.dto.req.XN631470Req;
 import com.cdkj.gchf.dto.res.BooleanRes;
 import com.cdkj.gchf.exception.BizException;
 import com.cdkj.gchf.exception.ParaException;
 import com.cdkj.gchf.spring.SpringContextHolder;
 
 /**
- * 考勤打卡
- * @author: nyc 
- * @since: 2018年4月30日 下午9:11:05 
+ * 项目重新开始
+ * @author: xieyj 
+ * @since: 2016年4月17日 上午8:26:30 
  * @history:
  */
-public class XN631390 extends AProcessor {
+public class XN631471 extends AProcessor {
+    private IProjectAO projectAO = SpringContextHolder
+        .getBean(IProjectAO.class);
 
-    private IAttendanceAO attendanceAO = SpringContextHolder
-        .getBean(IAttendanceAO.class);
-
-    private XN631390Req req = null;
+    private XN631470Req req = null;
 
     @Override
     public Object doBusiness() throws BizException {
-        attendanceAO.clockIn(req.getProjectCode(), req.getStaffCode());
+        projectAO.restartProject(req.getCode(), req.getUpdater(),
+            req.getRemark());
         return new BooleanRes(true);
     }
 
     @Override
     public void doCheck(String inputparams, String operator)
             throws ParaException {
-        req = JsonUtil.json2Bean(inputparams, XN631390Req.class);
+        req = JsonUtil.json2Bean(inputparams, XN631470Req.class);
         ObjValidater.validateReq(req);
     }
-
 }

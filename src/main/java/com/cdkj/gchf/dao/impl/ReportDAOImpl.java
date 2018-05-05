@@ -46,4 +46,9 @@ public class ReportDAOImpl extends AMybatisTemplate implements IReportDAO {
             condition, Report.class);
     }
 
+    @Override
+    public void update(Report data) {
+        super.update(NAMESPACE.concat("update_report"), data);
+    }
+
 }

@@ -1,4 +1,4 @@
-package com.cdkj.gchf.api.impl;
+package com.cdkj.gchf.dto.req;
 
 public class XN631439Req {
 

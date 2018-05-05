@@ -66,15 +66,14 @@ public class SmsOutBOImpl implements ISmsOutBO {
     }
 
     @Override
-    public void sendSmsOut(String mobile, String content, String bizType,
-            String systemCode, String companyCode) {
+    public void sendSmsOut(String mobile, String content, String bizType) {
         try {
             XN804080Req req = new XN804080Req();
             req.setMobile(mobile);
             req.setContent(content);
             req.setType("M");
-            req.setCompanyCode(companyCode);
-            req.setSystemCode(systemCode);
+            req.setCompanyCode(ESystemCode.GCHF.getCode());
+            req.setSystemCode(ESystemCode.GCHF.getCode());
             BizConnecter.getBizData(bizType, JsonUtils.object2Json(req),
                 PKCodeRes.class);
         } catch (Exception e) {

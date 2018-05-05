@@ -60,6 +60,8 @@ public class CompanyCard extends ABaseDO {
 
     private String keyword;
 
+    private String updateName;
+
     public void setCode(String code) {
         this.code = code;
     }
@@ -178,6 +180,14 @@ public class CompanyCard extends ABaseDO {
 
     public void setRemark(String remark) {
         this.remark = remark;
+    }
+
+    public String getUpdateName() {
+        return updateName;
+    }
+
+    public void setUpdateName(String updateName) {
+        this.updateName = updateName;
     }
 
 }

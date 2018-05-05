@@ -13,7 +13,7 @@ public interface IAttendanceAO {
 
     public void dropAttendance(String code);
 
-    public void editAttendance(String projectCode, String staffCode);
+    public void clockIn(String projectCode, String staffCode);
 
     public Paginable<Attendance> queryAttendancePage(int start, int limit,
             Attendance condition);

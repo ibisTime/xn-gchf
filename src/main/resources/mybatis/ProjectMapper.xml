@@ -266,4 +266,25 @@
 		status = #{status}
 		WHERE code = #{code}
 	</update>
+	
+	<update id="stop_project" parameterType="project">
+		UPDATE thf_project
+		SET
+		status = #{status}
+		,updater = #{updater}
+		,update_datetime = #{updateDatetime}
+		,remark = #{remark}
+		WHERE code = #{code}
+	</update>
+	
+	
+	<update id="restart_project" parameterType="project">
+		UPDATE thf_project
+		SET
+		status = #{status}
+		,updater = #{updater}
+		,update_datetime = #{updateDatetime}
+		,remark = #{remark}
+		WHERE code = #{code}
+	</update>
 </mapper>

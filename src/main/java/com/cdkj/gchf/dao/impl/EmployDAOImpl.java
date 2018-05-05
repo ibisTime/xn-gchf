@@ -60,4 +60,15 @@ public class EmployDAOImpl extends AMybatisTemplate implements IEmployDAO {
         super.update(NAMESPACE.concat("leave_office"), data);
     }
 
+    @Override
+    public long getSalaryCount(Employ condition) {
+        return super.selectTotalCount(NAMESPACE.concat("select_salary_count"),
+            condition);
+    }
+
+    @Override
+    public void updateStatus(Employ data) {
+        super.update(NAMESPACE.concat("update_status"), data);
+    }
+
 }

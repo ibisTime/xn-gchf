@@ -29,9 +29,13 @@
 			<if test="staffCode != null and staffCode != '' ">
 				AND t.staff_code = #{staffCode}
 			</if>
+			
 			<choose>
-				<when test="status == 'not_n' ">
-					AND t.status IN ('1','2','3')
+				<when test="status == '0,1' ">
+					AND t.status IN ('0','1')
+				</when>
+				<when test="status == '3' ">
+					AND t.status IN ('0','1')
 				</when>
 				<when test="status != null and status != '' ">
 					AND t.status = #{status}
@@ -119,5 +123,26 @@
 		WHERE code = #{code}
 	</update>
 
-
+	<update id="to_start" parameterType="attendance">
+		UPDATE thf_attendance
+		SET
+		status = #{status}
+		,start_datetime = #{startDatetime}
+		WHERE code = #{code}
+	</update>
+	
+	<update id="to_end" parameterType="attendance">
+		UPDATE thf_attendance
+		SET
+		status = #{status}
+		,end_datetime = #{endDatetime}
+		WHERE code = #{code}
+	</update>
+	
+	<update id="update_status" parameterType="attendance">
+		UPDATE thf_attendance
+		SET
+		status = #{status}
+		WHERE code = #{code}
+	</update>
 </mapper>

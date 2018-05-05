@@ -15,6 +15,7 @@ import com.cdkj.gchf.bo.ISYSRoleBO;
 import com.cdkj.gchf.bo.ISmsOutBO;
 import com.cdkj.gchf.bo.IUserBO;
 import com.cdkj.gchf.bo.base.Paginable;
+import com.cdkj.gchf.common.DateUtil;
 import com.cdkj.gchf.common.MD5Util;
 import com.cdkj.gchf.common.PhoneUtil;
 import com.cdkj.gchf.common.PwdUtil;
@@ -23,7 +24,6 @@ import com.cdkj.gchf.domain.Department;
 import com.cdkj.gchf.domain.SYSRole;
 import com.cdkj.gchf.domain.User;
 import com.cdkj.gchf.dto.req.XN631070Req;
-import com.cdkj.gchf.enums.ESystemCode;
 import com.cdkj.gchf.enums.EUser;
 import com.cdkj.gchf.enums.EUserKind;
 import com.cdkj.gchf.enums.EUserStatus;
@@ -46,6 +46,7 @@ public class UserAOImpl implements IUserAO {
 
     @Override
     public String doAddUser(XN631070Req req) {
+        PhoneUtil.checkMobile(req.getMobile());
         User data = new User();
         String userId = OrderNoGenerater.generate("U");
         data.setUserId(userId);
@@ -86,6 +87,7 @@ public class UserAOImpl implements IUserAO {
     @Transactional
     public void doChangeMoblie(String userId, String newMobile, String updater,
             String remark) {
+        PhoneUtil.checkMobile(newMobile);
         User user = userBO.getUser(userId);
         if (user == null) {
             throw new BizException("xn000000", "用户不存在");
@@ -97,6 +99,13 @@ public class UserAOImpl implements IUserAO {
         // 验证手机号
         userBO.isMobileExist(newMobile);
         userBO.refreshMobile(user, newMobile, updater, remark);
+        smsOutBO.sendSmsOut(oldMobile,
+            "尊敬的" + PhoneUtil.hideMobile(oldMobile) + "用户，您于"
+                    + DateUtil.dateToStr(new Date(),
+                        DateUtil.DATA_TIME_PATTERN_1)
+                    + "提交的更改绑定手机号码服务已审核通过，现绑定手机号码为" + newMobile + "，同时您的登录名更改为"
+                    + newMobile + "，请妥善保管您的账户相关信息。",
+            "805061");
     }
 
     @Override
@@ -116,8 +125,7 @@ public class UserAOImpl implements IUserAO {
             smsOutBO.sendSmsOut(user.getMobile(),
                 "尊敬的" + PhoneUtil.hideMobile(user.getMobile())
                         + "用户，您的登录密码修改成功。请妥善保管您的账户相关信息。",
-                "631073", ESystemCode.GCHF.getCode(),
-                ESystemCode.GCHF.getCode());
+                "631073");
         }
     }
 
@@ -274,11 +282,14 @@ public class UserAOImpl implements IUserAO {
             String updater, String remark) {
         User user = userBO.getUser(userId);
         if (user == null) {
-            throw new BizException("li01004", "用户不存在");
+            throw new BizException("xn0000", "用户不存在");
         }
         Department department = departmentBO.getDepartment(departmentCode);
         if (department == null) {
-            throw new BizException("li01004", "部门不存在");
+            throw new BizException("xn0000", "部门不存在");
+        }
+        if (EUser.ADMIN.getCode().equals(user.getLoginName())) {
+            throw new BizException("xn0000", "该用户是超级管理员,不能设置部门");
         }
         userBO.refreshDepartment(user, departmentCode, updater, remark);
     }

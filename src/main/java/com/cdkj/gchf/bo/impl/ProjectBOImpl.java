@@ -12,6 +12,7 @@ import com.cdkj.gchf.bo.base.PaginableBOImpl;
 import com.cdkj.gchf.common.DateUtil;
 import com.cdkj.gchf.dao.IProjectDAO;
 import com.cdkj.gchf.domain.Project;
+import com.cdkj.gchf.enums.EProjectStatus;
 import com.cdkj.gchf.exception.BizException;
 
 @Component
@@ -86,6 +87,25 @@ public class ProjectBOImpl extends PaginableBOImpl<Project>
     @Override
     public void toBuilding(Project project) {
         projectDAO.toBuilding(project);
+    }
+
+    @Override
+    public void stopProject(Project data, String updater, String remark) {
+        data.setUpdater(updater);
+        data.setUpdateDatetime(new Date());
+        data.setStatus(EProjectStatus.Stop.getCode());
+        data.setRemark(remark);
+        projectDAO.stopProject(data);
+
+    }
+
+    @Override
+    public void restartProject(Project data, String updater, String remark) {
+        data.setUpdater(updater);
+        data.setUpdateDatetime(new Date());
+        data.setStatus(EProjectStatus.Building.getCode());
+        data.setRemark(remark);
+        projectDAO.restartProject(data);
     }
 
 }

@@ -56,13 +56,16 @@ public class Employ extends ABaseDO {
     // 最近一次请假结束时间
     private Date endDatetime;
 
+    // 请假天数
+    private Double days;
+
     // 更新人
     private String updater;
 
     // 更新时间
     private Date updateDatetime;
 
-    // 更新时间
+    // 备注
     private String remark;
 
     // ***********db**************
@@ -71,6 +74,10 @@ public class Employ extends ABaseDO {
     private User user;
 
     private Staff staff;
+
+    private String upUserName;
+
+    private String updateName;
 
     public void setCode(String code) {
         this.code = code;
@@ -230,6 +237,30 @@ public class Employ extends ABaseDO {
 
     public void setStaff(Staff staff) {
         this.staff = staff;
+    }
+
+    public Double getDays() {
+        return days;
+    }
+
+    public void setDays(Double days) {
+        this.days = days;
+    }
+
+    public String getUpUserName() {
+        return upUserName;
+    }
+
+    public void setUpUserName(String upUserName) {
+        this.upUserName = upUserName;
+    }
+
+    public String getUpdateName() {
+        return updateName;
+    }
+
+    public void setUpdateName(String updateName) {
+        this.updateName = updateName;
     }
 
 }

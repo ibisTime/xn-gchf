@@ -6,14 +6,17 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.cdkj.gchf.ao.IMessageAO;
-import com.cdkj.gchf.api.impl.XN631439Req;
+import com.cdkj.gchf.bo.IAttendanceBO;
 import com.cdkj.gchf.bo.IMessageBO;
 import com.cdkj.gchf.bo.ISalaryBO;
 import com.cdkj.gchf.bo.ISalaryLogBO;
 import com.cdkj.gchf.bo.base.Paginable;
 import com.cdkj.gchf.core.StringValidater;
+import com.cdkj.gchf.domain.Attendance;
 import com.cdkj.gchf.domain.Message;
 import com.cdkj.gchf.domain.Salary;
+import com.cdkj.gchf.dto.req.XN631439Req;
+import com.cdkj.gchf.enums.EAttendanceStatus;
 import com.cdkj.gchf.enums.ESalaryLogType;
 
 @Service
@@ -27,6 +30,9 @@ public class MessageAOImpl implements IMessageAO {
 
     @Autowired
     private ISalaryLogBO salaryLogBO;
+
+    @Autowired
+    private IAttendanceBO attendanceBO;
 
     @Override
     public String addMessage(Message data) {
@@ -67,6 +73,7 @@ public class MessageAOImpl implements IMessageAO {
     @Override
     public void approveMessage(String code, String handler, String handleNote,
             List<XN631439Req> list) {
+        Message data = messageBO.getMessage(code);
         String type = ESalaryLogType.Normal.getCode();
         for (XN631439Req req : list) {
             Salary salary = salaryBO.getSalary(req.getCode());
@@ -81,7 +88,16 @@ public class MessageAOImpl implements IMessageAO {
             salaryLogBO.saveSalaryLog(salary, type, handler, handleNote);
 
         }
-        Message data = messageBO.getMessage(code);
+        // 修改考勤记录状态
+        Attendance condition = new Attendance();
+        condition.setProjectCode(data.getProjectCode());
+        condition.setStatus(EAttendanceStatus.Unpaied.getCode());
+        List<Attendance> aList = attendanceBO.queryAttendanceList(condition);
+        for (Attendance attendance : aList) {
+            attendance.setStatus(EAttendanceStatus.Paied.getCode());
+            attendanceBO.updateStatus(attendance);
+        }
+
         messageBO.approveMessage(data, handler, handleNote);
     }
 

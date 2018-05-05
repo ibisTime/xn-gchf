@@ -12,6 +12,7 @@ import com.cdkj.gchf.bo.ICompanyCardBO;
 import com.cdkj.gchf.bo.IMessageBO;
 import com.cdkj.gchf.bo.IProjectBO;
 import com.cdkj.gchf.bo.ISalaryBO;
+import com.cdkj.gchf.bo.base.Page;
 import com.cdkj.gchf.bo.base.Paginable;
 import com.cdkj.gchf.core.OrderNoGenerater;
 import com.cdkj.gchf.core.StringValidater;
@@ -72,7 +73,7 @@ public class SalaryAOImpl implements ISalaryAO {
     public void approveSalary(String code, String approver, String approveNote,
             String result) {
         Salary data = salaryBO.getSalary(code);
-        if (ESalaryStatus.To_Approve.getCode().equals(data.getStatus())) {
+        if (!ESalaryStatus.To_Approve.getCode().equals(data.getStatus())) {
             throw new BizException("xn0000", "工资条不处于待审核状态");
         }
         String status = ESalaryStatus.To_Approve.getCode();
@@ -148,6 +149,22 @@ public class SalaryAOImpl implements ISalaryAO {
         data.setCompanyCard(companyCard);
 
         return data;
+    }
+
+    @Override
+    public Paginable<Salary> queryTotalSalaryPage(int start, int limit,
+            Salary condition) {
+        long totalCount = salaryBO.getTotalSalaryCount(condition);
+        Page<Salary> page = new Page<Salary>(start, limit, totalCount);
+        List<Salary> list = salaryBO.queryTotalSalaryPage(page.getPageNO(),
+            page.getPageSize(), condition);
+        page.setList(list);
+        return page;
+    }
+
+    @Override
+    public List<Salary> queryTotalSalaryList(Salary condition) {
+        return salaryBO.queryTotalSalaryList(condition);
     }
 
 }

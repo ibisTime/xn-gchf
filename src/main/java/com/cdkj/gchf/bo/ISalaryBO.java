@@ -23,4 +23,11 @@ public interface ISalaryBO extends IPaginableBO<Salary> {
     public void payAmount(Salary salary, String payAmount,
             String latePayDatetime);
 
+    public long getTotalSalaryCount(Salary condition);
+
+    public List<Salary> queryTotalSalaryList(Salary condition);
+
+    public List<Salary> queryTotalSalaryPage(int pageNO, int pageSize,
+            Salary condition);
+
 }

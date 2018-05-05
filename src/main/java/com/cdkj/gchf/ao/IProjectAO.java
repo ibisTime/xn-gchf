@@ -38,8 +38,10 @@ public interface IProjectAO {
     public void projectEnd(String code, String endDatetime, String updater,
             String remark);
 
-    void createAttendance();
+    // 项目停工
+    public void stopProject(String code, String updater, String remark);
 
-    void createSalary();
+    // 项目重新开工
+    public void restartProject(String code, String updater, String remark);
 
 }

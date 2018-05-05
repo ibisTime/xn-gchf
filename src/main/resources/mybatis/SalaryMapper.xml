@@ -24,6 +24,7 @@
 		<result column="approve_note" property="approveNote" />
 		<result column="remark" property="remark" />
 		<result column="late_pay_datetime" property="latePayDatetime" />
+		<result column="total_fact_amount" property="totalFactAmount" />
 	</resultMap>
 	<sql id="where_condition">
 		<trim prefix="WHERE" prefixOverrides="AND | OR">
@@ -33,12 +34,30 @@
 			<if test="approveUser != null and approveUser != '' ">
 				AND t.approve_user = #{approveUser}
 			</if>
-			
-			<if test="code != null and code != '' ">
-				AND t.code = #{code}
+			<if test="messageCode != null and messageCode != '' ">
+				AND t.message_code = #{messageCode}
 			</if>
+			<if test="staffCode != null and staffCode != '' ">
+				AND t.staff_code = #{staffCode}
+			</if>
+			<if test="projectCode != null and projectCode != '' ">
+				AND t.project_code = #{projectCode}
+			</if>
+			
+			
+			<if test="month != null and month != '' ">
+				AND t.month = #{month}
+			</if>
+			<if test="status != null and status != '' ">
+				AND t.status = #{status}
+			</if>
+			<if test="keyword != null and keyword != '' ">
+				AND t.cut_note like "%"#{keyword} "%"
+			</if>
+			
 		</trim>
 	</sql>
+	
 	<select id="select_salary" parameterType="salary" resultMap="salary_DB_Result">
 		SELECT
 		t.code
@@ -76,6 +95,48 @@
 		resultType="java.lang.Long">
 		SELECT count(1) FROM thf_salary t
 		<include refid="where_condition" />
+	</select>
+
+	<select id="select_total_salary" parameterType="salary" resultMap="salary_DB_Result">
+		SELECT
+		t.code
+		,t.message_code
+		,t.staff_code
+		,t.project_code
+		,t.month
+		,t.should_amount
+		,t.fact_amount
+		,t.pay_amount
+		,t.cut_amount
+		,t.cut_note
+		,t.tax
+		,t.delay_days
+		,t.early_days
+		,t.leaving_days
+		,t.create_datetime
+		,t.status
+		,t.approve_user
+		,t.approve_datetime
+		,t.approve_note
+		,t.remark
+		,t.late_pay_datetime
+		,SUM(t.fact_amount) AS total_fact_amount
+		FROM
+		thf_salary t
+		<include refid="where_condition" />
+		GROUP BY t.month
+		<trim prefix="ORDER BY ">
+			<if test="order != null and order != '' ">
+				t.${order}
+			</if>
+		</trim>
+	</select>
+
+	<select id="total_salary_count" parameterType="salary"
+		resultType="java.lang.Long">
+		SELECT COUNT(1) FROM ( SELECT * FROM thf_salary t  
+		<include refid="where_condition" />
+		GROUP BY t.month)salary
 	</select>
 
 	<insert id="insert_salary" parameterType="salary">

@@ -10,15 +10,18 @@ import com.cdkj.gchf.ao.ICcontractAO;
 import com.cdkj.gchf.bo.ICcontractBO;
 import com.cdkj.gchf.bo.IProjectBO;
 import com.cdkj.gchf.bo.IStaffBO;
+import com.cdkj.gchf.bo.IUserBO;
 import com.cdkj.gchf.bo.base.Paginable;
 import com.cdkj.gchf.common.DateUtil;
 import com.cdkj.gchf.core.OrderNoGenerater;
 import com.cdkj.gchf.domain.Ccontract;
 import com.cdkj.gchf.domain.Project;
 import com.cdkj.gchf.domain.Staff;
+import com.cdkj.gchf.domain.User;
 import com.cdkj.gchf.dto.req.XN631400Req;
 import com.cdkj.gchf.dto.req.XN631402Req;
 import com.cdkj.gchf.enums.EGeneratePrefix;
+import com.cdkj.gchf.enums.EUser;
 
 @Service
 public class CcontractAOImpl implements ICcontractAO {
@@ -31,6 +34,9 @@ public class CcontractAOImpl implements ICcontractAO {
 
     @Autowired
     private IStaffBO staffBO;
+
+    @Autowired
+    private IUserBO userBO;
 
     @Override
     public String addCcontract(XN631400Req req) {
@@ -79,9 +85,12 @@ public class CcontractAOImpl implements ICcontractAO {
         Paginable<Ccontract> page = ccontractBO.getPaginable(start, limit,
             condition);
         List<Ccontract> list = page.getList();
+        String updateName = null;
         for (Ccontract ccontract : list) {
             Staff staff = staffBO.getStaff(ccontract.getStaffCode());
             ccontract.setStaffName(staff.getName());
+            updateName = getName(ccontract.getUpdater());
+            ccontract.setUpdateName(updateName);
         }
         page.setList(list);
 
@@ -91,9 +100,12 @@ public class CcontractAOImpl implements ICcontractAO {
     @Override
     public List<Ccontract> queryCcontractList(Ccontract condition) {
         List<Ccontract> list = ccontractBO.queryCcontractList(condition);
+        String updateName = null;
         for (Ccontract ccontract : list) {
             Staff staff = staffBO.getStaff(ccontract.getStaffCode());
             ccontract.setStaffName(staff.getName());
+            updateName = getName(ccontract.getUpdater());
+            ccontract.setUpdateName(updateName);
         }
         return list;
     }
@@ -103,6 +115,18 @@ public class CcontractAOImpl implements ICcontractAO {
         Ccontract data = ccontractBO.getCcontract(code);
         Staff staff = staffBO.getStaff(data.getStaffCode());
         data.setStaff(staff);
+        String updateName = getName(data.getUpdater());
+        data.setUpdateName(updateName);
         return data;
+    }
+
+    private String getName(String userId) {
+        User user = userBO.getUserName(userId);
+        String name = EUser.ADMIN.getCode();
+        if (!EUser.ADMIN.getCode().equals(user.getLoginName())) {
+            name = user.getRealName();
+        }
+        return name;
+
     }
 }

@@ -8,7 +8,6 @@ import com.cdkj.gchf.dao.IAttendanceDAO;
 import com.cdkj.gchf.dao.base.support.AMybatisTemplate;
 import com.cdkj.gchf.domain.Attendance;
 
-//CHECK 。。。 
 @Repository("attendanceDAOImpl")
 public class AttendanceDAOImpl extends AMybatisTemplate
         implements IAttendanceDAO {
@@ -46,6 +45,21 @@ public class AttendanceDAOImpl extends AMybatisTemplate
             int count) {
         return super.selectList(NAMESPACE.concat("select_attendance"), start,
             count, condition, Attendance.class);
+    }
+
+    @Override
+    public void toStart(Attendance data) {
+        super.update(NAMESPACE.concat("to_start"), data);
+    }
+
+    @Override
+    public void toEnd(Attendance data) {
+        super.update(NAMESPACE.concat("to_end"), data);
+    }
+
+    @Override
+    public void updateStatus(Attendance data) {
+        super.update(NAMESPACE.concat("update_status"), data);
     }
 
 }

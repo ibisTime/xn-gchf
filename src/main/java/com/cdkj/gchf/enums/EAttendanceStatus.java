@@ -5,9 +5,8 @@ import java.util.Map;
 
 public enum EAttendanceStatus {
 
-    TO_Start("0", "待上班打卡"), Later("1", "迟到"), TO_End("1", "待下班打卡"), EarLy("2",
-            "早退"), All("3",
-                    "迟到和早退"), Paied("3", "已结算"), Not_Normal("not_n", "非正常");
+    TO_Start("0", "待上班打卡"), TO_End("1", "待下班打卡"), Unpaied("2",
+            "已打卡待结算"), Paied("3", "已结算");
 
     public static Map<String, EAccountType> getAccountTypeResultMap() {
         Map<String, EAccountType> map = new HashMap<String, EAccountType>();

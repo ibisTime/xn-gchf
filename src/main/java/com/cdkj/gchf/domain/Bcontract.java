@@ -59,6 +59,8 @@ public class Bcontract extends ABaseDO {
     // 关键字
     private String keyword;
 
+    private String updateName;
+
     public String getKeyword() {
         return keyword;
     }
@@ -185,6 +187,14 @@ public class Bcontract extends ABaseDO {
 
     public void setPict3(String pict3) {
         this.pict3 = pict3;
+    }
+
+    public String getUpdateName() {
+        return updateName;
+    }
+
+    public void setUpdateName(String updateName) {
+        this.updateName = updateName;
     }
 
 }

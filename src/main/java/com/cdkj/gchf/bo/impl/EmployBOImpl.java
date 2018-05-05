@@ -95,4 +95,14 @@ public class EmployBOImpl extends PaginableBOImpl<Employ> implements IEmployBO {
         return data;
     }
 
+    @Override
+    public long getSalaryCount(Employ condition) {
+        return employDAO.getSalaryCount(condition);
+    }
+
+    @Override
+    public void updateStatus(Employ data) {
+        employDAO.updateStatus(data);
+    }
+
 }

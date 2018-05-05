@@ -18,7 +18,6 @@ public class ReportAOImpl implements IReportAO {
 
     @Override
     public String addReport(Report data) {
-        reportBO.saveReport(data);
         return null;
     }
 

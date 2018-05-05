@@ -61,4 +61,23 @@ public class SalaryDAOImpl extends AMybatisTemplate implements ISalaryDAO {
         super.update(NAMESPACE.concat("pay_amount"), data);
     }
 
+    @Override
+    public long getTotalSalaryCount(Salary condition) {
+        return super.selectTotalCount(NAMESPACE.concat("total_salary_count"),
+            condition);
+    }
+
+    @Override
+    public List<Salary> queryTotalSalaryList(Salary condition) {
+        return super.selectList(NAMESPACE.concat("select_total_salary"),
+            condition, Salary.class);
+    }
+
+    @Override
+    public List<Salary> queryTotalSalaryPage(int pageNO, int pageSize,
+            Salary condition) {
+        return super.selectList(NAMESPACE.concat("select_total_salary"), pageNO,
+            pageSize, condition, Salary.class);
+    }
+
 }

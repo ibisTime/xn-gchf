@@ -182,7 +182,7 @@
 	<update id="down_load" parameterType="message">
 		UPDATE thf_message
 		SET
-		down_load = #{downLoad}
+		download = #{download}
 		WHERE code = #{code}
 	</update>
 

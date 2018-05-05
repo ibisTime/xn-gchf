@@ -11,7 +11,8 @@ public interface IReportBO extends IPaginableBO<Report> {
 
     public void removeReport(String code);
 
-    public void refreshReport(Report data);
+    public void refreshReport(String cpde, Report data, long lastMonthSalary,
+            int todayWorkers);
 
     public List<Report> queryReportList(Report condition);
 

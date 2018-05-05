@@ -97,6 +97,12 @@ public class Project extends ABaseDO {
     // 统计
     private Report report;
 
+    // 审核人名字
+    private String approveName;
+
+    // 修改人名字
+    private String updateName;
+
     public String getKeyword() {
         return keyword;
     }
@@ -319,6 +325,22 @@ public class Project extends ABaseDO {
 
     public void setReport(Report report) {
         this.report = report;
+    }
+
+    public String getApproveName() {
+        return approveName;
+    }
+
+    public void setApproveName(String approveName) {
+        this.approveName = approveName;
+    }
+
+    public String getUpdateName() {
+        return updateName;
+    }
+
+    public void setUpdateName(String updateName) {
+        this.updateName = updateName;
     }
 
 }

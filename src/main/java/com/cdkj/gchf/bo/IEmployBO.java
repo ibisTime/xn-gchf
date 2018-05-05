@@ -24,4 +24,8 @@ public interface IEmployBO extends IPaginableBO<Employ> {
 
     public Employ getEmployStaff(String code);
 
+    public long getSalaryCount(Employ eCondition);
+
+    public void updateStatus(Employ employ);
+
 }

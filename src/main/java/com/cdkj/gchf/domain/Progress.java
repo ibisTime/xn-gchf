@@ -5,6 +5,7 @@ import java.util.Date;
 import com.cdkj.gchf.dao.base.ABaseDO;
 
 public class Progress extends ABaseDO {
+
     private static final long serialVersionUID = 1L;
 
     // 编号
@@ -43,6 +44,8 @@ public class Progress extends ABaseDO {
     // ****************db**************
     // 关键字
     private String keyword;
+
+    private String updateName;
 
     public String getKeyword() {
         return keyword;
@@ -142,6 +145,14 @@ public class Progress extends ABaseDO {
 
     public void setCompanyName(String companyName) {
         this.companyName = companyName;
+    }
+
+    public String getUpdateName() {
+        return updateName;
+    }
+
+    public void setUpdateName(String updateName) {
+        this.updateName = updateName;
     }
 
 }

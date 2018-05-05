@@ -4,9 +4,9 @@ import java.util.List;
 
 import org.springframework.stereotype.Component;
 
-import com.cdkj.gchf.api.impl.XN631439Req;
 import com.cdkj.gchf.bo.base.Paginable;
 import com.cdkj.gchf.domain.Message;
+import com.cdkj.gchf.dto.req.XN631439Req;
 
 @Component
 public interface IMessageAO {

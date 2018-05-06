@@ -33,7 +33,6 @@ public class UserBOImpl extends PaginableBOImpl<User> implements IUserBO {
     @Override
     public void refreshMobile(User data, String mobile, String updater,
             String remark) {
-        data.setLoginName(mobile);
         data.setMobile(mobile);
         data.setUpdater(updater);
         data.setUpdateDatetime(new Date());

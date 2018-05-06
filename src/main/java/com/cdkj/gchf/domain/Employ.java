@@ -1,6 +1,7 @@
 package com.cdkj.gchf.domain;
 
 import java.util.Date;
+import java.util.List;
 
 import com.cdkj.gchf.dao.base.ABaseDO;
 
@@ -78,6 +79,8 @@ public class Employ extends ABaseDO {
     private String upUserName;
 
     private String updateName;
+
+    private List<String> statusList;
 
     public void setCode(String code) {
         this.code = code;
@@ -261,6 +264,14 @@ public class Employ extends ABaseDO {
 
     public void setUpdateName(String updateName) {
         this.updateName = updateName;
+    }
+
+    public List<String> getStatusList() {
+        return statusList;
+    }
+
+    public void setStatusList(List<String> statusList) {
+        this.statusList = statusList;
     }
 
 }

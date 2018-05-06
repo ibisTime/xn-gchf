@@ -10,11 +10,6 @@ import com.cdkj.gchf.bo.ISYSConfigBO;
 import com.cdkj.gchf.bo.base.Paginable;
 import com.cdkj.gchf.domain.SYSConfig;
 
-/**
- * @author: Gejin 
- * @since: 2016年4月17日 下午7:32:28 
- * @history:
- */
 @Service
 public class SYSConfigAOImpl implements ISYSConfigAO {
     @Autowired

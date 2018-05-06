@@ -5,12 +5,6 @@ import java.util.Map;
 import com.cdkj.gchf.bo.base.Paginable;
 import com.cdkj.gchf.domain.SYSConfig;
 
-/**
- * 
- * @author: Gejin 
- * @since: 2016年4月17日 下午7:00:47 
- * @history:
- */
 public interface ISYSConfigAO {
 
     String DEFAULT_ORDER_COLUMN = "id";

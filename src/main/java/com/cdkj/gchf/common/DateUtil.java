@@ -356,6 +356,20 @@ public class DateUtil {
         return days;
     }
 
+    //
+    public static boolean isToday(String date) {
+        boolean flag = false;
+
+        Date todayStart = DateUtil.getTodayStart();
+        Date todayEnd = DateUtil.getTodayEnd();
+
+        Date checkDate = DateUtil.strToDate(date, DateUtil.DATA_TIME_PATTERN_1);
+        if (todayStart.before(checkDate) && todayEnd.after(checkDate)) {
+            flag = true;
+        }
+        return flag;
+    }
+
     public static void main(String[] args) {
         Date startDate = DateUtil.strToDate("2018-5-20 12:00:00",
             DateUtil.DATA_TIME_PATTERN_1);

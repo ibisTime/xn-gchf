@@ -19,15 +19,12 @@ import com.cdkj.gchf.domain.SYSMenu;
  * @history:
  */
 @Component
-public class SYSMenuBOImpl extends PaginableBOImpl<SYSMenu> implements
-        ISYSMenuBO {
+public class SYSMenuBOImpl extends PaginableBOImpl<SYSMenu>
+        implements ISYSMenuBO {
 
     @Autowired
     private ISYSMenuDAO sysMenuDAO;
 
-    /** 
-     * @see com.std.user.bo.ISYSMenuBO#isSYSMenuExist(java.lang.String)
-     */
     @Override
     public boolean isSYSMenuExist(String code) {
         SYSMenu menu = new SYSMenu();
@@ -38,9 +35,6 @@ public class SYSMenuBOImpl extends PaginableBOImpl<SYSMenu> implements
         return false;
     }
 
-    /** 
-     * @see com.std.user.bo.ISYSMenuBO#saveSYSMenu(com.xnjr.std.security.domain.SYSMenu)
-     */
     @Override
     public int saveSYSMenu(SYSMenu data) {
         int count = 0;
@@ -52,9 +46,6 @@ public class SYSMenuBOImpl extends PaginableBOImpl<SYSMenu> implements
         return count;
     }
 
-    /** 
-     * @see com.std.user.bo.ISYSMenuBO#removeSYSMenu(java.lang.String)
-     */
     @Override
     public int removeSYSMenu(String code) {
         int count = 0;
@@ -66,9 +57,6 @@ public class SYSMenuBOImpl extends PaginableBOImpl<SYSMenu> implements
         return count;
     }
 
-    /** 
-     * @see com.std.user.bo.ISYSMenuBO#refreshSYSMenu(com.xnjr.std.security.domain.SYSMenu)
-     */
     @Override
     public int refreshSYSMenu(SYSMenu data) {
         int count = 0;
@@ -79,9 +67,6 @@ public class SYSMenuBOImpl extends PaginableBOImpl<SYSMenu> implements
         return count;
     }
 
-    /** 
-     * @see com.std.user.bo.ISYSMenuBO#getSYSMenu(java.lang.String)
-     */
     @Override
     public SYSMenu getSYSMenu(String code) {
         SYSMenu data = null;

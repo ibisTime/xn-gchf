@@ -1,5 +1,7 @@
 package com.cdkj.gchf.dto.req;
 
+import java.util.List;
+
 import org.hibernate.validator.constraints.NotBlank;
 
 /**
@@ -33,6 +35,8 @@ public class XN631465Req extends APageReq {
 
     // （选填）更新人
     private String updater;
+
+    private List<String> statusList;
 
     public String getKeyword() {
         return keyword;
@@ -80,6 +84,14 @@ public class XN631465Req extends APageReq {
 
     public void setUpdater(String updater) {
         this.updater = updater;
+    }
+
+    public List<String> getStatusList() {
+        return statusList;
+    }
+
+    public void setStatusList(List<String> statusList) {
+        this.statusList = statusList;
     }
 
 }

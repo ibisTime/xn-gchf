@@ -46,21 +46,26 @@ public class UserAOImpl implements IUserAO {
 
     @Override
     public String doAddUser(XN631070Req req) {
-        PhoneUtil.checkMobile(req.getMobile());
+        if (StringUtils.isNotBlank(req.getMobile())) {
+            PhoneUtil.checkMobile(req.getMobile());
+        }
         User data = new User();
         String userId = OrderNoGenerater.generate("U");
         data.setUserId(userId);
+
+        data.setLoginName(req.getLoginName());
         data.setType(req.getType());
         data.setRealName(req.getRealName());
         data.setLoginName(req.getMobile());
         data.setMobile(req.getMobile());
+
         data.setLoginPwd(MD5Util.md5(req.getLoginPwd()));
         data.setLoginPwdStrength(
             PwdUtil.calculateSecurityLevel(req.getLoginPwd()));
-
         data.setCreateDatetime(new Date());
         data.setStatus(EUserStatus.NORMAL.getCode());
         data.setRemark(req.getRemark());
+
         userBO.saveUser(data);
         return userId;
     }

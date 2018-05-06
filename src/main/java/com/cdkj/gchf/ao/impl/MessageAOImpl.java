@@ -10,14 +10,17 @@ import com.cdkj.gchf.bo.IAttendanceBO;
 import com.cdkj.gchf.bo.IMessageBO;
 import com.cdkj.gchf.bo.ISalaryBO;
 import com.cdkj.gchf.bo.ISalaryLogBO;
+import com.cdkj.gchf.bo.IUserBO;
 import com.cdkj.gchf.bo.base.Paginable;
 import com.cdkj.gchf.core.StringValidater;
 import com.cdkj.gchf.domain.Attendance;
 import com.cdkj.gchf.domain.Message;
 import com.cdkj.gchf.domain.Salary;
+import com.cdkj.gchf.domain.User;
 import com.cdkj.gchf.dto.req.XN631439Req;
 import com.cdkj.gchf.enums.EAttendanceStatus;
 import com.cdkj.gchf.enums.ESalaryLogType;
+import com.cdkj.gchf.enums.EUser;
 
 @Service
 public class MessageAOImpl implements IMessageAO {
@@ -33,6 +36,9 @@ public class MessageAOImpl implements IMessageAO {
 
     @Autowired
     private IAttendanceBO attendanceBO;
+
+    @Autowired
+    private IUserBO userBO;
 
     @Override
     public String addMessage(Message data) {
@@ -51,17 +57,45 @@ public class MessageAOImpl implements IMessageAO {
     @Override
     public Paginable<Message> queryMessagePage(int start, int limit,
             Message condition) {
-        return messageBO.getPaginable(start, limit, condition);
+        Paginable<Message> page = messageBO.getPaginable(start, limit,
+            condition);
+        List<Message> list = page.getList();
+        String sendName = null;
+        String handleName = null;
+        for (Message message : list) {
+            sendName = getName(message.getSender());
+            handleName = getName(message.getHandler());
+            message.setSendName(sendName);
+            message.setHandleName(handleName);
+        }
+        page.setList(list);
+        return page;
     }
 
     @Override
     public List<Message> queryMessageList(Message condition) {
-        return messageBO.queryMessageList(condition);
+        List<Message> list = messageBO.queryMessageList(condition);
+        String sendName = null;
+        String handleName = null;
+        for (Message message : list) {
+            sendName = getName(message.getSender());
+            handleName = getName(message.getHandler());
+            message.setSendName(sendName);
+            message.setHandleName(handleName);
+        }
+        return list;
     }
 
     @Override
     public Message getMessage(String code) {
-        return messageBO.getMessage(code);
+        Message data = messageBO.getMessage(code);
+        String sendName = null;
+        String handleName = null;
+        sendName = getName(data.getSender());
+        handleName = getName(data.getHandler());
+        data.setSendName(sendName);
+        data.setHandleName(handleName);
+        return data;
     }
 
     @Override
@@ -110,5 +144,15 @@ public class MessageAOImpl implements IMessageAO {
             data.setDownload(data.getDownload() + 1);
         }
         messageBO.downLoad(data);
+    }
+
+    private String getName(String userId) {
+        User user = userBO.getUserName(userId);
+        String name = EUser.ADMIN.getCode();
+        if (!EUser.ADMIN.getCode().equals(user.getLoginName())) {
+            name = user.getRealName();
+        }
+        return name;
+
     }
 }

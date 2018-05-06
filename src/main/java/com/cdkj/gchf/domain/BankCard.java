@@ -53,6 +53,8 @@ public class BankCard extends ABaseDO {
     // *******************db***************
     private String keyword;
 
+    private String updateName;
+
     public void setCode(String code) {
         this.code = code;
     }
@@ -155,6 +157,14 @@ public class BankCard extends ABaseDO {
 
     public void setKeyword(String keyword) {
         this.keyword = keyword;
+    }
+
+    public String getUpdateName() {
+        return updateName;
+    }
+
+    public void setUpdateName(String updateName) {
+        this.updateName = updateName;
     }
 
 }

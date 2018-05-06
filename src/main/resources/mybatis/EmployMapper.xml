@@ -44,7 +44,7 @@
 				AND t.updater = #{updater}
 			</if>
 			<choose>
-				<when test="status == 'not_l' ">
+				<when test="status == 'not' ">
 					AND t.status IN ('0','1')
 				</when>
 				<when test="status != null and status != '' ">

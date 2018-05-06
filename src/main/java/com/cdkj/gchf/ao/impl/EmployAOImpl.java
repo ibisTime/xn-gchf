@@ -116,9 +116,16 @@ public class EmployAOImpl implements IEmployAO {
             days = data.getDays() + DateUtil.getHolidays(start, end);
         }
         data.setDays(days);
+        // 是否今天请的假
+        String status = EStaffStatus.Work.getCode();
+        if (DateUtil.isToday(req.getStartDatetime())) {
+            status = EStaffStatus.Leave.getCode();
+        }
+
         // 状态的改变放在生成考勤记录
         data.setStartDatetime(start);
         data.setEndDatetime(end);
+        data.setStatus(status);
         data.setUpdater(req.getUpdater());
         data.setUpdateDatetime(new Date());
         data.setRemark(req.getRemark());

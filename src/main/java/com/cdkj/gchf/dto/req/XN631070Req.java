@@ -9,6 +9,14 @@ import org.hibernate.validator.constraints.NotBlank;
  */
 public class XN631070Req {
 
+    // 登录名（必填）
+    @NotBlank(message = "登录名不能为空")
+    private String loginName;
+
+    // 登录密码（必填）
+    @NotBlank(message = "登录密码不能为空")
+    private String loginPwd;
+
     // 真实姓名（必填）
     @NotBlank(message = "真实姓名不能为空")
     private String realName;
@@ -17,13 +25,8 @@ public class XN631070Req {
     @NotBlank(message = "用户类型不能为空")
     private String type;
 
-    // 手机号（必填）
-    @NotBlank(message = "手机号不能为空")
+    // 手机号（选填）
     private String mobile;
-
-    // 登录密码（必填）
-    @NotBlank(message = "登录密码不能为空")
-    private String loginPwd;
 
     // 推荐人（选填）
     private String userRefree;
@@ -77,6 +80,14 @@ public class XN631070Req {
 
     public void setRealName(String realName) {
         this.realName = realName;
+    }
+
+    public String getLoginName() {
+        return loginName;
+    }
+
+    public void setLoginName(String loginName) {
+        this.loginName = loginName;
     }
 
 }

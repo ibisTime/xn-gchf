@@ -79,11 +79,11 @@ public class UserAOImpl implements IUserAO {
 
         List<User> userList2 = userBO.queryUserList(condition);
         if (CollectionUtils.isEmpty(userList2)) {
-            throw new BizException("xn805050", "登录密码错误");
+            throw new BizException("xn00000", "登录密码错误");
         }
         User user = userList2.get(0);
         if (!EUserStatus.NORMAL.getCode().equals(user.getStatus())) {
-            throw new BizException("xn805050", "该用户操作存在异常");
+            throw new BizException("xn00000", "该用户操作存在异常");
         }
         return user.getUserId();
     }

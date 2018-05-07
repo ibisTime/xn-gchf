@@ -1,5 +1,7 @@
 package com.cdkj.gchf.dto.req;
 
+import java.util.List;
+
 /**
  * 列表查代发消息
  * @author: nyc 
@@ -11,16 +13,26 @@ public class XN631436Req extends APageReq {
     /** 
      * @Fields serialVersionUID : TODO(用一句话描述这个变量表示什么) 
      */
-    private static final long serialVersionUID = 6478578711244877650L;
-
     // （选填）工程编号
     private String projectCode;
+
+    // （选填）工程名称
+    private String projectName;
+
+    // （选填）公司编号
+    private String companyCode;
+
+    // （选填）公司名称
+    private String companyName;
 
     // （选填）发送人
     private String sender;
 
     // （选填）状态
     private String status;
+
+    // （选填）状态List
+    private List<String> statusList;
 
     // （选填）处理人
     private String handler;
@@ -66,6 +78,38 @@ public class XN631436Req extends APageReq {
 
     public void setKeyword(String keyword) {
         this.keyword = keyword;
+    }
+
+    public List<String> getStatusList() {
+        return statusList;
+    }
+
+    public void setStatusList(List<String> statusList) {
+        this.statusList = statusList;
+    }
+
+    public String getProjectName() {
+        return projectName;
+    }
+
+    public void setProjectName(String projectName) {
+        this.projectName = projectName;
+    }
+
+    public String getCompanyCode() {
+        return companyCode;
+    }
+
+    public void setCompanyCode(String companyCode) {
+        this.companyCode = companyCode;
+    }
+
+    public String getCompanyName() {
+        return companyName;
+    }
+
+    public void setCompanyName(String companyName) {
+        this.companyName = companyName;
     }
 
 }

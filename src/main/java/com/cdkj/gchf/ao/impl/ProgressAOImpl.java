@@ -1,5 +1,6 @@
 package com.cdkj.gchf.ao.impl;
 
+import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -58,7 +59,7 @@ public class ProgressAOImpl implements IProgressAO {
         data.setDescription(req.getDescription());
         data.setPicture(req.getPicture());
         data.setUpdater(req.getUpdater());
-
+        data.setUpdateDatetime(new Date());
         data.setRemark(req.getRemark());
         return progressBO.refreshProgress(data);
     }
@@ -99,11 +100,13 @@ public class ProgressAOImpl implements IProgressAO {
 
     private String getName(String userId) {
         User user = userBO.getUserName(userId);
-        String name = EUser.ADMIN.getCode();
-        if (!EUser.ADMIN.getCode().equals(user.getLoginName())) {
-            name = user.getRealName();
+        String name = null;
+        if (user != null) {
+            name = EUser.ADMIN.getCode();
+            if (!EUser.ADMIN.getCode().equals(user.getLoginName())) {
+                name = user.getRealName();
+            }
         }
         return name;
-
     }
 }

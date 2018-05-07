@@ -6,7 +6,10 @@
 		<result column="code" property="code" />
 		<result column="message_code" property="messageCode" />
 		<result column="staff_code" property="staffCode" />
+		<result column="company_code" property="companyCode" />
+		<result column="company_name" property="companyName" />
 		<result column="project_code" property="projectCode" />
+		<result column="project_name" property="projectName" />
 		<result column="month" property="month" />
 		<result column="should_amount" property="shouldAmount" />
 		<result column="fact_amount" property="factAmount" />
@@ -40,8 +43,17 @@
 			<if test="staffCode != null and staffCode != '' ">
 				AND t.staff_code = #{staffCode}
 			</if>
+			<if test="companyCode != null and companyCode != '' ">
+				AND t.company_code = #{companyCode}
+			</if>
+			<if test="companyName != null and companyName != '' ">
+				AND t.company_name like "%"#{companyName}"%"
+			</if>
 			<if test="projectCode != null and projectCode != '' ">
 				AND t.project_code = #{projectCode}
+			</if>
+			<if test="projectName != null and projectName != '' ">
+				AND t.project_name like "%"#{projectName}"%"
 			</if>
 			
 			
@@ -63,7 +75,10 @@
 		t.code
 		,t.message_code
 		,t.staff_code
+		,t.company_code
+		,t.company_name
 		,t.project_code
+		,t.project_name
 		,t.month
 		,t.should_amount
 		,t.fact_amount
@@ -102,7 +117,10 @@
 		t.code
 		,t.message_code
 		,t.staff_code
+		,t.company_code
+		,t.company_name
 		,t.project_code
+		,t.project_name
 		,t.month
 		,t.should_amount
 		,t.fact_amount
@@ -145,7 +163,10 @@
 		code
 		,message_code
 		,staff_code
+		,company_code
+		,company_name
 		,project_code
+		,project_name
 		,month
 		,should_amount
 		,fact_amount
@@ -168,7 +189,10 @@
 		#{code}
 		,#{messageCode}
 		,#{staffCode}
+		,#{companyCode}
+		,#{companyName}
 		,#{projectCode}
+		,#{projectName}
 		,#{month}
 		,#{shouldAmount}
 		,#{factAmount}
@@ -220,6 +244,14 @@
 		status = #{status}
 		,pay_amount = #{payAmount}
 		,late_pay_datetime = #{latePayDatetime}
+		WHERE code = #{code}
+	</update>
+
+
+	<update id="update_leavingDays" parameterType="salary">
+		UPDATE thf_salary
+		SET
+		leaving_days = #{leavingDays}
 		WHERE code = #{code}
 	</update>
 

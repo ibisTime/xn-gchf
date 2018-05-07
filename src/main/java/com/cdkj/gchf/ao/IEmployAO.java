@@ -13,7 +13,8 @@ import com.cdkj.gchf.dto.req.XN631461Req;
 public interface IEmployAO {
     static final String DEFAULT_ORDER_COLUMN = "code";
 
-    public String addEmploy(XN631460Req req);
+    // 入职
+    public String joinIn(XN631460Req req);
 
     public int dropEmploy(String code);
 

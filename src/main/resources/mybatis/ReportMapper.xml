@@ -68,55 +68,63 @@
 		code
 		,project_code
 		,project_name
-		,today_days
-		,last_month_salary
-		
-		,next_month_salary
-		,total_salary
-		,staff_on
-		,staff_in
-		,staff_out
-		
-		,leaving_days
-		,working_days
-		,remark
 		)
 		VALUES(
 		#{code}
 		,#{projectCode}
 		,#{projectName}
-		,#{todayDays}
-		,#{lastMonthSalary}
-		
-		,#{nextMonthSalary}
-		,#{totalSalary}
-		,#{staffOn}
-		,#{staffIn}
-		,#{staffOut}
-		
-		,#{leavingDays}
-		,#{workingDays}
-		,#{remark}
 		)
 	</insert>
 
-	<update id="update_report" parameterType="report">
+
+	<update id="update_staff_in" parameterType="report">
 		UPDATE thf_report
 		SET
-		today_days = #{todayDays}
-		,last_month_salary = #{lastMonthSalary}
-		,next_month_salary = #{nextMonthSalary}
-		,total_salary = #{totalSalary}
-		,staff_on = #{staffOn}
-		
-		,staff_in = #{staffIn}
-		,staff_out = #{staffOut}
-		,leaving_days = #{leavingDays}
-		,working_days = #{workingDays}
-		,remark = #{remark}
-		
+		staff_in = staff_in + 1
 		WHERE code = #{code}
 	</update>
 
-
+	<update id="update_staff_out" parameterType="report">
+		UPDATE thf_report
+		SET
+		staff_out = #{staffOut}
+		WHERE code = #{code}
+	</update>
+	
+	<update id="update_leaving_days" parameterType="report">
+		UPDATE thf_report
+		SET
+		leaving_days = #{leavingDays}
+		WHERE code = #{code}
+	</update>
+	
+	<update id="update_today_days" parameterType="report">
+		UPDATE thf_report
+		SET
+		today_days = #{todayDay}
+		,working_days = #{workingDays}
+		WHERE code = #{code}
+	</update>
+	
+	<update id="update_staff_on" parameterType="report">
+		UPDATE thf_report
+		SET
+		staff_on = #{staffOn}
+		WHERE code = #{code}
+	</update>
+	
+	<update id="update_last_month_salary" parameterType="report">
+		UPDATE thf_report
+		SET
+		last_month_salary = #{lastMonthSalary}
+		WHERE code = #{code}
+	</update>
+	
+	
+	<update id="update_next_month_salary" parameterType="report">
+		UPDATE thf_report
+		SET
+		next_month_salary = #{nextMonthSalary}
+		WHERE code = #{code}
+	</update>
 </mapper>

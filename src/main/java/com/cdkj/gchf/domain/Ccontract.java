@@ -17,6 +17,12 @@ public class Ccontract extends ABaseDO {
     // 编号
     private String code;
 
+    // 公司编号
+    private String companyCode;
+
+    // 公司名称
+    private String companyName;
+
     // 项目编号
     private String projectCode;
 
@@ -47,8 +53,6 @@ public class Ccontract extends ABaseDO {
     // ***********db*************
 
     private String keyword;
-
-    private String staffName;
 
     private String updateName;
 
@@ -142,14 +146,6 @@ public class Ccontract extends ABaseDO {
         this.keyword = keyword;
     }
 
-    public String getStaffName() {
-        return staffName;
-    }
-
-    public void setStaffName(String staffName) {
-        this.staffName = staffName;
-    }
-
     public String getUpdateName() {
         return updateName;
     }
@@ -164,6 +160,22 @@ public class Ccontract extends ABaseDO {
 
     public void setStaff(Staff staff) {
         Staff = staff;
+    }
+
+    public String getCompanyCode() {
+        return companyCode;
+    }
+
+    public void setCompanyCode(String companyCode) {
+        this.companyCode = companyCode;
+    }
+
+    public String getCompanyName() {
+        return companyName;
+    }
+
+    public void setCompanyName(String companyName) {
+        this.companyName = companyName;
     }
 
 }

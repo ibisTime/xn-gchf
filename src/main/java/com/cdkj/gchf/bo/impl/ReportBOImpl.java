@@ -20,35 +20,18 @@ public class ReportBOImpl extends PaginableBOImpl<Report> implements IReportBO {
     @Autowired
     private IReportDAO reportDAO;
 
-    public void saveReport(Report data) {
+    public void saveReport(String projectCode, String name) {
+        Report data = new Report();
         String code = OrderNoGenerater
             .generate(EGeneratePrefix.Report.getCode());
         data.setCode(code);
+        data.setProjectCode(projectCode);
+        data.setProjectName(name);
         reportDAO.insert(data);
     }
 
     @Override
     public void removeReport(String code) {
-    }
-
-    @Override
-    public void refreshReport(String code, Report data, long lastMonthSalary,
-            int todayWorkers) {
-        data.setCode(code);
-        if (data.getTotalSalary() == null) {
-            data.setTotalSalary(0L);
-        } else {
-            data.setTotalSalary(data.getTotalSalary() + lastMonthSalary);
-        }
-
-        if (data.getTodayDays() == null) {
-            data.setTodayDays(0);
-        } else {
-            data.setTodayDays(data.getTodayDays() + todayWorkers);
-        }
-
-        data.setCode(code);
-        reportDAO.update(data);
     }
 
     @Override
@@ -79,5 +62,43 @@ public class ReportBOImpl extends PaginableBOImpl<Report> implements IReportBO {
             data = reportDAO.select(condition);
         }
         return data;
+    }
+
+    @Override
+    public void staffIn(Report data) {
+        reportDAO.updateStaffIn(data);
+    }
+
+    @Override
+    public void refreshStaffOut(Report data) {
+        reportDAO.updateStaffOut(data);
+    }
+
+    @Override
+    public void refreshLeavingDays(Report data) {
+        reportDAO.updateLeavingDays(data);
+    }
+
+    @Override
+    public void refreshTodayDays(Report data, int todayDays) {
+        data.setTodayDays(todayDays);
+        data.setWorkingDays(data.getWorkingDays() + 1);
+        reportDAO.updateTodayDays(data);
+    }
+
+    @Override
+    public void refreshStaffOn(Report data) {
+        reportDAO.updateStaffOn(data);
+
+    }
+
+    @Override
+    public void refreshLastMonthSalary(Report data) {
+        reportDAO.updateLastMonthSalary(data);
+    }
+
+    @Override
+    public void refreshNextMonthSalary(Report data) {
+        reportDAO.updateNextMonthSalary(data);
     }
 }

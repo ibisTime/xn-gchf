@@ -19,8 +19,9 @@
 		<result column="leaving_datetime" property="leavingDatetime" />
 		<result column="start_datetime" property="startDatetime" />
 		<result column="end_datetime" property="endDatetime" />
-		<result column="days" property="days" />
+		<result column="leaving_days" property="leavingDays" />
 		
+		<result column="total_leaving_days" property="totalLeavingDays" />
 		<result column="updater" property="updater" />
 		<result column="update_datetime" property="updateDatetime" />
 		<result column="remark" property="remark" />
@@ -77,8 +78,9 @@
 		,t.leaving_datetime
 		,t.start_datetime
 		,t.end_datetime
-		,t.days
+		,t.leaving_days
 		
+		,t.total_leaving_days
 		,t.updater
 		,t.update_datetime
 		,t.remark
@@ -171,7 +173,8 @@
 		,days = #{days}
 		,start_datetime = #{startDatetime}
 		,end_datetime = #{endDatetime}
-		,days = days
+		,leaving_days = #{leavingDays}
+		,total_leaving_days = #{totalLeavingDays}
 		,updater = #{updater}
 		,update_datetime = #{updateDatetime}
 		,remark = #{remark}

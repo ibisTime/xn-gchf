@@ -29,8 +29,13 @@ public class XN631455 extends AProcessor {
     @Override
     public Object doBusiness() throws BizException {
         SalaryLog condition = new SalaryLog();
+
+        condition.setCompanyCode(req.getCompanyCode());
+        condition.setCompanyName(req.getCompanyName());
+        condition.setProjectCode(req.getProjectCode());
+        condition.setProjectName(req.getProjectName());
+
         condition.setHandler(req.getHandler());
-        condition.setProjectCode(req.getProductCode());
         condition.setSalaryCode(req.getSalaryCode());
         condition.setStaffCode(req.getStaffCode());
         condition.setType(req.getType());

@@ -5,8 +5,8 @@ import java.util.Date;
 import com.cdkj.gchf.dao.base.ABaseDO;
 
 /**
-* 平台用户
-* @author: chenshan 
+* 工资条
+* @author: nyc
 * @since: 2018-04-30 22:00:38
 * @history:
 */
@@ -23,8 +23,17 @@ public class Salary extends ABaseDO {
     // 员工编号
     private String staffCode;
 
+    // 公司编号
+    private String companyCode;
+
+    // 公司名称
+    private String companyName;
+
     // 项目编号
     private String projectCode;
+
+    // 项目编号
+    private String projectName;
 
     // 所属月份
     private Integer month;
@@ -106,6 +115,14 @@ public class Salary extends ABaseDO {
         return messageCode;
     }
 
+    public String getCompanyName() {
+        return companyName;
+    }
+
+    public void setCompanyName(String companyName) {
+        this.companyName = companyName;
+    }
+
     public void setStaffCode(String staffCode) {
         this.staffCode = staffCode;
     }
@@ -122,12 +139,28 @@ public class Salary extends ABaseDO {
         return projectCode;
     }
 
+    public String getProjectName() {
+        return projectName;
+    }
+
+    public void setProjectName(String projectName) {
+        this.projectName = projectName;
+    }
+
     public Integer getMonth() {
         return month;
     }
 
     public void setMonth(Integer month) {
         this.month = month;
+    }
+
+    public String getCompanyCode() {
+        return companyCode;
+    }
+
+    public void setCompanyCode(String companyCode) {
+        this.companyCode = companyCode;
     }
 
     public void setCutNote(String cutNote) {

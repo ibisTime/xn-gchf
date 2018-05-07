@@ -11,7 +11,7 @@ import com.cdkj.gchf.exception.ParaException;
 import com.cdkj.gchf.spring.SpringContextHolder;
 
 /**
- * 发送代发消息
+ * 下载
  * @author: nyc 
  * @since: 2018年5月1日 上午11:48:15 
  * @history:
@@ -25,8 +25,7 @@ public class XN631431 extends AProcessor {
 
     @Override
     public Object doBusiness() throws BizException {
-        messageAO.approveMessage(req.getCode(), req.getHandler(),
-            req.getHandleNote(), req.getPayList());
+        messageAO.downLoad(req.getCode());
         return new BooleanRes(true);
     }
 

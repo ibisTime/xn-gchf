@@ -337,19 +337,31 @@ public class DateUtil {
         return flag;
     }
 
+    public static boolean isIn(Date startDatetime, Date endDatetime) {
+        Date now = new Date();
+        if (startDatetime.after(now) && endDatetime.before(now)) {
+            return true;
+        }
+        return false;
+    }
+
     /**
-     * >=6小时 视为0.5天,其余均视为1天
+     * 计算请假时间
+     * 不大于工作时间一半视为半天
      * @param start
      * @param end
      * @return 
      * @create: 2018年5月5日 下午5:30:39 nyc
      * @history:
      */
-    public static double getHolidays(Date startDatetime, Date endDatetime) {
+    public static double getDays(Date startDatetime, Date endDatetime,
+            Date leavingStartDate, Date leavingEndDate) {
         double days = 1.0;
         int times = (int) ((endDatetime.getTime() - startDatetime.getTime())
                 / 60 / 60 / 1000);
-        if (times <= 6) {
+        int leavingDays = (int) ((leavingEndDate.getTime()
+                - leavingStartDate.getTime()) / 60 / 60 / 1000);
+        if (leavingDays <= times / 2) {
             days = 0.5;
         }
 

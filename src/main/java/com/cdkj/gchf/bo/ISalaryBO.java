@@ -20,7 +20,7 @@ public interface ISalaryBO extends IPaginableBO<Salary> {
     public void approveSalary(Salary data, String messageCode, String approver,
             String approveNote, String status);
 
-    public void payAmount(Salary salary, String payAmount,
+    public void payAmount(Salary salary, Long payAmount,
             String latePayDatetime);
 
     public long getTotalSalaryCount(Salary condition);

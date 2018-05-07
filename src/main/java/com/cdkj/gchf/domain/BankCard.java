@@ -5,8 +5,8 @@ import java.util.Date;
 import com.cdkj.gchf.dao.base.ABaseDO;
 
 /**
-* 平台用户
-* @author: chenshan 
+* 工资卡
+* @author: nyc 
 * @since: 2018-04-29 20:42:12
 * @history:
 */
@@ -16,6 +16,12 @@ public class BankCard extends ABaseDO {
 
     // 编号
     private String code;
+
+    // 公司编号
+    private String companyCode;
+
+    // 公司名称
+    private String companyName;
 
     // 员工编号
     private String staffCode;
@@ -165,6 +171,22 @@ public class BankCard extends ABaseDO {
 
     public void setUpdateName(String updateName) {
         this.updateName = updateName;
+    }
+
+    public String getCompanyCode() {
+        return companyCode;
+    }
+
+    public void setCompanyCode(String companyCode) {
+        this.companyCode = companyCode;
+    }
+
+    public String getCompanyName() {
+        return companyName;
+    }
+
+    public void setCompanyName(String companyName) {
+        this.companyName = companyName;
     }
 
 }

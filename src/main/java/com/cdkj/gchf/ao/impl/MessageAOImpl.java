@@ -6,19 +6,20 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.cdkj.gchf.ao.IMessageAO;
-import com.cdkj.gchf.bo.IAttendanceBO;
 import com.cdkj.gchf.bo.IMessageBO;
+import com.cdkj.gchf.bo.IProjectBO;
+import com.cdkj.gchf.bo.IReportBO;
 import com.cdkj.gchf.bo.ISalaryBO;
 import com.cdkj.gchf.bo.ISalaryLogBO;
 import com.cdkj.gchf.bo.IUserBO;
 import com.cdkj.gchf.bo.base.Paginable;
 import com.cdkj.gchf.core.StringValidater;
-import com.cdkj.gchf.domain.Attendance;
 import com.cdkj.gchf.domain.Message;
+import com.cdkj.gchf.domain.Project;
+import com.cdkj.gchf.domain.Report;
 import com.cdkj.gchf.domain.Salary;
 import com.cdkj.gchf.domain.User;
 import com.cdkj.gchf.dto.req.XN631439Req;
-import com.cdkj.gchf.enums.EAttendanceStatus;
 import com.cdkj.gchf.enums.ESalaryLogType;
 import com.cdkj.gchf.enums.EUser;
 
@@ -35,10 +36,13 @@ public class MessageAOImpl implements IMessageAO {
     private ISalaryLogBO salaryLogBO;
 
     @Autowired
-    private IAttendanceBO attendanceBO;
+    private IUserBO userBO;
 
     @Autowired
-    private IUserBO userBO;
+    private IReportBO reportBO;
+
+    @Autowired
+    private IProjectBO projectBO;
 
     @Override
     public String addMessage(Message data) {
@@ -109,35 +113,32 @@ public class MessageAOImpl implements IMessageAO {
             List<XN631439Req> list) {
         Message data = messageBO.getMessage(code);
         String type = ESalaryLogType.Normal.getCode();
+        Project project = projectBO.getProject(data.getProjectCode());
+        Long lastMonthSalary = 0L;
         for (XN631439Req req : list) {
             Salary salary = salaryBO.getSalary(req.getCode());
-            if (salary.getShouldAmount() != StringValidater
-                .toLong(req.getPayAmount())) {
+            Long shouldAmount = salary.getShouldAmount()
+                    + salary.getPayAmount();
+            if (shouldAmount != StringValidater.toLong(req.getPayAmount())) {
                 type = ESalaryLogType.Abnormal.getCode();
             }
             // 修改工资条信息
-            salaryBO.payAmount(salary, req.getPayAmount(),
-                req.getLatePayDatetime());
+            salaryBO.payAmount(salary, shouldAmount, req.getLatePayDatetime());
             // 添加工资日志
-            salaryLogBO.saveSalaryLog(salary, type, handler, handleNote);
-
+            salaryLogBO.saveSalaryLog(salary, project.getCompanyCode(),
+                project.getCompanyName(), type, handler, handleNote);
+            lastMonthSalary = lastMonthSalary
+                    + StringValidater.toLong(req.getPayAmount());
         }
-        // 修改考勤记录状态
-        Attendance condition = new Attendance();
-        condition.setProjectCode(data.getProjectCode());
-        condition.setStatus(EAttendanceStatus.Unpaied.getCode());
-        List<Attendance> aList = attendanceBO.queryAttendanceList(condition);
-        for (Attendance attendance : aList) {
-            attendance.setStatus(EAttendanceStatus.Paied.getCode());
-            attendanceBO.updateStatus(attendance);
-        }
-
+        Report report = reportBO.getReportByProject(data.getProjectCode());
+        reportBO.refreshLastMonthSalary(report);
         messageBO.approveMessage(data, handler, handleNote);
     }
 
     @Override
     public void downLoad(String code) {
         Message data = messageBO.getMessage(code);
+
         if (data.getDownload() == null) {
             data.setDownload(1);
         } else {
@@ -148,9 +149,12 @@ public class MessageAOImpl implements IMessageAO {
 
     private String getName(String userId) {
         User user = userBO.getUserName(userId);
-        String name = EUser.ADMIN.getCode();
-        if (!EUser.ADMIN.getCode().equals(user.getLoginName())) {
-            name = user.getRealName();
+        String name = null;
+        if (user != null) {
+            name = EUser.ADMIN.getCode();
+            if (!EUser.ADMIN.getCode().equals(user.getLoginName())) {
+                name = user.getRealName();
+            }
         }
         return name;
 

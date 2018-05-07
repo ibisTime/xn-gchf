@@ -17,6 +17,9 @@ public class Attendance extends ABaseDO {
     // 编号
     private String code;
 
+    // 编号编号
+    private String companyCode;
+
     // 项目编号
     private String projectCode;
 
@@ -103,6 +106,14 @@ public class Attendance extends ABaseDO {
 
     public String getStatus() {
         return status;
+    }
+
+    public String getCompanyCode() {
+        return companyCode;
+    }
+
+    public void setCompanyCode(String companyCode) {
+        this.companyCode = companyCode;
     }
 
     public Date getCreateDatetime() {

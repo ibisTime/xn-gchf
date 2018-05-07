@@ -16,14 +16,23 @@ public class SalaryLog extends ABaseDO {
 
     // 编号
     private String code;
-    // 员工编号
 
+    // 员工编号
     private String staffCode;
+
+    // 公司编号
+    private String companyCode;
+
+    // 公司名称
+    private String companyName;
 
     // 项目编号
     private String projectCode;
-    // 工资条编号
 
+    // 项目名称
+    private String projectName;
+
+    // 工资条编号
     private String salaryCode;
 
     // 类型
@@ -32,18 +41,42 @@ public class SalaryLog extends ABaseDO {
     // 操作人
     private String handler;
 
+    // 操作时间
     private Date handleDatetime;
 
     // 操作描述
     private String handleNote;
 
-    // 操作时间
     public void setCode(String code) {
         this.code = code;
     }
 
     public String getCode() {
         return code;
+    }
+
+    public String getCompanyCode() {
+        return companyCode;
+    }
+
+    public void setCompanyCode(String companyCode) {
+        this.companyCode = companyCode;
+    }
+
+    public String getCompanyName() {
+        return companyName;
+    }
+
+    public void setCompanyName(String companyName) {
+        this.companyName = companyName;
+    }
+
+    public String getProjectName() {
+        return projectName;
+    }
+
+    public void setProjectName(String projectName) {
+        this.projectName = projectName;
     }
 
     public void setStaffCode(String staffCode) {

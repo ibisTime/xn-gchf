@@ -2,7 +2,8 @@ package com.cdkj.gchf.enums;
 
 public enum EMessageStatus {
 
-    Send_NO("0", "待发送"), Send_YES("1", "待处理"), Approved("2", "已处理");
+    TO_Send("0", "待发送"), TO_Deal("1", "未处理"), TO_Feedback("2",
+            "待反馈"), Approved("3", "已处理");
 
     EMessageStatus(String code, String value) {
         this.code = code;

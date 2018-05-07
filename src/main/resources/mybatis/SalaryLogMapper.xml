@@ -4,8 +4,12 @@
 <mapper namespace="com.cdkj.gchf.dao.ISalaryLogDAO">
 	<resultMap id="salaryLog_DB_Result" type="salaryLog">
 		<result column="code" property="code" />
-		<result column="staff_code" property="staffCode" />
+		<result column="company_code" property="companyCode" />
+		<result column="company_name" property="companyName" />
 		<result column="project_code" property="projectCode" />
+		<result column="project_name" property="projectName" />
+		<result column="staff_code" property="staffCode" />
+		
 		<result column="salary_code" property="salaryCode" />
 		<result column="type" property="type" />
 		<result column="handler" property="handler" />
@@ -17,12 +21,19 @@
 			<if test="code != null and code != '' ">
 				AND t.code = #{code}
 			</if>
-			<if test="staffCode != null and staffCode != '' ">
-				AND t.staff_code = #{staffCode}
+			<if test="companyCode != null and companyCode != '' ">
+				AND t.company_code = #{companyCode}
+			</if>
+			<if test="companyName != null and companyName != '' ">
+				AND t.company_name like "%"#{companyName}"%"
 			</if>
 			<if test="projectCode != null and projectCode != '' ">
 				AND t.project_code = #{projectCode}
 			</if>
+			<if test="projectName != null and projectName != '' ">
+				AND t.project_name like "%"#{projectName}"%"
+			</if>
+			
 			<if test="salaryCode != null and salaryCode != '' ">
 				AND t.salary_code = #{salaryCode}
 			</if>
@@ -37,8 +48,11 @@
 	<select id="select_salaryLog" parameterType="salaryLog" resultMap="salaryLog_DB_Result">
 		SELECT
 		t.code
-		,t.staff_code
+		,t.company_code
+		,t.company_name
 		,t.project_code
+		,t.project_name
+		,t.staff_code
 		,t.salary_code
 		,t.type
 		,t.handler
@@ -64,8 +78,12 @@
 		INSERT INTO
 		thf_salary_log(
 		code
-		,staff_code
+		,company_code
+		,company_name
 		,project_code
+		,project_name
+		,staff_code
+		
 		,salary_code
 		,type
 		,handler
@@ -74,8 +92,12 @@
 		)
 		VALUES(
 		#{code}
-		,#{staffCode}
+		,#{companyCode}
+		,#{companyName}
 		,#{projectCode}
+		,#{projectName}
+		,#{staffCode}
+	
 		,#{salaryCode}
 		,#{type}
 		,#{handler}

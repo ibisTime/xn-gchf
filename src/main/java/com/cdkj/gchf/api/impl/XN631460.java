@@ -23,7 +23,7 @@ public class XN631460 extends AProcessor {
 
     @Override
     public Object doBusiness() throws BizException {
-        return employAO.addEmploy(req);
+        return employAO.joinIn(req);
     }
 
     @Override

@@ -64,7 +64,8 @@ public class SalaryLogBOImpl extends PaginableBOImpl<SalaryLog>
     }
 
     @Override
-    public void saveSalaryLog(Salary salary, String type, String handler,
+    public void saveSalaryLog(Salary salary, String companyCode,
+            String companyName, String type, String handler,
             String handleNote) {
         SalaryLog data = new SalaryLog();
         String code = OrderNoGenerater
@@ -72,9 +73,12 @@ public class SalaryLogBOImpl extends PaginableBOImpl<SalaryLog>
         data.setCode(code);
         data.setSalaryCode(salary.getCode());
         data.setType(type);
-        data.setStaffCode(salary.getStaffCode());
+        data.setCompanyCode(companyCode);
+        data.setCompanyName(companyName);
 
+        data.setStaffCode(salary.getStaffCode());
         data.setProjectCode(salary.getProjectCode());
+        data.setProjectName(salary.getProjectName());
         data.setHandler(handler);
         data.setHandleDatetime(new Date());
         data.setHandleNote(handleNote);

@@ -18,7 +18,7 @@ public interface ISalaryLogBO extends IPaginableBO<SalaryLog> {
 
     public SalaryLog getSalaryLog(String code);
 
-    public void saveSalaryLog(Salary salary, String type, String handler,
-            String handleNote);
+    public void saveSalaryLog(Salary salary, String companyCode,
+            String companyName, String type, String handler, String handleNote);
 
 }

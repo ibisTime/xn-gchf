@@ -13,11 +13,20 @@ public class XN631455Req extends APageReq {
      */
     private static final long serialVersionUID = -3735724866853750864L;
 
+    // （选填）工程编号
+    private String projectCode;
+
+    // （选填）工程名称
+    private String projectName;
+
+    // （选填）公司编号
+    private String companyCode;
+
+    // （选填）公司名称
+    private String companyName;
+
     // （选填）操作人
     private String handler;
-
-    // （选填）项目编号
-    private String productCode;
 
     // （选填）工资条编号
     private String salaryCode;
@@ -36,12 +45,36 @@ public class XN631455Req extends APageReq {
         this.handler = handler;
     }
 
-    public String getProductCode() {
-        return productCode;
+    public String getProjectCode() {
+        return projectCode;
     }
 
-    public void setProductCode(String productCode) {
-        this.productCode = productCode;
+    public void setProjectCode(String projectCode) {
+        this.projectCode = projectCode;
+    }
+
+    public String getProjectName() {
+        return projectName;
+    }
+
+    public void setProjectName(String projectName) {
+        this.projectName = projectName;
+    }
+
+    public String getCompanyCode() {
+        return companyCode;
+    }
+
+    public void setCompanyCode(String companyCode) {
+        this.companyCode = companyCode;
+    }
+
+    public String getCompanyName() {
+        return companyName;
+    }
+
+    public void setCompanyName(String companyName) {
+        this.companyName = companyName;
     }
 
     public String getSalaryCode() {

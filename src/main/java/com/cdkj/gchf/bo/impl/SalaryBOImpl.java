@@ -10,7 +10,6 @@ import org.springframework.stereotype.Component;
 import com.cdkj.gchf.bo.ISalaryBO;
 import com.cdkj.gchf.bo.base.PaginableBOImpl;
 import com.cdkj.gchf.common.DateUtil;
-import com.cdkj.gchf.core.StringValidater;
 import com.cdkj.gchf.dao.ISalaryDAO;
 import com.cdkj.gchf.domain.Salary;
 import com.cdkj.gchf.enums.ESalaryStatus;
@@ -69,10 +68,10 @@ public class SalaryBOImpl extends PaginableBOImpl<Salary> implements ISalaryBO {
     }
 
     @Override
-    public void payAmount(Salary salary, String payAmount,
+    public void payAmount(Salary salary, Long payAmount,
             String latePayDatetime) {
         salary.setStatus(ESalaryStatus.Payed.getCode());
-        salary.setPayAmount(StringValidater.toLong(payAmount));
+        salary.setPayAmount(payAmount);
         salary.setLatePayDatetime(DateUtil.strToDate(latePayDatetime,
             DateUtil.FRONT_DATE_FORMAT_STRING));
         salaryDAO.payAmount(salary);
@@ -94,4 +93,5 @@ public class SalaryBOImpl extends PaginableBOImpl<Salary> implements ISalaryBO {
             Salary condition) {
         return salaryDAO.queryTotalSalaryPage(pageNO, pageSize, condition);
     }
+
 }

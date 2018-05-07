@@ -46,6 +46,9 @@ public class CcontractAOImpl implements ICcontractAO {
         data.setCode(code);
         data.setProjectCode(req.getProjectCode());
         Project project = projectBO.getProject(req.getProjectCode());
+        data.setCompanyCode(project.getCompanyCode());
+        data.setCompanyName(project.getCompanyName());
+
         data.setProjectName(project.getName());
         data.setStaffCode(req.getStaffCode());
         Staff staff = staffBO.getStaff(req.getStaffCode());
@@ -88,7 +91,7 @@ public class CcontractAOImpl implements ICcontractAO {
         String updateName = null;
         for (Ccontract ccontract : list) {
             Staff staff = staffBO.getStaff(ccontract.getStaffCode());
-            ccontract.setStaffName(staff.getName());
+            ccontract.setStaff(staff);
             updateName = getName(ccontract.getUpdater());
             ccontract.setUpdateName(updateName);
         }
@@ -103,7 +106,7 @@ public class CcontractAOImpl implements ICcontractAO {
         String updateName = null;
         for (Ccontract ccontract : list) {
             Staff staff = staffBO.getStaff(ccontract.getStaffCode());
-            ccontract.setStaffName(staff.getName());
+            ccontract.setStaff(staff);
             updateName = getName(ccontract.getUpdater());
             ccontract.setUpdateName(updateName);
         }

@@ -8,7 +8,6 @@ import com.cdkj.gchf.dao.IReportDAO;
 import com.cdkj.gchf.dao.base.support.AMybatisTemplate;
 import com.cdkj.gchf.domain.Report;
 
-//CHECK 。。。 
 @Repository("reportDAOImpl")
 public class ReportDAOImpl extends AMybatisTemplate implements IReportDAO {
 
@@ -47,8 +46,38 @@ public class ReportDAOImpl extends AMybatisTemplate implements IReportDAO {
     }
 
     @Override
-    public void update(Report data) {
-        super.update(NAMESPACE.concat("update_report"), data);
+    public void updateStaffIn(Report data) {
+        super.update(NAMESPACE.concat("update_staff_in"), data);
+    }
+
+    @Override
+    public void updateStaffOut(Report data) {
+        super.update(NAMESPACE.concat("update_staff_out"), data);
+    }
+
+    @Override
+    public void updateLeavingDays(Report data) {
+        super.update(NAMESPACE.concat("update_leaving_days"), data);
+    }
+
+    @Override
+    public void updateTodayDays(Report data) {
+        super.update(NAMESPACE.concat("update_today_days"), data);
+    }
+
+    @Override
+    public void updateStaffOn(Report data) {
+        super.update(NAMESPACE.concat("update_staff_on"), data);
+    }
+
+    @Override
+    public void updateLastMonthSalary(Report data) {
+        super.update(NAMESPACE.concat("update_last_month_salary"), data);
+    }
+
+    @Override
+    public void updateNextMonthSalary(Report data) {
+        super.update(NAMESPACE.concat("update_next_month_salary"), data);
     }
 
 }

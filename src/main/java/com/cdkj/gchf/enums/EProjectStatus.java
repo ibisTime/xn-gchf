@@ -2,8 +2,8 @@ package com.cdkj.gchf.enums;
 
 public enum EProjectStatus {
 
-    TO_AUDIT_NO("0", "待提请待审核"), TO_AUDIT_YES("1", "待审核"), PASS("2",
-            "通过"), Building("3", "在建"), Stop("4", "停工"), End("5", "项目结束");
+    To_Audit("0", "待提交"), UnApprove("1", "已提交待审核"), UnPass("2",
+            "审核不通过"), Building("3", "在建"), Stop("4", "停工"), End("5", "完工");
     EProjectStatus(String code, String status) {
         this.code = code;
         this.status = status;

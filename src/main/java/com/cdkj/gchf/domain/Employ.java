@@ -57,8 +57,11 @@ public class Employ extends ABaseDO {
     // 最近一次请假结束时间
     private Date endDatetime;
 
-    // 请假天数
-    private Double days;
+    // 本月请假天数
+    private Double leavingDays;
+
+    // 累积构请假天数
+    private Double totalLeavingDays;
 
     // 更新人
     private String updater;
@@ -242,14 +245,6 @@ public class Employ extends ABaseDO {
         this.staff = staff;
     }
 
-    public Double getDays() {
-        return days;
-    }
-
-    public void setDays(Double days) {
-        this.days = days;
-    }
-
     public String getUpUserName() {
         return upUserName;
     }
@@ -272,6 +267,22 @@ public class Employ extends ABaseDO {
 
     public void setStatusList(List<String> statusList) {
         this.statusList = statusList;
+    }
+
+    public Double getLeavingDays() {
+        return leavingDays;
+    }
+
+    public void setLeavingDays(Double leavingDays) {
+        this.leavingDays = leavingDays;
+    }
+
+    public Double getTotalLeavingDays() {
+        return totalLeavingDays;
+    }
+
+    public void setTotalLeavingDays(Double totalLeavingDays) {
+        this.totalLeavingDays = totalLeavingDays;
     }
 
 }

@@ -7,6 +7,7 @@ import org.springframework.stereotype.Repository;
 import com.cdkj.gchf.dao.IEmployDAO;
 import com.cdkj.gchf.dao.base.support.AMybatisTemplate;
 import com.cdkj.gchf.domain.Employ;
+import com.cdkj.gchf.domain.Salary;
 
 @Repository("employDAOImpl")
 public class EmployDAOImpl extends AMybatisTemplate implements IEmployDAO {
@@ -69,6 +70,11 @@ public class EmployDAOImpl extends AMybatisTemplate implements IEmployDAO {
     @Override
     public void updateStatus(Employ data) {
         super.update(NAMESPACE.concat("update_status"), data);
+    }
+
+    @Override
+    public void updateLeavingDays(Salary data) {
+        super.update(NAMESPACE.concat("update_leavingDays"), data);
     }
 
 }

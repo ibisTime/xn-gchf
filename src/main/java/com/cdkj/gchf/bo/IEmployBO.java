@@ -4,10 +4,11 @@ import java.util.List;
 
 import com.cdkj.gchf.bo.base.IPaginableBO;
 import com.cdkj.gchf.domain.Employ;
+import com.cdkj.gchf.domain.Salary;
 
 public interface IEmployBO extends IPaginableBO<Employ> {
 
-    public void saveEmploy(Employ data);
+    public void joinIn(Employ data);
 
     public int removeEmploy(String code);
 
@@ -27,5 +28,7 @@ public interface IEmployBO extends IPaginableBO<Employ> {
     public long getSalaryCount(Employ eCondition);
 
     public void updateStatus(Employ employ);
+
+    public void updateLeavingDays(Salary data);
 
 }

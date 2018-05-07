@@ -12,7 +12,8 @@ import com.cdkj.gchf.bo.base.PaginableBOImpl;
 import com.cdkj.gchf.common.DateUtil;
 import com.cdkj.gchf.dao.IEmployDAO;
 import com.cdkj.gchf.domain.Employ;
-import com.cdkj.gchf.enums.EStaffStatus;
+import com.cdkj.gchf.domain.Salary;
+import com.cdkj.gchf.enums.EEmploytatus;
 import com.cdkj.gchf.exception.BizException;
 
 @Component
@@ -21,7 +22,7 @@ public class EmployBOImpl extends PaginableBOImpl<Employ> implements IEmployBO {
     @Autowired
     private IEmployDAO employDAO;
 
-    public void saveEmploy(Employ data) {
+    public void joinIn(Employ data) {
         employDAO.insert(data);
     }
 
@@ -35,7 +36,7 @@ public class EmployBOImpl extends PaginableBOImpl<Employ> implements IEmployBO {
             String remark) {
         data.setLeavingDatetime(DateUtil.strToDate(leavingDatetime,
             DateUtil.FRONT_DATE_FORMAT_STRING));
-        data.setStatus(EStaffStatus.Leave.getCode());
+        data.setStatus(EEmploytatus.Leave.getCode());
         data.setUpdater(updater);
         data.setUpdateDatetime(new Date());
         data.setRemark(remark);
@@ -103,6 +104,11 @@ public class EmployBOImpl extends PaginableBOImpl<Employ> implements IEmployBO {
     @Override
     public void updateStatus(Employ data) {
         employDAO.updateStatus(data);
+    }
+
+    @Override
+    public void updateLeavingDays(Salary data) {
+        employDAO.updateLeavingDays(data);
     }
 
 }

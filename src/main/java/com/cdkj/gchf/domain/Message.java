@@ -1,6 +1,7 @@
 package com.cdkj.gchf.domain;
 
 import java.util.Date;
+import java.util.List;
 
 import com.cdkj.gchf.dao.base.ABaseDO;
 
@@ -17,6 +18,12 @@ public class Message extends ABaseDO {
 
     // 编号
     private String code;
+
+    // 公司编号
+    private String companyCode;
+
+    // 公司名称
+    private String companyName;
 
     // 项目编号
     private String projectCode;
@@ -77,6 +84,8 @@ public class Message extends ABaseDO {
 
     private String handleName;
 
+    private List<String> statusList;
+
     public void setCode(String code) {
         this.code = code;
     }
@@ -99,6 +108,22 @@ public class Message extends ABaseDO {
 
     public String getProjectName() {
         return projectName;
+    }
+
+    public String getCompanyCode() {
+        return companyCode;
+    }
+
+    public void setCompanyCode(String companyCode) {
+        this.companyCode = companyCode;
+    }
+
+    public String getCompanyName() {
+        return companyName;
+    }
+
+    public void setCompanyName(String companyName) {
+        this.companyName = companyName;
     }
 
     public void setBankCode(String bankCode) {
@@ -243,6 +268,14 @@ public class Message extends ABaseDO {
 
     public void setHandleName(String handleName) {
         this.handleName = handleName;
+    }
+
+    public List<String> getStatusList() {
+        return statusList;
+    }
+
+    public void setStatusList(List<String> statusList) {
+        this.statusList = statusList;
     }
 
 }

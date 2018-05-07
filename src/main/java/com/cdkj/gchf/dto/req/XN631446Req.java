@@ -25,8 +25,17 @@ public class XN631446Req extends APageReq {
     // （选填）工资所属月份
     private String month;
 
-    // （选填）项目编号
+    // （选填）工程编号
     private String projectCode;
+
+    // （选填）工程名称
+    private String projectName;
+
+    // （选填）公司编号
+    private String companyCode;
+
+    // （选填）公司名称
+    private String companyName;
 
     // （选填）员工编号
     private String staffCode;
@@ -88,6 +97,30 @@ public class XN631446Req extends APageReq {
 
     public void setStatus(String status) {
         this.status = status;
+    }
+
+    public String getProjectName() {
+        return projectName;
+    }
+
+    public void setProjectName(String projectName) {
+        this.projectName = projectName;
+    }
+
+    public String getCompanyCode() {
+        return companyCode;
+    }
+
+    public void setCompanyCode(String companyCode) {
+        this.companyCode = companyCode;
+    }
+
+    public String getCompanyName() {
+        return companyName;
+    }
+
+    public void setCompanyName(String companyName) {
+        this.companyName = companyName;
     }
 
 }

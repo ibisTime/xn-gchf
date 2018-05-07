@@ -4,6 +4,8 @@
 <mapper namespace="com.cdkj.gchf.dao.IMessageDAO">
 	<resultMap id="message_DB_Result" type="message">
 		<result column="code" property="code" />
+		<result column="company_code" property="companyCode" />
+		<result column="company_name" property="companyName" />
 		<result column="project_code" property="projectCode" />
 		<result column="project_name" property="projectName" />
 		<result column="bank_code" property="bankCode" />
@@ -27,23 +29,28 @@
 			<if test="code != null and code != '' ">
 				AND t.code = #{code}
 			</if>
+			<if test="companyCode != null and companyCode != '' ">
+				AND t.company_code = #{companyCode}
+			</if>
+			<if test="companyName != null and companyName != '' ">
+				AND t.company_name like "%"#{companyName}"%"
+			</if>
 			<if test="projectCode != null and projectCode != '' ">
 				AND t.project_code = #{projectCode}
 			</if>
+			<if test="projectName != null and projectName != '' ">
+				AND t.project_name like "%"#{projectName}"%"
+			</if>
+			
 			<if test="status != null and status != '' ">
 				AND t.status = #{status}
 			</if>
-			<choose>
-				<when test="status == '1,2' ">
-					AND t.status = '1' OR t.status = '2'
-				</when>
-				<when test="status != null and status != '' ">
-					AND t.status = #{status}
-				</when>
-				<otherwise>
-					AND 1 = 1
-				</otherwise>
-			</choose>
+			<if test="statusList != null and statusList != '' ">
+				AND t.status IN
+				<foreach collection="statusList" item="item" index="index"  open="(" separator="," close=")">
+					#{item}
+				</foreach>
+			</if>
 			<if test="sender != null and sender != '' ">
 				AND t.sender = #{sender}
 			</if>
@@ -51,9 +58,6 @@
 				AND t.handler = #{handler}
 			</if>
 			
-			<if test="keyword != null and keyword != '' ">
-				AND t.project_name like "%"#{keyword}"%" OR t.bank_name like "%"#{keyword}"%" OR t.title like "%"#{keyword}"%"
-			</if>
 		</trim>
 	</sql>
 	<select id="select_message" parameterType="message" resultMap="message_DB_Result">
@@ -183,6 +187,7 @@
 		UPDATE thf_message
 		SET
 		download = #{download}
+		,status = #{status}
 		WHERE code = #{code}
 	</update>
 

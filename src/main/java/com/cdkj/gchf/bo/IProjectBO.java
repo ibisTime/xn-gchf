@@ -31,4 +31,6 @@ public interface IProjectBO extends IPaginableBO<Project> {
 
     public void restartProject(Project data, String updater, String remark);
 
+    public List<String> queryCompanyList(Project condition);
+
 }

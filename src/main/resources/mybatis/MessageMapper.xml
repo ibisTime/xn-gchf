@@ -16,6 +16,9 @@
 		<result column="content" property="content" />
 		<result column="create_datetime" property="createDatetime" />
 		<result column="download" property="download" />
+		<result column="back_download" property="backDownload" />
+		
+		
 		<result column="status" property="status" />
 		<result column="sender" property="sender" />
 		<result column="send_datetime" property="sendDatetime" />
@@ -42,6 +45,12 @@
 				AND t.project_name like "%"#{projectName}"%"
 			</if>
 			
+			<if test="bankName != null and bankName != '' ">
+				AND t.bank_name = #{bankName}
+			</if>
+			<if test="subbranch != null and subbranch != '' ">
+				AND t.subbranch = #{subbranch}
+			</if>
 			<if test="status != null and status != '' ">
 				AND t.status = #{status}
 			</if>
@@ -63,6 +72,8 @@
 	<select id="select_message" parameterType="message" resultMap="message_DB_Result">
 		SELECT
 		t.code
+		,t.company_code
+		,t.company_name
 		,t.project_code
 		,t.project_name
 		,t.bank_code
@@ -73,6 +84,7 @@
 		,t.content
 		,t.create_datetime
 		,t.download
+		,t.back_download
 		,t.status
 		,t.sender
 		,t.send_datetime
@@ -100,6 +112,8 @@
 		INSERT INTO
 		thf_message(
 		code
+		,company_code
+		,company_name
 		,project_code
 		,project_name
 		,bank_code
@@ -120,6 +134,8 @@
 		)
 		VALUES(
 		#{code}
+		,#{companyCode}
+		,#{companyName}
 		,#{projectCode}
 		,#{projectName}
 		,#{bankCode}

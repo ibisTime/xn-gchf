@@ -25,7 +25,7 @@ public enum EGeneratePrefix {
             "BK", "工资卡编号"), Ccontract("CC", "用工合同"), Attendance("AT", "考勤表"),
 
     Salary("SA", "工资条"), Message("M", "代发消息"), SalaryLog("SA",
-            "工资日志"), Report("R", "统计报表");
+            "工资日志"), Report("R", "统计报表"), StaffLog("SL", "员工记录");
 
     public static Map<String, EGeneratePrefix> getMap() {
         Map<String, EGeneratePrefix> map = new HashMap<String, EGeneratePrefix>();

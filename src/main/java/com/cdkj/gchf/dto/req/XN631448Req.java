@@ -1,5 +1,7 @@
 package com.cdkj.gchf.dto.req;
 
+import java.util.List;
+
 /**
  * 分页查询累积薪资
  * @author: nyc 
@@ -36,6 +38,9 @@ public class XN631448Req extends APageReq {
 
     // （选填）状态
     private String status;
+
+    // （选填）状态List
+    private List<String> statusList;
 
     // （选填）信息编号
     private String messageCode;
@@ -110,6 +115,14 @@ public class XN631448Req extends APageReq {
 
     public void setCompanyName(String companyName) {
         this.companyName = companyName;
+    }
+
+    public List<String> getStatusList() {
+        return statusList;
+    }
+
+    public void setStatusList(List<String> statusList) {
+        this.statusList = statusList;
     }
 
 }

@@ -8,11 +8,14 @@
 		<result column="project_name" property="projectName" />
 		<result column="staff_code" property="staffCode" />
 		<result column="staff_mobile" property="staffMobile" />
+		<result column="company_code" property="companyCode" />
+		<result column="company_name" property="companyName" />
 		
 		<result column="type" property="type" />
 		<result column="position" property="position" />
 		<result column="up_user" property="upUser" />
 		<result column="salary" property="salary" />
+		<result column="cut_amount" property="cutAmount" />
 		<result column="status" property="status" />
 		
 		<result column="join_datetime" property="joinDatetime" />
@@ -31,6 +34,12 @@
 		<trim prefix="WHERE" prefixOverrides="AND | OR">
 			<if test="code != null and code != '' ">
 				AND t.code = #{code}
+			</if>
+			<if test="companyCode != null and companyCode != '' ">
+				AND t.company_code = #{companyCode}
+			</if>
+			<if test="companyName != null and companyName != '' ">
+				AND t.company_name = #{companyName}
 			</if>
 			<if test="projectCode != null and projectCode != '' ">
 				AND t.project_code = #{projectCode}
@@ -63,6 +72,8 @@
 	<select id="select_employ" parameterType="employ" resultMap="employ_DB_Result">
 		SELECT
 		t.code
+		,t.company_code
+		,t.company_name
 		,t.project_code
 		,t.project_name
 		,t.staff_code
@@ -72,6 +83,7 @@
 		,t.position
 		,t.up_user
 		,t.salary
+		,t.cut_amount
 		,t.status
 		
 		,t.join_datetime
@@ -112,6 +124,8 @@
 		INSERT INTO
 		thf_employ(
 		code
+		,company_code
+		,company_name
 		,project_code
 		,project_name
 		,staff_code
@@ -120,6 +134,7 @@
 		,position
 		,up_user
 		,salary
+		,cut_amount
 		,status
 		,join_datetime
 		,updater
@@ -128,6 +143,8 @@
 		)
 		VALUES(
 		#{code}
+		,#{companyCode}
+		,#{companyName}
 		,#{projectCode}
 		,#{projectName}
 		,#{staffCode}
@@ -136,6 +153,7 @@
 		,#{position}
 		,#{upUser}
 		,#{salary}
+		,#{cutAmount}
 		,#{status}
 		,#{joinDatetime}
 		,#{updater}
@@ -155,6 +173,7 @@
 		,position = #{position}
 		,up_user = #{upUser}
 		,salary = #{salary}
+		,cut_amount = #{cutAmount}
 		,status = #{status}
 		,join_datetime = #{joinDatetime}
 		,leaving_datetime = #{leavingDatetime}
@@ -196,6 +215,13 @@
 		UPDATE thf_employ
 		SET
 		status = #{status}
+		WHERE code = #{code}
+	</update>
+	
+	<update id="update_leavingDays" parameterType="employ">
+		UPDATE thf_employ
+		SET
+		leaving_days = #{leavingDays}
 		WHERE code = #{code}
 	</update>
 

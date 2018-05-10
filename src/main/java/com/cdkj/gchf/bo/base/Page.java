@@ -37,6 +37,9 @@ public class Page<T> implements Paginable<T> {
         this(pageNO, DEFAULT_PAGE_SIZE, totalCount);
     }
 
+    public Page() {
+    }
+
     public int getPageNO() {
         return pageNO;
     }

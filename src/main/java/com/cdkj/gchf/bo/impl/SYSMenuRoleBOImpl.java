@@ -27,8 +27,8 @@ import com.cdkj.gchf.domain.SYSMenuRole;
  * @history:
  */
 @Component
-public class SYSMenuRoleBOImpl extends PaginableBOImpl<SYSMenuRole> implements
-        ISYSMenuRoleBO {
+public class SYSMenuRoleBOImpl extends PaginableBOImpl<SYSMenuRole>
+        implements ISYSMenuRoleBO {
 
     @Autowired
     private ISYSMenuRoleDAO sysMenuRoleDAO;
@@ -58,4 +58,5 @@ public class SYSMenuRoleBOImpl extends PaginableBOImpl<SYSMenuRole> implements
     public List<SYSMenu> querySYSMenuList(SYSMenuRole data) {
         return sysMenuRoleDAO.selectSYSMenuList(data);
     }
+
 }

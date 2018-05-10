@@ -16,7 +16,15 @@
 		<result column="create_datetime" property="createDatetime" />
 		<result column="role_code" property="roleCode" />
 		
+		<result column="company_code" property="companyCode" />
+		<result column="company_name" property="companyName" />
 		<result column="department_code" property="departmentCode" />
+		<result column="province" property="province" />
+		<result column="city" property="city" />
+		<result column="area" property="area" />
+		
+		<result column="bank_name" property="bankName" />
+		<result column="subbranch" property="subbranch" />
 		<result column="updater" property="updater" />
 		<result column="update_datetime" property="updateDatetime" />
 		<result column="status" property="status" />
@@ -40,9 +48,34 @@
 			<if test="loginPwd != null and loginPwd != '' ">
 				AND t.login_pwd = #{loginPwd}
 			</if>
-			<if test="roleCode != null and roleCode != '' ">
-				AND t.role_code = #{roleCode}
+			
+			<if test="province != null and province != '' ">
+				AND t.province = #{province}
 			</if>
+			<if test="city != null and city != '' ">
+				AND t.city = #{city}
+			</if>
+			<if test="area != null and area != '' ">
+				AND t.area = #{area}
+			</if>
+			<if test="bankName != null and bankName != '' ">
+				AND t.bank_name = #{bankName}
+			</if>
+			<if test="subbranch != null and subbranch != '' ">
+				AND t.subbranch = #{subbranch}
+			</if>
+			
+			<if test="companyCode != null and companyCode != '' ">
+				AND t.company_code = #{companyCode}
+			</if>
+			<if test="companyName != null and companyName != '' ">
+				AND t.company_name like "%"#{companyName}"%"
+			</if>
+			
+			<if test="departmentCode != null and departmentCode != '' ">
+				AND t.department_code = #{departmentCode}
+			</if>
+			
 			<if test="keyword != null and keyword != '' ">
 				AND t.login_name like "%"#{keyword}"%" OR  t.mobile like "%"#{keyword}"%"
 			</if>
@@ -68,7 +101,15 @@
 		,t.user_refree
 		,t.create_datetime
 		,t.role_code
+		,t.company_code
+		,t.company_name
 		,t.department_code
+		
+		,t.province
+		,t.city
+		,t.area
+		,t.bank_name
+		,t.subbranch
 		,t.updater
 		
 		,t.update_datetime
@@ -106,7 +147,14 @@
 		,create_datetime
 		,role_code
 		
-		,department_code
+		,company_code
+		,company_name
+		,city
+		,area
+		,bankName
+		,subbranch
+		
+		,province
 		,updater
 		,update_datetime
 		,status
@@ -126,7 +174,14 @@
 		,#{createDatetime}
 		,#{roleCode}
 		
-		,#{departmentCode}
+		,#{companyCode}
+		,#{companyName}
+		,#{province}
+		,#{city}
+		,#{area}
+		
+		,#{bankName}
+		,#{subbranch}
 		,#{updater}
 		,#{updateDatetime}
 		,#{status}

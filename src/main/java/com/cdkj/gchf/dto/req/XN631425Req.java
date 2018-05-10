@@ -28,6 +28,15 @@ public class XN631425Req extends APageReq {
     // （选填）更新人
     private String updater;
 
+    // （选填）公司编号
+    private String companyCode;
+
+    // （选填）公司名称
+    private String companyName;
+
+    // （选填）用户类型
+    private String kind;
+
     public String getBankCode() {
         return bankCode;
     }
@@ -66,6 +75,30 @@ public class XN631425Req extends APageReq {
 
     public void setUpdater(String updater) {
         this.updater = updater;
+    }
+
+    public String getCompanyCode() {
+        return companyCode;
+    }
+
+    public void setCompanyCode(String companyCode) {
+        this.companyCode = companyCode;
+    }
+
+    public String getCompanyName() {
+        return companyName;
+    }
+
+    public void setCompanyName(String companyName) {
+        this.companyName = companyName;
+    }
+
+    public String getKind() {
+        return kind;
+    }
+
+    public void setKind(String kind) {
+        this.kind = kind;
     }
 
 }

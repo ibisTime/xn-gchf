@@ -10,7 +10,10 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.cdkj.gchf.ao.IUserAO;
+import com.cdkj.gchf.bo.ICompanyBO;
 import com.cdkj.gchf.bo.IDepartmentBO;
+import com.cdkj.gchf.bo.IProjectBO;
+import com.cdkj.gchf.bo.ISYSMenuRoleBO;
 import com.cdkj.gchf.bo.ISYSRoleBO;
 import com.cdkj.gchf.bo.ISmsOutBO;
 import com.cdkj.gchf.bo.IUserBO;
@@ -20,7 +23,10 @@ import com.cdkj.gchf.common.MD5Util;
 import com.cdkj.gchf.common.PhoneUtil;
 import com.cdkj.gchf.common.PwdUtil;
 import com.cdkj.gchf.core.OrderNoGenerater;
+import com.cdkj.gchf.domain.Company;
 import com.cdkj.gchf.domain.Department;
+import com.cdkj.gchf.domain.Project;
+import com.cdkj.gchf.domain.SYSMenuRole;
 import com.cdkj.gchf.domain.SYSRole;
 import com.cdkj.gchf.domain.User;
 import com.cdkj.gchf.dto.req.XN631070Req;
@@ -39,10 +45,19 @@ public class UserAOImpl implements IUserAO {
     private ISYSRoleBO sysRoleBO;
 
     @Autowired
+    private ISYSMenuRoleBO sysMenuRoleBO;
+
+    @Autowired
     private IDepartmentBO departmentBO;
 
     @Autowired
+    private ICompanyBO companyBO;
+
+    @Autowired
     private ISmsOutBO smsOutBO;
+
+    @Autowired
+    private IProjectBO projectBO;
 
     @Override
     public String doAddUser(XN631070Req req) {
@@ -55,8 +70,9 @@ public class UserAOImpl implements IUserAO {
 
         data.setLoginName(req.getLoginName());
         data.setType(req.getType());
+
         data.setRealName(req.getRealName());
-        data.setLoginName(req.getMobile());
+        data.setLoginName(req.getLoginName());
         data.setMobile(req.getMobile());
 
         data.setLoginPwd(MD5Util.md5(req.getLoginPwd()));
@@ -64,8 +80,39 @@ public class UserAOImpl implements IUserAO {
             PwdUtil.calculateSecurityLevel(req.getLoginPwd()));
         data.setCreateDatetime(new Date());
         data.setStatus(EUserStatus.NORMAL.getCode());
+        if (EUserKind.Owner.getCode().equals(req.getType())) {
+            Company company = companyBO.getCompany(req.getCompanyCode());
+            data.setCompanyCode(company.getCode());
+            data.setCompanyName(company.getName());
+        }
+
+        data.setProvince(req.getProvince());
+        data.setCity(req.getCity());
+        data.setArea(req.getArea());
+
+        data.setBankName(req.getBankName());
+        data.setSubbranch(req.getSubbranch());
         data.setRemark(req.getRemark());
 
+        // 给用户分配角色
+        SYSRole condition = new SYSRole();
+        condition.setType(req.getType());
+        List<SYSRole> list = sysRoleBO.querySYSRoleList(condition);
+        SYSRole role = list.get(0);
+        String sysRoleCode = role.getCode();
+        if (list.size() > 1) {
+            // 获取最大角色
+            long count = 0L;
+            for (SYSRole sysRole : list) {
+                SYSMenuRole sysMenuRole = new SYSMenuRole();
+                sysMenuRole.setRoleCode(sysRole.getCode());
+                if (sysMenuRoleBO.getTotalCount(sysMenuRole) > count) {
+                    count = sysMenuRoleBO.getTotalCount(sysMenuRole);
+                    sysRoleCode = sysRole.getCode();
+                }
+            }
+        }
+        data.setRoleCode(sysRoleCode);
         userBO.saveUser(data);
         return userId;
     }
@@ -93,6 +140,7 @@ public class UserAOImpl implements IUserAO {
     public void doChangeMoblie(String userId, String newMobile, String updater,
             String remark) {
         PhoneUtil.checkMobile(newMobile);
+        userBO.isMobileExist(newMobile);
         User user = userBO.getUser(userId);
         if (user == null) {
             throw new BizException("xn000000", "用户不存在");
@@ -168,12 +216,12 @@ public class UserAOImpl implements IUserAO {
             userStatus = EUserStatus.NORMAL;
         }
         userBO.refreshStatus(userId, userStatus, updater, remark);
-        // if (!EUserKind.Plat.getCode().equals(user.getKind())
-        // && PhoneUtil.isMobile(mobile)) {
-        // // 发送短信
-        // smsOutBO.sendSmsOut(mobile,
-        // "尊敬的" + PhoneUtil.hideMobile(mobile) + smsContent, "631075");
-        // }
+        if (!EUserKind.Plat.getCode().equals(user.getType())
+                && StringUtils.isNotBlank(user.getMobile())) {
+            // 发送短信
+            smsOutBO.sendSmsOut(mobile,
+                "尊敬的" + PhoneUtil.hideMobile(mobile) + smsContent, "631075");
+        }
     }
 
     @Override
@@ -211,13 +259,12 @@ public class UserAOImpl implements IUserAO {
                         + "，请联系工作人员");
         }
         // 短信验证码是否正确
-        // smsOutBO.checkCaptcha(mobile, smsCaptcha, "805063");
+        smsOutBO.checkCaptcha(mobile, smsCaptcha, "805063");
         userBO.refreshLoginPwd(user, newLoginPwd);
         // // 发送短信
-        // smsOutBO.sendSmsOut(mobile,
-        // "尊敬的" + PhoneUtil.hideMobile(mobile)
-        // + "用户，您的登录密码重置成功。请妥善保管您的账户相关信息。",
-        // "805063", companyCode, systemCode);
+        smsOutBO.sendSmsOut(mobile, "尊敬的" + PhoneUtil.hideMobile(mobile)
+                + "用户，您的登录密码重置成功。请妥善保管您的账户相关信息。",
+            "805063");
     }
 
     @Override
@@ -271,13 +318,14 @@ public class UserAOImpl implements IUserAO {
     @Override
     public User getUser(String code) {
         User data = userBO.getUser(code);
-        if (!EUser.ADMIN.getCode().equals(data.getLoginName())) {
-            if (StringUtils.isNotBlank(data.getDepartmentCode())) {
-                Department department = departmentBO
-                    .getDepartment(data.getDepartmentCode());
-                data.setCompanyCode(department.getCompanyCode());
-                data.setDepartmentName(department.getName());
-            }
+        if (EUserKind.Supervise.getCode().equals(data.getType())) {
+            Project condition = new Project();
+            condition.setProvince(data.getProvince());
+            condition.setCity(data.getCity());
+            condition.setArea(data.getArea());
+            List<String> companyCodeList = projectBO
+                .queryCompanyList(condition);
+            data.setCompanyCodeList(companyCodeList);
         }
         return data;
     }

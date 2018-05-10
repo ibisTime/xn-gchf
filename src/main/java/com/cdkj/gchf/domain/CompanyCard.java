@@ -62,6 +62,9 @@ public class CompanyCard extends ABaseDO {
 
     private String updateName;
 
+    // 用户类型
+    private String kind;
+
     public void setCode(String code) {
         this.code = code;
     }
@@ -188,6 +191,14 @@ public class CompanyCard extends ABaseDO {
 
     public void setUpdateName(String updateName) {
         this.updateName = updateName;
+    }
+
+    public String getKind() {
+        return kind;
+    }
+
+    public void setKind(String kind) {
+        this.kind = kind;
     }
 
 }

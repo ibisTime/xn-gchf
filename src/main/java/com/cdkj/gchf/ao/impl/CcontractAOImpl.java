@@ -1,8 +1,10 @@
 package com.cdkj.gchf.ao.impl;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -11,6 +13,7 @@ import com.cdkj.gchf.bo.ICcontractBO;
 import com.cdkj.gchf.bo.IProjectBO;
 import com.cdkj.gchf.bo.IStaffBO;
 import com.cdkj.gchf.bo.IUserBO;
+import com.cdkj.gchf.bo.base.Page;
 import com.cdkj.gchf.bo.base.Paginable;
 import com.cdkj.gchf.common.DateUtil;
 import com.cdkj.gchf.core.OrderNoGenerater;
@@ -22,6 +25,7 @@ import com.cdkj.gchf.dto.req.XN631400Req;
 import com.cdkj.gchf.dto.req.XN631402Req;
 import com.cdkj.gchf.enums.EGeneratePrefix;
 import com.cdkj.gchf.enums.EUser;
+import com.cdkj.gchf.enums.EUserKind;
 
 @Service
 public class CcontractAOImpl implements ICcontractAO {
@@ -85,24 +89,35 @@ public class CcontractAOImpl implements ICcontractAO {
     @Override
     public Paginable<Ccontract> queryCcontractPage(int start, int limit,
             Ccontract condition) {
-        Paginable<Ccontract> page = ccontractBO.getPaginable(start, limit,
-            condition);
-        List<Ccontract> list = page.getList();
+        List<Ccontract> list = new ArrayList<Ccontract>();
+        Paginable<Ccontract> page = new Page<Ccontract>();
+        if (EUserKind.Owner.getCode().equals(condition.getKind())) {
+            if (StringUtils.isBlank(condition.getCompanyCode())) {
+                page.setList(list);
+                return page;
+            }
+        }
+        page = ccontractBO.getPaginable(start, limit, condition);
         String updateName = null;
-        for (Ccontract ccontract : list) {
+        for (Ccontract ccontract : page.getList()) {
             Staff staff = staffBO.getStaff(ccontract.getStaffCode());
             ccontract.setStaff(staff);
             updateName = getName(ccontract.getUpdater());
             ccontract.setUpdateName(updateName);
         }
-        page.setList(list);
 
         return page;
     }
 
     @Override
     public List<Ccontract> queryCcontractList(Ccontract condition) {
-        List<Ccontract> list = ccontractBO.queryCcontractList(condition);
+        List<Ccontract> list = null;
+        if (EUserKind.Owner.getCode().equals(condition.getKind())) {
+            if (StringUtils.isBlank(condition.getCompanyCode())) {
+                return list;
+            }
+        }
+        list = ccontractBO.queryCcontractList(condition);
         String updateName = null;
         for (Ccontract ccontract : list) {
             Staff staff = staffBO.getStaff(ccontract.getStaffCode());
@@ -125,9 +140,12 @@ public class CcontractAOImpl implements ICcontractAO {
 
     private String getName(String userId) {
         User user = userBO.getUserName(userId);
-        String name = EUser.ADMIN.getCode();
-        if (!EUser.ADMIN.getCode().equals(user.getLoginName())) {
-            name = user.getRealName();
+        String name = null;
+        if (user != null) {
+            name = EUser.ADMIN.getCode();
+            if (!EUser.ADMIN.getCode().equals(user.getLoginName())) {
+                name = user.getRealName();
+            }
         }
         return name;
 

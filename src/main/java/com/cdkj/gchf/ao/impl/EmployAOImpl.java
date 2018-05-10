@@ -11,8 +11,10 @@ import com.cdkj.gchf.bo.IEmployBO;
 import com.cdkj.gchf.bo.IProjectBO;
 import com.cdkj.gchf.bo.IReportBO;
 import com.cdkj.gchf.bo.IStaffBO;
+import com.cdkj.gchf.bo.IStaffLogBO;
 import com.cdkj.gchf.bo.IUserBO;
 import com.cdkj.gchf.bo.base.Paginable;
+import com.cdkj.gchf.common.AmountUtil;
 import com.cdkj.gchf.common.DateUtil;
 import com.cdkj.gchf.core.OrderNoGenerater;
 import com.cdkj.gchf.core.StringValidater;
@@ -42,6 +44,9 @@ public class EmployAOImpl implements IEmployAO {
     private IStaffBO staffBO;
 
     @Autowired
+    private IStaffLogBO staffLogBO;
+
+    @Autowired
     private IUserBO userBO;
 
     @Autowired
@@ -59,7 +64,8 @@ public class EmployAOImpl implements IEmployAO {
         if (EProjectStatus.End.getCode().equals(project.getStatus())) {
             throw new BizException("xn0000", "该项目已经结束");
         }
-
+        data.setCompanyCode(project.getCompanyCode());
+        data.setCompanyName(project.getCompanyName());
         data.setProjectName(project.getName());
         data.setStaffCode(req.getStaffCode());
 
@@ -68,6 +74,7 @@ public class EmployAOImpl implements IEmployAO {
         data.setType(req.getType());
         data.setPosition(req.getPosition());
         data.setSalary(StringValidater.toLong(req.getSalary()));
+        data.setCutAmount(StringValidater.toLong(req.getCutAmount()));
 
         userBO.getUser(req.getUpUser());
         data.setUpUser(req.getUpUser());
@@ -81,6 +88,8 @@ public class EmployAOImpl implements IEmployAO {
         // 计入累积入职
         Report report = reportBO.getReportByProject(project.getCode());
         reportBO.staffIn(report);
+        staffLogBO.saveStaffLog(data, staff.getName(), project.getCompanyCode(),
+            project.getCompanyName(), project.getCode(), project.getName());
         return code;
     }
 
@@ -108,7 +117,7 @@ public class EmployAOImpl implements IEmployAO {
         reportBO.refreshLeavingDays(report);
 
         Project project = projectBO.getProject(data.getProjectCode());
-        // 统计请假天速
+        // 统计请假天数
         double leadingDays = data.getLeavingDays() + DateUtil.getDays(
             project.getStartDatetime(), project.getEndDatetime(), start, end);
         data.setLeavingDays(leadingDays);
@@ -140,6 +149,11 @@ public class EmployAOImpl implements IEmployAO {
         // 更新目前在职人数
         report.setStaffOn(report.getStaffOn() - 1);
         reportBO.refreshStaffOn(report);
+        // 修改下月预发工资
+        long daySalay = data.getSalary() / DateUtil.getMonthDays();
+        report.setNextMonthSalary(report.getNextMonthSalary()
+                - AmountUtil.mul(daySalay, data.getLeavingDays()));
+        reportBO.refreshNextMonthSalary(report);
 
     }
 
@@ -233,5 +247,12 @@ public class EmployAOImpl implements IEmployAO {
         }
 
     }
+
+    // private Long getSalay(Long salay, String leavingDate) {
+    // String date[] = leavingDate.split("-");
+    // int monthDays = DateUtil.getMonthDays();
+    // int workDays = StringValidater.toInteger(date[2]);
+    // return null;
+    // }
 
 }

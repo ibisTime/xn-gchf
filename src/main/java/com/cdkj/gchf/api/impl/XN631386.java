@@ -32,9 +32,11 @@ public class XN631386 extends AProcessor {
         condition.setUpdater(req.getUpdater());
         condition.setUpdateDatetime(new Date());
         condition.setKeyword(req.getKeyword());
+        condition.setKind(req.getKind());
+
         String column = req.getOrderColumn();
         if (StringUtils.isBlank(column)) {
-            column = progressAO.DEFAULT_ORDER_COLUMN;
+            column = IProgressAO.DEFAULT_ORDER_COLUMN;
         }
         condition.setOrder(column, req.getOrderDir());
         return progressAO.queryProgressList(condition);

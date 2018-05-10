@@ -11,7 +11,7 @@ public interface ISalaryDAO extends IBaseDAO<Salary> {
 
     void update(Salary data);
 
-    void approveSalary(Salary data);
+    void addMessageCode(Salary data);
 
     void payAmount(Salary data);
 
@@ -21,5 +21,7 @@ public interface ISalaryDAO extends IBaseDAO<Salary> {
 
     List<Salary> queryTotalSalaryPage(int pageNO, int pageSize,
             Salary condition);
+
+    void cutAmount(Salary data);
 
 }

@@ -1,7 +1,5 @@
 package com.cdkj.gchf.dto.req;
 
-import org.hibernate.validator.constraints.NotBlank;
-
 /**
  * 分页查合同
  * @author: nyc 
@@ -19,11 +17,19 @@ public class XN631405Req extends APageReq {
     private String keyword;
 
     // （必填）工程编号
-    @NotBlank(message = "工程编号不能为空")
     private String projectCode;
 
     // （选填）更新人
     private String updater;
+
+    // （选填）公司编号
+    private String companyCode;
+
+    // （选填）公司名称
+    private String companyName;
+
+    // （选填）用户类型
+    private String kind;
 
     public String getKeyword() {
         return keyword;
@@ -47,6 +53,30 @@ public class XN631405Req extends APageReq {
 
     public void setUpdater(String updater) {
         this.updater = updater;
+    }
+
+    public String getCompanyCode() {
+        return companyCode;
+    }
+
+    public void setCompanyCode(String companyCode) {
+        this.companyCode = companyCode;
+    }
+
+    public String getCompanyName() {
+        return companyName;
+    }
+
+    public void setCompanyName(String companyName) {
+        this.companyName = companyName;
+    }
+
+    public String getKind() {
+        return kind;
+    }
+
+    public void setKind(String kind) {
+        this.kind = kind;
     }
 
 }

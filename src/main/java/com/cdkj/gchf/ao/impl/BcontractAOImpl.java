@@ -35,8 +35,6 @@ public class BcontractAOImpl implements IBcontractAO {
         PhoneUtil.checkMobile(req.getBmobile());
         Bcontract data = new Bcontract();
         Company company = companyBO.getCompany(req.getCompanyCode());
-        data.setCompanyCode(req.getCompanyCode());
-        data.setCompanyName(company.getName());
         data.setProjectCode(req.getProjectCode());
         data.setProjectName(
             projectBO.getProject(req.getProjectCode()).getName());

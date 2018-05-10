@@ -55,6 +55,9 @@ public class Message extends ABaseDO {
     // 下载次数
     private Integer download;
 
+    // 反馈消息下载次数
+    private Integer backDownload;
+
     // 状态
     private String status;
 
@@ -83,6 +86,8 @@ public class Message extends ABaseDO {
     private String sendName;
 
     private String handleName;
+
+    private String kind;
 
     private List<String> statusList;
 
@@ -198,6 +203,14 @@ public class Message extends ABaseDO {
         return status;
     }
 
+    public String getKind() {
+        return kind;
+    }
+
+    public void setKind(String kind) {
+        this.kind = kind;
+    }
+
     public void setSender(String sender) {
         this.sender = sender;
     }
@@ -276,6 +289,14 @@ public class Message extends ABaseDO {
 
     public void setStatusList(List<String> statusList) {
         this.statusList = statusList;
+    }
+
+    public Integer getBackDownload() {
+        return backDownload;
+    }
+
+    public void setBackDownload(Integer backDownload) {
+        this.backDownload = backDownload;
     }
 
 }

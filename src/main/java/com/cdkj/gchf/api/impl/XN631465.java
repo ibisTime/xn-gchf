@@ -6,7 +6,6 @@ import com.cdkj.gchf.ao.IEmployAO;
 import com.cdkj.gchf.ao.IProgressAO;
 import com.cdkj.gchf.api.AProcessor;
 import com.cdkj.gchf.common.JsonUtil;
-import com.cdkj.gchf.core.ObjValidater;
 import com.cdkj.gchf.core.StringValidater;
 import com.cdkj.gchf.domain.Employ;
 import com.cdkj.gchf.dto.req.XN631465Req;
@@ -54,7 +53,6 @@ public class XN631465 extends AProcessor {
             throws ParaException {
         req = JsonUtil.json2Bean(inputparams, XN631465Req.class);
         StringValidater.validateNumber(req.getStart(), req.getLimit());
-        ObjValidater.validateReq(req);
     }
 
 }

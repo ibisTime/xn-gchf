@@ -42,6 +42,15 @@ public class XN631435Req extends APageReq {
     // （选填）关键字
     private String keyword;
 
+    // （选填）用户类型
+    private String kind;
+
+    // （选填）银行名称
+    private String bankName;
+
+    // （选填）户名
+    private String subbranch;
+
     public String getProjectCode() {
         return projectCode;
     }
@@ -112,6 +121,30 @@ public class XN631435Req extends APageReq {
 
     public void setCompanyName(String companyName) {
         this.companyName = companyName;
+    }
+
+    public String getKind() {
+        return kind;
+    }
+
+    public void setKind(String kind) {
+        this.kind = kind;
+    }
+
+    public String getBankName() {
+        return bankName;
+    }
+
+    public void setBankName(String bankName) {
+        this.bankName = bankName;
+    }
+
+    public String getSubbranch() {
+        return subbranch;
+    }
+
+    public void setSubbranch(String subbranch) {
+        this.subbranch = subbranch;
     }
 
 }

@@ -18,10 +18,16 @@ public class Employ extends ABaseDO {
     // 编号
     private String code;
 
+    // 公司编号
+    private String companyCode;
+
+    // 公司编号
+    private String companyName;
+
     // 项目编号
     private String projectCode;
 
-    // 项目名称
+    // 项目编号
     private String projectName;
 
     // 员工编号
@@ -42,6 +48,9 @@ public class Employ extends ABaseDO {
     // 薪酬
     private Long salary;
 
+    // 迟到早退扣款金额
+    private Long cutAmount;
+
     // 状态
     private String status;
 
@@ -60,7 +69,7 @@ public class Employ extends ABaseDO {
     // 本月请假天数
     private Double leavingDays;
 
-    // 累积构请假天数
+    // 累积请假天数
     private Double totalLeavingDays;
 
     // 更新人
@@ -163,6 +172,14 @@ public class Employ extends ABaseDO {
 
     public void setUpdater(String updater) {
         this.updater = updater;
+    }
+
+    public Long getCutAmount() {
+        return cutAmount;
+    }
+
+    public void setCutAmount(Long cutAmount) {
+        this.cutAmount = cutAmount;
     }
 
     public Date getUpdateDatetime() {
@@ -283,6 +300,22 @@ public class Employ extends ABaseDO {
 
     public void setTotalLeavingDays(Double totalLeavingDays) {
         this.totalLeavingDays = totalLeavingDays;
+    }
+
+    public String getCompanyCode() {
+        return companyCode;
+    }
+
+    public void setCompanyCode(String companyCode) {
+        this.companyCode = companyCode;
+    }
+
+    public String getCompanyName() {
+        return companyName;
+    }
+
+    public void setCompanyName(String companyName) {
+        this.companyName = companyName;
     }
 
 }

@@ -11,9 +11,11 @@ public class XN631046Req {
     // 角色名称(选填)
     private String name;
 
-
     // 更新人(选填)
     private String updater;
+
+    // 角色类型（选填）
+    private String type;
 
     public String getName() {
         return name;
@@ -23,7 +25,6 @@ public class XN631046Req {
         this.name = name;
     }
 
-
     public String getUpdater() {
         return updater;
     }
@@ -31,4 +32,13 @@ public class XN631046Req {
     public void setUpdater(String updater) {
         this.updater = updater;
     }
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
+    }
+
 }

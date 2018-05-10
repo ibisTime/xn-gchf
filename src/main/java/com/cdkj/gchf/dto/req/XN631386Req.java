@@ -11,6 +11,8 @@ public class XN631386Req extends APageReq {
 
     private String keyword;// 关键字
 
+    private String kind;
+
     public String getCompanyCode() {
         return companyCode;
     }
@@ -43,7 +45,12 @@ public class XN631386Req extends APageReq {
         this.keyword = keyword;
     }
 
-    public static long getSerialversionuid() {
-        return serialVersionUID;
+    public String getKind() {
+        return kind;
     }
+
+    public void setKind(String kind) {
+        this.kind = kind;
+    }
+
 }

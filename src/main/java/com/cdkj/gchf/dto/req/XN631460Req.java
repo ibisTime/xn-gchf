@@ -42,6 +42,10 @@ public class XN631460Req {
     @NotBlank(message = "更新不能为空")
     private String updater;
 
+    // （必填）扣款规则
+    @NotBlank(message = "扣款规则不能为空")
+    private String cutAmount;
+
     // （选填）备注
     private String remark;
 
@@ -115,6 +119,14 @@ public class XN631460Req {
 
     public void setRemark(String remark) {
         this.remark = remark;
+    }
+
+    public String getCutAmount() {
+        return cutAmount;
+    }
+
+    public void setCutAmount(String cutAmount) {
+        this.cutAmount = cutAmount;
     }
 
 }

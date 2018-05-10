@@ -127,6 +127,9 @@
 		<property name="paginableDAO" ref="bankCardDAOImpl"/>
 	</bean>	
 	
+	<bean id="staffLogBO" class="com.cdkj.gchf.bo.impl.StaffLogBOImpl">
+		<property name="paginableDAO" ref="staffLogDAOImpl"/>
+	</bean>	
 	
 </beans>
 

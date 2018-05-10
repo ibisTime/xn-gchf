@@ -3,7 +3,7 @@ package com.cdkj.gchf.dto.req;
 import org.hibernate.validator.constraints.NotBlank;
 
 /**
- *  修改工资卡
+ *  修改工资条
  * @author: nyc 
  * @since: 2018年4月29日 下午8:37:32 
  * @history:

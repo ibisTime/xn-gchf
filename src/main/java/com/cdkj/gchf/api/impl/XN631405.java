@@ -5,7 +5,6 @@ import org.apache.commons.lang3.StringUtils;
 import com.cdkj.gchf.ao.ICcontractAO;
 import com.cdkj.gchf.api.AProcessor;
 import com.cdkj.gchf.common.JsonUtil;
-import com.cdkj.gchf.core.ObjValidater;
 import com.cdkj.gchf.core.StringValidater;
 import com.cdkj.gchf.domain.Ccontract;
 import com.cdkj.gchf.dto.req.XN631405Req;
@@ -28,11 +27,14 @@ public class XN631405 extends AProcessor {
 
     @Override
     public Object doBusiness() throws BizException {
-
         Ccontract condition = new Ccontract();
         condition.setKeyword(req.getKeyword());
         condition.setUpdater(req.getUpdater());
         condition.setProjectCode(req.getProjectCode());
+        condition.setCompanyCode(req.getCompanyCode());
+        condition.setCompanyName(req.getCompanyName());
+
+        condition.setKind(req.getKind());
 
         String column = req.getOrderColumn();
         if (StringUtils.isBlank(column)) {
@@ -50,7 +52,6 @@ public class XN631405 extends AProcessor {
             throws ParaException {
         req = JsonUtil.json2Bean(inputparams, XN631405Req.class);
         StringValidater.validateNumber(req.getStart(), req.getLimit());
-        ObjValidater.validateReq(req);
     }
 
 }

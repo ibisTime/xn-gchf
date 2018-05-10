@@ -1,5 +1,7 @@
 package com.cdkj.gchf.dto.req;
 
+import java.util.List;
+
 /**
  * 列表查工资条
  * @author: nyc 
@@ -42,6 +44,11 @@ public class XN631446Req extends APageReq {
 
     // （选填）状态
     private String status;
+
+    // （选填）用户类型
+    private String kind;
+
+    private List<String> statusList;
 
     public String getApprover() {
         return approver;
@@ -121,6 +128,22 @@ public class XN631446Req extends APageReq {
 
     public void setCompanyName(String companyName) {
         this.companyName = companyName;
+    }
+
+    public String getKind() {
+        return kind;
+    }
+
+    public void setKind(String kind) {
+        this.kind = kind;
+    }
+
+    public List<String> getStatusList() {
+        return statusList;
+    }
+
+    public void setStatusList(List<String> statusList) {
+        this.statusList = statusList;
     }
 
 }

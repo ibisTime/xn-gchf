@@ -1,12 +1,13 @@
 package com.cdkj.gchf.domain;
 
 import java.util.Date;
+import java.util.List;
 
 import com.cdkj.gchf.dao.base.ABaseDO;
 
 /**
-* 平台用户
-* @author: chenshan 
+* 用户
+* @author: nyc
 * @since: 2018-04-24 10:03:59
 * @history:
 */
@@ -47,8 +48,29 @@ public class User extends ABaseDO {
     // 角色编号
     private String roleCode;
 
+    // 公司编号
+    private String companyCode;
+
+    // 公司名称
+    private String companyName;
+
     // 部门编号
     private String departmentCode;
+
+    // 所属省份
+    private String province;
+
+    // 所属市
+    private String city;
+
+    // 所属区
+    private String area;
+
+    // 银行名称
+    private String bankName;
+
+    // 所属支行
+    private String subbranch;
 
     // 更新人
     private String updater;
@@ -70,12 +92,10 @@ public class User extends ABaseDO {
     // 登录名等模糊查询
     private String keyword;
 
-    // 公司编号
-    private String companyCode;
-
     // 部门名称
-
     private String departmentName;
+
+    private List<String> companyCodeList;
 
     public void setUserId(String userId) {
         this.userId = userId;
@@ -243,6 +263,62 @@ public class User extends ABaseDO {
 
     public void setDepartmentName(String departmentName) {
         this.departmentName = departmentName;
+    }
+
+    public String getCompanyName() {
+        return companyName;
+    }
+
+    public void setCompanyName(String companyName) {
+        this.companyName = companyName;
+    }
+
+    public String getProvince() {
+        return province;
+    }
+
+    public void setProvince(String province) {
+        this.province = province;
+    }
+
+    public String getCity() {
+        return city;
+    }
+
+    public void setCity(String city) {
+        this.city = city;
+    }
+
+    public String getArea() {
+        return area;
+    }
+
+    public void setArea(String area) {
+        this.area = area;
+    }
+
+    public String getSubbranch() {
+        return subbranch;
+    }
+
+    public void setSubbranch(String subbranch) {
+        this.subbranch = subbranch;
+    }
+
+    public String getBankName() {
+        return bankName;
+    }
+
+    public void setBankName(String bankName) {
+        this.bankName = bankName;
+    }
+
+    public List<String> getCompanyCodeList() {
+        return companyCodeList;
+    }
+
+    public void setCompanyCodeList(List<String> companyCodeList) {
+        this.companyCodeList = companyCodeList;
     }
 
 }

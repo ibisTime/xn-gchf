@@ -51,7 +51,7 @@ public class SalaryDAOImpl extends AMybatisTemplate implements ISalaryDAO {
     }
 
     @Override
-    public void approveSalary(Salary data) {
+    public void addMessageCode(Salary data) {
         super.update(NAMESPACE.concat("approve_salary"), data);
 
     }
@@ -78,6 +78,11 @@ public class SalaryDAOImpl extends AMybatisTemplate implements ISalaryDAO {
             Salary condition) {
         return super.selectList(NAMESPACE.concat("select_total_salary"), pageNO,
             pageSize, condition, Salary.class);
+    }
+
+    @Override
+    public void cutAmount(Salary data) {
+        super.update(NAMESPACE.concat("cut_amount"), data);
     }
 
 }

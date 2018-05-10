@@ -28,6 +28,24 @@ public class XN631070Req {
     // 手机号（选填）
     private String mobile;
 
+    // （选填） 公司编号
+    private String companyCode;
+
+    // (选填) 银行名称
+    private String bankName;
+
+    // （选填） 省
+    private String subbranch;
+
+    // （选填） 市
+    private String city;
+
+    // （选填） 区
+    private String area;
+
+    // （选填） 所属支行
+    private String province;
+
     // 推荐人（选填）
     private String userRefree;
 
@@ -88,6 +106,54 @@ public class XN631070Req {
 
     public void setLoginName(String loginName) {
         this.loginName = loginName;
+    }
+
+    public String getArea() {
+        return area;
+    }
+
+    public void setArea(String area) {
+        this.area = area;
+    }
+
+    public String getCity() {
+        return city;
+    }
+
+    public void setCity(String city) {
+        this.city = city;
+    }
+
+    public String getCompanyCode() {
+        return companyCode;
+    }
+
+    public void setCompanyCode(String companyCode) {
+        this.companyCode = companyCode;
+    }
+
+    public String getProvince() {
+        return province;
+    }
+
+    public void setProvince(String province) {
+        this.province = province;
+    }
+
+    public String getSubbranch() {
+        return subbranch;
+    }
+
+    public void setSubbranch(String subbranch) {
+        this.subbranch = subbranch;
+    }
+
+    public String getBankName() {
+        return bankName;
+    }
+
+    public void setBankName(String bankName) {
+        this.bankName = bankName;
     }
 
 }

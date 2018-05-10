@@ -47,6 +47,8 @@ public class Progress extends ABaseDO {
 
     private String updateName;
 
+    private String kind;
+
     public String getKeyword() {
         return keyword;
     }
@@ -153,6 +155,14 @@ public class Progress extends ABaseDO {
 
     public void setUpdateName(String updateName) {
         this.updateName = updateName;
+    }
+
+    public String getKind() {
+        return kind;
+    }
+
+    public void setKind(String kind) {
+        this.kind = kind;
     }
 
 }

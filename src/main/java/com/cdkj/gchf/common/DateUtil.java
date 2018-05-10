@@ -303,7 +303,7 @@ public class DateUtil {
         return calendar.getTime();
     }
 
-    // 获取指定月的最后一天
+    // 获取当前HH：mm
     public static String getNow() {
         Calendar calendar = Calendar.getInstance();
         int time = calendar.get(Calendar.HOUR_OF_DAY);
@@ -327,16 +327,26 @@ public class DateUtil {
      * @history:
      */
 
-    public static boolean compare(String str1, String str2, String pattern) {
+    public static boolean compare(String str1, String str2) {
         boolean flag = false;
-        Date date1 = DateUtil.strToDate(str1, pattern);
-        Date date2 = DateUtil.strToDate(str2, pattern);
+        Date date1 = DateUtil.strToDate(str1,
+            DateUtil.FRONT_DATE_FORMAT_STRING);
+        Date date2 = DateUtil.strToDate(str2,
+            DateUtil.FRONT_DATE_FORMAT_STRING);
         if (-1 == date1.compareTo(date2)) {
             flag = true;
         }
         return flag;
     }
 
+    /**
+     * 当前时间是否在指定时间范围内
+     * @param startDatetime
+     * @param endDatetime
+     * @return 
+     * @create: 2018年5月8日 下午2:14:27 nyc
+     * @history:
+     */
     public static boolean isIn(Date startDatetime, Date endDatetime) {
         Date now = new Date();
         if (startDatetime.after(now) && endDatetime.before(now)) {
@@ -368,7 +378,29 @@ public class DateUtil {
         return days;
     }
 
-    //
+    /**
+     * 计算迟到、早退小时数
+     * 不足一小时算作一小时
+     * @param startDatetime
+     * @param endDatetime
+     * @param leavingStartDate
+     * @param leavingEndDate
+     * @return 
+     * @create: 2018年5月8日 下午8:49:03 nyc
+     * @history:
+     */
+    public static int getHours(String startDatetime, String endDatetime) {
+        Date start = strToDate(startDatetime, DateUtil.DATA_TIME_PATTERN_7);
+        Date end = strToDate(endDatetime, DateUtil.DATA_TIME_PATTERN_7);
+        int hours = (int) Math
+            .ceil((double) (end.getTime() - start.getTime()) / 60 / 60 / 1000);
+        if (hours < 1) {
+            hours = 1;
+        }
+        return hours;
+    }
+
+    // 判断时间是否在今天之内
     public static boolean isToday(String date) {
         boolean flag = false;
 
@@ -382,14 +414,17 @@ public class DateUtil {
         return flag;
     }
 
-    public static void main(String[] args) {
-        Date startDate = DateUtil.strToDate("2018-5-20 12:00:00",
-            DateUtil.DATA_TIME_PATTERN_1);
-        Date endDate = DateUtil.strToDate("2018-5-21 12:00:00",
-            DateUtil.DATA_TIME_PATTERN_1);
-        long times = endDate.getTime() - startDate.getTime();
+    // 获取本月天数
+    public static int getMonthDays() {
+        Calendar calendar = Calendar.getInstance();
+        calendar.set(Calendar.DAY_OF_MONTH, 1);
+        calendar.roll(Calendar.DAY_OF_MONTH, -1);
+        return calendar.get(Calendar.DATE);
+    }
 
-        System.out.println(times / 60 / 60 / 1000 / 24);
+    public static void main(String[] args) {
+        System.out.println(daysBetween("2018-5-8", "2018-5-12",
+            DateUtil.FRONT_DATE_FORMAT_STRING));
 
     }
 

@@ -1,11 +1,13 @@
 package com.cdkj.gchf.ao.impl;
 
+import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.cdkj.gchf.ao.IMessageAO;
+import com.cdkj.gchf.bo.ICompanyCardBO;
 import com.cdkj.gchf.bo.IMessageBO;
 import com.cdkj.gchf.bo.IProjectBO;
 import com.cdkj.gchf.bo.IReportBO;
@@ -13,15 +15,21 @@ import com.cdkj.gchf.bo.ISalaryBO;
 import com.cdkj.gchf.bo.ISalaryLogBO;
 import com.cdkj.gchf.bo.IUserBO;
 import com.cdkj.gchf.bo.base.Paginable;
+import com.cdkj.gchf.core.OrderNoGenerater;
 import com.cdkj.gchf.core.StringValidater;
+import com.cdkj.gchf.domain.CompanyCard;
 import com.cdkj.gchf.domain.Message;
 import com.cdkj.gchf.domain.Project;
 import com.cdkj.gchf.domain.Report;
 import com.cdkj.gchf.domain.Salary;
 import com.cdkj.gchf.domain.User;
 import com.cdkj.gchf.dto.req.XN631439Req;
+import com.cdkj.gchf.enums.EGeneratePrefix;
+import com.cdkj.gchf.enums.EMessageStatus;
 import com.cdkj.gchf.enums.ESalaryLogType;
+import com.cdkj.gchf.enums.ESalaryStatus;
 import com.cdkj.gchf.enums.EUser;
+import com.cdkj.gchf.exception.BizException;
 
 @Service
 public class MessageAOImpl implements IMessageAO {
@@ -44,6 +52,9 @@ public class MessageAOImpl implements IMessageAO {
     @Autowired
     private IProjectBO projectBO;
 
+    @Autowired
+    private ICompanyCardBO companyCardBO;
+
     @Override
     public String addMessage(Message data) {
         messageBO.saveMessage(data);
@@ -63,16 +74,14 @@ public class MessageAOImpl implements IMessageAO {
             Message condition) {
         Paginable<Message> page = messageBO.getPaginable(start, limit,
             condition);
-        List<Message> list = page.getList();
         String sendName = null;
         String handleName = null;
-        for (Message message : list) {
+        for (Message message : page.getList()) {
             sendName = getName(message.getSender());
             handleName = getName(message.getHandler());
             message.setSendName(sendName);
             message.setHandleName(handleName);
         }
-        page.setList(list);
         return page;
     }
 
@@ -112,25 +121,67 @@ public class MessageAOImpl implements IMessageAO {
     public void approveMessage(String code, String handler, String handleNote,
             List<XN631439Req> list) {
         Message data = messageBO.getMessage(code);
-        String type = ESalaryLogType.Normal.getCode();
+
         Project project = projectBO.getProject(data.getProjectCode());
         Long lastMonthSalary = 0L;
+        String mCode = null;
+        String type = ESalaryLogType.Normal.getCode();
+        String status = ESalaryStatus.Payed.getCode();
         for (XN631439Req req : list) {
             Salary salary = salaryBO.getSalary(req.getCode());
-            Long shouldAmount = salary.getShouldAmount()
-                    + salary.getPayAmount();
-            if (shouldAmount != StringValidater.toLong(req.getPayAmount())) {
+            // 防止重复发放
+            if (ESalaryStatus.Payed.getCode().equals(salary.getStatus())) {
+                throw new BizException("xn0000",
+                    "编号为[" + salary.getStaffCode() + "]员工的工资已全部发放");
+            }
+
+            Long payAmount = salary.getPayAmount()
+                    + StringValidater.toLong(req.getPayAmount());
+            if (salary.getFactAmount() > StringValidater
+                .toLong(req.getPayAmount())) {
                 type = ESalaryLogType.Abnormal.getCode();
+                // 生成新代发消息
+                Message message = new Message();
+                mCode = OrderNoGenerater
+                    .generate(EGeneratePrefix.Message.getCode());
+
+                message.setCode(mCode);
+                message.setCompanyCode(project.getCompanyCode());
+                message.setCompanyName(project.getCompanyName());
+                message.setProjectCode(project.getCode());
+                message.setProjectName(project.getName());
+
+                CompanyCard card = companyCardBO
+                    .getCompanyCardByProject(project.getCode());
+                message.setBankCode(card.getBankCode());
+                message.setBankName(card.getBankName());
+                message.setSubbranch(card.getSubbranch());
+                message.setBankcardNumber(card.getBankcardNumber());
+                message.setCreateDatetime(new Date());
+
+                message.setStatus(EMessageStatus.TO_Send.getCode());
+                messageBO.saveMessage(message);
+                status = ESalaryStatus.Pay_Portion.getCode();
+                salaryBO.saveNewSalay(salary, mCode,
+                    StringValidater.toLong(req.getPayAmount()));
+            }
+
+            if (ESalaryStatus.Pay_Portion.getCode()
+                .equals(salary.getStatus())) {
+                status = ESalaryStatus.Pay_Again.getCode();
             }
             // 修改工资条信息
-            salaryBO.payAmount(salary, shouldAmount, req.getLatePayDatetime());
+            salaryBO.payAmount(salary, payAmount, status,
+                req.getLatePayDatetime());
             // 添加工资日志
             salaryLogBO.saveSalaryLog(salary, project.getCompanyCode(),
-                project.getCompanyName(), type, handler, handleNote);
+                project.getCompanyName(), type, data.getSender(),
+                data.getSendNote());
             lastMonthSalary = lastMonthSalary
                     + StringValidater.toLong(req.getPayAmount());
         }
         Report report = reportBO.getReportByProject(data.getProjectCode());
+        report.setLastMonthSalary(lastMonthSalary);
         reportBO.refreshLastMonthSalary(report);
         messageBO.approveMessage(data, handler, handleNote);
     }
@@ -138,11 +189,10 @@ public class MessageAOImpl implements IMessageAO {
     @Override
     public void downLoad(String code) {
         Message data = messageBO.getMessage(code);
-
-        if (data.getDownload() == null) {
-            data.setDownload(1);
-        } else {
+        if (EMessageStatus.TO_Deal.getCode().equals(data.getStatus())) {
             data.setDownload(data.getDownload() + 1);
+        } else {
+            data.setBackDownload(data.getBackDownload() + 1);
         }
         messageBO.downLoad(data);
     }

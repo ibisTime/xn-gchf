@@ -39,8 +39,19 @@
 			<if test="code != null and code != '' ">
 				AND t.code = #{code}
 			</if>
-			<if test="companyCode != null and companyCode != '' ">
-				AND t.company_code = #{companyCode}
+			<choose>
+				<when test="companyCode != null and companyCode != '' ">
+					AND t.company_code = #{companyCode}
+				</when>
+				<when test="companyCodeList != null and companyCodeList != ''">
+					AND t.company_code IN 
+					<foreach collection="companyCodeList" item="item" index="index" open="(" separator="," close=")">
+						#{item}
+					</foreach>
+				</when>
+			</choose>
+			<if test="companyName != null and companyName != '' ">
+				AND t.company_name = #{companyName}
 			</if>
 			<if test="name != null and name != '' ">
 				AND t.name = #{name}

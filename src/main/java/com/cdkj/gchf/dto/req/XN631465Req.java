@@ -2,8 +2,6 @@ package com.cdkj.gchf.dto.req;
 
 import java.util.List;
 
-import org.hibernate.validator.constraints.NotBlank;
-
 /**
  * 分页查雇佣员工
  * @author: nyc 
@@ -21,7 +19,6 @@ public class XN631465Req extends APageReq {
     private String keyword;
 
     // （必填）项目编号
-    @NotBlank(message = "项目编号不能为空")
     private String projectCode;
 
     // （选填）状态

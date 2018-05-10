@@ -23,4 +23,5 @@ public interface ISYSRoleBO extends IPaginableBO<SYSRole> {
     public SYSRole getSYSRole(String code);
 
     public List<SYSRole> querySYSRoleList(SYSRole data);
+
 }

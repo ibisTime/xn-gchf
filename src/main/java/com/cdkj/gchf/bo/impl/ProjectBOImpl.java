@@ -1,5 +1,6 @@
 package com.cdkj.gchf.bo.impl;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -106,6 +107,16 @@ public class ProjectBOImpl extends PaginableBOImpl<Project>
         data.setStatus(EProjectStatus.Building.getCode());
         data.setRemark(remark);
         projectDAO.restartProject(data);
+    }
+
+    @Override
+    public List<String> queryCompanyList(Project condition) {
+        List<String> companyCodeList = new ArrayList<String>();
+        List<Project> list = projectDAO.selectList(condition);
+        for (Project project : list) {
+            companyCodeList.add(project.getCompanyCode());
+        }
+        return companyCodeList;
     }
 
 }

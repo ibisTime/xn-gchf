@@ -1,5 +1,7 @@
 package com.cdkj.gchf.dto.req;
 
+import java.util.List;
+
 public class XN631356Req extends APageReq {
 
     private static final long serialVersionUID = 5138736221155343722L;
@@ -7,13 +9,26 @@ public class XN631356Req extends APageReq {
     // 公司编号 （选填）
     private String companyCode;
 
-    private String approver;// 审核人
+    // 公司名称 （选填）
+    private String companyName;
 
-    private String status;// 状态
+    // 审核人
+    private String approver;
 
-    private String updater;// 更新人
+    // 状态
+    private String status;
 
-    private String keyword;// 关键字
+    // 更新人
+    private String updater;
+
+    // 关键字
+    private String keyword;
+
+    // 用户类型
+    private String kind;
+
+    // 公司编号 （选填）
+    private List<String> companyCodeList;
 
     public String getStatus() {
         return status;
@@ -53,6 +68,30 @@ public class XN631356Req extends APageReq {
 
     public void setApprover(String approver) {
         this.approver = approver;
+    }
+
+    public String getKind() {
+        return kind;
+    }
+
+    public void setKind(String kind) {
+        this.kind = kind;
+    }
+
+    public String getCompanyName() {
+        return companyName;
+    }
+
+    public void setCompanyName(String companyName) {
+        this.companyName = companyName;
+    }
+
+    public List<String> getCompanyCodeList() {
+        return companyCodeList;
+    }
+
+    public void setCompanyCodeList(List<String> companyCodeList) {
+        this.companyCodeList = companyCodeList;
     }
 
 }

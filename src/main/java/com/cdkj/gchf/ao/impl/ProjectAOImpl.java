@@ -1,5 +1,6 @@
 package com.cdkj.gchf.ao.impl;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -13,6 +14,7 @@ import com.cdkj.gchf.bo.ICompanyCardBO;
 import com.cdkj.gchf.bo.IProjectBO;
 import com.cdkj.gchf.bo.IReportBO;
 import com.cdkj.gchf.bo.IUserBO;
+import com.cdkj.gchf.bo.base.Page;
 import com.cdkj.gchf.bo.base.Paginable;
 import com.cdkj.gchf.common.DateUtil;
 import com.cdkj.gchf.core.OrderNoGenerater;
@@ -28,6 +30,7 @@ import com.cdkj.gchf.enums.EBoolean;
 import com.cdkj.gchf.enums.EGeneratePrefix;
 import com.cdkj.gchf.enums.EProjectStatus;
 import com.cdkj.gchf.enums.EUser;
+import com.cdkj.gchf.enums.EUserKind;
 import com.cdkj.gchf.exception.BizException;
 
 @Service
@@ -131,16 +134,25 @@ public class ProjectAOImpl implements IProjectAO {
     @Override
     public Paginable<Project> queryProjectPage(int start, int limit,
             Project condition) {
-        Paginable<Project> page = projectBO.getPaginable(start, limit,
-            condition);
-        List<Project> list = page.getList();
+        List<Project> list = new ArrayList<Project>();
+        Paginable<Project> page = new Page<Project>();
+        if (EUserKind.Owner.getCode().equals(condition.getKind())) {
+            if (StringUtils.isBlank(condition.getCompanyCode())) {
+                page.setList(list);
+                return page;
+            }
+        }
+        page = projectBO.getPaginable(start, limit, condition);
         String approveName = null;
         String updateName = null;
-        for (Project project : list) {
+        String chargeName = null;
+        for (Project project : page.getList()) {
             approveName = getName(project.getApprover());
             updateName = getName(project.getUpdater());
+            chargeName = getName(project.getChargeUser());
             project.setApproveName(approveName);
             project.setUpdateName(updateName);
+            project.setChargeName(chargeName);
         }
         return page;
     }
@@ -156,27 +168,39 @@ public class ProjectAOImpl implements IProjectAO {
         // 补全名字信息
         String approveName = getName(data.getApprover());
         String updateName = getName(data.getUpdater());
+        String chargeName = getName(data.getChargeUser());
         data.setApproveName(approveName);
         data.setUpdateName(updateName);
+        data.setChargeName(chargeName);
         return data;
     }
 
     @Override
     public List<Project> queryProjectList(Project condition) {
+        List<Project> list = new ArrayList<Project>();
+        if (EUserKind.Owner.getCode().equals(condition.getKind())) {
+            if (StringUtils.isBlank(condition.getCompanyCode())) {
+                return list;
+            }
+        }
         String approveName = null;
         String updateName = null;
-        List<Project> list = projectBO.queryProject(condition);
+        String chargeName = null;
+        list = projectBO.queryProject(condition);
         for (Project project : list) {
             approveName = getName(project.getApprover());
             updateName = getName(project.getUpdater());
+            chargeName = getName(project.getChargeUser());
             project.setApproveName(approveName);
             project.setUpdateName(updateName);
+            project.setChargeName(chargeName);
         }
         return list;
     }
 
     @Override
     public void toApprove(XN631353Req req) {
+
         Project data = projectBO.getProject(req.getCode());
         if (!EProjectStatus.To_Audit.getCode().equals(data.getStatus())) {
             throw new BizException("xn0000", "项目不处于待提请审核状态");

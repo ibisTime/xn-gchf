@@ -13,6 +13,8 @@ public class XN631436Req extends APageReq {
     /** 
      * @Fields serialVersionUID : TODO(用一句话描述这个变量表示什么) 
      */
+    private static final long serialVersionUID = 9171586074174742305L;
+
     // （选填）工程编号
     private String projectCode;
 
@@ -39,6 +41,15 @@ public class XN631436Req extends APageReq {
 
     // （选填）关键字
     private String keyword;
+
+    // （选填）用户类型
+    private String kind;
+
+    // （选填）银行名称
+    private String bankName;
+
+    // （选填）户名
+    private String subbranch;
 
     public String getProjectCode() {
         return projectCode;
@@ -110,6 +121,30 @@ public class XN631436Req extends APageReq {
 
     public void setCompanyName(String companyName) {
         this.companyName = companyName;
+    }
+
+    public String getKind() {
+        return kind;
+    }
+
+    public void setKind(String kind) {
+        this.kind = kind;
+    }
+
+    public String getBankName() {
+        return bankName;
+    }
+
+    public void setBankName(String bankName) {
+        this.bankName = bankName;
+    }
+
+    public String getSubbranch() {
+        return subbranch;
+    }
+
+    public void setSubbranch(String subbranch) {
+        this.subbranch = subbranch;
     }
 
 }

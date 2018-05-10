@@ -1,5 +1,7 @@
 package com.cdkj.gchf.dto.req;
 
+import java.util.List;
+
 import org.hibernate.validator.constraints.NotBlank;
 
 /**
@@ -12,7 +14,7 @@ public class XN631443Req {
 
     // （必填）编号
     @NotBlank(message = "编号不能为空")
-    private String code;
+    private List<String> codeList;
 
     // （必填）审核人
     @NotBlank(message = "approveNote不能为空")
@@ -25,12 +27,12 @@ public class XN631443Req {
     @NotBlank(message = "审核结果不能为空")
     private String result;
 
-    public String getCode() {
-        return code;
+    public List<String> getCodeList() {
+        return codeList;
     }
 
-    public void setCode(String code) {
-        this.code = code;
+    public void setCodeList(List<String> codeList) {
+        this.codeList = codeList;
     }
 
     public String getApprover() {

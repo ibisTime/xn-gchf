@@ -61,6 +61,8 @@ public class BankCard extends ABaseDO {
 
     private String updateName;
 
+    private String kind;
+
     public void setCode(String code) {
         this.code = code;
     }
@@ -187,6 +189,14 @@ public class BankCard extends ABaseDO {
 
     public void setCompanyName(String companyName) {
         this.companyName = companyName;
+    }
+
+    public String getKind() {
+        return kind;
+    }
+
+    public void setKind(String kind) {
+        this.kind = kind;
     }
 
 }

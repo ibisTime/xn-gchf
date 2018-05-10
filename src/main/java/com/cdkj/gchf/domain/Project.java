@@ -1,6 +1,7 @@
 package com.cdkj.gchf.domain;
 
 import java.util.Date;
+import java.util.List;
 
 import com.cdkj.gchf.dao.base.ABaseDO;
 
@@ -102,6 +103,14 @@ public class Project extends ABaseDO {
 
     // 修改人名字
     private String updateName;
+
+    // 用户类型
+    private String kind;
+
+    // 负责人名称
+    private String chargeName;
+
+    private List<String> companyCodeList;
 
     public String getKeyword() {
         return keyword;
@@ -341,6 +350,30 @@ public class Project extends ABaseDO {
 
     public void setUpdateName(String updateName) {
         this.updateName = updateName;
+    }
+
+    public String getKind() {
+        return kind;
+    }
+
+    public void setKind(String kind) {
+        this.kind = kind;
+    }
+
+    public String getChargeName() {
+        return chargeName;
+    }
+
+    public void setChargeName(String chargeName) {
+        this.chargeName = chargeName;
+    }
+
+    public List<String> getCompanyCodeList() {
+        return companyCodeList;
+    }
+
+    public void setCompanyCodeList(List<String> companyCodeList) {
+        this.companyCodeList = companyCodeList;
     }
 
 }

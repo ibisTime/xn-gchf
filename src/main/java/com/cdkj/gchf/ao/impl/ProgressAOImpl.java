@@ -1,8 +1,10 @@
 package com.cdkj.gchf.ao.impl;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -10,6 +12,7 @@ import com.cdkj.gchf.ao.IProgressAO;
 import com.cdkj.gchf.bo.IProgressBO;
 import com.cdkj.gchf.bo.IProjectBO;
 import com.cdkj.gchf.bo.IUserBO;
+import com.cdkj.gchf.bo.base.Page;
 import com.cdkj.gchf.bo.base.Paginable;
 import com.cdkj.gchf.common.DateUtil;
 import com.cdkj.gchf.domain.Progress;
@@ -18,6 +21,7 @@ import com.cdkj.gchf.domain.User;
 import com.cdkj.gchf.dto.req.XN631380Req;
 import com.cdkj.gchf.dto.req.XN631382Req;
 import com.cdkj.gchf.enums.EUser;
+import com.cdkj.gchf.enums.EUserKind;
 
 @Service
 public class ProgressAOImpl implements IProgressAO {
@@ -67,21 +71,32 @@ public class ProgressAOImpl implements IProgressAO {
     @Override
     public Paginable<Progress> queryProgressPage(int start, int limit,
             Progress condition) {
-        Paginable<Progress> page = progressBO.getPaginable(start, limit,
-            condition);
-        List<Progress> list = page.getList();
+        List<Progress> list = new ArrayList<Progress>();
+        Paginable<Progress> page = new Page<Progress>();
+        if (EUserKind.Owner.getCode().equals(condition.getKind())) {
+            if (StringUtils.isBlank(condition.getCompanyCode())) {
+                page.setList(list);
+                return page;
+            }
+        }
+        page = progressBO.getPaginable(start, limit, condition);
         String updateName = null;
-        for (Progress progress : list) {
+        for (Progress progress : page.getList()) {
             updateName = getName(progress.getUpdater());
             progress.setUpdateName(updateName);
         }
-        page.setList(list);
         return page;
     }
 
     @Override
     public List<Progress> queryProgressList(Progress condition) {
-        List<Progress> list = progressBO.queryProgressList(condition);
+        List<Progress> list = new ArrayList<Progress>();
+        if (EUserKind.Owner.getCode().equals(condition.getKind())) {
+            if (StringUtils.isBlank(condition.getCompanyCode())) {
+                return list;
+            }
+        }
+        list = progressBO.queryProgressList(condition);
         String updateName = null;
         for (Progress progress : list) {
             updateName = getName(progress.getUpdater());

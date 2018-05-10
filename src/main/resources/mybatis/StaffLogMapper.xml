@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cdkj.gchf.dao.IStaffLogDAO">
+	<resultMap id="staffLog_DB_Result" type="staffLog">
+		<result column="code" property="code" />
+		<result column="company_code" property="companyCode" />
+		<result column="company_name" property="companyName" />
+		<result column="project_code" property="projectCode" />
+		<result column="project_name" property="projectName" />
+		<result column="staff_code" property="staffCode" />
+		<result column="staff_name" property="staffName" />
+		<result column="position" property="position" />
+		<result column="join_datetime" property="joinDatetime" />
+		<result column="leaving_datetime" property="leavingDatetime" />
+	</resultMap>
+	<sql id="where_condition">
+		<trim prefix="WHERE" prefixOverrides="AND | OR">
+			<if test="code != null and code != '' ">
+				AND t.code = #{code}
+			</if>
+			<if test="companyCode != null and companyCode != '' ">
+				AND t.company_code = #{companyCode}
+			</if>
+			<if test="companyName != null and companyName != '' ">
+				AND t.company_name like "%"#{companyName}"%"
+			</if>
+			<if test="staffCode != null and staffCode != '' ">
+				AND t.staff_code like "%"#{staffCode}"%"
+			</if>
+		</trim>
+	</sql>
+	<select id="select_staffLog" parameterType="staffLog" resultMap="staffLog_DB_Result">
+		SELECT
+		t.code
+		,t.company_code
+		,t.company_name
+		,t.project_code
+		,t.project_name
+		,t.staff_code
+		,t.staff_name
+		,t.position
+		,t.join_datetime
+		,t.leaving_datetime
+		FROM
+		thf_staff_log t
+		<include refid="where_condition" />
+		<trim prefix="ORDER BY ">
+			<if test="order != null and order != '' ">
+				t.${order}
+			</if>
+		</trim>
+	</select>
+
+	<select id="select_staffLog_count" parameterType="staffLog"
+		resultType="java.lang.Long">
+		SELECT count(1) FROM thf_staff_log t
+		<include refid="where_condition" />
+	</select>
+
+	<insert id="insert_staffLog" parameterType="staffLog">
+		INSERT INTO
+		thf_staff_log(
+		code
+		,company_code
+		,company_name
+		,project_code
+		,project_name
+		,staff_code
+		,staff_name
+		,position
+		,join_datetime
+		,leaving_datetime
+		)
+		VALUES(
+		#{code}
+		,#{companyCode}
+		,#{companyName}
+		,#{projectCode}
+		,#{projectName}
+		,#{staffCode}
+		,#{staffName}
+		,#{position}
+		,#{joinDatetime}
+		,#{leavingDatetime}
+		)
+	</insert>
+
+	<update id="update_staffLog" parameterType="staffLog">
+		UPDATE thf_staff_log
+		SET
+		company_code = #{companyCode}
+		,company_name = #{companyName}
+		,project_code = #{projectCode}
+		,project_name = #{projectName}
+		,staff_code = #{staffCode}
+		,staff_name = #{staffName}
+		,position = #{position}
+		,join_datetime = #{joinDatetime}
+		,leaving_datetime = #{leavingDatetime}
+		WHERE code = #{code}
+	</update>
+
+
+</mapper>

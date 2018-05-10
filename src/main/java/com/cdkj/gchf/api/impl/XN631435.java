@@ -32,12 +32,16 @@ public class XN631435 extends AProcessor {
         condition.setCompanyName(req.getCompanyName());
         condition.setProjectCode(req.getProjectCode());
         condition.setProjectName(req.getProjectName());
+        condition.setKind(req.getKind());
 
         condition.setSender(req.getSender());
         condition.setHandler(req.getHandler());
         condition.setStatus(req.getStatus());
         condition.setKeyword(req.getKeyword());
         condition.setStatusList(req.getStatusList());
+
+        condition.setBankName(req.getBankName());
+        condition.setSubbranch(req.getSubbranch());
 
         String column = req.getOrderColumn();
         if (StringUtils.isBlank(column)) {

@@ -25,6 +25,9 @@ public class XN631365Req extends APageReq {
     // （选填）状态
     private String status;
 
+    // 用户类型
+    private String kind;
+
     public String getCompanyCode() {
         return companyCode;
     }
@@ -55,6 +58,14 @@ public class XN631365Req extends APageReq {
 
     public void setStatus(String status) {
         this.status = status;
+    }
+
+    public String getKind() {
+        return kind;
+    }
+
+    public void setKind(String kind) {
+        this.kind = kind;
     }
 
 }

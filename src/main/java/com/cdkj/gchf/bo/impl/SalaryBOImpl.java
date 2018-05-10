@@ -10,8 +10,10 @@ import org.springframework.stereotype.Component;
 import com.cdkj.gchf.bo.ISalaryBO;
 import com.cdkj.gchf.bo.base.PaginableBOImpl;
 import com.cdkj.gchf.common.DateUtil;
+import com.cdkj.gchf.core.OrderNoGenerater;
 import com.cdkj.gchf.dao.ISalaryDAO;
 import com.cdkj.gchf.domain.Salary;
+import com.cdkj.gchf.enums.EGeneratePrefix;
 import com.cdkj.gchf.enums.ESalaryStatus;
 import com.cdkj.gchf.exception.BizException;
 
@@ -57,20 +59,20 @@ public class SalaryBOImpl extends PaginableBOImpl<Salary> implements ISalaryBO {
     }
 
     @Override
-    public void approveSalary(Salary data, String messageCode, String approver,
-            String approveNote, String status) {
+    public void addMessageCode(Salary data, String messageCode, String approver,
+            Date approveDatetime, String approveNote, String status) {
         data.setMessageCode(messageCode);
         data.setApproveUser(approver);
-        data.setApproveDatetime(new Date());
+        data.setApproveDatetime(approveDatetime);
         data.setApproveNote(approveNote);
         data.setStatus(status);
-        salaryDAO.approveSalary(data);
+        salaryDAO.addMessageCode(data);
     }
 
     @Override
-    public void payAmount(Salary salary, Long payAmount,
+    public void payAmount(Salary salary, Long payAmount, String status,
             String latePayDatetime) {
-        salary.setStatus(ESalaryStatus.Payed.getCode());
+        salary.setStatus(status);
         salary.setPayAmount(payAmount);
         salary.setLatePayDatetime(DateUtil.strToDate(latePayDatetime,
             DateUtil.FRONT_DATE_FORMAT_STRING));
@@ -92,6 +94,46 @@ public class SalaryBOImpl extends PaginableBOImpl<Salary> implements ISalaryBO {
     public List<Salary> queryTotalSalaryPage(int pageNO, int pageSize,
             Salary condition) {
         return salaryDAO.queryTotalSalaryPage(pageNO, pageSize, condition);
+    }
+
+    @Override
+    public void cutAmount(Salary data) {
+        salaryDAO.cutAmount(data);
+    }
+
+    @Override
+    public void saveNewSalay(Salary salary, String mCode, Long payAmount) {
+        Salary data = new Salary();
+        String code = OrderNoGenerater
+            .generate(EGeneratePrefix.Salary.getCode());
+        data.setCode(code);
+        data.setMessageCode(mCode);
+        data.setStaffCode(salary.getStaffCode());
+        data.setCompanyCode(salary.getCompanyCode());
+        data.setCompanyName(salary.getCompanyName());
+
+        data.setProjectCode(salary.getProjectCode());
+        data.setProjectName(salary.getProjectName());
+        data.setMonth(salary.getMonth());
+        data.setShouldAmount(salary.getShouldAmount());
+        data.setFactAmount(salary.getFactAmount() - payAmount);
+
+        data.setCutAmount(0L);
+        data.setTax(0L);
+        data.setNormalDays(0.0);
+        data.setDelayDays(0);
+        data.setEarlyDays(0);
+
+        data.setLeavingDays(0.0);
+        data.setCreateDatetime(new Date());
+        data.setApproveUser(salary.getApproveUser());
+        data.setApproveDatetime(salary.getApproveDatetime());
+        data.setApproveNote(salary.getApproveNote());
+
+        data.setStatus(ESalaryStatus.Pay_Portion.getCode());
+        data.setRemark(salary.getRemark());
+        data.setLatePayDatetime(salary.getLatePayDatetime());
+        salaryDAO.insert(data);
     }
 
 }

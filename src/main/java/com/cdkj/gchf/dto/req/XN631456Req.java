@@ -37,6 +37,9 @@ public class XN631456Req extends APageReq {
     // （选填）类型
     private String type;
 
+    // （选填）用户类型
+    private String kind;
+
     public String getHandler() {
         return handler;
     }
@@ -99,6 +102,14 @@ public class XN631456Req extends APageReq {
 
     public void setType(String type) {
         this.type = type;
+    }
+
+    public String getKind() {
+        return kind;
+    }
+
+    public void setKind(String kind) {
+        this.kind = kind;
     }
 
 }

@@ -26,13 +26,16 @@ public interface ISalaryAO {
     public Salary getSalary(String code);
 
     // 审核工资条
-    public void approveSalary(String code, String approver, String approveNote,
-            String result);
+    public void approveSalary(List<String> list, String approver,
+            String approveNote, String result);
 
     // 累积薪资
     public Paginable<Salary> queryTotalSalaryPage(int start, int limit,
             Salary condition);
 
     public List<Salary> queryTotalSalaryList(Salary condition);
+
+    // 补充扣款金额
+    public void cutAmount(List<Salary> list);
 
 }

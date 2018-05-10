@@ -1,5 +1,6 @@
 package com.cdkj.gchf.ao.impl;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -18,6 +19,7 @@ import com.cdkj.gchf.bo.IProjectBO;
 import com.cdkj.gchf.bo.ISalaryBO;
 import com.cdkj.gchf.bo.base.Page;
 import com.cdkj.gchf.bo.base.Paginable;
+import com.cdkj.gchf.common.AmountUtil;
 import com.cdkj.gchf.common.DateUtil;
 import com.cdkj.gchf.core.OrderNoGenerater;
 import com.cdkj.gchf.core.StringValidater;
@@ -34,6 +36,7 @@ import com.cdkj.gchf.enums.EBoolean;
 import com.cdkj.gchf.enums.EGeneratePrefix;
 import com.cdkj.gchf.enums.EMessageStatus;
 import com.cdkj.gchf.enums.ESalaryStatus;
+import com.cdkj.gchf.enums.EUserKind;
 import com.cdkj.gchf.exception.BizException;
 
 @Service
@@ -69,6 +72,9 @@ public class SalaryAOImpl implements ISalaryAO {
     @Override
     public void editSalary(XN631442Req req) {
         Salary data = salaryBO.getSalary(req.getCode());
+        if (!ESalaryStatus.To_Approve.getCode().equals(data.getStatus())) {
+            throw new BizException("xn00000", "该工资条不能修改");
+        }
         data.setEarlyDays(StringValidater.toInteger(req.getEarlyDays()));
         data.setDelayDays(StringValidater.toInteger(req.getDelayDays()));
         data.setLeavingDays(StringValidater.toDouble(req.getLeavingDays()));
@@ -84,21 +90,31 @@ public class SalaryAOImpl implements ISalaryAO {
     }
 
     @Override
-    public void approveSalary(String code, String approver, String approveNote,
-            String result) {
-        Salary data = salaryBO.getSalary(code);
-        if (!ESalaryStatus.To_Approve.getCode().equals(data.getStatus())) {
-            throw new BizException("xn0000", "工资条不处于待审核状态");
-        }
+    public void approveSalary(List<String> codeList, String approver,
+            String approveNote, String result) {
         String status = ESalaryStatus.To_Approve.getCode();
         String mCode = null;
         if (EBoolean.YES.getCode().equals(result)) {
+            Date date = new Date();
             status = ESalaryStatus.TO_Send.getCode();
+            Salary data = null;
             // 审核通过，生成代发消息
             Message message = new Message();
             mCode = OrderNoGenerater
                 .generate(EGeneratePrefix.Message.getCode());
+            // 修改工资条状态
+            for (String code : codeList) {
+                data = salaryBO.getSalary(code);
+                salaryBO.addMessageCode(data, mCode, approver, date,
+                    approveNote, status);
+                if (!ESalaryStatus.To_Approve.getCode()
+                    .equals(data.getStatus())) {
+                    throw new BizException("xn0000", "工资条不处于待审核状态");
+                }
+            }
+
             Project project = projectBO.getProject(data.getProjectCode());
+
             message.setCode(mCode);
             message.setCompanyCode(project.getCompanyCode());
             message.setCompanyName(project.getCompanyName());
@@ -112,12 +128,11 @@ public class SalaryAOImpl implements ISalaryAO {
             message.setSubbranch(card.getSubbranch());
             message.setBankcardNumber(card.getBankcardNumber());
             message.setCreateDatetime(new Date());
-
+            message.setDownload(0);
             message.setStatus(EMessageStatus.TO_Send.getCode());
             messageBO.saveMessage(message);
         }
 
-        salaryBO.approveSalary(data, mCode, approver, approveNote, status);
     }
 
     @Override
@@ -127,9 +142,16 @@ public class SalaryAOImpl implements ISalaryAO {
     @Override
     public Paginable<Salary> querySalaryPage(int start, int limit,
             Salary condition) {
-        Paginable<Salary> page = salaryBO.getPaginable(start, limit, condition);
-        List<Salary> list = page.getList();
-        for (Salary salary : list) {
+        List<Salary> list = new ArrayList<Salary>();
+        Paginable<Salary> page = new Page<Salary>();
+        if (EUserKind.Owner.getCode().equals(condition.getKind())) {
+            if (StringUtils.isBlank(condition.getCompanyCode())) {
+                page.setList(list);
+                return page;
+            }
+        }
+        page = salaryBO.getPaginable(start, limit, condition);
+        for (Salary salary : page.getList()) {
             BankCard bankCard = bankCardBO
                 .getBankCardByStaff(salary.getStaffCode());
             salary.setBankCard(bankCard);
@@ -137,13 +159,18 @@ public class SalaryAOImpl implements ISalaryAO {
                 .getCompanyCardByProject(salary.getProjectCode());
             salary.setCompanyCard(companyCard);
         }
-        page.setList(list);
         return page;
     }
 
     @Override
     public List<Salary> querySalaryList(Salary condition) {
-        List<Salary> list = salaryBO.querySalaryList(condition);
+        List<Salary> list = new ArrayList<Salary>();
+        if (EUserKind.Owner.getCode().equals(condition.getKind())) {
+            if (StringUtils.isBlank(condition.getCompanyCode())) {
+                return list;
+            }
+        }
+        list = salaryBO.querySalaryList(condition);
         for (Salary salary : list) {
             BankCard bankCard = bankCardBO
                 .getBankCardByStaff(salary.getStaffCode());
@@ -170,9 +197,17 @@ public class SalaryAOImpl implements ISalaryAO {
     @Override
     public Paginable<Salary> queryTotalSalaryPage(int start, int limit,
             Salary condition) {
+        List<Salary> list = new ArrayList<Salary>();
+        Page<Salary> page = new Page<Salary>();
+        if (EUserKind.Owner.getCode().equals(condition.getKind())) {
+            if (StringUtils.isBlank(condition.getCompanyCode())) {
+                page.setList(list);
+                return page;
+            }
+        }
         long totalCount = salaryBO.getTotalSalaryCount(condition);
-        Page<Salary> page = new Page<Salary>(start, limit, totalCount);
-        List<Salary> list = salaryBO.queryTotalSalaryPage(page.getPageNO(),
+        page = new Page<Salary>(start, limit, totalCount);
+        list = salaryBO.queryTotalSalaryPage(page.getPageNO(),
             page.getPageSize(), condition);
         page.setList(list);
         return page;
@@ -180,7 +215,30 @@ public class SalaryAOImpl implements ISalaryAO {
 
     @Override
     public List<Salary> queryTotalSalaryList(Salary condition) {
+        List<Salary> list = new ArrayList<Salary>();
+        if (EUserKind.Owner.getCode().equals(condition.getKind())) {
+            if (StringUtils.isBlank(condition.getCompanyCode())) {
+                return list;
+            }
+        }
         return salaryBO.queryTotalSalaryList(condition);
+    }
+
+    @Override
+    public void cutAmount(List<Salary> list) {
+        for (Salary salary : list) {
+            Salary data = salaryBO.getSalary(salary.getCode());
+            if (!ESalaryStatus.To_Approve.getCode().equals(data.getStatus())) {
+                throw new BizException("xn00000", "该工资条不能修改");
+            }
+            data.setTax(salary.getTax());
+            data.setCutAmount(salary.getCutAmount());
+            data.setCutNote(salary.getCutNote());
+            Long fact = data.getShouldAmount() - salary.getTax()
+                    - salary.getCutAmount();
+            data.setFactAmount(fact);
+            salaryBO.cutAmount(data);
+        }
     }
 
     // 定时器形成工资条
@@ -230,26 +288,34 @@ public class SalaryAOImpl implements ISalaryAO {
                     List<Attendance> aList = attendanceBO
                         .queryAttendanceList(aCondition);
 
-                    // 计算上月迟到和早退天数
+                    // 计算上月迟到和早退小时
                     int early = 0;
                     int delay = 0;
+                    long cutAmount = 0L;
 
                     for (Attendance attendance : aList) {
                         // 迟到
-                        if (StringUtils
-                            .isNotBlank(attendance.getStartDatetime())
-                                && DateUtil.compare(
-                                    attendance.getStartDatetime(),
-                                    project.getAttendanceStarttime(),
-                                    DateUtil.FRONT_DATE_FORMAT_STRING)) {
-                            early = early + 1;
+                        boolean isNormal = DateUtil.compare(
+                            attendance.getSettleDatetime(),
+                            project.getAttendanceStarttime());
+
+                        if (StringUtils.isNotBlank(
+                            attendance.getStartDatetime()) && isNormal) {
+                            // 计算
+                            early += 1;
+                            cutAmount += employ.getCutAmount() * DateUtil
+                                .getHours(attendance.getStartDatetime(),
+                                    project.getAttendanceStarttime());
                         }
                         // 早退
+                        isNormal = DateUtil.compare(attendance.getEndDatetime(),
+                            project.getAttendanceEndtime());
                         if (StringUtils.isNotBlank(attendance.getEndDatetime())
-                                && DateUtil.compare(attendance.getEndDatetime(),
-                                    project.getAttendanceEndtime(),
-                                    DateUtil.FRONT_DATE_FORMAT_STRING)) {
-                            delay = delay + 1;
+                                && isNormal) {
+                            early += 1;
+                            cutAmount += employ.getCutAmount() * DateUtil
+                                .getHours(attendance.getEndDatetime(),
+                                    project.getAttendanceEndtime());
                         }
                         // 修改考勤状态
                         attendance.setStatus(EAttendanceStatus.Paied.getCode());
@@ -262,7 +328,14 @@ public class SalaryAOImpl implements ISalaryAO {
                     if (employ.getLeavingDays() != null) {
                         leavingDays = employ.getLeavingDays();
                     }
+                    Long leavingCut = AmountUtil.mul(
+                        employ.getSalary() / DateUtil.getMonthDays(),
+                        employ.getLeavingDays());
+                    data.setCutAmount(cutAmount + leavingCut);
+                    data.setCutNote("本月迟到：" + early + "天，早退：" + delay + "天，请假："
+                            + leavingDays + "天，共计扣款：" + cutAmount + leavingCut);
                     data.setLeavingDays(leavingDays);
+
                     salaryBO.saveSalary(data);
                     // 清空上月累积请假天数
                     data.setLeavingDays(0.0);

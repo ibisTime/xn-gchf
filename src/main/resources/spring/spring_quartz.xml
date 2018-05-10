@@ -20,6 +20,7 @@
            	  <ref bean="attendanceDailyTrigger"/> 
            	  <ref bean="salaryMonthlyTrigger"/> 
            	  <ref bean="updateEmployStatusTrigger"/> 
+           	  <ref bean="nextMonthSalaryTrigger"/> 
  		   </list>  
        </property>  
        <property name="autoStartup" value="true"/>  
@@ -29,7 +30,7 @@
     <!-- 生成工资条 -->
 	<bean id="salaryMonthlyTrigger" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">  
        <property name="jobDetail" ref="createSalaryMonthly"/>  
-       <property name="cronExpression" value="0 0 0 1 * ?"/><!-- 0 0 0 1 * ?  每月的第一天0点执行 -->
+       <property name="cronExpression" value="0 0 0 * *  ?"/><!-- 0 0 1 * * ?  每月的第一天0点执行 -->
 	</bean>
 	
 	<bean id="createSalaryMonthly" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">   
@@ -57,6 +58,17 @@
 	<bean id="updateEmployStatus" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">   
         <property name="targetObject" ref="employAOImpl"/>  
         <property name="targetMethod" value="updateStatus"/>  
+        <property name="concurrent" value="true"/> <!--   是否允许任务并发执行。当值为false时，表示必须等到前一个线程处理完毕后才再启一个新的线程 -->
+	</bean>
+		
+	<!-- 下个月预计发薪 -->
+	<bean id="nextMonthSalaryTrigger" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">  
+       <property name="jobDetail" ref="nextMonthSalaryReport"/>  
+       <property name="cronExpression" value="0 0 0 1 * ?"/><!-- 0 0 0 1 * ?  每天每小时-->
+	</bean>
+	<bean id="nextMonthSalaryReport" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">   
+        <property name="targetObject" ref="reportAOImpl"/>  
+        <property name="targetMethod" value="nextMonthSalary"/>  
         <property name="concurrent" value="true"/> <!--   是否允许任务并发执行。当值为false时，表示必须等到前一个线程处理完毕后才再启一个新的线程 -->
 	</bean>
 	

@@ -26,4 +26,5 @@ public interface ISYSMenuRoleBO extends IPaginableBO<SYSMenuRole> {
     public int removeSYSMenuList(String roleCode);
 
     public List<SYSMenu> querySYSMenuList(SYSMenuRole data);
+
 }

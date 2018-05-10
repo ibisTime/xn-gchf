@@ -1,6 +1,7 @@
 package com.cdkj.gchf.domain;
 
 import java.util.Date;
+import java.util.List;
 
 import com.cdkj.gchf.dao.base.ABaseDO;
 
@@ -56,6 +57,9 @@ public class Salary extends ABaseDO {
     // 税费
     private Long tax;
 
+    // 正常上工天数
+    private Double normalDays;
+
     // 迟到天数
     private Integer delayDays;
 
@@ -98,6 +102,12 @@ public class Salary extends ABaseDO {
 
     // 月累积薪资
     private Long totalFactAmount;
+
+    // 用户类型
+    private String kind;
+
+    // 状态类型
+    private List<String> statusList;
 
     public void setCode(String code) {
         this.code = code;
@@ -321,6 +331,30 @@ public class Salary extends ABaseDO {
 
     public void setTotalFactAmount(Long totalFactAmount) {
         this.totalFactAmount = totalFactAmount;
+    }
+
+    public String getKind() {
+        return kind;
+    }
+
+    public void setKind(String kind) {
+        this.kind = kind;
+    }
+
+    public List<String> getStatusList() {
+        return statusList;
+    }
+
+    public void setStatusList(List<String> statusList) {
+        this.statusList = statusList;
+    }
+
+    public Double getNormalDays() {
+        return normalDays;
+    }
+
+    public void setNormalDays(Double normalDays) {
+        this.normalDays = normalDays;
     }
 
 }

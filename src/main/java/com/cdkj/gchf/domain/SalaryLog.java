@@ -47,6 +47,12 @@ public class SalaryLog extends ABaseDO {
     // 操作描述
     private String handleNote;
 
+    // *****************db**************
+    // 用户类型
+    private String kind;
+
+    private String handleName;
+
     public void setCode(String code) {
         this.code = code;
     }
@@ -133,6 +139,22 @@ public class SalaryLog extends ABaseDO {
 
     public String getHandleNote() {
         return handleNote;
+    }
+
+    public String getKind() {
+        return kind;
+    }
+
+    public void setKind(String kind) {
+        this.kind = kind;
+    }
+
+    public String getHandleName() {
+        return handleName;
+    }
+
+    public void setHandleName(String handleName) {
+        this.handleName = handleName;
     }
 
 }

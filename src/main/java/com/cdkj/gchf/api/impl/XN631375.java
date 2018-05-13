@@ -31,6 +31,8 @@ public class XN631375 extends AProcessor {
         condition.setProjectCode(req.getProjectCode());
         condition.setUpdater(req.getUpdater());
         condition.setKeyword(req.getKeyword());
+        condition.setProjectCodeList(req.getCompanyCodeList());
+
         String column = req.getOrderColumn();
         if (StringUtils.isBlank(column)) {
             column = IBcontractAO.DEFAULT_ORDER_COLUMN;

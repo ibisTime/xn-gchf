@@ -5,7 +5,7 @@ import java.util.Date;
 import com.cdkj.gchf.dao.base.ABaseDO;
 
 /**
-* 平台用户
+* 考勤
 * @author: chenshan 
 * @since: 2018-04-29 22:49:12
 * @history:
@@ -42,7 +42,7 @@ public class Attendance extends ABaseDO {
     private String endDatetime;
 
     // 结算时间
-    private String settleDatetime;
+    private Date settleDatetime;
 
     // 备注
     private String remark;
@@ -129,12 +129,12 @@ public class Attendance extends ABaseDO {
         return endDatetime;
     }
 
-    public void setSettleDatetime(String settleDatetime) {
-        this.settleDatetime = settleDatetime;
+    public Date getSettleDatetime() {
+        return settleDatetime;
     }
 
-    public String getSettleDatetime() {
-        return settleDatetime;
+    public void setSettleDatetime(Date settleDatetime) {
+        this.settleDatetime = settleDatetime;
     }
 
     public void setRemark(String remark) {

@@ -14,6 +14,14 @@ public class XN631430Req {
     @NotBlank(message = "编号不能为空")
     private String code;
 
+    // 标题
+    @NotBlank(message = "标题不能为空")
+    private String title;
+
+    // 内容
+    @NotBlank(message = "内容不能为空")
+    private String content;
+
     // 发送人
     @NotBlank(message = "发送人不能为空")
     private String sender;
@@ -43,6 +51,22 @@ public class XN631430Req {
 
     public void setSendNote(String sendNote) {
         this.sendNote = sendNote;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public String getContent() {
+        return content;
+    }
+
+    public void setContent(String content) {
+        this.content = content;
     }
 
 }

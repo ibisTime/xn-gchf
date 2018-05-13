@@ -1,6 +1,5 @@
 package com.cdkj.gchf.bo;
 
-import java.util.Date;
 import java.util.List;
 
 import com.cdkj.gchf.bo.base.IPaginableBO;
@@ -16,9 +15,7 @@ public interface IBankCardBO extends IPaginableBO<BankCard> {
 
     public BankCard getBankCard(String code);
 
-    public void addBankCard(String code, String name, String bankCode,
-            String bankName, String bankcardNumber, String subbranch,
-            String updater, Date updateDatetime, String remark);
+    public void addBankCard(BankCard data);
 
     public BankCard getBankCardByStaff(String code);
 

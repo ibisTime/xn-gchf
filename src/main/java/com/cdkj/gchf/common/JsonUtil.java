@@ -7,9 +7,7 @@ import com.google.gson.GsonBuilder;
 public class JsonUtil {
 
     public static <T> T json2Bean(String json, Class<T> clazz) {
-        System.out.println("json:" + json);
         boolean isJson = new JsonValidator().validate(json);
-        System.out.println("isJson:" + isJson);
         if (!isJson) {
             throw new ParaException("830xxx", "json格式不正确");
         }

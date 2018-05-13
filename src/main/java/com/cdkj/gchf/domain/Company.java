@@ -1,9 +1,16 @@
 package com.cdkj.gchf.domain;
 
 import java.util.Date;
+import java.util.List;
 
 import com.cdkj.gchf.dao.base.ABaseDO;
 
+/**
+ * 公司编号
+ * @author: nyc 
+ * @since: 2018年5月12日 下午3:25:07 
+ * @history:
+ */
 public class Company extends ABaseDO {
 
     /** 
@@ -19,6 +26,9 @@ public class Company extends ABaseDO {
 
     // ***********db********
     private String keyword;
+
+    // 公司编号
+    private List<String> projectCodeList;
 
     public String getCode() {
         return code;
@@ -50,6 +60,14 @@ public class Company extends ABaseDO {
 
     public void setKeyword(String keyword) {
         this.keyword = keyword;
+    }
+
+    public List<String> getProjectCodeList() {
+        return projectCodeList;
+    }
+
+    public void setProjectCodeList(List<String> projectCodeList) {
+        this.projectCodeList = projectCodeList;
     }
 
 }

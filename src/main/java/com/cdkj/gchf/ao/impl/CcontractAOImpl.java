@@ -44,6 +44,7 @@ public class CcontractAOImpl implements ICcontractAO {
 
     @Override
     public String addCcontract(XN631400Req req) {
+        ccontractBO.isExist(req.getProjectCode(), req.getStaffCode());
         Ccontract data = new Ccontract();
         String code = OrderNoGenerater
             .generate(EGeneratePrefix.Ccontract.getCode());
@@ -101,7 +102,7 @@ public class CcontractAOImpl implements ICcontractAO {
         String updateName = null;
         for (Ccontract ccontract : page.getList()) {
             Staff staff = staffBO.getStaff(ccontract.getStaffCode());
-            ccontract.setStaff(staff);
+            ccontract.setStaffName(staff.getName());
             updateName = getName(ccontract.getUpdater());
             ccontract.setUpdateName(updateName);
         }
@@ -121,7 +122,7 @@ public class CcontractAOImpl implements ICcontractAO {
         String updateName = null;
         for (Ccontract ccontract : list) {
             Staff staff = staffBO.getStaff(ccontract.getStaffCode());
-            ccontract.setStaff(staff);
+            ccontract.setStaffName(staff.getName());
             updateName = getName(ccontract.getUpdater());
             ccontract.setUpdateName(updateName);
         }
@@ -132,7 +133,7 @@ public class CcontractAOImpl implements ICcontractAO {
     public Ccontract getCcontract(String code) {
         Ccontract data = ccontractBO.getCcontract(code);
         Staff staff = staffBO.getStaff(data.getStaffCode());
-        data.setStaff(staff);
+        data.setStaffName(staff.getName());
         String updateName = getName(data.getUpdater());
         data.setUpdateName(updateName);
         return data;

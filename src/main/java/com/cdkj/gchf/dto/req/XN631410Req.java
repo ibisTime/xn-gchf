@@ -3,6 +3,12 @@ package com.cdkj.gchf.dto.req;
 import org.hibernate.validator.constraints.NotBlank;
 
 public class XN631410Req {
+    // （必填）员工编号
+    private String staffCode;
+
+    // （必填）项目编号
+    @NotBlank(message = "项目编号不能为空")
+    private String projectCode;
 
     // （必填）证件类型
     @NotBlank(message = "证件类型不能为空")
@@ -55,6 +61,17 @@ public class XN631410Req {
     // （必填）开户行
     @NotBlank(message = "开户行不能为空")
     private String subbranch;
+
+    // （必填）合同照片
+    @NotBlank(message = "合同照片不能为空")
+    private String contentPic;
+
+    // 签约时间
+    @NotBlank(message = "签约时间不能为空")
+    private String contractDatetime;
+
+    // 特征值
+    private String feat;
 
     // （选填）备注
     private String remark;
@@ -169,6 +186,46 @@ public class XN631410Req {
 
     public void setSubbranch(String subbranch) {
         this.subbranch = subbranch;
+    }
+
+    public String getProjectCode() {
+        return projectCode;
+    }
+
+    public void setProjectCode(String projectCode) {
+        this.projectCode = projectCode;
+    }
+
+    public String getContractDatetime() {
+        return contractDatetime;
+    }
+
+    public void setContractDatetime(String contractDatetime) {
+        this.contractDatetime = contractDatetime;
+    }
+
+    public String getContentPic() {
+        return contentPic;
+    }
+
+    public void setContentPic(String contentPic) {
+        this.contentPic = contentPic;
+    }
+
+    public String getFeat() {
+        return feat;
+    }
+
+    public void setFeat(String feat) {
+        this.feat = feat;
+    }
+
+    public String getStaffCode() {
+        return staffCode;
+    }
+
+    public void setStaffCode(String staffCode) {
+        this.staffCode = staffCode;
     }
 
 }

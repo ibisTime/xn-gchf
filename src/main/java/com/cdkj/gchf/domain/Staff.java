@@ -1,6 +1,7 @@
 package com.cdkj.gchf.domain;
 
 import java.util.Date;
+import java.util.List;
 
 import com.cdkj.gchf.dao.base.ABaseDO;
 
@@ -15,10 +16,17 @@ public class Staff extends ABaseDO {
     private static final long serialVersionUID = 1L;
 
     // 编号
+
     private String code;
 
     // 姓名
     private String name;
+
+    // 公司编号
+    private String companyCode;
+
+    // 公司名称
+    private String companyName;
 
     // 手机号
     private String mobile;
@@ -45,15 +53,27 @@ public class Staff extends ABaseDO {
     private String updater;
 
     // 更新时间
+
     private Date updateDatetime;
 
     // 备注
     private String remark;
 
+    // 特征值
+    private String feat;
+
     // ***************db***********
+    // 关键字模糊查询
     private String keyword;
 
+    // 工资卡
     private BankCard bankCard;
+
+    // 公司编号List
+    private List<String> projectCodeList;
+
+    // 更新人名字
+    private String updateName;
 
     public void setCode(String code) {
         this.code = code;
@@ -165,6 +185,46 @@ public class Staff extends ABaseDO {
 
     public void setBankCard(BankCard bankCard) {
         this.bankCard = bankCard;
+    }
+
+    public String getCompanyCode() {
+        return companyCode;
+    }
+
+    public void setCompanyCode(String companyCode) {
+        this.companyCode = companyCode;
+    }
+
+    public String getCompanyName() {
+        return companyName;
+    }
+
+    public void setCompanyName(String companyName) {
+        this.companyName = companyName;
+    }
+
+    public List<String> getProjectCodeList() {
+        return projectCodeList;
+    }
+
+    public void setProjectCodeList(List<String> projectCodeList) {
+        this.projectCodeList = projectCodeList;
+    }
+
+    public String getUpdateName() {
+        return updateName;
+    }
+
+    public void setUpdateName(String updateName) {
+        this.updateName = updateName;
+    }
+
+    public String getFeat() {
+        return feat;
+    }
+
+    public void setFeat(String feat) {
+        this.feat = feat;
     }
 
 }

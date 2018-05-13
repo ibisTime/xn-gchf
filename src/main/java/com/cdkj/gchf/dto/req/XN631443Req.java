@@ -3,6 +3,7 @@ package com.cdkj.gchf.dto.req;
 import java.util.List;
 
 import org.hibernate.validator.constraints.NotBlank;
+import org.hibernate.validator.constraints.NotEmpty;
 
 /**
  * 修改工资条
@@ -13,11 +14,11 @@ import org.hibernate.validator.constraints.NotBlank;
 public class XN631443Req {
 
     // （必填）编号
-    @NotBlank(message = "编号不能为空")
+    @NotEmpty(message = "编号不能为空")
     private List<String> codeList;
 
     // （必填）审核人
-    @NotBlank(message = "approveNote不能为空")
+    @NotBlank(message = "审核人不能为空")
     private String approver;
 
     // （必填）审核备注

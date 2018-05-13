@@ -26,11 +26,8 @@ public class MessageBOImpl extends PaginableBOImpl<Message>
     }
 
     @Override
-    public void sendMessage(Message data, String sender, String sendNote) {
-        data.setSender(sender);
-        data.setSendDatetime(new Date());
-        data.setSendNote(sendNote);
-        data.setStatus(EMessageStatus.TO_Deal.getCode());
+    public void sendMessage(Message data) {
+
         messageDAO.sendMessage(data);
 
     }

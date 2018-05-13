@@ -27,9 +27,17 @@
 			<if test="projectCode != null and projectCode != '' ">
 				AND t.project_code = #{projectCode}
 			</if>
-			<if test="companyCode != null and companyCode != '' ">
-				AND t.company_code = #{companyCode}
-			</if>
+			<choose>
+				<when test="companyCode != null and companyCode != '' ">
+					AND t.company_code = #{companyCode}
+				</when>
+				<when test="projectCodeList != null and projectCodeList.size() > 0 ">
+					AND t.project_code IN 
+					<foreach collection="projectCodeList" item="item" index="index" open="(" separator="," close=")">
+						#{item}
+					</foreach>
+				</when>
+			</choose>
 			<if test="status != null and status !='' ">
 				AND t.status = #{status}
 			</if>

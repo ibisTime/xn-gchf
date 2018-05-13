@@ -17,7 +17,7 @@ public interface IMessageBO extends IPaginableBO<Message> {
 
     public Message getMessage(String code);
 
-    public void sendMessage(Message data, String sender, String sendNote);
+    public void sendMessage(Message data);
 
     public void approveMessage(Message data, String handler, String handleNote);
 

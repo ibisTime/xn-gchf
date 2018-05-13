@@ -114,7 +114,7 @@ public class ProjectBOImpl extends PaginableBOImpl<Project>
         List<String> companyCodeList = new ArrayList<String>();
         List<Project> list = projectDAO.selectList(condition);
         for (Project project : list) {
-            companyCodeList.add(project.getCompanyCode());
+            companyCodeList.add(project.getCode());
         }
         return companyCodeList;
     }

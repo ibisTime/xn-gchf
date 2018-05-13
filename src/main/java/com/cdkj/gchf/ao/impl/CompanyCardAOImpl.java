@@ -38,11 +38,6 @@ public class CompanyCardAOImpl implements ICompanyCardAO {
     public Paginable<CompanyCard> queryCompanyCardPage(int start, int limit,
             CompanyCard condition) {
         Paginable<CompanyCard> page = null;
-        if (EUserKind.Owner.getCode().equals(condition.getKind())) {
-            if (StringUtils.isBlank(condition.getCompanyCode())) {
-                return page;
-            }
-        }
         return companyCardBO.getPaginable(start, limit, condition);
     }
 

@@ -81,6 +81,7 @@
 		UPDATE thf_report
 		SET
 		staff_in = staff_in + 1
+		,next_month_salary = #{nextMonthSalary}
 		WHERE code = #{code}
 	</update>
 
@@ -101,7 +102,7 @@
 	<update id="update_today_days" parameterType="report">
 		UPDATE thf_report
 		SET
-		today_days = #{todayDay}
+		today_days = #{todayDays}
 		,working_days = #{workingDays}
 		WHERE code = #{code}
 	</update>

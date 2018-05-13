@@ -1,5 +1,7 @@
 package com.cdkj.gchf.dto.req;
 
+import java.util.List;
+
 public class XN631376Req extends APageReq {
     private static final long serialVersionUID = 5138736221155343722L;
 
@@ -10,6 +12,8 @@ public class XN631376Req extends APageReq {
     private String updater;// 更新人
 
     private String keyword;// 关键字
+
+    private List<String> companyCodeList;
 
     public String getCompanyCode() {
         return companyCode;
@@ -43,7 +47,12 @@ public class XN631376Req extends APageReq {
         this.keyword = keyword;
     }
 
-    public static long getSerialversionuid() {
-        return serialVersionUID;
+    public List<String> getCompanyCodeList() {
+        return companyCodeList;
     }
+
+    public void setCompanyCodeList(List<String> companyCodeList) {
+        this.companyCodeList = companyCodeList;
+    }
+
 }

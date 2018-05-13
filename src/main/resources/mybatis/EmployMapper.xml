@@ -189,7 +189,6 @@
 		UPDATE thf_employ
 		SET
 		status = #{status}
-		,days = #{days}
 		,start_datetime = #{startDatetime}
 		,end_datetime = #{endDatetime}
 		,leaving_days = #{leavingDays}

@@ -111,4 +111,15 @@ public class EmployBOImpl extends PaginableBOImpl<Employ> implements IEmployBO {
         employDAO.updateLeavingDays(data);
     }
 
+    @Override
+    public void isExist(String projectCode, String staffCode) {
+        Employ condition = new Employ();
+        condition.setProjectCode(projectCode);
+        condition.setStaffCode(staffCode);
+        Employ data = employDAO.select(condition);
+        if (data != null) {
+            throw new BizException("xn00000", "该员工已入职");
+        }
+    }
+
 }

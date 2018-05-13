@@ -56,21 +56,22 @@ public class EmployAOImpl implements IEmployAO {
     public String joinIn(XN631460Req req) {
         String code = OrderNoGenerater
             .generate(EGeneratePrefix.Employ.getCode());
-
+        employBO.isExist(req.getProjectCode(), req.getStaffCode());
         Employ data = new Employ();
         data.setCode(code);
         Project project = projectBO.getProject(req.getProjectCode());
         data.setProjectCode(req.getProjectCode());
-        if (EProjectStatus.End.getCode().equals(project.getStatus())) {
+        if (EProjectStatus.End.getCode().equals(project.getStatus())
+                || EProjectStatus.Stop.getCode().equals(project.getStatus())) {
             throw new BizException("xn0000", "该项目已经结束");
         }
         data.setCompanyCode(project.getCompanyCode());
         data.setCompanyName(project.getCompanyName());
         data.setProjectName(project.getName());
-        data.setStaffCode(req.getStaffCode());
-
         Staff staff = staffBO.getStaff(req.getStaffCode());
-        data.setStaffCode(staff.getMobile());
+        data.setStaffCode(staff.getCode());
+
+        data.setStaffMobile(staff.getMobile());
         data.setType(req.getType());
         data.setPosition(req.getPosition());
         data.setSalary(StringValidater.toLong(req.getSalary()));
@@ -87,6 +88,10 @@ public class EmployAOImpl implements IEmployAO {
         employBO.joinIn(data);
         // 计入累积入职
         Report report = reportBO.getReportByProject(project.getCode());
+        Long nextMonthSalary = StringValidater.toLong(req.getSalary())
+                / DateUtil.getMonthDays() * DateUtil.getRemainDays()
+                + report.getNextMonthSalary();
+        report.setNextMonthSalary(nextMonthSalary);
         reportBO.staffIn(report);
         staffLogBO.saveStaffLog(data, staff.getName(), project.getCompanyCode(),
             project.getCompanyName(), project.getCode(), project.getName());
@@ -118,8 +123,9 @@ public class EmployAOImpl implements IEmployAO {
 
         Project project = projectBO.getProject(data.getProjectCode());
         // 统计请假天数
-        double leadingDays = data.getLeavingDays() + DateUtil.getDays(
-            project.getStartDatetime(), project.getEndDatetime(), start, end);
+        double leadingDays = data.getLeavingDays()
+                + DateUtil.getDays(project.getAttendanceStarttime(),
+                    project.getAttendanceEndtime(), start, end);
         data.setLeavingDays(leadingDays);
 
         // 累积请假天数

@@ -1,6 +1,7 @@
 package com.cdkj.gchf.domain;
 
 import java.util.Date;
+import java.util.List;
 
 import com.cdkj.gchf.dao.base.ABaseDO;
 
@@ -64,6 +65,8 @@ public class CompanyCard extends ABaseDO {
 
     // 用户类型
     private String kind;
+
+    private List<String> projectCodeList;
 
     public void setCode(String code) {
         this.code = code;
@@ -199,6 +202,14 @@ public class CompanyCard extends ABaseDO {
 
     public void setKind(String kind) {
         this.kind = kind;
+    }
+
+    public List<String> getProjectCodeList() {
+        return projectCodeList;
+    }
+
+    public void setProjectCodeList(List<String> projectCodeList) {
+        this.projectCodeList = projectCodeList;
     }
 
 }

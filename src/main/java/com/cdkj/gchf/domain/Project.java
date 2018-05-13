@@ -110,7 +110,7 @@ public class Project extends ABaseDO {
     // 负责人名称
     private String chargeName;
 
-    private List<String> companyCodeList;
+    private List<String> projectCodeList;
 
     public String getKeyword() {
         return keyword;
@@ -368,12 +368,12 @@ public class Project extends ABaseDO {
         this.chargeName = chargeName;
     }
 
-    public List<String> getCompanyCodeList() {
-        return companyCodeList;
+    public List<String> getProjectCodeList() {
+        return projectCodeList;
     }
 
-    public void setCompanyCodeList(List<String> companyCodeList) {
-        this.companyCodeList = companyCodeList;
+    public void setProjectCodeList(List<String> projectCodeList) {
+        this.projectCodeList = projectCodeList;
     }
 
 }

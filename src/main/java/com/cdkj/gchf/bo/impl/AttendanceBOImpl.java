@@ -1,5 +1,6 @@
 package com.cdkj.gchf.bo.impl;
 
+import java.util.Date;
 import java.util.List;
 
 import org.apache.commons.collections.CollectionUtils;
@@ -92,6 +93,7 @@ public class AttendanceBOImpl extends PaginableBOImpl<Attendance>
 
     @Override
     public void updateStatus(Attendance data) {
+        data.setSettleDatetime(new Date());
         attendanceDAO.updateStatus(data);
     }
 }

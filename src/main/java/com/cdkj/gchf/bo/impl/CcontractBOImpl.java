@@ -20,9 +20,7 @@ public class CcontractBOImpl extends PaginableBOImpl<Ccontract>
     private ICcontractDAO ccontractDAO;
 
     public void saveCcontract(Ccontract data) {
-
         ccontractDAO.insert(data);
-
     }
 
     @Override
@@ -51,5 +49,16 @@ public class CcontractBOImpl extends PaginableBOImpl<Ccontract>
             }
         }
         return data;
+    }
+
+    @Override
+    public void isExist(String projectCode, String staffCode) {
+        Ccontract condition = new Ccontract();
+        condition.setProjectCode(projectCode);
+        condition.setStaffCode(staffCode);
+        Ccontract data = ccontractDAO.select(condition);
+        if (data != null) {
+            throw new BizException("xn0000", "合同信息不存在");
+        }
     }
 }

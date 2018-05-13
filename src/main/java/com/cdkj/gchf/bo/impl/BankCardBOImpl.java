@@ -1,6 +1,5 @@
 package com.cdkj.gchf.bo.impl;
 
-import java.util.Date;
 import java.util.List;
 
 import org.apache.commons.lang3.StringUtils;
@@ -23,26 +22,10 @@ public class BankCardBOImpl extends PaginableBOImpl<BankCard>
     private IBankCardDAO bankCardDAO;
 
     @Override
-    public void addBankCard(String staffCode, String name, String bankCode,
-            String bankName, String bankcardNumber, String subbranch,
-            String updater, Date updateDatetime, String remark) {
-
-        BankCard data = new BankCard();
+    public void addBankCard(BankCard data) {
         String code = OrderNoGenerater
             .generate(EGeneratePrefix.BankCard.getCode());
         data.setCode(code);
-        data.setStaffCode(staffCode);
-        data.setStaffName(name);
-        data.setBankCode(bankCode);
-        data.setBankName(bankName);
-
-        data.setBankcardNumber(bankcardNumber);
-        data.setSubbranch(subbranch);
-        data.setCreateDatetime(new Date());
-        data.setUpdater(updater);
-        data.setUpdateDatetime(updateDatetime);
-
-        data.setRemark(remark);
         bankCardDAO.insert(data);
 
     }

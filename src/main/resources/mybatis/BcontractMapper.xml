@@ -11,9 +11,6 @@
 		
 		<result column="bname" property="bname" />
 		<result column="bmobile" property="bmobile" />
-		<result column="pict1" property="pict1" />
-		<result column="pict2" property="pict2" />
-		<result column="pict3" property="pict3" />
 		
 		<result column="content_pic" property="contentPic" />
 		<result column="contract_datetime" property="contractDatetime" />
@@ -26,12 +23,20 @@
 			<if test="code != null and code != '' ">
 				AND t.code = #{code}
 			</if>
-			<if test="companyCode != null and companyCode != '' ">
-				AND t.company_code = #{companyCode}
-			</if>
-			<if test="projectCode != null and projectCode != '' ">
-				AND t.project_code = #{projectCode}
-			</if>
+			<choose>
+				<when test="projectCode != null and projectCode != '' ">
+					AND t.project_code = #{projectCode}
+				</when>
+				<when test="projectCodeList != null and projectCodeList.size() > 0 ">
+					AND t.project_code IN 
+					<foreach collection="projectCodeList" item="item" index="index" open="(" separator="," close=")">
+						#{item}
+					</foreach>
+				</when>
+				<otherwise>
+					AND 1 = 1
+				</otherwise>
+			</choose>
 			<if test="contractDatetime != null and contractDatetime != '' ">
 				AND t.contract_datetime = #{contractDatetime}
 			</if>
@@ -46,7 +51,7 @@
 			</if>
 			<if test="keyword != null and keyword != '' ">
 				AND t.bname like "%"#{keyword}"%" OR  t.bmobile like "%"#{keyword}"% OR 
-					t.company_name like "%"#{keyword}"%" OR t.project_name like "%"#{keyword}"%"
+				 OR t.project_name like "%"#{keyword}"%"
 			</if>
 		</trim>
 	</sql>
@@ -59,9 +64,6 @@
 		,t.project_name
 		,t.bname
 		,t.bmobile
-		,t.pict1
-		,t.pict2
-		,t.pict3
 		,t.content_pic
 		,t.contract_datetime
 		,t.updater
@@ -91,12 +93,8 @@
 		,company_name
 		,project_code
 		,project_name
-		
 		,bname
 		,bmobile
-		,pict1
-		,pict2
-		,pict3
 		
 		,content_pic
 		,contract_datetime
@@ -113,10 +111,6 @@
 		
 		,#{bname}
 		,#{bmobile}
-		,#{pict1}
-		,#{pict2}
-		,#{pict3}
-		
 		,#{contentPic}
 		,#{contractDatetime}
 		,#{updater}
@@ -130,10 +124,6 @@
 		SET
 		bname = #{bname}
 		,bmobile = #{bmobile}
-		,pict1 = #{pict1}
-		,pict2 = #{pict2}
-		,pict3 = #{pict3}
-		
 		,content_pic = #{contentPic}
 		,contract_datetime = #{contractDatetime}
 		,updater = #{updater}

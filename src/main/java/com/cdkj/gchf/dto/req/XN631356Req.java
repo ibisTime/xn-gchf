@@ -27,8 +27,8 @@ public class XN631356Req extends APageReq {
     // 用户类型
     private String kind;
 
-    // 公司编号 （选填）
-    private List<String> companyCodeList;
+    // 项目编号
+    private List<String> projectCodeList;
 
     public String getStatus() {
         return status;
@@ -86,12 +86,12 @@ public class XN631356Req extends APageReq {
         this.companyName = companyName;
     }
 
-    public List<String> getCompanyCodeList() {
-        return companyCodeList;
+    public List<String> getProjectCodeList() {
+        return projectCodeList;
     }
 
-    public void setCompanyCodeList(List<String> companyCodeList) {
-        this.companyCodeList = companyCodeList;
+    public void setProjectCodeList(List<String> projectCodeList) {
+        this.projectCodeList = projectCodeList;
     }
 
 }

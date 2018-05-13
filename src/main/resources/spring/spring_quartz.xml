@@ -30,7 +30,7 @@
     <!-- 生成工资条 -->
 	<bean id="salaryMonthlyTrigger" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">  
        <property name="jobDetail" ref="createSalaryMonthly"/>  
-       <property name="cronExpression" value="0 0 0 * *  ?"/><!-- 0 0 1 * * ?  每月的第一天0点执行 -->
+       <property name="cronExpression" value="0 0 0  * *  ?"/><!-- 0 0 1 * * ?  每月的第一天0点执行 -->
 	</bean>
 	
 	<bean id="createSalaryMonthly" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">   
@@ -42,8 +42,8 @@
 	<!-- 生成考勤 -->
 	<bean id="attendanceDailyTrigger" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">  
        <property name="jobDetail" ref="createAttendanceDaily"/>  
-       <property name="cronExpression" value="0 0 0 * * ?"/><!-- 0 0 0 1 * ?  每天凌晨-->
-	</bean>
+       <property name="cronExpression" value="0 0 0  * * ?"/><!-- 0 0 0 1 * ?  每天凌晨-->
+	</bean> 
 	<bean id="createAttendanceDaily" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">   
         <property name="targetObject" ref="attendanceAOImpl"/>  
         <property name="targetMethod" value="createAttendance"/>  
@@ -53,7 +53,7 @@
 	<!-- 员工是否请假 -->
 	<bean id="updateEmployStatusTrigger" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">  
        <property name="jobDetail" ref="updateEmployStatus"/>  
-       <property name="cronExpression" value="0 0 0/1 * * ?"/><!-- 0 0 0 1 * ?  每天每小时-->
+       <property name="cronExpression" value="0 0/1 * * * ?"/><!-- 0 0 0 1 * ?  每天每小时-->
 	</bean>
 	<bean id="updateEmployStatus" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">   
         <property name="targetObject" ref="employAOImpl"/>  

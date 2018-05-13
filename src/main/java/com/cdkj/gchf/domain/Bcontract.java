@@ -1,6 +1,7 @@
 package com.cdkj.gchf.domain;
 
 import java.util.Date;
+import java.util.List;
 
 import com.cdkj.gchf.dao.base.ABaseDO;
 
@@ -16,7 +17,7 @@ public class Bcontract extends ABaseDO {
     // 公司编号
     private String companyCode;
 
-    // 公司名称
+    // 公司编号
     private String companyName;
 
     // 项目编号
@@ -30,15 +31,6 @@ public class Bcontract extends ABaseDO {
 
     // 承包商手机号
     private String bmobile;
-
-    // 免冠照片
-    private String pict1;
-
-    // 手持身份证照片
-    private String pict2;
-
-    // 身份证正反面照片+签名
-    private String pict3;
 
     // 合同照片
     private String contentPic;
@@ -60,6 +52,8 @@ public class Bcontract extends ABaseDO {
     private String keyword;
 
     private String updateName;
+
+    private List<String> projectCodeList;
 
     public String getKeyword() {
         return keyword;
@@ -149,6 +143,22 @@ public class Bcontract extends ABaseDO {
         this.remark = remark;
     }
 
+    public String getUpdateName() {
+        return updateName;
+    }
+
+    public void setUpdateName(String updateName) {
+        this.updateName = updateName;
+    }
+
+    public List<String> getProjectCodeList() {
+        return projectCodeList;
+    }
+
+    public void setProjectCodeList(List<String> projectCodeList) {
+        this.projectCodeList = projectCodeList;
+    }
+
     public String getCompanyCode() {
         return companyCode;
     }
@@ -163,38 +173,6 @@ public class Bcontract extends ABaseDO {
 
     public void setCompanyName(String companyName) {
         this.companyName = companyName;
-    }
-
-    public String getPict1() {
-        return pict1;
-    }
-
-    public void setPict1(String pict1) {
-        this.pict1 = pict1;
-    }
-
-    public String getPict2() {
-        return pict2;
-    }
-
-    public void setPict2(String pict2) {
-        this.pict2 = pict2;
-    }
-
-    public String getPict3() {
-        return pict3;
-    }
-
-    public void setPict3(String pict3) {
-        this.pict3 = pict3;
-    }
-
-    public String getUpdateName() {
-        return updateName;
-    }
-
-    public void setUpdateName(String updateName) {
-        this.updateName = updateName;
     }
 
 }

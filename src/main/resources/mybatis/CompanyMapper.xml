@@ -12,6 +12,12 @@
 			<if test="code != null and code != '' ">
 				AND t.code = #{code}
 			</if>
+			<if test="companyCodeList != null and companyCodeList != '' ">
+				AND t.code IN 
+				<foreach collection="companyCodeList" item="item" index="index" open="(" separator="," close=")" >
+					#{item}
+				</foreach>
+			</if>
 			<if test="keyword != null and keyword != '' ">
 				AND t.name like "%"#{keyword}"%"
 			</if>

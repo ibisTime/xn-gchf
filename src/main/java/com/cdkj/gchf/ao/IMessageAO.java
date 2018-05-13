@@ -25,11 +25,12 @@ public interface IMessageAO {
 
     public Message getMessage(String code);
 
-    public void sendMessage(String code, String sender, String sendNote);
+    public void sendMessage(String code, String title, String content,
+            String sender, String sendNote);
 
     public void approveMessage(String code, String handler, String handleNote,
             List<XN631439Req> list);
 
-    public void downLoad(String code);
+    public Message downLoad(String code);
 
 }

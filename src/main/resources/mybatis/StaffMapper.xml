@@ -4,6 +4,9 @@
 <mapper namespace="com.cdkj.gchf.dao.IStaffDAO">
 	<resultMap id="staff_DB_Result" type="staff">
 		<result column="code" property="code" />
+		<result column="company_code" property="companyCode" />
+		<result column="company_name" property="companyName" />
+		
 		<result column="name" property="name" />
 		<result column="mobile" property="mobile" />
 		<result column="id_type" property="idType" />
@@ -15,6 +18,7 @@
 		<result column="updater" property="updater" />
 		<result column="update_datetime" property="updateDatetime" />
 		<result column="remark" property="remark" />
+		<result column="feat" property="feat" />
 	</resultMap>
 	
 	<sql id="where_condition">
@@ -22,11 +26,30 @@
 			<if test="code != null and code != '' ">
 				AND t.code = #{code}
 			</if>
+			<if test="companyCode != null and companyCode != '' ">
+				AND t.company_code = #{companyCode}
+			</if>
+		   <choose>
+				<when test="companyCode != null and companyCode != '' ">
+					AND t.company_code = #{companyCode}
+				</when>
+			</choose>
+			
+			<if test="companyName != null and companyName != '' ">
+				AND t.company_name like "%"#{companyName}"%"
+			</if>
+			<if test="idNo != null and idNo != '' ">
+				AND t.id_no = #{idNo}
+			</if>
+			
 			<if test="updater != null and updater != '' ">
 				AND t.updater = #{updater}
 			</if>
 			<if test="keyword != null and keyword != '' ">
 				AND t.name like "%"#{keyword}"%" OR  t.mobile like "%"#{keyword}"%" OR t.id_no like "%"#{keyword}"%"
+			</if>
+			<if test="feat != null and featfeat != '' ">
+				AND t.feat = #{feat}
 			</if>
 		</trim>
 	</sql>
@@ -34,6 +57,8 @@
 	<select id="select_staff" parameterType="staff" resultMap="staff_DB_Result">
 		SELECT
 		t.code
+		,t.company_code
+		,t.company_name
 		,t.name
 		,t.mobile
 		,t.id_type
@@ -45,6 +70,7 @@
 		,t.updater
 		,t.update_datetime
 		,t.remark
+		,t.feat
 		FROM
 		thf_staff t
 		<include refid="where_condition" />
@@ -65,6 +91,8 @@
 		INSERT INTO
 		thf_staff(
 		code
+		,company_code
+		,company_name
 		,name
 		,mobile
 		,id_type
@@ -76,9 +104,12 @@
 		,updater
 		,update_datetime
 		,remark
+		,feat
 		)
 		VALUES(
 		#{code}
+		,#{companyCode}
+		,#{companyName}
 		,#{name}
 		,#{mobile}
 		,#{idType}
@@ -90,6 +121,7 @@
 		,#{updater}
 		,#{updateDatetime}
 		,#{remark}
+		,#{feat}
 		)
 	</insert>
 

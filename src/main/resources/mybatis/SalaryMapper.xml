@@ -67,7 +67,7 @@
 				AND t.status = #{status}
 			</if>
 		
-			<if test="statusList != null and statusList !='' ">
+			<if test="statusList != null and statusList.size() > 0 ">
 				<foreach collection="statusList" item="item" index="index" open="(" separator="," close=")">
 					#{item}
 				</foreach>

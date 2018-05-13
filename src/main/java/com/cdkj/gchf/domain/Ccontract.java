@@ -1,6 +1,7 @@
 package com.cdkj.gchf.domain;
 
 import java.util.Date;
+import java.util.List;
 
 import com.cdkj.gchf.dao.base.ABaseDO;
 
@@ -54,11 +55,17 @@ public class Ccontract extends ABaseDO {
 
     private String keyword;
 
+    // 更新人名称
     private String updateName;
 
-    private Staff Staff;
+    // 员工名称
+    private String staffName;
 
+    // 用户类型
     private String kind;
+
+    // 项目编号
+    private List<String> projectCodeList;
 
     public void setCode(String code) {
         this.code = code;
@@ -156,12 +163,12 @@ public class Ccontract extends ABaseDO {
         this.updateName = updateName;
     }
 
-    public Staff getStaff() {
-        return Staff;
+    public String getStaffName() {
+        return staffName;
     }
 
-    public void setStaff(Staff staff) {
-        Staff = staff;
+    public void setStaffName(String staffName) {
+        this.staffName = staffName;
     }
 
     public String getCompanyCode() {
@@ -186,6 +193,14 @@ public class Ccontract extends ABaseDO {
 
     public void setKind(String kind) {
         this.kind = kind;
+    }
+
+    public List<String> getProjectCodeList() {
+        return projectCodeList;
+    }
+
+    public void setProjectCodeList(List<String> projectCodeList) {
+        this.projectCodeList = projectCodeList;
     }
 
 }

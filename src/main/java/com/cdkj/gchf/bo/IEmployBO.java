@@ -31,4 +31,6 @@ public interface IEmployBO extends IPaginableBO<Employ> {
 
     public void updateLeavingDays(Salary data);
 
+    public void isExist(String projectCode, String staffCode);
+
 }

@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.cdkj.gchf.ao.IMessageAO;
 import com.cdkj.gchf.bo.ICompanyCardBO;
@@ -112,12 +113,21 @@ public class MessageAOImpl implements IMessageAO {
     }
 
     @Override
-    public void sendMessage(String code, String sender, String sendNote) {
+    public void sendMessage(String code, String title, String content,
+            String sender, String sendNote) {
         Message data = messageBO.getMessage(code);
-        messageBO.sendMessage(data, sender, sendNote);
+        data.setTitle(title);
+        data.setContent(content);
+        data.setSender(sender);
+        data.setSendDatetime(new Date());
+        data.setSendNote(sendNote);
+
+        data.setStatus(EMessageStatus.TO_Deal.getCode());
+        messageBO.sendMessage(data);
     }
 
     @Override
+    @Transactional
     public void approveMessage(String code, String handler, String handleNote,
             List<XN631439Req> list) {
         Message data = messageBO.getMessage(code);
@@ -187,7 +197,7 @@ public class MessageAOImpl implements IMessageAO {
     }
 
     @Override
-    public void downLoad(String code) {
+    public Message downLoad(String code) {
         Message data = messageBO.getMessage(code);
         if (EMessageStatus.TO_Deal.getCode().equals(data.getStatus())) {
             data.setDownload(data.getDownload() + 1);
@@ -195,6 +205,7 @@ public class MessageAOImpl implements IMessageAO {
             data.setBackDownload(data.getBackDownload() + 1);
         }
         messageBO.downLoad(data);
+        return data;
     }
 
     private String getName(String userId) {

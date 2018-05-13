@@ -34,6 +34,7 @@ public class XN631405 extends AProcessor {
         condition.setCompanyCode(req.getCompanyCode());
         condition.setCompanyName(req.getCompanyName());
 
+        condition.setProjectCodeList(req.getCompanyCodeList());
         condition.setKind(req.getKind());
 
         String column = req.getOrderColumn();

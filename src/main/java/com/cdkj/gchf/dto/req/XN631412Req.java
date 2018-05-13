@@ -51,7 +51,6 @@ public class XN631412Req {
     private String updater;
 
     // （选填）备注
-    @NotBlank(message = "备注不能为空")
     private String remark;
 
     public String getCode() {

@@ -17,4 +17,6 @@ public interface ICcontractBO extends IPaginableBO<Ccontract> {
 
     public Ccontract getCcontract(String code);
 
+    public void isExist(String projectCode, String staffCode);
+
 }

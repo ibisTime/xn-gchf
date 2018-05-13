@@ -54,7 +54,6 @@ public class ProjectAOImpl implements IProjectAO {
     @Override
     public String addProject(XN631350Req req) {
         Project data = new Project();
-
         String code = OrderNoGenerater
             .generate(EGeneratePrefix.Project.getCode());
         data.setCode(code);
@@ -226,7 +225,7 @@ public class ProjectAOImpl implements IProjectAO {
         data.setAttendanceStarttime(req.getAttendanceStarttime());
         data.setAttendanceEndtime(req.getAttendanceEndtime());
 
-        data.setStatus(EProjectStatus.To_Audit.getCode());
+        data.setStatus(EProjectStatus.UnApprove.getCode());
         data.setUpdater(req.getUpdater());
         data.setUpdateDatetime(new Date());
         data.setRemark(req.getRemark());
@@ -250,7 +249,7 @@ public class ProjectAOImpl implements IProjectAO {
         data.setApprover(approver);
         data.setApproveDatetime(new Date());
         if (StringUtils.isBlank(approveNote)) {
-            approveNote = "您申请的项目[" + data.getName() + "]未通过审核,请在修改后再次申请";
+            approveNote = "您申请的项目[" + data.getName() + "]未通过审核,请修改后再提交申请";
         }
         data.setApproveNote(approveNote);
         projectBO.approveProject(data);

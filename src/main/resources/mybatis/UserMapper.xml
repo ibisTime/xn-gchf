@@ -149,12 +149,13 @@
 		
 		,company_code
 		,company_name
+		,province
 		,city
 		,area
-		,bankName
+		,bank_name
 		,subbranch
 		
-		,province
+		
 		,updater
 		,update_datetime
 		,status

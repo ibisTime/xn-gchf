@@ -22,11 +22,22 @@
 			<if test="code != null and code != '' ">
 				AND t.code = #{code}
 			</if>
-			<if test="projectCode != null and projectCode != '' ">
-				AND t.project_code = #{projectCode}
-			</if>
 			<if test="companyCode != null and companyCode != '' ">
 				AND t.company_code = #{companyCode}
+			</if>
+			<choose>
+				<when test="projectCode != null and projectCodeList.size() > 0 ">
+					AND t.project_code = #{projectCode}
+				</when>
+				<when test="projectCodeList != null and projectCodeList != ''">
+					AND t.project_code IN 
+					<foreach collection="projectCodeList" item="item" index="index" open="(" separator="," close=")">
+						#{item}
+					</foreach>
+				</when>
+			</choose>
+			<if test="companyName != null and companyName != '' ">
+				AND t.company_name = #{companyName}
 			</if>
 			<if test="updater != null and updater != '' ">
 				AND t.updater = #{updater}
@@ -73,7 +84,7 @@
 		thf_ccontract(
 		code
 		,company_code
-		,cmpany_name
+		,company_name
 		,project_code
 		,project_name
 		,staff_code
@@ -86,9 +97,9 @@
 		)
 		VALUES(
 		#{code}
-		,#{projectCode}
 		,#{companyCode}
 		,#{companyName}
+		,#{projectCode}
 		,#{projectName}
 		,#{staffCode}
 		,#{staffMobile}

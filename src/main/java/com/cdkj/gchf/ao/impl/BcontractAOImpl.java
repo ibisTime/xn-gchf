@@ -33,17 +33,14 @@ public class BcontractAOImpl implements IBcontractAO {
     @Override
     public String addBcontract(XN631370Req req) {
         PhoneUtil.checkMobile(req.getBmobile());
+
         Bcontract data = new Bcontract();
         Company company = companyBO.getCompany(req.getCompanyCode());
         data.setProjectCode(req.getProjectCode());
         data.setProjectName(
             projectBO.getProject(req.getProjectCode()).getName());
         data.setBname(req.getBname());
-
         data.setBmobile(req.getBmobile());
-        data.setPict1(req.getPict1());
-        data.setPict2(req.getPict2());
-        data.setPict3(req.getPict3());
         data.setContentPic(req.getContentPic());
 
         data.setContractDatetime(DateUtil.strToDate(req.getContractDatetime(),

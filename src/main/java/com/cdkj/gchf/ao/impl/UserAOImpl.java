@@ -64,6 +64,7 @@ public class UserAOImpl implements IUserAO {
         if (StringUtils.isNotBlank(req.getMobile())) {
             PhoneUtil.checkMobile(req.getMobile());
         }
+
         User data = new User();
         String userId = OrderNoGenerater.generate("U");
         data.setUserId(userId);
@@ -85,13 +86,15 @@ public class UserAOImpl implements IUserAO {
             data.setCompanyCode(company.getCode());
             data.setCompanyName(company.getName());
         }
-
-        data.setProvince(req.getProvince());
-        data.setCity(req.getCity());
-        data.setArea(req.getArea());
-
-        data.setBankName(req.getBankName());
-        data.setSubbranch(req.getSubbranch());
+        if (EUserKind.Bank.getCode().equals(req.getType())) {
+            data.setBankName(req.getBankName());
+            data.setSubbranch(req.getSubbranch());
+        }
+        if (EUserKind.Supervise.getCode().equals(req.getType())) {
+            data.setProvince(req.getProvince());
+            data.setCity(req.getCity());
+            data.setArea(req.getArea());
+        }
         data.setRemark(req.getRemark());
 
         // 给用户分配角色
@@ -131,6 +134,11 @@ public class UserAOImpl implements IUserAO {
         User user = userList2.get(0);
         if (!EUserStatus.NORMAL.getCode().equals(user.getStatus())) {
             throw new BizException("xn00000", "该用户操作存在异常");
+        }
+        if (EUserKind.Owner.getCode().equals(user.getType())) {
+            if (StringUtils.isBlank(user.getType())) {
+                throw new BizException("xn00000", "您不属于任何公司");
+            }
         }
         return user.getUserId();
     }
@@ -336,13 +344,6 @@ public class UserAOImpl implements IUserAO {
         User user = userBO.getUser(userId);
         if (user == null) {
             throw new BizException("xn0000", "用户不存在");
-        }
-        Department department = departmentBO.getDepartment(departmentCode);
-        if (department == null) {
-            throw new BizException("xn0000", "部门不存在");
-        }
-        if (EUser.ADMIN.getCode().equals(user.getLoginName())) {
-            throw new BizException("xn0000", "该用户是超级管理员,不能设置部门");
         }
         userBO.refreshDepartment(user, departmentCode, updater, remark);
     }

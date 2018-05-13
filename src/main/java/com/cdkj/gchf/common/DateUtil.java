@@ -280,7 +280,13 @@ public class DateUtil {
         return currentDate.getTime();
     }
 
-    // 获取指定月的第一天
+    /**
+     * 获取当指定月份第一天
+     * @param month
+     * @return 
+     * @create: 2018年5月11日 下午1:58:15 nyc
+     * @history:
+     */
     public static Date getFristDay(int month) {
         Calendar calendar = Calendar.getInstance();
         calendar.set(Calendar.MONTH, month);
@@ -291,16 +297,52 @@ public class DateUtil {
         return calendar.getTime();
     }
 
-    // 获取指定月的最后一天
+    /**
+     * 获取指定月份最后一天
+     * @param month
+     * @return 
+     * @create: 2018年5月11日 下午1:58:15 nyc
+     * @history:
+     */
     public static Date getLastDay(int month) {
         Calendar calendar = Calendar.getInstance();
-        calendar.set(Calendar.MONTH, month);
         calendar.set(Calendar.DAY_OF_MONTH,
             calendar.getActualMaximum(Calendar.DAY_OF_MONTH));
         calendar.set(Calendar.HOUR_OF_DAY, 23);
         calendar.set(Calendar.MINUTE, 59);
         calendar.set(Calendar.SECOND, 59);
         return calendar.getTime();
+    }
+
+    /**
+     * 获取当前月份最后一天
+     * @param month
+     * @return 
+     * @create: 2018年5月11日 下午1:58:15 nyc
+     * @history:
+     */
+    public static Date getLastDay() {
+        Calendar calendar = Calendar.getInstance();
+        calendar.set(Calendar.DAY_OF_MONTH,
+            calendar.getActualMaximum(Calendar.DAY_OF_MONTH));
+        calendar.set(Calendar.HOUR_OF_DAY, 23);
+        calendar.set(Calendar.MINUTE, 59);
+        calendar.set(Calendar.SECOND, 59);
+        return calendar.getTime();
+    }
+
+    /**
+     * 当前时间距离下一个月的天数
+     * @param month
+     * @return 
+     * @create: 2018年5月11日 下午1:58:15 nyc
+     * @history:
+     */
+    public static int getRemainDays() {
+        Date now = new Date();
+        Date lastDay = DateUtil.getLastDay();
+        long days = (lastDay.getTime() - now.getTime()) / 60 / 60 / 1000 / 24;
+        return (int) days;
     }
 
     // 获取当前HH：mm
@@ -327,13 +369,12 @@ public class DateUtil {
      * @history:
      */
 
-    public static boolean compare(String str1, String str2) {
+    public static boolean compare(String start, String end) {
         boolean flag = false;
-        Date date1 = DateUtil.strToDate(str1,
-            DateUtil.FRONT_DATE_FORMAT_STRING);
-        Date date2 = DateUtil.strToDate(str2,
-            DateUtil.FRONT_DATE_FORMAT_STRING);
-        if (-1 == date1.compareTo(date2)) {
+        Date startDate = DateUtil.strToDate(start,
+            DateUtil.DATA_TIME_PATTERN_7);
+        Date endDate = DateUtil.strToDate(end, DateUtil.DATA_TIME_PATTERN_7);
+        if (-1 == startDate.compareTo(endDate)) {
             flag = true;
         }
         return flag;
@@ -364,11 +405,12 @@ public class DateUtil {
      * @create: 2018年5月5日 下午5:30:39 nyc
      * @history:
      */
-    public static double getDays(Date startDatetime, Date endDatetime,
+    public static double getDays(String startDatetime, String endDatetime,
             Date leavingStartDate, Date leavingEndDate) {
         double days = 1.0;
-        int times = (int) ((endDatetime.getTime() - startDatetime.getTime())
-                / 60 / 60 / 1000);
+        Date start = strToDate(startDatetime, DateUtil.DATA_TIME_PATTERN_7);
+        Date end = strToDate(endDatetime, DateUtil.DATA_TIME_PATTERN_7);
+        int times = (int) ((end.getTime() - start.getTime()) / 60 / 60 / 1000);
         int leavingDays = (int) ((leavingEndDate.getTime()
                 - leavingStartDate.getTime()) / 60 / 60 / 1000);
         if (leavingDays <= times / 2) {
@@ -420,12 +462,6 @@ public class DateUtil {
         calendar.set(Calendar.DAY_OF_MONTH, 1);
         calendar.roll(Calendar.DAY_OF_MONTH, -1);
         return calendar.get(Calendar.DATE);
-    }
-
-    public static void main(String[] args) {
-        System.out.println(daysBetween("2018-5-8", "2018-5-12",
-            DateUtil.FRONT_DATE_FORMAT_STRING));
-
     }
 
 }

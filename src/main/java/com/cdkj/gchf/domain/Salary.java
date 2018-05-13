@@ -106,6 +106,8 @@ public class Salary extends ABaseDO {
     // 用户类型
     private String kind;
 
+    private Staff staff;
+
     // 状态类型
     private List<String> statusList;
 
@@ -355,6 +357,14 @@ public class Salary extends ABaseDO {
 
     public void setNormalDays(Double normalDays) {
         this.normalDays = normalDays;
+    }
+
+    public Staff getStaff() {
+        return staff;
+    }
+
+    public void setStaff(Staff staff) {
+        this.staff = staff;
     }
 
 }

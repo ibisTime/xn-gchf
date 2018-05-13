@@ -11,6 +11,7 @@ import com.cdkj.gchf.dto.req.XN631412Req;
 
 @Component
 public interface IStaffAO {
+
     static final String DEFAULT_ORDER_COLUMN = "code";
 
     public String addStaff(XN631410Req req);
@@ -25,5 +26,9 @@ public interface IStaffAO {
     public List<Staff> queryStaffList(Staff condition);
 
     public Staff getStaff(String code);
+
+    public String getStaffFeatList();
+
+    public String addStaff(String idNo, String feat);
 
 }

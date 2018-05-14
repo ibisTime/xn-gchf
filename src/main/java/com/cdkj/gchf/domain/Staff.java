@@ -37,6 +37,30 @@ public class Staff extends ABaseDO {
     // 证件号
     private String idNo;
 
+    // 性别
+    private String sex;
+
+    // 出生年月日
+    private Date birthday;
+
+    // 民族
+    private String idNation;
+
+    // 身份证上籍贯
+    private String idAddress;
+
+    // 身份证上头像
+    private String idPic;
+
+    // 签发机关
+    private String idPolice;
+
+    // 证件有效开始时间
+    private Date idStartDate;
+
+    // 证件有效结束时间
+    private Date idEndDate;
+
     // 籍贯
     private String place;
 
@@ -115,20 +139,80 @@ public class Staff extends ABaseDO {
         return idNo;
     }
 
-    public void setPlace(String place) {
-        this.place = place;
+    public String getSex() {
+        return sex;
+    }
+
+    public void setSex(String sex) {
+        this.sex = sex;
+    }
+
+    public String getIdNation() {
+        return idNation;
+    }
+
+    public void setIdNation(String idNation) {
+        this.idNation = idNation;
+    }
+
+    public String getIdAddress() {
+        return idAddress;
+    }
+
+    public void setIdAddress(String idAddress) {
+        this.idAddress = idAddress;
+    }
+
+    public String getIdPic() {
+        return idPic;
+    }
+
+    public void setIdPic(String idPic) {
+        this.idPic = idPic;
+    }
+
+    public String getIdPolice() {
+        return idPolice;
+    }
+
+    public void setIdPolice(String idPolice) {
+        this.idPolice = idPolice;
+    }
+
+    public Date getIdStartDate() {
+        return idStartDate;
+    }
+
+    public void setIdStartDate(Date idStartDate) {
+        this.idStartDate = idStartDate;
+    }
+
+    public Date getIdEndDate() {
+        return idEndDate;
+    }
+
+    public void setIdEndDate(Date idEndDate) {
+        this.idEndDate = idEndDate;
     }
 
     public String getPlace() {
         return place;
     }
 
-    public void setPict1(String pict1) {
-        this.pict1 = pict1;
+    public void setPlace(String place) {
+        this.place = place;
     }
 
     public String getPict1() {
         return pict1;
+    }
+
+    public void setPict1(String pict1) {
+        this.pict1 = pict1;
+    }
+
+    public static long getSerialversionuid() {
+        return serialVersionUID;
     }
 
     public void setPict2(String pict2) {
@@ -225,6 +309,14 @@ public class Staff extends ABaseDO {
 
     public void setFeat(String feat) {
         this.feat = feat;
+    }
+
+    public Date getBirthday() {
+        return birthday;
+    }
+
+    public void setBirthday(Date birthday) {
+        this.birthday = birthday;
     }
 
 }

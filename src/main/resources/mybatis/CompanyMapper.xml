@@ -12,7 +12,7 @@
 			<if test="code != null and code != '' ">
 				AND t.code = #{code}
 			</if>
-			<if test="companyCodeList != null and companyCodeList != '' ">
+			<if test="companyCodeList != null and companyCodeList.size() > 0">
 				AND t.code IN 
 				<foreach collection="companyCodeList" item="item" index="index" open="(" separator="," close=")" >
 					#{item}

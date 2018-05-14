@@ -28,7 +28,7 @@ public class Company extends ABaseDO {
     private String keyword;
 
     // 公司编号
-    private List<String> projectCodeList;
+    private List<String> companyCodeList;
 
     public String getCode() {
         return code;
@@ -62,12 +62,12 @@ public class Company extends ABaseDO {
         this.keyword = keyword;
     }
 
-    public List<String> getProjectCodeList() {
-        return projectCodeList;
+    public List<String> getCompanyCodeList() {
+        return companyCodeList;
     }
 
-    public void setProjectCodeList(List<String> projectCodeList) {
-        this.projectCodeList = projectCodeList;
+    public void setCompanyCodeList(List<String> companyCodeList) {
+        this.companyCodeList = companyCodeList;
     }
 
 }

@@ -4,9 +4,7 @@ import java.util.List;
 
 import com.cdkj.gchf.bo.base.Paginable;
 import com.cdkj.gchf.domain.HLOrder;
-import com.cdkj.gchf.spring.ServiceModule;
 
-@ServiceModule
 public interface IHLOrderAO {
     String DEFAULT_ORDER_COLUMN = "code";
 

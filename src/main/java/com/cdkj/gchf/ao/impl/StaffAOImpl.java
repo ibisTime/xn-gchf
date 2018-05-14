@@ -25,6 +25,7 @@ import com.cdkj.gchf.domain.Project;
 import com.cdkj.gchf.domain.Staff;
 import com.cdkj.gchf.domain.User;
 import com.cdkj.gchf.dto.req.XN631410Req;
+import com.cdkj.gchf.dto.req.XN631411Req;
 import com.cdkj.gchf.dto.req.XN631412Req;
 import com.cdkj.gchf.enums.EGeneratePrefix;
 import com.cdkj.gchf.enums.EUser;
@@ -223,13 +224,29 @@ public class StaffAOImpl implements IStaffAO {
     }
 
     @Override
-    public String addStaff(String idNo, String feat) {
+    public String addStaff(XN631411Req req) {
         String code = OrderNoGenerater
             .generate(EGeneratePrefix.Staff.getCode());
         Staff data = new Staff();
         data.setCode(code);
-        data.setIdNo(idNo);
-        data.setFeat(feat);
+        data.setName(req.getRealName());
+        data.setSex(req.getSex());
+        data.setIdNation(req.getIdNation());
+        data.setBirthday(DateUtil.strToDate(req.getBirthday(),
+            DateUtil.FRONT_DATE_FORMAT_STRING));
+
+        data.setIdType(req.getIdKind());
+        data.setIdNo(req.getIdNo());
+        data.setIdAddress(req.getIdAddress());
+        data.setIdPic(req.getIdPic());
+        data.setIdPolice(req.getIdPolice());
+
+        data.setIdStartDate(DateUtil.strToDate(req.getIdStartDate(),
+            DateUtil.FRONT_DATE_FORMAT_STRING));
+        data.setIdEndDate(DateUtil.strToDate(req.getIdEndDate(),
+            DateUtil.FRONT_DATE_FORMAT_STRING));
+        data.setFeat(req.getFeat());
+
         staffBO.saveStaff(data);
         return code;
     }

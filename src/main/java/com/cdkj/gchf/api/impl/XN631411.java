@@ -25,7 +25,7 @@ public class XN631411 extends AProcessor {
     @Override
     public Object doBusiness() throws BizException {
 
-        return new PKCodeRes(staffAO.addStaff(req.getIdNo(), req.getFeat()));
+        return new PKCodeRes(staffAO.addStaff(req));
     }
 
     @Override

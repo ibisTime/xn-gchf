@@ -6,11 +6,21 @@
 		<result column="code" property="code" />
 		<result column="company_code" property="companyCode" />
 		<result column="company_name" property="companyName" />
-		
 		<result column="name" property="name" />
 		<result column="mobile" property="mobile" />
+		
 		<result column="id_type" property="idType" />
 		<result column="id_no" property="idNo" />
+		<result column="sex" property="sex" />
+		<result column="id_nation" property="idNation" />
+		<result column="id_address" property="idAddress" />
+		
+		<result column="id_pic" property="idPic" />
+		<result column="id_police" property="idPolice" />
+		<result column="id_startDate" property="idStartDate" />
+		<result column="id_endDate" property="idEndDate" />
+		<result column="birthday" property="birthday" />
+		
 		<result column="place" property="place" />
 		<result column="pict1" property="pict1" />
 		<result column="pict2" property="pict2" />
@@ -41,6 +51,10 @@
 			<if test="idNo != null and idNo != '' ">
 				AND t.id_no = #{idNo}
 			</if>
+			<if test="sex != null and sex != '' ">
+				AND t.sex = #{sex}
+			</if>
+			
 			
 			<if test="updater != null and updater != '' ">
 				AND t.updater = #{updater}
@@ -61,8 +75,19 @@
 		,t.company_name
 		,t.name
 		,t.mobile
+		
 		,t.id_type
 		,t.id_no
+		,t.sex
+		,t.id_nation
+		,t.id_address
+		,t.id_pic
+		
+		,t.id_police
+		,t.id_startDate
+		,t.id_endDate
+		,t.birthday
+		
 		,t.place
 		,t.pict1
 		,t.pict2
@@ -95,8 +120,20 @@
 		,company_name
 		,name
 		,mobile
+		
 		,id_type
 		,id_no
+		,sex
+		,birthday
+		,id_nation
+		,id_address
+		
+		,id_pic
+		,id_police
+		,id_startDate
+		,id_endDate
+	
+		
 		,place
 		,pict1
 		,pict2
@@ -112,8 +149,19 @@
 		,#{companyName}
 		,#{name}
 		,#{mobile}
+		
 		,#{idType}
 		,#{idNo}
+		,#{sex}
+		,#{birthday}
+		,#{idNation}
+		,#{idAddress}
+		
+		,#{idPic}
+		,#{idPolice}
+		,#{idStartDate}
+		,#{idEndDate}
+		
 		,#{place}
 		,#{pict1}
 		,#{pict2}

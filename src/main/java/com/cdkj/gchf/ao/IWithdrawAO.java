@@ -5,9 +5,7 @@ import java.util.List;
 
 import com.cdkj.gchf.bo.base.Paginable;
 import com.cdkj.gchf.domain.Withdraw;
-import com.cdkj.gchf.spring.ServiceModule;
 
-@ServiceModule
 public interface IWithdrawAO {
     String DEFAULT_ORDER_COLUMN = "code";
 

@@ -5,7 +5,6 @@ import org.hibernate.validator.constraints.NotBlank;
 public class XN631350Req {
 
     // 公司编号 （必填）
-    @NotBlank(message = "公司编号不能为空")
     private String companyCode;
 
     // 项目名称

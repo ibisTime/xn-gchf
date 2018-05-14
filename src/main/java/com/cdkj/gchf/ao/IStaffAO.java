@@ -7,6 +7,7 @@ import org.springframework.stereotype.Component;
 import com.cdkj.gchf.bo.base.Paginable;
 import com.cdkj.gchf.domain.Staff;
 import com.cdkj.gchf.dto.req.XN631410Req;
+import com.cdkj.gchf.dto.req.XN631411Req;
 import com.cdkj.gchf.dto.req.XN631412Req;
 
 @Component
@@ -29,6 +30,6 @@ public interface IStaffAO {
 
     public String getStaffFeatList();
 
-    public String addStaff(String idNo, String feat);
+    public String addStaff(XN631411Req req);
 
 }

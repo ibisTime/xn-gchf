@@ -52,18 +52,20 @@ public class AttendanceAOImpl implements IAttendanceAO {
     public void clockIn(String projectCode, String staffCode) {
         Attendance data = attendanceBO.getAttendanceByProject(projectCode,
             staffCode);
+        Report report = reportBO.getReportByProject(data.getProjectCode());
+        int todayDays = report.getTodayDays();
         if (EAttendanceStatus.Unpaied.equals(data.getStatus())) {
             throw new BizException("xn00000", "该员工今日已打卡");
         }
         if (EAttendanceStatus.TO_Start.getCode().equals(data.getStatus())) {
             attendanceBO.toStart(data, EAttendanceStatus.TO_End.getCode());
+            todayDays = todayDays + 1;
 
         } else if (EAttendanceStatus.TO_End.getCode()
             .equals(data.getStatus())) {
             attendanceBO.toEnd(data, EAttendanceStatus.Unpaied.getCode());
         }
-        Report report = reportBO.getReportByProject(data.getProjectCode());
-        int todayDays = report.getTodayDays() + 1;
+
         reportBO.refreshTodayDays(report, todayDays);
 
     }

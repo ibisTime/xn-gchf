@@ -1,14 +1,16 @@
 package com.cdkj.gchf.ao.impl;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.collections.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.cdkj.gchf.ao.ICompanyCardAO;
 import com.cdkj.gchf.bo.ICompanyCardBO;
+import com.cdkj.gchf.bo.base.Page;
 import com.cdkj.gchf.bo.base.Paginable;
 import com.cdkj.gchf.domain.CompanyCard;
 import com.cdkj.gchf.dto.req.XN631362Req;
@@ -37,19 +39,29 @@ public class CompanyCardAOImpl implements ICompanyCardAO {
     @Override
     public Paginable<CompanyCard> queryCompanyCardPage(int start, int limit,
             CompanyCard condition) {
-        Paginable<CompanyCard> page = null;
-        return companyCardBO.getPaginable(start, limit, condition);
+        Paginable<CompanyCard> page = new Page<CompanyCard>();
+        List<CompanyCard> list = new ArrayList<CompanyCard>();
+        if (EUserKind.Supervise.getCode().equals(condition.getKind())) {
+            if (CollectionUtils.isEmpty(condition.getProjectCodeList())) {
+                page.setList(list);
+                return page;
+            }
+        }
+
+        page = companyCardBO.getPaginable(start, limit, condition);
+        return page;
     }
 
     @Override
     public List<CompanyCard> queryCompanyCardList(CompanyCard condition) {
-        List<CompanyCard> list = null;
-        if (EUserKind.Owner.getCode().equals(condition.getKind())) {
-            if (StringUtils.isBlank(condition.getCompanyCode())) {
+        List<CompanyCard> list = new ArrayList<CompanyCard>();
+        if (EUserKind.Supervise.getCode().equals(condition.getKind())) {
+            if (CollectionUtils.isEmpty(condition.getProjectCodeList())) {
                 return list;
             }
         }
-        return companyCardBO.queryCompanyCardList(condition);
+        list = companyCardBO.queryCompanyCardList(condition);
+        return list;
     }
 
     @Override

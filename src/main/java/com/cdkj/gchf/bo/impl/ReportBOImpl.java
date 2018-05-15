@@ -27,6 +27,17 @@ public class ReportBOImpl extends PaginableBOImpl<Report> implements IReportBO {
         data.setCode(code);
         data.setProjectCode(projectCode);
         data.setProjectName(name);
+        data.setTodayDays(0);
+        data.setLastMonthSalary(0L);
+
+        data.setNextMonthSalary(0L);
+        data.setTotalSalary(0L);
+        data.setStaffOn(0);
+        data.setStaffIn(0);
+        data.setStaffOut(0);
+
+        data.setLeavingDays(0);
+        data.setWorkingDays(0);
         reportDAO.insert(data);
     }
 

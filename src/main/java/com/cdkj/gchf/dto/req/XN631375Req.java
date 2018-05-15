@@ -15,6 +15,8 @@ public class XN631375Req extends APageReq {
 
     private List<String> companyCodeList;
 
+    private String kind;
+
     public String getCompanyCode() {
         return companyCode;
     }
@@ -53,6 +55,14 @@ public class XN631375Req extends APageReq {
 
     public void setCompanyCodeList(List<String> companyCodeList) {
         this.companyCodeList = companyCodeList;
+    }
+
+    public String getKind() {
+        return kind;
+    }
+
+    public void setKind(String kind) {
+        this.kind = kind;
     }
 
 }

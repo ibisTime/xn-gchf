@@ -38,12 +38,28 @@
 			<if test="companyCode != null and companyCode != '' ">
 				AND t.company_code = #{companyCode}
 			</if>
+			<if test="staffCode != null and staffCode != '' ">
+				AND t.staff_code = #{staffCode}
+			</if>
+			
 			<if test="companyName != null and companyName != '' ">
 				AND t.company_name = #{companyName}
 			</if>
-			<if test="projectCode != null and projectCode != '' ">
-				AND t.project_code = #{projectCode}
+			<choose>
+				<when test="projectCode != null and projectCode != ''">
+					AND t.project_code = #{projectCode}
+				</when>
+				<when test="projectCodeList != null and projectCodeList.size() > 0 ">
+					AND t.project_code IN 
+					<foreach collection="projectCodeList" index="index" item="item" open="(" separator="," close=")" >
+						#{item}
+					</foreach>
+				</when>
+			</choose>
+			<if test="staffCode != null and staffCode != '' ">
+				AND t.staff_code = #{staffCode}
 			</if>
+			
 			<if test="type != null and type != '' ">
 				AND t.type = #{type}
 			</if>

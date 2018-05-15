@@ -58,7 +58,7 @@ public class CcontractBOImpl extends PaginableBOImpl<Ccontract>
         condition.setStaffCode(staffCode);
         Ccontract data = ccontractDAO.select(condition);
         if (data != null) {
-            throw new BizException("xn0000", "合同信息不存在");
+            throw new BizException("xn0000", "该员工合同已录入");
         }
     }
 }

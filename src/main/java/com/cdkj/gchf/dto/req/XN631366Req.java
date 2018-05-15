@@ -1,5 +1,7 @@
 package com.cdkj.gchf.dto.req;
 
+import java.util.List;
+
 /**
  * 分页查公司编号
  * @author: nyc 
@@ -27,6 +29,9 @@ public class XN631366Req extends APageReq {
 
     // 用户类型
     private String kind;
+
+    // 编号List
+    private List<String> companyCodeList;
 
     public String getCompanyCode() {
         return companyCode;
@@ -66,6 +71,14 @@ public class XN631366Req extends APageReq {
 
     public void setKind(String kind) {
         this.kind = kind;
+    }
+
+    public List<String> getCompanyCodeList() {
+        return companyCodeList;
+    }
+
+    public void setCompanyCodeList(List<String> companyCodeList) {
+        this.companyCodeList = companyCodeList;
     }
 
 }

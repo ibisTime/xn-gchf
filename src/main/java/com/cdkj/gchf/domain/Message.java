@@ -91,6 +91,8 @@ public class Message extends ABaseDO {
 
     private List<String> statusList;
 
+    private List<String> projectCodeList;
+
     public void setCode(String code) {
         this.code = code;
     }
@@ -297,6 +299,14 @@ public class Message extends ABaseDO {
 
     public void setBackDownload(Integer backDownload) {
         this.backDownload = backDownload;
+    }
+
+    public List<String> getProjectCodeList() {
+        return projectCodeList;
+    }
+
+    public void setProjectCodeList(List<String> projectCodeList) {
+        this.projectCodeList = projectCodeList;
     }
 
 }

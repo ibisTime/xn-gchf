@@ -87,7 +87,10 @@ public class SalaryAOImpl implements ISalaryAO {
 
         data.setTax(StringValidater.toLong(req.getTax()));
         data.setCutAmount(StringValidater.toLong(req.getCutAmount()));
-        data.setCutNote(req.getCutNote());
+        data.setCutNote(
+            "本月迟到：" + req.getEarlyDays() + "天，早退：" + req.getDelayDays()
+                    + "天，请假：" + req.getLeavingDays() + "天，共计扣款："
+                    + StringValidater.toLong(req.getCutAmount()) / 1000 + "元");
         Long fact = data.getShouldAmount()
                 - StringValidater.toLong(req.getTax())
                 - StringValidater.toLong(req.getCutAmount());
@@ -162,7 +165,7 @@ public class SalaryAOImpl implements ISalaryAO {
             Salary condition) {
         List<Salary> list = new ArrayList<Salary>();
         Paginable<Salary> page = new Page<Salary>();
-        if (EUserKind.Owner.getCode().equals(condition.getKind())) {
+        if (EUserKind.Supervise.getCode().equals(condition.getKind())) {
             if (StringUtils.isBlank(condition.getCompanyCode())) {
                 page.setList(list);
                 return page;
@@ -309,6 +312,7 @@ public class SalaryAOImpl implements ISalaryAO {
                 .toInteger(project.getSalaryCreateDatetime())) {
                 // 生成工资条
                 for (Employ employ : eList) {
+                    System.err.println("===========开始成工资条==============");
                     Salary data = new Salary();
                     String code = OrderNoGenerater
                         .generate(EGeneratePrefix.Salary.getCode());
@@ -363,7 +367,7 @@ public class SalaryAOImpl implements ISalaryAO {
                         isNormal = DateUtil.compare(attendance.getEndDatetime(),
                             project.getAttendanceEndtime());
                         if (StringUtils.isNotBlank(attendance.getEndDatetime())
-                                && isNormal) {
+                                && !isNormal) {
                             early += 1;
                             cutAmount += employ.getCutAmount() * DateUtil
                                 .getHours(attendance.getEndDatetime(),

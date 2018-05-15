@@ -1,5 +1,7 @@
 package com.cdkj.gchf.dto.req;
 
+import java.util.List;
+
 /**
  * 列表查雇佣员工
  * @author: nyc 
@@ -30,6 +32,12 @@ public class XN631466Req extends APageReq {
 
     // （选填）更新人
     private String updater;
+
+    // （选填）
+    private String staffCode;
+
+    // 编号列表
+    private List<String> companyCodeList;
 
     public String getKeyword() {
         return keyword;
@@ -77,6 +85,22 @@ public class XN631466Req extends APageReq {
 
     public void setUpdater(String updater) {
         this.updater = updater;
+    }
+
+    public List<String> getCompanyCodeList() {
+        return companyCodeList;
+    }
+
+    public void setCompanyCodeList(List<String> companyCodeList) {
+        this.companyCodeList = companyCodeList;
+    }
+
+    public String getStaffCode() {
+        return staffCode;
+    }
+
+    public void setStaffCode(String staffCode) {
+        this.staffCode = staffCode;
     }
 
 }

@@ -16,7 +16,6 @@ public class Staff extends ABaseDO {
     private static final long serialVersionUID = 1L;
 
     // 编号
-
     private String code;
 
     // 姓名

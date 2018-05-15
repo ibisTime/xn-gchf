@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.collections.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -71,14 +71,16 @@ public class ProgressAOImpl implements IProgressAO {
     @Override
     public Paginable<Progress> queryProgressPage(int start, int limit,
             Progress condition) {
-        List<Progress> list = new ArrayList<Progress>();
+
         Paginable<Progress> page = new Page<Progress>();
-        if (EUserKind.Owner.getCode().equals(condition.getKind())) {
-            if (StringUtils.isBlank(condition.getCompanyCode())) {
+        List<Progress> list = new ArrayList<Progress>();
+        if (EUserKind.Supervise.getCode().equals(condition.getKind())) {
+            if (CollectionUtils.isEmpty(condition.getProjectCodeList())) {
                 page.setList(list);
                 return page;
             }
         }
+
         page = progressBO.getPaginable(start, limit, condition);
         String updateName = null;
         for (Progress progress : page.getList()) {
@@ -91,11 +93,12 @@ public class ProgressAOImpl implements IProgressAO {
     @Override
     public List<Progress> queryProgressList(Progress condition) {
         List<Progress> list = new ArrayList<Progress>();
-        if (EUserKind.Owner.getCode().equals(condition.getKind())) {
-            if (StringUtils.isBlank(condition.getCompanyCode())) {
+        if (EUserKind.Supervise.getCode().equals(condition.getKind())) {
+            if (CollectionUtils.isEmpty(condition.getProjectCodeList())) {
                 return list;
             }
         }
+
         list = progressBO.queryProgressList(condition);
         String updateName = null;
         for (Progress progress : list) {

@@ -28,7 +28,8 @@ public class XN631026 extends AProcessor {
     public Object doBusiness() throws BizException {
         Company condition = new Company();
         condition.setKeyword(req.getKeyword());
-        condition.setCompanyCodeList(req.getCompanyCodeList());
+        condition.setProjectCodeList(req.getCompanyCodeList());
+        condition.setKind(req.getKind());
 
         String column = req.getOrderColumn();
         if (StringUtils.isBlank(column)) {

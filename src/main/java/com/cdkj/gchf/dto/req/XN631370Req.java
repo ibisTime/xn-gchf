@@ -20,18 +20,6 @@ public class XN631370Req {
     @NotBlank(message = "承包商手机不能为空")
     private String bmobile;
 
-    // 免冠照片
-    @NotBlank(message = "免冠照片不能为空")
-    private String pict1;
-
-    // 手持身份证照片
-    @NotBlank(message = "手持身份证照片不能为空")
-    private String pict2;
-
-    // 身份证正反照+签名
-    @NotBlank(message = "身份证正反照+签名不能为空")
-    private String pict3;
-
     // 合同照片
     @NotBlank(message = "合同照片不能为空")
     private String contentPic;
@@ -109,30 +97,6 @@ public class XN631370Req {
 
     public void setCompanyCode(String companyCode) {
         this.companyCode = companyCode;
-    }
-
-    public String getPict1() {
-        return pict1;
-    }
-
-    public void setPict1(String pict1) {
-        this.pict1 = pict1;
-    }
-
-    public String getPict2() {
-        return pict2;
-    }
-
-    public void setPict2(String pict2) {
-        this.pict2 = pict2;
-    }
-
-    public String getPict3() {
-        return pict3;
-    }
-
-    public void setPict3(String pict3) {
-        this.pict3 = pict3;
     }
 
 }

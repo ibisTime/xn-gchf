@@ -27,8 +27,13 @@ public class Company extends ABaseDO {
     // ***********db********
     private String keyword;
 
+    private String kind;
+
     // 公司编号
     private List<String> companyCodeList;
+
+    // 公司编号
+    private List<String> projectCodeList;
 
     public String getCode() {
         return code;
@@ -68,6 +73,22 @@ public class Company extends ABaseDO {
 
     public void setCompanyCodeList(List<String> companyCodeList) {
         this.companyCodeList = companyCodeList;
+    }
+
+    public String getKind() {
+        return kind;
+    }
+
+    public void setKind(String kind) {
+        this.kind = kind;
+    }
+
+    public List<String> getProjectCodeList() {
+        return projectCodeList;
+    }
+
+    public void setProjectCodeList(List<String> projectCodeList) {
+        this.projectCodeList = projectCodeList;
     }
 
 }

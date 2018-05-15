@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.collections.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -92,15 +92,17 @@ public class CcontractAOImpl implements ICcontractAO {
             Ccontract condition) {
         List<Ccontract> list = new ArrayList<Ccontract>();
         Paginable<Ccontract> page = new Page<Ccontract>();
-        if (EUserKind.Owner.getCode().equals(condition.getKind())) {
-            if (StringUtils.isBlank(condition.getCompanyCode())) {
+        if (EUserKind.Supervise.getCode().equals(condition.getKind())) {
+            if (CollectionUtils.isEmpty(condition.getProjectCodeList())) {
                 page.setList(list);
                 return page;
             }
         }
+
         page = ccontractBO.getPaginable(start, limit, condition);
         String updateName = null;
         for (Ccontract ccontract : page.getList()) {
+            System.out.println(ccontract);
             Staff staff = staffBO.getStaff(ccontract.getStaffCode());
             ccontract.setStaffName(staff.getName());
             updateName = getName(ccontract.getUpdater());
@@ -113,11 +115,12 @@ public class CcontractAOImpl implements ICcontractAO {
     @Override
     public List<Ccontract> queryCcontractList(Ccontract condition) {
         List<Ccontract> list = null;
-        if (EUserKind.Owner.getCode().equals(condition.getKind())) {
-            if (StringUtils.isBlank(condition.getCompanyCode())) {
+        if (EUserKind.Supervise.getCode().equals(condition.getKind())) {
+            if (CollectionUtils.isEmpty(condition.getProjectCodeList())) {
                 return list;
             }
         }
+
         list = ccontractBO.queryCcontractList(condition);
         String updateName = null;
         for (Ccontract ccontract : list) {

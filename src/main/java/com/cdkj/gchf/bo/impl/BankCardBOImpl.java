@@ -65,9 +65,6 @@ public class BankCardBOImpl extends PaginableBOImpl<BankCard>
             BankCard condition = new BankCard();
             condition.setStaffCode(staffCode);
             data = bankCardDAO.select(condition);
-            if (data == null) {
-                throw new BizException("xn0000", "工资卡卡不存在");
-            }
         }
         return data;
     }

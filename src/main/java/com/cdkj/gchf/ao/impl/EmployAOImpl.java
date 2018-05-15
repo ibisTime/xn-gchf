@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.cdkj.gchf.ao.IEmployAO;
+import com.cdkj.gchf.bo.IAttendanceBO;
 import com.cdkj.gchf.bo.IEmployBO;
 import com.cdkj.gchf.bo.IProjectBO;
 import com.cdkj.gchf.bo.IReportBO;
@@ -18,6 +19,7 @@ import com.cdkj.gchf.common.AmountUtil;
 import com.cdkj.gchf.common.DateUtil;
 import com.cdkj.gchf.core.OrderNoGenerater;
 import com.cdkj.gchf.core.StringValidater;
+import com.cdkj.gchf.domain.Attendance;
 import com.cdkj.gchf.domain.Employ;
 import com.cdkj.gchf.domain.Project;
 import com.cdkj.gchf.domain.Report;
@@ -25,6 +27,7 @@ import com.cdkj.gchf.domain.Staff;
 import com.cdkj.gchf.domain.User;
 import com.cdkj.gchf.dto.req.XN631460Req;
 import com.cdkj.gchf.dto.req.XN631461Req;
+import com.cdkj.gchf.enums.EAttendanceStatus;
 import com.cdkj.gchf.enums.EEmploytatus;
 import com.cdkj.gchf.enums.EGeneratePrefix;
 import com.cdkj.gchf.enums.EProjectStatus;
@@ -52,11 +55,16 @@ public class EmployAOImpl implements IEmployAO {
     @Autowired
     private IReportBO reportBO;
 
+    @Autowired
+    private IAttendanceBO attendanceBO;
+
     @Override
     public String joinIn(XN631460Req req) {
         String code = OrderNoGenerater
             .generate(EGeneratePrefix.Employ.getCode());
         employBO.isExist(req.getProjectCode(), req.getStaffCode());
+        Staff staff = staffBO.getStaff(req.getStaffCode());
+
         Employ data = new Employ();
         data.setCode(code);
         Project project = projectBO.getProject(req.getProjectCode());
@@ -68,7 +76,7 @@ public class EmployAOImpl implements IEmployAO {
         data.setCompanyCode(project.getCompanyCode());
         data.setCompanyName(project.getCompanyName());
         data.setProjectName(project.getName());
-        Staff staff = staffBO.getStaff(req.getStaffCode());
+
         data.setStaffCode(staff.getCode());
 
         data.setStaffMobile(staff.getMobile());
@@ -93,6 +101,22 @@ public class EmployAOImpl implements IEmployAO {
                 + report.getNextMonthSalary();
         report.setNextMonthSalary(nextMonthSalary);
         reportBO.staffIn(report);
+        // 生成考勤
+        Attendance attendance = new Attendance();
+        String attendanceCode = OrderNoGenerater
+            .generate(EGeneratePrefix.Attendance.getCode());
+        attendance.setCode(attendanceCode);
+        attendance.setProjectCode(project.getCode());
+        attendance.setProjectName(project.getName());
+
+        attendance.setStaffCode(staff.getCode());
+        attendance.setStaffMobile(staff.getMobile());
+
+        attendance.setStatus(EAttendanceStatus.TO_Start.getCode());
+        Date date = new Date();
+        attendance.setCreateDatetime(date);
+        attendanceBO.saveAttendance(attendance);
+
         staffLogBO.saveStaffLog(data, staff.getName(), project.getCompanyCode(),
             project.getCompanyName(), project.getCode(), project.getName());
         return code;
@@ -130,11 +154,11 @@ public class EmployAOImpl implements IEmployAO {
 
         // 累积请假天数
         data.setTotalLeavingDays(data.getTotalLeavingDays() + leadingDays);
-        // 状态的改变放在生成考勤记录
         data.setStartDatetime(start);
         data.setEndDatetime(end);
         data.setUpdater(req.getUpdater());
         data.setUpdateDatetime(new Date());
+
         data.setRemark(req.getRemark());
         employBO.toHoliday(data);
 
@@ -152,14 +176,21 @@ public class EmployAOImpl implements IEmployAO {
         Report report = reportBO.getReportByProject(data.getProjectCode());
         report.setStaffOut(report.getStaffOut() + 1);
         reportBO.refreshStaffOut(report);
+
         // 更新目前在职人数
         report.setStaffOn(report.getStaffOn() - 1);
         reportBO.refreshStaffOn(report);
+
         // 修改下月预发工资
         long daySalay = data.getSalary() / DateUtil.getMonthDays();
         report.setNextMonthSalary(report.getNextMonthSalary()
                 - AmountUtil.mul(daySalay, data.getLeavingDays()));
         reportBO.refreshNextMonthSalary(report);
+
+        Project project = projectBO.getProject(data.getCode());
+        staffLogBO.saveStaffLog(data, data.getStaffCode(),
+            project.getCompanyCode(), project.getCompanyName(),
+            project.getCode(), project.getName());
 
     }
 
@@ -176,17 +207,16 @@ public class EmployAOImpl implements IEmployAO {
     @Override
     public Paginable<Employ> queryEmployPage(int start, int limit,
             Employ condition) {
+        System.out.println(
+            condition.getStaffCode() + "," + condition.getProjectCodeList());
         Paginable<Employ> page = employBO.getPaginable(start, limit, condition);
         List<Employ> list = page.getList();
-        String upUesrName = null;
-        String updateName = null;
         for (Employ employ : list) {
             Staff staff = staffBO.getStaff(employ.getStaffCode());
             employ.setStaff(staff);
-            upUesrName = getName(employ.getUpUser());
-            updateName = getName(employ.getUpdater());
-            employ.setUpUserName(upUesrName);
-            employ.setUpdateName(updateName);
+            employ.setUpUserName(getName(employ.getUpUser()));
+            employ.setUpdateName(getName(employ.getUpdater()));
+            employ.setStaffName(staff.getName());
         }
         page.setList(list);
         return page;
@@ -196,15 +226,13 @@ public class EmployAOImpl implements IEmployAO {
     public List<Employ> queryEmployList(Employ condition) {
         // 补充信息
         List<Employ> list = employBO.queryEmployList(condition);
-        String upUesrName = null;
-        String updateName = null;
         for (Employ employ : list) {
             Staff staff = staffBO.getStaff(employ.getStaffCode());
             employ.setStaff(staff);
-            upUesrName = getName(employ.getUpUser());
-            updateName = getName(employ.getUpdater());
-            employ.setUpUserName(upUesrName);
-            employ.setUpdateName(updateName);
+            employ.setStaff(staff);
+            employ.setUpUserName(getName(employ.getUpUser()));
+            employ.setUpdateName(getName(employ.getUpdater()));
+            employ.setStaffName(staff.getName());
         }
         return list;
     }
@@ -219,11 +247,6 @@ public class EmployAOImpl implements IEmployAO {
         data.setUpUserName(upUesrName);
         data.setUpdateName(updateName);
         return data;
-    }
-
-    public static void main(String[] args) {
-        DateUtil.strToDate("2018-05-17", DateUtil.FRONT_DATE_FORMAT_STRING)
-            .after(new Date());
     }
 
     private String getName(String userId) {
@@ -253,12 +276,5 @@ public class EmployAOImpl implements IEmployAO {
         }
 
     }
-
-    // private Long getSalay(Long salay, String leavingDate) {
-    // String date[] = leavingDate.split("-");
-    // int monthDays = DateUtil.getMonthDays();
-    // int workDays = StringValidater.toInteger(date[2]);
-    // return null;
-    // }
 
 }

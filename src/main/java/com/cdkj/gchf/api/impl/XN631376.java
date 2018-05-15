@@ -32,7 +32,9 @@ public class XN631376 extends AProcessor {
         condition.setUpdater(req.getUpdater());
         condition.setUpdateDatetime(new Date());
         condition.setKeyword(req.getKeyword());
+
         condition.setProjectCodeList(req.getCompanyCodeList());
+        condition.setKind(req.getKind());
 
         String column = req.getOrderColumn();
         if (StringUtils.isBlank(column)) {

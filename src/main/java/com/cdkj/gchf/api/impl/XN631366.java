@@ -35,6 +35,8 @@ public class XN631366 extends AProcessor {
         condition.setStatus(req.getStatus());
         condition.setKind(req.getKind());
 
+        condition.setProjectCodeList(req.getCompanyCodeList());
+
         String orderColumn = req.getOrderColumn();
         if (StringUtils.isBlank(orderColumn)) {
             orderColumn = IProjectAO.DEFAULT_ORDER_COLUMN;

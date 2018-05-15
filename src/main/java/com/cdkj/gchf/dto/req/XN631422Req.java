@@ -16,7 +16,7 @@ public class XN631422Req {
 
     // （必填）银行卡号
     @NotBlank(message = "银行卡号不能为空")
-    private String backCardNumber;
+    private String bankCardNumber;
 
     // （必填）银行别称
     @NotBlank(message = "银行别称不能为空")
@@ -45,12 +45,12 @@ public class XN631422Req {
         this.code = code;
     }
 
-    public String getBackCardNumber() {
-        return backCardNumber;
+    public String getBankCardNumber() {
+        return bankCardNumber;
     }
 
-    public void setBackCardNumber(String backCardNumber) {
-        this.backCardNumber = backCardNumber;
+    public void setBankCardNumber(String bankCardNumber) {
+        this.bankCardNumber = bankCardNumber;
     }
 
     public String getBankCode() {

@@ -27,8 +27,11 @@ import com.cdkj.gchf.domain.User;
 import com.cdkj.gchf.dto.req.XN631410Req;
 import com.cdkj.gchf.dto.req.XN631411Req;
 import com.cdkj.gchf.dto.req.XN631412Req;
+import com.cdkj.gchf.dto.req.XN631413Req;
+import com.cdkj.gchf.enums.EBankCardStatus;
 import com.cdkj.gchf.enums.EGeneratePrefix;
 import com.cdkj.gchf.enums.EUser;
+import com.cdkj.gchf.exception.BizException;
 import com.google.gson.Gson;
 
 @Service
@@ -227,13 +230,20 @@ public class StaffAOImpl implements IStaffAO {
     public String addStaff(XN631411Req req) {
         String code = OrderNoGenerater
             .generate(EGeneratePrefix.Staff.getCode());
-        Staff data = new Staff();
+        Staff data = null;
+        if (StringUtils.isNotBlank(req.getIdNo())) {
+            data = staffBO.getStaffByIdNo(req.getIdNo());
+            if (data != null) {
+                throw new BizException("xn000000", "档案库中已有此人的资料");
+            }
+        }
+        data = new Staff();
         data.setCode(code);
         data.setName(req.getRealName());
         data.setSex(req.getSex());
         data.setIdNation(req.getIdNation());
         data.setBirthday(DateUtil.strToDate(req.getBirthday(),
-            DateUtil.FRONT_DATE_FORMAT_STRING));
+            DateUtil.DB_DATE_FORMAT_STRING));
 
         data.setIdType(req.getIdKind());
         data.setIdNo(req.getIdNo());
@@ -242,13 +252,52 @@ public class StaffAOImpl implements IStaffAO {
         data.setIdPolice(req.getIdPolice());
 
         data.setIdStartDate(DateUtil.strToDate(req.getIdStartDate(),
-            DateUtil.FRONT_DATE_FORMAT_STRING));
+            DateUtil.DB_DATE_FORMAT_STRING));
         data.setIdEndDate(DateUtil.strToDate(req.getIdEndDate(),
-            DateUtil.FRONT_DATE_FORMAT_STRING));
+            DateUtil.DB_DATE_FORMAT_STRING));
         data.setFeat(req.getFeat());
 
         staffBO.saveStaff(data);
         return code;
+    }
+
+    @Override
+    public void addStaffInfo(XN631413Req req) {
+        PhoneUtil.checkMobile(req.getMobile());
+        Date date = new Date();
+        Staff data = staffBO.getStaff(req.getCode());
+
+        data.setPict1(req.getPict1());
+        data.setPict2(req.getPict2());
+        data.setUpdater(req.getUpdater());
+        data.setUpdateDatetime(date);
+        data.setRemark(req.getRemark());
+        staffBO.saveStaff(data);
+        // 添加工资卡
+        BankCard bankCard = new BankCard();
+
+        bankCard.setStaffName(data.getName());
+        bankCard.setBankCode(req.getBankCode());
+        bankCard.setBankName(req.getBankName());
+        bankCard.setBankcardNumber(req.getBankcardNumber());
+
+        bankCard.setStatus(EBankCardStatus.Normal.getCode());
+        bankCard.setSubbranch(req.getSubbranch());
+        bankCard.setUpdater(req.getUpdater());
+        bankCard.setUpdateDatetime(date);
+        bankCard.setRemark(req.getRemark());
+
+        BankCard card = bankCardBO.getBankCardByStaff(data.getCode());
+        if (card == null) {
+            String bankCode = OrderNoGenerater
+                .generate(EGeneratePrefix.BankCard.getCode());
+            bankCard.setStaffCode(bankCode);
+            bankCardBO.addBankCard(bankCard);
+        } else {
+            bankCard.setCode(card.getCode());
+            bankCardBO.refreshBankCard(bankCard);
+        }
+
     }
 
 }

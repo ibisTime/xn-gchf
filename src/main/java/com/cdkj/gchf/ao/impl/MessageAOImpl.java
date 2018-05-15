@@ -1,8 +1,10 @@
 package com.cdkj.gchf.ao.impl;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import org.apache.commons.collections.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -15,6 +17,7 @@ import com.cdkj.gchf.bo.IReportBO;
 import com.cdkj.gchf.bo.ISalaryBO;
 import com.cdkj.gchf.bo.ISalaryLogBO;
 import com.cdkj.gchf.bo.IUserBO;
+import com.cdkj.gchf.bo.base.Page;
 import com.cdkj.gchf.bo.base.Paginable;
 import com.cdkj.gchf.core.OrderNoGenerater;
 import com.cdkj.gchf.core.StringValidater;
@@ -30,6 +33,7 @@ import com.cdkj.gchf.enums.EMessageStatus;
 import com.cdkj.gchf.enums.ESalaryLogType;
 import com.cdkj.gchf.enums.ESalaryStatus;
 import com.cdkj.gchf.enums.EUser;
+import com.cdkj.gchf.enums.EUserKind;
 import com.cdkj.gchf.exception.BizException;
 
 @Service
@@ -73,22 +77,33 @@ public class MessageAOImpl implements IMessageAO {
     @Override
     public Paginable<Message> queryMessagePage(int start, int limit,
             Message condition) {
-        Paginable<Message> page = messageBO.getPaginable(start, limit,
-            condition);
-        String sendName = null;
-        String handleName = null;
+        Paginable<Message> page = new Page<Message>();
+        List<Message> list = new ArrayList<Message>();
+        if (EUserKind.Supervise.getCode().equals(condition.getKind())) {
+            if (CollectionUtils.isEmpty(condition.getProjectCodeList())) {
+                page.setList(list);
+                return page;
+            }
+
+        }
+        page = messageBO.getPaginable(start, limit, condition);
         for (Message message : page.getList()) {
-            sendName = getName(message.getSender());
-            handleName = getName(message.getHandler());
-            message.setSendName(sendName);
-            message.setHandleName(handleName);
+            message.setSendName(getName(message.getSender()));
+            message.setHandleName(getName(message.getHandler()));
         }
         return page;
     }
 
     @Override
     public List<Message> queryMessageList(Message condition) {
-        List<Message> list = messageBO.queryMessageList(condition);
+        List<Message> list = new ArrayList<Message>();
+        if (EUserKind.Supervise.getCode().equals(condition.getKind())) {
+            if (CollectionUtils.isEmpty(condition.getProjectCodeList())) {
+                return list;
+            }
+        }
+
+        list = messageBO.queryMessageList(condition);
         String sendName = null;
         String handleName = null;
         for (Message message : list) {
@@ -197,13 +212,16 @@ public class MessageAOImpl implements IMessageAO {
     }
 
     @Override
-    public Message downLoad(String code) {
+    public Message downLoad(String code, String download, String backDownload) {
         Message data = messageBO.getMessage(code);
+        data.setDownload(StringValidater.toInteger(download));
+        data.setBackDownload(StringValidater.toInteger(backDownload));
         if (EMessageStatus.TO_Deal.getCode().equals(data.getStatus())) {
-            data.setDownload(data.getDownload() + 1);
-        } else {
-            data.setBackDownload(data.getBackDownload() + 1);
+            data.setStatus(EMessageStatus.TO_Feedback.getCode());
         }
+        System.out.println("download:" + data.getDownload() + ",backDownload:"
+                + data.getBackDownload());
+
         messageBO.downLoad(data);
         return data;
     }

@@ -11,49 +11,51 @@ import org.hibernate.validator.constraints.NotBlank;
 public class XN631411Req {
 
     // （必填）姓名
-    @NotBlank
+    @NotBlank(message = "姓名不能为空")
     private String realName;
 
     // （必填）性别
-    @NotBlank
+    @NotBlank(message = "性别不能为空")
     private String sex;
 
     // （必填）民族
+    @NotBlank(message = "民族不能为空")
     private String idNation;
 
     // （必填）出生年月日
+    @NotBlank(message = "出生年月日不能为空")
     private String birthday;
 
     // （必填）证件类型
-    @NotBlank
+    @NotBlank(message = "证件类型不能为空")
     private String idKind;
 
     // （必填）身份证号
-    @NotBlank
+    @NotBlank(message = "身份证号不能为空")
     private String idNo;
 
     // （必填）身份证上籍贯
-    @NotBlank
+    @NotBlank(message = "籍贯不能为空")
     private String idAddress;
 
     // （必填）身份证上头像
-    @NotBlank
+    @NotBlank(message = "身份证上头像不能为空")
     private String idPic;
 
     // （必填）签发机关
-    @NotBlank
+    @NotBlank(message = "签发机关不能为空")
     private String idPolice;
 
     // （必填）证件有效结束时间
-    @NotBlank
+    @NotBlank(message = "证件有效结束时间不能为空")
     private String idEndDate;
 
     // （必填）证件有效开始时间
-    @NotBlank
+    @NotBlank(message = "证件有效开始时间不能为空")
     private String idStartDate;
 
     // （必填）特征值
-    @NotBlank
+    @NotBlank(message = "特征值不能为空")
     private String feat;
 
     public String getRealName() {

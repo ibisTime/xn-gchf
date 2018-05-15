@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -106,12 +107,10 @@ public class ProjectAOImpl implements IProjectAO {
         if (StringUtils.isNotBlank(user.getMobile())) {
             data.setChargeMobile(user.getMobile());
         }
-        if (!(EProjectStatus.To_Audit.getCode().equals(data.getStatus())
-                || EProjectStatus.UnPass.getCode().equals(data.getStatus()))) {
+        if (EProjectStatus.Building.getCode().equals(data.getStatus())
+                || EProjectStatus.End.getCode().equals(data.getStatus())) {
             throw new BizException("xn000", "该项目的状态无法修改");
         }
-        data.setStartDatetime(DateUtil.strToDate(req.getStartDatetime(),
-            DateUtil.FRONT_DATE_FORMAT_STRING));
         data.setLongitude(req.getLongitude());
         data.setLatitude(req.getLatitude());
         data.setProvince(req.getProvince());
@@ -133,14 +132,15 @@ public class ProjectAOImpl implements IProjectAO {
     @Override
     public Paginable<Project> queryProjectPage(int start, int limit,
             Project condition) {
-        List<Project> list = new ArrayList<Project>();
         Paginable<Project> page = new Page<Project>();
-        if (EUserKind.Owner.getCode().equals(condition.getKind())) {
-            if (StringUtils.isBlank(condition.getCompanyCode())) {
+        List<Project> list = new ArrayList<Project>();
+        if (EUserKind.Supervise.getCode().equals(condition.getKind())) {
+            if (CollectionUtils.isEmpty(condition.getProjectCodeList())) {
                 page.setList(list);
                 return page;
             }
         }
+
         page = projectBO.getPaginable(start, limit, condition);
         String approveName = null;
         String updateName = null;
@@ -177,8 +177,8 @@ public class ProjectAOImpl implements IProjectAO {
     @Override
     public List<Project> queryProjectList(Project condition) {
         List<Project> list = new ArrayList<Project>();
-        if (EUserKind.Owner.getCode().equals(condition.getKind())) {
-            if (StringUtils.isBlank(condition.getCompanyCode())) {
+        if (EUserKind.Supervise.getCode().equals(condition.getKind())) {
+            if (CollectionUtils.isEmpty(condition.getProjectCodeList())) {
                 return list;
             }
         }
@@ -265,10 +265,6 @@ public class ProjectAOImpl implements IProjectAO {
         Project data = projectBO.getProject(code);
         if (!EProjectStatus.Building.getCode().equals(data.getStatus())) {
             throw new BizException("xn0000", "该工程项目未处于在建状态");
-        }
-        if (DateUtil.strToDate(endDatetime, DateUtil.FRONT_DATE_FORMAT_STRING)
-            .before(new Date())) {
-            throw new BizException("xn0000", "请输入正确的结束时间");
         }
 
         projectBO.projectEnd(data, endDatetime, updater, remark);

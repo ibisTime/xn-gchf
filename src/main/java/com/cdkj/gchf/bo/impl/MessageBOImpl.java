@@ -72,7 +72,6 @@ public class MessageBOImpl extends PaginableBOImpl<Message>
 
     @Override
     public void downLoad(Message data) {
-        data.setStatus(EMessageStatus.TO_Feedback.getCode());
         messageDAO.downLoad(data);
     }
 

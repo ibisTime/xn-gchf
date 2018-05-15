@@ -1,5 +1,7 @@
 package com.cdkj.gchf.dto.req;
 
+import java.util.List;
+
 /**
  * 工程进度分页查询
  * @author: CYL 
@@ -16,6 +18,8 @@ public class XN631385Req extends APageReq {
     private String updater;// 更新人
 
     private String keyword;// 关键字
+
+    private List<String> companyCodeList;
 
     // 用户类型
     private String kind;
@@ -58,6 +62,14 @@ public class XN631385Req extends APageReq {
 
     public void setKind(String kind) {
         this.kind = kind;
+    }
+
+    public List<String> getCompanyCodeList() {
+        return companyCodeList;
+    }
+
+    public void setCompanyCodeList(List<String> companyCodeList) {
+        this.companyCodeList = companyCodeList;
     }
 
 }

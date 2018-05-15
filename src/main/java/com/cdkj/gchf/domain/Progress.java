@@ -1,6 +1,7 @@
 package com.cdkj.gchf.domain;
 
 import java.util.Date;
+import java.util.List;
 
 import com.cdkj.gchf.dao.base.ABaseDO;
 
@@ -48,6 +49,8 @@ public class Progress extends ABaseDO {
     private String updateName;
 
     private String kind;
+
+    private List<String> projectCodeList;
 
     public String getKeyword() {
         return keyword;
@@ -163,6 +166,14 @@ public class Progress extends ABaseDO {
 
     public void setKind(String kind) {
         this.kind = kind;
+    }
+
+    public List<String> getProjectCodeList() {
+        return projectCodeList;
+    }
+
+    public void setProjectCodeList(List<String> projectCodeList) {
+        this.projectCodeList = projectCodeList;
     }
 
 }

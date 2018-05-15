@@ -79,6 +79,7 @@ public class ProjectBOImpl extends PaginableBOImpl<Project>
             String remark) {
         data.setEndDatetime(
             DateUtil.strToDate(endDatetime, DateUtil.FRONT_DATE_FORMAT_STRING));
+        data.setStatus(EProjectStatus.End.getCode());
         data.setUpdater(updater);
         data.setUpdateDatetime(new Date());
         data.setRemark(remark);

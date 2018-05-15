@@ -68,11 +68,33 @@
 		code
 		,project_code
 		,project_name
+		,today_days
+		,last_month_salary
+		
+		,next_month_salary
+		,total_salary
+		,staff_on
+		,staff_in
+		,staff_out
+		
+		,leaving_days
+		,working_days
 		)
 		VALUES(
 		#{code}
 		,#{projectCode}
 		,#{projectName}
+		,#{todayDays}
+		,#{lastMonthSalary}
+		
+		,#{nextMonthSalary}
+		,#{totalSalary}
+		,#{staffOn}
+		,#{staffIn}
+		,#{staffOut}
+		
+		,#{leavingDays}
+		,#{workingDays}
 		)
 	</insert>
 

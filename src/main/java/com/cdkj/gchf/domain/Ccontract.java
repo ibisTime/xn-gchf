@@ -203,4 +203,18 @@ public class Ccontract extends ABaseDO {
         this.projectCodeList = projectCodeList;
     }
 
+    @Override
+    public String toString() {
+        return "Ccontract [code=" + code + ", companyCode=" + companyCode
+                + ", companyName=" + companyName + ", projectCode="
+                + projectCode + ", projectName=" + projectName + ", staffCode="
+                + staffCode + ", staffMobile=" + staffMobile + ", contentPic="
+                + contentPic + ", contractDatetime=" + contractDatetime
+                + ", updater=" + updater + ", updateDatetime=" + updateDatetime
+                + ", remark=" + remark + ", keyword=" + keyword
+                + ", updateName=" + updateName + ", staffName=" + staffName
+                + ", kind=" + kind + ", projectCodeList=" + projectCodeList
+                + "]";
+    }
+
 }

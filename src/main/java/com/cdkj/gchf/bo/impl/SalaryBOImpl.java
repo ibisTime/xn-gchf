@@ -115,7 +115,7 @@ public class SalaryBOImpl extends PaginableBOImpl<Salary> implements ISalaryBO {
         data.setProjectCode(salary.getProjectCode());
         data.setProjectName(salary.getProjectName());
         data.setMonth(salary.getMonth());
-        data.setShouldAmount(salary.getShouldAmount());
+        data.setShouldAmount(salary.getFactAmount() - payAmount);
         data.setFactAmount(salary.getFactAmount() - payAmount);
 
         data.setCutAmount(0L);

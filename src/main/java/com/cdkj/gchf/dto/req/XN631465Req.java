@@ -33,7 +33,14 @@ public class XN631465Req extends APageReq {
     // （选填）更新人
     private String updater;
 
+    // （选填）
+    private String staffCode;
+
+    // 状态列表
     private List<String> statusList;
+
+    // 编号列表
+    private List<String> companyCodeList;
 
     public String getKeyword() {
         return keyword;
@@ -89,6 +96,22 @@ public class XN631465Req extends APageReq {
 
     public void setStatusList(List<String> statusList) {
         this.statusList = statusList;
+    }
+
+    public List<String> getCompanyCodeList() {
+        return companyCodeList;
+    }
+
+    public void setCompanyCodeList(List<String> companyCodeList) {
+        this.companyCodeList = companyCodeList;
+    }
+
+    public String getStaffCode() {
+        return staffCode;
+    }
+
+    public void setStaffCode(String staffCode) {
+        this.staffCode = staffCode;
     }
 
 }

@@ -42,6 +42,7 @@ public class XN631435 extends AProcessor {
 
         condition.setBankName(req.getBankName());
         condition.setSubbranch(req.getSubbranch());
+        condition.setProjectCodeList(req.getCompanyCodeList());
 
         String column = req.getOrderColumn();
         if (StringUtils.isBlank(column)) {

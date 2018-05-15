@@ -1,5 +1,6 @@
 package com.cdkj.gchf.ao.impl;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -8,16 +9,22 @@ import org.springframework.stereotype.Service;
 
 import com.cdkj.gchf.ao.ICompanyAO;
 import com.cdkj.gchf.bo.ICompanyBO;
+import com.cdkj.gchf.bo.IProjectBO;
 import com.cdkj.gchf.bo.base.Paginable;
 import com.cdkj.gchf.core.OrderNoGenerater;
 import com.cdkj.gchf.domain.Company;
+import com.cdkj.gchf.domain.Project;
 import com.cdkj.gchf.enums.EGeneratePrefix;
+import com.cdkj.gchf.enums.EUserKind;
 
 @Service
 public class CompanyAOImpl implements ICompanyAO {
 
     @Autowired
     private ICompanyBO companyBO;
+
+    @Autowired
+    private IProjectBO projectBO;
 
     @Override
     public String addCompany(String name) {
@@ -46,11 +53,33 @@ public class CompanyAOImpl implements ICompanyAO {
     @Override
     public Paginable<Company> queryCompanyPage(int start, int limit,
             Company condition) {
+        List<String> companyCodeList = new ArrayList<String>();
+        if (EUserKind.Supervise.equals(condition.getKind())) {
+            Project pCondition = new Project();
+            pCondition.setProjectCodeList(condition.getProjectCodeList());
+            List<Project> projectList = projectBO.queryProject(pCondition);
+            for (Project project : projectList) {
+                companyCodeList.add(project.getCompanyCode());
+            }
+
+            condition.setCompanyCodeList(companyCodeList);
+        }
         return companyBO.getPaginable(start, limit, condition);
     }
 
     @Override
     public List<Company> queryCompanyList(Company condition) {
+        List<String> companyCodeList = new ArrayList<String>();
+        if (EUserKind.Supervise.equals(condition.getKind())) {
+            Project pCondition = new Project();
+            pCondition.setProjectCodeList(condition.getProjectCodeList());
+            List<Project> projectList = projectBO.queryProject(pCondition);
+            for (Project project : projectList) {
+                companyCodeList.add(project.getCompanyCode());
+            }
+
+            condition.setCompanyCodeList(companyCodeList);
+        }
         return companyBO.queryCompanyList(condition);
     }
 

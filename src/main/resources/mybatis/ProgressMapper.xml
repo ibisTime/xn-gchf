@@ -18,14 +18,24 @@
 	<sql id="where_condition">
 		<trim prefix="WHERE" prefixOverrides="AND | OR">
 			<if test="code != null and code != '' ">
-				AND t.code = #{code}
+					AND t.code = #{code}
 			</if>
+			<choose>
+				<when test="projectCode != null and projectCode != ''">
+					AND t.project_code = #{projectCode}
+				</when>
+				<when test="projectCodeList != null and projectCodeList.size() > 0 ">
+					AND t.project_code IN 
+					<foreach collection="projectCodeList" index="index" item="item" open="(" separator="," close=")" >
+						#{item}
+					</foreach>
+				</when>
+			</choose>
+			
 			<if test="companyCode != null and companyCode != ''">
 				AND t.company_code = #{companyCode}
 			</if>
-			<if test="projectCode != null and projectCode != ''">
-				AND t.project_code = #{projectCode}
-			</if>
+			
 			<if test="projectName != null and projectName != ''">
 				AND t.project_name like "%"#{projectName}"%"
 			</if>

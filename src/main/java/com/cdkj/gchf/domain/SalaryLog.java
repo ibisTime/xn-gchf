@@ -1,6 +1,7 @@
 package com.cdkj.gchf.domain;
 
 import java.util.Date;
+import java.util.List;
 
 import com.cdkj.gchf.dao.base.ABaseDO;
 
@@ -17,9 +18,6 @@ public class SalaryLog extends ABaseDO {
     // 编号
     private String code;
 
-    // 员工编号
-    private String staffCode;
-
     // 公司编号
     private String companyCode;
 
@@ -31,6 +29,9 @@ public class SalaryLog extends ABaseDO {
 
     // 项目名称
     private String projectName;
+
+    // 员工编号
+    private String staffCode;
 
     // 工资条编号
     private String salaryCode;
@@ -52,6 +53,10 @@ public class SalaryLog extends ABaseDO {
     private String kind;
 
     private String handleName;
+
+    private String staffName;
+
+    private List<String> projectCodeList;
 
     public void setCode(String code) {
         this.code = code;
@@ -155,6 +160,22 @@ public class SalaryLog extends ABaseDO {
 
     public void setHandleName(String handleName) {
         this.handleName = handleName;
+    }
+
+    public List<String> getProjectCodeList() {
+        return projectCodeList;
+    }
+
+    public void setProjectCodeList(List<String> projectCodeList) {
+        this.projectCodeList = projectCodeList;
+    }
+
+    public String getStaffName() {
+        return staffName;
+    }
+
+    public void setStaffName(String staffName) {
+        this.staffName = staffName;
     }
 
 }

@@ -3,7 +3,7 @@ package com.cdkj.gchf.ao.impl;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.collections.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -42,19 +42,20 @@ public class SalaryLogAOImpl implements ISalaryLogAO {
     @Override
     public Paginable<SalaryLog> querySalaryLogPage(int start, int limit,
             SalaryLog condition) {
-        List<SalaryLog> list = new ArrayList<SalaryLog>();
+        System.out.println(condition.getProjectCodeList());
         Paginable<SalaryLog> page = new Page<SalaryLog>();
-        if (EUserKind.Owner.getCode().equals(condition.getKind())) {
-            if (StringUtils.isBlank(condition.getCompanyCode())) {
+        List<SalaryLog> list = new ArrayList<SalaryLog>();
+        if (EUserKind.Supervise.getCode().equals(condition.getKind())) {
+            if (CollectionUtils.isEmpty(condition.getProjectCodeList())) {
                 page.setList(list);
                 return page;
             }
         }
+
         page = salaryLogBO.getPaginable(start, limit, condition);
-        String handleName = null;
         for (SalaryLog salaryLog : page.getList()) {
-            handleName = getName(salaryLog.getHandler());
-            salaryLog.setHandleName(handleName);
+            salaryLog.setHandleName(getName(salaryLog.getHandler()));
+            salaryLog.setStaffName(getName(salaryLog.getStaffCode()));
         }
         return page;
     }
@@ -62,16 +63,18 @@ public class SalaryLogAOImpl implements ISalaryLogAO {
     @Override
     public List<SalaryLog> querySalaryLogList(SalaryLog condition) {
         List<SalaryLog> list = new ArrayList<SalaryLog>();
-        if (EUserKind.Owner.getCode().equals(condition.getKind())) {
-            if (StringUtils.isBlank(condition.getCompanyCode())) {
+        if (EUserKind.Supervise.getCode().equals(condition.getKind())) {
+            if (CollectionUtils.isEmpty(condition.getProjectCodeList())) {
                 return list;
             }
         }
+
         list = salaryLogBO.querySalaryLogList(condition);
         String handleName = null;
         for (SalaryLog salaryLog : list) {
             handleName = getName(salaryLog.getHandler());
             salaryLog.setHandleName(handleName);
+            salaryLog.setStaffName(getName(salaryLog.getStaffCode()));
         }
         return list;
     }

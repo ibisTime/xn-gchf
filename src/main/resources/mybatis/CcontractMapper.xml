@@ -25,6 +25,9 @@
 			<if test="companyCode != null and companyCode != '' ">
 				AND t.company_code = #{companyCode}
 			</if>
+			<if test="staffCode != null and staffCode != '' ">
+				AND t.staff_code = #{staffCode}
+			</if>
 			<choose>
 				<when test="projectCode != null and projectCode != '' ">
 					AND t.project_code = #{projectCode}

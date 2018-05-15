@@ -38,9 +38,18 @@
 			<if test="companyName != null and companyName != '' ">
 				AND t.company_name like "%"#{companyName}"%"
 			</if>
-			<if test="projectCode != null and projectCode != '' ">
-				AND t.project_code = #{projectCode}
-			</if>
+			<choose>
+				<when test="projectCode != null and projectCode != '' ">
+					AND t.project_code = #{projectCode}
+				</when>
+				<when test="projectCodeList != null and projectCodeList.size() > 0">
+					AND t.project_code IN 
+					<foreach collection="projectCodeList" item="item" index="index" open="(" separator="," close=")">
+						#{item}
+					</foreach>
+				</when>
+			</choose>
+			
 			<if test="projectName != null and projectName != '' ">
 				AND t.project_name like "%"#{projectName}"%"
 			</if>
@@ -123,7 +132,6 @@
 		,title
 		,content
 		,create_datetime
-		,download
 		,status
 		,sender
 		,send_datetime
@@ -145,7 +153,6 @@
 		,#{title}
 		,#{content}
 		,#{createDatetime}
-		,#{download}
 		,#{status}
 		,#{sender}
 		,#{sendDatetime}
@@ -182,7 +189,9 @@
 	<update id="send_message" parameterType="message">
 		UPDATE thf_message
 		SET
-		status = #{status}
+		title = #{title}
+		,content = #{content}
+		,status = #{status}
 		,sender = #{sender}
 		,send_datetime = #{sendDatetime}
 		,send_note = #{sendNote}
@@ -203,6 +212,7 @@
 		UPDATE thf_message
 		SET
 		download = #{download}
+		,back_download = #{backDownload}
 		,status = #{status}
 		WHERE code = #{code}
 	</update>

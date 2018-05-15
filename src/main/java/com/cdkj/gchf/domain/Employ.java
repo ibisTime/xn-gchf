@@ -92,7 +92,11 @@ public class Employ extends ABaseDO {
 
     private String updateName;
 
+    private String staffName;
+
     private List<String> statusList;
+
+    private List<String> projectCodeList;
 
     public void setCode(String code) {
         this.code = code;
@@ -316,6 +320,22 @@ public class Employ extends ABaseDO {
 
     public void setCompanyName(String companyName) {
         this.companyName = companyName;
+    }
+
+    public List<String> getProjectCodeList() {
+        return projectCodeList;
+    }
+
+    public void setProjectCodeList(List<String> projectCodeList) {
+        this.projectCodeList = projectCodeList;
+    }
+
+    public String getStaffName() {
+        return staffName;
+    }
+
+    public void setStaffName(String staffName) {
+        this.staffName = staffName;
     }
 
 }

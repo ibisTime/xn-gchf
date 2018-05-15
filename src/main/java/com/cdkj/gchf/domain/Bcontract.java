@@ -53,6 +53,8 @@ public class Bcontract extends ABaseDO {
 
     private String updateName;
 
+    private String kind;
+
     private List<String> projectCodeList;
 
     public String getKeyword() {
@@ -173,6 +175,14 @@ public class Bcontract extends ABaseDO {
 
     public void setCompanyName(String companyName) {
         this.companyName = companyName;
+    }
+
+    public String getKind() {
+        return kind;
+    }
+
+    public void setKind(String kind) {
+        this.kind = kind;
     }
 
 }

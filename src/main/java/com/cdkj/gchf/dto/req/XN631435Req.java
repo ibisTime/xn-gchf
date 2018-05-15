@@ -51,6 +51,8 @@ public class XN631435Req extends APageReq {
     // （选填）户名
     private String subbranch;
 
+    private List<String> companyCodeList;
+
     public String getProjectCode() {
         return projectCode;
     }
@@ -145,6 +147,14 @@ public class XN631435Req extends APageReq {
 
     public void setSubbranch(String subbranch) {
         this.subbranch = subbranch;
+    }
+
+    public List<String> getCompanyCodeList() {
+        return companyCodeList;
+    }
+
+    public void setCompanyCodeList(List<String> companyCodeList) {
+        this.companyCodeList = companyCodeList;
     }
 
 }

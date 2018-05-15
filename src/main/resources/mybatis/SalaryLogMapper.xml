@@ -27,9 +27,17 @@
 			<if test="companyName != null and companyName != '' ">
 				AND t.company_name like "%"#{companyName}"%"
 			</if>
-			<if test="projectCode != null and projectCode != '' ">
-				AND t.project_code = #{projectCode}
-			</if>
+			<choose>
+				<when test="projectCode != null and projectCode != '' ">
+					AND t.project_code = #{projectCode}
+				</when>
+				<when test="projectCodeList != null and projectCodeList != '' ">
+					AND t.project_code IN 
+					<foreach collection="projectCodeList" index="index" item="item" open="(" separator="," close=")" >
+						#{item}
+					</foreach>
+				</when>
+			</choose>
 			<if test="projectName != null and projectName != '' ">
 				AND t.project_name like "%"#{projectName}"%"
 			</if>

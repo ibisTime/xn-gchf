@@ -33,6 +33,8 @@ public class XN631385 extends AProcessor {
         condition.setKeyword(req.getKeyword());
 
         condition.setKind(req.getKind());
+        condition.setProjectCodeList(req.getCompanyCodeList());
+
         String column = req.getOrderColumn();
         if (StringUtils.isBlank(column)) {
             column = IProgressAO.DEFAULT_ORDER_COLUMN;

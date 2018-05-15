@@ -41,6 +41,7 @@ public class XN631085 extends AProcessor {
         condition.setCreateDatetimeEnd(
             DateUtil.getFrontDate(req.getDateEnd(), true));
 
+        condition.setCompanyCode(req.getCompanyCode());
         condition.setKeyword(req.getKeyword());
         String column = req.getOrderColumn();
         if (StringUtils.isBlank(column)) {

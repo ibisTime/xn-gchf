@@ -16,10 +16,6 @@ public class XN631352Req {
     @NotBlank(message = "负责人编号不能为空")
     private String chargeUser;
 
-    // 项目开始时间
-    @NotBlank(message = "项目开始时间不能为空")
-    private String startDatetime;
-
     // 经度
     @NotBlank(message = "经度不能为空")
     private String longitude;
@@ -185,14 +181,6 @@ public class XN631352Req {
 
     public void setAttendanceEndtime(String attendanceEndtime) {
         this.attendanceEndtime = attendanceEndtime;
-    }
-
-    public String getStartDatetime() {
-        return startDatetime;
-    }
-
-    public void setStartDatetime(String startDatetime) {
-        this.startDatetime = startDatetime;
     }
 
 }

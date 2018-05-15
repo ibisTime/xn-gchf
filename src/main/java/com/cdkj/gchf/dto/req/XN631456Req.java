@@ -1,5 +1,7 @@
 package com.cdkj.gchf.dto.req;
 
+import java.util.List;
+
 /**
  * 分页查工资条日志
  * @author: nyc 
@@ -39,6 +41,8 @@ public class XN631456Req extends APageReq {
 
     // （选填）用户类型
     private String kind;
+
+    private List<String> comanyCodeList;
 
     public String getHandler() {
         return handler;
@@ -110,6 +114,14 @@ public class XN631456Req extends APageReq {
 
     public void setKind(String kind) {
         this.kind = kind;
+    }
+
+    public List<String> getComanyCodeList() {
+        return comanyCodeList;
+    }
+
+    public void setComanyCodeList(List<String> comanyCodeList) {
+        this.comanyCodeList = comanyCodeList;
     }
 
 }

@@ -9,6 +9,7 @@ import com.cdkj.gchf.domain.Staff;
 import com.cdkj.gchf.dto.req.XN631410Req;
 import com.cdkj.gchf.dto.req.XN631411Req;
 import com.cdkj.gchf.dto.req.XN631412Req;
+import com.cdkj.gchf.dto.req.XN631413Req;
 
 @Component
 public interface IStaffAO {
@@ -31,5 +32,7 @@ public interface IStaffAO {
     public String getStaffFeatList();
 
     public String addStaff(XN631411Req req);
+
+    public void addStaffInfo(XN631413Req req);
 
 }

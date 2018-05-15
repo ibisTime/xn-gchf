@@ -13,6 +13,9 @@ public class XN631376Req extends APageReq {
 
     private String keyword;// 关键字
 
+    // 用戶類型
+    private String kind;
+
     private List<String> companyCodeList;
 
     public String getCompanyCode() {
@@ -53,6 +56,14 @@ public class XN631376Req extends APageReq {
 
     public void setCompanyCodeList(List<String> companyCodeList) {
         this.companyCodeList = companyCodeList;
+    }
+
+    public String getKind() {
+        return kind;
+    }
+
+    public void setKind(String kind) {
+        this.kind = kind;
     }
 
 }

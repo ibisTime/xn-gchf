@@ -10,7 +10,7 @@ import com.cdkj.gchf.dto.req.XN631442Req;
 
 @Component
 public interface ISalaryAO {
-    static final String DEFAULT_ORDER_COLUMN = "code";
+    static final String DEFAULT_ORDER_COLUMN = "month";
 
     public String addSalary(Salary data);
 

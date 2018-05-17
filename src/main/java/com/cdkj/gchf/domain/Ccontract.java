@@ -18,12 +18,6 @@ public class Ccontract extends ABaseDO {
     // 编号
     private String code;
 
-    // 公司编号
-    private String companyCode;
-
-    // 公司名称
-    private String companyName;
-
     // 项目编号
     private String projectCode;
 
@@ -171,22 +165,6 @@ public class Ccontract extends ABaseDO {
         this.staffName = staffName;
     }
 
-    public String getCompanyCode() {
-        return companyCode;
-    }
-
-    public void setCompanyCode(String companyCode) {
-        this.companyCode = companyCode;
-    }
-
-    public String getCompanyName() {
-        return companyName;
-    }
-
-    public void setCompanyName(String companyName) {
-        this.companyName = companyName;
-    }
-
     public String getKind() {
         return kind;
     }
@@ -201,20 +179,6 @@ public class Ccontract extends ABaseDO {
 
     public void setProjectCodeList(List<String> projectCodeList) {
         this.projectCodeList = projectCodeList;
-    }
-
-    @Override
-    public String toString() {
-        return "Ccontract [code=" + code + ", companyCode=" + companyCode
-                + ", companyName=" + companyName + ", projectCode="
-                + projectCode + ", projectName=" + projectName + ", staffCode="
-                + staffCode + ", staffMobile=" + staffMobile + ", contentPic="
-                + contentPic + ", contractDatetime=" + contractDatetime
-                + ", updater=" + updater + ", updateDatetime=" + updateDatetime
-                + ", remark=" + remark + ", keyword=" + keyword
-                + ", updateName=" + updateName + ", staffName=" + staffName
-                + ", kind=" + kind + ", projectCodeList=" + projectCodeList
-                + "]";
     }
 
 }

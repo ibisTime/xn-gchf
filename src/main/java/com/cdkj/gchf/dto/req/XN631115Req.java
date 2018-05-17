@@ -1,6 +1,6 @@
 package com.cdkj.gchf.dto.req;
 
-public class XN631093Req extends APageReq {
+public class XN631115Req extends APageReq {
 
     /** 
      * @Fields serialVersionUID : TODO(用一句话描述这个变量表示什么) 

@@ -21,12 +21,6 @@ public class XN631435Req extends APageReq {
     // （选填）工程名称
     private String projectName;
 
-    // （选填）公司编号
-    private String companyCode;
-
-    // （选填）公司名称
-    private String companyName;
-
     // （选填）发送人
     private String sender;
 
@@ -51,7 +45,7 @@ public class XN631435Req extends APageReq {
     // （选填）户名
     private String subbranch;
 
-    private List<String> companyCodeList;
+    private List<String> projectCodeList;
 
     public String getProjectCode() {
         return projectCode;
@@ -109,22 +103,6 @@ public class XN631435Req extends APageReq {
         this.projectName = projectName;
     }
 
-    public String getCompanyCode() {
-        return companyCode;
-    }
-
-    public void setCompanyCode(String companyCode) {
-        this.companyCode = companyCode;
-    }
-
-    public String getCompanyName() {
-        return companyName;
-    }
-
-    public void setCompanyName(String companyName) {
-        this.companyName = companyName;
-    }
-
     public String getKind() {
         return kind;
     }
@@ -149,12 +127,12 @@ public class XN631435Req extends APageReq {
         this.subbranch = subbranch;
     }
 
-    public List<String> getCompanyCodeList() {
-        return companyCodeList;
+    public List<String> getProjectCodeList() {
+        return projectCodeList;
     }
 
-    public void setCompanyCodeList(List<String> companyCodeList) {
-        this.companyCodeList = companyCodeList;
+    public void setProjectCodeList(List<String> projectCodeList) {
+        this.projectCodeList = projectCodeList;
     }
 
 }

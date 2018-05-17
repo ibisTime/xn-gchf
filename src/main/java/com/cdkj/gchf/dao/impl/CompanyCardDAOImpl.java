@@ -47,4 +47,9 @@ public class CompanyCardDAOImpl extends AMybatisTemplate
             count, condition, CompanyCard.class);
     }
 
+    @Override
+    public void update(CompanyCard data) {
+        super.update(NAMESPACE.concat("update_companyCard"), data);
+    }
+
 }

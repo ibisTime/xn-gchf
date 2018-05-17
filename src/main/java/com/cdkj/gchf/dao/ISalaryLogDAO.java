@@ -8,4 +8,6 @@ public interface ISalaryLogDAO extends IBaseDAO<SalaryLog> {
     String NAMESPACE = ISalaryLogDAO.class.getName().concat(".");
 
     void update(SalaryLog data);
+
+    void dealWithSalary(SalaryLog data);
 }

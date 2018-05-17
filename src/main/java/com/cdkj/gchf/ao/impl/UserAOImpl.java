@@ -69,7 +69,6 @@ public class UserAOImpl implements IUserAO {
         String userId = OrderNoGenerater.generate("U");
         data.setUserId(userId);
 
-        data.setLoginName(req.getLoginName());
         data.setType(req.getType());
 
         data.setRealName(req.getRealName());
@@ -87,14 +86,13 @@ public class UserAOImpl implements IUserAO {
             data.setCompanyName(company.getName());
         }
         if (EUserKind.Bank.getCode().equals(req.getType())) {
+            data.setLoginName(req.getBankName() + req.getSubbranch());
             data.setBankName(req.getBankName());
             data.setSubbranch(req.getSubbranch());
         }
-        if (EUserKind.Supervise.getCode().equals(req.getType())) {
-            data.setProvince(req.getProvince());
-            data.setCity(req.getCity());
-            data.setArea(req.getArea());
-        }
+        data.setProvince(req.getProvince());
+        data.setCity(req.getCity());
+        data.setArea(req.getArea());
         data.setRemark(req.getRemark());
 
         // 给用户分配角色
@@ -326,14 +324,16 @@ public class UserAOImpl implements IUserAO {
     @Override
     public User getUser(String code) {
         User data = userBO.getUser(code);
-        if (EUserKind.Supervise.getCode().equals(data.getType())) {
+        if (EUserKind.Supervise.getCode().equals(data.getType())
+                || EUserKind.Owner.getCode().equals(data.getType())) {
             Project condition = new Project();
             condition.setProvince(data.getProvince());
             condition.setCity(data.getCity());
             condition.setArea(data.getArea());
-            List<String> companyCodeList = projectBO
-                .queryCompanyList(condition);
-            data.setCompanyCodeList(companyCodeList);
+            condition.setCompanyCode(data.getCompanyCode());
+            List<String> projectCodeList = projectBO
+                .queryProjectCodeList(condition);
+            data.setProjectCodeList(projectCodeList);
         }
         return data;
     }

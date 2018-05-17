@@ -23,15 +23,6 @@ public class SalaryLogBOImpl extends PaginableBOImpl<SalaryLog>
     @Autowired
     private ISalaryLogDAO salaryLogDAO;
 
-    public String saveSalaryLog(SalaryLog data) {
-        String code = null;
-        if (data != null) {
-            data.setCode(code);
-            salaryLogDAO.insert(data);
-        }
-        return code;
-    }
-
     @Override
     public void removeSalaryLog(String code) {
         SalaryLog data = new SalaryLog();
@@ -64,24 +55,27 @@ public class SalaryLogBOImpl extends PaginableBOImpl<SalaryLog>
     }
 
     @Override
-    public void saveSalaryLog(Salary salary, String companyCode,
-            String companyName, String type, String handler,
-            String handleNote) {
+    public void saveSalaryLog(Salary salary, String type) {
         SalaryLog data = new SalaryLog();
         String code = OrderNoGenerater
             .generate(EGeneratePrefix.SalaryLog.getCode());
         data.setCode(code);
         data.setSalaryCode(salary.getCode());
         data.setType(type);
-        data.setCompanyCode(companyCode);
-        data.setCompanyName(companyName);
-
         data.setStaffCode(salary.getStaffCode());
         data.setProjectCode(salary.getProjectCode());
         data.setProjectName(salary.getProjectName());
-        data.setHandler(handler);
-        data.setHandleDatetime(new Date());
-        data.setHandleNote(handleNote);
         salaryLogDAO.insert(data);
+    }
+
+    @Override
+    public void dealWithSalary(SalaryLog data, String handler,
+            String handleNote) {
+        Date date = new Date();
+        data.setHandler(handler);
+        data.setHandleDatetime(date);
+        data.setHandleNote(handleNote);
+        salaryLogDAO.dealWithSalary(data);
+
     }
 }

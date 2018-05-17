@@ -70,7 +70,7 @@
 				AND t.updater = #{updater}
 			</if>
 			<choose>
-				<when test="status == 'not' ">
+				<when test="status == '0,1' ">
 					AND t.status IN ('0','1')
 				</when>
 				<when test="status != null and status != '' ">
@@ -121,9 +121,6 @@
 			</if>
 		</trim>
 	</select>
-
-
-	
 	<select id="select_employ_count" parameterType="employ"
 		resultType="java.lang.Long">
 		SELECT count(1) FROM thf_employ t

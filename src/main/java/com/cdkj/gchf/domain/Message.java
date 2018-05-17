@@ -19,12 +19,6 @@ public class Message extends ABaseDO {
     // 编号
     private String code;
 
-    // 公司编号
-    private String companyCode;
-
-    // 公司名称
-    private String companyName;
-
     // 项目编号
     private String projectCode;
 
@@ -115,22 +109,6 @@ public class Message extends ABaseDO {
 
     public String getProjectName() {
         return projectName;
-    }
-
-    public String getCompanyCode() {
-        return companyCode;
-    }
-
-    public void setCompanyCode(String companyCode) {
-        this.companyCode = companyCode;
-    }
-
-    public String getCompanyName() {
-        return companyName;
-    }
-
-    public void setCompanyName(String companyName) {
-        this.companyName = companyName;
     }
 
     public void setBankCode(String bankCode) {

@@ -8,8 +8,8 @@ import org.springframework.stereotype.Service;
 import com.cdkj.gchf.ao.IChannelBankAO;
 import com.cdkj.gchf.bo.IChannelBankBO;
 import com.cdkj.gchf.bo.base.Paginable;
+import com.cdkj.gchf.core.StringValidater;
 import com.cdkj.gchf.domain.ChannelBank;
-import com.cdkj.gchf.exception.BizException;
 
 @Service
 public class ChannelBankAOImpl implements IChannelBankAO {
@@ -18,24 +18,21 @@ public class ChannelBankAOImpl implements IChannelBankAO {
     private IChannelBankBO channelBankBO;
 
     @Override
-    public void addChannelBank(ChannelBank data) {
-        channelBankBO.saveChannelBank(data);
+    public Long addChannelBank(String bankCode, String bankName) {
+        return channelBankBO.saveChannelBank(bankCode, bankName);
     }
 
     @Override
-    public void editChannelBank(ChannelBank data) {
-        if (!channelBankBO.isChannelBankExist(data.getId())) {
-            throw new BizException("xn0000", "渠道银行序号不存在");
-        }
-        channelBankBO.refreshChannelBank(data);
+    public void editChannelBank(String id, String bankCode, String bankName) {
+        ChannelBank data = channelBankBO
+            .getChannelBank(StringValidater.toLong(id));
+        channelBankBO.refreshChannelBank(data, bankCode, bankName);
     }
 
     @Override
     public void dropChannelBank(Long id) {
-        if (!channelBankBO.isChannelBankExist(id)) {
-            throw new BizException("xn0000", "渠道银行序号不存在");
-        }
-        channelBankBO.removeChannelBank(id);
+        ChannelBank data = channelBankBO.getChannelBank(id);
+        channelBankBO.removeChannelBank(data);
     }
 
     @Override

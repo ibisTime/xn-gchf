@@ -1,3 +1,4 @@
+
 package com.cdkj.gchf.domain;
 
 import java.util.Date;
@@ -18,23 +19,17 @@ public class Salary extends ABaseDO {
     // 编号
     private String code;
 
-    // 消息编号
-    private String messageCode;
-
-    // 员工编号
-    private String staffCode;
-
-    // 公司编号
-    private String companyCode;
-
-    // 公司名称
-    private String companyName;
-
     // 项目编号
     private String projectCode;
 
     // 项目编号
     private String projectName;
+
+    // 消息编号
+    private String messageCode;
+
+    // 员工编号
+    private String staffCode;
 
     // 所属月份
     private Integer month;
@@ -106,10 +101,14 @@ public class Salary extends ABaseDO {
     // 用户类型
     private String kind;
 
+    // 员工
     private Staff staff;
 
     // 状态类型
     private List<String> statusList;
+
+    // 项目编号List
+    private List<String> projectCodeList;
 
     public void setCode(String code) {
         this.code = code;
@@ -125,14 +124,6 @@ public class Salary extends ABaseDO {
 
     public String getMessageCode() {
         return messageCode;
-    }
-
-    public String getCompanyName() {
-        return companyName;
-    }
-
-    public void setCompanyName(String companyName) {
-        this.companyName = companyName;
     }
 
     public void setStaffCode(String staffCode) {
@@ -165,14 +156,6 @@ public class Salary extends ABaseDO {
 
     public void setMonth(Integer month) {
         this.month = month;
-    }
-
-    public String getCompanyCode() {
-        return companyCode;
-    }
-
-    public void setCompanyCode(String companyCode) {
-        this.companyCode = companyCode;
     }
 
     public void setCutNote(String cutNote) {
@@ -365,6 +348,14 @@ public class Salary extends ABaseDO {
 
     public void setStaff(Staff staff) {
         this.staff = staff;
+    }
+
+    public List<String> getProjectCodeList() {
+        return projectCodeList;
+    }
+
+    public void setProjectCodeList(List<String> projectCodeList) {
+        this.projectCodeList = projectCodeList;
     }
 
 }

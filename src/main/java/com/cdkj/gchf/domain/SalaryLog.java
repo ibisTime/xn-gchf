@@ -52,11 +52,17 @@ public class SalaryLog extends ABaseDO {
     // 用户类型
     private String kind;
 
+    // 处理人名称
     private String handleName;
 
+    // 员工名称
     private String staffName;
 
+    // 项目编号List
     private List<String> projectCodeList;
+
+    // 工资条
+    private Salary salary;
 
     public void setCode(String code) {
         this.code = code;
@@ -176,6 +182,14 @@ public class SalaryLog extends ABaseDO {
 
     public void setStaffName(String staffName) {
         this.staffName = staffName;
+    }
+
+    public Salary getSalary() {
+        return salary;
+    }
+
+    public void setSalary(Salary salary) {
+        this.salary = salary;
     }
 
 }

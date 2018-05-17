@@ -19,7 +19,6 @@ import com.cdkj.gchf.core.OrderNoGenerater;
 import com.cdkj.gchf.dao.IWithdrawDAO;
 import com.cdkj.gchf.domain.Account;
 import com.cdkj.gchf.domain.Withdraw;
-import com.cdkj.gchf.enums.EChannelType;
 import com.cdkj.gchf.enums.EGeneratePrefix;
 import com.cdkj.gchf.enums.EWithdrawStatus;
 import com.cdkj.gchf.exception.BizException;
@@ -50,7 +49,6 @@ public class WithdrawBOImpl extends PaginableBOImpl<Withdraw>
         data.setAmount(amount);
         data.setFee(fee);
 
-        data.setChannelType(EChannelType.ETH.getCode());
         data.setPayCardInfo(payCardInfo);
         // 取现户名，应该和银行卡户名一致
         data.setAccountName(account.getRealName());

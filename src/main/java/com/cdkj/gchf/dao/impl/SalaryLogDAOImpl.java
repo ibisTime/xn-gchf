@@ -52,4 +52,9 @@ public class SalaryLogDAOImpl extends AMybatisTemplate
         super.update(NAMESPACE.concat("update_salaryLog"), data);
     }
 
+    @Override
+    public void dealWithSalary(SalaryLog data) {
+        super.update(NAMESPACE.concat("deal_with"), data);
+    }
+
 }

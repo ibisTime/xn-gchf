@@ -4,8 +4,6 @@
 <mapper namespace="com.cdkj.gchf.dao.IStaffLogDAO">
 	<resultMap id="staffLog_DB_Result" type="staffLog">
 		<result column="code" property="code" />
-		<result column="company_code" property="companyCode" />
-		<result column="company_name" property="companyName" />
 		<result column="project_code" property="projectCode" />
 		<result column="project_name" property="projectName" />
 		<result column="staff_code" property="staffCode" />
@@ -19,14 +17,14 @@
 			<if test="code != null and code != '' ">
 				AND t.code = #{code}
 			</if>
-			<if test="companyCode != null and companyCode != '' ">
-				AND t.company_code = #{companyCode}
-			</if>
-			<if test="companyName != null and companyName != '' ">
-				AND t.company_name like "%"#{companyName}"%"
-			</if>
 			<if test="staffCode != null and staffCode != '' ">
 				AND t.staff_code like "%"#{staffCode}"%"
+			</if>
+			<if test="projectCodeList != null and projectCode.size() > 0 ">
+				AND t.project_code IN
+				<foreach collection="projectCodeList" item="item" index="index" open="(" separator="," close=")" >
+					#{item}
+				</foreach>
 			</if>
 		</trim>
 	</sql>

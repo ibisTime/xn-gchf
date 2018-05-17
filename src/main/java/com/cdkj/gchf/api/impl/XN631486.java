@@ -6,6 +6,7 @@ import com.cdkj.gchf.ao.IProgressAO;
 import com.cdkj.gchf.ao.IStaffLogAO;
 import com.cdkj.gchf.api.AProcessor;
 import com.cdkj.gchf.common.JsonUtil;
+import com.cdkj.gchf.core.StringValidater;
 import com.cdkj.gchf.domain.StaffLog;
 import com.cdkj.gchf.dto.req.XN631485Req;
 import com.cdkj.gchf.exception.BizException;
@@ -28,10 +29,8 @@ public class XN631486 extends AProcessor {
     @Override
     public Object doBusiness() throws BizException {
         StaffLog condition = new StaffLog();
-        condition.setCompanyCode(req.getCompanyCode());
-        condition.setCompanyName(req.getCompanyName());
-        condition.setKind(req.getKind());
         condition.setStaffCode(req.getStaffCode());
+        condition.setProjectCodeList(req.getProjectCodeList());
 
         String column = req.getOrderColumn();
         if (StringUtils.isBlank(column)) {
@@ -46,6 +45,7 @@ public class XN631486 extends AProcessor {
     public void doCheck(String inputparams, String operator)
             throws ParaException {
         req = JsonUtil.json2Bean(inputparams, XN631485Req.class);
+        StringValidater.validateBlank(req.getStaffCode());
     }
 
 }

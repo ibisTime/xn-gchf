@@ -4,8 +4,6 @@
 <mapper namespace="com.cdkj.gchf.dao.IMessageDAO">
 	<resultMap id="message_DB_Result" type="message">
 		<result column="code" property="code" />
-		<result column="company_code" property="companyCode" />
-		<result column="company_name" property="companyName" />
 		<result column="project_code" property="projectCode" />
 		<result column="project_name" property="projectName" />
 		<result column="bank_code" property="bankCode" />
@@ -31,12 +29,6 @@
 		<trim prefix="WHERE" prefixOverrides="AND | OR">
 			<if test="code != null and code != '' ">
 				AND t.code = #{code}
-			</if>
-			<if test="companyCode != null and companyCode != '' ">
-				AND t.company_code = #{companyCode}
-			</if>
-			<if test="companyName != null and companyName != '' ">
-				AND t.company_name like "%"#{companyName}"%"
 			</if>
 			<choose>
 				<when test="projectCode != null and projectCode != '' ">
@@ -81,8 +73,6 @@
 	<select id="select_message" parameterType="message" resultMap="message_DB_Result">
 		SELECT
 		t.code
-		,t.company_code
-		,t.company_name
 		,t.project_code
 		,t.project_name
 		,t.bank_code
@@ -121,8 +111,6 @@
 		INSERT INTO
 		thf_message(
 		code
-		,company_code
-		,company_name
 		,project_code
 		,project_name
 		,bank_code
@@ -142,8 +130,6 @@
 		)
 		VALUES(
 		#{code}
-		,#{companyCode}
-		,#{companyName}
 		,#{projectCode}
 		,#{projectName}
 		,#{bankCode}

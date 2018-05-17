@@ -20,4 +20,6 @@ public interface IStaffBO extends IPaginableBO<Staff> {
     public List<Staff> getStaffFeatList();
 
     public Staff getStaffByIdNo(String idNo);
+
+    public void saveStaffInfo(Staff data);
 }

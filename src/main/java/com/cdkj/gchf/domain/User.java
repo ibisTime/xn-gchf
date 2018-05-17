@@ -95,7 +95,7 @@ public class User extends ABaseDO {
     // 部门名称
     private String departmentName;
 
-    private List<String> companyCodeList;
+    private List<String> projectCodeList;
 
     public void setUserId(String userId) {
         this.userId = userId;
@@ -313,12 +313,12 @@ public class User extends ABaseDO {
         this.bankName = bankName;
     }
 
-    public List<String> getCompanyCodeList() {
-        return companyCodeList;
+    public List<String> getProjectCodeList() {
+        return projectCodeList;
     }
 
-    public void setCompanyCodeList(List<String> companyCodeList) {
-        this.companyCodeList = companyCodeList;
+    public void setProjectCodeList(List<String> projectCodeList) {
+        this.projectCodeList = projectCodeList;
     }
 
 }

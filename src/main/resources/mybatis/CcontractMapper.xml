@@ -6,8 +6,6 @@
 		<result column="code" property="code" />
 		<result column="project_code" property="projectCode" />
 		<result column="project_name" property="projectName" />
-		<result column="company_code" property="companyCode" />
-		<result column="company_name" property="companyName" />
 		<result column="staff_code" property="staffCode" />
 		<result column="staff_mobile" property="staffMobile" />
 		<result column="content_pic" property="contentPic" />
@@ -21,9 +19,6 @@
 		<trim prefix="WHERE" prefixOverrides="AND | OR">
 			<if test="code != null and code != '' ">
 				AND t.code = #{code}
-			</if>
-			<if test="companyCode != null and companyCode != '' ">
-				AND t.company_code = #{companyCode}
 			</if>
 			<if test="staffCode != null and staffCode != '' ">
 				AND t.staff_code = #{staffCode}
@@ -39,9 +34,6 @@
 					</foreach>
 				</when>
 			</choose>
-			<if test="companyName != null and companyName != '' ">
-				AND t.company_name = #{companyName}
-			</if>
 			<if test="updater != null and updater != '' ">
 				AND t.updater = #{updater}
 			</if>
@@ -55,8 +47,6 @@
 	<select id="select_ccontract" parameterType="ccontract" resultMap="ccontract_DB_Result">
 		SELECT
 		t.code
-		,t.company_code
-		,t.company_name
 		,t.project_code
 		,t.project_name
 		,t.staff_code
@@ -86,8 +76,6 @@
 		INSERT INTO
 		thf_ccontract(
 		code
-		,company_code
-		,company_name
 		,project_code
 		,project_name
 		,staff_code
@@ -100,8 +88,6 @@
 		)
 		VALUES(
 		#{code}
-		,#{companyCode}
-		,#{companyName}
 		,#{projectCode}
 		,#{projectName}
 		,#{staffCode}

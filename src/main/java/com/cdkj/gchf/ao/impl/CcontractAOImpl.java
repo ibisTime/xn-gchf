@@ -51,9 +51,6 @@ public class CcontractAOImpl implements ICcontractAO {
         data.setCode(code);
         data.setProjectCode(req.getProjectCode());
         Project project = projectBO.getProject(req.getProjectCode());
-        data.setCompanyCode(project.getCompanyCode());
-        data.setCompanyName(project.getCompanyName());
-
         data.setProjectName(project.getName());
         data.setStaffCode(req.getStaffCode());
         Staff staff = staffBO.getStaff(req.getStaffCode());

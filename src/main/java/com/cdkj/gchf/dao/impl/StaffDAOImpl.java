@@ -50,4 +50,10 @@ public class StaffDAOImpl extends AMybatisTemplate implements IStaffDAO {
         super.update(NAMESPACE.concat("update_staff"), data);
     }
 
+    @Override
+    public void insertStaffInfo(Staff data) {
+        super.update(NAMESPACE.concat("insert_staff_info"), data);
+
+    }
+
 }

@@ -9,7 +9,7 @@
 		<result column="project_code" property="projectCode" />
 		<result column="project_name" property="projectName" />
 		<result column="staff_code" property="staffCode" />
-		
+
 		<result column="salary_code" property="salaryCode" />
 		<result column="type" property="type" />
 		<result column="handler" property="handler" />
@@ -32,8 +32,9 @@
 					AND t.project_code = #{projectCode}
 				</when>
 				<when test="projectCodeList != null and projectCodeList != '' ">
-					AND t.project_code IN 
-					<foreach collection="projectCodeList" index="index" item="item" open="(" separator="," close=")" >
+					AND t.project_code IN
+					<foreach collection="projectCodeList" index="index" item="item"
+						open="(" separator="," close=")">
 						#{item}
 					</foreach>
 				</when>
@@ -41,7 +42,7 @@
 			<if test="projectName != null and projectName != '' ">
 				AND t.project_name like "%"#{projectName}"%"
 			</if>
-			
+
 			<if test="salaryCode != null and salaryCode != '' ">
 				AND t.salary_code = #{salaryCode}
 			</if>
@@ -53,7 +54,9 @@
 			</if>
 		</trim>
 	</sql>
-	<select id="select_salaryLog" parameterType="salaryLog" resultMap="salaryLog_DB_Result">
+
+	<select id="select_salaryLog" parameterType="salaryLog"
+		resultMap="salaryLog_DB_Result">
 		SELECT
 		t.code
 		,t.company_code
@@ -91,7 +94,7 @@
 		,project_code
 		,project_name
 		,staff_code
-		
+
 		,salary_code
 		,type
 		,handler
@@ -105,7 +108,7 @@
 		,#{projectCode}
 		,#{projectName}
 		,#{staffCode}
-	
+
 		,#{salaryCode}
 		,#{type}
 		,#{handler}
@@ -115,17 +118,30 @@
 	</insert>
 
 	<update id="update_salaryLog" parameterType="salaryLog">
-		UPDATE thf_salary_log
+		UPDATE
+		thf_salary_log
 		SET
 		staff_code = #{staffCode}
-		,project_code = #{projectCode}
+		,project_code =
+		#{projectCode}
 		,salary_code = #{salaryCode}
 		,type = #{type}
-		,handler = #{handler}
+		,handler =
+		#{handler}
+		,handle_datetime = #{handleDatetime}
+		,handle_note =
+		#{handleNote}
+		WHERE code = #{code}
+	</update>
+
+	<update id="deal_with" parameterType="salaryLog">
+		UPDATE
+		thf_salary_log
+		SET
+		handler = #{handler}
 		,handle_datetime = #{handleDatetime}
 		,handle_note = #{handleNote}
 		WHERE code = #{code}
 	</update>
-
 
 </mapper>

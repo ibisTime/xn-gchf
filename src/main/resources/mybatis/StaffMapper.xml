@@ -191,4 +191,16 @@
 	</update>
 
 
+	<update id="insert_staff_info" parameterType="staff">
+		UPDATE thf_staff
+		SET
+		pict1 = #{pict1}
+		,pict2 = #{pict2}
+		,pict3 = #{pict3}
+		,updater = #{updater}
+		,update_datetime = #{updateDatetime}
+		,remark = #{remark}
+		WHERE code = #{code}
+	</update>
+
 </mapper>

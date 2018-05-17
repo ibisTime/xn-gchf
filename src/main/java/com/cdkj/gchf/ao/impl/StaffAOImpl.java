@@ -12,7 +12,9 @@ import com.alibaba.fastjson.JSONObject;
 import com.cdkj.gchf.ao.IStaffAO;
 import com.cdkj.gchf.bo.IBankCardBO;
 import com.cdkj.gchf.bo.ICcontractBO;
+import com.cdkj.gchf.bo.IEmployBO;
 import com.cdkj.gchf.bo.IProjectBO;
+import com.cdkj.gchf.bo.ISalaryBO;
 import com.cdkj.gchf.bo.IStaffBO;
 import com.cdkj.gchf.bo.IUserBO;
 import com.cdkj.gchf.bo.base.Paginable;
@@ -21,7 +23,9 @@ import com.cdkj.gchf.common.PhoneUtil;
 import com.cdkj.gchf.core.OrderNoGenerater;
 import com.cdkj.gchf.domain.BankCard;
 import com.cdkj.gchf.domain.Ccontract;
+import com.cdkj.gchf.domain.Employ;
 import com.cdkj.gchf.domain.Project;
+import com.cdkj.gchf.domain.Salary;
 import com.cdkj.gchf.domain.Staff;
 import com.cdkj.gchf.domain.User;
 import com.cdkj.gchf.dto.req.XN631410Req;
@@ -29,6 +33,7 @@ import com.cdkj.gchf.dto.req.XN631411Req;
 import com.cdkj.gchf.dto.req.XN631412Req;
 import com.cdkj.gchf.dto.req.XN631413Req;
 import com.cdkj.gchf.enums.EBankCardStatus;
+import com.cdkj.gchf.enums.EEmploytatus;
 import com.cdkj.gchf.enums.EGeneratePrefix;
 import com.cdkj.gchf.enums.EUser;
 import com.cdkj.gchf.exception.BizException;
@@ -52,6 +57,12 @@ public class StaffAOImpl implements IStaffAO {
     @Autowired
     private IProjectBO projectBO;
 
+    @Autowired
+    private IEmployBO employBO;
+
+    @Autowired
+    private ISalaryBO salaryBO;
+
     @Override
     public String addStaff(XN631410Req req) {
         PhoneUtil.checkMobile(req.getMobile());
@@ -67,12 +78,10 @@ public class StaffAOImpl implements IStaffAO {
         String ccontractCode = OrderNoGenerater
             .generate(EGeneratePrefix.Ccontract.getCode());
         ccontract.setCode(ccontractCode);
-        ccontract.setCompanyCode(project.getCompanyCode());
-        ccontract.setCompanyName(project.getCompanyName());
         ccontract.setProjectName(project.getCompanyName());
         ccontract.setProjectCode(project.getCode());
-
         ccontract.setStaffMobile(req.getMobile());
+
         ccontract.setProjectName(project.getName());
         ccontract.setContentPic(req.getContentPic());
         ccontract.setContractDatetime(DateUtil.strToDate(
@@ -198,7 +207,6 @@ public class StaffAOImpl implements IStaffAO {
 
     @Override
     public String getStaffFeatList() {
-
         JSONArray json = new JSONArray();
         JSONObject jo = new JSONObject();
         List<Staff> list = staffBO.getStaffFeatList();
@@ -211,19 +219,6 @@ public class StaffAOImpl implements IStaffAO {
             }
         }
         return new Gson().toJson(json);
-    }
-
-    private String getName(String userId) {
-        User user = userBO.getUserName(userId);
-        String name = null;
-        if (user != null) {
-            name = EUser.ADMIN.getCode();
-            if (!EUser.ADMIN.getCode().equals(user.getLoginName())) {
-                name = user.getRealName();
-            }
-        }
-        return name;
-
     }
 
     @Override
@@ -264,18 +259,19 @@ public class StaffAOImpl implements IStaffAO {
     @Override
     public void addStaffInfo(XN631413Req req) {
         PhoneUtil.checkMobile(req.getMobile());
+
         Date date = new Date();
         Staff data = staffBO.getStaff(req.getCode());
-
         data.setPict1(req.getPict1());
         data.setPict2(req.getPict2());
+        data.setPict3(req.getPict3());
+
         data.setUpdater(req.getUpdater());
         data.setUpdateDatetime(date);
         data.setRemark(req.getRemark());
-        staffBO.saveStaff(data);
+        staffBO.saveStaffInfo(data);
         // 添加工资卡
         BankCard bankCard = new BankCard();
-
         bankCard.setStaffName(data.getName());
         bankCard.setBankCode(req.getBankCode());
         bankCard.setBankName(req.getBankName());
@@ -289,9 +285,7 @@ public class StaffAOImpl implements IStaffAO {
 
         BankCard card = bankCardBO.getBankCardByStaff(data.getCode());
         if (card == null) {
-            String bankCode = OrderNoGenerater
-                .generate(EGeneratePrefix.BankCard.getCode());
-            bankCard.setStaffCode(bankCode);
+            bankCard.setStaffCode(data.getCode());
             bankCardBO.addBankCard(bankCard);
         } else {
             bankCard.setCode(card.getCode());
@@ -300,4 +294,38 @@ public class StaffAOImpl implements IStaffAO {
 
     }
 
+    @Override
+    public Staff getStaffInfo(String code, List<String> projectCodeList) {
+        Staff data = staffBO.getStaff(code);
+        // 所在项目信息
+        Employ eCondition = new Employ();
+        eCondition.setStaffCode(code);
+        eCondition.setProjectCodeList(projectCodeList);
+        eCondition.setStatus(EEmploytatus.Not_Leave.getCode());
+        List<Employ> employList = employBO.queryEmployList(eCondition);
+        data.setEmployList(employList);
+        // 工资信息
+        Salary sCondition = new Salary();
+        sCondition.setProjectCodeList(projectCodeList);
+        sCondition.setStaffCode(code);
+        List<Salary> salaryList = salaryBO.querySalaryList(sCondition);
+        data.setSalaryList(salaryList);
+        // 工资卡
+        BankCard bankCard = bankCardBO.getBankCardByStaff(data.getCode());
+        data.setBankCard(bankCard);
+        return data;
+    }
+
+    private String getName(String userId) {
+        User user = userBO.getUserName(userId);
+        String name = null;
+        if (user != null) {
+            name = EUser.ADMIN.getCode();
+            if (!EUser.ADMIN.getCode().equals(user.getLoginName())) {
+                name = user.getRealName();
+            }
+        }
+        return name;
+
+    }
 }

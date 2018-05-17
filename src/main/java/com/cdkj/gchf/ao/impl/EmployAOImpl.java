@@ -94,6 +94,7 @@ public class EmployAOImpl implements IEmployAO {
         data.setUpdateDatetime(new Date());
         data.setRemark(req.getRemark());
         employBO.joinIn(data);
+        System.out.println("======入职结束=========");
         // 计入累积入职
         Report report = reportBO.getReportByProject(project.getCode());
         Long nextMonthSalary = StringValidater.toLong(req.getSalary())
@@ -101,6 +102,7 @@ public class EmployAOImpl implements IEmployAO {
                 + report.getNextMonthSalary();
         report.setNextMonthSalary(nextMonthSalary);
         reportBO.staffIn(report);
+        System.out.println("==========统计结束=========");
         // 生成考勤
         Attendance attendance = new Attendance();
         String attendanceCode = OrderNoGenerater
@@ -116,9 +118,10 @@ public class EmployAOImpl implements IEmployAO {
         Date date = new Date();
         attendance.setCreateDatetime(date);
         attendanceBO.saveAttendance(attendance);
-
+        System.out.println("=======考勤生成结束========");
         staffLogBO.saveStaffLog(data, staff.getName(), project.getCompanyCode(),
             project.getCompanyName(), project.getCode(), project.getName());
+        System.out.println("=========历史记录结束======");
         return code;
     }
 
@@ -260,7 +263,6 @@ public class EmployAOImpl implements IEmployAO {
     }
 
     public void updateStatus() {
-
         Employ eCondition = new Employ();
         eCondition.setStatus(EEmploytatus.Not_Leave.getCode());
         List<Employ> eList = employBO.queryEmployList(eCondition);

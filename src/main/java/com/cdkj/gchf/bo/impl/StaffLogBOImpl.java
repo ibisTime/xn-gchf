@@ -29,8 +29,6 @@ public class StaffLogBOImpl extends PaginableBOImpl<StaffLog>
         String code = OrderNoGenerater
             .generate(EGeneratePrefix.StaffLog.getCode());
         staffLog.setCode(code);
-        staffLog.setCompanyCode(companyCode);
-        staffLog.setCompanyName(companyName);
         staffLog.setProjectCode(projectCode);
         staffLog.setProjectName(projectName);
 

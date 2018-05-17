@@ -160,8 +160,6 @@ public class MessageAOImpl implements IMessageAO {
                     "编号为[" + salary.getStaffCode() + "]员工的工资已全部发放");
             }
 
-            Long payAmount = salary.getPayAmount()
-                    + StringValidater.toLong(req.getPayAmount());
             if (salary.getFactAmount() > StringValidater
                 .toLong(req.getPayAmount())) {
                 type = ESalaryLogType.Abnormal.getCode();
@@ -171,8 +169,6 @@ public class MessageAOImpl implements IMessageAO {
                     .generate(EGeneratePrefix.Message.getCode());
 
                 message.setCode(mCode);
-                message.setCompanyCode(project.getCompanyCode());
-                message.setCompanyName(project.getCompanyName());
                 message.setProjectCode(project.getCode());
                 message.setProjectName(project.getName());
 
@@ -196,12 +192,11 @@ public class MessageAOImpl implements IMessageAO {
                 status = ESalaryStatus.Pay_Again.getCode();
             }
             // 修改工资条信息
-            salaryBO.payAmount(salary, payAmount, status,
+            salaryBO.payAmount(salary,
+                StringValidater.toLong(req.getPayAmount()), status,
                 req.getLatePayDatetime());
             // 添加工资日志
-            salaryLogBO.saveSalaryLog(salary, project.getCompanyCode(),
-                project.getCompanyName(), type, data.getSender(),
-                data.getSendNote());
+            salaryLogBO.saveSalaryLog(salary, type);
             lastMonthSalary = lastMonthSalary
                     + StringValidater.toLong(req.getPayAmount());
         }

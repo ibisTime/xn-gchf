@@ -11,6 +11,8 @@ import com.cdkj.gchf.bo.IChannelBankBO;
 import com.cdkj.gchf.bo.base.PaginableBOImpl;
 import com.cdkj.gchf.dao.IChannelBankDAO;
 import com.cdkj.gchf.domain.ChannelBank;
+import com.cdkj.gchf.enums.EBankCardStatus;
+import com.cdkj.gchf.enums.EChannelType;
 import com.cdkj.gchf.exception.BizException;
 
 /**
@@ -26,42 +28,27 @@ public class ChannelBankBOImpl extends PaginableBOImpl<ChannelBank>
     private IChannelBankDAO channelBankDAO;
 
     @Override
-    public boolean isChannelBankExist(Long id) {
-        ChannelBank condition = new ChannelBank();
-        condition.setId(id);
-        if (channelBankDAO.selectTotalCount(condition) > 0) {
-            return true;
-        }
-        return false;
+    public Long saveChannelBank(String bankCode, String bankName) {
+        ChannelBank data = new ChannelBank();
+        data.setBankCode(bankCode);
+        data.setBankName(bankName);
+        data.setChannelType(EChannelType.BankCard.getCode());
+        data.setStatus(EBankCardStatus.Normal.getCode());
+        channelBankDAO.insert(data);
+        return data.getId();
     }
 
     @Override
-    public int saveChannelBank(ChannelBank data) {
-        int count = 0;
-        if (data != null) {
-            count = channelBankDAO.insert(data);
-        }
-        return count;
+    public void removeChannelBank(ChannelBank data) {
+        channelBankDAO.delete(data);
     }
 
     @Override
-    public int removeChannelBank(Long id) {
-        int count = 0;
-        if (id != null) {
-            ChannelBank data = new ChannelBank();
-            data.setId(id);
-            count = channelBankDAO.delete(data);
-        }
-        return count;
-    }
-
-    @Override
-    public int refreshChannelBank(ChannelBank data) {
-        int count = 0;
-        if (data != null) {
-            count = channelBankDAO.update(data);
-        }
-        return count;
+    public void refreshChannelBank(ChannelBank data, String bankCode,
+            String bankName) {
+        data.setBankCode(bankCode);
+        data.setBankName(bankName);
+        channelBankDAO.update(data);
     }
 
     @Override

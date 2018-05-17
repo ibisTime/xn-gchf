@@ -5,16 +5,22 @@ import java.util.List;
 public class XN631375Req extends APageReq {
     private static final long serialVersionUID = 5138736221155343722L;
 
-    private String companyCode;// 公司编号
+    // 公司编号
+    private String companyCode;
 
-    private String projectCode;// 项目编号
+    // 项目编号
+    private String projectCode;
 
-    private String updater;// 更新人
+    // 更新人
+    private String updater;
 
-    private String keyword;// 关键字
+    // 关键字
+    private String keyword;
 
-    private List<String> companyCodeList;
+    // 项目编号List
+    private List<String> projectCodeList;
 
+    // 用户类型
     private String kind;
 
     public String getCompanyCode() {
@@ -49,12 +55,12 @@ public class XN631375Req extends APageReq {
         this.keyword = keyword;
     }
 
-    public List<String> getCompanyCodeList() {
-        return companyCodeList;
+    public List<String> getProjectCodeList() {
+        return projectCodeList;
     }
 
-    public void setCompanyCodeList(List<String> companyCodeList) {
-        this.companyCodeList = companyCodeList;
+    public void setProjectCodeList(List<String> projectCodeList) {
+        this.projectCodeList = projectCodeList;
     }
 
     public String getKind() {

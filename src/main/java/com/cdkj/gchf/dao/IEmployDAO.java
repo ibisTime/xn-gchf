@@ -1,5 +1,7 @@
 package com.cdkj.gchf.dao;
 
+import java.util.List;
+
 import com.cdkj.gchf.dao.base.IBaseDAO;
 import com.cdkj.gchf.domain.Employ;
 import com.cdkj.gchf.domain.Salary;
@@ -19,4 +21,6 @@ public interface IEmployDAO extends IBaseDAO<Employ> {
     void updateStatus(Employ data);
 
     void updateLeavingDays(Salary data);
+
+    List<Employ> selectStaffInfoList(Employ condition);
 }

@@ -21,7 +21,7 @@ public class CompanyCardBOImpl extends PaginableBOImpl<CompanyCard>
         implements ICompanyCardBO {
 
     @Autowired
-    private ICompanyCardDAO CompanyCardDAO;
+    private ICompanyCardDAO companyCardDAO;
 
     public void saveCompanyCard(String projectCode, String projectName,
             String companyCode, String companyName, String bankCode,
@@ -47,7 +47,7 @@ public class CompanyCardBOImpl extends PaginableBOImpl<CompanyCard>
         data.setUpdater(updater);
         data.setUpdateDatetime(updateDatetime);
         data.setRemark(remark);
-        CompanyCardDAO.insert(data);
+        companyCardDAO.insert(data);
 
     }
 
@@ -57,11 +57,13 @@ public class CompanyCardBOImpl extends PaginableBOImpl<CompanyCard>
 
     @Override
     public void refreshCompanyCard(CompanyCard data) {
+        companyCardDAO.update(data);
+
     }
 
     @Override
     public List<CompanyCard> queryCompanyCardList(CompanyCard condition) {
-        return CompanyCardDAO.selectList(condition);
+        return companyCardDAO.selectList(condition);
     }
 
     @Override
@@ -70,7 +72,7 @@ public class CompanyCardBOImpl extends PaginableBOImpl<CompanyCard>
         if (StringUtils.isNotBlank(code)) {
             CompanyCard condition = new CompanyCard();
             condition.setCode(code);
-            data = CompanyCardDAO.select(condition);
+            data = companyCardDAO.select(condition);
             if (data == null) {
                 throw new BizException("xn0000", "公司账户不存在");
             }
@@ -84,7 +86,7 @@ public class CompanyCardBOImpl extends PaginableBOImpl<CompanyCard>
         if (StringUtils.isNotBlank(projectCode)) {
             CompanyCard condition = new CompanyCard();
             condition.setProjectCode(projectCode);
-            data = CompanyCardDAO.select(condition);
+            data = companyCardDAO.select(condition);
             if (data == null) {
                 throw new BizException("xn0000", "公司账户不存在");
             }

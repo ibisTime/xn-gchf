@@ -111,13 +111,13 @@ public class ProjectBOImpl extends PaginableBOImpl<Project>
     }
 
     @Override
-    public List<String> queryCompanyList(Project condition) {
-        List<String> companyCodeList = new ArrayList<String>();
+    public List<String> queryProjectCodeList(Project condition) {
+        List<String> projectCodeList = new ArrayList<String>();
         List<Project> list = projectDAO.selectList(condition);
         for (Project project : list) {
-            companyCodeList.add(project.getCode());
+            projectCodeList.add(project.getCode());
         }
-        return companyCodeList;
+        return projectCodeList;
     }
 
 }

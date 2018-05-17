@@ -81,7 +81,6 @@ public class BcontractAOImpl implements IBcontractAO {
                 return page;
             }
         }
-
         return bcontractBO.getPaginable(start, limit, condition);
     }
 

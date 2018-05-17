@@ -48,7 +48,11 @@ public class XN631445Req extends APageReq {
     // （选填）用户类型
     private String kind;
 
+    // （选填）状态List
     private List<String> statusList;
+
+    // （选填）项目编号List
+    private List<String> projectCodeList;
 
     public String getApprover() {
         return approver;
@@ -144,6 +148,14 @@ public class XN631445Req extends APageReq {
 
     public void setStatusList(List<String> statusList) {
         this.statusList = statusList;
+    }
+
+    public List<String> getProjectCodeList() {
+        return projectCodeList;
+    }
+
+    public void setProjectCodeList(List<String> projectCodeList) {
+        this.projectCodeList = projectCodeList;
     }
 
 }

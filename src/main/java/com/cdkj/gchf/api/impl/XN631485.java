@@ -29,10 +29,8 @@ public class XN631485 extends AProcessor {
     @Override
     public Object doBusiness() throws BizException {
         StaffLog condition = new StaffLog();
-        condition.setCompanyCode(req.getCompanyCode());
-        condition.setCompanyName(req.getCompanyName());
-        condition.setKind(req.getKind());
         condition.setStaffCode(req.getStaffCode());
+        condition.setProjectCodeList(req.getProjectCodeList());
 
         String column = req.getOrderColumn();
         if (StringUtils.isBlank(column)) {

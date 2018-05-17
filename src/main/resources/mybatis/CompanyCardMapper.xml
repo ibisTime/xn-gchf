@@ -6,8 +6,6 @@
 		<result column="code" property="code" />
 		<result column="project_code" property="projectCode" />
 		<result column="project_name" property="projectName" />
-		<result column="company_code" property="companyCode" />
-		<result column="company_name" property="companyName" />
 		<result column="bank_code" property="bankCode" />
 		<result column="bank_name" property="bankName" />
 		<result column="subbranch" property="subbranch" />
@@ -23,9 +21,6 @@
 		<trim prefix="WHERE" prefixOverrides="AND | OR">
 			<if test="code != null and code != '' ">
 				AND t.code = #{code}
-			</if>
-			<if test="companyCode != null and companyCode != '' ">
-				AND t.company_code = #{companyCode}
 			</if>
 			<choose>
 				<when test="projectCode != null and projectCode != '' ">
@@ -51,8 +46,6 @@
 		t.code
 		,t.project_code
 		,t.project_name
-		,t.company_code
-		,t.company_name
 		,t.bank_code
 		,t.bank_name
 		,t.subbranch
@@ -84,8 +77,6 @@
 		code
 		,project_code
 		,project_name
-		,company_code
-		,company_name
 		,bank_code
 		,bank_name
 		,subbranch
@@ -100,8 +91,6 @@
 		#{code}
 		,#{projectCode}
 		,#{projectName}
-		,#{companyCode}
-		,#{companyName}
 		,#{bankCode}
 		,#{bankName}
 		,#{subbranch}

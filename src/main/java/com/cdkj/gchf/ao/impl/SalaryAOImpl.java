@@ -114,8 +114,10 @@ public class SalaryAOImpl implements ISalaryAO {
             // 修改工资条状态
             for (String code : codeList) {
                 data = salaryBO.getSalary(code);
-                if (!ESalaryStatus.To_Approve.getCode()
-                    .equals(data.getStatus())) {
+                if (!(ESalaryStatus.To_Approve.getCode()
+                    .equals(data.getStatus())
+                        || ESalaryStatus.Pay_Portion.getCode()
+                            .equals(data.getStatus()))) {
                     throw new BizException("xn0000", "存在不处于待审核状态的工资条");
                 }
                 salaryBO.addMessageCode(data, mCode, approver, date,
@@ -125,8 +127,6 @@ public class SalaryAOImpl implements ISalaryAO {
             Project project = projectBO.getProject(data.getProjectCode());
 
             message.setCode(mCode);
-            message.setCompanyCode(project.getCompanyCode());
-            message.setCompanyName(project.getCompanyName());
             message.setProjectCode(project.getCode());
             message.setProjectName(project.getName());
 
@@ -166,10 +166,10 @@ public class SalaryAOImpl implements ISalaryAO {
         List<Salary> list = new ArrayList<Salary>();
         Paginable<Salary> page = new Page<Salary>();
         if (EUserKind.Supervise.getCode().equals(condition.getKind())) {
-            if (StringUtils.isBlank(condition.getCompanyCode())) {
-                page.setList(list);
-                return page;
-            }
+            // if (StringUtils.isBlank(condition.getCompanyCode())) {
+            // page.setList(list);
+            // return page;
+            // }
         }
 
         page = salaryBO.getPaginable(start, limit, condition);
@@ -317,8 +317,6 @@ public class SalaryAOImpl implements ISalaryAO {
                     String code = OrderNoGenerater
                         .generate(EGeneratePrefix.Salary.getCode());
                     data.setCode(code);
-                    data.setCompanyCode(project.getCompanyCode());
-                    data.setCompanyName(project.getCompanyName());
                     data.setProjectCode(project.getCode());
                     data.setProjectName(project.getName());
 

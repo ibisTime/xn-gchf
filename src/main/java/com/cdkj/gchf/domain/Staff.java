@@ -95,6 +95,12 @@ public class Staff extends ABaseDO {
     // 公司编号List
     private List<String> projectCodeList;
 
+    // 雇佣List
+    private List<Employ> employList;
+
+    // 工资条List
+    private List<Salary> salaryList;
+
     // 更新人名字
     private String updateName;
 
@@ -316,6 +322,22 @@ public class Staff extends ABaseDO {
 
     public void setBirthday(Date birthday) {
         this.birthday = birthday;
+    }
+
+    public List<Employ> getEmployList() {
+        return employList;
+    }
+
+    public void setEmployList(List<Employ> employList) {
+        this.employList = employList;
+    }
+
+    public List<Salary> getSalaryList() {
+        return salaryList;
+    }
+
+    public void setSalaryList(List<Salary> salaryList) {
+        this.salaryList = salaryList;
     }
 
 }

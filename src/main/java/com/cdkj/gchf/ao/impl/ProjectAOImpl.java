@@ -94,6 +94,8 @@ public class ProjectAOImpl implements IProjectAO {
             company.getName(), req.getBankCode(), req.getBankName(),
             req.getBankcardNumber(), req.getSubbranch(), req.getUpdater(),
             data.getUpdateDatetime(), req.getRemark());
+        // 生成统计信息
+        reportBO.saveReport(data.getCode(), data.getName());
         return code;
     }
 
@@ -254,9 +256,6 @@ public class ProjectAOImpl implements IProjectAO {
         data.setApproveNote(approveNote);
         projectBO.approveProject(data);
         // 添加统计信息
-        if (EProjectStatus.Building.getCode().equals(status)) {
-            reportBO.saveReport(data.getCode(), data.getName());
-        }
     }
 
     @Override

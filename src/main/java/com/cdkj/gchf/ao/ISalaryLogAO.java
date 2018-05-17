@@ -11,7 +11,8 @@ import com.cdkj.gchf.domain.SalaryLog;
 public interface ISalaryLogAO {
     static final String DEFAULT_ORDER_COLUMN = "code";
 
-    public String addSalaryLog(SalaryLog data);
+    public void dealWithSalary(String salaryCode, String handler,
+            String handleNote);
 
     public void dropSalaryLog(String code);
 

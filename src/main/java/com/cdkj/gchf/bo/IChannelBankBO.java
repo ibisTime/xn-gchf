@@ -5,20 +5,14 @@ import java.util.List;
 import com.cdkj.gchf.bo.base.IPaginableBO;
 import com.cdkj.gchf.domain.ChannelBank;
 
-/**
- * @author: xieyj 
- * @since: 2016年11月10日 下午8:30:39 
- * @history:
- */
 public interface IChannelBankBO extends IPaginableBO<ChannelBank> {
 
-    public boolean isChannelBankExist(Long id);
+    public Long saveChannelBank(String bankCode, String bankName);
 
-    public int saveChannelBank(ChannelBank data);
+    public void removeChannelBank(ChannelBank data);
 
-    public int removeChannelBank(Long id);
-
-    public int refreshChannelBank(ChannelBank data);
+    public void refreshChannelBank(ChannelBank data, String bankCode,
+            String bankName);
 
     public List<ChannelBank> queryChannelBankList(ChannelBank condition);
 

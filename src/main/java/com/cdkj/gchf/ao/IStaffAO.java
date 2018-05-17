@@ -35,4 +35,6 @@ public interface IStaffAO {
 
     public void addStaffInfo(XN631413Req req);
 
+    public Staff getStaffInfo(String code, List<String> projetCodeList);
+
 }

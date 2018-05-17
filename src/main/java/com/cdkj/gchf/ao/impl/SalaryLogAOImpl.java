@@ -1,21 +1,21 @@
 package com.cdkj.gchf.ao.impl;
 
-import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.commons.collections.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.cdkj.gchf.ao.ISalaryLogAO;
+import com.cdkj.gchf.bo.ISalaryBO;
 import com.cdkj.gchf.bo.ISalaryLogBO;
+import com.cdkj.gchf.bo.IStaffBO;
 import com.cdkj.gchf.bo.IUserBO;
-import com.cdkj.gchf.bo.base.Page;
 import com.cdkj.gchf.bo.base.Paginable;
+import com.cdkj.gchf.domain.Salary;
 import com.cdkj.gchf.domain.SalaryLog;
+import com.cdkj.gchf.domain.Staff;
 import com.cdkj.gchf.domain.User;
 import com.cdkj.gchf.enums.EUser;
-import com.cdkj.gchf.enums.EUserKind;
 
 @Service
 public class SalaryLogAOImpl implements ISalaryLogAO {
@@ -26,9 +26,16 @@ public class SalaryLogAOImpl implements ISalaryLogAO {
     @Autowired
     private IUserBO userBO;
 
+    @Autowired
+    private ISalaryBO salaryBO;
+
+    @Autowired
+    private IStaffBO staffBO;
+
     @Override
-    public String addSalaryLog(SalaryLog data) {
-        return salaryLogBO.saveSalaryLog(data);
+    public void dealWithSalary(String code, String handler, String handleNote) {
+        SalaryLog data = salaryLogBO.getSalaryLog(code);
+        salaryLogBO.dealWithSalary(data, handler, handleNote);
     }
 
     @Override
@@ -42,39 +49,27 @@ public class SalaryLogAOImpl implements ISalaryLogAO {
     @Override
     public Paginable<SalaryLog> querySalaryLogPage(int start, int limit,
             SalaryLog condition) {
-        System.out.println(condition.getProjectCodeList());
-        Paginable<SalaryLog> page = new Page<SalaryLog>();
-        List<SalaryLog> list = new ArrayList<SalaryLog>();
-        if (EUserKind.Supervise.getCode().equals(condition.getKind())) {
-            if (CollectionUtils.isEmpty(condition.getProjectCodeList())) {
-                page.setList(list);
-                return page;
-            }
-        }
-
-        page = salaryLogBO.getPaginable(start, limit, condition);
+        Paginable<SalaryLog> page = salaryLogBO.getPaginable(start, limit,
+            condition);
+        Staff staff = null;
         for (SalaryLog salaryLog : page.getList()) {
+            staff = staffBO.getStaff(salaryLog.getSalaryCode());
             salaryLog.setHandleName(getName(salaryLog.getHandler()));
             salaryLog.setStaffName(getName(salaryLog.getStaffCode()));
+            salaryLog.setStaffName(staff.getName());
         }
         return page;
     }
 
     @Override
     public List<SalaryLog> querySalaryLogList(SalaryLog condition) {
-        List<SalaryLog> list = new ArrayList<SalaryLog>();
-        if (EUserKind.Supervise.getCode().equals(condition.getKind())) {
-            if (CollectionUtils.isEmpty(condition.getProjectCodeList())) {
-                return list;
-            }
-        }
-
-        list = salaryLogBO.querySalaryLogList(condition);
-        String handleName = null;
+        List<SalaryLog> list = salaryLogBO.querySalaryLogList(condition);
+        Staff staff = null;
         for (SalaryLog salaryLog : list) {
-            handleName = getName(salaryLog.getHandler());
-            salaryLog.setHandleName(handleName);
+            staff = staffBO.getStaff(salaryLog.getSalaryCode());
+            salaryLog.setHandleName(getName(salaryLog.getHandler()));
             salaryLog.setStaffName(getName(salaryLog.getStaffCode()));
+            salaryLog.setStaffName(staff.getName());
         }
         return list;
     }
@@ -82,8 +77,12 @@ public class SalaryLogAOImpl implements ISalaryLogAO {
     @Override
     public SalaryLog getSalaryLog(String code) {
         SalaryLog data = salaryLogBO.getSalaryLog(code);
+        Salary salary = salaryBO.getSalary(data.getSalaryCode());
+        data.setSalary(salary);
         String handleName = getName(data.getHandler());
         data.setHandleName(handleName);
+        Staff staff = staffBO.getStaff(data.getSalaryCode());
+        data.setStaffName(staff.getName());
         return data;
     }
 

@@ -28,7 +28,7 @@ public class XN631406Req extends APageReq {
     private String updater;
 
     // 公司编号
-    private List<String> companyCodeList;
+    private List<String> projectCodeList;
 
     // 用户类型
     private String kind;
@@ -57,12 +57,12 @@ public class XN631406Req extends APageReq {
         this.updater = updater;
     }
 
-    public List<String> getCompanyCodeList() {
-        return companyCodeList;
+    public List<String> getProjectCodeList() {
+        return projectCodeList;
     }
 
-    public void setCompanyCodeList(List<String> companyCodeList) {
-        this.companyCodeList = companyCodeList;
+    public void setProjectCodeList(List<String> projectCodeList) {
+        this.projectCodeList = projectCodeList;
     }
 
     public String getKind() {

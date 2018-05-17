@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -17,7 +16,6 @@ import com.cdkj.gchf.domain.BankCard;
 import com.cdkj.gchf.domain.User;
 import com.cdkj.gchf.dto.req.XN631422Req;
 import com.cdkj.gchf.enums.EUser;
-import com.cdkj.gchf.enums.EUserKind;
 
 @Service
 public class BankCardAOImpl implements IBankCardAO {
@@ -34,7 +32,7 @@ public class BankCardAOImpl implements IBankCardAO {
         data.setBankCode(req.getBankCode());
         data.setBankName(req.getBankName());
         data.setSubbranch(req.getSubbranch());
-        data.setBankcardNumber(req.getBankCardNumber());
+        data.setBankcardNumber(req.getBankcardNumber());
 
         data.setUpdater(req.getUpdater());
         data.setUpdateDatetime(new Date());
@@ -51,12 +49,11 @@ public class BankCardAOImpl implements IBankCardAO {
             BankCard condition) {
         List<BankCard> list = new ArrayList<BankCard>();
         Paginable<BankCard> page = new Page<BankCard>();
-        if (EUserKind.Owner.getCode().equals(condition.getKind())) {
-            if (StringUtils.isBlank(condition.getCompanyCode())) {
-                page.setList(list);
-                return page;
-            }
-        }
+        /*
+         * if (EUserKind.Owner.getCode().equals(condition.getKind())) { if
+         * (StringUtils.isBlank(condition.getCompanyCode())) {
+         * page.setList(list); return page; } }
+         */
         page = bankCardBO.getPaginable(start, limit, condition);
         for (BankCard bankCard : page.getList()) {
             bankCard.setUpdateName(getName(bankCard.getUpdater()));
@@ -67,11 +64,10 @@ public class BankCardAOImpl implements IBankCardAO {
     @Override
     public List<BankCard> queryBankCardList(BankCard condition) {
         List<BankCard> list = new ArrayList<BankCard>();
-        if (EUserKind.Owner.getCode().equals(condition.getKind())) {
-            if (StringUtils.isBlank(condition.getCompanyCode())) {
-                return list;
-            }
-        }
+        /*
+         * if (EUserKind.Owner.getCode().equals(condition.getKind())) { if
+         * (StringUtils.isBlank(condition.getCompanyCode())) { return list; } }
+         */
         list = bankCardBO.queryBankCardList(condition);
         for (BankCard bankCard : list) {
             bankCard.setUpdateName(getName(bankCard.getUpdater()));

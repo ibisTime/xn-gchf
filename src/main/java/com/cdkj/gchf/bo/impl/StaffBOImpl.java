@@ -69,4 +69,9 @@ public class StaffBOImpl extends PaginableBOImpl<Staff> implements IStaffBO {
         return null;
 
     }
+
+    @Override
+    public void saveStaffInfo(Staff data) {
+        staffDAO.insertStaffInfo(data);
+    }
 }

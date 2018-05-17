@@ -29,20 +29,19 @@ public class XN631445 extends AProcessor {
     public Object doBusiness() throws BizException {
 
         Salary condition = new Salary();
-        condition.setCompanyCode(req.getCompanyCode());
-        condition.setCompanyName(req.getCompanyName());
         condition.setProjectCode(req.getProjectCode());
         condition.setProjectName(req.getProjectName());
-
         condition.setApproveUser(req.getApprover());
         condition.setKind(req.getKind());
+
         condition.setStatusList(req.getStatusList());
         condition.setKeyword(req.getKeyword());
         condition.setMessageCode(req.getMessageCode());
-
         condition.setMonth(StringValidater.toInteger(req.getMonth()));
         condition.setStaffCode(req.getStaffCode());
+
         condition.setStatus(req.getStatus());
+        condition.setProjectCodeList(req.getProjectCodeList());
 
         String column = req.getOrderColumn();
         if (StringUtils.isBlank(column)) {

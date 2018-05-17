@@ -8,8 +8,6 @@ import com.cdkj.gchf.domain.SalaryLog;
 
 public interface ISalaryLogBO extends IPaginableBO<SalaryLog> {
 
-    public String saveSalaryLog(SalaryLog data);
-
     public void removeSalaryLog(String code);
 
     public void refreshSalaryLog(SalaryLog data);
@@ -18,7 +16,9 @@ public interface ISalaryLogBO extends IPaginableBO<SalaryLog> {
 
     public SalaryLog getSalaryLog(String code);
 
-    public void saveSalaryLog(Salary salary, String companyCode,
-            String companyName, String type, String handler, String handleNote);
+    public void saveSalaryLog(Salary salary, String type);
+
+    public void dealWithSalary(SalaryLog data, String handler,
+            String handleNote);
 
 }

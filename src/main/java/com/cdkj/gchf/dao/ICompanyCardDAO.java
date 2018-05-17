@@ -5,5 +5,7 @@ import com.cdkj.gchf.domain.CompanyCard;
 
 //dao层 
 public interface ICompanyCardDAO extends IBaseDAO<CompanyCard> {
-	String NAMESPACE = ICompanyCardDAO.class.getName().concat(".");
+    String NAMESPACE = ICompanyCardDAO.class.getName().concat(".");
+
+    void update(CompanyCard data);
 }

@@ -53,7 +53,7 @@
 	<!-- 员工是否请假 -->
 	<bean id="updateEmployStatusTrigger" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">  
        <property name="jobDetail" ref="updateEmployStatus"/>  
-       <property name="cronExpression" value="0 0/1 * * * ?"/><!-- 0 0 0 1 * ?  每天每小时-->
+       <property name="cronExpression" value="0 0 0/1 * * ?"/><!--每小时-->
 	</bean>
 	<bean id="updateEmployStatus" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">   
         <property name="targetObject" ref="employAOImpl"/>  

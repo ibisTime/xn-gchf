@@ -1,6 +1,7 @@
 package com.cdkj.gchf.domain;
 
 import java.util.Date;
+import java.util.List;
 
 import com.cdkj.gchf.dao.base.ABaseDO;
 
@@ -62,6 +63,8 @@ public class BankCard extends ABaseDO {
     private String updateName;
 
     private String kind;
+
+    private List<Employ> list;
 
     public void setCode(String code) {
         this.code = code;
@@ -197,6 +200,14 @@ public class BankCard extends ABaseDO {
 
     public void setKind(String kind) {
         this.kind = kind;
+    }
+
+    public List<Employ> getList() {
+        return list;
+    }
+
+    public void setList(List<Employ> list) {
+        this.list = list;
     }
 
 }

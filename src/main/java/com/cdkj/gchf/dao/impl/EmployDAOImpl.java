@@ -77,4 +77,10 @@ public class EmployDAOImpl extends AMybatisTemplate implements IEmployDAO {
         super.update(NAMESPACE.concat("update_leavingDays"), data);
     }
 
+    @Override
+    public List<Employ> selectStaffInfoList(Employ condition) {
+        return super.selectList(NAMESPACE.concat("select_staff_info"),
+            condition, Employ.class);
+    }
+
 }

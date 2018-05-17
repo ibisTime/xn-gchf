@@ -70,14 +70,13 @@ public class CompanyAOImpl implements ICompanyAO {
     @Override
     public List<Company> queryCompanyList(Company condition) {
         List<String> companyCodeList = new ArrayList<String>();
-        if (EUserKind.Supervise.equals(condition.getKind())) {
+        if (EUserKind.Supervise.getCode().equals(condition.getKind())) {
             Project pCondition = new Project();
             pCondition.setProjectCodeList(condition.getProjectCodeList());
             List<Project> projectList = projectBO.queryProject(pCondition);
             for (Project project : projectList) {
                 companyCodeList.add(project.getCompanyCode());
             }
-
             condition.setCompanyCodeList(companyCodeList);
         }
         return companyBO.queryCompanyList(condition);

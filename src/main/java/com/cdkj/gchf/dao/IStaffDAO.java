@@ -8,4 +8,6 @@ public interface IStaffDAO extends IBaseDAO<Staff> {
     String NAMESPACE = IStaffDAO.class.getName().concat(".");
 
     void update(Staff data);
+
+    void insertStaffInfo(Staff data);
 }

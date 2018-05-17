@@ -24,17 +24,11 @@ public class XN631405Req extends APageReq {
     // （选填）更新人
     private String updater;
 
-    // （选填）公司编号
-    private String companyCode;
-
-    // （选填）公司名称
-    private String companyName;
-
     // （选填）用户类型
     private String kind;
 
     // 公司编号
-    private List<String> companyCodeList;
+    private List<String> projectCodeList;
 
     public String getKeyword() {
         return keyword;
@@ -60,22 +54,6 @@ public class XN631405Req extends APageReq {
         this.updater = updater;
     }
 
-    public String getCompanyCode() {
-        return companyCode;
-    }
-
-    public void setCompanyCode(String companyCode) {
-        this.companyCode = companyCode;
-    }
-
-    public String getCompanyName() {
-        return companyName;
-    }
-
-    public void setCompanyName(String companyName) {
-        this.companyName = companyName;
-    }
-
     public String getKind() {
         return kind;
     }
@@ -84,12 +62,12 @@ public class XN631405Req extends APageReq {
         this.kind = kind;
     }
 
-    public List<String> getCompanyCodeList() {
-        return companyCodeList;
+    public List<String> getProjectCodeList() {
+        return projectCodeList;
     }
 
-    public void setCompanyCodeList(List<String> companyCodeList) {
-        this.companyCodeList = companyCodeList;
+    public void setProjectCodeList(List<String> projectCodeList) {
+        this.projectCodeList = projectCodeList;
     }
 
 }

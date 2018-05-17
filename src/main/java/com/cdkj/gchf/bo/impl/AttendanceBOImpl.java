@@ -70,6 +70,8 @@ public class AttendanceBOImpl extends PaginableBOImpl<Attendance>
         Attendance condition = new Attendance();
         condition.setProjectCode(projectCode);
         condition.setStaffCode(staffCode);
+        condition.setCreateDatetimeStart(DateUtil.getTodayStart());
+        condition.setCreateDatetimeEnd(DateUtil.getTodayEnd());
         List<Attendance> list = attendanceDAO.selectList(condition);
         if (CollectionUtils.isEmpty(list)) {
             throw new BizException("xn0000", "该项目未生成考勤表");

@@ -1,6 +1,7 @@
 package com.cdkj.gchf.domain;
 
 import java.util.Date;
+import java.util.List;
 
 import com.cdkj.gchf.dao.base.ABaseDO;
 
@@ -17,12 +18,6 @@ public class StaffLog extends ABaseDO {
     // 编号
     private String code;
 
-    // 公司编号
-    private String companyCode;
-
-    // 公司名称
-    private String companyName;
-
     // 项目编号
     private String projectCode;
 
@@ -35,6 +30,9 @@ public class StaffLog extends ABaseDO {
     // 员工名称
     private String staffName;
 
+    // 员工手机号
+    private String staffMobile;
+
     // 所在职位
     private String position;
 
@@ -46,7 +44,7 @@ public class StaffLog extends ABaseDO {
 
     // *************db*********
 
-    private String kind;
+    private List<String> projectCodeList;
 
     public void setCode(String code) {
         this.code = code;
@@ -56,20 +54,12 @@ public class StaffLog extends ABaseDO {
         return code;
     }
 
-    public void setCompanyCode(String companyCode) {
-        this.companyCode = companyCode;
+    public String getStaffMobile() {
+        return staffMobile;
     }
 
-    public String getCompanyCode() {
-        return companyCode;
-    }
-
-    public void setCompanyName(String companyName) {
-        this.companyName = companyName;
-    }
-
-    public String getCompanyName() {
-        return companyName;
+    public void setStaffMobile(String staffMobile) {
+        this.staffMobile = staffMobile;
     }
 
     public void setProjectCode(String projectCode) {
@@ -128,12 +118,12 @@ public class StaffLog extends ABaseDO {
         this.leavingDatetime = leavingDatetime;
     }
 
-    public String getKind() {
-        return kind;
+    public List<String> getProjectCodeList() {
+        return projectCodeList;
     }
 
-    public void setKind(String kind) {
-        this.kind = kind;
+    public void setProjectCodeList(List<String> projectCodeList) {
+        this.projectCodeList = projectCodeList;
     }
 
 }

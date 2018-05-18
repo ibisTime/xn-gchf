@@ -38,4 +38,8 @@ public interface ISalaryAO {
     // 补充扣款金额
     public void cutAmount(List<Salary> list);
 
+    // 异常工资条
+    Paginable<Salary> queryAbnormalSalaryPage(int start, int limit,
+            Salary condition);
+
 }

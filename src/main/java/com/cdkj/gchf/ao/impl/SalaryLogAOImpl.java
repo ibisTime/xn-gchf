@@ -55,7 +55,6 @@ public class SalaryLogAOImpl implements ISalaryLogAO {
         for (SalaryLog salaryLog : page.getList()) {
             staff = staffBO.getStaff(salaryLog.getSalaryCode());
             salaryLog.setHandleName(getName(salaryLog.getHandler()));
-            salaryLog.setStaffName(getName(salaryLog.getStaffCode()));
             salaryLog.setStaffName(staff.getName());
         }
         return page;
@@ -68,7 +67,6 @@ public class SalaryLogAOImpl implements ISalaryLogAO {
         for (SalaryLog salaryLog : list) {
             staff = staffBO.getStaff(salaryLog.getSalaryCode());
             salaryLog.setHandleName(getName(salaryLog.getHandler()));
-            salaryLog.setStaffName(getName(salaryLog.getStaffCode()));
             salaryLog.setStaffName(staff.getName());
         }
         return list;

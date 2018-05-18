@@ -113,13 +113,33 @@ public class EmployBOImpl extends PaginableBOImpl<Employ> implements IEmployBO {
 
     @Override
     public void isExist(String projectCode, String staffCode) {
-        Employ condition = new Employ();
-        condition.setProjectCode(projectCode);
-        condition.setStaffCode(staffCode);
-        Employ data = employDAO.select(condition);
-        if (data != null) {
-            throw new BizException("xn00000", "该员工已入职");
+        Employ data = null;
+        if (StringUtils.isNotBlank(staffCode)
+                && StringUtils.isNotBlank(projectCode)) {
+            Employ condition = new Employ();
+            condition.setProjectCode(projectCode);
+            condition.setStaffCode(staffCode);
+            data = employDAO.select(condition);
+            if (data != null) {
+                throw new BizException("xn00000", "该员工已入职");
+            }
         }
+    }
+
+    @Override
+    public Employ getEmployByStaff(String staffCode, String projectCode) {
+        Employ data = null;
+        if (StringUtils.isNotBlank(staffCode)
+                && StringUtils.isNotBlank(projectCode)) {
+            Employ condition = new Employ();
+            condition.setProjectCode(projectCode);
+            condition.setStaffCode(staffCode);
+            data = employDAO.select(condition);
+            if (data == null) {
+                throw new BizException("xn0000", "该雇佣信息不存在");
+            }
+        }
+        return data;
     }
 
 }

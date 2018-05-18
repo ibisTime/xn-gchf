@@ -50,9 +50,9 @@
 				<when test="projectCode != null and projectCode != '' ">
 					AND t.project_code = #{projectCode}
 				</when>
-				<when test="projectCodeList != null and projectCodeList != '' ">
+				<when test="projectCodeList != null and projectCodeList.size() > 0 ">
 					AND t.project_code IN
-					<foreach collection="projectCodeList != null and projectCodeList != '' " item="item" index="index" open="(" separator="," close=")">
+					<foreach collection="projectCodeList" item="item" index="index" open="(" separator="," close=")">
 						#{item}
 					</foreach>
 				</when>

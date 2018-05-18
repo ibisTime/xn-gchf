@@ -35,9 +35,6 @@ public class XN631410Req {
     // （必填）身份证正反面照片+签名
     private String pict3;
 
-    // （必填）籍贯
-    private String place;
-
     // （必填）更新人
     private String updater;
 
@@ -119,14 +116,6 @@ public class XN631410Req {
 
     public void setPict3(String pict3) {
         this.pict3 = pict3;
-    }
-
-    public String getPlace() {
-        return place;
-    }
-
-    public void setPlace(String place) {
-        this.place = place;
     }
 
     public String getUpdater() {

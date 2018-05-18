@@ -39,7 +39,6 @@ import com.cdkj.gchf.enums.EBoolean;
 import com.cdkj.gchf.enums.EGeneratePrefix;
 import com.cdkj.gchf.enums.EMessageStatus;
 import com.cdkj.gchf.enums.ESalaryStatus;
-import com.cdkj.gchf.enums.EUserKind;
 import com.cdkj.gchf.exception.BizException;
 
 @Service
@@ -163,16 +162,17 @@ public class SalaryAOImpl implements ISalaryAO {
     @Override
     public Paginable<Salary> querySalaryPage(int start, int limit,
             Salary condition) {
-        List<Salary> list = new ArrayList<Salary>();
-        Paginable<Salary> page = new Page<Salary>();
-        if (EUserKind.Supervise.getCode().equals(condition.getKind())) {
-            // if (StringUtils.isBlank(condition.getCompanyCode())) {
-            // page.setList(list);
-            // return page;
-            // }
-        }
+        // List<Salary> list = new ArrayList<Salary>();
+        // page = new Page<Salary>();
+        // if (EUserKind.Supervise.getCode().equals(condition.getKind())
+        // || EUserKind.Owner.getCode().equals(condition.getKind())) {
+        // if (CollectionUtils.isEmpty(condition.getProjectCodeList())) {
+        // page.setList(list);
+        // return page;
+        // }
+        // }
 
-        page = salaryBO.getPaginable(start, limit, condition);
+        Paginable<Salary> page = salaryBO.getPaginable(start, limit, condition);
         BankCard bankCard = null;
         CompanyCard companyCard = null;
         Staff staff = null;
@@ -191,12 +191,6 @@ public class SalaryAOImpl implements ISalaryAO {
 
     @Override
     public List<Salary> querySalaryList(Salary condition) {
-        // List<Salary> list = new ArrayList<Salary>();
-        // if (EUserKind.Owner.getCode().equals(condition.getKind())) {
-        // if (StringUtils.isBlank(condition.getCompanyCode())) {
-        // return list;
-        // }
-        // }
         List<Salary> list = salaryBO.querySalaryList(condition);
         BankCard bankCard = null;
         CompanyCard companyCard = null;
@@ -252,12 +246,6 @@ public class SalaryAOImpl implements ISalaryAO {
 
     @Override
     public List<Salary> queryTotalSalaryList(Salary condition) {
-        // List<Salary> list = new ArrayList<Salary>();
-        // if (EUserKind.Owner.getCode().equals(condition.getKind())) {
-        // if (StringUtils.isBlank(condition.getCompanyCode())) {
-        // return list;
-        // }
-        // }
         List<Salary> list = salaryBO.queryTotalSalaryList(condition);
         BankCard bankCard = null;
         CompanyCard companyCard = null;
@@ -290,6 +278,37 @@ public class SalaryAOImpl implements ISalaryAO {
             data.setFactAmount(fact);
             salaryBO.cutAmount(data);
         }
+    }
+
+    @Override
+    public Paginable<Salary> queryAbnormalSalaryPage(int start, int limit,
+            Salary condition) {
+        List<Salary> list = new ArrayList<Salary>();
+        Paginable<Salary> page = salaryBO.getPaginable(start, limit, condition);
+
+        BankCard bankCard = null;
+        CompanyCard companyCard = null;
+        Staff staff = null;
+        // 获取部分发放（异常）状态的工资条
+        for (Salary salary : page.getList()) {
+            // 查询异常工资条是否有补发
+            Salary data = salaryBO.querySalayByStatus(salary.getProjectCode(),
+                salary.getStaffCode(), salary.getMonth(),
+                ESalaryStatus.Pay_Again.getCode());
+            if (data == null) {
+                bankCard = bankCardBO.getBankCardByStaff(salary.getStaffCode());
+                salary.setBankCard(bankCard);
+                companyCard = companyCardBO
+                    .getCompanyCardByProject(salary.getProjectCode());
+                salary.setCompanyCard(companyCard);
+                staff = staffBO.getStaff(salary.getStaffCode());
+                salary.setStaff(staff);
+                list.add(salary);
+            }
+
+        }
+        page.setList(list);
+        return page;
     }
 
     // 定时器形成工资条

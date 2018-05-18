@@ -1,5 +1,6 @@
 package com.cdkj.gchf.ao.impl;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -33,7 +34,6 @@ import com.cdkj.gchf.dto.req.XN631411Req;
 import com.cdkj.gchf.dto.req.XN631412Req;
 import com.cdkj.gchf.dto.req.XN631413Req;
 import com.cdkj.gchf.enums.EBankCardStatus;
-import com.cdkj.gchf.enums.EEmploytatus;
 import com.cdkj.gchf.enums.EGeneratePrefix;
 import com.cdkj.gchf.enums.EUser;
 import com.cdkj.gchf.exception.BizException;
@@ -128,7 +128,6 @@ public class StaffAOImpl implements IStaffAO {
         data.setPict2(req.getPict2());
         data.setPict3(req.getPict3());
 
-        data.setPlace(req.getPlace());
         data.setUpdater(req.getUpdater());
         data.setUpdateDatetime(date);
         data.setRemark(req.getRemark());
@@ -158,7 +157,6 @@ public class StaffAOImpl implements IStaffAO {
         data.setPict1(req.getPict1());
         data.setPict2(req.getPict2());
         data.setPict3(req.getPict3());
-        data.setPlace(req.getPlace());
         data.setUpdater(req.getUpdater());
 
         data.setUpdateDatetime(new Date());
@@ -298,17 +296,15 @@ public class StaffAOImpl implements IStaffAO {
     public Staff getStaffInfo(String code, List<String> projectCodeList) {
         Staff data = staffBO.getStaff(code);
         // 所在项目信息
-        Employ eCondition = new Employ();
-        eCondition.setStaffCode(code);
-        eCondition.setProjectCodeList(projectCodeList);
-        eCondition.setStatus(EEmploytatus.Not_Leave.getCode());
-        List<Employ> employList = employBO.queryEmployList(eCondition);
+        List<Employ> employList = new ArrayList<Employ>();
+        List<Salary> salaryList = new ArrayList<Salary>();
+        for (String projectCode : projectCodeList) {
+            employList
+                .add(employBO.getEmployByStaff(data.getCode(), projectCode));
+            salaryList
+                .add(salaryBO.getSalaryByStaff(data.getCode(), projectCode));
+        }
         data.setEmployList(employList);
-        // 工资信息
-        Salary sCondition = new Salary();
-        sCondition.setProjectCodeList(projectCodeList);
-        sCondition.setStaffCode(code);
-        List<Salary> salaryList = salaryBO.querySalaryList(sCondition);
         data.setSalaryList(salaryList);
         // 工资卡
         BankCard bankCard = bankCardBO.getBankCardByStaff(data.getCode());

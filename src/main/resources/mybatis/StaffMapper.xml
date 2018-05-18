@@ -21,12 +21,12 @@
 		<result column="id_endDate" property="idEndDate" />
 		<result column="birthday" property="birthday" />
 		
-		<result column="place" property="place" />
 		<result column="pict1" property="pict1" />
 		<result column="pict2" property="pict2" />
 		<result column="pict3" property="pict3" />
 		<result column="updater" property="updater" />
 		<result column="update_datetime" property="updateDatetime" />
+		
 		<result column="remark" property="remark" />
 		<result column="feat" property="feat" />
 	</resultMap>
@@ -54,14 +54,13 @@
 			<if test="sex != null and sex != '' ">
 				AND t.sex = #{sex}
 			</if>
-			
-			
 			<if test="updater != null and updater != '' ">
 				AND t.updater = #{updater}
 			</if>
 			<if test="keyword != null and keyword != '' ">
 				AND t.name like "%"#{keyword}"%" OR  t.mobile like "%"#{keyword}"%" OR t.id_no like "%"#{keyword}"%"
 			</if>
+			
 			<if test="feat != null and featfeat != '' ">
 				AND t.feat = #{feat}
 			</if>
@@ -88,7 +87,6 @@
 		,t.id_endDate
 		,t.birthday
 		
-		,t.place
 		,t.pict1
 		,t.pict2
 		,t.pict3
@@ -134,7 +132,6 @@
 		,id_endDate
 	
 		
-		,place
 		,pict1
 		,pict2
 		,pict3
@@ -162,7 +159,6 @@
 		,#{idStartDate}
 		,#{idEndDate}
 		
-		,#{place}
 		,#{pict1}
 		,#{pict2}
 		,#{pict3}
@@ -180,7 +176,6 @@
 		,mobile = #{mobile}
 		,id_type = #{idType}
 		,id_no = #{idNo}
-		,place = #{place}
 		,pict1 = #{pict1}
 		,pict2 = #{pict2}
 		,pict3 = #{pict3}

@@ -33,4 +33,6 @@ public interface IEmployBO extends IPaginableBO<Employ> {
 
     public void isExist(String projectCode, String staffCode);
 
+    public Employ getEmployByStaff(String code, String projectCode);
+
 }

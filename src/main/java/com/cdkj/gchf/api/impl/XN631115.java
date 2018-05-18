@@ -6,6 +6,7 @@ import com.cdkj.gchf.ao.IChannelBankAO;
 import com.cdkj.gchf.api.AProcessor;
 import com.cdkj.gchf.common.JsonUtil;
 import com.cdkj.gchf.core.ObjValidater;
+import com.cdkj.gchf.core.StringValidater;
 import com.cdkj.gchf.domain.ChannelBank;
 import com.cdkj.gchf.dto.req.XN631115Req;
 import com.cdkj.gchf.exception.BizException;
@@ -36,7 +37,11 @@ public class XN631115 extends AProcessor {
             column = IChannelBankAO.DEFAULT_ORDER_COLUMN;
         }
         condition.setOrder(column, req.getOrderDir());
-        return channelBankAO.queryChannelBankList(condition);
+
+        int start = StringValidater.toInteger(req.getStart());
+        int limit = StringValidater.toInteger(req.getLimit());
+
+        return channelBankAO.queryChannelBankPage(start, limit, condition);
     }
 
     @Override

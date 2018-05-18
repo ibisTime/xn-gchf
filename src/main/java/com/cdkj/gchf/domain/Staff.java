@@ -60,9 +60,6 @@ public class Staff extends ABaseDO {
     // 证件有效结束时间
     private Date idEndDate;
 
-    // 籍贯
-    private String place;
-
     // 免冠照片
     private String pict1;
 
@@ -198,14 +195,6 @@ public class Staff extends ABaseDO {
 
     public void setIdEndDate(Date idEndDate) {
         this.idEndDate = idEndDate;
-    }
-
-    public String getPlace() {
-        return place;
-    }
-
-    public void setPlace(String place) {
-        this.place = place;
     }
 
     public String getPict1() {

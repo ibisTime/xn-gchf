@@ -38,13 +38,21 @@ public class XN631460Req {
     @NotBlank(message = "入职时间不能为空")
     private String joinDatetime;
 
-    // （必填）更新人
-    @NotBlank(message = "更新不能为空")
-    private String updater;
-
     // （必填）扣款规则
     @NotBlank(message = "扣款规则不能为空")
     private String cutAmount;
+
+    // （必填）签约合同
+    @NotBlank(message = "签约合同不能为空")
+    private String contentPic;
+
+    // （必填）签约时间
+    @NotBlank(message = "签约时间不能为空")
+    private String contractDatetime;
+
+    // （必填）更新人
+    @NotBlank(message = "更新不能为空")
+    private String updater;
 
     // （选填）备注
     private String remark;
@@ -127,6 +135,22 @@ public class XN631460Req {
 
     public void setCutAmount(String cutAmount) {
         this.cutAmount = cutAmount;
+    }
+
+    public String getContentPic() {
+        return contentPic;
+    }
+
+    public void setContentPic(String contentPic) {
+        this.contentPic = contentPic;
+    }
+
+    public String getContractDatetime() {
+        return contractDatetime;
+    }
+
+    public void setContractDatetime(String contractDatetime) {
+        this.contractDatetime = contractDatetime;
     }
 
 }

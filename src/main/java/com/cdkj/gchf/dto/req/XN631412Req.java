@@ -42,10 +42,6 @@ public class XN631412Req {
     @NotBlank(message = "身份证正反面照片+签名不能为空")
     private String pict3;
 
-    // （必填）籍贯
-    @NotBlank(message = "籍贯不能为空")
-    private String place;
-
     // （必填）更新人
     @NotBlank(message = "更新人不能为空")
     private String updater;
@@ -115,14 +111,6 @@ public class XN631412Req {
 
     public void setPict3(String pict3) {
         this.pict3 = pict3;
-    }
-
-    public String getPlace() {
-        return place;
-    }
-
-    public void setPlace(String place) {
-        this.place = place;
     }
 
     public String getUpdater() {

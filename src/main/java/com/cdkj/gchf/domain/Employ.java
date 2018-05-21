@@ -338,4 +338,24 @@ public class Employ extends ABaseDO {
         this.staffName = staffName;
     }
 
+    @Override
+    public String toString() {
+        return "Employ [code=" + code + ", companyCode=" + companyCode
+                + ", companyName=" + companyName + ", projectCode="
+                + projectCode + ", projectName=" + projectName + ", staffCode="
+                + staffCode + ", staffMobile=" + staffMobile + ", type=" + type
+                + ", position=" + position + ", upUser=" + upUser + ", salary="
+                + salary + ", cutAmount=" + cutAmount + ", status=" + status
+                + ", joinDatetime=" + joinDatetime + ", leavingDatetime="
+                + leavingDatetime + ", startDatetime=" + startDatetime
+                + ", endDatetime=" + endDatetime + ", leavingDays="
+                + leavingDays + ", totalLeavingDays=" + totalLeavingDays
+                + ", updater=" + updater + ", updateDatetime=" + updateDatetime
+                + ", remark=" + remark + ", keyword=" + keyword + ", user="
+                + user + ", staff=" + staff + ", upUserName=" + upUserName
+                + ", updateName=" + updateName + ", staffName=" + staffName
+                + ", statusList=" + statusList + ", projectCodeList="
+                + projectCodeList + "]";
+    }
+
 }

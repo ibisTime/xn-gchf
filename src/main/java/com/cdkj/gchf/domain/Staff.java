@@ -82,6 +82,12 @@ public class Staff extends ABaseDO {
     // 特征值
     private String feat;
 
+    // 紧急联系人
+    private String contacts;
+
+    // 紧急联系人电话
+    private String contactsMobile;
+
     // ***************db***********
     // 关键字模糊查询
     private String keyword;
@@ -327,6 +333,22 @@ public class Staff extends ABaseDO {
 
     public void setSalaryList(List<Salary> salaryList) {
         this.salaryList = salaryList;
+    }
+
+    public String getContacts() {
+        return contacts;
+    }
+
+    public void setContacts(String contacts) {
+        this.contacts = contacts;
+    }
+
+    public String getContactsMobile() {
+        return contactsMobile;
+    }
+
+    public void setContactsMobile(String contactsMobile) {
+        this.contactsMobile = contactsMobile;
     }
 
 }

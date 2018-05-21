@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import com.cdkj.gchf.ao.IEmployAO;
 import com.cdkj.gchf.bo.IAttendanceBO;
+import com.cdkj.gchf.bo.ICcontractBO;
 import com.cdkj.gchf.bo.IEmployBO;
 import com.cdkj.gchf.bo.IProjectBO;
 import com.cdkj.gchf.bo.IReportBO;
@@ -20,6 +21,7 @@ import com.cdkj.gchf.common.DateUtil;
 import com.cdkj.gchf.core.OrderNoGenerater;
 import com.cdkj.gchf.core.StringValidater;
 import com.cdkj.gchf.domain.Attendance;
+import com.cdkj.gchf.domain.Ccontract;
 import com.cdkj.gchf.domain.Employ;
 import com.cdkj.gchf.domain.Project;
 import com.cdkj.gchf.domain.Report;
@@ -58,12 +60,16 @@ public class EmployAOImpl implements IEmployAO {
     @Autowired
     private IAttendanceBO attendanceBO;
 
+    @Autowired
+    private ICcontractBO ccontractBO;
+
     @Override
     public String joinIn(XN631460Req req) {
         String code = OrderNoGenerater
             .generate(EGeneratePrefix.Employ.getCode());
         employBO.isExist(req.getProjectCode(), req.getStaffCode());
         Staff staff = staffBO.getStaff(req.getStaffCode());
+        Date date = new Date();
 
         Employ data = new Employ();
         data.setCode(code);
@@ -91,10 +97,28 @@ public class EmployAOImpl implements IEmployAO {
             DateUtil.FRONT_DATE_FORMAT_STRING));
         data.setStatus(EEmploytatus.Work.getCode());
         data.setUpdater(req.getUpdater());
-        data.setUpdateDatetime(new Date());
+        data.setUpdateDatetime(date);
         data.setRemark(req.getRemark());
         employBO.joinIn(data);
-        System.out.println("======入职结束=========");
+        // 录入合同
+        ccontractBO.isExist(req.getProjectCode(), req.getStaffCode());
+        Ccontract ccontract = new Ccontract();
+        String ccontractCode = OrderNoGenerater
+            .generate(EGeneratePrefix.Ccontract.getCode());
+        ccontract.setCode(ccontractCode);
+        ccontract.setProjectCode(req.getProjectCode());
+        ccontract.setProjectName(project.getName());
+        ccontract.setStaffCode(req.getStaffCode());
+        ccontract.setStaffMobile(staff.getMobile());
+
+        ccontract.setContentPic(req.getContentPic());
+        ccontract.setContractDatetime(DateUtil.strToDate(
+            req.getContractDatetime(), DateUtil.FRONT_DATE_FORMAT_STRING));
+        ccontract.setUpdater(req.getUpdater());
+        ccontract.setUpdateDatetime(date);
+        ccontract.setRemark(req.getRemark());
+
+        ccontractBO.saveCcontract(ccontract);
         // 计入累积入职
         Report report = reportBO.getReportByProject(project.getCode());
         Long nextMonthSalary = StringValidater.toLong(req.getSalary())
@@ -102,7 +126,6 @@ public class EmployAOImpl implements IEmployAO {
                 + report.getNextMonthSalary();
         report.setNextMonthSalary(nextMonthSalary);
         reportBO.staffIn(report);
-        System.out.println("==========统计结束=========");
         // 生成考勤
         Attendance attendance = new Attendance();
         String attendanceCode = OrderNoGenerater
@@ -115,7 +138,6 @@ public class EmployAOImpl implements IEmployAO {
         attendance.setStaffMobile(staff.getMobile());
 
         attendance.setStatus(EAttendanceStatus.TO_Start.getCode());
-        Date date = new Date();
         attendance.setCreateDatetime(date);
         attendanceBO.saveAttendance(attendance);
         System.out.println("=======考勤生成结束========");

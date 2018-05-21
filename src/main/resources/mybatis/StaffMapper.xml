@@ -29,6 +29,9 @@
 		
 		<result column="remark" property="remark" />
 		<result column="feat" property="feat" />
+		<result column="contacts" property="contacts" />
+		<result column="contacts_mobile" property="contactsMobile" />
+		
 	</resultMap>
 	
 	<sql id="where_condition">
@@ -94,6 +97,8 @@
 		,t.update_datetime
 		,t.remark
 		,t.feat
+		,t.contacts
+		,t.contacts_mobile
 		FROM
 		thf_staff t
 		<include refid="where_condition" />
@@ -195,6 +200,8 @@
 		,updater = #{updater}
 		,update_datetime = #{updateDatetime}
 		,remark = #{remark}
+		,contacts = #{contacts}
+		,contacts_mobile = #{contactsMobile}
 		WHERE code = #{code}
 	</update>
 

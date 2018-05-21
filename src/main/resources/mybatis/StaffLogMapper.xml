@@ -31,8 +31,6 @@
 	<select id="select_staffLog" parameterType="staffLog" resultMap="staffLog_DB_Result">
 		SELECT
 		t.code
-		,t.company_code
-		,t.company_name
 		,t.project_code
 		,t.project_name
 		,t.staff_code
@@ -60,8 +58,6 @@
 		INSERT INTO
 		thf_staff_log(
 		code
-		,company_code
-		,company_name
 		,project_code
 		,project_name
 		,staff_code
@@ -72,8 +68,6 @@
 		)
 		VALUES(
 		#{code}
-		,#{companyCode}
-		,#{companyName}
 		,#{projectCode}
 		,#{projectName}
 		,#{staffCode}
@@ -87,9 +81,7 @@
 	<update id="update_staffLog" parameterType="staffLog">
 		UPDATE thf_staff_log
 		SET
-		company_code = #{companyCode}
-		,company_name = #{companyName}
-		,project_code = #{projectCode}
+		project_code = #{projectCode}
 		,project_name = #{projectName}
 		,staff_code = #{staffCode}
 		,staff_name = #{staffName}

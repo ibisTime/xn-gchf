@@ -143,9 +143,6 @@ public class SalaryBOImpl extends PaginableBOImpl<Salary> implements ISalaryBO {
             condition.setStaffCode(staffCode);
             condition.setProjectCode(projectCode);
             data = salaryDAO.select(condition);
-            if (data == null) {
-                throw new BizException("xn0000", "工资条不存在");
-            }
         }
         return data;
     }

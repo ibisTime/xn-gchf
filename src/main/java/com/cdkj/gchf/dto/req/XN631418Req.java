@@ -10,16 +10,16 @@ import org.hibernate.validator.constraints.NotBlank;
  */
 public class XN631418Req {
 
-    // (必填)、
-    @NotBlank
-    private String license;
+    // (必填)
+    @NotBlank(message = "身份证号不能为空")
+    private String idNo;
 
-    public String getLicense() {
-        return license;
+    public String getIdNo() {
+        return idNo;
     }
 
-    public void setLicense(String license) {
-        this.license = license;
+    public void setIdNo(String idNo) {
+        this.idNo = idNo;
     }
 
 }

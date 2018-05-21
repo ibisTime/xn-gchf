@@ -257,7 +257,7 @@ public class StaffAOImpl implements IStaffAO {
     @Override
     public void addStaffInfo(XN631413Req req) {
         PhoneUtil.checkMobile(req.getMobile());
-
+        PhoneUtil.checkMobile(req.getContactsMobile());
         Date date = new Date();
         Staff data = staffBO.getStaff(req.getCode());
         data.setPict1(req.getPict1());
@@ -267,6 +267,9 @@ public class StaffAOImpl implements IStaffAO {
         data.setUpdater(req.getUpdater());
         data.setUpdateDatetime(date);
         data.setRemark(req.getRemark());
+        data.setContacts(req.getContacts());
+        data.setMobile(req.getContactsMobile());
+
         staffBO.saveStaffInfo(data);
         // 添加工资卡
         BankCard bankCard = new BankCard();
@@ -312,6 +315,11 @@ public class StaffAOImpl implements IStaffAO {
         return data;
     }
 
+    @Override
+    public Staff getStaffByIdNo(String idNo) {
+        return staffBO.getStaffByIdNo(idNo);
+    }
+
     private String getName(String userId) {
         User user = userBO.getUserName(userId);
         String name = null;
@@ -324,4 +332,5 @@ public class StaffAOImpl implements IStaffAO {
         return name;
 
     }
+
 }

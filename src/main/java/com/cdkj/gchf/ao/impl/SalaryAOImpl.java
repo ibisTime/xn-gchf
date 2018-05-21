@@ -184,7 +184,8 @@ public class SalaryAOImpl implements ISalaryAO {
                 .getCompanyCardByProject(salary.getProjectCode());
             salary.setCompanyCard(companyCard);
             staff = staffBO.getStaff(salary.getStaffCode());
-            salary.setStaff(staff);
+            salary.setStaffName(staff.getName());
+            salary.setStaffMobile(staff.getMobile());
         }
         return page;
     }
@@ -203,7 +204,8 @@ public class SalaryAOImpl implements ISalaryAO {
                 .getCompanyCardByProject(salary.getProjectCode());
             salary.setCompanyCard(companyCard);
             staff = staffBO.getStaff(salary.getStaffCode());
-            salary.setStaff(staff);
+            salary.setStaffName(staff.getName());
+            salary.setStaffMobile(staff.getMobile());
         }
         return list;
     }
@@ -238,7 +240,8 @@ public class SalaryAOImpl implements ISalaryAO {
                 .getCompanyCardByProject(salary.getProjectCode());
             salary.setCompanyCard(companyCard);
             staff = staffBO.getStaff(salary.getStaffCode());
-            salary.setStaff(staff);
+            salary.setStaffName(staff.getName());
+            salary.setStaffMobile(staff.getMobile());
         }
         page.setList(list);
         return page;
@@ -258,7 +261,8 @@ public class SalaryAOImpl implements ISalaryAO {
                 .getCompanyCardByProject(salary.getProjectCode());
             salary.setCompanyCard(companyCard);
             staff = staffBO.getStaff(salary.getStaffCode());
-            salary.setStaff(staff);
+            salary.setStaffName(staff.getName());
+            salary.setStaffMobile(staff.getMobile());
         }
         return list;
     }
@@ -302,7 +306,8 @@ public class SalaryAOImpl implements ISalaryAO {
                     .getCompanyCardByProject(salary.getProjectCode());
                 salary.setCompanyCard(companyCard);
                 staff = staffBO.getStaff(salary.getStaffCode());
-                salary.setStaff(staff);
+                salary.setStaffName(staff.getName());
+                salary.setStaffMobile(staff.getMobile());
                 list.add(salary);
             }
 

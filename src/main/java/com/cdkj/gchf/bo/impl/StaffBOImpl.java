@@ -2,7 +2,6 @@ package com.cdkj.gchf.bo.impl;
 
 import java.util.List;
 
-import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -60,13 +59,16 @@ public class StaffBOImpl extends PaginableBOImpl<Staff> implements IStaffBO {
 
     @Override
     public Staff getStaffByIdNo(String idNo) {
-        Staff condition = new Staff();
-        condition.setIdNo(idNo);
-        List<Staff> list = staffDAO.selectList(condition);
-        if (CollectionUtils.isNotEmpty(list)) {
-            return list.get(0);
+        Staff data = null;
+        if (StringUtils.isNotBlank(idNo)) {
+            Staff condition = new Staff();
+            condition.setCode(idNo);
+            data = staffDAO.select(condition);
+            if (data == null) {
+                throw new BizException("xn0000", "该员工不存在");
+            }
         }
-        return null;
+        return data;
 
     }
 

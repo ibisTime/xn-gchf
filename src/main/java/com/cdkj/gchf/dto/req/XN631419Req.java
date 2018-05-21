@@ -16,7 +16,7 @@ public class XN631419Req {
     @NotBlank(message = "不能为空")
     private String code;
 
-    private List<String> projetCodeList;
+    private List<String> projectCodeList;
 
     public String getCode() {
         return code;
@@ -26,12 +26,12 @@ public class XN631419Req {
         this.code = code;
     }
 
-    public List<String> getProjetCodeList() {
-        return projetCodeList;
+    public List<String> getProjectCodeList() {
+        return projectCodeList;
     }
 
-    public void setProjetCodeList(List<String> projetCodeList) {
-        this.projetCodeList = projetCodeList;
+    public void setProjectCodeList(List<String> projectCodeList) {
+        this.projectCodeList = projectCodeList;
     }
 
 }

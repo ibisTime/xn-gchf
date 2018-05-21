@@ -8,8 +8,6 @@
 		<result column="project_name" property="projectName" />
 		<result column="staff_code" property="staffCode" />
 		<result column="staff_mobile" property="staffMobile" />
-		<result column="company_code" property="companyCode" />
-		<result column="company_name" property="companyName" />
 		
 		<result column="type" property="type" />
 		<result column="position" property="position" />
@@ -34,9 +32,6 @@
 		<trim prefix="WHERE" prefixOverrides="AND | OR">
 			<if test="code != null and code != '' ">
 				AND t.code = #{code}
-			</if>
-			<if test="companyCode != null and companyCode != '' ">
-				AND t.company_code = #{companyCode}
 			</if>
 			<if test="staffCode != null and staffCode != '' ">
 				AND t.staff_code = #{staffCode}
@@ -88,8 +83,6 @@
 	<select id="select_employ" parameterType="employ" resultMap="employ_DB_Result">
 		SELECT
 		t.code
-		,t.company_code
-		,t.company_name
 		,t.project_code
 		,t.project_name
 		,t.staff_code
@@ -138,8 +131,6 @@
 		INSERT INTO
 		thf_employ(
 		code
-		,company_code
-		,company_name
 		,project_code
 		,project_name
 		,staff_code
@@ -157,8 +148,6 @@
 		)
 		VALUES(
 		#{code}
-		,#{companyCode}
-		,#{companyName}
 		,#{projectCode}
 		,#{projectName}
 		,#{staffCode}

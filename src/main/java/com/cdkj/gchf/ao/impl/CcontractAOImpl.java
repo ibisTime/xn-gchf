@@ -99,7 +99,6 @@ public class CcontractAOImpl implements ICcontractAO {
         page = ccontractBO.getPaginable(start, limit, condition);
         String updateName = null;
         for (Ccontract ccontract : page.getList()) {
-            System.out.println(ccontract);
             Staff staff = staffBO.getStaff(ccontract.getStaffCode());
             ccontract.setStaffName(staff.getName());
             updateName = getName(ccontract.getUpdater());

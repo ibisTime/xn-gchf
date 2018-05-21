@@ -5,11 +5,11 @@ import org.hibernate.validator.constraints.NotBlank;
 public class XN631413Req {
 
     // （必填）编号
-    @NotBlank
+    @NotBlank(message = "编号不能为空")
     private String code;
 
     // （必填）联系方式
-    @NotBlank
+    @NotBlank(message = "联系方式不能为空")
     private String mobile;
 
     // （必填）免冠照片
@@ -28,26 +28,28 @@ public class XN631413Req {
     private String updater;
 
     // （必填）银行别称
-    @NotBlank
+    @NotBlank(message = "银行别称不能为空")
     private String bankCode;
 
     // （必填）银行名称
-    @NotBlank
+    @NotBlank(message = "银行名称不能为空")
     private String bankName;
 
     // （必填）银行卡号
-    @NotBlank
+    @NotBlank(message = "银行卡号不能为空")
     private String bankcardNumber;
 
     // （必填）开户行
     @NotBlank(message = "开户行不能为空")
     private String subbranch;
 
-    // （必填）合同照片
-    private String contentPic;
+    // 紧急联系人
+    @NotBlank(message = "紧急联系人不能为空")
+    private String contacts;
 
-    // 签约时间
-    private String contractDatetime;
+    // 紧急联系人电话
+    @NotBlank(message = "紧急联系人电话不能为空")
+    private String contactsMobile;
 
     // （选填）备注
     private String remark;
@@ -132,28 +134,28 @@ public class XN631413Req {
         this.subbranch = subbranch;
     }
 
-    public String getContentPic() {
-        return contentPic;
-    }
-
-    public void setContentPic(String contentPic) {
-        this.contentPic = contentPic;
-    }
-
-    public String getContractDatetime() {
-        return contractDatetime;
-    }
-
-    public void setContractDatetime(String contractDatetime) {
-        this.contractDatetime = contractDatetime;
-    }
-
     public String getRemark() {
         return remark;
     }
 
     public void setRemark(String remark) {
         this.remark = remark;
+    }
+
+    public String getContacts() {
+        return contacts;
+    }
+
+    public void setContacts(String contacts) {
+        this.contacts = contacts;
+    }
+
+    public String getContactsMobile() {
+        return contactsMobile;
+    }
+
+    public void setContactsMobile(String contactsMobile) {
+        this.contactsMobile = contactsMobile;
     }
 
 }

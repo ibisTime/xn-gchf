@@ -37,4 +37,6 @@ public interface IStaffAO {
 
     public Staff getStaffInfo(String code, List<String> projetCodeList);
 
+    public Staff getStaffByIdNo(String idNo);
+
 }

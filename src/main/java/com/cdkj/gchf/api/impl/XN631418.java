@@ -23,10 +23,8 @@ public class XN631418 extends AProcessor {
 
     @Override
     public Object doBusiness() throws BizException {
-        if ("cdkjws".equalsIgnoreCase(req.getLicense())) {
-            return staffAO.getStaffFeatList();
-        }
-        return null;
+
+        return staffAO.getStaffByIdNo(req.getIdNo());
 
     }
 

@@ -101,8 +101,11 @@ public class Salary extends ABaseDO {
     // 用户类型
     private String kind;
 
-    // 员工
-    private Staff staff;
+    // 员工名称
+    private String staffName;
+
+    // 员工手机号
+    private String staffMobile;
 
     // 状态类型
     private List<String> statusList;
@@ -342,20 +345,28 @@ public class Salary extends ABaseDO {
         this.normalDays = normalDays;
     }
 
-    public Staff getStaff() {
-        return staff;
-    }
-
-    public void setStaff(Staff staff) {
-        this.staff = staff;
-    }
-
     public List<String> getProjectCodeList() {
         return projectCodeList;
     }
 
     public void setProjectCodeList(List<String> projectCodeList) {
         this.projectCodeList = projectCodeList;
+    }
+
+    public String getStaffName() {
+        return staffName;
+    }
+
+    public void setStaffName(String staffName) {
+        this.staffName = staffName;
+    }
+
+    public String getStaffMobile() {
+        return staffMobile;
+    }
+
+    public void setStaffMobile(String staffMobile) {
+        this.staffMobile = staffMobile;
     }
 
 }

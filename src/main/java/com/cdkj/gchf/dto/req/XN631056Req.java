@@ -8,22 +8,27 @@ import org.hibernate.validator.constraints.NotBlank;
  * @since: 2016年5月16日 下午10:45:20 
  * @history:
  */
-public class XN631056Req {
+public class XN631056Req extends APageReq {
+
+    /** 
+     * @Fields serialVersionUID : TODO(用一句话描述这个变量表示什么) 
+     */
+    private static final long serialVersionUID = 8289656184041242091L;
 
     // 角色编号（必填）
     @NotBlank(message = "角色编号不能为空")
     private String roleCode;
 
-    //菜单名称（选填）
+    // 菜单名称（选填）
     private String name;
-    
+
     // 类型(选填)
     private String type;
 
     // 父菜单编号(选填)
     private String parentCode;
-    
-    //菜单更新人(选填)
+
+    // 菜单更新人(选填)
     private String updater;
 
     public String getRoleCode() {

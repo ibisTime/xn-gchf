@@ -118,7 +118,6 @@ public class SalaryBOImpl extends PaginableBOImpl<Salary> implements ISalaryBO {
 
         data.setCutAmount(0L);
         data.setTax(0L);
-        data.setNormalDays(0.0);
         data.setDelayDays(0);
         data.setEarlyDays(0);
 

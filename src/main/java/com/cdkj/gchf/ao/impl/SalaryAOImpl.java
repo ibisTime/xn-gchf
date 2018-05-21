@@ -291,7 +291,7 @@ public class SalaryAOImpl implements ISalaryAO {
         Paginable<Salary> page = salaryBO.getPaginable(start, limit, condition);
 
         BankCard bankCard = null;
-        CompanyCard companyCard = null;
+        // CompanyCard companyCard = null;
         Staff staff = null;
         // 获取部分发放（异常）状态的工资条
         for (Salary salary : page.getList()) {
@@ -302,9 +302,9 @@ public class SalaryAOImpl implements ISalaryAO {
             if (data == null) {
                 bankCard = bankCardBO.getBankCardByStaff(salary.getStaffCode());
                 salary.setBankCard(bankCard);
-                companyCard = companyCardBO
-                    .getCompanyCardByProject(salary.getProjectCode());
-                salary.setCompanyCard(companyCard);
+                // companyCard = companyCardBO
+                // .getCompanyCardByProject(salary.getProjectCode());
+                // salary.setCompanyCard(companyCard);
                 staff = staffBO.getStaff(salary.getStaffCode());
                 salary.setStaffName(staff.getName());
                 salary.setStaffMobile(staff.getMobile());

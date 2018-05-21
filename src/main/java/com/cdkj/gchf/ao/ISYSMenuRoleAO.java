@@ -12,6 +12,8 @@ import com.cdkj.gchf.domain.SYSMenuRole;
  */
 public interface ISYSMenuRoleAO {
 
+    String DEFAULT_ORDER_COLUMN = "code";
+
     public int addSYSMenuRole(SYSMenuRole data);
 
     public List<SYSMenu> querySYSMenuList(SYSMenuRole data);

@@ -52,9 +52,6 @@ public class Salary extends ABaseDO {
     // 税费
     private Long tax;
 
-    // 正常上工天数
-    private Double normalDays;
-
     // 迟到天数
     private Integer delayDays;
 
@@ -335,14 +332,6 @@ public class Salary extends ABaseDO {
 
     public void setStatusList(List<String> statusList) {
         this.statusList = statusList;
-    }
-
-    public Double getNormalDays() {
-        return normalDays;
-    }
-
-    public void setNormalDays(Double normalDays) {
-        this.normalDays = normalDays;
     }
 
     public List<String> getProjectCodeList() {

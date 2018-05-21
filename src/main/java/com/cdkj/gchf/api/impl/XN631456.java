@@ -6,7 +6,6 @@ import com.cdkj.gchf.ao.IProgressAO;
 import com.cdkj.gchf.ao.ISalaryLogAO;
 import com.cdkj.gchf.api.AProcessor;
 import com.cdkj.gchf.common.JsonUtil;
-import com.cdkj.gchf.core.StringValidater;
 import com.cdkj.gchf.domain.SalaryLog;
 import com.cdkj.gchf.dto.req.XN631456Req;
 import com.cdkj.gchf.exception.BizException;
@@ -47,9 +46,6 @@ public class XN631456 extends AProcessor {
             column = IProgressAO.DEFAULT_ORDER_COLUMN;
         }
         condition.setOrder(column, req.getOrderDir());
-
-        int start = StringValidater.toInteger(req.getStart());
-        int limit = StringValidater.toInteger(req.getLimit());
         return salaryAO.querySalaryLogList(condition);
     }
 

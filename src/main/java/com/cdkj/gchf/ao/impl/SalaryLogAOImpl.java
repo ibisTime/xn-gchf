@@ -65,7 +65,7 @@ public class SalaryLogAOImpl implements ISalaryLogAO {
         List<SalaryLog> list = salaryLogBO.querySalaryLogList(condition);
         Staff staff = null;
         for (SalaryLog salaryLog : list) {
-            staff = staffBO.getStaff(salaryLog.getSalaryCode());
+            staff = staffBO.getStaff(salaryLog.getStaffCode());
             salaryLog.setHandleName(getName(salaryLog.getHandler()));
             salaryLog.setStaffName(staff.getName());
         }

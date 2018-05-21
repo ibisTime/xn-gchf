@@ -292,9 +292,12 @@ public class EmployAOImpl implements IEmployAO {
         for (Employ employ : eList) {
             String status = EEmploytatus.Work.getCode();
             // 今天是否请假
-            if (DateUtil.isIn(employ.getStartDatetime(),
-                employ.getEndDatetime())) {
-                status = EEmploytatus.Hoilday.getCode();
+            if (employ.getStartDatetime() != null
+                    && employ.getEndDatetime() != null) {
+                if (DateUtil.isIn(employ.getStartDatetime(),
+                    employ.getEndDatetime())) {
+                    status = EEmploytatus.Hoilday.getCode();
+                }
             }
             employ.setStatus(status);
             employBO.updateStatus(employ);

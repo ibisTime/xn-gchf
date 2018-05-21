@@ -32,6 +32,11 @@ public class SYSRole extends ABaseDO {
     // 备注
     private String remark;
 
+    // **********db***********
+
+    // 更新人名称
+    private String updateName;
+
     public String getCode() {
         return code;
     }
@@ -79,4 +84,13 @@ public class SYSRole extends ABaseDO {
     public void setRemark(String remark) {
         this.remark = remark;
     }
+
+    public String getUpdateName() {
+        return updateName;
+    }
+
+    public void setUpdateName(String updateName) {
+        this.updateName = updateName;
+    }
+
 }

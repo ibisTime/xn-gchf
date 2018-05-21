@@ -14,6 +14,7 @@ import com.cdkj.gchf.bo.IUserBO;
 import com.cdkj.gchf.bo.base.Paginable;
 import com.cdkj.gchf.domain.SYSRole;
 import com.cdkj.gchf.domain.User;
+import com.cdkj.gchf.enums.EUser;
 import com.cdkj.gchf.exception.BizException;
 
 @Service
@@ -68,23 +69,43 @@ public class SYSRoleAOImpl implements ISYSRoleAO {
 
     @Override
     public List<SYSRole> querySYSRoleList(SYSRole condition) {
-        return sysRoleBO.querySYSRoleList(condition);
+        List<SYSRole> list = sysRoleBO.querySYSRoleList(condition);
+        for (SYSRole data : list) {
+            data.setUpdateName(getName(data.getUpdater()));
+        }
+        return list;
     }
 
     @Override
     public Paginable<SYSRole> querySYSRolePage(int start, int limit,
             SYSRole condition) {
-        return sysRoleBO.getPaginable(start, limit, condition);
+        Paginable<SYSRole> page = sysRoleBO.getPaginable(start, limit,
+            condition);
+        for (SYSRole data : page.getList()) {
+            data.setUpdateName(getName(data.getUpdater()));
+        }
+        return page;
     }
 
-    /** 
-     * @see com.std.user.ao.ISYSRoleAO#getSYSRole(java.lang.String)
-     */
     @Override
     public SYSRole getSYSRole(String code) {
         if (!sysRoleBO.isSYSRoleExist(code)) {
             throw new BizException("lh4000", "角色编号不存在！");
         }
-        return sysRoleBO.getSYSRole(code);
+        SYSRole data = sysRoleBO.getSYSRole(code);
+        data.setUpdateName(getName(data.getUpdater()));
+        return data;
+    }
+
+    private String getName(String userId) {
+        User user = userBO.getUserName(userId);
+        String name = null;
+        if (user != null) {
+            name = EUser.ADMIN.getCode();
+            if (!EUser.ADMIN.getCode().equals(user.getLoginName())) {
+                name = user.getRealName();
+            }
+        }
+        return name;
     }
 }

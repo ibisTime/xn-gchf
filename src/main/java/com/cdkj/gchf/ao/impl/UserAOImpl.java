@@ -68,17 +68,16 @@ public class UserAOImpl implements IUserAO {
         User data = new User();
         String userId = OrderNoGenerater.generate("U");
         data.setUserId(userId);
-
         data.setType(req.getType());
-
         data.setRealName(req.getRealName());
+
         data.setLoginName(req.getLoginName());
         data.setMobile(req.getMobile());
-
         data.setLoginPwd(MD5Util.md5(req.getLoginPwd()));
         data.setLoginPwdStrength(
             PwdUtil.calculateSecurityLevel(req.getLoginPwd()));
         data.setCreateDatetime(new Date());
+
         data.setStatus(EUserStatus.NORMAL.getCode());
         if (EUserKind.Owner.getCode().equals(req.getType())) {
             Company company = companyBO.getCompany(req.getCompanyCode());
@@ -90,6 +89,7 @@ public class UserAOImpl implements IUserAO {
             data.setBankName(req.getBankName());
             data.setSubbranch(req.getSubbranch());
         }
+
         data.setProvince(req.getProvince());
         data.setCity(req.getCity());
         data.setArea(req.getArea());

@@ -135,5 +135,9 @@
 		<property name="paginableDAO" ref="channelBankDAOImpl"/>
 	</bean>	
 	
+	<bean id="queryLogBO" class="com.cdkj.gchf.bo.impl.QueryLogBOImpl">
+		<property name="paginableDAO" ref="queryLogDAOImpl"/>
+	</bean>	
+	
 </beans>
 

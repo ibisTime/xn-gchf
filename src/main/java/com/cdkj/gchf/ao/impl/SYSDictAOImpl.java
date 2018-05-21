@@ -16,10 +16,13 @@ import org.springframework.stereotype.Service;
 
 import com.cdkj.gchf.ao.ISYSDictAO;
 import com.cdkj.gchf.bo.ISYSDictBO;
+import com.cdkj.gchf.bo.IUserBO;
 import com.cdkj.gchf.bo.base.Paginable;
 import com.cdkj.gchf.domain.SYSDict;
+import com.cdkj.gchf.domain.User;
 import com.cdkj.gchf.dto.req.XN631000Req;
 import com.cdkj.gchf.enums.EDictType;
+import com.cdkj.gchf.enums.EUser;
 
 /** 
  * @author: haiqingzheng 
@@ -28,8 +31,12 @@ import com.cdkj.gchf.enums.EDictType;
  */
 @Service
 public class SYSDictAOImpl implements ISYSDictAO {
+
     @Autowired
     ISYSDictBO sysDictBO;
+
+    @Autowired
+    IUserBO userBO;
 
     @Override
     public Long addSecondDict(XN631000Req req) {
@@ -63,16 +70,39 @@ public class SYSDictAOImpl implements ISYSDictAO {
     @Override
     public Paginable<SYSDict> querySYSDictPage(int start, int limit,
             SYSDict condition) {
-        return sysDictBO.getPaginable(start, limit, condition);
+        Paginable<SYSDict> page = sysDictBO.getPaginable(start, limit,
+            condition);
+        for (SYSDict data : page.getList()) {
+            data.setUpdateName(getName(data.getUpdater()));
+        }
+        return page;
     }
 
     @Override
     public List<SYSDict> querySysDictList(SYSDict condition) {
-        return sysDictBO.querySYSDictList(condition);
+        List<SYSDict> list = sysDictBO.querySYSDictList(condition);
+        for (SYSDict data : list) {
+            data.setUpdateName(getName(data.getUpdater()));
+        }
+        return list;
     }
 
     @Override
     public SYSDict getSYSDict(Long id) {
-        return sysDictBO.getSYSDict(id);
+        SYSDict data = sysDictBO.getSYSDict(id);
+        data.setUpdateName(getName(data.getUpdater()));
+        return data;
+    }
+
+    private String getName(String userId) {
+        User user = userBO.getUserName(userId);
+        String name = null;
+        if (user != null) {
+            name = EUser.ADMIN.getCode();
+            if (!EUser.ADMIN.getCode().equals(user.getLoginName())) {
+                name = user.getRealName();
+            }
+        }
+        return name;
     }
 }

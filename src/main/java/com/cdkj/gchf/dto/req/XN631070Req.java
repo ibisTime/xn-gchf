@@ -10,7 +10,6 @@ import org.hibernate.validator.constraints.NotBlank;
 public class XN631070Req {
 
     // 登录名（必填）
-    @NotBlank(message = "登录名不能为空")
     private String loginName;
 
     // 登录密码（必填）

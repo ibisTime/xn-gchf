@@ -9,7 +9,6 @@ import com.cdkj.gchf.domain.Progress;
 import com.cdkj.gchf.dto.req.XN631380Req;
 import com.cdkj.gchf.dto.req.XN631382Req;
 
-//AO层
 @Component
 public interface IProgressAO {
     static final String DEFAULT_ORDER_COLUMN = "code";

@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.cdkj.gchf.ao.IMessageAO;
+import com.cdkj.gchf.bo.IBankCardBO;
 import com.cdkj.gchf.bo.IEmployBO;
 import com.cdkj.gchf.bo.IMessageBO;
 import com.cdkj.gchf.bo.IReportBO;
@@ -22,6 +23,7 @@ import com.cdkj.gchf.bo.base.Paginable;
 import com.cdkj.gchf.common.DateUtil;
 import com.cdkj.gchf.core.OrderNoGenerater;
 import com.cdkj.gchf.core.StringValidater;
+import com.cdkj.gchf.domain.BankCard;
 import com.cdkj.gchf.domain.Employ;
 import com.cdkj.gchf.domain.Message;
 import com.cdkj.gchf.domain.Report;
@@ -60,6 +62,9 @@ public class MessageAOImpl implements IMessageAO {
 
     @Autowired
     IEmployBO employBO;
+
+    @Autowired
+    IBankCardBO bankCardBO;
 
     @Override
     public String addMessage(Message data) {
@@ -132,16 +137,24 @@ public class MessageAOImpl implements IMessageAO {
         data.setSendDatetime(new Date());
         data.setSendNote(sendNote);
         data.setStatus(EMessageStatus.TO_Deal.getCode());
+
         // 判断工资条是否已审核
         Salary condition = new Salary();
         condition.setMessageCode(data.getCode());
         List<Salary> list = salaryBO.querySalaryList(condition);
+        BankCard bankCard = null;
+
         for (Salary salary : list) {
             if (ESalaryStatus.TO_Send.getCode().equals(salary.getStatus())) {
                 throw new BizException("xn00000", "存在未审核的工资条");
             }
             salary.setStatus(ESalaryStatus.TO_Pay.getCode());
             salaryBO.refreshStatus(salary);
+            bankCard = bankCardBO.getBankCardByStaff(salary.getStaffCode());
+            if (bankCard == null) {
+                throw new BizException("xn00000",
+                    "员工：" + salary.getStaffName() + "，未录入银行卡信息，请补全信息后再发送");
+            }
         }
         messageBO.sendMessage(data);
     }

@@ -1,6 +1,7 @@
 package com.cdkj.gchf.domain;
 
 import java.util.Date;
+import java.util.List;
 
 import com.cdkj.gchf.dao.base.ABaseDO;
 
@@ -49,13 +50,23 @@ public class Attendance extends ABaseDO {
 
     // ******************db*************
 
+    // 关键字
     private String keyword;
 
+    // 生成开始时间
     private Date createDatetimeStart;
 
+    // 生成结束时间
     private Date createDatetimeEnd;
 
+    // 员工姓名
     private String staffName;
+
+    // 项目编号List
+    private List<String> projectCodeList;
+
+    // 用户类型
+    private String kind;
 
     public void setCode(String code) {
         this.code = code;
@@ -175,6 +186,22 @@ public class Attendance extends ABaseDO {
 
     public void setStaffName(String staffName) {
         this.staffName = staffName;
+    }
+
+    public List<String> getProjectCodeList() {
+        return projectCodeList;
+    }
+
+    public void setProjectCodeList(List<String> projectCodeList) {
+        this.projectCodeList = projectCodeList;
+    }
+
+    public String getKind() {
+        return kind;
+    }
+
+    public void setKind(String kind) {
+        this.kind = kind;
     }
 
 }

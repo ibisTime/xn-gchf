@@ -22,6 +22,4 @@ public interface IAttendanceAO {
 
     public Attendance getAttendance(String code);
 
-    public void addAttendance(String projectCode, String staffCode);
-
 }

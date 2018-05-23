@@ -27,7 +27,7 @@
 		,t.message_code
 		,t.salary_code
 		FROM
-		thf_message_log_log t
+		thf_message_log t
 		<include refid="where_condition" />
 		<trim prefix="ORDER BY ">
 			<if test="order != null and order != '' ">

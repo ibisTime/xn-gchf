@@ -21,9 +21,6 @@ public class BankCard extends ABaseDO {
     // 公司编号
     private String companyCode;
 
-    // 公司名称
-    private String companyName;
-
     // 员工编号
     private String staffCode;
 
@@ -184,14 +181,6 @@ public class BankCard extends ABaseDO {
 
     public void setCompanyCode(String companyCode) {
         this.companyCode = companyCode;
-    }
-
-    public String getCompanyName() {
-        return companyName;
-    }
-
-    public void setCompanyName(String companyName) {
-        this.companyName = companyName;
     }
 
     public String getKind() {

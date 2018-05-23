@@ -155,10 +155,7 @@ public class StaffAOImpl implements IStaffAO {
         PhoneUtil.checkMobile(req.getMobile());
         Date date = new Date();
         Staff data = staffBO.getStaff(req.getCode());
-        data.setIdType(req.getIdType());
-        data.setIdNo(req.getIdNo());
         data.setMobile(req.getMobile());
-        data.setName(req.getName());
 
         data.setPict1(req.getPict1());
         data.setPict2(req.getPict2());

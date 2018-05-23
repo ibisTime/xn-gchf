@@ -1,5 +1,7 @@
 package com.cdkj.gchf.dto.req;
 
+import java.util.List;
+
 /**
  * 分页查询考勤记录
  * @author: nyc 
@@ -21,6 +23,12 @@ public class XN631395Req extends APageReq {
 
     // （选填）状态
     private String status;
+
+    // 用户类型
+    private String kind;
+
+    // 项目编号List
+    private List<String> projectCodeList;
 
     public String getKeyword() {
         return keyword;
@@ -44,6 +52,22 @@ public class XN631395Req extends APageReq {
 
     public void setStatus(String status) {
         this.status = status;
+    }
+
+    public String getKind() {
+        return kind;
+    }
+
+    public void setKind(String kind) {
+        this.kind = kind;
+    }
+
+    public List<String> getProjectCodeList() {
+        return projectCodeList;
+    }
+
+    public void setProjectCodeList(List<String> projectCodeList) {
+        this.projectCodeList = projectCodeList;
     }
 
 }

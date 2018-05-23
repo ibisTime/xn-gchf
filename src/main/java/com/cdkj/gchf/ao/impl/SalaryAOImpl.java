@@ -218,13 +218,23 @@ public class SalaryAOImpl implements ISalaryAO {
     public List<Salary> querySalaryListByMessageCode(Salary condition) {
         List<Salary> list = new ArrayList<Salary>();
         MessageLog mCondition = new MessageLog();
+
         mCondition.setMessageCode(condition.getMessageCode());
         List<MessageLog> mList = messageLogAO.queryMessageLogList(mCondition);
         for (MessageLog messageLog : mList) {
             list.add(salaryBO.getSalary(messageLog.getSalaryCode()));
         }
+
+        CompanyCard companyCard = null;
+        BankCard bankCard = null;
         Staff staff = null;
         for (Salary salary : list) {
+            companyCard = companyCardBO
+                .getCompanyCardByProject(salary.getProjectCode());
+            salary.setCompanyCard(companyCard);
+            bankCard = bankCardBO.getBankCardByStaff(salary.getStaffCode());
+            salary.setBankCard(bankCard);
+
             staff = staffBO.getStaff(salary.getStaffCode());
             salary.setStaffName(staff.getName());
             salary.setStaffMobile(staff.getMobile());

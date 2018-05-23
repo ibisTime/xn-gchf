@@ -18,21 +18,9 @@ public class XN631412Req {
     @NotBlank(message = "编号不能为空")
     private String code;
 
-    // （必填）证件类型
-    @NotBlank(message = "证件类型不能为空")
-    private String idType;
-
-    // （必填）身份证号
-    @NotBlank(message = "身份证号不能为空")
-    private String idNo;
-
     // （必填）联系方式
     @NotBlank(message = "联系方式不能为空")
     private String mobile;
-
-    // （必填）姓名
-    @NotBlank(message = "姓名不能为空")
-    private String name;
 
     // （必填）免冠照片
     @NotBlank(message = "免冠照片不能为空")
@@ -64,36 +52,12 @@ public class XN631412Req {
         this.code = code;
     }
 
-    public String getIdType() {
-        return idType;
-    }
-
-    public void setIdType(String idType) {
-        this.idType = idType;
-    }
-
-    public String getIdNo() {
-        return idNo;
-    }
-
-    public void setIdNo(String idNo) {
-        this.idNo = idNo;
-    }
-
     public String getMobile() {
         return mobile;
     }
 
     public void setMobile(String mobile) {
         this.mobile = mobile;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
     }
 
     public String getPict1() {

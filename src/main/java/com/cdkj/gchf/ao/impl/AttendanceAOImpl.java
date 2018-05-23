@@ -1,8 +1,10 @@
 package com.cdkj.gchf.ao.impl;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import org.apache.commons.collections.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -12,6 +14,7 @@ import com.cdkj.gchf.bo.IEmployBO;
 import com.cdkj.gchf.bo.IProjectBO;
 import com.cdkj.gchf.bo.IReportBO;
 import com.cdkj.gchf.bo.IStaffBO;
+import com.cdkj.gchf.bo.base.Page;
 import com.cdkj.gchf.bo.base.Paginable;
 import com.cdkj.gchf.core.OrderNoGenerater;
 import com.cdkj.gchf.domain.Attendance;
@@ -23,6 +26,7 @@ import com.cdkj.gchf.enums.EAttendanceStatus;
 import com.cdkj.gchf.enums.EEmploytatus;
 import com.cdkj.gchf.enums.EGeneratePrefix;
 import com.cdkj.gchf.enums.EProjectStatus;
+import com.cdkj.gchf.enums.EUserKind;
 import com.cdkj.gchf.exception.BizException;
 
 @Service
@@ -42,11 +46,6 @@ public class AttendanceAOImpl implements IAttendanceAO {
 
     @Autowired
     private IReportBO reportBO;
-
-    @Override
-    public void addAttendance(String projectCode, String staffCode) {
-
-    }
 
     @Override
     public void clockIn(String projectCode, String staffCode) {
@@ -77,6 +76,15 @@ public class AttendanceAOImpl implements IAttendanceAO {
     @Override
     public Paginable<Attendance> queryAttendancePage(int start, int limit,
             Attendance condition) {
+        Paginable<Attendance> page = new Page<Attendance>();
+        List<Attendance> list = new ArrayList<Attendance>();
+        if (EUserKind.Owner.getCode().equals(condition.getKeyword())
+                || EUserKind.Owner.getCode().equals(condition.getKeyword())) {
+            if (CollectionUtils.isEmpty(condition.getProjectCodeList())) {
+                page.setList(list);
+                return page;
+            }
+        }
         if (condition.getCreateDatetimeStart() != null
                 && condition.getCreateDatetimeEnd() != null
                 && condition.getCreateDatetimeStart()
@@ -84,14 +92,11 @@ public class AttendanceAOImpl implements IAttendanceAO {
             throw new BizException("xn0000", "开始时间不能大于结束时间");
         }
 
-        Paginable<Attendance> page = attendanceBO.getPaginable(start, limit,
-            condition);
-        List<Attendance> list = page.getList();
-        for (Attendance attendance : list) {
+        page = attendanceBO.getPaginable(start, limit, condition);
+        for (Attendance attendance : page.getList()) {
             Staff staff = staffBO.getStaff(attendance.getStaffCode());
             attendance.setStaffName(staff.getName());
         }
-        page.setList(list);
         return page;
     }
 

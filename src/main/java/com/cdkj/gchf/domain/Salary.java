@@ -32,7 +32,7 @@ public class Salary extends ABaseDO {
     private String staffCode;
 
     // 所属月份
-    private Integer month;
+    private String month;
 
     // 应发工资
     private Long shouldAmount;
@@ -42,6 +42,9 @@ public class Salary extends ABaseDO {
 
     // 已发放金额
     private Long payAmount;
+
+    // 补发金额
+    private Long supplyAmount;
 
     // 扣款金额
     private Long cutAmount;
@@ -110,6 +113,9 @@ public class Salary extends ABaseDO {
     // 项目编号List
     private List<String> projectCodeList;
 
+    // 月领薪人数
+    private long number;
+
     public void setCode(String code) {
         this.code = code;
     }
@@ -150,11 +156,11 @@ public class Salary extends ABaseDO {
         this.projectName = projectName;
     }
 
-    public Integer getMonth() {
+    public String getMonth() {
         return month;
     }
 
-    public void setMonth(Integer month) {
+    public void setMonth(String month) {
         this.month = month;
     }
 
@@ -356,6 +362,22 @@ public class Salary extends ABaseDO {
 
     public void setStaffMobile(String staffMobile) {
         this.staffMobile = staffMobile;
+    }
+
+    public long getNumber() {
+        return number;
+    }
+
+    public void setNumber(long number) {
+        this.number = number;
+    }
+
+    public Long getSupplyAmount() {
+        return supplyAmount;
+    }
+
+    public void setSupplyAmount(Long supplyAmount) {
+        this.supplyAmount = supplyAmount;
     }
 
 }

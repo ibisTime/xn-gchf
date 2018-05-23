@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -16,6 +17,7 @@ import com.cdkj.gchf.bo.ICcontractBO;
 import com.cdkj.gchf.bo.IEmployBO;
 import com.cdkj.gchf.bo.IProjectBO;
 import com.cdkj.gchf.bo.ISalaryBO;
+import com.cdkj.gchf.bo.ISkillBO;
 import com.cdkj.gchf.bo.IStaffBO;
 import com.cdkj.gchf.bo.IUserBO;
 import com.cdkj.gchf.bo.base.Paginable;
@@ -27,6 +29,7 @@ import com.cdkj.gchf.domain.Ccontract;
 import com.cdkj.gchf.domain.Employ;
 import com.cdkj.gchf.domain.Project;
 import com.cdkj.gchf.domain.Salary;
+import com.cdkj.gchf.domain.Skill;
 import com.cdkj.gchf.domain.Staff;
 import com.cdkj.gchf.domain.User;
 import com.cdkj.gchf.dto.req.XN631410Req;
@@ -43,25 +46,28 @@ import com.google.gson.Gson;
 public class StaffAOImpl implements IStaffAO {
 
     @Autowired
-    private IStaffBO staffBO;
+    IStaffBO staffBO;
 
     @Autowired
-    private IBankCardBO bankCardBO;
+    IBankCardBO bankCardBO;
 
     @Autowired
-    private IUserBO userBO;
+    IUserBO userBO;
 
     @Autowired
-    private ICcontractBO ccontractBO;
+    ICcontractBO ccontractBO;
 
     @Autowired
-    private IProjectBO projectBO;
+    IProjectBO projectBO;
 
     @Autowired
-    private IEmployBO employBO;
+    IEmployBO employBO;
 
     @Autowired
-    private ISalaryBO salaryBO;
+    ISalaryBO salaryBO;
+
+    @Autowired
+    ISkillBO skillBO;
 
     @Override
     public String addStaff(XN631410Req req) {
@@ -78,7 +84,7 @@ public class StaffAOImpl implements IStaffAO {
         String ccontractCode = OrderNoGenerater
             .generate(EGeneratePrefix.Ccontract.getCode());
         ccontract.setCode(ccontractCode);
-        ccontract.setProjectName(project.getCompanyName());
+        ccontract.setProjectName(project.getName());
         ccontract.setProjectCode(project.getCode());
         ccontract.setStaffMobile(req.getMobile());
 
@@ -92,7 +98,6 @@ public class StaffAOImpl implements IStaffAO {
         ccontract.setRemark(req.getRemark());
         // 工资卡信息 ;
         bankCard.setCompanyCode(project.getCompanyCode());
-        bankCard.setCompanyName(project.getCompanyName());
         bankCard.setBankCode(req.getBankCode());
         bankCard.setBankName(req.getBankName());
         bankCard.setBankcardNumber(req.getBankcardNumber());
@@ -148,6 +153,7 @@ public class StaffAOImpl implements IStaffAO {
     @Override
     public void editStaff(XN631412Req req) {
         PhoneUtil.checkMobile(req.getMobile());
+        Date date = new Date();
         Staff data = staffBO.getStaff(req.getCode());
         data.setIdType(req.getIdType());
         data.setIdNo(req.getIdNo());
@@ -159,9 +165,13 @@ public class StaffAOImpl implements IStaffAO {
         data.setPict3(req.getPict3());
         data.setUpdater(req.getUpdater());
 
-        data.setUpdateDatetime(new Date());
+        data.setUpdateDatetime(date);
         data.setRemark(req.getRemark());
         staffBO.refreshStaff(data);
+        // 修改技能
+        for (Skill skill : req.getSkillList()) {
+            skillBO.refreshSkill(skill);
+        }
     }
 
     @Override
@@ -258,19 +268,21 @@ public class StaffAOImpl implements IStaffAO {
     public void addStaffInfo(XN631413Req req) {
         PhoneUtil.checkMobile(req.getMobile());
         PhoneUtil.checkMobile(req.getContactsMobile());
+
         Date date = new Date();
         Staff data = staffBO.getStaff(req.getCode());
         data.setPict1(req.getPict1());
         data.setPict2(req.getPict2());
         data.setPict3(req.getPict3());
 
-        data.setUpdater(req.getUpdater());
-        data.setUpdateDatetime(date);
-        data.setRemark(req.getRemark());
         data.setContacts(req.getContacts());
         data.setMobile(req.getContactsMobile());
+        data.setUpdater(req.getUpdater());
+        data.setUpdateDatetime(date);
 
+        data.setRemark(req.getRemark());
         staffBO.saveStaffInfo(data);
+
         // 添加工资卡
         BankCard bankCard = new BankCard();
         bankCard.setStaffName(data.getName());
@@ -293,31 +305,67 @@ public class StaffAOImpl implements IStaffAO {
             bankCardBO.refreshBankCard(bankCard);
         }
 
+        // 添加技能信息
+        String skillCode = null;
+        for (Skill sData : req.getSkillList()) {
+            Skill skill = new Skill();
+            skillCode = OrderNoGenerater
+                .generate(EGeneratePrefix.Skill.getCode());
+            skill.setCode(skillCode);
+            skill.setStaffCode(data.getCode());
+            skill.setStaffName(data.getName());
+            skill.setName(sData.getName());
+
+            skill.setScore(sData.getScore());
+            skill.setPdf(sData.getPdf());
+            skillBO.saveSkill(skill);
+        }
+
     }
 
     @Override
     public Staff getStaffInfo(String code, List<String> projectCodeList) {
         Staff data = staffBO.getStaff(code);
-        // 所在项目信息
+        // 所在项目及工资条
         List<Employ> employList = new ArrayList<Employ>();
         List<Salary> salaryList = new ArrayList<Salary>();
         for (String projectCode : projectCodeList) {
             employList
                 .add(employBO.getEmployByStaff(data.getCode(), projectCode));
-            salaryList
-                .add(salaryBO.getSalaryByStaff(data.getCode(), projectCode));
+            // salaryList
+            // .add(salaryBO.getSalaryByStaff(data.getCode(), projectCode));
         }
         data.setEmployList(employList);
         data.setSalaryList(salaryList);
         // 工资卡
         BankCard bankCard = bankCardBO.getBankCardByStaff(data.getCode());
         data.setBankCard(bankCard);
+        // 技能
         return data;
     }
 
     @Override
-    public Staff getStaffByIdNo(String idNo) {
-        return staffBO.getStaffByIdNo(idNo);
+    public Staff getStaffByIdNo(String idNo, List<String> projectCodeList) {
+        Staff data = staffBO.getStaffByIdNo(idNo);
+        // 所在项目及工资条
+        List<Employ> employList = new ArrayList<Employ>();
+        List<Salary> salaryList = new ArrayList<Salary>();
+        if (CollectionUtils.isNotEmpty(projectCodeList)) {
+            for (String projectCode : projectCodeList) {
+                employList.add(
+                    employBO.getEmployByStaff(data.getCode(), projectCode));
+
+                salaryList.addAll(
+                    salaryBO.getSalaryByStaff(data.getCode(), projectCode));
+            }
+        }
+        data.setEmployList(employList);
+        data.setSalaryList(salaryList);
+        // 工资卡
+        BankCard bankCard = bankCardBO.getBankCardByStaff(data.getCode());
+        data.setBankCard(bankCard);
+
+        return data;
     }
 
     private String getName(String userId) {

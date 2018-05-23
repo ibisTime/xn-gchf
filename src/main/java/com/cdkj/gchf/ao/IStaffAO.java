@@ -29,14 +29,19 @@ public interface IStaffAO {
 
     public Staff getStaff(String code);
 
+    // 获取特征值
     public String getStaffFeatList();
 
+    // 员工建档
     public String addStaff(XN631411Req req);
 
+    // 补全信息
     public void addStaffInfo(XN631413Req req);
 
+    // 获取员工所有信息
     public Staff getStaffInfo(String code, List<String> projetCodeList);
 
-    public Staff getStaffByIdNo(String idNo);
+    // 根据身份证号获取员工信息
+    public Staff getStaffByIdNo(String idNo, List<String> projetCodeList);
 
 }

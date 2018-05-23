@@ -75,16 +75,22 @@ public class Message extends ABaseDO {
 
     // **************db**************
 
+    // 关键字
     private String keyword;
 
+    // 发送人
     private String sendName;
 
+    // 处理人名字
     private String handleName;
 
+    // 用户类型
     private String kind;
 
+    // 状态List
     private List<String> statusList;
 
+    // 项目编号List
     private List<String> projectCodeList;
 
     public void setCode(String code) {

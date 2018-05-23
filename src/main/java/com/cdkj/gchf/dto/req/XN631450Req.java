@@ -12,7 +12,7 @@ public class XN631450Req {
 
     // （必填）工资条编号
     @NotBlank(message = "工资条编号不能为空")
-    private String code;
+    private String salaryCode;
 
     // （必填）处理人
     @NotBlank(message = "处理人不能为空")
@@ -22,12 +22,12 @@ public class XN631450Req {
     @NotBlank(message = "处理备注不能为空")
     private String handleNote;
 
-    public String getCode() {
-        return code;
+    public String getSalaryCode() {
+        return salaryCode;
     }
 
-    public void setCode(String code) {
-        this.code = code;
+    public void setSalaryCode(String salaryCode) {
+        this.salaryCode = salaryCode;
     }
 
     public String getHandler() {

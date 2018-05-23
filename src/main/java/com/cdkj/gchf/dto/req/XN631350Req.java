@@ -15,26 +15,6 @@ public class XN631350Req {
     @NotBlank(message = "负责人编号不能为空")
     private String chargeUser;
 
-    // 账户别称
-    @NotBlank(message = "账户别称不能为空")
-    private String bankCode;
-
-    // 账户号
-    @NotBlank(message = "账户号不能为空")
-    private String bankcardNumber;
-
-    // 银行名
-    @NotBlank(message = "银行名不能为空")
-    private String bankName;
-
-    // 开户行
-    @NotBlank(message = "开户行不能为空")
-    private String subbranch;
-
-    // 经度
-    @NotBlank(message = "经度不能为空")
-    private String longitude;
-
     // 纬度
     @NotBlank(message = "纬度不能为空")
     private String latitude;
@@ -81,6 +61,30 @@ public class XN631350Req {
 
     // 备注
     private String remark;
+
+    // 账户别称
+    @NotBlank(message = "账户别称不能为空")
+    private String bankCode;
+
+    // 账户号
+    @NotBlank(message = "账户号不能为空")
+    private String bankcardNumber;
+
+    // 银行名
+    @NotBlank(message = "银行名不能为空")
+    private String bankName;
+
+    // 开户行
+    @NotBlank(message = "开户行不能为空")
+    private String subbranch;
+
+    // 经度
+    @NotBlank(message = "经度不能为空")
+    private String longitude;
+
+    // 户名
+    @NotBlank(message = "户名不能为空")
+    private String accountName;
 
     public String getBankcardNumber() {
         return bankcardNumber;
@@ -240,6 +244,14 @@ public class XN631350Req {
 
     public void setSalaryCreateDatetime(String salaryCreateDatetime) {
         this.salaryCreateDatetime = salaryCreateDatetime;
+    }
+
+    public String getAccountName() {
+        return accountName;
+    }
+
+    public void setAccountName(String accountName) {
+        this.accountName = accountName;
     }
 
 }

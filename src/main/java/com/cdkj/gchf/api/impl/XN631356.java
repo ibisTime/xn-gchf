@@ -38,7 +38,6 @@ public class XN631356 extends AProcessor {
         condition.setApprover(req.getApprover());
         condition.setUpdater(req.getUpdater());
         condition.setCompanyCode(req.getCompanyCode());
-        condition.setCompanyName(req.getCompanyName());
         condition.setStatus(req.getStatus());
 
         condition.setKeyword(req.getKeyword());

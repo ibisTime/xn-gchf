@@ -10,22 +10,23 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.cdkj.gchf.ao.IMessageAO;
-import com.cdkj.gchf.bo.ICompanyCardBO;
+import com.cdkj.gchf.bo.IEmployBO;
 import com.cdkj.gchf.bo.IMessageBO;
-import com.cdkj.gchf.bo.IProjectBO;
 import com.cdkj.gchf.bo.IReportBO;
 import com.cdkj.gchf.bo.ISalaryBO;
 import com.cdkj.gchf.bo.ISalaryLogBO;
+import com.cdkj.gchf.bo.IStaffBO;
 import com.cdkj.gchf.bo.IUserBO;
 import com.cdkj.gchf.bo.base.Page;
 import com.cdkj.gchf.bo.base.Paginable;
+import com.cdkj.gchf.common.DateUtil;
 import com.cdkj.gchf.core.OrderNoGenerater;
 import com.cdkj.gchf.core.StringValidater;
-import com.cdkj.gchf.domain.CompanyCard;
+import com.cdkj.gchf.domain.Employ;
 import com.cdkj.gchf.domain.Message;
-import com.cdkj.gchf.domain.Project;
 import com.cdkj.gchf.domain.Report;
 import com.cdkj.gchf.domain.Salary;
+import com.cdkj.gchf.domain.SalaryLog;
 import com.cdkj.gchf.domain.User;
 import com.cdkj.gchf.dto.req.XN631439Req;
 import com.cdkj.gchf.enums.EGeneratePrefix;
@@ -40,38 +41,30 @@ import com.cdkj.gchf.exception.BizException;
 public class MessageAOImpl implements IMessageAO {
 
     @Autowired
-    private IMessageBO messageBO;
+    IMessageBO messageBO;
 
     @Autowired
-    private ISalaryBO salaryBO;
+    ISalaryBO salaryBO;
 
     @Autowired
-    private ISalaryLogBO salaryLogBO;
+    ISalaryLogBO salaryLogBO;
 
     @Autowired
-    private IUserBO userBO;
+    IUserBO userBO;
 
     @Autowired
-    private IReportBO reportBO;
+    IReportBO reportBO;
 
     @Autowired
-    private IProjectBO projectBO;
+    IStaffBO staffBO;
 
     @Autowired
-    private ICompanyCardBO companyCardBO;
+    IEmployBO employBO;
 
     @Override
     public String addMessage(Message data) {
         messageBO.saveMessage(data);
         return null;
-    }
-
-    @Override
-    public void editMessage(Message data) {
-    }
-
-    @Override
-    public void dropMessage(String code) {
     }
 
     @Override
@@ -128,16 +121,28 @@ public class MessageAOImpl implements IMessageAO {
     }
 
     @Override
+    @Transactional
     public void sendMessage(String code, String title, String content,
             String sender, String sendNote) {
+
         Message data = messageBO.getMessage(code);
         data.setTitle(title);
         data.setContent(content);
         data.setSender(sender);
         data.setSendDatetime(new Date());
         data.setSendNote(sendNote);
-
         data.setStatus(EMessageStatus.TO_Deal.getCode());
+        // 判断工资条是否已审核
+        Salary condition = new Salary();
+        condition.setMessageCode(data.getCode());
+        List<Salary> list = salaryBO.querySalaryList(condition);
+        for (Salary salary : list) {
+            if (ESalaryStatus.TO_Send.getCode().equals(salary.getStatus())) {
+                throw new BizException("xn00000", "存在未审核的工资条");
+            }
+            salary.setStatus(ESalaryStatus.TO_Pay.getCode());
+            salaryBO.refreshStatus(salary);
+        }
         messageBO.sendMessage(data);
     }
 
@@ -146,63 +151,79 @@ public class MessageAOImpl implements IMessageAO {
     public void approveMessage(String code, String handler, String handleNote,
             List<XN631439Req> list) {
         Message data = messageBO.getMessage(code);
-
-        Project project = projectBO.getProject(data.getProjectCode());
         Long lastMonthSalary = 0L;
-        String mCode = null;
-        String type = ESalaryLogType.Normal.getCode();
         String status = ESalaryStatus.Payed.getCode();
+        boolean flag = false;
+        String messageCode = OrderNoGenerater
+            .generate(EGeneratePrefix.Message.getCode());
+
         for (XN631439Req req : list) {
             Salary salary = salaryBO.getSalary(req.getCode());
             // 防止重复发放
             if (ESalaryStatus.Payed.getCode().equals(salary.getStatus())) {
-                throw new BizException("xn0000",
-                    "编号为[" + salary.getStaffCode() + "]员工的工资已全部发放");
+                throw new BizException("xn00000",
+                    "员工[" + salary.getStaffName() + "]的工资已全部发放");
             }
-
-            if (salary.getFactAmount() > StringValidater
+            if (salary.getFactAmount() == StringValidater
                 .toLong(req.getPayAmount())) {
-                type = ESalaryLogType.Abnormal.getCode();
-                // 生成新代发消息
-                Message message = new Message();
-                mCode = OrderNoGenerater
-                    .generate(EGeneratePrefix.Message.getCode());
+                flag = true;
 
-                message.setCode(mCode);
-                message.setProjectCode(project.getCode());
-                message.setProjectName(project.getName());
-
-                CompanyCard card = companyCardBO
-                    .getCompanyCardByProject(project.getCode());
-                message.setBankCode(card.getBankCode());
-                message.setBankName(card.getBankName());
-                message.setSubbranch(card.getSubbranch());
-                message.setBankcardNumber(card.getBankcardNumber());
-                message.setCreateDatetime(new Date());
-
-                message.setStatus(EMessageStatus.TO_Send.getCode());
-                messageBO.saveMessage(message);
+                // 添加工资日志
+                SalaryLog salaryLog = new SalaryLog();
+                String salaryLogCode = OrderNoGenerater
+                    .generate(EGeneratePrefix.SalaryLog.getCode());
+                salaryLog.setCode(salaryLogCode);
+                salaryLog.setSalaryCode(salary.getCode());
+                salaryLog.setType(ESalaryLogType.Abnormal.getCode());
+                salaryLog.setStaffCode(salary.getStaffCode());
+                salaryLog.setProjectCode(salary.getProjectCode());
+                salaryLog.setProjectName(salary.getProjectName());
+                salaryLogBO.saveSalaryLog(salaryLog);
                 status = ESalaryStatus.Pay_Portion.getCode();
-                salaryBO.saveNewSalay(salary, mCode,
-                    StringValidater.toLong(req.getPayAmount()));
             }
-
             if (ESalaryStatus.Pay_Portion.getCode()
                 .equals(salary.getStatus())) {
                 status = ESalaryStatus.Pay_Again.getCode();
             }
-            // 修改工资条信息
-            salaryBO.payAmount(salary,
-                StringValidater.toLong(req.getPayAmount()), status,
-                req.getLatePayDatetime());
-            // 添加工资日志
-            salaryLogBO.saveSalaryLog(salary, type);
+
+            Long supplyAmount = salary.getFactAmount()
+                    - StringValidater.toLong(req.getPayAmount());
+            salary.setPayAmount(StringValidater.toLong(req.getPayAmount()));
+            salary.setSupplyAmount(supplyAmount);
+            salary.setStatus(status);
+            salary.setLatePayDatetime(DateUtil.strToDate(
+                req.getLatePayDatetime(), DateUtil.FRONT_DATE_FORMAT_STRING));
+            salary.setMessageCode(messageCode);
+            salaryBO.payAmount(salary);
+
+            // 修改员工工资发放状态
+            Employ employ = employBO.getEmployByStaff(salary.getStaffCode(),
+                salary.getProjectCode());
+            employ.setSalaryStatus(status);
+            employBO.updateSalaryStatus(employ);
             lastMonthSalary = lastMonthSalary
                     + StringValidater.toLong(req.getPayAmount());
         }
+
         Report report = reportBO.getReportByProject(data.getProjectCode());
         report.setLastMonthSalary(lastMonthSalary);
         reportBO.refreshLastMonthSalary(report);
+        // 是否有异常工资
+        if (flag) {
+            Date date = new Date();
+            Message message = new Message();
+            message.setCode(messageCode);
+            message.setProjectCode(data.getCode());
+            message.setBankCode(data.getBankCode());
+            message.setBankName(data.getBankName());
+            message.setSubbranch(data.getSubbranch());
+
+            message.setBankcardNumber(data.getBankcardNumber());
+            message.setCreateDatetime(date);
+            message.setDownload(0);
+            message.setStatus(EMessageStatus.TO_Send.getCode());
+            messageBO.saveMessage(message);
+        }
         messageBO.approveMessage(data, handler, handleNote);
     }
 
@@ -214,8 +235,6 @@ public class MessageAOImpl implements IMessageAO {
         if (EMessageStatus.TO_Deal.getCode().equals(data.getStatus())) {
             data.setStatus(EMessageStatus.TO_Feedback.getCode());
         }
-        System.out.println("download:" + data.getDownload() + ",backDownload:"
-                + data.getBackDownload());
 
         messageBO.downLoad(data);
         return data;

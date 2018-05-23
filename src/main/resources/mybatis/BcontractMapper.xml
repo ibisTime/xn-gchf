@@ -5,10 +5,7 @@
 	<resultMap id="bcontract_DB_Result" type="bcontract">
 		<result column="code" property="code" />
 		<result column="company_code" property="companyCode" />
-		<result column="company_name" property="companyName" />
 		<result column="project_code" property="projectCode" />
-		<result column="project_name" property="projectName" />
-		
 		<result column="bname" property="bname" />
 		<result column="bmobile" property="bmobile" />
 		
@@ -37,6 +34,10 @@
 					AND 1 = 1
 				</otherwise>
 			</choose>
+			<if test="companyCode != null and companyCode != '' ">
+				AND t.company_code = #{companyCode}
+			</if>
+			
 			<if test="contractDatetime != null and contractDatetime != '' ">
 				AND t.contract_datetime = #{contractDatetime}
 			</if>
@@ -59,9 +60,7 @@
 		SELECT
 		t.code
 		,t.company_code
-		,t.company_name
 		,t.project_code
-		,t.project_name
 		,t.bname
 		,t.bmobile
 		,t.content_pic
@@ -90,9 +89,7 @@
 		thf_bcontract(
 		code
 		,company_code
-		,company_name
 		,project_code
-		,project_name
 		,bname
 		,bmobile
 		
@@ -105,10 +102,7 @@
 		VALUES(
 		#{code}
 		,#{companyCode}
-		,#{companyName}
 		,#{projectCode}
-		,#{projectName}
-		
 		,#{bname}
 		,#{bmobile}
 		,#{contentPic}

@@ -134,10 +134,16 @@ public class EmployBOImpl extends PaginableBOImpl<Employ> implements IEmployBO {
             Employ condition = new Employ();
             condition.setProjectCode(projectCode);
             condition.setStaffCode(staffCode);
+            condition.setStatus(EEmploytatus.Not_Leave.getCode());
             data = employDAO.select(condition);
             System.out.println(data);
         }
         return data;
+    }
+
+    @Override
+    public void updateSalaryStatus(Employ data) {
+        employDAO.updateSalaryStatus(data);
     }
 
 }

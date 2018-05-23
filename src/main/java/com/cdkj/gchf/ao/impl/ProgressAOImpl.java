@@ -27,24 +27,21 @@ import com.cdkj.gchf.enums.EUserKind;
 public class ProgressAOImpl implements IProgressAO {
 
     @Autowired
-    private IProgressBO progressBO;
+    IProgressBO progressBO;
 
     @Autowired
-    private IProjectBO projectBO;
+    IProjectBO projectBO;
 
     @Autowired
-    private IUserBO userBO;
+    IUserBO userBO;
 
     @Override
     public String addProgress(XN631380Req req) {
         Progress data = new Progress();
         Project project = projectBO.getProject(req.getProjectCode());
         data.setCompanyCode(project.getCompanyCode());
-        data.setCompanyName(project.getCompanyName());
 
         data.setProjectCode(req.getProjectCode());
-        data.setProjectName(
-            projectBO.getProject(req.getProjectCode()).getName());
         data.setDatetime(DateUtil.strToDate(req.getDatetime(),
             DateUtil.FRONT_DATE_FORMAT_STRING));
         data.setDescription(req.getDescription());
@@ -81,11 +78,15 @@ public class ProgressAOImpl implements IProgressAO {
             }
         }
 
+        // 补全信息
         page = progressBO.getPaginable(start, limit, condition);
         String updateName = null;
+        Project project = null;
         for (Progress progress : page.getList()) {
+            project = projectBO.getProject(progress.getProjectCode());
             updateName = getName(progress.getUpdater());
             progress.setUpdateName(updateName);
+            progress.setProjectName(project.getName());
         }
         return page;
     }
@@ -98,12 +99,15 @@ public class ProgressAOImpl implements IProgressAO {
                 return list;
             }
         }
-
+        // 补全信息
         list = progressBO.queryProgressList(condition);
         String updateName = null;
+        Project project = null;
         for (Progress progress : list) {
+            project = projectBO.getProject(progress.getProjectCode());
             updateName = getName(progress.getUpdater());
             progress.setUpdateName(updateName);
+            progress.setProjectName(project.getName());
         }
         return list;
     }
@@ -113,6 +117,8 @@ public class ProgressAOImpl implements IProgressAO {
         Progress data = progressBO.getProgress(code);
         String updateName = getName(data.getUpdater());
         data.setUpdateName(updateName);
+        Project project = projectBO.getProject(data.getProjectCode());
+        data.setProjectName(project.getName());
         return progressBO.getProgress(code);
     }
 

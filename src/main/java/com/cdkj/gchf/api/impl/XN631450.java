@@ -5,7 +5,7 @@ import com.cdkj.gchf.api.AProcessor;
 import com.cdkj.gchf.common.JsonUtil;
 import com.cdkj.gchf.core.ObjValidater;
 import com.cdkj.gchf.dto.req.XN631450Req;
-import com.cdkj.gchf.dto.res.BooleanRes;
+import com.cdkj.gchf.dto.res.PKCodeRes;
 import com.cdkj.gchf.exception.BizException;
 import com.cdkj.gchf.exception.ParaException;
 import com.cdkj.gchf.spring.SpringContextHolder;
@@ -18,16 +18,15 @@ import com.cdkj.gchf.spring.SpringContextHolder;
  */
 public class XN631450 extends AProcessor {
 
-    private ISalaryLogAO salaryAO = SpringContextHolder
+    private ISalaryLogAO salaryLogAO = SpringContextHolder
         .getBean(ISalaryLogAO.class);
 
     private XN631450Req req = null;
 
     @Override
     public Object doBusiness() throws BizException {
-        salaryAO.dealWithSalary(req.getCode(), req.getHandler(),
-            req.getHandleNote());
-        return new BooleanRes(true);
+        return new PKCodeRes(salaryLogAO.addsalaryLog(req.getSalaryCode(),
+            req.getHandler(), req.getHandleNote()));
     }
 
     @Override

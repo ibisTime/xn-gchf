@@ -23,7 +23,7 @@ public class StaffLogBOImpl extends PaginableBOImpl<StaffLog>
     private IStaffLogDAO staffLogDAO;
 
     public void saveStaffLog(Employ data, String staffName, String companyCode,
-            String companyName, String projectCode, String projectName) {
+            String projectCode, String projectName) {
         StaffLog staffLog = new StaffLog();
 
         String code = OrderNoGenerater

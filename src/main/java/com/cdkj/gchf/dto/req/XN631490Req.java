@@ -15,7 +15,7 @@ public class XN631490Req {
 
     // 员工编号
     @NotBlank(message = "员工编号不能为空")
-    private String staffCode;
+    private String idNo;
 
     public String getUserId() {
         return userId;
@@ -25,12 +25,12 @@ public class XN631490Req {
         this.userId = userId;
     }
 
-    public String getStaffCode() {
-        return staffCode;
+    public String getIdNo() {
+        return idNo;
     }
 
-    public void setStaffCode(String staffCode) {
-        this.staffCode = staffCode;
+    public void setIdNo(String idNo) {
+        this.idNo = idNo;
     }
 
 }

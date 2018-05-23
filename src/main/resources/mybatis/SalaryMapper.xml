@@ -14,6 +14,7 @@
 		<result column="fact_amount" property="factAmount" />
 		<result column="pay_amount" property="payAmount" />
 		<result column="cut_amount" property="cutAmount" />
+		<result column="supply_amount" property="supplyAmount" />
 		
 		<result column="cut_note" property="cutNote" />
 		<result column="tax" property="tax" />
@@ -63,16 +64,17 @@
 			<if test="month != null and month != '' ">
 				AND t.month = #{month}
 			</if>
-			<if test="status != null and status != '' ">
-				AND t.status = #{status}
-			</if>
-		
-			<if test="statusList != null and statusList.size() > 0 ">
-				<foreach collection="statusList" item="item" index="index" open="(" separator="," close=")">
-					#{item}
-				</foreach>
-			</if>
-			
+			<choose>
+				<when test="status != null and status != '' ">
+					AND t.status = #{status}
+				</when>
+				<when test="statusList != null and statusList.size() > 0 ">
+					AND t.status IN
+					<foreach collection="statusList" item="item" index="index" open="(" separator="," close=")">
+						#{item}
+					</foreach>
+				</when>
+			</choose>
 			
 		</trim>
 	</sql>
@@ -84,20 +86,25 @@
 		,t.staff_code
 		,t.project_code
 		,t.project_name
+		
 		,t.month
 		,t.should_amount
 		,t.fact_amount
 		,t.pay_amount
 		,t.cut_amount
+		
+		,t.supply_amount
 		,t.cut_note
 		,t.tax
 		,t.delay_days
 		,t.early_days
+		
 		,t.leaving_days
 		,t.create_datetime
 		,t.status
 		,t.approve_user
 		,t.approve_datetime
+		
 		,t.approve_note
 		,t.remark
 		,t.late_pay_datetime
@@ -128,6 +135,7 @@
 		,t.should_amount
 		,t.fact_amount
 		,t.pay_amount
+		,t.supply_amount
 		,t.cut_amount
 		,t.cut_note
 		,t.tax
@@ -228,6 +236,7 @@
 		SET
 		status = #{status}
 		,pay_amount = #{payAmount}
+		,supply_amount = #{supplyAmount}
 		,late_pay_datetime = #{latePayDatetime}
 		WHERE code = #{code}
 	</update>
@@ -240,15 +249,11 @@
 		WHERE code = #{code}
 	</update>
 
-	<update id="cut_amount" parameterType="salary">
+	<update id="update_status" parameterType="salary">
 		UPDATE thf_salary
 		SET
-		fact_amount = #{factAmount}
-		,cut_amount = #{cutAmount}
-		,cut_note = #{cutNote}
-		,tax = #{tax}
+		status = #{status}
 		WHERE code = #{code}
 	</update>
-
 
 </mapper>

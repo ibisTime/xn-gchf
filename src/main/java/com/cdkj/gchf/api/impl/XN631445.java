@@ -37,7 +37,7 @@ public class XN631445 extends AProcessor {
         condition.setStatusList(req.getStatusList());
         condition.setKeyword(req.getKeyword());
         condition.setMessageCode(req.getMessageCode());
-        condition.setMonth(StringValidater.toInteger(req.getMonth()));
+        condition.setMonth(req.getMonth());
         condition.setStaffCode(req.getStaffCode());
 
         condition.setStatus(req.getStatus());

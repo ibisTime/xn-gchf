@@ -5,6 +5,7 @@ import org.apache.commons.lang3.StringUtils;
 import com.cdkj.gchf.ao.IQueryLogAO;
 import com.cdkj.gchf.api.AProcessor;
 import com.cdkj.gchf.common.JsonUtil;
+import com.cdkj.gchf.core.StringValidater;
 import com.cdkj.gchf.domain.QueryLog;
 import com.cdkj.gchf.dto.req.XN631496Req;
 import com.cdkj.gchf.exception.BizException;
@@ -28,6 +29,7 @@ public class XN631496 extends AProcessor {
     public Object doBusiness() throws BizException {
         QueryLog condition = new QueryLog();
         condition.setStaffName(req.getStaffName());
+        condition.setUserId(req.getUserId());
 
         String column = req.getOrderColumn();
         if (StringUtils.isBlank(column)) {
@@ -41,6 +43,7 @@ public class XN631496 extends AProcessor {
     public void doCheck(String inputparams, String operator)
             throws ParaException {
         req = JsonUtil.json2Bean(inputparams, XN631496Req.class);
+        StringValidater.validateBlank(req.getUserId());
     }
 
 }

@@ -37,10 +37,7 @@ public class BcontractAOImpl implements IBcontractAO {
         Bcontract data = new Bcontract();
         Project project = projectBO.getProject(req.getProjectCode());
         data.setProjectCode(project.getCode());
-        data.setProjectName(project.getName());
         data.setCompanyCode(project.getCompanyCode());
-
-        data.setCompanyName(project.getCompanyName());
 
         data.setBname(req.getBname());
         data.setBmobile(req.getBmobile());

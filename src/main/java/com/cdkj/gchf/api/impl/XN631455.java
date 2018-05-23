@@ -30,8 +30,6 @@ public class XN631455 extends AProcessor {
     public Object doBusiness() throws BizException {
         SalaryLog condition = new SalaryLog();
 
-        condition.setCompanyCode(req.getCompanyCode());
-        condition.setCompanyName(req.getCompanyName());
         condition.setProjectCode(req.getProjectCode());
         condition.setProjectName(req.getProjectName());
         condition.setKind(req.getKind());

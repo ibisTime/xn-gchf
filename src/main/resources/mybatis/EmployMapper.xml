@@ -26,6 +26,7 @@
 		<result column="updater" property="updater" />
 		<result column="update_datetime" property="updateDatetime" />
 		<result column="remark" property="remark" />
+		<result column="salary_status"  property="salaryStatus" />
 	</resultMap>
 	
 	<sql id="where_condition">
@@ -37,9 +38,6 @@
 				AND t.staff_code = #{staffCode}
 			</if>
 			
-			<if test="companyName != null and companyName != '' ">
-				AND t.company_name = #{companyName}
-			</if>
 			<choose>
 				<when test="projectCode != null and projectCode != ''">
 					AND t.project_code = #{projectCode}
@@ -73,6 +71,9 @@
 				</when>
 			</choose>
 			
+			<if test="salaryStatus != null and salaryStatus != '' ">
+				AND t.salary_status = #{salaryStatus}
+			</if>
 			<if test="keyword != null and keyword != '' ">
 				AND t.staff_mobile like "%"#{keyword}"%" OR t.position  like "%"#{keyword}"%" OR 
 			</if>
@@ -94,6 +95,7 @@
 		,t.salary
 		,t.cut_amount
 		,t.status
+		,t.salary_status
 		
 		,t.join_datetime
 		,t.leaving_datetime
@@ -141,6 +143,7 @@
 		,salary
 		,cut_amount
 		,status
+		,salary_status
 		,join_datetime
 		,updater
 		,update_datetime
@@ -158,6 +161,7 @@
 		,#{salary}
 		,#{cutAmount}
 		,#{status}
+		,#{salary_status}
 		,#{joinDatetime}
 		,#{updater}
 		,#{updateDatetime}
@@ -227,4 +231,10 @@
 		WHERE code = #{code}
 	</update>
 
+	<update id="update_salary_status" parameterType="employ">
+		UPDATE thf_employ
+		SET
+		salary_status = #{salaryStatus}
+		WHERE code = #{code}
+	</update>
 </mapper>

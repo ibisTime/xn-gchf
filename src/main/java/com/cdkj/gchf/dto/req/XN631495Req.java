@@ -1,5 +1,7 @@
 package com.cdkj.gchf.dto.req;
 
+import org.hibernate.validator.constraints.NotBlank;
+
 /**
  * 分页查询记录
  * @author: nyc 
@@ -13,6 +15,10 @@ public class XN631495Req extends APageReq {
      */
     private static final long serialVersionUID = 1573992282405662608L;
 
+    // 用户Id
+    @NotBlank(message = "用户Id不能为空")
+    private String userId;
+
     // （选填） 员工姓名
     private String staffName;
 
@@ -22,6 +28,14 @@ public class XN631495Req extends APageReq {
 
     public void setStaffName(String staffName) {
         this.staffName = staffName;
+    }
+
+    public String getUserId() {
+        return userId;
+    }
+
+    public void setUserId(String userId) {
+        this.userId = userId;
     }
 
 }

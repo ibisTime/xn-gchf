@@ -4,8 +4,6 @@
 <mapper namespace="com.cdkj.gchf.dao.ISalaryLogDAO">
 	<resultMap id="salaryLog_DB_Result" type="salaryLog">
 		<result column="code" property="code" />
-		<result column="company_code" property="companyCode" />
-		<result column="company_name" property="companyName" />
 		<result column="project_code" property="projectCode" />
 		<result column="project_name" property="projectName" />
 		<result column="staff_code" property="staffCode" />
@@ -20,12 +18,6 @@
 		<trim prefix="WHERE" prefixOverrides="AND | OR">
 			<if test="code != null and code != '' ">
 				AND t.code = #{code}
-			</if>
-			<if test="companyCode != null and companyCode != '' ">
-				AND t.company_code = #{companyCode}
-			</if>
-			<if test="companyName != null and companyName != '' ">
-				AND t.company_name like "%"#{companyName}"%"
 			</if>
 			<choose>
 				<when test="projectCode != null and projectCode != '' ">
@@ -59,8 +51,6 @@
 		resultMap="salaryLog_DB_Result">
 		SELECT
 		t.code
-		,t.company_code
-		,t.company_name
 		,t.project_code
 		,t.project_name
 		,t.staff_code
@@ -89,8 +79,6 @@
 		INSERT INTO
 		thf_salary_log(
 		code
-		,company_code
-		,company_name
 		,project_code
 		,project_name
 		,staff_code
@@ -103,8 +91,6 @@
 		)
 		VALUES(
 		#{code}
-		,#{companyCode}
-		,#{companyName}
 		,#{projectCode}
 		,#{projectName}
 		,#{staffCode}

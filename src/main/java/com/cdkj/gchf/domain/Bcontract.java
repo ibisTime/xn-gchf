@@ -17,14 +17,8 @@ public class Bcontract extends ABaseDO {
     // 公司编号
     private String companyCode;
 
-    // 公司编号
-    private String companyName;
-
     // 项目编号
     private String projectCode;
-
-    // 项目名称
-    private String projectName;
 
     // 承包商名称
     private String bname;
@@ -79,14 +73,6 @@ public class Bcontract extends ABaseDO {
 
     public void setProjectCode(String projectCode) {
         this.projectCode = projectCode;
-    }
-
-    public String getProjectName() {
-        return projectName;
-    }
-
-    public void setProjectName(String projectName) {
-        this.projectName = projectName;
     }
 
     public String getBname() {
@@ -169,13 +155,6 @@ public class Bcontract extends ABaseDO {
         this.companyCode = companyCode;
     }
 
-    public String getCompanyName() {
-        return companyName;
-    }
-
-    public void setCompanyName(String companyName) {
-        this.companyName = companyName;
-    }
 
     public String getKind() {
         return kind;

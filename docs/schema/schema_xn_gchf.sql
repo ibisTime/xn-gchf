@@ -319,9 +319,9 @@ CREATE TABLE `thf_staff` (
   `updater` varchar(32) DEFAULT NULL COMMENT '更新人',
   `update_datetime` datetime DEFAULT NULL COMMENT '更新时间',
   `feat` text COMMENT '特征值',
-  `contacts` text COMMENT '紧急联系人',
-  `contacts_mobile` text COMMENT '紧急联系人手机号',
-  `remark` text COMMENT '备注',
+  `contacts` varchar(64) DEFAULT NULL COMMENT '紧急联系人',
+  `contacts_mobile` varchar(16) DEFAULT NULL COMMENT '紧急联系人方式',
+  `skill_pdf` varchar(255) DEFAULT NULL COMMENT '技能证书',
   PRIMARY KEY (`code`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 

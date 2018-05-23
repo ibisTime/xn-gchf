@@ -85,7 +85,7 @@ public class UserAOImpl implements IUserAO {
             data.setCompanyName(company.getName());
         }
         if (EUserKind.Bank.getCode().equals(req.getType())) {
-            data.setLoginName(req.getBankName() + req.getSubbranch());
+            data.setLoginName(req.getLoginName());
             data.setBankName(req.getBankName());
             data.setSubbranch(req.getSubbranch());
         }
@@ -322,8 +322,8 @@ public class UserAOImpl implements IUserAO {
     }
 
     @Override
-    public User getUser(String code) {
-        User data = userBO.getUser(code);
+    public User getUser(String userId) {
+        User data = userBO.getUser(userId);
         if (EUserKind.Supervise.getCode().equals(data.getType())
                 || EUserKind.Owner.getCode().equals(data.getType())) {
             Project condition = new Project();

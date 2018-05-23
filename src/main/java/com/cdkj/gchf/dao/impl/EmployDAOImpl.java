@@ -77,4 +77,9 @@ public class EmployDAOImpl extends AMybatisTemplate implements IEmployDAO {
         super.update(NAMESPACE.concat("update_leavingDays"), data);
     }
 
+    @Override
+    public void updateSalaryStatus(Employ data) {
+        super.update(NAMESPACE.concat("update_salary_status"), data);
+    }
+
 }

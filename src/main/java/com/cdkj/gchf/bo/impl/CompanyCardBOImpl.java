@@ -23,19 +23,17 @@ public class CompanyCardBOImpl extends PaginableBOImpl<CompanyCard>
     @Autowired
     private ICompanyCardDAO companyCardDAO;
 
-    public void saveCompanyCard(String projectCode, String projectName,
-            String companyCode, String companyName, String bankCode,
-            String bankName, String bankCardNumber, String subbranch,
-            String updater, Date updateDatetime, String remark) {
+    public void saveCompanyCard(String companyCode, String projectCode,
+            String bankCode, String bankName, String bankCardNumber,
+            String subbranch, String updater, Date updateDatetime,
+            String remark) {
         CompanyCard data = new CompanyCard();
 
         String code = OrderNoGenerater
             .generate(EGeneratePrefix.CompanyBank.getCode());
         data.setCode(code);
         data.setProjectCode(projectCode);
-        data.setProjectName(projectName);
         data.setCompanyCode(companyCode);
-        data.setCompanyName(companyName);
 
         data.setBankCode(bankCode);
         data.setBankName(bankName);

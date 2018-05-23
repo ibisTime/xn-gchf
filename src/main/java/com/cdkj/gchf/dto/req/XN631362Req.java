@@ -14,12 +14,8 @@ public class XN631362Req {
     @NotBlank(message = "编号不能为空")
     private String code;
 
-    // （必填）账户号
-    @NotBlank(message = "账户号不能为空")
-    private String bankcardNumber;
-
     // （必填）银行代号
-    @NotBlank(message = "银行代号不能为空")
+    @NotBlank(message = "银行别称不能为空")
     private String bankCode;
 
     // （必填）银行名称
@@ -29,6 +25,14 @@ public class XN631362Req {
     // （必填）开户行
     @NotBlank(message = "开户行不能为空")
     private String subbranch;
+
+    // （必填）户名
+    @NotBlank(message = "户名不能为空")
+    private String accountName;
+
+    // （必填）账户号
+    @NotBlank(message = "账户号不能为空")
+    private String bankcardNumber;
 
     // （必填）更新人
     @NotBlank(message = "更新人不能为空")
@@ -91,6 +95,14 @@ public class XN631362Req {
 
     public void setRemark(String remark) {
         this.remark = remark;
+    }
+
+    public String getAccountName() {
+        return accountName;
+    }
+
+    public void setAccountName(String accountName) {
+        this.accountName = accountName;
     }
 
 }

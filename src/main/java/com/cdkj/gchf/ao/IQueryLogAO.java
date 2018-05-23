@@ -9,7 +9,7 @@ public interface IQueryLogAO {
 
     static final String DEFAULT_ORDER_COLUMN = "code";
 
-    String addQueryLog(String userId, String staffCode);
+    String addQueryLog(String userId, String idNo);
 
     Paginable<QueryLog> queryQueryLogPage(int start, int limit,
             QueryLog condition);

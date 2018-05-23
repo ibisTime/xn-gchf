@@ -31,7 +31,6 @@
 		<result column="feat" property="feat" />
 		<result column="contacts" property="contacts" />
 		<result column="contacts_mobile" property="contactsMobile" />
-		
 	</resultMap>
 	
 	<sql id="where_condition">

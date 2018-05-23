@@ -1,5 +1,6 @@
 package com.cdkj.gchf.ao.impl;
 
+import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,10 +12,12 @@ import com.cdkj.gchf.bo.ISalaryLogBO;
 import com.cdkj.gchf.bo.IStaffBO;
 import com.cdkj.gchf.bo.IUserBO;
 import com.cdkj.gchf.bo.base.Paginable;
+import com.cdkj.gchf.core.OrderNoGenerater;
 import com.cdkj.gchf.domain.Salary;
 import com.cdkj.gchf.domain.SalaryLog;
 import com.cdkj.gchf.domain.Staff;
 import com.cdkj.gchf.domain.User;
+import com.cdkj.gchf.enums.EGeneratePrefix;
 import com.cdkj.gchf.enums.EUser;
 
 @Service
@@ -33,9 +36,25 @@ public class SalaryLogAOImpl implements ISalaryLogAO {
     private IStaffBO staffBO;
 
     @Override
-    public void dealWithSalary(String code, String handler, String handleNote) {
-        SalaryLog data = salaryLogBO.getSalaryLog(code);
-        salaryLogBO.dealWithSalary(data, handler, handleNote);
+    public String addsalaryLog(String salaryCode, String handler,
+            String handleNote) {
+        SalaryLog data = new SalaryLog();
+        String code = OrderNoGenerater
+            .generate(EGeneratePrefix.SalaryLog.getCode());
+        Salary salary = salaryBO.getSalary(salaryCode);
+        data.setCode(code);
+        data.setProjectCode(salary.getProjectCode());
+        data.setProjectName(salary.getProjectName());
+
+        data.setSalaryCode(salary.getCode());
+        data.setStaffCode(salary.getStaffCode());
+        data.setHandler(handler);
+        Date date = new Date();
+        data.setHandleDatetime(date);
+
+        data.setHandleNote(handleNote);
+        salaryLogBO.saveSalaryLog(data);
+        return code;
     }
 
     @Override

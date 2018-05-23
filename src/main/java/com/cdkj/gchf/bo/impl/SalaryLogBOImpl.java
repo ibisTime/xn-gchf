@@ -9,11 +9,8 @@ import org.springframework.stereotype.Component;
 
 import com.cdkj.gchf.bo.ISalaryLogBO;
 import com.cdkj.gchf.bo.base.PaginableBOImpl;
-import com.cdkj.gchf.core.OrderNoGenerater;
 import com.cdkj.gchf.dao.ISalaryLogDAO;
-import com.cdkj.gchf.domain.Salary;
 import com.cdkj.gchf.domain.SalaryLog;
-import com.cdkj.gchf.enums.EGeneratePrefix;
 import com.cdkj.gchf.exception.BizException;
 
 @Component
@@ -55,16 +52,7 @@ public class SalaryLogBOImpl extends PaginableBOImpl<SalaryLog>
     }
 
     @Override
-    public void saveSalaryLog(Salary salary, String type) {
-        SalaryLog data = new SalaryLog();
-        String code = OrderNoGenerater
-            .generate(EGeneratePrefix.SalaryLog.getCode());
-        data.setCode(code);
-        data.setSalaryCode(salary.getCode());
-        data.setType(type);
-        data.setStaffCode(salary.getStaffCode());
-        data.setProjectCode(salary.getProjectCode());
-        data.setProjectName(salary.getProjectName());
+    public void saveSalaryLog(SalaryLog data) {
         salaryLogDAO.insert(data);
     }
 

@@ -1,6 +1,5 @@
 package com.cdkj.gchf.bo;
 
-import java.util.Date;
 import java.util.List;
 
 import com.cdkj.gchf.bo.base.IPaginableBO;
@@ -10,19 +9,15 @@ public interface ISalaryBO extends IPaginableBO<Salary> {
 
     public void saveSalary(Salary data);
 
-    public void removeSalary(String code);
-
     public void refreshSalary(Salary data);
 
     public List<Salary> querySalaryList(Salary condition);
 
     public Salary getSalary(String code);
 
-    public void addMessageCode(Salary data, String messageCode, String approver,
-            Date approveDatetime, String approveNote, String status);
+    public void addMessageCode(Salary data);
 
-    public void payAmount(Salary salary, Long payAmount, String status,
-            String latePayDatetime);
+    public void payAmount(Salary salary);
 
     public long getTotalSalaryCount(Salary condition);
 
@@ -31,13 +26,13 @@ public interface ISalaryBO extends IPaginableBO<Salary> {
     public List<Salary> queryTotalSalaryPage(int pageNO, int pageSize,
             Salary condition);
 
-    public void cutAmount(Salary data);
-
     public void saveNewSalay(Salary salary, String mCode, Long payAmount);
 
-    public Salary getSalaryByStaff(String code, String projectCode);
+    public List<Salary> getSalaryByStaff(String staffCode, String projectCode);
 
     public Salary querySalayByStatus(String projectCode, String staffCode,
-            Integer month, String status);
+            String month, String status);
+
+    public void refreshStatus(Salary salary);
 
 }

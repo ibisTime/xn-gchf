@@ -6,7 +6,6 @@ import com.cdkj.gchf.ao.IProgressAO;
 import com.cdkj.gchf.ao.ISalaryAO;
 import com.cdkj.gchf.api.AProcessor;
 import com.cdkj.gchf.common.JsonUtil;
-import com.cdkj.gchf.core.StringValidater;
 import com.cdkj.gchf.domain.Salary;
 import com.cdkj.gchf.dto.req.XN631449Req;
 import com.cdkj.gchf.exception.BizException;
@@ -33,7 +32,7 @@ public class XN631449 extends AProcessor {
 
         condition.setApproveUser(req.getApprover());
         condition.setKeyword(req.getKeyword());
-        condition.setMonth(StringValidater.toInteger(req.getMonth()));
+        condition.setMonth(req.getMonth());
         condition.setProjectCode(req.getProjectCode());
         condition.setStatus(req.getStatus());
 

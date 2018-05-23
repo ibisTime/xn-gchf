@@ -1,5 +1,7 @@
 package com.cdkj.gchf.domain;
 
+import java.util.List;
+
 import com.cdkj.gchf.dao.base.ABaseDO;
 
 /**
@@ -26,6 +28,26 @@ public class QueryLog extends ABaseDO {
 
     // 员工姓名
     private String staffName;
+
+    // 证件号
+    private String idNo;
+
+    // 身份证上头像
+    private String idPic;
+
+    // ***********db*************
+
+    // 关键字
+    private String keyword;
+
+    // 项目编号
+    private List<Employ> employList;
+
+    // 职位
+    private String position;
+
+    // 工资发放状态
+    private String salaryStatus;
 
     public String getCode() {
         return code;
@@ -57,6 +79,54 @@ public class QueryLog extends ABaseDO {
 
     public void setStaffName(String staffName) {
         this.staffName = staffName;
+    }
+
+    public String getIdNo() {
+        return idNo;
+    }
+
+    public void setIdNo(String idNo) {
+        this.idNo = idNo;
+    }
+
+    public String getIdPic() {
+        return idPic;
+    }
+
+    public void setIdPic(String idPic) {
+        this.idPic = idPic;
+    }
+
+    public String getKeyword() {
+        return keyword;
+    }
+
+    public void setKeyword(String keyword) {
+        this.keyword = keyword;
+    }
+
+    public List<Employ> getEmployList() {
+        return employList;
+    }
+
+    public void setEmployList(List<Employ> employList) {
+        this.employList = employList;
+    }
+
+    public String getPosition() {
+        return position;
+    }
+
+    public void setPosition(String position) {
+        this.position = position;
+    }
+
+    public String getSalaryStatus() {
+        return salaryStatus;
+    }
+
+    public void setSalaryStatus(String salaryStatus) {
+        this.salaryStatus = salaryStatus;
     }
 
 }

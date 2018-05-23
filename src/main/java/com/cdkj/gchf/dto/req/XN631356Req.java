@@ -9,9 +9,6 @@ public class XN631356Req extends APageReq {
     // 公司编号 （选填）
     private String companyCode;
 
-    // 公司名称 （选填）
-    private String companyName;
-
     // 审核人
     private String approver;
 
@@ -76,14 +73,6 @@ public class XN631356Req extends APageReq {
 
     public void setKind(String kind) {
         this.kind = kind;
-    }
-
-    public String getCompanyName() {
-        return companyName;
-    }
-
-    public void setCompanyName(String companyName) {
-        this.companyName = companyName;
     }
 
     public List<String> getProjectCodeList() {

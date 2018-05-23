@@ -33,6 +33,7 @@ import com.cdkj.gchf.enums.EAttendanceStatus;
 import com.cdkj.gchf.enums.EEmploytatus;
 import com.cdkj.gchf.enums.EGeneratePrefix;
 import com.cdkj.gchf.enums.EProjectStatus;
+import com.cdkj.gchf.enums.EStaffSalaryStatus;
 import com.cdkj.gchf.enums.EUser;
 import com.cdkj.gchf.exception.BizException;
 
@@ -40,28 +41,28 @@ import com.cdkj.gchf.exception.BizException;
 public class EmployAOImpl implements IEmployAO {
 
     @Autowired
-    private IEmployBO employBO;
+    IEmployBO employBO;
 
     @Autowired
-    private IProjectBO projectBO;
+    IProjectBO projectBO;
 
     @Autowired
-    private IStaffBO staffBO;
+    IStaffBO staffBO;
 
     @Autowired
-    private IStaffLogBO staffLogBO;
+    IStaffLogBO staffLogBO;
 
     @Autowired
-    private IUserBO userBO;
+    IUserBO userBO;
 
     @Autowired
-    private IReportBO reportBO;
+    IReportBO reportBO;
 
     @Autowired
-    private IAttendanceBO attendanceBO;
+    IAttendanceBO attendanceBO;
 
     @Autowired
-    private ICcontractBO ccontractBO;
+    ICcontractBO ccontractBO;
 
     @Override
     public String joinIn(XN631460Req req) {
@@ -79,10 +80,7 @@ public class EmployAOImpl implements IEmployAO {
                 || EProjectStatus.Stop.getCode().equals(project.getStatus())) {
             throw new BizException("xn0000", "该项目已经结束");
         }
-        data.setCompanyCode(project.getCompanyCode());
-        data.setCompanyName(project.getCompanyName());
         data.setProjectName(project.getName());
-
         data.setStaffCode(staff.getCode());
 
         data.setStaffMobile(staff.getMobile());
@@ -96,6 +94,7 @@ public class EmployAOImpl implements IEmployAO {
         data.setJoinDatetime(DateUtil.strToDate(req.getJoinDatetime(),
             DateUtil.FRONT_DATE_FORMAT_STRING));
         data.setStatus(EEmploytatus.Work.getCode());
+        data.setSalaryStatus(EStaffSalaryStatus.TO_Pay.getCode());
         data.setUpdater(req.getUpdater());
         data.setUpdateDatetime(date);
         data.setRemark(req.getRemark());
@@ -142,7 +141,7 @@ public class EmployAOImpl implements IEmployAO {
         attendanceBO.saveAttendance(attendance);
         System.out.println("=======考勤生成结束========");
         staffLogBO.saveStaffLog(data, staff.getName(), project.getCompanyCode(),
-            project.getCompanyName(), project.getCode(), project.getName());
+            project.getCode(), project.getName());
         System.out.println("=========历史记录结束======");
 
         return code;
@@ -215,8 +214,7 @@ public class EmployAOImpl implements IEmployAO {
 
         Project project = projectBO.getProject(data.getCode());
         staffLogBO.saveStaffLog(data, data.getStaffCode(),
-            project.getCompanyCode(), project.getCompanyName(),
-            project.getCode(), project.getName());
+            project.getCompanyCode(), project.getCode(), project.getName());
 
     }
 

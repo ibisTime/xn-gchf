@@ -6,11 +6,15 @@
 	<resultMap type="queryLog" id="queryLog_DB_Result">
 		<result column="code" property="code" />
 		<result column="user_id" property="userId" />
-		<result column="staff_code" property="staffCode"/>
-		<result column="staff_name" property="staffName" /> 
+		<result column="staff_code" property="staffCode" />
+		<result column="staff_name" property="staffName" />
+
+		<result column="id_no" property="idNo" />
+		<result column="id_pic" property="idPic" />
+
 	</resultMap>
-	
-	<sql id="where_condition" >
+
+	<sql id="where_condition">
 		<trim prefix="WHERE" prefixOverrides="AND | OR">
 			<if test="code != null and code != '' ">
 				AND t.code = #{code}
@@ -21,33 +25,35 @@
 			<if test="staffCode != null and staffCode != '' ">
 				AND t.staff_code = #{staffCode}
 			</if>
-			<if test="staffName != null and staffName != '' ">
-				AND t.staff_name = #{staffName}
+			<if test="keyword != null and keyword != '' ">
+				AND t.staff_name like "%"#{keyword}"%" OR t.id_no  like "%"#{keyword}"%"
 			</if>
 		</trim>
 	</sql>
-	
+
 	<select id="select_queryLog" parameterType="queryLog" resultMap="queryLog_DB_Result">
-		SELECT 
+		SELECT
 		t.code
 		,t.user_id
 		,t.staff_code
 		,t.staff_name
+		,t.id_no
+		,t.id_pic
 		FROM thf_query_log t
-		<include refid="where_condition"/>
+		<include refid="where_condition" />
 		<trim prefix="ORDER BY ">
 			<if test="order != null and order != '' ">
 				t.${order}
 			</if>
 		</trim>
 	</select>
-	
+
 	<select id="select_queryLog_count" parameterType="queryLog"
 		resultType="java.lang.Long">
 		SELECT count(1) FROM thf_query_log t
 		<include refid="where_condition" />
 	</select>
-	
+
 	<insert id="insert_queryLog" parameterType="queryLog">
 		INSERT INTO
 		thf_query_log(
@@ -55,17 +61,22 @@
 		,user_id
 		,staff_code
 		,staff_name
+		,id_no
+		,id_pic
 		)
 		VALUES(
 		#{code}
 		,#{userId}
 		,#{staffCode}
 		,#{staffName}
+		,#{idNo}
+		,#{idPic}
 		)
 	</insert>
-	
+
 	<delete id="delete_queryLog" parameterType="queryLog">
-		DELETE FROM thf_query_log
+		DELETE FROM
+		thf_query_log
 		WHERE
 		code = #{code}
 	</delete>

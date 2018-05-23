@@ -10,8 +10,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.cdkj.gchf.ao.IProjectAO;
-import com.cdkj.gchf.bo.ICompanyBO;
 import com.cdkj.gchf.bo.ICompanyCardBO;
+import com.cdkj.gchf.bo.IEmployBO;
 import com.cdkj.gchf.bo.IProjectBO;
 import com.cdkj.gchf.bo.IReportBO;
 import com.cdkj.gchf.bo.IUserBO;
@@ -19,8 +19,8 @@ import com.cdkj.gchf.bo.base.Page;
 import com.cdkj.gchf.bo.base.Paginable;
 import com.cdkj.gchf.common.DateUtil;
 import com.cdkj.gchf.core.OrderNoGenerater;
-import com.cdkj.gchf.domain.Company;
 import com.cdkj.gchf.domain.CompanyCard;
+import com.cdkj.gchf.domain.Employ;
 import com.cdkj.gchf.domain.Project;
 import com.cdkj.gchf.domain.Report;
 import com.cdkj.gchf.domain.User;
@@ -28,6 +28,7 @@ import com.cdkj.gchf.dto.req.XN631350Req;
 import com.cdkj.gchf.dto.req.XN631352Req;
 import com.cdkj.gchf.dto.req.XN631353Req;
 import com.cdkj.gchf.enums.EBoolean;
+import com.cdkj.gchf.enums.EEmploytatus;
 import com.cdkj.gchf.enums.EGeneratePrefix;
 import com.cdkj.gchf.enums.EProjectStatus;
 import com.cdkj.gchf.enums.EUser;
@@ -47,10 +48,10 @@ public class ProjectAOImpl implements IProjectAO {
     private ICompanyCardBO companyCardBO;
 
     @Autowired
-    private ICompanyBO companyBO;
+    private IReportBO reportBO;
 
     @Autowired
-    private IReportBO reportBO;
+    IEmployBO employBO;
 
     @Override
     public String addProject(XN631350Req req) {
@@ -59,8 +60,6 @@ public class ProjectAOImpl implements IProjectAO {
             .generate(EGeneratePrefix.Project.getCode());
         data.setCode(code);
         data.setCompanyCode(req.getCompanyCode());
-        Company company = companyBO.getCompany(req.getCompanyCode());
-        data.setCompanyName(company.getName());
         data.setName(req.getName());
         data.setChargeUser(req.getChargeUser());
         User user = userBO.getUser(req.getChargeUser());
@@ -90,10 +89,10 @@ public class ProjectAOImpl implements IProjectAO {
         data.setRemark(req.getRemark());
         projectBO.saveProject(data);
         // 添加公司账户
-        companyCardBO.saveCompanyCard(code, req.getName(), company.getCode(),
-            company.getName(), req.getBankCode(), req.getBankName(),
-            req.getBankcardNumber(), req.getSubbranch(), req.getUpdater(),
-            data.getUpdateDatetime(), req.getRemark());
+        companyCardBO.saveCompanyCard(data.getCompanyCode(), code,
+            req.getBankCode(), req.getBankName(), req.getBankcardNumber(),
+            req.getSubbranch(), req.getUpdater(), data.getUpdateDatetime(),
+            req.getRemark());
         // 生成统计信息
         reportBO.saveReport(data.getCode(), data.getName());
         return code;
@@ -109,8 +108,7 @@ public class ProjectAOImpl implements IProjectAO {
         if (StringUtils.isNotBlank(user.getMobile())) {
             data.setChargeMobile(user.getMobile());
         }
-        if (EProjectStatus.Building.getCode().equals(data.getStatus())
-                || EProjectStatus.End.getCode().equals(data.getStatus())) {
+        if (!EProjectStatus.To_Audit.getCode().equals(data.getStatus())) {
             throw new BizException("xn000", "该项目的状态无法修改");
         }
         data.setLongitude(req.getLongitude());
@@ -265,8 +263,17 @@ public class ProjectAOImpl implements IProjectAO {
         if (!EProjectStatus.Building.getCode().equals(data.getStatus())) {
             throw new BizException("xn0000", "该工程项目未处于在建状态");
         }
-
         projectBO.projectEnd(data, endDatetime, updater, remark);
+        // 项目结束，员工离职
+        Employ condition = new Employ();
+        condition.setProjectCode(data.getCode());
+        condition.setStatus(EEmploytatus.Not_Leave.getCode());
+        List<Employ> list = employBO.queryEmployList(condition);
+
+        for (Employ employ : list) {
+            employ.setStatus(EEmploytatus.Leave.getCode());
+            employBO.updateStatus(employ);
+        }
     }
 
     @Override

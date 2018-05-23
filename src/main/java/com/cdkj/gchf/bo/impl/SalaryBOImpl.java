@@ -9,7 +9,6 @@ import org.springframework.stereotype.Component;
 
 import com.cdkj.gchf.bo.ISalaryBO;
 import com.cdkj.gchf.bo.base.PaginableBOImpl;
-import com.cdkj.gchf.common.DateUtil;
 import com.cdkj.gchf.core.OrderNoGenerater;
 import com.cdkj.gchf.dao.ISalaryDAO;
 import com.cdkj.gchf.domain.Salary;
@@ -25,13 +24,6 @@ public class SalaryBOImpl extends PaginableBOImpl<Salary> implements ISalaryBO {
 
     public void saveSalary(Salary data) {
         salaryDAO.insert(data);
-    }
-
-    @Override
-    public void removeSalary(String code) {
-        Salary data = new Salary();
-        data.setCode(code);
-        salaryDAO.delete(data);
     }
 
     @Override
@@ -59,23 +51,12 @@ public class SalaryBOImpl extends PaginableBOImpl<Salary> implements ISalaryBO {
     }
 
     @Override
-    public void addMessageCode(Salary data, String messageCode, String approver,
-            Date approveDatetime, String approveNote, String status) {
-        data.setMessageCode(messageCode);
-        data.setApproveUser(approver);
-        data.setApproveDatetime(approveDatetime);
-        data.setApproveNote(approveNote);
-        data.setStatus(status);
+    public void addMessageCode(Salary data) {
         salaryDAO.addMessageCode(data);
     }
 
     @Override
-    public void payAmount(Salary salary, Long payAmount, String status,
-            String latePayDatetime) {
-        salary.setStatus(status);
-        salary.setPayAmount(payAmount);
-        salary.setLatePayDatetime(DateUtil.strToDate(latePayDatetime,
-            DateUtil.FRONT_DATE_FORMAT_STRING));
+    public void payAmount(Salary salary) {
         salaryDAO.payAmount(salary);
 
     }
@@ -94,11 +75,6 @@ public class SalaryBOImpl extends PaginableBOImpl<Salary> implements ISalaryBO {
     public List<Salary> queryTotalSalaryPage(int pageNO, int pageSize,
             Salary condition) {
         return salaryDAO.queryTotalSalaryPage(pageNO, pageSize, condition);
-    }
-
-    @Override
-    public void cutAmount(Salary data) {
-        salaryDAO.cutAmount(data);
     }
 
     @Override
@@ -134,27 +110,32 @@ public class SalaryBOImpl extends PaginableBOImpl<Salary> implements ISalaryBO {
     }
 
     @Override
-    public Salary getSalaryByStaff(String staffCode, String projectCode) {
-        Salary data = null;
+    public List<Salary> getSalaryByStaff(String staffCode, String projectCode) {
+        List<Salary> list = null;
         if (StringUtils.isNotBlank(staffCode)
                 && StringUtils.isNotBlank(projectCode)) {
             Salary condition = new Salary();
             condition.setStaffCode(staffCode);
             condition.setProjectCode(projectCode);
-            data = salaryDAO.select(condition);
+            list = salaryDAO.selectList(condition);
         }
-        return data;
+        return list;
     }
 
     @Override
     public Salary querySalayByStatus(String projectCode, String staffCode,
-            Integer month, String status) {
+            String month, String status) {
         Salary condition = new Salary();
         condition.setStaffCode(staffCode);
         condition.setProjectCode(projectCode);
         condition.setMonth(month);
         condition.setStatus(status);
         return salaryDAO.select(condition);
+    }
+
+    @Override
+    public void refreshStatus(Salary salary) {
+        salaryDAO.updateStatus(salary);
     }
 
 }

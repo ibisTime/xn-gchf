@@ -81,8 +81,8 @@ public class SalaryDAOImpl extends AMybatisTemplate implements ISalaryDAO {
     }
 
     @Override
-    public void cutAmount(Salary data) {
-        super.update(NAMESPACE.concat("cut_amount"), data);
+    public void updateStatus(Salary data) {
+        super.update(NAMESPACE.concat("update_status"), data);
     }
 
 }

@@ -1,6 +1,10 @@
 package com.cdkj.gchf.dto.req;
 
+import java.util.List;
+
 import org.hibernate.validator.constraints.NotBlank;
+
+import com.cdkj.gchf.domain.Skill;
 
 /**
  * 修改务工人员信息
@@ -45,6 +49,9 @@ public class XN631412Req {
     // （必填）更新人
     @NotBlank(message = "更新人不能为空")
     private String updater;
+
+    // 员工技能
+    private List<Skill> skillList;
 
     // （选填）备注
     private String remark;
@@ -127,6 +134,14 @@ public class XN631412Req {
 
     public void setRemark(String remark) {
         this.remark = remark;
+    }
+
+    public List<Skill> getSkillList() {
+        return skillList;
+    }
+
+    public void setSkillList(List<Skill> skillList) {
+        this.skillList = skillList;
     }
 
 }

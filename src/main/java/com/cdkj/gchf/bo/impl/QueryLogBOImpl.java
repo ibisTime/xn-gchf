@@ -62,13 +62,12 @@ public class QueryLogBOImpl extends PaginableBOImpl<QueryLog>
     }
 
     @Override
-    public QueryLog isExist(String userId, String staffCode) {
+    public QueryLog isExist(String userId, String idNo) {
         QueryLog data = null;
-        if (StringUtils.isNotBlank(userId)
-                && StringUtils.isNotBlank(staffCode)) {
+        if (StringUtils.isNotBlank(userId) && StringUtils.isNotBlank(idNo)) {
             QueryLog condition = new QueryLog();
             condition.setUserId(userId);
-            condition.setStaffCode(staffCode);
+            condition.setIdNo(idNo);
             data = queryLogDAO.select(condition);
         }
         return data;

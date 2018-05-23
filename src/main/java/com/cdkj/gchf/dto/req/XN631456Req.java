@@ -21,12 +21,6 @@ public class XN631456Req extends APageReq {
     // （选填）工程名称
     private String projectName;
 
-    // （选填）公司编号
-    private String companyCode;
-
-    // （选填）公司名称
-    private String companyName;
-
     // （选填）操作人
     private String handler;
 
@@ -66,22 +60,6 @@ public class XN631456Req extends APageReq {
 
     public void setProjectName(String projectName) {
         this.projectName = projectName;
-    }
-
-    public String getCompanyCode() {
-        return companyCode;
-    }
-
-    public void setCompanyCode(String companyCode) {
-        this.companyCode = companyCode;
-    }
-
-    public String getCompanyName() {
-        return companyName;
-    }
-
-    public void setCompanyName(String companyName) {
-        this.companyName = companyName;
     }
 
     public String getSalaryCode() {

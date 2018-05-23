@@ -15,14 +15,8 @@ public class Progress extends ABaseDO {
     // 公司编号
     private String companyCode;
 
-    // 公司编号
-    private String companyName;
-
     // 项目编号
     private String projectCode;
-
-    // 项目名称
-    private String projectName;
 
     // 进度时间
     private Date datetime;
@@ -46,11 +40,17 @@ public class Progress extends ABaseDO {
     // 关键字
     private String keyword;
 
+    // 更新人名字
     private String updateName;
 
+    // 用户类型
     private String kind;
 
+    // 项目编号List
     private List<String> projectCodeList;
+
+    // 项目名称
+    private String projectName;
 
     public String getKeyword() {
         return keyword;
@@ -74,14 +74,6 @@ public class Progress extends ABaseDO {
 
     public void setProjectCode(String projectCode) {
         this.projectCode = projectCode;
-    }
-
-    public String getProjectName() {
-        return projectName;
-    }
-
-    public void setProjectName(String projectName) {
-        this.projectName = projectName;
     }
 
     public Date getUpdateDatetime() {
@@ -144,14 +136,6 @@ public class Progress extends ABaseDO {
         this.companyCode = companyCode;
     }
 
-    public String getCompanyName() {
-        return companyName;
-    }
-
-    public void setCompanyName(String companyName) {
-        this.companyName = companyName;
-    }
-
     public String getUpdateName() {
         return updateName;
     }
@@ -174,6 +158,14 @@ public class Progress extends ABaseDO {
 
     public void setProjectCodeList(List<String> projectCodeList) {
         this.projectCodeList = projectCodeList;
+    }
+
+    public String getProjectName() {
+        return projectName;
+    }
+
+    public void setProjectName(String projectName) {
+        this.projectName = projectName;
     }
 
 }

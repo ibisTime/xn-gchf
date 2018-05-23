@@ -14,8 +14,6 @@ public interface ISalaryAO {
 
     public String addSalary(Salary data);
 
-    public void dropSalary(String code);
-
     public void editSalary(XN631442Req req);
 
     public Paginable<Salary> querySalaryPage(int start, int limit,
@@ -35,11 +33,6 @@ public interface ISalaryAO {
 
     public List<Salary> queryTotalSalaryList(Salary condition);
 
-    // 补充扣款金额
-    public void cutAmount(List<Salary> list);
-
-    // 异常工资条
-    Paginable<Salary> queryAbnormalSalaryPage(int start, int limit,
-            Salary condition);
+    public List<Salary> querySalaryListByMessageCode(Salary condition);
 
 }

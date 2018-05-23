@@ -21,14 +21,8 @@ public class CompanyCard extends ABaseDO {
     // 公司编号
     private String companyCode;
 
-    // 公司名称
-    private String companyName;
-
     // 项目编号
     private String projectCode;
-
-    // 项目名称
-    private String projectName;
 
     // 银行行别
     private String bankCode;
@@ -38,6 +32,9 @@ public class CompanyCard extends ABaseDO {
 
     // 开户行
     private String subbranch;
+
+    // 户名
+    private String accountName;
 
     // 银行卡号
     private String bankcardNumber;
@@ -59,12 +56,17 @@ public class CompanyCard extends ABaseDO {
 
     // **********************db******************
 
+    // 关键字
     private String keyword;
 
+    // 更新人名称
     private String updateName;
 
     // 用户类型
     private String kind;
+
+    // 项目名称
+    private String projectName;
 
     private List<String> projectCodeList;
 
@@ -82,30 +84,6 @@ public class CompanyCard extends ABaseDO {
 
     public String getProjectCode() {
         return projectCode;
-    }
-
-    public void setProjectName(String projectName) {
-        this.projectName = projectName;
-    }
-
-    public String getProjectName() {
-        return projectName;
-    }
-
-    public void setCompanyCode(String companyCode) {
-        this.companyCode = companyCode;
-    }
-
-    public String getCompanyCode() {
-        return companyCode;
-    }
-
-    public void setCompanyName(String companyName) {
-        this.companyName = companyName;
-    }
-
-    public String getCompanyName() {
-        return companyName;
     }
 
     public void setBankCode(String bankCode) {
@@ -210,6 +188,30 @@ public class CompanyCard extends ABaseDO {
 
     public void setProjectCodeList(List<String> projectCodeList) {
         this.projectCodeList = projectCodeList;
+    }
+
+    public String getCompanyCode() {
+        return companyCode;
+    }
+
+    public void setCompanyCode(String companyCode) {
+        this.companyCode = companyCode;
+    }
+
+    public String getProjectName() {
+        return projectName;
+    }
+
+    public void setProjectName(String projectName) {
+        this.projectName = projectName;
+    }
+
+    public String getAccountName() {
+        return accountName;
+    }
+
+    public void setAccountName(String accountName) {
+        this.accountName = accountName;
     }
 
 }

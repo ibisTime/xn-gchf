@@ -1,17 +1,24 @@
 package com.cdkj.gchf.ao.impl;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.cdkj.gchf.ao.IQueryLogAO;
+import com.cdkj.gchf.bo.IEmployBO;
+import com.cdkj.gchf.bo.IProjectBO;
 import com.cdkj.gchf.bo.IQueryLogBO;
 import com.cdkj.gchf.bo.IStaffBO;
 import com.cdkj.gchf.bo.IUserBO;
 import com.cdkj.gchf.bo.base.Paginable;
+import com.cdkj.gchf.domain.Employ;
+import com.cdkj.gchf.domain.Project;
 import com.cdkj.gchf.domain.QueryLog;
 import com.cdkj.gchf.domain.Staff;
+import com.cdkj.gchf.domain.User;
+import com.cdkj.gchf.enums.EEmploytatus;
 
 @Service
 public class QueryLogAOImpl implements IQueryLogAO {
@@ -23,13 +30,19 @@ public class QueryLogAOImpl implements IQueryLogAO {
     IUserBO userBO;
 
     @Autowired
+    IEmployBO employBO;
+
+    @Autowired
+    IProjectBO projectBO;
+
+    @Autowired
     IStaffBO staffBO;
 
     @Override
-    public String addQueryLog(String userId, String staffCode) {
+    public String addQueryLog(String userId, String idNo) {
         userBO.getUser(userId);
-        Staff staff = staffBO.getStaff(staffCode);
-        QueryLog data = queryLogBO.isExist(userId, staffCode);
+        Staff staff = staffBO.getStaffByIdNo(idNo);
+        QueryLog data = queryLogBO.isExist(userId, idNo);
         if (data != null) {
             return data.getCode();
         }
@@ -47,17 +60,51 @@ public class QueryLogAOImpl implements IQueryLogAO {
     @Override
     public Paginable<QueryLog> queryQueryLogPage(int start, int limit,
             QueryLog condition) {
-        return queryLogBO.getPaginable(start, limit, condition);
+        // 获取辖区工程
+        User user = userBO.getUser(condition.getUserId());
+        Project pCondition = new Project();
+        pCondition.setProvince(user.getProvince());
+        pCondition.setCity(user.getCity());
+        pCondition.setArea(user.getArea());
+        List<Project> list = projectBO.queryProject(pCondition);
+        List<String> projectCodeList = new ArrayList<String>();
+        for (Project project : list) {
+            projectCodeList.add(project.getCode());
+        }
+        Paginable<QueryLog> page = queryLogBO.getPaginable(start, limit,
+            condition);
+        // 补充员工所在工程
+        Employ eCondition = new Employ();
+        List<Employ> employList = null;
+        for (QueryLog queryLog : page.getList()) {
+            eCondition.setStaffCode(queryLog.getCode());
+            eCondition.setStatus(EEmploytatus.Not_Leave.getCode());
+            eCondition.setProjectCodeList(projectCodeList);
+            employList = employBO.queryEmployList(eCondition);
+            queryLog.setEmployList(employList);
+
+        }
+        return page;
     }
 
     @Override
     public List<QueryLog> queryQueryLogList(QueryLog condition) {
-        return queryLogBO.queryQueryLogList(condition);
+        List<QueryLog> list = queryLogBO.queryQueryLogList(condition);
+        Employ eCondition = new Employ();
+        List<Employ> employList = null;
+        for (QueryLog queryLog : list) {
+            eCondition.setStaffCode(queryLog.getCode());
+            eCondition.setStatus(EEmploytatus.Not_Leave.getCode());
+            employList = employBO.queryEmployList(eCondition);
+            queryLog.setEmployList(employList);
+        }
+        return list;
     }
 
     @Override
     public QueryLog getQueryLog(String code) {
-        return queryLogBO.getQueryLog(code);
+        QueryLog data = queryLogBO.getQueryLog(code);
+        return data;
     }
 
 }

@@ -139,5 +139,8 @@
 		<property name="paginableDAO" ref="queryLogDAOImpl"/>
 	</bean>	
 	
+	<bean id="skillBO" class="com.cdkj.gchf.bo.impl.SkillBOImpl">
+		<property name="paginableDAO" ref="skillDAOImpl"/>
+	</bean>	
 </beans>
 

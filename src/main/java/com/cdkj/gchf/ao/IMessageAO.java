@@ -14,10 +14,6 @@ public interface IMessageAO {
 
     public String addMessage(Message data);
 
-    public void dropMessage(String code);
-
-    public void editMessage(Message data);
-
     public Paginable<Message> queryMessagePage(int start, int limit,
             Message condition);
 

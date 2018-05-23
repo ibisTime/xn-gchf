@@ -18,12 +18,6 @@ public class Employ extends ABaseDO {
     // 编号
     private String code;
 
-    // 公司编号
-    private String companyCode;
-
-    // 公司编号
-    private String companyName;
-
     // 项目编号
     private String projectCode;
 
@@ -80,6 +74,9 @@ public class Employ extends ABaseDO {
 
     // 备注
     private String remark;
+
+    // 工资发放状态
+    private String salaryStatus;
 
     // ***********db**************
     private String keyword;
@@ -306,22 +303,6 @@ public class Employ extends ABaseDO {
         this.totalLeavingDays = totalLeavingDays;
     }
 
-    public String getCompanyCode() {
-        return companyCode;
-    }
-
-    public void setCompanyCode(String companyCode) {
-        this.companyCode = companyCode;
-    }
-
-    public String getCompanyName() {
-        return companyName;
-    }
-
-    public void setCompanyName(String companyName) {
-        this.companyName = companyName;
-    }
-
     public List<String> getProjectCodeList() {
         return projectCodeList;
     }
@@ -338,24 +319,12 @@ public class Employ extends ABaseDO {
         this.staffName = staffName;
     }
 
-    @Override
-    public String toString() {
-        return "Employ [code=" + code + ", companyCode=" + companyCode
-                + ", companyName=" + companyName + ", projectCode="
-                + projectCode + ", projectName=" + projectName + ", staffCode="
-                + staffCode + ", staffMobile=" + staffMobile + ", type=" + type
-                + ", position=" + position + ", upUser=" + upUser + ", salary="
-                + salary + ", cutAmount=" + cutAmount + ", status=" + status
-                + ", joinDatetime=" + joinDatetime + ", leavingDatetime="
-                + leavingDatetime + ", startDatetime=" + startDatetime
-                + ", endDatetime=" + endDatetime + ", leavingDays="
-                + leavingDays + ", totalLeavingDays=" + totalLeavingDays
-                + ", updater=" + updater + ", updateDatetime=" + updateDatetime
-                + ", remark=" + remark + ", keyword=" + keyword + ", user="
-                + user + ", staff=" + staff + ", upUserName=" + upUserName
-                + ", updateName=" + updateName + ", staffName=" + staffName
-                + ", statusList=" + statusList + ", projectCodeList="
-                + projectCodeList + "]";
+    public String getSalaryStatus() {
+        return salaryStatus;
+    }
+
+    public void setSalaryStatus(String salaryStatus) {
+        this.salaryStatus = salaryStatus;
     }
 
 }

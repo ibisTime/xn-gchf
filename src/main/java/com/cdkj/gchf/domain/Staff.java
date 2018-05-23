@@ -73,7 +73,6 @@ public class Staff extends ABaseDO {
     private String updater;
 
     // 更新时间
-
     private Date updateDatetime;
 
     // 备注
@@ -106,6 +105,9 @@ public class Staff extends ABaseDO {
 
     // 更新人名字
     private String updateName;
+
+    // 技能
+    private List<Skill> skillList;
 
     public void setCode(String code) {
         this.code = code;
@@ -349,6 +351,14 @@ public class Staff extends ABaseDO {
 
     public void setContactsMobile(String contactsMobile) {
         this.contactsMobile = contactsMobile;
+    }
+
+    public List<Skill> getSkillList() {
+        return skillList;
+    }
+
+    public void setSkillList(List<Skill> skillList) {
+        this.skillList = skillList;
     }
 
 }

@@ -1,6 +1,10 @@
 package com.cdkj.gchf.dto.req;
 
+import java.util.List;
+
 import org.hibernate.validator.constraints.NotBlank;
+
+import com.cdkj.gchf.domain.Skill;
 
 public class XN631413Req {
 
@@ -50,6 +54,9 @@ public class XN631413Req {
     // 紧急联系人电话
     @NotBlank(message = "紧急联系人电话不能为空")
     private String contactsMobile;
+
+    // 技能
+    private List<Skill> skillList;
 
     // （选填）备注
     private String remark;
@@ -156,6 +163,14 @@ public class XN631413Req {
 
     public void setContactsMobile(String contactsMobile) {
         this.contactsMobile = contactsMobile;
+    }
+
+    public List<Skill> getSkillList() {
+        return skillList;
+    }
+
+    public void setSkillList(List<Skill> skillList) {
+        this.skillList = skillList;
     }
 
 }

@@ -30,6 +30,7 @@ public class XN631495 extends AProcessor {
     public Object doBusiness() throws BizException {
         QueryLog condition = new QueryLog();
         condition.setStaffName(req.getStaffName());
+        condition.setUserId(req.getUserId());
 
         String column = req.getOrderColumn();
         if (StringUtils.isBlank(column)) {

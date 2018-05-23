@@ -22,6 +22,6 @@ public interface ISalaryDAO extends IBaseDAO<Salary> {
     List<Salary> queryTotalSalaryPage(int pageNO, int pageSize,
             Salary condition);
 
-    void cutAmount(Salary data);
+    void updateStatus(Salary data);
 
 }

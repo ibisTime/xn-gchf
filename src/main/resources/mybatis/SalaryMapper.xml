@@ -31,6 +31,8 @@
 		<result column="remark" property="remark" />
 		<result column="late_pay_datetime" property="latePayDatetime" />
 		<result column="total_fact_amount" property="totalFactAmount" />
+		<result column="total_cut_amount" property="totalCutAmount" />
+		<result column="total_tax" property="totalTax" />
 	</resultMap>
 	<sql id="where_condition">
 		<trim prefix="WHERE" prefixOverrides="AND | OR">
@@ -150,6 +152,8 @@
 		,t.remark
 		,t.late_pay_datetime
 		,SUM(t.fact_amount) AS total_fact_amount
+		,SUM(t.cut_amount) AS total_cut_amount
+		,SUM(t.tax) AS total_tax
 		FROM
 		thf_salary t
 		<include refid="where_condition" />

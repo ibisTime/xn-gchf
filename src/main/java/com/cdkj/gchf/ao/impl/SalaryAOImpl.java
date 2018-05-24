@@ -179,6 +179,7 @@ public class SalaryAOImpl implements ISalaryAO {
     @Override
     public Paginable<Salary> queryTotalSalaryPage(int start, int limit,
             Salary condition) {
+        long number = salaryBO.getTotalCount(condition);
         long totalCount = salaryBO.getTotalSalaryCount(condition);
         Page<Salary> page = new Page<Salary>(start, limit, totalCount);
         List<Salary> list = salaryBO.queryTotalSalaryPage(page.getPageNO(),
@@ -189,6 +190,7 @@ public class SalaryAOImpl implements ISalaryAO {
             staff = staffBO.getStaff(data.getStaffCode());
             data.setStaffName(staff.getName());
             data.setStaffMobile(staff.getMobile());
+            data.setNumber(number);
         }
         page.setList(list);
         return page;

@@ -51,6 +51,9 @@ public class Bcontract extends ABaseDO {
 
     private List<String> projectCodeList;
 
+    // 项目名
+    private String projectName;
+
     public String getKeyword() {
         return keyword;
     }
@@ -155,13 +158,20 @@ public class Bcontract extends ABaseDO {
         this.companyCode = companyCode;
     }
 
-
     public String getKind() {
         return kind;
     }
 
     public void setKind(String kind) {
         this.kind = kind;
+    }
+
+    public String getProjectName() {
+        return projectName;
+    }
+
+    public void setProjectName(String projectName) {
+        this.projectName = projectName;
     }
 
 }

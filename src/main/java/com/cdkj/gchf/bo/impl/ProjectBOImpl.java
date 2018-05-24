@@ -42,7 +42,7 @@ public class ProjectBOImpl extends PaginableBOImpl<Project>
             condition.setCode(code);
             data = projectDAO.select(condition);
             if (data == null) {
-                throw new BizException("xn0000", "该编号不存在");
+                throw new BizException("xn0000", "该项目不存在");
             }
         }
         return data;

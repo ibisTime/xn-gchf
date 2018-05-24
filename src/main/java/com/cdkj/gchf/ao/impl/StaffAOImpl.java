@@ -338,6 +338,8 @@ public class StaffAOImpl implements IStaffAO {
         BankCard bankCard = bankCardBO.getBankCardByStaff(data.getCode());
         data.setBankCard(bankCard);
         // 技能
+        List<Skill> skillList = skillBO.querySkillByStaff(data.getCode());
+        data.setSkillList(skillList);
         return data;
     }
 

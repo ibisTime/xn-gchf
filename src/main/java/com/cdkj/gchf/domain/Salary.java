@@ -98,6 +98,15 @@ public class Salary extends ABaseDO {
     // 月累积薪资
     private Long totalFactAmount;
 
+    // 月累积税费
+    private Long totalTax;
+
+    // 月累计扣款
+    private Long totalCutAmount;
+
+    // 共计发薪
+    private Long totalAmount;
+
     // 用户类型
     private String kind;
 
@@ -378,6 +387,30 @@ public class Salary extends ABaseDO {
 
     public void setSupplyAmount(Long supplyAmount) {
         this.supplyAmount = supplyAmount;
+    }
+
+    public Long getTotalTax() {
+        return totalTax;
+    }
+
+    public void setTotalTax(Long totalTax) {
+        this.totalTax = totalTax;
+    }
+
+    public Long getTotalCutAmount() {
+        return totalCutAmount;
+    }
+
+    public void setTotalCutAmount(Long totalCutAmount) {
+        this.totalCutAmount = totalCutAmount;
+    }
+
+    public Long getTotalAmount() {
+        return totalAmount;
+    }
+
+    public void setTotalAmunt(Long totalAmount) {
+        this.totalAmount = totalAmount;
     }
 
 }

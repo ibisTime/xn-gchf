@@ -57,7 +57,7 @@ public class CompanyCardAOImpl implements ICompanyCardAO {
         page = companyCardBO.getPaginable(start, limit, condition);
         Project project = null;
         for (CompanyCard companyCard : page.getList()) {
-            project = projectBO.getProject(companyCard.getCompanyCode());
+            project = projectBO.getProject(companyCard.getProjectCode());
             companyCard.setProjectName(project.getName());
         }
         return page;

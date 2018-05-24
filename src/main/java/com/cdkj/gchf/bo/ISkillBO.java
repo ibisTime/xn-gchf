@@ -11,8 +11,10 @@ public interface ISkillBO extends IPaginableBO<Skill> {
 
     void refreshSkill(Skill skill);
 
-    List<Skill> querySalaryLogList(Skill condition);
+    List<Skill> querySkillList(Skill condition);
 
-    Skill getSalaryLog(String code);
+    Skill getSkill(String code);
+
+    List<Skill> querySkillByStaff(String code);
 
 }

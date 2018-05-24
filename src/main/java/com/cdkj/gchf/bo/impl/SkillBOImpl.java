@@ -29,12 +29,12 @@ public class SkillBOImpl extends PaginableBOImpl<Skill> implements ISkillBO {
     }
 
     @Override
-    public List<Skill> querySalaryLogList(Skill condition) {
+    public List<Skill> querySkillList(Skill condition) {
         return skillDAO.selectList(condition);
     }
 
     @Override
-    public Skill getSalaryLog(String code) {
+    public Skill getSkill(String code) {
         Skill data = null;
         if (StringUtils.isNotBlank(code)) {
             Skill condition = new Skill();
@@ -44,8 +44,14 @@ public class SkillBOImpl extends PaginableBOImpl<Skill> implements ISkillBO {
                 throw new BizException("xn00000", "技能不存在");
             }
         }
+        return data;
+    }
 
-        return null;
+    @Override
+    public List<Skill> querySkillByStaff(String staffCode) {
+        Skill condition = new Skill();
+        condition.setStaffCode(staffCode);
+        return skillDAO.selectList(condition);
     }
 
 }

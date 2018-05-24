@@ -24,12 +24,12 @@ public class SkillAOImpl implements ISkillAO {
 
     @Override
     public List<Skill> querySalaryLogList(Skill condition) {
-        return skillBO.querySalaryLogList(condition);
+        return skillBO.querySkillList(condition);
     }
 
     @Override
     public Skill getSalaryLog(String code) {
-        return skillBO.getSalaryLog(code);
+        return skillBO.getSkill(code);
     }
 
 }

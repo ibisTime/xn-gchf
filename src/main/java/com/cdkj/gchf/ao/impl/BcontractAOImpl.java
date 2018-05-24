@@ -78,7 +78,14 @@ public class BcontractAOImpl implements IBcontractAO {
                 return page;
             }
         }
-        return bcontractBO.getPaginable(start, limit, condition);
+        // 补全信息
+        page = bcontractBO.getPaginable(start, limit, condition);
+        Project project = null;
+        for (Bcontract bcontract : page.getList()) {
+            project = projectBO.getProject(bcontract.getProjectCode());
+            bcontract.setProjectName(project.getName());
+        }
+        return page;
     }
 
     @Override
@@ -89,11 +96,21 @@ public class BcontractAOImpl implements IBcontractAO {
                 return list;
             }
         }
-        return bcontractBO.queryBcontractList(condition);
+        // 补全信息
+        list = bcontractBO.queryBcontractList(condition);
+        Project project = null;
+        for (Bcontract bcontract : list) {
+            project = projectBO.getProject(bcontract.getProjectCode());
+            bcontract.setProjectName(project.getName());
+        }
+        return list;
     }
 
     @Override
     public Bcontract getBcontract(String code) {
-        return bcontractBO.getBcontract(code);
+        Bcontract data = bcontractBO.getBcontract(code);
+        Project project = projectBO.getProject(data.getProjectCode());
+        data.setProjectName(project.getName());
+        return data;
     }
 }

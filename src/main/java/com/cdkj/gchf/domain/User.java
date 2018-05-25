@@ -51,9 +51,6 @@ public class User extends ABaseDO {
     // 公司编号
     private String companyCode;
 
-    // 公司名称
-    private String companyName;
-
     // 部门编号
     private String departmentCode;
 
@@ -263,14 +260,6 @@ public class User extends ABaseDO {
 
     public void setDepartmentName(String departmentName) {
         this.departmentName = departmentName;
-    }
-
-    public String getCompanyName() {
-        return companyName;
-    }
-
-    public void setCompanyName(String companyName) {
-        this.companyName = companyName;
     }
 
     public String getProvince() {

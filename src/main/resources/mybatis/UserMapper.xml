@@ -17,7 +17,6 @@
 		<result column="role_code" property="roleCode" />
 		
 		<result column="company_code" property="companyCode" />
-		<result column="company_name" property="companyName" />
 		<result column="department_code" property="departmentCode" />
 		<result column="province" property="province" />
 		<result column="city" property="city" />
@@ -68,10 +67,6 @@
 			<if test="companyCode != null and companyCode != '' ">
 				AND t.company_code = #{companyCode}
 			</if>
-			<if test="companyName != null and companyName != '' ">
-				AND t.company_name like "%"#{companyName}"%"
-			</if>
-			
 			<if test="departmentCode != null and departmentCode != '' ">
 				AND t.department_code = #{departmentCode}
 			</if>
@@ -102,7 +97,6 @@
 		,t.create_datetime
 		,t.role_code
 		,t.company_code
-		,t.company_name
 		,t.department_code
 		
 		,t.province
@@ -148,7 +142,6 @@
 		,role_code
 		
 		,company_code
-		,company_name
 		,province
 		,city
 		,area
@@ -176,7 +169,6 @@
 		,#{roleCode}
 		
 		,#{companyCode}
-		,#{companyName}
 		,#{province}
 		,#{city}
 		,#{area}

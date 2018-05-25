@@ -23,10 +23,6 @@ public class StaffBOImpl extends PaginableBOImpl<Staff> implements IStaffBO {
     }
 
     @Override
-    public void removeStaff(String code) {
-    }
-
-    @Override
     public void refreshStaff(Staff data) {
         staffDAO.update(data);
     }
@@ -75,5 +71,10 @@ public class StaffBOImpl extends PaginableBOImpl<Staff> implements IStaffBO {
     @Override
     public void saveStaffInfo(Staff data) {
         staffDAO.insertStaffInfo(data);
+    }
+
+    @Override
+    public void refreshSalaryStatus(Staff data) {
+        staffDAO.updateSalaryStatus(data);
     }
 }

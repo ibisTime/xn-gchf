@@ -76,6 +76,14 @@ public class Progress extends ABaseDO {
         this.projectCode = projectCode;
     }
 
+    public String getCompanyCode() {
+        return companyCode;
+    }
+
+    public void setCompanyCode(String companyCode) {
+        this.companyCode = companyCode;
+    }
+
     public Date getUpdateDatetime() {
         return updateDatetime;
     }
@@ -126,14 +134,6 @@ public class Progress extends ABaseDO {
 
     public void setRemark(String remark) {
         this.remark = remark;
-    }
-
-    public String getCompanyCode() {
-        return companyCode;
-    }
-
-    public void setCompanyCode(String companyCode) {
-        this.companyCode = companyCode;
     }
 
     public String getUpdateName() {

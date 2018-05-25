@@ -2,8 +2,7 @@ package com.cdkj.gchf.enums;
 
 public enum EStaffSalaryStatus {
 
-    TO_Pay("0", "工资待发放"), Normal_Pay("1", "正常发放"), Pay_Portion("2",
-            "部分发放"), Pay_Aagin("3", "已补发");
+    Normal("1", "正常发放"), Pay_Portion("2", "部分发放"), Pay_Aagin("3", "已转正常");
 
     EStaffSalaryStatus(String code, String value) {
         this.code = code;

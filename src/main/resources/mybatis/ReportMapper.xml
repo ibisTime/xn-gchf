@@ -140,6 +140,7 @@
 		UPDATE thf_report
 		SET
 		last_month_salary = #{lastMonthSalary}
+		,total_salary = #{totalSalary}
 		WHERE code = #{code}
 	</update>
 	

@@ -8,18 +8,25 @@
 		<result column="project_name" property="projectName" />
 		<result column="bank_code" property="bankCode" />
 		<result column="bank_name" property="bankName" />
+		
 		<result column="subbranch" property="subbranch" />
 		<result column="bankcard_number" property="bankcardNumber" />
+		<result column="month" property="month" />
+		<result column="total_amount" property="totalAmount" />
+		<result column="number" property="number" />
+		
+		<result column="total_cut_amount" property="totalCutAmount" />
+		<result column="total_tax" property="totalTax" />
 		<result column="title" property="title" />
 		<result column="content" property="content" />
 		<result column="create_datetime" property="createDatetime" />
+		
 		<result column="download" property="download" />
 		<result column="back_download" property="backDownload" />
-		
-		
 		<result column="status" property="status" />
 		<result column="sender" property="sender" />
 		<result column="send_datetime" property="sendDatetime" />
+		
 		<result column="send_note" property="sendNote" />
 		<result column="handler" property="handler" />
 		<result column="handle_datetime" property="handleDatetime" />
@@ -61,6 +68,10 @@
 					#{item}
 				</foreach>
 			</if>
+			
+			<if test="month != null and month != '' ">
+				AND t.month = #{month}
+			</if>
 			<if test="sender != null and sender != '' ">
 				AND t.sender = #{sender}
 			</if>
@@ -77,16 +88,25 @@
 		,t.project_name
 		,t.bank_code
 		,t.bank_name
+		
 		,t.subbranch
 		,t.bankcard_number
+		,t.month
+		,t.total_amount
+		,t.number
+		
+		,t.total_cut_amount
+		,t.total_tax
 		,t.title
 		,t.content
 		,t.create_datetime
+		
 		,t.download
 		,t.back_download
 		,t.status
 		,t.sender
 		,t.send_datetime
+		
 		,t.send_note
 		,t.handler
 		,t.handle_datetime
@@ -115,16 +135,24 @@
 		,project_name
 		,bank_code
 		,bank_name
+		
 		,subbranch
 		,bankcard_number
+		,month
+		,total_amount
+		,number
+		
+		,total_cut_amount
 		,title
 		,content
 		,create_datetime
+		
 		,status
 		,sender
 		,send_datetime
 		,send_note
 		,handler
+		
 		,handle_datetime
 		,handle_note
 		)
@@ -134,16 +162,24 @@
 		,#{projectName}
 		,#{bankCode}
 		,#{bankName}
+		
 		,#{subbranch}
 		,#{bankcardNumber}
+		,#{month}
+		,#{totalAmount}
+		,#{number}
+		
+		,#{totalCutAmount}
 		,#{title}
 		,#{content}
 		,#{createDatetime}
+		
 		,#{status}
 		,#{sender}
 		,#{sendDatetime}
 		,#{sendNote}
 		,#{handler}
+		
 		,#{handleDatetime}
 		,#{handleNote}
 		)
@@ -152,23 +188,9 @@
 	<update id="update_message" parameterType="message">
 		UPDATE thf_message
 		SET
-		project_code = #{projectCode}
-		,project_name = #{projectName}
-		,bank_code = #{bankCode}
-		,bank_name = #{bankName}
-		,subbranch = #{subbranch}
-		,bankcard_number = #{bankcardNumber}
-		,title = #{title}
-		,content = #{content}
-		,create_datetime = #{createDatetime}
-		,download = #{download}
-		,status = #{status}
-		,sender = #{sender}
-		,send_datetime = #{sendDatetime}
-		,send_note = #{sendNote}
-		,handler = #{handler}
-		,handle_datetime = #{handleDatetime}
-		,handle_note = #{handleNote}
+		total_amount = #{totalAmount}
+		,total_cut_amount = #{totalCutAmount}
+		,total_tax = #{totalTax}
 		WHERE code = #{code}
 	</update>
 

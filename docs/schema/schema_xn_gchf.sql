@@ -18,9 +18,8 @@ CREATE TABLE `thf_attendance` (
 
 DROP TABLE IF EXISTS `thf_bank_card`;
 CREATE TABLE `thf_bank_card` (
-  `company_code` varchar(32) DEFAULT NULL COMMENT '公司编号',
-  `company_name` varchar(255) DEFAULT NULL COMMENT '公司名称',
   `code` varchar(32) NOT NULL COMMENT '编号',
+  `company_code` varchar(32) DEFAULT NULL COMMENT '公司编号',
   `staff_code` varchar(32) DEFAULT NULL COMMENT '员工编号',
   `staff_name` varchar(64) DEFAULT NULL COMMENT '员工姓名',
   `bank_code` varchar(64) DEFAULT NULL COMMENT '银行行别',
@@ -39,13 +38,8 @@ CREATE TABLE `thf_bank_card` (
 DROP TABLE IF EXISTS `thf_bcontract`;
 CREATE TABLE `thf_bcontract` (
   `code` varchar(32) NOT NULL COMMENT '编号',
-  `pict1` varchar(255) DEFAULT NULL COMMENT '免冠照片',
-  `pict2` varchar(255) DEFAULT NULL COMMENT '手持身份证照片',
-  `pict3` varchar(255) DEFAULT NULL COMMENT '身份证正反面+签名照',
   `company_code` varchar(32) DEFAULT NULL COMMENT '公司编号',
-  `company_name` varchar(64) DEFAULT NULL COMMENT '公司名称',
   `project_code` varchar(32) DEFAULT NULL COMMENT '项目编号',
-  `project_name` varchar(255) DEFAULT NULL COMMENT '项目名称',
   `bname` varchar(255) DEFAULT NULL COMMENT '承包商名称',
   `bmobile` varchar(16) DEFAULT NULL COMMENT '承包商手机号',
   `content_pic` varchar(255) DEFAULT NULL COMMENT '合同照片',
@@ -60,8 +54,6 @@ CREATE TABLE `thf_bcontract` (
 DROP TABLE IF EXISTS `thf_ccontract`;
 CREATE TABLE `thf_ccontract` (
   `code` varchar(32) NOT NULL COMMENT '编号',
-  `company_code` varchar(32) DEFAULT NULL COMMENT '公司编号',
-  `company_name` varchar(255) DEFAULT NULL COMMENT '公司编号',
   `project_code` varchar(32) DEFAULT NULL COMMENT '项目编号',
   `project_name` varchar(255) DEFAULT NULL COMMENT '项目名称',
   `staff_code` varchar(32) DEFAULT NULL COMMENT '员工编号',
@@ -104,14 +96,16 @@ CREATE TABLE `thf_company` (
 DROP TABLE IF EXISTS `thf_company_card`;
 CREATE TABLE `thf_company_card` (
   `code` varchar(32) NOT NULL COMMENT '编号',
+  `company_code` varchar(32) DEFAULT NULL COMMENT '公司编号',
   `project_code` varchar(32) DEFAULT NULL COMMENT '项目编号',
   `project_name` varchar(255) DEFAULT NULL COMMENT '项目名称',
+  `bank_name` varchar(255) DEFAULT NULL COMMENT '银行名称',
+  `subbranch` varchar(255) DEFAULT NULL COMMENT '开户行',
+  `account_name` varchar(64) DEFAULT NULL COMMENT '户名',
+  `bankcard_number` varchar(64) DEFAULT NULL COMMENT '银行卡号',
   `update_datetime` datetime DEFAULT NULL COMMENT '更新时间',
   `bank_code` varchar(32) DEFAULT NULL COMMENT '银行行别',
   `updater` varchar(32) DEFAULT NULL COMMENT '更新人',
-  `bank_name` varchar(255) DEFAULT NULL COMMENT '银行名称',
-  `subbranch` varchar(255) DEFAULT NULL COMMENT '开户行',
-  `bankcard_number` varchar(64) DEFAULT NULL COMMENT '银行卡号',
   `status` varchar(4) DEFAULT NULL COMMENT '状态',
   `create_datetime` datetime DEFAULT NULL COMMENT '创建时间',
   `remark` text COMMENT '备注',
@@ -134,8 +128,6 @@ CREATE TABLE `thf_department` (
 DROP TABLE IF EXISTS `thf_employ`;
 CREATE TABLE `thf_employ` (
   `code` varchar(32) NOT NULL COMMENT '编号',
-  `company_code` varchar(32) DEFAULT NULL COMMENT '公司编号',
-  `company_name` varchar(255) DEFAULT NULL COMMENT '公司名称',
   `project_code` varchar(32) DEFAULT NULL COMMENT '项目编号',
   `project_name` varchar(255) DEFAULT NULL COMMENT '项目名称',
   `staff_code` varchar(32) DEFAULT NULL COMMENT '员工编号',
@@ -187,7 +179,6 @@ CREATE TABLE `thf_message` (
 DROP TABLE IF EXISTS `thf_progress`;
 CREATE TABLE `thf_progress` (
   `company_code` varchar(32) DEFAULT NULL COMMENT '公司编号',
-  `company_name` varchar(64) DEFAULT NULL COMMENT '公司名称',
   `code` varchar(32) NOT NULL COMMENT '编号',
   `project_code` varchar(32) DEFAULT NULL COMMENT '项目编号',
   `project_name` varchar(255) DEFAULT NULL COMMENT '项目名称',
@@ -205,21 +196,20 @@ DROP TABLE IF EXISTS `thf_project`;
 CREATE TABLE `thf_project` (
   `code` varchar(32) NOT NULL COMMENT '编号',
   `company_code` varchar(32) DEFAULT NULL COMMENT '公司编号',
-  `company_name` varchar(255) DEFAULT NULL COMMENT '公司名称',
   `name` varchar(255) DEFAULT NULL COMMENT '项目名称',
   `charge_user` varchar(32) DEFAULT NULL COMMENT '负责人编号',
-  `attendance_endtime` varchar(64) DEFAULT NULL COMMENT '下班时间',
   `charge_mobile` varchar(16) DEFAULT NULL COMMENT '负责人手机号',
-  `attendance_starttime` varchar(64) DEFAULT NULL COMMENT '上班时间',
   `start_datetime` datetime DEFAULT NULL COMMENT '项目开始时间',
-  `salary_create_datetime` varchar(64) DEFAULT NULL COMMENT '工资条形成时间',
   `end_datetime` datetime DEFAULT NULL COMMENT '项目结束时间',
-  `longitude` varchar(255) DEFAULT NULL COMMENT '经度',
-  `latitude` varchar(255) DEFAULT NULL COMMENT '纬度',
   `province` varchar(255) DEFAULT NULL COMMENT '省',
   `city` varchar(255) DEFAULT NULL COMMENT '市',
   `area` varchar(255) DEFAULT NULL COMMENT '区',
   `address` text COMMENT '地址',
+  `longitude` varchar(255) DEFAULT NULL COMMENT '经度',
+  `latitude` varchar(255) DEFAULT NULL COMMENT '纬度',
+  `attendance_starttime` varchar(64) DEFAULT NULL COMMENT '上班时间',
+  `attendance_endtime` varchar(64) DEFAULT NULL COMMENT '下班时间',
+  `salary_create_datetime` varchar(64) DEFAULT NULL COMMENT '工资条形成时间',
   `salary_datetime` varchar(64) DEFAULT NULL COMMENT '薪资发放时间',
   `status` varchar(4) DEFAULT NULL COMMENT '状态',
   `approver` varchar(32) DEFAULT NULL COMMENT '审核人',
@@ -254,12 +244,15 @@ CREATE TABLE `thf_report` (
 DROP TABLE IF EXISTS `thf_salary`;
 CREATE TABLE `thf_salary` (
   `code` varchar(32) NOT NULL COMMENT '编号',
+  `project_code` varchar(32) DEFAULT NULL COMMENT '项目编号',
   `project_name` varchar(255) DEFAULT NULL COMMENT '项目名称',
   `message_code` varchar(32) DEFAULT NULL COMMENT '消息编号',
+  `staff_code` varchar(32) DEFAULT NULL COMMENT '员工编号',
   `month` int(11) DEFAULT '0' COMMENT '所属月份',
   `should_amount` bigint(20) DEFAULT '0' COMMENT '应发工资',
   `fact_amount` bigint(20) DEFAULT '0' COMMENT '实发工资',
   `pay_amount` bigint(20) DEFAULT '0' COMMENT '已发放金额',
+  `supply_amount` bigint(20) DEFAULT '0' COMMENT '已发放金额',
   `cut_amount` bigint(20) DEFAULT '0' COMMENT '扣款金额',
   `cut_note` text COMMENT '扣款说明',
   `tax` bigint(20) DEFAULT '0' COMMENT '税费',
@@ -273,8 +266,6 @@ CREATE TABLE `thf_salary` (
   `approve_note` text COMMENT '审核说明',
   `remark` text COMMENT '备注',
   `late_pay_datetime` datetime DEFAULT NULL COMMENT '最近一次发放时间',
-  `staff_code` varchar(32) DEFAULT NULL COMMENT '员工编号',
-  `project_code` varchar(32) DEFAULT NULL COMMENT '项目编号',
   PRIMARY KEY (`code`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
@@ -282,8 +273,6 @@ CREATE TABLE `thf_salary` (
 DROP TABLE IF EXISTS `thf_salary_log`;
 CREATE TABLE `thf_salary_log` (
   `code` varchar(32) NOT NULL COMMENT '编号',
-  `company_code` varchar(32) DEFAULT NULL COMMENT '公司编号',
-  `company_name` varchar(255) DEFAULT NULL COMMENT '公司名称',
   `salary_code` varchar(32) DEFAULT NULL COMMENT '工资条编号',
   `type` varchar(4) DEFAULT NULL COMMENT '类型',
   `handler` varchar(32) DEFAULT NULL COMMENT '操作人',
@@ -299,7 +288,6 @@ CREATE TABLE `thf_salary_log` (
 DROP TABLE IF EXISTS `thf_staff`;
 CREATE TABLE `thf_staff` (
   `code` varchar(32) NOT NULL COMMENT '编号',
-  `company_name` varchar(255) DEFAULT NULL COMMENT '公司名称',
   `company_code` varchar(32) DEFAULT NULL COMMENT '公司编号',
   `name` varchar(64) DEFAULT NULL COMMENT '姓名',
   `mobile` varchar(16) DEFAULT NULL COMMENT '手机号',
@@ -316,25 +304,24 @@ CREATE TABLE `thf_staff` (
   `pict1` varchar(255) DEFAULT NULL COMMENT '免冠照片',
   `pict2` varchar(255) DEFAULT NULL COMMENT '手持身份张照片',
   `pict3` varchar(255) DEFAULT NULL COMMENT '身份证正反面照片+签名',
-  `updater` varchar(32) DEFAULT NULL COMMENT '更新人',
-  `update_datetime` datetime DEFAULT NULL COMMENT '更新时间',
   `feat` text COMMENT '特征值',
   `contacts` varchar(64) DEFAULT NULL COMMENT '紧急联系人',
   `contacts_mobile` varchar(16) DEFAULT NULL COMMENT '紧急联系人方式',
-  `skill_pdf` varchar(255) DEFAULT NULL COMMENT '技能证书',
+  `updater` varchar(32) DEFAULT NULL COMMENT '更新人',
+  `update_datetime` datetime DEFAULT NULL COMMENT '更新时间',
+  `remark` datetime DEFAULT NULL COMMENT '备注'
   PRIMARY KEY (`code`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 
 DROP TABLE IF EXISTS `thf_staff_log`;
 CREATE TABLE `thf_staff_log` (
-  `company_code` varchar(32) DEFAULT NULL COMMENT '公司编号',
-  `company_name` varchar(255) DEFAULT NULL COMMENT '公司名称',
   `code` varchar(32) NOT NULL COMMENT '编号',
   `project_code` varchar(32) DEFAULT NULL COMMENT '项目编号',
   `project_name` varchar(255) DEFAULT NULL COMMENT '项目编号',
   `staff_code` varchar(32) DEFAULT NULL COMMENT '工人编号',
-  `staff_name` varchar(255) DEFAULT NULL COMMENT '工人编号',
+  `staff_name` varchar(255) DEFAULT NULL COMMENT '工人名字',
+  `staff_mobile` varchar(255) DEFAULT NULL COMMENT '工人手机号',
   `position` varchar(255) DEFAULT NULL COMMENT '职位',
   `join_datetime` datetime DEFAULT NULL COMMENT '入职时间',
   `leaving_datetime` datetime DEFAULT NULL COMMENT '离职时间',
@@ -345,8 +332,8 @@ CREATE TABLE `thf_staff_log` (
 DROP TABLE IF EXISTS `thf_user`;
 CREATE TABLE `thf_user` (
   `user_id` varchar(32) NOT NULL COMMENT '用户ID',
-  `real_name` varchar(64) DEFAULT NULL COMMENT '真实姓名',
   `type` varchar(4) DEFAULT NULL COMMENT '类型',
+  `real_name` varchar(64) DEFAULT NULL COMMENT '真实姓名',
   `photo` varchar(255) DEFAULT NULL COMMENT '头像',
   `login_name` varchar(64) DEFAULT NULL COMMENT '登录名',
   `mobile` varchar(16) DEFAULT NULL COMMENT '手机号',
@@ -367,7 +354,6 @@ CREATE TABLE `thf_user` (
   `update_datetime` datetime DEFAULT NULL COMMENT '更新时间',
   `status` varchar(4) DEFAULT NULL COMMENT '状态',
   `remark` text COMMENT '备注',
-  `feat` text COMMENT '特征值',
   PRIMARY KEY (`user_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
@@ -441,6 +427,8 @@ CREATE TABLE `thf_query_log` (
   `user_id` varchar(32) DEFAULT NULL COMMENT '用户id',
   `staff_code` varchar(32) DEFAULT NULL COMMENT '员工编号',
   `staff_name` varchar(64) DEFAULT NULL COMMENT '员工名称',
+  `id_no` varchar(32) DEFAULT NULL COMMENT '身份证号',
+  `id_pic` varchar(64) DEFAULT NULL COMMENT '身份证头像',
   PRIMARY KEY (`code`),
   KEY `staff_code` (`staff_code`),
   KEY `user_id` (`user_id`),

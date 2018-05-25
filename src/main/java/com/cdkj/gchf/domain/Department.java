@@ -35,6 +35,9 @@ public class Department extends ABaseDO {
     // 关键字模糊查询
     private String keyword;
 
+    // 上级部门名称
+    private String parentName;
+
     public void setCode(String code) {
         this.code = code;
     }
@@ -89,6 +92,14 @@ public class Department extends ABaseDO {
 
     public void setKeyword(String keyword) {
         this.keyword = keyword;
+    }
+
+    public String getParentName() {
+        return parentName;
+    }
+
+    public void setParentName(String parentName) {
+        this.parentName = parentName;
     }
 
 }

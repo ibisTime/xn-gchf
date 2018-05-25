@@ -33,7 +33,7 @@ public class QueryLog extends ABaseDO {
     private String idNo;
 
     // 身份证上头像
-    private String idPic;
+    private String pic1;
 
     // ***********db*************
 
@@ -89,12 +89,12 @@ public class QueryLog extends ABaseDO {
         this.idNo = idNo;
     }
 
-    public String getIdPic() {
-        return idPic;
+    public String getPic1() {
+        return pic1;
     }
 
-    public void setIdPic(String idPic) {
-        this.idPic = idPic;
+    public void setPic1(String pic1) {
+        this.pic1 = pic1;
     }
 
     public String getKeyword() {

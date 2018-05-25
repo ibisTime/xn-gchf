@@ -41,19 +41,9 @@ public class BankCardAOImpl implements IBankCardAO {
     }
 
     @Override
-    public void dropBankCard(String code) {
-    }
-
-    @Override
     public Paginable<BankCard> queryBankCardPage(int start, int limit,
             BankCard condition) {
-        List<BankCard> list = new ArrayList<BankCard>();
         Paginable<BankCard> page = new Page<BankCard>();
-        /*
-         * if (EUserKind.Owner.getCode().equals(condition.getKind())) { if
-         * (StringUtils.isBlank(condition.getCompanyCode())) {
-         * page.setList(list); return page; } }
-         */
         page = bankCardBO.getPaginable(start, limit, condition);
         for (BankCard bankCard : page.getList()) {
             bankCard.setUpdateName(getName(bankCard.getUpdater()));
@@ -64,10 +54,6 @@ public class BankCardAOImpl implements IBankCardAO {
     @Override
     public List<BankCard> queryBankCardList(BankCard condition) {
         List<BankCard> list = new ArrayList<BankCard>();
-        /*
-         * if (EUserKind.Owner.getCode().equals(condition.getKind())) { if
-         * (StringUtils.isBlank(condition.getCompanyCode())) { return list; } }
-         */
         list = bankCardBO.queryBankCardList(condition);
         for (BankCard bankCard : list) {
             bankCard.setUpdateName(getName(bankCard.getUpdater()));

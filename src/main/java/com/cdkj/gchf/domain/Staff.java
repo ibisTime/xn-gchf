@@ -24,9 +24,6 @@ public class Staff extends ABaseDO {
     // 公司编号
     private String companyCode;
 
-    // 公司名称
-    private String companyName;
-
     // 手机号
     private String mobile;
 
@@ -108,6 +105,9 @@ public class Staff extends ABaseDO {
 
     // 技能
     private List<Skill> skillList;
+
+    // 薪资发放状态
+    private String salaryStatus;
 
     public void setCode(String code) {
         this.code = code;
@@ -281,14 +281,6 @@ public class Staff extends ABaseDO {
         this.companyCode = companyCode;
     }
 
-    public String getCompanyName() {
-        return companyName;
-    }
-
-    public void setCompanyName(String companyName) {
-        this.companyName = companyName;
-    }
-
     public List<String> getProjectCodeList() {
         return projectCodeList;
     }
@@ -359,6 +351,14 @@ public class Staff extends ABaseDO {
 
     public void setSkillList(List<Skill> skillList) {
         this.skillList = skillList;
+    }
+
+    public String getSalaryStatus() {
+        return salaryStatus;
+    }
+
+    public void setSalaryStatus(String salaryStatus) {
+        this.salaryStatus = salaryStatus;
     }
 
 }

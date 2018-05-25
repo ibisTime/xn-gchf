@@ -5,7 +5,6 @@
 	<resultMap id="staff_DB_Result" type="staff">
 		<result column="code" property="code" />
 		<result column="company_code" property="companyCode" />
-		<result column="company_name" property="companyName" />
 		<result column="name" property="name" />
 		<result column="mobile" property="mobile" />
 		
@@ -41,15 +40,6 @@
 			<if test="companyCode != null and companyCode != '' ">
 				AND t.company_code = #{companyCode}
 			</if>
-		   <choose>
-				<when test="companyCode != null and companyCode != '' ">
-					AND t.company_code = #{companyCode}
-				</when>
-			</choose>
-			
-			<if test="companyName != null and companyName != '' ">
-				AND t.company_name like "%"#{companyName}"%"
-			</if>
 			<if test="idNo != null and idNo != '' ">
 				AND t.id_no = #{idNo}
 			</if>
@@ -73,7 +63,6 @@
 		SELECT
 		t.code
 		,t.company_code
-		,t.company_name
 		,t.name
 		,t.mobile
 		
@@ -119,7 +108,6 @@
 		thf_staff(
 		code
 		,company_code
-		,company_name
 		,name
 		,mobile
 		
@@ -147,7 +135,6 @@
 		VALUES(
 		#{code}
 		,#{companyCode}
-		,#{companyName}
 		,#{name}
 		,#{mobile}
 		
@@ -201,6 +188,13 @@
 		,remark = #{remark}
 		,contacts = #{contacts}
 		,contacts_mobile = #{contactsMobile}
+		WHERE code = #{code}
+	</update>
+	
+	<update id="update_salary_status" parameterType="staff">
+		UPDATE thf_staff
+		SET
+		salary_status = #{salaryStatus}
 		WHERE code = #{code}
 	</update>
 

@@ -18,8 +18,6 @@ public interface IStaffAO {
 
     public String addStaff(XN631410Req req);
 
-    public void dropStaff(String code);
-
     public void editStaff(XN631412Req req);
 
     public Paginable<Staff> queryStaffPage(int start, int limit,

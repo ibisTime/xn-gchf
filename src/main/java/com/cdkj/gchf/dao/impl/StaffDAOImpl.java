@@ -56,4 +56,9 @@ public class StaffDAOImpl extends AMybatisTemplate implements IStaffDAO {
 
     }
 
+    @Override
+    public void updateSalaryStatus(Staff data) {
+        super.update(NAMESPACE.concat("update_salary_status"), data);
+    }
+
 }

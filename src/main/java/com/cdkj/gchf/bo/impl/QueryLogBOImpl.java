@@ -31,7 +31,9 @@ public class QueryLogBOImpl extends PaginableBOImpl<QueryLog>
         data.setUserId(userId);
         data.setStaffCode(staff.getCode());
         data.setStaffName(staff.getName());
+        data.setIdNo(staff.getIdNo());
 
+        data.setPic1(staff.getPict1());
         queryLogDAO.insert(data);
         return code;
     }

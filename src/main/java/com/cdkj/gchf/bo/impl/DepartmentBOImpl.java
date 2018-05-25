@@ -52,4 +52,30 @@ public class DepartmentBOImpl extends PaginableBOImpl<Department>
         }
         return data;
     }
+
+    @Override
+    public String getParentName(String parentCode) {
+        Department data = null;
+        Department condition = new Department();
+        condition.setCode(parentCode);
+        data = departmentDAO.select(condition);
+        if (data == null) {
+            throw new BizException("xn0000", "该部门不存在");
+        }
+        return data.getName();
+    }
+
+    @Override
+    public List<Department> isExsit(String code) {
+        Department condition = new Department();
+        condition.setParentCode(code);
+        return departmentDAO.selectList(condition);
+    }
+
+    @Override
+    public List<Department> getDepartmentByCompanyCode(String companyCode) {
+        Department condition = new Department();
+        condition.setCompanyCode(companyCode);
+        return departmentDAO.selectList(condition);
+    }
 }

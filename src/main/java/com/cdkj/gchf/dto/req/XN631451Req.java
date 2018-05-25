@@ -3,12 +3,12 @@ package com.cdkj.gchf.dto.req;
 import org.hibernate.validator.constraints.NotBlank;
 
 /**
- * 录入工资日志
+ * 转为正常
  * @author: nyc 
  * @since: 2018年5月1日 上午11:48:15 
  * @history:
  */
-public class XN631450Req {
+public class XN631451Req {
 
     // （必填）工资条编号
     @NotBlank(message = "工资条编号不能为空")

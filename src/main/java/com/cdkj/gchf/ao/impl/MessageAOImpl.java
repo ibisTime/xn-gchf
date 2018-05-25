@@ -29,6 +29,7 @@ import com.cdkj.gchf.domain.Message;
 import com.cdkj.gchf.domain.Report;
 import com.cdkj.gchf.domain.Salary;
 import com.cdkj.gchf.domain.SalaryLog;
+import com.cdkj.gchf.domain.Staff;
 import com.cdkj.gchf.domain.User;
 import com.cdkj.gchf.dto.req.XN631439Req;
 import com.cdkj.gchf.enums.EGeneratePrefix;
@@ -166,7 +167,6 @@ public class MessageAOImpl implements IMessageAO {
         Message data = messageBO.getMessage(code);
         Long lastMonthSalary = 0L;
         String status = ESalaryStatus.Payed.getCode();
-        boolean flag = false;
         String messageCode = OrderNoGenerater
             .generate(EGeneratePrefix.Message.getCode());
 
@@ -179,8 +179,6 @@ public class MessageAOImpl implements IMessageAO {
             }
             if (salary.getFactAmount() == StringValidater
                 .toLong(req.getPayAmount())) {
-                flag = true;
-
                 // 添加工资日志
                 SalaryLog salaryLog = new SalaryLog();
                 String salaryLogCode = OrderNoGenerater
@@ -189,14 +187,9 @@ public class MessageAOImpl implements IMessageAO {
                 salaryLog.setSalaryCode(salary.getCode());
                 salaryLog.setType(ESalaryLogType.Abnormal.getCode());
                 salaryLog.setStaffCode(salary.getStaffCode());
-                salaryLog.setProjectCode(salary.getProjectCode());
-                salaryLog.setProjectName(salary.getProjectName());
+
                 salaryLogBO.saveSalaryLog(salaryLog);
                 status = ESalaryStatus.Pay_Portion.getCode();
-            }
-            if (ESalaryStatus.Pay_Portion.getCode()
-                .equals(salary.getStatus())) {
-                status = ESalaryStatus.Pay_Again.getCode();
             }
 
             Long supplyAmount = salary.getFactAmount()
@@ -216,28 +209,18 @@ public class MessageAOImpl implements IMessageAO {
             employBO.updateSalaryStatus(employ);
             lastMonthSalary = lastMonthSalary
                     + StringValidater.toLong(req.getPayAmount());
+            // 改变员工薪资状态
+            Staff staff = staffBO.getStaff(salary.getStaffCode());
+            staffBO.refreshSalaryStatus(staff);
         }
 
+        messageBO.approveMessage(data, handler, handleNote);
+
+        // 统计薪资发放
         Report report = reportBO.getReportByProject(data.getProjectCode());
         report.setLastMonthSalary(lastMonthSalary);
+        report.setTotalSalary(report.getTotalSalary() + lastMonthSalary);
         reportBO.refreshLastMonthSalary(report);
-        // 是否有异常工资
-        if (flag) {
-            Date date = new Date();
-            Message message = new Message();
-            message.setCode(messageCode);
-            message.setProjectCode(data.getCode());
-            message.setBankCode(data.getBankCode());
-            message.setBankName(data.getBankName());
-            message.setSubbranch(data.getSubbranch());
-
-            message.setBankcardNumber(data.getBankcardNumber());
-            message.setCreateDatetime(date);
-            message.setDownload(0);
-            message.setStatus(EMessageStatus.TO_Send.getCode());
-            messageBO.saveMessage(message);
-        }
-        messageBO.approveMessage(data, handler, handleNote);
     }
 
     @Override

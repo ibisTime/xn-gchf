@@ -34,7 +34,6 @@ public class XN631426 extends AProcessor {
         condition.setUpdater(req.getUpdater());
         condition.setKeyword(req.getKeyword());
 
-        condition.setCompanyCode(req.getCompanyCode());
         condition.setKind(req.getKind());
 
         String column = req.getOrderColumn();

@@ -24,8 +24,10 @@ import com.cdkj.gchf.domain.User;
 import com.cdkj.gchf.dto.req.XN631400Req;
 import com.cdkj.gchf.dto.req.XN631402Req;
 import com.cdkj.gchf.enums.EGeneratePrefix;
+import com.cdkj.gchf.enums.EProjectStatus;
 import com.cdkj.gchf.enums.EUser;
 import com.cdkj.gchf.enums.EUserKind;
+import com.cdkj.gchf.exception.BizException;
 
 @Service
 public class CcontractAOImpl implements ICcontractAO {
@@ -50,7 +52,15 @@ public class CcontractAOImpl implements ICcontractAO {
             .generate(EGeneratePrefix.Ccontract.getCode());
         data.setCode(code);
         data.setProjectCode(req.getProjectCode());
+
         Project project = projectBO.getProject(req.getProjectCode());
+        if (EProjectStatus.End.getCode().equals(project.getCode())) {
+            throw new BizException("xn00000", "项目已经结束");
+        }
+        if (!EProjectStatus.Building.getCode().equals(project.getStatus())) {
+            throw new BizException("xn00000", "该项目还未通过审核");
+        }
+
         data.setProjectName(project.getName());
         data.setStaffCode(req.getStaffCode());
         Staff staff = staffBO.getStaff(req.getStaffCode());
@@ -89,7 +99,8 @@ public class CcontractAOImpl implements ICcontractAO {
             Ccontract condition) {
         List<Ccontract> list = new ArrayList<Ccontract>();
         Paginable<Ccontract> page = new Page<Ccontract>();
-        if (EUserKind.Supervise.getCode().equals(condition.getKind())) {
+        if (EUserKind.Supervise.getCode().equals(condition.getKind())
+                || EUserKind.Owner.getCode().equals(condition.getKind())) {
             if (CollectionUtils.isEmpty(condition.getProjectCodeList())) {
                 page.setList(list);
                 return page;

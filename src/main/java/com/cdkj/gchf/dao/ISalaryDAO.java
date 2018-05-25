@@ -11,7 +11,7 @@ public interface ISalaryDAO extends IBaseDAO<Salary> {
 
     void update(Salary data);
 
-    void addMessageCode(Salary data);
+    void approveSalary(Salary data);
 
     void payAmount(Salary data);
 

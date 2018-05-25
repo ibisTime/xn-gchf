@@ -20,7 +20,7 @@
 			<if test="staffCode != null and staffCode != '' ">
 				AND t.staff_code like "%"#{staffCode}"%"
 			</if>
-			<if test="projectCodeList != null and projectCode.size() > 0 ">
+			<if test="projectCodeList != null and projectCodeList.size() > 0 ">
 				AND t.project_code IN
 				<foreach collection="projectCodeList" item="item" index="index" open="(" separator="," close=")" >
 					#{item}

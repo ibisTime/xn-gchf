@@ -10,7 +10,7 @@
 		<result column="staff_name" property="staffName" />
 
 		<result column="id_no" property="idNo" />
-		<result column="id_pic" property="idPic" />
+		<result column="pic1" property="pic1" />
 
 	</resultMap>
 
@@ -25,8 +25,11 @@
 			<if test="staffCode != null and staffCode != '' ">
 				AND t.staff_code = #{staffCode}
 			</if>
+			<if test="idNo != null and idNo != '' ">
+				AND t.id_no = #{idNo}
+			</if>
 			<if test="keyword != null and keyword != '' ">
-				AND t.staff_name like "%"#{keyword}"%" OR t.id_no  like "%"#{keyword}"%"
+				AND t.staff_name like "%"#{keyword}"%" OR t.id_no like "%"#{idNo}"%"
 			</if>
 		</trim>
 	</sql>
@@ -38,7 +41,7 @@
 		,t.staff_code
 		,t.staff_name
 		,t.id_no
-		,t.id_pic
+		,t.pic1
 		FROM thf_query_log t
 		<include refid="where_condition" />
 		<trim prefix="ORDER BY ">
@@ -62,7 +65,7 @@
 		,staff_code
 		,staff_name
 		,id_no
-		,id_pic
+		,pic1
 		)
 		VALUES(
 		#{code}
@@ -70,7 +73,7 @@
 		,#{staffCode}
 		,#{staffName}
 		,#{idNo}
-		,#{idPic}
+		,#{pic1}
 		)
 	</insert>
 

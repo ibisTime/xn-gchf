@@ -30,15 +30,12 @@ public class XN631455 extends AProcessor {
     public Object doBusiness() throws BizException {
         SalaryLog condition = new SalaryLog();
 
-        condition.setProjectCode(req.getProjectCode());
-        condition.setProjectName(req.getProjectName());
         condition.setKind(req.getKind());
 
         condition.setHandler(req.getHandler());
         condition.setSalaryCode(req.getSalaryCode());
         condition.setStaffCode(req.getStaffCode());
         condition.setType(req.getType());
-        condition.setProjectCodeList(req.getComanyCodeList());
 
         String column = req.getOrderColumn();
         if (StringUtils.isBlank(column)) {

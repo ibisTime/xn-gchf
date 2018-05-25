@@ -74,22 +74,20 @@ public class SalaryAOImpl implements ISalaryAO {
     IMessageLogAO messageLogAO;
 
     @Override
-    public String addSalary(Salary data) {
-        salaryBO.saveSalary(data);
-        return null;
-    }
-
-    @Override
     public void editSalary(XN631442Req req) {
+
+        Long dif = 0L;
         Salary data = salaryBO.getSalary(req.getCode());
         if (!ESalaryStatus.To_Approve.getCode().equals(data.getStatus())) {
             throw new BizException("xn00000", "该工资条不能修改");
         }
+        // 计算修改后扣款、实际发薪的的差值
+        dif = data.getCutAmount() - StringValidater.toLong(req.getCutAmount());
         data.setEarlyDays(StringValidater.toInteger(req.getEarlyDays()));
         data.setDelayDays(StringValidater.toInteger(req.getDelayDays()));
         data.setLeavingDays(StringValidater.toDouble(req.getLeavingDays()));
-
         data.setTax(StringValidater.toLong(req.getTax()));
+
         data.setCutAmount(StringValidater.toLong(req.getCutAmount()));
         data.setCutNote(
             "本月迟到：" + req.getEarlyDays() + "天，早退：" + req.getDelayDays()
@@ -100,6 +98,13 @@ public class SalaryAOImpl implements ISalaryAO {
                 - StringValidater.toLong(req.getCutAmount());
         data.setFactAmount(fact);
         salaryBO.refreshSalary(data);
+
+        // 更新每月累积发薪、扣款、税费
+        Message message = messageBO.getMessage(data.getMessageCode());
+        message.setTotalAmount(message.getTotalAmount() + dif);
+        message.setTotalCutAmount(message.getTotalCutAmount() + dif);
+        message.setTotalTax(message.getTotalTax() + data.getTax());
+        messageBO.refreshMessage(message);
     }
 
     @Override
@@ -123,7 +128,7 @@ public class SalaryAOImpl implements ISalaryAO {
             data.setApproveUser(approver);
             data.setApproveDatetime(date);
             data.setApproveNote(approveNote);
-            salaryBO.addMessageCode(data);
+            salaryBO.approveSalary(data);
         }
     }
 
@@ -266,6 +271,10 @@ public class SalaryAOImpl implements ISalaryAO {
                 // 生成工资条
                 String mCode = OrderNoGenerater
                     .generate(EGeneratePrefix.Message.getCode());
+                Long totalAmount = 0L;
+                Long totalCutAmount = 0L;
+                Integer number = 0;
+
                 for (Employ employ : eList) {
                     System.err.println("===========开始成工资条==============");
                     Salary data = new Salary();
@@ -273,13 +282,14 @@ public class SalaryAOImpl implements ISalaryAO {
                         .generate(EGeneratePrefix.Salary.getCode());
                     data.setCode(code);
                     data.setMessageCode(mCode);
+
                     data.setProjectCode(project.getCode());
                     data.setProjectName(project.getName());
-
                     data.setStaffCode(employ.getStaffCode());
                     data.setMonth(calendar.get(Calendar.YEAR) + "/"
                             + calendar.get(Calendar.MONTH));
                     data.setShouldAmount(employ.getSalary());
+
                     data.setCreateDatetime(date);
                     data.setStatus(ESalaryStatus.To_Approve.getCode());
 
@@ -348,6 +358,10 @@ public class SalaryAOImpl implements ISalaryAO {
                     data.setSupplyAmount(0L);
                     salaryBO.saveSalary(data);
 
+                    totalAmount = totalAmount + employ.getSalary();
+                    totalCutAmount = totalCutAmount + leavingCut;
+                    number = number + 1;
+
                     // 清空上月累积请假天数
                     data.setLeavingDays(0.0);
                     employBO.updateLeavingDays(data);
@@ -360,13 +374,19 @@ public class SalaryAOImpl implements ISalaryAO {
                 message.setProjectName(project.getName());
                 CompanyCard card = companyCardBO
                     .getCompanyCardByProject(project.getCode());
+
                 message.setBankCode(card.getBankCode());
                 message.setBankName(card.getBankName());
                 message.setSubbranch(card.getSubbranch());
                 message.setBankcardNumber(card.getBankcardNumber());
                 message.setCreateDatetime(new Date());
+
+                message.setTotalAmount(totalAmount - totalCutAmount);
+                message.setTotalCutAmount(totalCutAmount);
+                message.setNumber(number);
                 message.setDownload(0);
                 message.setStatus(EMessageStatus.TO_Send.getCode());
+
                 messageBO.saveMessage(message);
             }
         }

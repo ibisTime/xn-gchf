@@ -15,12 +15,6 @@ public class XN631455Req extends APageReq {
      */
     private static final long serialVersionUID = -3735724866853750864L;
 
-    // （选填）工程编号
-    private String projectCode;
-
-    // （选填）工程名称
-    private String projectName;
-
     // （选填）操作人
     private String handler;
 
@@ -44,22 +38,6 @@ public class XN631455Req extends APageReq {
 
     public void setHandler(String handler) {
         this.handler = handler;
-    }
-
-    public String getProjectCode() {
-        return projectCode;
-    }
-
-    public void setProjectCode(String projectCode) {
-        this.projectCode = projectCode;
-    }
-
-    public String getProjectName() {
-        return projectName;
-    }
-
-    public void setProjectName(String projectName) {
-        this.projectName = projectName;
     }
 
     public String getSalaryCode() {

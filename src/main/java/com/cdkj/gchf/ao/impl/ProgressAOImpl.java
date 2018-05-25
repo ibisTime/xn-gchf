@@ -5,6 +5,7 @@ import java.util.Date;
 import java.util.List;
 
 import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -20,8 +21,10 @@ import com.cdkj.gchf.domain.Project;
 import com.cdkj.gchf.domain.User;
 import com.cdkj.gchf.dto.req.XN631380Req;
 import com.cdkj.gchf.dto.req.XN631382Req;
+import com.cdkj.gchf.enums.EProjectStatus;
 import com.cdkj.gchf.enums.EUser;
 import com.cdkj.gchf.enums.EUserKind;
+import com.cdkj.gchf.exception.BizException;
 
 @Service
 public class ProgressAOImpl implements IProgressAO {
@@ -39,7 +42,13 @@ public class ProgressAOImpl implements IProgressAO {
     public String addProgress(XN631380Req req) {
         Progress data = new Progress();
         Project project = projectBO.getProject(req.getProjectCode());
-        data.setCompanyCode(project.getCompanyCode());
+        // 项目是否通过审核
+        if (EProjectStatus.End.getCode().equals(project.getStatus())) {
+            throw new BizException("xn00000", "该项目已经结束");
+        }
+        if (!EProjectStatus.Building.getCode().equals(project.getStatus())) {
+            throw new BizException("xn00000", "该项目还未通过审核");
+        }
 
         data.setProjectCode(req.getProjectCode());
         data.setDatetime(DateUtil.strToDate(req.getDatetime(),
@@ -77,7 +86,12 @@ public class ProgressAOImpl implements IProgressAO {
                 return page;
             }
         }
-
+        if (EUserKind.Owner.getCode().equals(condition.getKind())) {
+            if (StringUtils.isEmpty(condition.getCompanyCode())) {
+                page.setList(list);
+                return page;
+            }
+        }
         // 补全信息
         page = progressBO.getPaginable(start, limit, condition);
         String updateName = null;

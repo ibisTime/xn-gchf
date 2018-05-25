@@ -94,7 +94,7 @@ public class EmployAOImpl implements IEmployAO {
         data.setJoinDatetime(DateUtil.strToDate(req.getJoinDatetime(),
             DateUtil.FRONT_DATE_FORMAT_STRING));
         data.setStatus(EEmploytatus.Work.getCode());
-        data.setSalaryStatus(EStaffSalaryStatus.TO_Pay.getCode());
+        data.setSalaryStatus(EStaffSalaryStatus.Normal.getCode());
         data.setUpdater(req.getUpdater());
         data.setUpdateDatetime(date);
         data.setRemark(req.getRemark());
@@ -139,11 +139,10 @@ public class EmployAOImpl implements IEmployAO {
         attendance.setStatus(EAttendanceStatus.TO_Start.getCode());
         attendance.setCreateDatetime(date);
         attendanceBO.saveAttendance(attendance);
-        System.out.println("=======考勤生成结束========");
         staffLogBO.saveStaffLog(data, staff.getName(), project.getCompanyCode(),
             project.getCode(), project.getName());
-        System.out.println("=========历史记录结束======");
-
+        staff.setSalaryStatus(EStaffSalaryStatus.Normal.getCode());
+        staffBO.refreshSalaryStatus(staff);
         return code;
     }
 

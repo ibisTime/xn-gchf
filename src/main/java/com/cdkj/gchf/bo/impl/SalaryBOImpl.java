@@ -51,8 +51,8 @@ public class SalaryBOImpl extends PaginableBOImpl<Salary> implements ISalaryBO {
     }
 
     @Override
-    public void addMessageCode(Salary data) {
-        salaryDAO.addMessageCode(data);
+    public void approveSalary(Salary data) {
+        salaryDAO.approveSalary(data);
     }
 
     @Override

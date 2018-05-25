@@ -12,8 +12,6 @@ import com.cdkj.gchf.dto.req.XN631442Req;
 public interface ISalaryAO {
     static final String DEFAULT_ORDER_COLUMN = "month";
 
-    public String addSalary(Salary data);
-
     public void editSalary(XN631442Req req);
 
     public Paginable<Salary> querySalaryPage(int start, int limit,

@@ -20,14 +20,14 @@ public class XN631495Req extends APageReq {
     private String userId;
 
     // （选填） 员工姓名
-    private String staffName;
+    private String keyword;
 
-    public String getStaffName() {
-        return staffName;
+    public String getKeyword() {
+        return keyword;
     }
 
-    public void setStaffName(String staffName) {
-        this.staffName = staffName;
+    public void setKeyword(String keyword) {
+        this.keyword = keyword;
     }
 
     public String getUserId() {

@@ -12,8 +12,6 @@ import com.cdkj.gchf.dto.req.XN631422Req;
 public interface IBankCardAO {
     static final String DEFAULT_ORDER_COLUMN = "code";
 
-    public void dropBankCard(String code);
-
     public void editBankCard(XN631422Req req);
 
     public Paginable<BankCard> queryBankCardPage(int start, int limit,

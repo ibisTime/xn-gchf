@@ -18,7 +18,10 @@ import com.cdkj.gchf.domain.SalaryLog;
 import com.cdkj.gchf.domain.Staff;
 import com.cdkj.gchf.domain.User;
 import com.cdkj.gchf.enums.EGeneratePrefix;
+import com.cdkj.gchf.enums.ESalaryLogType;
+import com.cdkj.gchf.enums.ESalaryStatus;
 import com.cdkj.gchf.enums.EUser;
+import com.cdkj.gchf.exception.BizException;
 
 @Service
 public class SalaryLogAOImpl implements ISalaryLogAO {
@@ -38,31 +41,53 @@ public class SalaryLogAOImpl implements ISalaryLogAO {
     @Override
     public String addsalaryLog(String salaryCode, String handler,
             String handleNote) {
+
         SalaryLog data = new SalaryLog();
         String code = OrderNoGenerater
             .generate(EGeneratePrefix.SalaryLog.getCode());
         Salary salary = salaryBO.getSalary(salaryCode);
         data.setCode(code);
-        data.setProjectCode(salary.getProjectCode());
-        data.setProjectName(salary.getProjectName());
-
         data.setSalaryCode(salary.getCode());
+
         data.setStaffCode(salary.getStaffCode());
+        data.setType(ESalaryLogType.Abnormal.getCode());
         data.setHandler(handler);
         Date date = new Date();
         data.setHandleDatetime(date);
 
         data.setHandleNote(handleNote);
         salaryLogBO.saveSalaryLog(data);
+        // 查看员工是否还有未发工资
         return code;
     }
 
     @Override
-    public void editSalaryLog(SalaryLog data) {
-    }
+    public String changeToNormal(String salaryCode, String handler,
+            String handleNote) {
 
-    @Override
-    public void dropSalaryLog(String code) {
+        SalaryLog data = new SalaryLog();
+        String code = OrderNoGenerater
+            .generate(EGeneratePrefix.SalaryLog.getCode());
+        Salary salary = salaryBO.getSalary(salaryCode);
+        if (ESalaryStatus.Pay_Again.getCode().equals(salary.getStatus())) {
+            throw new BizException("xn00000", "该工资条已转正常，请勿重复操作");
+        }
+
+        data.setCode(code);
+        data.setSalaryCode(salary.getCode());
+        data.setStaffCode(salary.getStaffCode());
+        data.setType(ESalaryLogType.Normal.getCode());
+        data.setHandler(handler);
+
+        Date date = new Date();
+        data.setHandleDatetime(date);
+        data.setHandleNote(handleNote);
+        salaryLogBO.saveSalaryLog(data);
+
+        // 改变工资条状态
+        salary.setStatus(ESalaryStatus.Pay_Again.getCode());
+        salaryBO.refreshStatus(salary);
+        return code;
     }
 
     @Override
@@ -115,4 +140,5 @@ public class SalaryLogAOImpl implements ISalaryLogAO {
         return name;
 
     }
+
 }

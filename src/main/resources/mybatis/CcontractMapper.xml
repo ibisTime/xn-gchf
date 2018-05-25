@@ -5,8 +5,8 @@
 	<resultMap id="ccontract_DB_Result" type="ccontract">
 		<result column="code" property="code" />
 		<result column="project_code" property="projectCode" />
-		<result column="project_name" property="projectName" />
 		<result column="staff_code" property="staffCode" />
+		
 		<result column="staff_mobile" property="staffMobile" />
 		<result column="content_pic" property="contentPic" />
 		<result column="contract_datetime" property="contractDatetime" />
@@ -38,7 +38,7 @@
 				AND t.updater = #{updater}
 			</if>
 			<if test="keyword != null and keyword != '' ">
-				AND t.staff_mobile like "%"#{keyword}"%" OR  t.project_name like "%"#{keyword}"%"
+				AND t.staff_mobile like "%"#{keyword}"%"
 			</if>
 			
 		</trim>

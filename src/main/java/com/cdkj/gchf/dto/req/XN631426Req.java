@@ -28,9 +28,6 @@ public class XN631426Req extends APageReq {
     // （选填）更新人
     private String updater;
 
-    // （选填）公司编号
-    private String companyCode;
-
     // （选填）用户类型
     private String kind;
 
@@ -72,14 +69,6 @@ public class XN631426Req extends APageReq {
 
     public void setUpdater(String updater) {
         this.updater = updater;
-    }
-
-    public String getCompanyCode() {
-        return companyCode;
-    }
-
-    public void setCompanyCode(String companyCode) {
-        this.companyCode = companyCode;
     }
 
     public String getKind() {

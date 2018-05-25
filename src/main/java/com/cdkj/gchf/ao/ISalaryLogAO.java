@@ -11,10 +11,6 @@ import com.cdkj.gchf.domain.SalaryLog;
 public interface ISalaryLogAO {
     static final String DEFAULT_ORDER_COLUMN = "code";
 
-    public void dropSalaryLog(String code);
-
-    public void editSalaryLog(SalaryLog data);
-
     public Paginable<SalaryLog> querySalaryLogPage(int start, int limit,
             SalaryLog condition);
 
@@ -23,5 +19,8 @@ public interface ISalaryLogAO {
     public SalaryLog getSalaryLog(String code);
 
     public String addsalaryLog(String code, String handler, String handleNote);
+
+    public String changeToNormal(String salaryCode, String handler,
+            String handleNote);
 
 }

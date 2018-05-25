@@ -37,6 +37,21 @@ public class Message extends ABaseDO {
     // 银行卡号
     private String bankcardNumber;
 
+    // 所属月份
+    private String month;
+
+    // 每月累积发薪
+    private Long totalAmount;
+
+    // 每月领薪人数
+    private Integer number;
+
+    // 每月共计扣款
+    private Long totalCutAmount;
+
+    // 每月共计税费
+    private Long totalTax;
+
     // 标题
     private String title;
 
@@ -291,6 +306,46 @@ public class Message extends ABaseDO {
 
     public void setProjectCodeList(List<String> projectCodeList) {
         this.projectCodeList = projectCodeList;
+    }
+
+    public String getMonth() {
+        return month;
+    }
+
+    public void setMonth(String month) {
+        this.month = month;
+    }
+
+    public Long getTotalAmount() {
+        return totalAmount;
+    }
+
+    public void setTotalAmount(Long totalAmount) {
+        this.totalAmount = totalAmount;
+    }
+
+    public Integer getNumber() {
+        return number;
+    }
+
+    public void setNumber(Integer number) {
+        this.number = number;
+    }
+
+    public Long getTotalCutAmount() {
+        return totalCutAmount;
+    }
+
+    public void setTotalCutAmount(Long totalCutAmount) {
+        this.totalCutAmount = totalCutAmount;
+    }
+
+    public Long getTotalTax() {
+        return totalTax;
+    }
+
+    public void setTotalTax(Long totalTax) {
+        this.totalTax = totalTax;
     }
 
 }

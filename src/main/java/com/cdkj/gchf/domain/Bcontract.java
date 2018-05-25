@@ -5,6 +5,12 @@ import java.util.List;
 
 import com.cdkj.gchf.dao.base.ABaseDO;
 
+/**
+ * 承包商合同
+ * @author: nyc 
+ * @since: 2018年5月24日 下午8:09:25 
+ * @history:
+ */
 public class Bcontract extends ABaseDO {
     /** 
      * @Fields serialVersionUID : TODO(用一句话描述这个变量表示什么) 

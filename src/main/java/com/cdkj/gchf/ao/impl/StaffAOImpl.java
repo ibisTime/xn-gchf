@@ -97,7 +97,6 @@ public class StaffAOImpl implements IStaffAO {
         ccontract.setUpdateDatetime(date);
         ccontract.setRemark(req.getRemark());
         // 工资卡信息 ;
-        bankCard.setCompanyCode(project.getCompanyCode());
         bankCard.setBankCode(req.getBankCode());
         bankCard.setBankName(req.getBankName());
         bankCard.setBankcardNumber(req.getBankcardNumber());
@@ -128,7 +127,6 @@ public class StaffAOImpl implements IStaffAO {
         data.setName(req.getName());
 
         data.setCompanyCode(user.getCompanyCode());
-        data.setCompanyName(user.getCompanyName());
         data.setPict1(req.getPict1());
         data.setPict2(req.getPict2());
         data.setPict3(req.getPict3());
@@ -169,11 +167,6 @@ public class StaffAOImpl implements IStaffAO {
         for (Skill skill : req.getSkillList()) {
             skillBO.refreshSkill(skill);
         }
-    }
-
-    @Override
-    public void dropStaff(String code) {
-        staffBO.removeStaff(code);
     }
 
     @Override
@@ -349,21 +342,29 @@ public class StaffAOImpl implements IStaffAO {
         // 所在项目及工资条
         List<Employ> employList = new ArrayList<Employ>();
         List<Salary> salaryList = new ArrayList<Salary>();
-        if (CollectionUtils.isNotEmpty(projectCodeList)) {
-            for (String projectCode : projectCodeList) {
-                employList.add(
-                    employBO.getEmployByStaff(data.getCode(), projectCode));
+        Employ employ = null;
 
-                salaryList.addAll(
-                    salaryBO.getSalaryByStaff(data.getCode(), projectCode));
+        if (CollectionUtils.isNotEmpty(projectCodeList)) {
+            List<Salary> sList = new ArrayList<Salary>();
+            for (String projectCode : projectCodeList) {
+                employ = employBO.getEmployByStaff(data.getCode(), projectCode);
+                if (employ != null) {
+                    employList.add(employ);
+                }
+                sList = salaryBO.getSalaryByStaff(data.getCode(), projectCode);
+                if (CollectionUtils.isNotEmpty(sList)) {
+                    salaryList.addAll(sList);
+                }
             }
         }
+        for (Salary salary : salaryList) {
+            // 工资卡
+            BankCard bankCard = bankCardBO.getBankCardByStaff(data.getCode());
+            salary.setBankCard(bankCard);
+        }
+
         data.setEmployList(employList);
         data.setSalaryList(salaryList);
-        // 工资卡
-        BankCard bankCard = bankCardBO.getBankCardByStaff(data.getCode());
-        data.setBankCard(bankCard);
-
         return data;
     }
 

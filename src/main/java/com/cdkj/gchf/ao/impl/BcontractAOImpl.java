@@ -5,6 +5,7 @@ import java.util.Date;
 import java.util.List;
 
 import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -19,7 +20,9 @@ import com.cdkj.gchf.domain.Bcontract;
 import com.cdkj.gchf.domain.Project;
 import com.cdkj.gchf.dto.req.XN631370Req;
 import com.cdkj.gchf.dto.req.XN631372Req;
+import com.cdkj.gchf.enums.EProjectStatus;
 import com.cdkj.gchf.enums.EUserKind;
+import com.cdkj.gchf.exception.BizException;
 
 @Service
 public class BcontractAOImpl implements IBcontractAO {
@@ -36,6 +39,14 @@ public class BcontractAOImpl implements IBcontractAO {
 
         Bcontract data = new Bcontract();
         Project project = projectBO.getProject(req.getProjectCode());
+        // 项目是否通过审核
+        if (EProjectStatus.End.getCode().equals(project.getStatus())) {
+            throw new BizException("xn00000", "该项目已经结束");
+        }
+        if (!EProjectStatus.Building.getCode().equals(project.getStatus())) {
+            throw new BizException("xn00000", "该项目还未通过审核");
+        }
+
         data.setProjectCode(project.getCode());
         data.setCompanyCode(project.getCompanyCode());
 
@@ -72,12 +83,20 @@ public class BcontractAOImpl implements IBcontractAO {
             Bcontract condition) {
         Paginable<Bcontract> page = new Page<Bcontract>();
         List<Bcontract> list = new ArrayList<Bcontract>();
+        // 业主端、监管端是否有项目
         if (EUserKind.Supervise.getCode().equals(condition.getKind())) {
             if (CollectionUtils.isEmpty(condition.getProjectCodeList())) {
                 page.setList(list);
                 return page;
             }
         }
+        if (EUserKind.Owner.getCode().equals(condition.getKind())) {
+            if (StringUtils.isBlank(condition.getCompanyCode())) {
+                page.setList(list);
+                return page;
+            }
+        }
+
         // 补全信息
         page = bcontractBO.getPaginable(start, limit, condition);
         Project project = null;
@@ -91,11 +110,18 @@ public class BcontractAOImpl implements IBcontractAO {
     @Override
     public List<Bcontract> queryBcontractList(Bcontract condition) {
         List<Bcontract> list = new ArrayList<Bcontract>();
+        // 业主端、监管端是否有项目
         if (EUserKind.Supervise.getCode().equals(condition.getKind())) {
             if (CollectionUtils.isEmpty(condition.getProjectCodeList())) {
                 return list;
             }
         }
+        if (EUserKind.Owner.getCode().equals(condition.getKind())) {
+            if (StringUtils.isBlank(condition.getCompanyCode())) {
+                return list;
+            }
+        }
+
         // 补全信息
         list = bcontractBO.queryBcontractList(condition);
         Project project = null;

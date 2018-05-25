@@ -1,7 +1,5 @@
 package com.cdkj.gchf.dto.req;
 
-import java.util.List;
-
 /**
  * 分页查工资条日志
  * @author: nyc 
@@ -14,12 +12,6 @@ public class XN631456Req extends APageReq {
      * @Fields serialVersionUID : TODO(用一句话描述这个变量表示什么) 
      */
     private static final long serialVersionUID = -3735724866853750864L;
-
-    // （选填）工程编号
-    private String projectCode;
-
-    // （选填）工程名称
-    private String projectName;
 
     // （选填）操作人
     private String handler;
@@ -36,30 +28,12 @@ public class XN631456Req extends APageReq {
     // （选填）用户类型
     private String kind;
 
-    private List<String> comanyCodeList;
-
     public String getHandler() {
         return handler;
     }
 
     public void setHandler(String handler) {
         this.handler = handler;
-    }
-
-    public String getProjectCode() {
-        return projectCode;
-    }
-
-    public void setProjectCode(String projectCode) {
-        this.projectCode = projectCode;
-    }
-
-    public String getProjectName() {
-        return projectName;
-    }
-
-    public void setProjectName(String projectName) {
-        this.projectName = projectName;
     }
 
     public String getSalaryCode() {
@@ -92,14 +66,6 @@ public class XN631456Req extends APageReq {
 
     public void setKind(String kind) {
         this.kind = kind;
-    }
-
-    public List<String> getComanyCodeList() {
-        return comanyCodeList;
-    }
-
-    public void setComanyCodeList(List<String> comanyCodeList) {
-        this.comanyCodeList = comanyCodeList;
     }
 
 }

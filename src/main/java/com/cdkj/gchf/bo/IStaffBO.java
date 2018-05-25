@@ -9,8 +9,6 @@ public interface IStaffBO extends IPaginableBO<Staff> {
 
     public void saveStaff(Staff data);
 
-    public void removeStaff(String code);
-
     public void refreshStaff(Staff data);
 
     public List<Staff> queryStaffList(Staff condition);
@@ -22,4 +20,6 @@ public interface IStaffBO extends IPaginableBO<Staff> {
     public Staff getStaffByIdNo(String idNo);
 
     public void saveStaffInfo(Staff data);
+
+    public void refreshSalaryStatus(Staff staff);
 }

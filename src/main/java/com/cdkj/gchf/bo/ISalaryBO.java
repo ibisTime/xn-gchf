@@ -19,13 +19,6 @@ public interface ISalaryBO extends IPaginableBO<Salary> {
 
     public void payAmount(Salary salary);
 
-    public long getTotalSalaryCount(Salary condition);
-
-    public List<Salary> queryTotalSalaryList(Salary condition);
-
-    public List<Salary> queryTotalSalaryPage(int pageNO, int pageSize,
-            Salary condition);
-
     public void saveNewSalay(Salary salary, String mCode, Long payAmount);
 
     public List<Salary> getSalaryByStaff(String staffCode, String projectCode);

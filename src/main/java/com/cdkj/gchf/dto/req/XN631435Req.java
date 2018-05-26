@@ -45,7 +45,11 @@ public class XN631435Req extends APageReq {
     // （选填）户名
     private String subbranch;
 
+    // （选填）项目编号List
     private List<String> projectCodeList;
+
+    // 工资所属月份
+    private String month;
 
     public String getProjectCode() {
         return projectCode;
@@ -133,6 +137,14 @@ public class XN631435Req extends APageReq {
 
     public void setProjectCodeList(List<String> projectCodeList) {
         this.projectCodeList = projectCodeList;
+    }
+
+    public String getMonth() {
+        return month;
+    }
+
+    public void setMonth(String month) {
+        this.month = month;
     }
 
 }

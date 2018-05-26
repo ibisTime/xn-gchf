@@ -1,6 +1,5 @@
 package com.cdkj.gchf.ao.impl;
 
-import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -20,7 +19,6 @@ import com.cdkj.gchf.bo.IMessageBO;
 import com.cdkj.gchf.bo.IProjectBO;
 import com.cdkj.gchf.bo.ISalaryBO;
 import com.cdkj.gchf.bo.IStaffBO;
-import com.cdkj.gchf.bo.base.Page;
 import com.cdkj.gchf.bo.base.Paginable;
 import com.cdkj.gchf.common.AmountUtil;
 import com.cdkj.gchf.common.DateUtil;
@@ -31,7 +29,6 @@ import com.cdkj.gchf.domain.BankCard;
 import com.cdkj.gchf.domain.CompanyCard;
 import com.cdkj.gchf.domain.Employ;
 import com.cdkj.gchf.domain.Message;
-import com.cdkj.gchf.domain.MessageLog;
 import com.cdkj.gchf.domain.Project;
 import com.cdkj.gchf.domain.Salary;
 import com.cdkj.gchf.domain.Staff;
@@ -179,73 +176,6 @@ public class SalaryAOImpl implements ISalaryAO {
         data.setStaffName(staff.getName());
         data.setStaffMobile(staff.getMobile());
         return data;
-    }
-
-    @Override
-    public Paginable<Salary> queryTotalSalaryPage(int start, int limit,
-            Salary condition) {
-        long number = salaryBO.getTotalCount(condition);
-        long totalCount = salaryBO.getTotalSalaryCount(condition);
-        Page<Salary> page = new Page<Salary>(start, limit, totalCount);
-        List<Salary> list = salaryBO.queryTotalSalaryPage(page.getPageNO(),
-            page.getPageSize(), condition);
-
-        Staff staff = null;
-        for (Salary data : list) {
-            staff = staffBO.getStaff(data.getStaffCode());
-            data.setStaffName(staff.getName());
-            data.setStaffMobile(staff.getMobile());
-        }
-        page.setList(list);
-        return page;
-    }
-
-    @Override
-    public List<Salary> queryTotalSalaryList(Salary condition) {
-        List<Salary> list = salaryBO.queryTotalSalaryList(condition);
-        BankCard bankCard = null;
-        CompanyCard companyCard = null;
-        Staff staff = null;
-
-        for (Salary salary : list) {
-            bankCard = bankCardBO.getBankCardByStaff(salary.getStaffCode());
-            salary.setBankCard(bankCard);
-            companyCard = companyCardBO
-                .getCompanyCardByProject(salary.getProjectCode());
-            salary.setCompanyCard(companyCard);
-            staff = staffBO.getStaff(salary.getStaffCode());
-            salary.setStaffName(staff.getName());
-            salary.setStaffMobile(staff.getMobile());
-        }
-        return list;
-    }
-
-    @Override
-    public List<Salary> querySalaryListByMessageCode(Salary condition) {
-        List<Salary> list = new ArrayList<Salary>();
-        MessageLog mCondition = new MessageLog();
-
-        mCondition.setMessageCode(condition.getMessageCode());
-        List<MessageLog> mList = messageLogAO.queryMessageLogList(mCondition);
-        for (MessageLog messageLog : mList) {
-            list.add(salaryBO.getSalary(messageLog.getSalaryCode()));
-        }
-
-        CompanyCard companyCard = null;
-        BankCard bankCard = null;
-        Staff staff = null;
-        for (Salary salary : list) {
-            companyCard = companyCardBO
-                .getCompanyCardByProject(salary.getProjectCode());
-            salary.setCompanyCard(companyCard);
-            bankCard = bankCardBO.getBankCardByStaff(salary.getStaffCode());
-            salary.setBankCard(bankCard);
-
-            staff = staffBO.getStaff(salary.getStaffCode());
-            salary.setStaffName(staff.getName());
-            salary.setStaffMobile(staff.getMobile());
-        }
-        return list;
     }
 
     // 定时器形成工资条

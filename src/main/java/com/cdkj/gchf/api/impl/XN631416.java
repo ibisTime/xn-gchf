@@ -30,6 +30,8 @@ public class XN631416 extends AProcessor {
         condition.setKeyword(req.getKeyword());
         condition.setIdType(req.getIdType());
         condition.setUpdater(req.getUpdater());
+        condition.setIdNo(req.getIdNo());
+
         String column = req.getOrderColumn();
         if (StringUtils.isBlank(column)) {
             column = IProgressAO.DEFAULT_ORDER_COLUMN;

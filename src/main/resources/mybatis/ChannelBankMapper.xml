@@ -108,16 +108,6 @@
 		SET
 		bank_code = #{bankCode}
 		,bank_name  = #{bankName}
-		,channel_type = #{channelType}
-		,status = #{status}
-		
-		,channel_bank = #{channelBank}
-		,max_order = #{maxOrder}
-		,order_amount = #{orderAmount}
-		,day_amount = #{dayAmount}
-		,month_amount = #{monthAmount}
-		
-		,remark = #{remark}
 		WHERE id = #{id}
 	</update>
 	

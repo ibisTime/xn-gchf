@@ -16,6 +16,9 @@ public class XN631416Req extends APageReq {
     // （选填）证件类型
     private String idType;
 
+    // （选填）身份证号
+    private String idNo;
+
     // （选填）关键字
     private String keyword;
 
@@ -44,6 +47,14 @@ public class XN631416Req extends APageReq {
 
     public void setUpdater(String updater) {
         this.updater = updater;
+    }
+
+    public String getIdNo() {
+        return idNo;
+    }
+
+    public void setIdNo(String idNo) {
+        this.idNo = idNo;
     }
 
 }

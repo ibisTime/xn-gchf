@@ -25,12 +25,4 @@ public interface ISalaryAO {
     public void approveSalary(List<String> list, String approver,
             String approveNote, String result);
 
-    // 累积薪资
-    public Paginable<Salary> queryTotalSalaryPage(int start, int limit,
-            Salary condition);
-
-    public List<Salary> queryTotalSalaryList(Salary condition);
-
-    public List<Salary> querySalaryListByMessageCode(Salary condition);
-
 }

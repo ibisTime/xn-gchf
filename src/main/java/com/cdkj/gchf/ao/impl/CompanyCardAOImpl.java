@@ -86,7 +86,7 @@ public class CompanyCardAOImpl implements ICompanyCardAO {
     @Override
     public CompanyCard getCompanyCard(String code) {
         CompanyCard data = companyCardBO.getCompanyCard(code);
-        Project project = projectBO.getProject(data.getCompanyCode());
+        Project project = projectBO.getProject(data.getProjectCode());
         data.setProjectName(project.getName());
         return companyCardBO.getCompanyCard(code);
     }

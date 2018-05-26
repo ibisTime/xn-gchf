@@ -62,22 +62,6 @@ public class SalaryBOImpl extends PaginableBOImpl<Salary> implements ISalaryBO {
     }
 
     @Override
-    public long getTotalSalaryCount(Salary condition) {
-        return salaryDAO.getTotalSalaryCount(condition);
-    }
-
-    @Override
-    public List<Salary> queryTotalSalaryList(Salary condition) {
-        return salaryDAO.queryTotalSalaryList(condition);
-    }
-
-    @Override
-    public List<Salary> queryTotalSalaryPage(int pageNO, int pageSize,
-            Salary condition) {
-        return salaryDAO.queryTotalSalaryPage(pageNO, pageSize, condition);
-    }
-
-    @Override
     public void saveNewSalay(Salary salary, String mCode, Long payAmount) {
         Salary data = new Salary();
         String code = OrderNoGenerater

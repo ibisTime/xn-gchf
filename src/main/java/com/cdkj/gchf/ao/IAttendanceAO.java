@@ -11,8 +11,6 @@ import com.cdkj.gchf.domain.Attendance;
 public interface IAttendanceAO {
     static final String DEFAULT_ORDER_COLUMN = "code";
 
-    public void dropAttendance(String code);
-
     public void clockIn(String projectCode, String staffCode);
 
     public Paginable<Attendance> queryAttendancePage(int start, int limit,

@@ -140,6 +140,7 @@ public class EmployAOImpl implements IEmployAO {
         attendance.setProjectName(project.getName());
 
         attendance.setStaffCode(staff.getCode());
+        attendance.setStaffName(staff.getName());
         attendance.setStaffMobile(staff.getMobile());
         attendance.setStatus(EAttendanceStatus.TO_Start.getCode());
         attendance.setCreateDatetime(date);
@@ -245,7 +246,6 @@ public class EmployAOImpl implements IEmployAO {
             employ.setStaff(staff);
             employ.setUpUserName(getName(employ.getUpUser()));
             employ.setUpdateName(getName(employ.getUpdater()));
-            employ.setStaffName(staff.getName());
         }
         page.setList(list);
         return page;
@@ -261,7 +261,6 @@ public class EmployAOImpl implements IEmployAO {
             employ.setStaff(staff);
             employ.setUpUserName(getName(employ.getUpUser()));
             employ.setUpdateName(getName(employ.getUpdater()));
-            employ.setStaffName(staff.getName());
         }
         return list;
     }

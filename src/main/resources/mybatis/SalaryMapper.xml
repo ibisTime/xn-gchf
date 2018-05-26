@@ -30,9 +30,6 @@
 		
 		<result column="remark" property="remark" />
 		<result column="late_pay_datetime" property="latePayDatetime" />
-		<result column="total_fact_amount" property="totalFactAmount" />
-		<result column="total_cut_amount" property="totalCutAmount" />
-		<result column="total_tax" property="totalTax" />
 	</resultMap>
 	<sql id="where_condition">
 		<trim prefix="WHERE" prefixOverrides="AND | OR">
@@ -126,51 +123,6 @@
 		<include refid="where_condition" />
 	</select>
 
-	<select id="select_total_salary" parameterType="salary" resultMap="salary_DB_Result">
-		SELECT
-		t.code
-		,t.message_code
-		,t.staff_code
-		,t.project_code
-		,t.project_name
-		,t.month
-		,t.should_amount
-		,t.fact_amount
-		,t.pay_amount
-		,t.supply_amount
-		,t.cut_amount
-		,t.cut_note
-		,t.tax
-		,t.delay_days
-		,t.early_days
-		,t.leaving_days
-		,t.create_datetime
-		,t.status
-		,t.approve_user
-		,t.approve_datetime
-		,t.approve_note
-		,t.remark
-		,t.late_pay_datetime
-		,SUM(t.fact_amount) AS total_fact_amount
-		,SUM(t.cut_amount) AS total_cut_amount
-		,SUM(t.tax) AS total_tax
-		FROM
-		thf_salary t
-		<include refid="where_condition" />
-		GROUP BY t.month
-		<trim prefix="ORDER BY ">
-			<if test="order != null and order != '' ">
-				t.${order}
-			</if>
-		</trim>
-	</select>
-
-	<select id="total_salary_count" parameterType="salary"
-		resultType="java.lang.Long">
-		SELECT COUNT(1) FROM ( SELECT * FROM thf_salary t  
-		<include refid="where_condition" />
-		GROUP BY t.month)salary
-	</select>
 
 	<insert id="insert_salary" parameterType="salary">
 		INSERT INTO

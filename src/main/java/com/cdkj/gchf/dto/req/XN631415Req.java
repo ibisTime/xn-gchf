@@ -27,6 +27,9 @@ public class XN631415Req extends APageReq {
     // （选填）公司编号
     private String companyCode;
 
+    // （选填）身份证号
+    private String idNo;
+
     // （选填）公司编号
     private List<String> companyCodeList;
 
@@ -68,6 +71,14 @@ public class XN631415Req extends APageReq {
 
     public void setCompanyCodeList(List<String> companyCodeList) {
         this.companyCodeList = companyCodeList;
+    }
+
+    public String getIdNo() {
+        return idNo;
+    }
+
+    public void setIdNo(String idNo) {
+        this.idNo = idNo;
     }
 
 }

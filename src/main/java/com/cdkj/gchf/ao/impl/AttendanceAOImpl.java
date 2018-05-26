@@ -13,7 +13,6 @@ import com.cdkj.gchf.bo.IAttendanceBO;
 import com.cdkj.gchf.bo.IEmployBO;
 import com.cdkj.gchf.bo.IProjectBO;
 import com.cdkj.gchf.bo.IReportBO;
-import com.cdkj.gchf.bo.IStaffBO;
 import com.cdkj.gchf.bo.base.Page;
 import com.cdkj.gchf.bo.base.Paginable;
 import com.cdkj.gchf.core.OrderNoGenerater;
@@ -21,7 +20,6 @@ import com.cdkj.gchf.domain.Attendance;
 import com.cdkj.gchf.domain.Employ;
 import com.cdkj.gchf.domain.Project;
 import com.cdkj.gchf.domain.Report;
-import com.cdkj.gchf.domain.Staff;
 import com.cdkj.gchf.enums.EAttendanceStatus;
 import com.cdkj.gchf.enums.EEmploytatus;
 import com.cdkj.gchf.enums.EGeneratePrefix;
@@ -34,9 +32,6 @@ public class AttendanceAOImpl implements IAttendanceAO {
 
     @Autowired
     private IAttendanceBO attendanceBO;
-
-    @Autowired
-    private IStaffBO staffBO;
 
     @Autowired
     private IProjectBO projectBO;
@@ -56,6 +51,7 @@ public class AttendanceAOImpl implements IAttendanceAO {
         if (EAttendanceStatus.Unpaied.equals(data.getStatus())) {
             throw new BizException("xn00000", "该员工今日已打卡");
         }
+
         if (EAttendanceStatus.TO_Start.getCode().equals(data.getStatus())) {
             attendanceBO.toStart(data, EAttendanceStatus.TO_End.getCode());
             todayDays = todayDays + 1;
@@ -64,13 +60,7 @@ public class AttendanceAOImpl implements IAttendanceAO {
             .equals(data.getStatus())) {
             attendanceBO.toEnd(data, EAttendanceStatus.Unpaied.getCode());
         }
-
         reportBO.refreshTodayDays(report, todayDays);
-
-    }
-
-    @Override
-    public void dropAttendance(String code) {
     }
 
     @Override
@@ -85,6 +75,7 @@ public class AttendanceAOImpl implements IAttendanceAO {
                 return page;
             }
         }
+
         if (condition.getCreateDatetimeStart() != null
                 && condition.getCreateDatetimeEnd() != null
                 && condition.getCreateDatetimeStart()
@@ -92,16 +83,19 @@ public class AttendanceAOImpl implements IAttendanceAO {
             throw new BizException("xn0000", "开始时间不能大于结束时间");
         }
 
-        page = attendanceBO.getPaginable(start, limit, condition);
-        for (Attendance attendance : page.getList()) {
-            Staff staff = staffBO.getStaff(attendance.getStaffCode());
-            attendance.setStaffName(staff.getName());
-        }
-        return page;
+        return attendanceBO.getPaginable(start, limit, condition);
     }
 
     @Override
     public List<Attendance> queryAttendanceList(Attendance condition) {
+        List<Attendance> list = new ArrayList<Attendance>();
+        if (EUserKind.Owner.getCode().equals(condition.getKeyword())
+                || EUserKind.Owner.getCode().equals(condition.getKeyword())) {
+            if (CollectionUtils.isEmpty(condition.getProjectCodeList())) {
+                return list;
+            }
+        }
+
         if (condition.getCreateDatetimeStart() != null
                 && condition.getCreateDatetimeEnd() != null
                 && condition.getCreateDatetimeStart()
@@ -109,12 +103,7 @@ public class AttendanceAOImpl implements IAttendanceAO {
             throw new BizException("xn0000", "开始时间不能大于结束时间");
         }
 
-        List<Attendance> list = attendanceBO.queryAttendanceList(condition);
-        for (Attendance attendance : list) {
-            Staff staff = staffBO.getStaff(attendance.getStaffCode());
-            attendance.setStaffName(staff.getName());
-        }
-        return list;
+        return attendanceBO.queryAttendanceList(condition);
     }
 
     @Override

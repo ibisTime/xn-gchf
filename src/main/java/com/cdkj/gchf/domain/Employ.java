@@ -327,5 +327,4 @@ public class Employ extends ABaseDO {
     public void setSalaryStatus(String salaryStatus) {
         this.salaryStatus = salaryStatus;
     }
-
 }

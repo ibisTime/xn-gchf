@@ -41,6 +41,7 @@ public class XN631435 extends AProcessor {
 
         condition.setSubbranch(req.getSubbranch());
         condition.setProjectCodeList(req.getProjectCodeList());
+        condition.setMonth(req.getMonth());
 
         String column = req.getOrderColumn();
         if (StringUtils.isBlank(column)) {

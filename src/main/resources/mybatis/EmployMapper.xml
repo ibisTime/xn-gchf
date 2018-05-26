@@ -7,6 +7,7 @@
 		<result column="project_code" property="projectCode" />
 		<result column="project_name" property="projectName" />
 		<result column="staff_code" property="staffCode" />
+		<result column="staff_name" property="staffName" />
 		<result column="staff_mobile" property="staffMobile" />
 		
 		<result column="type" property="type" />
@@ -75,7 +76,7 @@
 				AND t.salary_status = #{salaryStatus}
 			</if>
 			<if test="keyword != null and keyword != '' ">
-				AND t.staff_mobile like "%"#{keyword}"%" OR t.position  like "%"#{keyword}"%" OR 
+				AND t.staff_mobile like "%"#{keyword}"%" OR t.position  like "%"#{keyword}"%" OR t.staff_name  like "%"#{keyword}"%"
 			</if>
 			
 		</trim>
@@ -87,6 +88,7 @@
 		,t.project_code
 		,t.project_name
 		,t.staff_code
+		,t.staff_name
 		,t.staff_mobile
 		
 		,t.type
@@ -136,6 +138,7 @@
 		,project_code
 		,project_name
 		,staff_code
+		,staff_name
 		,staff_mobile
 		,type
 		,position
@@ -154,6 +157,7 @@
 		,#{projectCode}
 		,#{projectName}
 		,#{staffCode}
+		,#{staffName}
 		,#{staffMobile}
 		,#{type}
 		,#{position}

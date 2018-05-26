@@ -87,6 +87,10 @@ public class Salary extends ABaseDO {
 
     // **********db***************
 
+    // 工资卡号
+    private String bankcardNumber;
+
+    // 关键字
     private String keyword;
 
     // 工资卡
@@ -94,18 +98,6 @@ public class Salary extends ABaseDO {
 
     // 公司账户
     private CompanyCard companyCard;
-
-    // 月累积薪资
-    private Long totalFactAmount;
-
-    // 月累积税费
-    private Long totalTax;
-
-    // 月累计扣款
-    private Long totalCutAmount;
-
-    // 共计发薪
-    private Long totalAmount;
 
     // 用户类型
     private String kind;
@@ -121,9 +113,6 @@ public class Salary extends ABaseDO {
 
     // 项目编号List
     private List<String> projectCodeList;
-
-    // 月领薪人数
-    private long number;
 
     public void setCode(String code) {
         this.code = code;
@@ -325,14 +314,6 @@ public class Salary extends ABaseDO {
         this.companyCard = companyCard;
     }
 
-    public Long getTotalFactAmount() {
-        return totalFactAmount;
-    }
-
-    public void setTotalFactAmount(Long totalFactAmount) {
-        this.totalFactAmount = totalFactAmount;
-    }
-
     public String getKind() {
         return kind;
     }
@@ -373,14 +354,6 @@ public class Salary extends ABaseDO {
         this.staffMobile = staffMobile;
     }
 
-    public long getNumber() {
-        return number;
-    }
-
-    public void setNumber(long number) {
-        this.number = number;
-    }
-
     public Long getSupplyAmount() {
         return supplyAmount;
     }
@@ -389,28 +362,12 @@ public class Salary extends ABaseDO {
         this.supplyAmount = supplyAmount;
     }
 
-    public Long getTotalTax() {
-        return totalTax;
+    public String getBankcardNumber() {
+        return bankcardNumber;
     }
 
-    public void setTotalTax(Long totalTax) {
-        this.totalTax = totalTax;
-    }
-
-    public Long getTotalCutAmount() {
-        return totalCutAmount;
-    }
-
-    public void setTotalCutAmount(Long totalCutAmount) {
-        this.totalCutAmount = totalCutAmount;
-    }
-
-    public Long getTotalAmount() {
-        return totalAmount;
-    }
-
-    public void setTotalAmunt(Long totalAmount) {
-        this.totalAmount = totalAmount;
+    public void setBankcardNumber(String bankcardNumber) {
+        this.bankcardNumber = bankcardNumber;
     }
 
 }

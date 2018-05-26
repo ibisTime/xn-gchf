@@ -27,6 +27,9 @@ public class Employ extends ABaseDO {
     // 员工编号
     private String staffCode;
 
+    // 员工姓名
+    private String staffName;
+
     // 员工手机号
     private String staffMobile;
 
@@ -88,8 +91,6 @@ public class Employ extends ABaseDO {
     private String upUserName;
 
     private String updateName;
-
-    private String staffName;
 
     private List<String> statusList;
 

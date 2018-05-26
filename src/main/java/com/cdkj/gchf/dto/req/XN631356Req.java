@@ -25,6 +25,9 @@ public class XN631356Req extends APageReq {
     private String kind;
 
     // 项目编号
+    private String projectCode;
+
+    // 项目编号
     private List<String> projectCodeList;
 
     public String getStatus() {
@@ -81,6 +84,14 @@ public class XN631356Req extends APageReq {
 
     public void setProjectCodeList(List<String> projectCodeList) {
         this.projectCodeList = projectCodeList;
+    }
+
+    public String getProjectCode() {
+        return projectCode;
+    }
+
+    public void setProjectCode(String projectCode) {
+        this.projectCode = projectCode;
     }
 
 }

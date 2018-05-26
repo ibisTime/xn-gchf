@@ -100,6 +100,9 @@ public class Staff extends ABaseDO {
     // 工资条List
     private List<Salary> salaryList;
 
+    // 异常工资条List
+    private List<Salary> abnormalSalaryList;
+
     // 更新人名字
     private String updateName;
 
@@ -359,6 +362,14 @@ public class Staff extends ABaseDO {
 
     public void setSalaryStatus(String salaryStatus) {
         this.salaryStatus = salaryStatus;
+    }
+
+    public List<Salary> getAbnormalSalaryList() {
+        return abnormalSalaryList;
+    }
+
+    public void setAbnormalSalaryList(List<Salary> abnormalSalaryList) {
+        this.abnormalSalaryList = abnormalSalaryList;
     }
 
 }

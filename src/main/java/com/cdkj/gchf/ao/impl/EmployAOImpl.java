@@ -76,21 +76,24 @@ public class EmployAOImpl implements IEmployAO {
         data.setCode(code);
         Project project = projectBO.getProject(req.getProjectCode());
         data.setProjectCode(req.getProjectCode());
+
         if (EProjectStatus.End.getCode().equals(project.getStatus())
                 || EProjectStatus.Stop.getCode().equals(project.getStatus())) {
             throw new BizException("xn0000", "该项目已经结束");
         }
+
         data.setProjectName(project.getName());
         data.setStaffCode(staff.getCode());
-
+        data.setStaffName(staff.getName());
         data.setStaffMobile(staff.getMobile());
         data.setType(req.getType());
+
         data.setPosition(req.getPosition());
         data.setSalary(StringValidater.toLong(req.getSalary()));
         data.setCutAmount(StringValidater.toLong(req.getCutAmount()));
-
         userBO.getUser(req.getUpUser());
         data.setUpUser(req.getUpUser());
+
         data.setJoinDatetime(DateUtil.strToDate(req.getJoinDatetime(),
             DateUtil.FRONT_DATE_FORMAT_STRING));
         data.setStatus(EEmploytatus.Work.getCode());
@@ -98,6 +101,7 @@ public class EmployAOImpl implements IEmployAO {
         data.setUpdater(req.getUpdater());
         data.setUpdateDatetime(date);
         data.setRemark(req.getRemark());
+
         employBO.joinIn(data);
         // 录入合同
         ccontractBO.isExist(req.getProjectCode(), req.getStaffCode());
@@ -106,18 +110,19 @@ public class EmployAOImpl implements IEmployAO {
             .generate(EGeneratePrefix.Ccontract.getCode());
         ccontract.setCode(ccontractCode);
         ccontract.setProjectCode(req.getProjectCode());
+
         ccontract.setProjectName(project.getName());
         ccontract.setStaffCode(req.getStaffCode());
         ccontract.setStaffMobile(staff.getMobile());
-
         ccontract.setContentPic(req.getContentPic());
         ccontract.setContractDatetime(DateUtil.strToDate(
             req.getContractDatetime(), DateUtil.FRONT_DATE_FORMAT_STRING));
+
         ccontract.setUpdater(req.getUpdater());
         ccontract.setUpdateDatetime(date);
         ccontract.setRemark(req.getRemark());
-
         ccontractBO.saveCcontract(ccontract);
+
         // 计入累积入职
         Report report = reportBO.getReportByProject(project.getCode());
         Long nextMonthSalary = StringValidater.toLong(req.getSalary())
@@ -125,6 +130,7 @@ public class EmployAOImpl implements IEmployAO {
                 + report.getNextMonthSalary();
         report.setNextMonthSalary(nextMonthSalary);
         reportBO.staffIn(report);
+
         // 生成考勤
         Attendance attendance = new Attendance();
         String attendanceCode = OrderNoGenerater
@@ -135,9 +141,9 @@ public class EmployAOImpl implements IEmployAO {
 
         attendance.setStaffCode(staff.getCode());
         attendance.setStaffMobile(staff.getMobile());
-
         attendance.setStatus(EAttendanceStatus.TO_Start.getCode());
         attendance.setCreateDatetime(date);
+
         attendanceBO.saveAttendance(attendance);
         staffLogBO.saveStaffLog(data, staff.getName(), project.getCompanyCode(),
             project.getCode(), project.getName());

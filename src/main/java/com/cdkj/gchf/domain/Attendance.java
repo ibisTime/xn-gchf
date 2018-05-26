@@ -27,6 +27,9 @@ public class Attendance extends ABaseDO {
     // 员工编号
     private String staffCode;
 
+    // 员工姓名
+    private String staffName;
+
     // 员工手机号
     private String staffMobile;
 
@@ -58,9 +61,6 @@ public class Attendance extends ABaseDO {
 
     // 生成结束时间
     private Date createDatetimeEnd;
-
-    // 员工姓名
-    private String staffName;
 
     // 项目编号List
     private List<String> projectCodeList;

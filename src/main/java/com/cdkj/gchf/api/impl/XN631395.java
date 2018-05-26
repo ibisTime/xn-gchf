@@ -39,6 +39,7 @@ public class XN631395 extends AProcessor {
             DateUtil.strToDate(req.getDateEnd(), DateUtil.DATA_TIME_PATTERN_1));
         condition.setKind(req.getKind());
 
+        condition.setKeyword(req.getKeyword());
         condition.setProjectCodeList(req.getProjectCodeList());
 
         String column = req.getOrderColumn();

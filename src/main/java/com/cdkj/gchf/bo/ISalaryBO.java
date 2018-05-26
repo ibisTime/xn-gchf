@@ -35,4 +35,7 @@ public interface ISalaryBO extends IPaginableBO<Salary> {
 
     public void refreshStatus(Salary salary);
 
+    public List<Salary> getAbnormalSalaryByStaff(String code,
+            String projectCode);
+
 }

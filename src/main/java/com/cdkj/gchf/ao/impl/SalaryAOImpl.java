@@ -195,7 +195,6 @@ public class SalaryAOImpl implements ISalaryAO {
             staff = staffBO.getStaff(data.getStaffCode());
             data.setStaffName(staff.getName());
             data.setStaffMobile(staff.getMobile());
-            data.setNumber(number);
         }
         page.setList(list);
         return page;

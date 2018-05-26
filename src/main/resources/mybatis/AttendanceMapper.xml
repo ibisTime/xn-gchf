@@ -7,6 +7,7 @@
 		<result column="project_code" property="projectCode" />
 		<result column="project_name" property="projectName" />
 		<result column="staff_code" property="staffCode" />
+		<result column="staff_name" property="staffName" />
 		<result column="staff_mobile" property="staffMobile" />
 		<result column="status" property="status" />
 		<result column="create_datetime" property="createDatetime" />
@@ -31,9 +32,14 @@
 			</if>
 			
 			<if test="keyword != null and keyword != '' ">
-				AND t.staff_mobile like "%"#{keyword}"%"
+				AND t.staff_mobile like "%"#{keyword}"%" OR t.staff_name like "%"#{keyword}"%" 
 			</if>
-			
+			<if test="createDatetimeStart != null and createDatetimeStart != '' ">
+				<![CDATA[AND t.createDatetime >= createDatetimeStart]]>
+			</if>
+			<if test="createDatetimeEnd != null and createDatetimeEnd != ''">
+				<![CDATA[AND t.createDatetime <= createDatetimeEnd]]>
+			</if>
 		</trim>
 	</sql>
 	<select id="select_attendance" parameterType="attendance" resultMap="attendance_DB_Result">
@@ -42,6 +48,7 @@
 		,t.project_code
 		,t.project_name
 		,t.staff_code
+		,t.staff_name
 		,t.staff_mobile
 		,t.status
 		,t.create_datetime
@@ -72,6 +79,7 @@
 		,project_code
 		,project_name
 		,staff_code
+		,staff_name
 		,staff_mobile
 		,status
 		,create_datetime
@@ -85,6 +93,7 @@
 		,#{projectCode}
 		,#{projectName}
 		,#{staffCode}
+		,#{staffName}
 		,#{staffMobile}
 		,#{status}
 		,#{createDatetime}

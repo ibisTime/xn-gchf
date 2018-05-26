@@ -12,11 +12,13 @@ import com.cdkj.gchf.ao.ICompanyAO;
 import com.cdkj.gchf.bo.ICompanyBO;
 import com.cdkj.gchf.bo.IDepartmentBO;
 import com.cdkj.gchf.bo.IProjectBO;
+import com.cdkj.gchf.bo.IUserBO;
 import com.cdkj.gchf.bo.base.Paginable;
 import com.cdkj.gchf.core.OrderNoGenerater;
 import com.cdkj.gchf.domain.Company;
 import com.cdkj.gchf.domain.Department;
 import com.cdkj.gchf.domain.Project;
+import com.cdkj.gchf.domain.User;
 import com.cdkj.gchf.enums.EGeneratePrefix;
 import com.cdkj.gchf.enums.EUserKind;
 import com.cdkj.gchf.exception.BizException;
@@ -25,13 +27,16 @@ import com.cdkj.gchf.exception.BizException;
 public class CompanyAOImpl implements ICompanyAO {
 
     @Autowired
-    private ICompanyBO companyBO;
+    ICompanyBO companyBO;
 
     @Autowired
-    private IProjectBO projectBO;
+    IProjectBO projectBO;
 
     @Autowired
-    private IDepartmentBO departmentBO;
+    IDepartmentBO departmentBO;
+
+    @Autowired
+    IUserBO userBO;
 
     @Override
     public String addCompany(String name) {
@@ -48,18 +53,24 @@ public class CompanyAOImpl implements ICompanyAO {
     @Override
     public void editCompany(String code, String name) {
         Company data = companyBO.getCompany(code);
-        List<Department> list = departmentBO
-            .getDepartmentByCompanyCode(data.getCode());
-        if (CollectionUtils.isNotEmpty(list)) {
-            throw new BizException("xn00000", "该公司下还有部门，无法删除");
-        }
+
         companyBO.refreshCompany(data, name);
     }
 
     @Override
     public void dropCompany(String code) {
         Company data = companyBO.getCompany(code);
-
+        // 该公司下是否存在用户
+        List<User> userList = userBO.getUserByCompany(data.getCode());
+        if (CollectionUtils.isNotEmpty(userList)) {
+            throw new BizException("xn00000", "该公司下下仍有人员，无法删除");
+        }
+        // 该公司下是否存在部门
+        List<Department> list = departmentBO
+            .getDepartmentByCompanyCode(data.getCode());
+        if (CollectionUtils.isNotEmpty(list)) {
+            throw new BizException("xn00000", "该公司下还有部门，无法删除");
+        }
         companyBO.removeCompany(data);
     }
 

@@ -152,6 +152,7 @@ public class AttendanceAOImpl implements IAttendanceAO {
                 data.setProjectName(project.getName());
 
                 data.setStaffCode(employ.getStaffCode());
+                data.setStaffName(employ.getStaffName());
                 data.setStaffMobile(employ.getStaffMobile());
 
                 data.setStatus(EAttendanceStatus.TO_Start.getCode());

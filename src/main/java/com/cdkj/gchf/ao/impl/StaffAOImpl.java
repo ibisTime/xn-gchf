@@ -38,6 +38,7 @@ import com.cdkj.gchf.dto.req.XN631412Req;
 import com.cdkj.gchf.dto.req.XN631413Req;
 import com.cdkj.gchf.enums.EBankCardStatus;
 import com.cdkj.gchf.enums.EGeneratePrefix;
+import com.cdkj.gchf.enums.ESalaryStatus;
 import com.cdkj.gchf.enums.EUser;
 import com.cdkj.gchf.exception.BizException;
 import com.google.gson.Gson;
@@ -342,6 +343,7 @@ public class StaffAOImpl implements IStaffAO {
         // 所在项目及工资条
         List<Employ> employList = new ArrayList<Employ>();
         List<Salary> salaryList = new ArrayList<Salary>();
+        List<Salary> abnormalSalaryList = new ArrayList<Salary>();
         Employ employ = null;
 
         if (CollectionUtils.isNotEmpty(projectCodeList)) {
@@ -351,20 +353,27 @@ public class StaffAOImpl implements IStaffAO {
                 if (employ != null) {
                     employList.add(employ);
                 }
-                sList = salaryBO.getSalaryByStaff(data.getCode(), projectCode);
+                sList = salaryBO.getAbnormalSalaryByStaff(data.getCode(),
+                    projectCode);
                 if (CollectionUtils.isNotEmpty(sList)) {
                     salaryList.addAll(sList);
                 }
             }
         }
+
         for (Salary salary : salaryList) {
             // 工资卡
             BankCard bankCard = bankCardBO.getBankCardByStaff(data.getCode());
             salary.setBankCard(bankCard);
+            salary.setBankcardNumber(bankCard.getBankcardNumber());
+            if (ESalaryStatus.Pay_Portion.getCode()
+                .equals(salary.getStatus())) {
+                abnormalSalaryList.add(salary);
+            }
         }
-
         data.setEmployList(employList);
         data.setSalaryList(salaryList);
+        data.setAbnormalSalaryList(abnormalSalaryList);
         return data;
     }
 

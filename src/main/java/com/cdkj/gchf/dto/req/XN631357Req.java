@@ -9,9 +9,6 @@ public class XN631357Req extends APageReq {
     // 公司编号 （选填）
     private String companyCode;
 
-    // 公司名称 （选填）
-    private String companyName;
-
     // 审核人
     private String approver;
 
@@ -29,6 +26,9 @@ public class XN631357Req extends APageReq {
 
     // 项目编号
     private List<String> projectCodeList;
+
+    // 项目名称
+    private String projectCode;
 
     public String getStatus() {
         return status;
@@ -70,12 +70,12 @@ public class XN631357Req extends APageReq {
         this.approver = approver;
     }
 
-    public String getCompanyName() {
-        return companyName;
+    public String getProjectCode() {
+        return projectCode;
     }
 
-    public void setCompanyName(String companyName) {
-        this.companyName = companyName;
+    public void setProjectCode(String projectCode) {
+        this.projectCode = projectCode;
     }
 
     public String getKind() {

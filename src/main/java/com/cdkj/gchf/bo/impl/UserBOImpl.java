@@ -182,4 +182,11 @@ public class UserBOImpl extends PaginableBOImpl<User> implements IUserBO {
         return data;
     }
 
+    @Override
+    public List<User> getUserByCompany(String companyCode) {
+        User condition = new User();
+        condition.setCompanyCode(companyCode);
+        return userDAO.selectList(condition);
+    }
+
 }

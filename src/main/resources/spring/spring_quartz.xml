@@ -64,7 +64,7 @@
 	<!-- 下个月预计发薪 -->
 	<bean id="nextMonthSalaryTrigger" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">  
        <property name="jobDetail" ref="nextMonthSalaryReport"/>  
-       <property name="cronExpression" value="0 0 0 1 * ?"/><!-- 0 0 0 1 * ?  每天每小时-->
+       <property name="cronExpression" value="0 0 0 1 * ?"/><!-- 0 0 0 1 * ? 每月第一天 -->
 	</bean>
 	<bean id="nextMonthSalaryReport" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">   
         <property name="targetObject" ref="reportAOImpl"/>  

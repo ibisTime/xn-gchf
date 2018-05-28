@@ -29,6 +29,7 @@ import com.cdkj.gchf.domain.Staff;
 import com.cdkj.gchf.domain.User;
 import com.cdkj.gchf.dto.req.XN631460Req;
 import com.cdkj.gchf.dto.req.XN631461Req;
+import com.cdkj.gchf.dto.req.XN631462Req;
 import com.cdkj.gchf.enums.EAttendanceStatus;
 import com.cdkj.gchf.enums.EEmploytatus;
 import com.cdkj.gchf.enums.EGeneratePrefix;
@@ -156,7 +157,8 @@ public class EmployAOImpl implements IEmployAO {
     @Override
     public void toHoliday(XN631461Req req) {
 
-        Employ data = employBO.getEmploy(req.getCode());
+        Employ data = employBO.getEmployByStaff(req.getStaffCode(),
+            req.getProjectCode());
         if (!EEmploytatus.Work.getCode().equals(data.getStatus())) {
             throw new BizException("xn0000", "该员工不是在职状态");
         }
@@ -196,13 +198,14 @@ public class EmployAOImpl implements IEmployAO {
     }
 
     @Override
-    public void leaveOffice(String code, String leavingDatetime, String updater,
-            String remark) {
-        Employ data = employBO.getEmploy(code);
+    public void leaveOffice(XN631462Req req) {
+        Employ data = employBO.getEmployByStaff(req.getStaffCode(),
+            req.getProjectCode());
         if (EEmploytatus.Leave.getCode().equals(data.getStatus())) {
             throw new BizException("xn0000", "该员工已经离职");
         }
-        employBO.leaveOffice(data, leavingDatetime, updater, remark);
+        employBO.leaveOffice(data, req.getLeavingDatetime(), req.getUpdater(),
+            req.getRemark());
         // 统计累积离职人数
         Report report = reportBO.getReportByProject(data.getProjectCode());
         report.setStaffOut(report.getStaffOut() + 1);

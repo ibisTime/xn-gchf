@@ -42,7 +42,7 @@
 				AND t.updater = #{updater}
 			</if>
 			<if test="keyword != null and keyword != '' ">
-				AND t.project_name like "%"#{keyword}"%" OR t.company_name like "%"#{keyword}"%"
+				AND (t.project_name like "%"#{keyword}"%" OR t.company_name like "%"#{keyword}"%")
 			</if>
 		</trim>
 	</sql>

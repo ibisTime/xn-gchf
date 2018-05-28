@@ -18,6 +18,9 @@ public class Progress extends ABaseDO {
     // 项目编号
     private String projectCode;
 
+    // 项目名称
+    private String projectName;
+
     // 进度时间
     private Date datetime;
 
@@ -48,9 +51,6 @@ public class Progress extends ABaseDO {
 
     // 项目编号List
     private List<String> projectCodeList;
-
-    // 项目名称
-    private String projectName;
 
     public String getKeyword() {
         return keyword;

@@ -22,7 +22,7 @@
 				AND t.parent_code = #{parentCode}
 			</if>
 			<if test="keyword != null and keyword != '' ">
-				t.name LIKE "%"#{keyword}"%" OR t.leade_mobile LIKE "%"#{keyword}"%" OR t.leader LIKE "%"#{keyword}"%" 
+				AND (t.name LIKE "%"#{keyword}"%" OR t.leade_mobile LIKE "%"#{keyword}"%" OR t.leader LIKE "%"#{keyword}"%" )
 			</if>
 		</trim>
 	</sql>

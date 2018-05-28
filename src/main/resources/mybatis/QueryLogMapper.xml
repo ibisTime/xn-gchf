@@ -29,7 +29,7 @@
 				AND t.id_no = #{idNo}
 			</if>
 			<if test="keyword != null and keyword != '' ">
-				AND t.staff_name like "%"#{keyword}"%" OR t.id_no like "%"#{keyword}"%"
+				AND (t.staff_name like "%"#{keyword}"%" OR t.id_no like "%"#{keyword}"%")
 			</if>
 		</trim>
 	</sql>

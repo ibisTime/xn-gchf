@@ -1,37 +1,37 @@
 package com.cdkj.gchf.api.impl;
 
-import com.cdkj.gchf.ao.IEmployAO;
+import com.cdkj.gchf.ao.IAbnormalRemindAO;
 import com.cdkj.gchf.api.AProcessor;
 import com.cdkj.gchf.common.JsonUtil;
 import com.cdkj.gchf.core.ObjValidater;
-import com.cdkj.gchf.dto.req.XN631462Req;
-import com.cdkj.gchf.dto.res.BooleanRes;
+import com.cdkj.gchf.dto.req.XN631510Req;
+import com.cdkj.gchf.dto.res.PKCodeRes;
 import com.cdkj.gchf.exception.BizException;
 import com.cdkj.gchf.exception.ParaException;
 import com.cdkj.gchf.spring.SpringContextHolder;
 
 /**
- * 离职
+ * 新增事件通知人
  * @author: nyc 
- * @since: 2018年4月29日 下午7:32:21 
+ * @since: 2018年5月28日 下午7:48:10 
  * @history:
  */
-public class XN631462 extends AProcessor {
+public class XN631510 extends AProcessor {
 
-    private IEmployAO employAO = SpringContextHolder.getBean(IEmployAO.class);
+    private IAbnormalRemindAO abnormalRemindAO = SpringContextHolder
+        .getBean(IAbnormalRemindAO.class);
 
-    private XN631462Req req = null;
+    private XN631510Req req = null;
 
     @Override
     public Object doBusiness() throws BizException {
-        employAO.leaveOffice(req);
-        return new BooleanRes(true);
+        return new PKCodeRes(abnormalRemindAO.addAbnormalRemin(req));
     }
 
     @Override
     public void doCheck(String inputparams, String operator)
             throws ParaException {
-        req = JsonUtil.json2Bean(inputparams, XN631462Req.class);
+        req = JsonUtil.json2Bean(inputparams, XN631510Req.class);
         ObjValidater.validateReq(req);
     }
 

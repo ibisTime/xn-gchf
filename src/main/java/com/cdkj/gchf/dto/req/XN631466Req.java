@@ -37,7 +37,10 @@ public class XN631466Req extends APageReq {
     private String staffCode;
 
     // 编号列表
-    private List<String> companyCodeList;
+    private List<String> projectCodeList;
+
+    // 状态列表
+    private List<String> statusList;
 
     public String getKeyword() {
         return keyword;
@@ -87,12 +90,12 @@ public class XN631466Req extends APageReq {
         this.updater = updater;
     }
 
-    public List<String> getCompanyCodeList() {
-        return companyCodeList;
+    public List<String> getProjectCodeList() {
+        return projectCodeList;
     }
 
-    public void setCompanyCodeList(List<String> companyCodeList) {
-        this.companyCodeList = companyCodeList;
+    public void setProjectCodeList(List<String> projectCodeList) {
+        this.projectCodeList = projectCodeList;
     }
 
     public String getStaffCode() {
@@ -101,6 +104,14 @@ public class XN631466Req extends APageReq {
 
     public void setStaffCode(String staffCode) {
         this.staffCode = staffCode;
+    }
+
+    public List<String> getStatusList() {
+        return statusList;
+    }
+
+    public void setStatusList(List<String> statusList) {
+        this.statusList = statusList;
     }
 
 }

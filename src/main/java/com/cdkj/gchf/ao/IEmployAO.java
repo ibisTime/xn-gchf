@@ -8,6 +8,7 @@ import com.cdkj.gchf.bo.base.Paginable;
 import com.cdkj.gchf.domain.Employ;
 import com.cdkj.gchf.dto.req.XN631460Req;
 import com.cdkj.gchf.dto.req.XN631461Req;
+import com.cdkj.gchf.dto.req.XN631462Req;
 
 @Component
 public interface IEmployAO {
@@ -31,7 +32,6 @@ public interface IEmployAO {
     public void toHoliday(XN631461Req req);
 
     // 离职
-    public void leaveOffice(String code, String leavingDatetime, String updater,
-            String remark);
+    public void leaveOffice(XN631462Req req);
 
 }

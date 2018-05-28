@@ -142,5 +142,9 @@
 	<bean id="skillBO" class="com.cdkj.gchf.bo.impl.SkillBOImpl">
 		<property name="paginableDAO" ref="skillDAOImpl"/>
 	</bean>	
+	
+	<bean id="abnormalRemindBO" class="com.cdkj.gchf.bo.impl.AbnormalRemindBOImpl">
+		<property name="paginableDAO" ref="abnormalRemindDAOImpl"/>
+	</bean>	
 </beans>
 

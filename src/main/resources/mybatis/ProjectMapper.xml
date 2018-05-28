@@ -95,7 +95,7 @@
 				AND t.updater = #{updater}
 			</if>
 			<if test="keyword != null and keyword != '' ">
-				AND t.name like "%"#{keyword}"%" OR  t.charge_mobile like "%"#{keyword}"%"
+				AND (t.name like "%"#{keyword}"%" OR  t.charge_mobile like "%"#{keyword}"%")
 			</if>
 		</trim>
 	</sql>

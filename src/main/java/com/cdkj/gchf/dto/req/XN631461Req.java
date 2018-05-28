@@ -10,9 +10,13 @@ import org.hibernate.validator.constraints.NotBlank;
  */
 public class XN631461Req {
 
-    // （必填） 编号
+    // （必填） 员工编号
     @NotBlank(message = "编码不能为空")
-    private String code;
+    private String staffCode;
+
+    // （必填） 项目编号
+    @NotBlank(message = "编码不能为空")
+    private String projectCode;
 
     // （必填）开始时间
     @NotBlank(message = "开始时间不能为空")
@@ -29,12 +33,12 @@ public class XN631461Req {
     // 备注
     private String remark;
 
-    public String getCode() {
-        return code;
+    public String getStaffCode() {
+        return staffCode;
     }
 
-    public void setCode(String code) {
-        this.code = code;
+    public void setStaffCode(String staffCode) {
+        this.staffCode = staffCode;
     }
 
     public String getStartDatetime() {
@@ -67,6 +71,14 @@ public class XN631461Req {
 
     public void setRemark(String remark) {
         this.remark = remark;
+    }
+
+    public String getProjectCode() {
+        return projectCode;
+    }
+
+    public void setProjectCode(String projectCode) {
+        this.projectCode = projectCode;
     }
 
 }

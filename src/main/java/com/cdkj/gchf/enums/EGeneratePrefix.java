@@ -27,7 +27,7 @@ public enum EGeneratePrefix {
     Salary("SA", "工资条"), Message("M", "代发消息"), SalaryLog("SA", "工资日志"), Report(
             "R", "统计报表"), StaffLog("SL", "员工记录"), QueryLog("QL", "查询记录"),
 
-    Skill("SK", "技能证书");
+    Skill("SK", "技能证书"), AbnormalRemind("AR", "异常通知");
 
     public static Map<String, EGeneratePrefix> getMap() {
         Map<String, EGeneratePrefix> map = new HashMap<String, EGeneratePrefix>();

@@ -51,7 +51,7 @@
 				AND t.remark = #{remark}
 			</if>
 			<if test="keyword != null and keyword != '' ">
-				AND t.bname like "%"#{keyword}"%" OR  t.bmobile like "%"#{keyword}"%" 
+				AND (t.bname like "%"#{keyword}"%" OR  t.bmobile like "%"#{keyword}"%") 
 			</if>
 		</trim>
 	</sql>

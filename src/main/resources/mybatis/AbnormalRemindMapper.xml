@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cdkj.gchf.dao.IAbnormalRemindDAO">
+	
+	<resultMap id="abnormalRemind_DB_Result" type="abnormalRemind" >
+		<result column="code" property="code" />
+		<result column="type" property="type" />
+		<result column="name" property="name" />
+		<result column="mobile" property="mobile" />
+		<result column="updater" property="updater" />
+		
+		<result column="update_datetime" property="updateDatetime" />
+		<result column="remark" property="remark" />
+	</resultMap>
+	
+	<sql id="where_condition">
+		<trim prefix="WHERE" prefixOverrides="AND | OR">
+			<if test="code != null and code != '' ">
+				AND t.code = #{code}			
+			</if>
+			<if test="type != null and type != '' ">
+				AND t.type = #{type}
+			</if>
+			
+			<if test="updater != null and updater != '' ">
+				AND t.updater = #{updater}			
+			</if>
+			<if test="keyword != null and keyword != '' ">
+				AND (t.name like "%"#{keyword}"%" OR t.mobile like "%"#{keyword}"%")
+			</if>
+		</trim>
+	</sql>
+	
+	<select id="select_abnormalRemind" parameterType="abnormalRemind" resultMap="abnormalRemind_DB_Result">
+		SELECT 
+		t.code
+		,t.type
+		,t.name
+		,t.mobile
+		,t.updater
+		
+		,t.update_datetime
+		,t.remark
+		FROM 
+		thf_abnormal_remind t
+		<include refid="where_condition"/>
+		<trim prefix="ORDER BY">
+			<if test="order != null and order != '' ">
+				t.${order}
+			</if>
+		</trim>
+	</select>
+	
+	<select id="select_abnormalRemind_count" parameterType="abnormalRemind" resultType="java.lang.Long">
+		SELECT count(1) FROM thf_abnormal_remind t
+		<include refid="where_condition"/>
+	</select>
+	
+	<insert id="insert_abnormalRemind">
+		INSERT INTO
+		thf_abnormal_remind(
+		code
+		,type
+		,name
+		,mobile
+		,upadter
+		
+		,update_datetime
+		,remark
+		)
+		VALUES(
+		#{code}
+		,#{type}
+		,#{name}
+		,#{mobile}
+		,#{updater}
+		
+		,#{updateDatetime}
+		,#{remark}
+		)
+	</insert>
+	
+	<delete id="delete_abnormalRemind" parameterType="abnormalRemind">
+		DELETE FROM thf_abnormal_remind	
+		WHERE code = #{code}
+	</delete>
+	
+	<update id="upadte_abnormalRemind" parameterType="abnormalRemind">
+		UPDATE thf_abnormal_remind
+		SET
+		name = #{name}
+		,mobile = #{mobile}
+		,updater = #{updater}
+		,update_datetime = #{updateDatetime}
+		,remark = #{remark}
+		WHERE code = #{code}
+	</update>
+</mapper>

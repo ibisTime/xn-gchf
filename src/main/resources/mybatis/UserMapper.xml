@@ -72,7 +72,7 @@
 			</if>
 			
 			<if test="keyword != null and keyword != '' ">
-				AND t.login_name like "%"#{keyword}"%" OR  t.mobile like "%"#{keyword}"%"
+				AND (t.login_name like "%"#{keyword}"%" OR  t.mobile like "%"#{keyword}"%")
 			</if>
 			
 			<if test="createDatetimeStart != null and createDatetimeStart != '' ">

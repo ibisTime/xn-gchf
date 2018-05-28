@@ -76,7 +76,7 @@
 				AND t.salary_status = #{salaryStatus}
 			</if>
 			<if test="keyword != null and keyword != '' ">
-				AND t.staff_mobile like "%"#{keyword}"%" OR t.position  like "%"#{keyword}"%" OR t.staff_name  like "%"#{keyword}"%"
+				AND (t.staff_mobile like "%"#{keyword}"%" OR t.position  like "%"#{keyword}"%" OR t.staff_name  like "%"#{keyword}"%")
 			</if>
 			
 		</trim>

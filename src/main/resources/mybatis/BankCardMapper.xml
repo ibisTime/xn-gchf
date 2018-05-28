@@ -35,7 +35,7 @@
 			</if>
 			
 			<if test="keyword != null and updater != '' ">
-				AND t.staff_name like "%"#{keyword}"%" OR t.bank_name like "%"#{keyword}"%" OR t.bankcard_number  like "%"#{keyword}"%" t.subbranch  like "%"#{keyword}"%"    
+				AND (t.staff_name like "%"#{keyword}"%" OR t.bank_name like "%"#{keyword}"%" OR t.bankcard_number  like "%"#{keyword}"%" OR t.subbranch  like "%"#{keyword}"%")
 			</if>
 		</trim>
 	</sql>

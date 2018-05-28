@@ -47,7 +47,7 @@
 				AND t.company_code = #{companyCode}
 			</if>
 			<if test="keyword != null and keyword != '' ">
-				AND t.bank_name like "%"#{keyword}"%" OR  t.subbranch like "%"#{keyword}"%"  OR  t.bankcard_number like "%"#{keyword}"%"
+				AND (t.bank_name like "%"#{keyword}"%" OR  t.subbranch like "%"#{keyword}"%"  OR  t.bankcard_number like "%"#{keyword}"%")
 			</if>
 		</trim>
 	</sql>

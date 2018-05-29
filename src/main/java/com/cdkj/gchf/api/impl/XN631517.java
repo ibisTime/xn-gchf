@@ -1,6 +1,6 @@
 package com.cdkj.gchf.api.impl;
 
-import com.cdkj.gchf.ao.IAbnormalRemindAO;
+import com.cdkj.gchf.ao.IEventRemindAO;
 import com.cdkj.gchf.api.AProcessor;
 import com.cdkj.gchf.common.JsonUtil;
 import com.cdkj.gchf.core.ObjValidater;
@@ -17,14 +17,14 @@ import com.cdkj.gchf.spring.SpringContextHolder;
  */
 public class XN631517 extends AProcessor {
 
-    private IAbnormalRemindAO abnormalRemindAO = SpringContextHolder
-        .getBean(IAbnormalRemindAO.class);
+    private IEventRemindAO eventRemindAO = SpringContextHolder
+        .getBean(IEventRemindAO.class);
 
     private XN631517Req req = null;
 
     @Override
     public Object doBusiness() throws BizException {
-        return abnormalRemindAO.getAbnormalRemind(req.getCode());
+        return eventRemindAO.getEventRemind(req.getCode());
     }
 
     @Override

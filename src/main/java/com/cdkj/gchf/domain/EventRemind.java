@@ -10,7 +10,7 @@ import com.cdkj.gchf.dao.base.ABaseDO;
  * @since: 2018年5月28日 下午5:28:41 
  * @history:
  */
-public class AbnormalRemind extends ABaseDO {
+public class EventRemind extends ABaseDO {
 
     /** 
      * @Fields serialVersionUID : TODO(用一句话描述这个变量表示什么) 

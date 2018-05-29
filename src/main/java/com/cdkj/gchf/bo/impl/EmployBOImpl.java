@@ -136,7 +136,9 @@ public class EmployBOImpl extends PaginableBOImpl<Employ> implements IEmployBO {
             condition.setStaffCode(staffCode);
             condition.setStatus(EEmploytatus.Not_Leave.getCode());
             data = employDAO.select(condition);
-            System.out.println(data);
+            if (data == null) {
+                throw new BizException("xn00000", "该员工不在本项目任职");
+            }
         }
         return data;
     }

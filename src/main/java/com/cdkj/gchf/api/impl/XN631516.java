@@ -2,10 +2,10 @@ package com.cdkj.gchf.api.impl;
 
 import org.apache.commons.lang3.StringUtils;
 
-import com.cdkj.gchf.ao.IAbnormalRemindAO;
+import com.cdkj.gchf.ao.IEventRemindAO;
 import com.cdkj.gchf.api.AProcessor;
 import com.cdkj.gchf.common.JsonUtil;
-import com.cdkj.gchf.domain.AbnormalRemind;
+import com.cdkj.gchf.domain.EventRemind;
 import com.cdkj.gchf.dto.req.XN631516Req;
 import com.cdkj.gchf.exception.BizException;
 import com.cdkj.gchf.exception.ParaException;
@@ -18,24 +18,24 @@ import com.cdkj.gchf.spring.SpringContextHolder;
  * @history:
  */
 public class XN631516 extends AProcessor {
-
-    private IAbnormalRemindAO abnormalRemindAO = SpringContextHolder
-        .getBean(IAbnormalRemindAO.class);
+    private IEventRemindAO abnormalRemindAO = SpringContextHolder
+        .getBean(IEventRemindAO.class);
 
     private XN631516Req req = null;
 
     @Override
     public Object doBusiness() throws BizException {
-        AbnormalRemind condition = new AbnormalRemind();
+        EventRemind condition = new EventRemind();
         condition.setKeyword(req.getKeyword());
         condition.setUpdater(req.getUpdater());
+        condition.setType(req.getType());
 
         String column = req.getOrderColumn();
         if (StringUtils.isBlank(column)) {
-            column = IAbnormalRemindAO.DEFAULT_ORDER_COLUMN;
+            column = IEventRemindAO.DEFAULT_ORDER_COLUMN;
         }
 
-        return abnormalRemindAO.queryAbnormalRemindList(condition);
+        return abnormalRemindAO.queryEventRemindList(condition);
     }
 
     @Override

@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE configuration PUBLIC "-//mybatis.org//DTD Config 3.0//EN" "http://mybatis.org/dtd/mybatis-3-config.dtd">
 <configuration>
-	<settings>
+<!-- 	<settings>
 		<setting name="logImpl" value="STDOUT_LOGGING"/>
-	</settings>
+	</settings> -->
 	<typeAliases>
 		<typeAlias alias="user" type="com.cdkj.gchf.domain.User" />
 		<typeAlias alias="blacklist" type="com.cdkj.gchf.domain.Blacklist" />
@@ -51,7 +51,7 @@
 		
 		<typeAlias alias="messageLog" type="com.cdkj.gchf.domain.MessageLog" />
 		<typeAlias alias="skill" type="com.cdkj.gchf.domain.Skill" />
-		<typeAlias alias="abnormalRemind" type="com.cdkj.gchf.domain.AbnormalRemind" />
+		<typeAlias alias="eventRemind" type="com.cdkj.gchf.domain.EventRemind" />
 	</typeAliases>
 </configuration>
 

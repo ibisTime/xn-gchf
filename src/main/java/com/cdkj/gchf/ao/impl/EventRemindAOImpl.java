@@ -6,12 +6,12 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.cdkj.gchf.ao.IAbnormalRemindAO;
-import com.cdkj.gchf.bo.IAbnormalRemindBO;
+import com.cdkj.gchf.ao.IEventRemindAO;
+import com.cdkj.gchf.bo.IEventRemindBO;
 import com.cdkj.gchf.bo.IUserBO;
 import com.cdkj.gchf.bo.base.Paginable;
 import com.cdkj.gchf.core.OrderNoGenerater;
-import com.cdkj.gchf.domain.AbnormalRemind;
+import com.cdkj.gchf.domain.EventRemind;
 import com.cdkj.gchf.domain.User;
 import com.cdkj.gchf.dto.req.XN631510Req;
 import com.cdkj.gchf.dto.req.XN631512Req;
@@ -19,19 +19,19 @@ import com.cdkj.gchf.enums.EGeneratePrefix;
 import com.cdkj.gchf.enums.EUser;
 
 @Service
-public class AbnormalReminAOImpl implements IAbnormalRemindAO {
+public class EventRemindAOImpl implements IEventRemindAO {
 
     @Autowired
-    IAbnormalRemindBO abnormalRemindBO;
+    IEventRemindBO eventRemindBO;
 
     @Autowired
     IUserBO userBO;
 
     @Override
-    public String addAbnormalRemin(XN631510Req req) {
-        AbnormalRemind data = new AbnormalRemind();
+    public String addEventRemind(XN631510Req req) {
+        EventRemind data = new EventRemind();
         String code = OrderNoGenerater
-            .generate(EGeneratePrefix.AbnormalRemind.getCode());
+            .generate(EGeneratePrefix.EventRemind.getCode());
         data.setCode(code);
         data.setType(req.getType());
         data.setName(req.getName());
@@ -42,19 +42,19 @@ public class AbnormalReminAOImpl implements IAbnormalRemindAO {
         data.setUpdateDatetime(date);
         data.setRemark(req.getRemark());
 
-        abnormalRemindBO.saveAbnormalRemin(data);
+        eventRemindBO.saveEventRemind(data);
         return code;
     }
 
     @Override
-    public void dropAbnormalRemin(String code) {
-        AbnormalRemind data = abnormalRemindBO.getAbnormalRemind(code);
-        abnormalRemindBO.removeAbnormalRemind(data);
+    public void dropEventRemind(String code) {
+        EventRemind data = eventRemindBO.getEventRemind(code);
+        eventRemindBO.removeEventRemind(data);
     }
 
     @Override
-    public void editAbnormalRemin(XN631512Req req) {
-        AbnormalRemind data = abnormalRemindBO.getAbnormalRemind(req.getCode());
+    public void editEventRemind(XN631512Req req) {
+        EventRemind data = eventRemindBO.getEventRemind(req.getCode());
         data.setName(req.getName());
         data.setMobile(req.getMobile());
         data.setUpdater(req.getUpdater());
@@ -62,34 +62,32 @@ public class AbnormalReminAOImpl implements IAbnormalRemindAO {
 
         data.setUpdateDatetime(date);
         data.setRemark(req.getRemark());
-        abnormalRemindBO.refreshAbnormalRemind(data);
+        eventRemindBO.refreshEventRemind(data);
     }
 
     @Override
-    public Paginable<AbnormalRemind> queryAbnormalRemindPage(int start,
-            int limit, AbnormalRemind condition) {
-        Paginable<AbnormalRemind> page = abnormalRemindBO.getPaginable(start,
-            limit, condition);
-        for (AbnormalRemind data : page.getList()) {
+    public Paginable<EventRemind> queryEventRemindPage(int start, int limit,
+            EventRemind condition) {
+        Paginable<EventRemind> page = eventRemindBO.getPaginable(start, limit,
+            condition);
+        for (EventRemind data : page.getList()) {
             data.setUpdateName(getName(data.getUpdater()));
         }
         return page;
     }
 
     @Override
-    public List<AbnormalRemind> queryAbnormalRemindList(
-            AbnormalRemind condition) {
-        List<AbnormalRemind> list = abnormalRemindBO
-            .queryAbnormalRemindList(condition);
-        for (AbnormalRemind data : list) {
+    public List<EventRemind> queryEventRemindList(EventRemind condition) {
+        List<EventRemind> list = eventRemindBO.queryEventRemindList(condition);
+        for (EventRemind data : list) {
             data.setUpdateName(getName(data.getUpdater()));
         }
         return list;
     }
 
     @Override
-    public AbnormalRemind getAbnormalRemind(String code) {
-        return abnormalRemindBO.getAbnormalRemind(code);
+    public EventRemind getEventRemind(String code) {
+        return eventRemindBO.getEventRemind(code);
     }
 
     private String getName(String userId) {

@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.cdkj.gchf.dao.IAbnormalRemindDAO">
+<mapper namespace="com.cdkj.gchf.dao.IEventRemindDAO">
 	
-	<resultMap id="abnormalRemind_DB_Result" type="abnormalRemind" >
+	<resultMap id="eventRemind_DB_Result" type="eventRemind" >
 		<result column="code" property="code" />
 		<result column="type" property="type" />
 		<result column="name" property="name" />
@@ -32,7 +32,7 @@
 		</trim>
 	</sql>
 	
-	<select id="select_abnormalRemind" parameterType="abnormalRemind" resultMap="abnormalRemind_DB_Result">
+	<select id="select_eventRemind" parameterType="eventRemind" resultMap="eventRemind_DB_Result">
 		SELECT 
 		t.code
 		,t.type
@@ -43,7 +43,7 @@
 		,t.update_datetime
 		,t.remark
 		FROM 
-		thf_abnormal_remind t
+		thf_event_remind t
 		<include refid="where_condition"/>
 		<trim prefix="ORDER BY">
 			<if test="order != null and order != '' ">
@@ -52,19 +52,19 @@
 		</trim>
 	</select>
 	
-	<select id="select_abnormalRemind_count" parameterType="abnormalRemind" resultType="java.lang.Long">
-		SELECT count(1) FROM thf_abnormal_remind t
+	<select id="select_eventRemind_count" parameterType="eventRemind" resultType="java.lang.Long">
+		SELECT count(1) FROM thf_event_remind t
 		<include refid="where_condition"/>
 	</select>
 	
-	<insert id="insert_abnormalRemind">
+	<insert id="insert_eventRemind">
 		INSERT INTO
-		thf_abnormal_remind(
+		thf_event_remind(
 		code
 		,type
 		,name
 		,mobile
-		,upadter
+		,updater
 		
 		,update_datetime
 		,remark
@@ -81,13 +81,13 @@
 		)
 	</insert>
 	
-	<delete id="delete_abnormalRemind" parameterType="abnormalRemind">
-		DELETE FROM thf_abnormal_remind	
+	<delete id="delete_eventRemind" parameterType="eventRemind">
+		DELETE FROM thf_event_remind	
 		WHERE code = #{code}
 	</delete>
 	
-	<update id="upadte_abnormalRemind" parameterType="abnormalRemind">
-		UPDATE thf_abnormal_remind
+	<update id="upadte_eventRemind" parameterType="eventRemind">
+		UPDATE thf_event_remind
 		SET
 		name = #{name}
 		,mobile = #{mobile}

@@ -19,6 +19,9 @@ public class XN631515Req extends APageReq {
     // 更新人
     private String updater;
 
+    // 类型
+    private String type;
+
     public String getKeyword() {
         return keyword;
     }
@@ -33,6 +36,14 @@ public class XN631515Req extends APageReq {
 
     public void setUpdater(String updater) {
         this.updater = updater;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
     }
 
 }

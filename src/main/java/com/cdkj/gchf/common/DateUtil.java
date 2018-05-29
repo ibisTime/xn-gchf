@@ -408,8 +408,8 @@ public class DateUtil {
     public static double getDays(String startDatetime, String endDatetime,
             Date leavingStartDate, Date leavingEndDate) {
         double days = 1.0;
-        Date start = strToDate(startDatetime, DateUtil.DATA_TIME_PATTERN_7);
-        Date end = strToDate(endDatetime, DateUtil.DATA_TIME_PATTERN_7);
+        Date start = strToDate(startDatetime, DateUtil.DATA_TIME_PATTERN_1);
+        Date end = strToDate(endDatetime, DateUtil.DATA_TIME_PATTERN_1);
         int times = (int) ((end.getTime() - start.getTime()) / 60 / 60 / 1000);
         int leavingDays = (int) ((leavingEndDate.getTime()
                 - leavingStartDate.getTime()) / 60 / 60 / 1000);

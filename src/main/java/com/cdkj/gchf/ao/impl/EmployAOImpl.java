@@ -166,6 +166,7 @@ public class EmployAOImpl implements IEmployAO {
             DateUtil.DATA_TIME_PATTERN_1);
         Date end = DateUtil.strToDate(req.getEndDatetime(),
             DateUtil.DATA_TIME_PATTERN_1);
+
         if (start == null || end == null) {
             throw new BizException("xn0000", "时间格式不正确");
         }

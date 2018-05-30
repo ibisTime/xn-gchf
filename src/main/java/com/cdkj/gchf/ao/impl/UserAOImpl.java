@@ -65,6 +65,11 @@ public class UserAOImpl implements IUserAO {
             PhoneUtil.checkMobile(req.getMobile());
         }
 
+        List<User> loginNameList = userBO.checkLoginName(req.getLoginName());
+        if (CollectionUtils.isEmpty(loginNameList)) {
+            throw new BizException("xn00000",
+                "登录名" + req.getLoginName() + "已经存在喽");
+        }
         User data = new User();
         String userId = OrderNoGenerater.generate("U");
         data.setUserId(userId);
@@ -122,8 +127,10 @@ public class UserAOImpl implements IUserAO {
         User condition = new User();
         condition.setType(type);
         condition.setLoginName(loginName);
+        System.out.println("type:" + type + ",loginName:" + loginName
+                + ",loginPwd:" + loginPwd);
         condition.setLoginPwd(MD5Util.md5(loginPwd));
-
+        System.out.println("loginPwd:" + MD5Util.md5(loginPwd));
         List<User> userList2 = userBO.queryUserList(condition);
         if (CollectionUtils.isEmpty(userList2)) {
             throw new BizException("xn00000", "登录密码错误");
@@ -345,6 +352,14 @@ public class UserAOImpl implements IUserAO {
             throw new BizException("xn0000", "用户不存在");
         }
         userBO.refreshDepartment(user, departmentCode, updater, remark);
+    }
+
+    @Override
+    public void doCheckLoginName(String loginName) {
+        List<User> list = userBO.checkLoginName(loginName);
+        if (CollectionUtils.isEmpty(list)) {
+            throw new BizException("xn00000", "登录名" + loginName + "已经存在喽");
+        }
     }
 
 }

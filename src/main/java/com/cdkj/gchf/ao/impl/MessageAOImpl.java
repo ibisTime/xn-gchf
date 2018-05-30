@@ -11,27 +11,36 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.cdkj.gchf.ao.IMessageAO;
 import com.cdkj.gchf.bo.IBankCardBO;
+import com.cdkj.gchf.bo.ICompanyBO;
 import com.cdkj.gchf.bo.IEmployBO;
+import com.cdkj.gchf.bo.IEventRemindBO;
 import com.cdkj.gchf.bo.IMessageBO;
+import com.cdkj.gchf.bo.IProjectBO;
 import com.cdkj.gchf.bo.IReportBO;
 import com.cdkj.gchf.bo.ISalaryBO;
 import com.cdkj.gchf.bo.ISalaryLogBO;
+import com.cdkj.gchf.bo.ISmsOutBO;
 import com.cdkj.gchf.bo.IStaffBO;
 import com.cdkj.gchf.bo.IUserBO;
 import com.cdkj.gchf.bo.base.Page;
 import com.cdkj.gchf.bo.base.Paginable;
 import com.cdkj.gchf.common.DateUtil;
+import com.cdkj.gchf.common.PhoneUtil;
 import com.cdkj.gchf.core.OrderNoGenerater;
 import com.cdkj.gchf.core.StringValidater;
 import com.cdkj.gchf.domain.BankCard;
+import com.cdkj.gchf.domain.Company;
 import com.cdkj.gchf.domain.Employ;
+import com.cdkj.gchf.domain.EventRemind;
 import com.cdkj.gchf.domain.Message;
+import com.cdkj.gchf.domain.Project;
 import com.cdkj.gchf.domain.Report;
 import com.cdkj.gchf.domain.Salary;
 import com.cdkj.gchf.domain.SalaryLog;
 import com.cdkj.gchf.domain.Staff;
 import com.cdkj.gchf.domain.User;
 import com.cdkj.gchf.dto.req.XN631439Req;
+import com.cdkj.gchf.enums.EAbnormalType;
 import com.cdkj.gchf.enums.EGeneratePrefix;
 import com.cdkj.gchf.enums.EMessageStatus;
 import com.cdkj.gchf.enums.ESalaryLogType;
@@ -66,6 +75,18 @@ public class MessageAOImpl implements IMessageAO {
 
     @Autowired
     IBankCardBO bankCardBO;
+
+    @Autowired
+    IEventRemindBO eventRemindBO;
+
+    @Autowired
+    ICompanyBO companyBO;
+
+    @Autowired
+    ISmsOutBO smsOutBO;
+
+    @Autowired
+    IProjectBO projectBO;
 
     @Override
     public String addMessage(Message data) {
@@ -147,7 +168,7 @@ public class MessageAOImpl implements IMessageAO {
 
         for (Salary salary : list) {
             if (ESalaryStatus.TO_Send.getCode().equals(salary.getStatus())) {
-                throw new BizException("xn00000", "存在未审核的工资条");
+                throw new BizException("xn00000", "存在未审核的工资条，请核对后再发送");
             }
             salary.setStatus(ESalaryStatus.TO_Pay.getCode());
             salaryBO.refreshStatus(salary);
@@ -212,6 +233,33 @@ public class MessageAOImpl implements IMessageAO {
             // 改变员工薪资状态
             Staff staff = staffBO.getStaff(salary.getStaffCode());
             staffBO.refreshSalaryStatus(staff);
+
+            // 发送提示短信
+            List<EventRemind> erList = eventRemindBO
+                .getEventRemindByType(EAbnormalType.Salary_Abnormal.getCode());
+            if (CollectionUtils.isNotEmpty(erList)) {
+                Project project = null;
+                Company company = null;
+
+                for (EventRemind eventRemind : erList) {
+                    project = projectBO.getProject(employ.getProjectCode());
+                    company = companyBO.getCompany(project.getCompanyCode());
+                    smsOutBO
+                        .sendSmsOut(eventRemind.getMobile(),
+                            "尊敬的" + PhoneUtil
+                                .hideMobile(eventRemind.getMobile()) + "，"
+                                    + company.getName() + "的"
+                                    + project.getName() + "出现工资拖欠，员工"
+                                    + staff.getName() + "," + salary.getMonth()
+                                    + "的工资为" + (salary.getFactAmount() / 1000)
+                                    + "发放薪资为"
+                                    + (StringValidater
+                                        .toLong(req.getPayAmount()) / 1000)
+                                    + "，请您及时处理",
+                            "805061");
+
+                }
+            }
         }
 
         messageBO.approveMessage(data, handler, handleNote);
@@ -246,6 +294,9 @@ public class MessageAOImpl implements IMessageAO {
             }
         }
         return name;
+    }
 
+    public static void main(String[] args) {
+        System.out.println(EAbnormalType.getEAbnormalType("0"));
     }
 }

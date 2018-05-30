@@ -60,9 +60,6 @@ public class StaffBOImpl extends PaginableBOImpl<Staff> implements IStaffBO {
             Staff condition = new Staff();
             condition.setIdNo(idNo);
             data = staffDAO.select(condition);
-            if (data == null) {
-                throw new BizException("xn0000", "该员工不存在");
-            }
         }
         return data;
 

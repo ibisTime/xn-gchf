@@ -18,7 +18,7 @@ public class XN631365Req extends APageReq {
     // （选填） 公司编号
     private String companyCode;
 
-    // （选填） 关键字,关联工程名称,户名，开户行，
+    // （选填） 关键字,户名，开户行，
     private String keyword;
 
     // （选填） 项目编号

@@ -189,4 +189,11 @@ public class UserBOImpl extends PaginableBOImpl<User> implements IUserBO {
         return userDAO.selectList(condition);
     }
 
+    @Override
+    public List<User> checkLoginName(String loginName) {
+        User condition = new User();
+        condition.setLoginName(loginName);
+        return userDAO.selectList(condition);
+    }
+
 }

@@ -44,6 +44,9 @@ public class AttendanceAOImpl implements IAttendanceAO {
 
     @Override
     public void clockIn(String projectCode, String staffCode) {
+        // synchronized (EmployBOImpl.class) {
+        //
+        // }
         Attendance data = attendanceBO.getAttendanceByProject(projectCode,
             staffCode);
         Report report = reportBO.getReportByProject(data.getProjectCode());

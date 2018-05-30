@@ -3,8 +3,9 @@ package com.cdkj.gchf.dto.req;
 import org.hibernate.validator.constraints.NotBlank;
 
 /**
- * @author: xieyj 
- * @since: 2016年9月17日 下午3:58:52 
+ * 修该头像
+ * @author: nyc 
+ * @since: 2018年5月30日 上午11:28:39 
  * @history:
  */
 public class XN631078Req {

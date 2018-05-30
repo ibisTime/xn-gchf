@@ -69,12 +69,16 @@ public class EmployAOImpl implements IEmployAO {
     public String joinIn(XN631460Req req) {
         String code = OrderNoGenerater
             .generate(EGeneratePrefix.Employ.getCode());
-        employBO.isExist(req.getProjectCode(), req.getStaffCode());
+        synchronized (EmployAOImpl.class) {
+
+        }
         Staff staff = staffBO.getStaff(req.getStaffCode());
+
         Date date = new Date();
 
         Employ data = new Employ();
         data.setCode(code);
+
         Project project = projectBO.getProject(req.getProjectCode());
         data.setProjectCode(req.getProjectCode());
 
@@ -106,7 +110,9 @@ public class EmployAOImpl implements IEmployAO {
         employBO.joinIn(data);
         // 录入合同
         ccontractBO.isExist(req.getProjectCode(), req.getStaffCode());
+
         Ccontract ccontract = new Ccontract();
+
         String ccontractCode = OrderNoGenerater
             .generate(EGeneratePrefix.Ccontract.getCode());
         ccontract.setCode(ccontractCode);
@@ -126,6 +132,7 @@ public class EmployAOImpl implements IEmployAO {
 
         // 计入累积入职
         Report report = reportBO.getReportByProject(project.getCode());
+
         Long nextMonthSalary = StringValidater.toLong(req.getSalary())
                 / DateUtil.getMonthDays() * DateUtil.getRemainDays()
                 + report.getNextMonthSalary();
@@ -134,6 +141,7 @@ public class EmployAOImpl implements IEmployAO {
 
         // 生成考勤
         Attendance attendance = new Attendance();
+
         String attendanceCode = OrderNoGenerater
             .generate(EGeneratePrefix.Attendance.getCode());
         attendance.setCode(attendanceCode);
@@ -160,7 +168,7 @@ public class EmployAOImpl implements IEmployAO {
         Employ data = employBO.getEmployByStaff(req.getStaffCode(),
             req.getProjectCode());
         if (!EEmploytatus.Work.getCode().equals(data.getStatus())) {
-            throw new BizException("xn0000", "该员工不是在职状态");
+            throw new BizException("xn0000", "该员工已从该项目离职");
         }
         Date start = DateUtil.strToDate(req.getStartDatetime(),
             DateUtil.DATA_TIME_PATTERN_1);

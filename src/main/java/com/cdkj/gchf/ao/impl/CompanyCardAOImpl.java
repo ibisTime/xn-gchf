@@ -88,6 +88,6 @@ public class CompanyCardAOImpl implements ICompanyCardAO {
         CompanyCard data = companyCardBO.getCompanyCard(code);
         Project project = projectBO.getProject(data.getProjectCode());
         data.setProjectName(project.getName());
-        return companyCardBO.getCompanyCard(code);
+        return data;
     }
 }

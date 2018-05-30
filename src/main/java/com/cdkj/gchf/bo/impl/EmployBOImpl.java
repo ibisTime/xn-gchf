@@ -113,6 +113,7 @@ public class EmployBOImpl extends PaginableBOImpl<Employ> implements IEmployBO {
 
     @Override
     public void isExist(String projectCode, String staffCode) {
+
         Employ data = null;
         if (StringUtils.isNotBlank(staffCode)
                 && StringUtils.isNotBlank(projectCode)) {

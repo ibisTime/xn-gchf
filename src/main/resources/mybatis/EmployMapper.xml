@@ -165,7 +165,7 @@
 		,#{salary}
 		,#{cutAmount}
 		,#{status}
-		,#{salary_status}
+		,#{salaryStatus}
 		,#{joinDatetime}
 		,#{updater}
 		,#{updateDatetime}

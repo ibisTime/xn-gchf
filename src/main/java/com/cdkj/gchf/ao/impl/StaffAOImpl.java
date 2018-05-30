@@ -228,7 +228,7 @@ public class StaffAOImpl implements IStaffAO {
         if (StringUtils.isNotBlank(req.getIdNo())) {
             data = staffBO.getStaffByIdNo(req.getIdNo());
             if (data != null) {
-                throw new BizException("xn000000", "档案库中已有此人的资料");
+                throw new BizException("xn000000", "档案库中已有此人的资料，无需重复建档");
             }
         }
         data = new Staff();

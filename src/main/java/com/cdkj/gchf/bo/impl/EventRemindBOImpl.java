@@ -54,4 +54,11 @@ public class EventRemindBOImpl extends PaginableBOImpl<EventRemind>
         return eventRemindDAO.selectList(condition);
     }
 
+    @Override
+    public List<EventRemind> getEventRemindByType(String type) {
+        EventRemind condition = new EventRemind();
+        condition.setType(type);
+        return eventRemindDAO.selectList(condition);
+    }
+
 }

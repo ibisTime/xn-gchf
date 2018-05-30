@@ -40,10 +40,10 @@ public class Attendance extends ABaseDO {
     private Date createDatetime;
 
     // 上班时间
-    private String startDatetime;
+    private Date startDatetime;
 
     // 下班时间
-    private String endDatetime;
+    private Date endDatetime;
 
     // 结算时间
     private Date settleDatetime;
@@ -124,20 +124,20 @@ public class Attendance extends ABaseDO {
         this.createDatetime = createDatetime;
     }
 
-    public void setStartDatetime(String startDatetime) {
-        this.startDatetime = startDatetime;
-    }
-
-    public String getStartDatetime() {
+    public Date getStartDatetime() {
         return startDatetime;
     }
 
-    public void setEndDatetime(String endDatetime) {
-        this.endDatetime = endDatetime;
+    public Date getEndDatetime() {
+        return endDatetime;
     }
 
-    public String getEndDatetime() {
-        return endDatetime;
+    public void setStartDatetime(Date startDatetime) {
+        this.startDatetime = startDatetime;
+    }
+
+    public void setEndDatetime(Date endDatetime) {
+        this.endDatetime = endDatetime;
     }
 
     public Date getSettleDatetime() {

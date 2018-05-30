@@ -18,6 +18,9 @@ public class XN631356Req extends APageReq {
     // 更新人
     private String updater;
 
+    // 负责人
+    private String chargeUser;
+
     // 关键字
     private String keyword;
 
@@ -92,6 +95,14 @@ public class XN631356Req extends APageReq {
 
     public void setProjectCode(String projectCode) {
         this.projectCode = projectCode;
+    }
+
+    public String getChargeUser() {
+        return chargeUser;
+    }
+
+    public void setChargeUser(String chargeUser) {
+        this.chargeUser = chargeUser;
     }
 
 }

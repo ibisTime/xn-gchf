@@ -24,8 +24,7 @@ public class XN631079 extends AProcessor {
 
     @Override
     public Object doBusiness() throws BizException {
-        userAO.doCheckLoginName(req.getLoginName());
-        return new BooleanRes(true);
+        return new BooleanRes(userAO.doCheckLoginName(req.getLoginName()));
     }
 
     @Override

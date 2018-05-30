@@ -2,6 +2,7 @@ package com.cdkj.gchf.ao.impl;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.LinkedHashMap;
 import java.util.List;
 
 import org.apache.commons.collections.CollectionUtils;
@@ -206,18 +207,18 @@ public class StaffAOImpl implements IStaffAO {
 
     @Override
     public String getStaffFeatList() {
-        JSONArray json = new JSONArray();
-        JSONObject jo = new JSONObject();
+        JSONArray array = new JSONArray();
+        JSONObject obj = new JSONObject(new LinkedHashMap());
         List<Staff> list = staffBO.getStaffFeatList();
         for (Staff staff : list) {
             if (StringUtils.isNotBlank(staff.getFeat())) {
-
-                jo.put("id", staff.getCode());
-                jo.put("feat", staff.getFeat());
-                json.add(jo);
+                obj.put("id", staff.getCode());
+                obj.put("name", staff.getName());
+                obj.put("feat", staff.getFeat());
+                array.add(obj);
             }
         }
-        return new Gson().toJson(json);
+        return new Gson().toJson(array);
     }
 
     @Override

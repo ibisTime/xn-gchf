@@ -66,6 +66,7 @@
 			<if test="chargeUser != null and chargeUser != '' ">
 				AND t.charge_user = #{chargeUser}
 			</if>
+			
 			<if test="chargeMobile != null and chargeMobile != '' ">
 				AND t.charge_mobile = #{chargeMobile}
 			</if>

@@ -12,6 +12,9 @@ public class XN631357Req extends APageReq {
     // 审核人
     private String approver;
 
+    // 负责人
+    private String chargeUser;
+
     // 状态
     private String status;
 
@@ -92,6 +95,14 @@ public class XN631357Req extends APageReq {
 
     public void setProjectCodeList(List<String> projectCodeList) {
         this.projectCodeList = projectCodeList;
+    }
+
+    public String getChargeUser() {
+        return chargeUser;
+    }
+
+    public void setChargeUser(String chargeUser) {
+        this.chargeUser = chargeUser;
     }
 
 }

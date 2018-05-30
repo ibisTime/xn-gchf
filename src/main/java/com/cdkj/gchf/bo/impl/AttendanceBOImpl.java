@@ -81,14 +81,12 @@ public class AttendanceBOImpl extends PaginableBOImpl<Attendance>
 
     @Override
     public void toStart(Attendance data, String status) {
-        data.setStartDatetime(DateUtil.getNow());
         data.setStatus(status);
         attendanceDAO.toStart(data);
     }
 
     @Override
     public void toEnd(Attendance data, String status) {
-        data.setEndDatetime(DateUtil.getNow());
         data.setStatus(status);
         attendanceDAO.toEnd(data);
     }

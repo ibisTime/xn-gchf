@@ -142,16 +142,10 @@ public class ProjectAOImpl implements IProjectAO {
         }
 
         page = projectBO.getPaginable(start, limit, condition);
-        String approveName = null;
-        String updateName = null;
-        String chargeName = null;
         for (Project project : page.getList()) {
-            approveName = getName(project.getApprover());
-            updateName = getName(project.getUpdater());
-            chargeName = getName(project.getChargeUser());
-            project.setApproveName(approveName);
-            project.setUpdateName(updateName);
-            project.setChargeName(chargeName);
+            project.setApproveName(getName(project.getApprover()));
+            project.setUpdateName(getName(project.getUpdater()));
+            project.setChargeName(getName(project.getChargeUser()));
         }
         return page;
     }

@@ -15,6 +15,7 @@ import com.cdkj.gchf.bo.IProjectBO;
 import com.cdkj.gchf.bo.IReportBO;
 import com.cdkj.gchf.bo.base.Page;
 import com.cdkj.gchf.bo.base.Paginable;
+import com.cdkj.gchf.common.DateUtil;
 import com.cdkj.gchf.core.OrderNoGenerater;
 import com.cdkj.gchf.domain.Attendance;
 import com.cdkj.gchf.domain.Employ;
@@ -44,26 +45,24 @@ public class AttendanceAOImpl implements IAttendanceAO {
 
     @Override
     public void clockIn(String projectCode, String staffCode) {
-        // synchronized (EmployBOImpl.class) {
-        //
-        // }
         Attendance data = attendanceBO.getAttendanceByProject(projectCode,
             staffCode);
         Report report = reportBO.getReportByProject(data.getProjectCode());
         int todayDays = report.getTodayDays();
-        if (EAttendanceStatus.Unpaied.equals(data.getStatus())) {
+        if (EAttendanceStatus.Unpaied.getCode().equals(data.getStatus())) {
             throw new BizException("xn00000", "该员工今日已打卡");
         }
 
         if (EAttendanceStatus.TO_Start.getCode().equals(data.getStatus())) {
             attendanceBO.toStart(data, EAttendanceStatus.TO_End.getCode());
             todayDays = todayDays + 1;
+            reportBO.refreshTodayDays(report, todayDays);
 
         } else if (EAttendanceStatus.TO_End.getCode()
             .equals(data.getStatus())) {
             attendanceBO.toEnd(data, EAttendanceStatus.Unpaied.getCode());
         }
-        reportBO.refreshTodayDays(report, todayDays);
+
     }
 
     @Override
@@ -153,6 +152,33 @@ public class AttendanceAOImpl implements IAttendanceAO {
                 attendanceBO.saveAttendance(data);
             }
 
+        }
+
+    }
+
+    @Override
+    public void clockIn(String projectCode, String staffCode,
+            String attendTime) {
+        Attendance data = attendanceBO.getAttendanceByProject(projectCode,
+            staffCode);
+        Report report = reportBO.getReportByProject(data.getProjectCode());
+        int todayDays = report.getTodayDays();
+        if (EAttendanceStatus.Unpaied.getCode().equals(data.getStatus())) {
+            throw new BizException("xn00000", "该员工今日已打卡");
+        }
+
+        if (EAttendanceStatus.TO_Start.getCode().equals(data.getStatus())) {
+            data.setStartDatetime(
+                DateUtil.strToDate(attendTime, DateUtil.DATA_TIME_PATTERN_1));
+            attendanceBO.toStart(data, EAttendanceStatus.TO_End.getCode());
+            todayDays = todayDays + 1;
+            reportBO.refreshTodayDays(report, todayDays);
+
+        } else if (EAttendanceStatus.TO_End.getCode()
+            .equals(data.getStatus())) {
+            data.setEndDatetime(
+                DateUtil.strToDate(attendTime, DateUtil.DATA_TIME_PATTERN_1));
+            attendanceBO.toEnd(data, EAttendanceStatus.Unpaied.getCode());
         }
 
     }

@@ -66,7 +66,7 @@ public class UserAOImpl implements IUserAO {
         }
 
         List<User> loginNameList = userBO.checkLoginName(req.getLoginName());
-        if (CollectionUtils.isEmpty(loginNameList)) {
+        if (CollectionUtils.isNotEmpty(loginNameList)) {
             throw new BizException("xn00000",
                 "登录名" + req.getLoginName() + "已经存在喽");
         }
@@ -355,11 +355,12 @@ public class UserAOImpl implements IUserAO {
     }
 
     @Override
-    public void doCheckLoginName(String loginName) {
+    public boolean doCheckLoginName(String loginName) {
         List<User> list = userBO.checkLoginName(loginName);
-        if (CollectionUtils.isEmpty(list)) {
-            throw new BizException("xn00000", "登录名" + loginName + "已经存在喽");
+        if (CollectionUtils.isNotEmpty(list)) {
+            return false;
         }
+        return true;
     }
 
 }

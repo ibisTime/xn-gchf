@@ -4,7 +4,6 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -245,19 +244,18 @@ public class SalaryAOImpl implements ISalaryAO {
                             attendance.getStartDatetime(),
                             project.getAttendanceStarttime());
 
-                        if (StringUtils.isNotBlank(
-                            attendance.getStartDatetime()) && isNormal) {
+                        if (attendance.getStartDatetime() != null && isNormal) {
                             // 计算
                             early += 1;
                             cutAmount += employ.getCutAmount() * DateUtil
                                 .getHours(attendance.getStartDatetime(),
                                     project.getAttendanceStarttime());
                         }
+
                         // 早退
                         isNormal = DateUtil.compare(attendance.getEndDatetime(),
                             project.getAttendanceEndtime());
-                        if (StringUtils.isNotBlank(attendance.getEndDatetime())
-                                && !isNormal) {
+                        if (attendance.getEndDatetime() != null && !isNormal) {
                             early += 1;
                             cutAmount += employ.getCutAmount() * DateUtil
                                 .getHours(attendance.getEndDatetime(),

@@ -5,6 +5,8 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
 
+import com.cdkj.gchf.core.StringValidater;
+
 public class DateUtil {
 
     public static final String DB_DATE_FORMAT_STRING = "yyyyMMdd";
@@ -369,13 +371,14 @@ public class DateUtil {
      * @history:
      */
 
-    public static boolean compare(String start, String end) {
+    public static boolean compare(Date start, String end) {
         boolean flag = false;
-        Date startDate = DateUtil.strToDate(start,
-            DateUtil.DATA_TIME_PATTERN_7);
-        Date endDate = DateUtil.strToDate(end, DateUtil.DATA_TIME_PATTERN_7);
-        if (-1 == startDate.compareTo(endDate)) {
-            flag = true;
+        if (start != null) {
+            Date endDate = DateUtil.strToDate(end,
+                DateUtil.DATA_TIME_PATTERN_7);
+            if (-1 == start.compareTo(endDate)) {
+                flag = true;
+            }
         }
         return flag;
     }
@@ -390,7 +393,7 @@ public class DateUtil {
      */
     public static boolean isIn(Date startDatetime, Date endDatetime) {
         Date now = new Date();
-        if (startDatetime.after(now) && endDatetime.before(now)) {
+        if (startDatetime.before(now) && endDatetime.after(now)) {
             return true;
         }
         return false;
@@ -408,8 +411,8 @@ public class DateUtil {
     public static double getDays(String startDatetime, String endDatetime,
             Date leavingStartDate, Date leavingEndDate) {
         double days = 1.0;
-        Date start = strToDate(startDatetime, DateUtil.DATA_TIME_PATTERN_1);
-        Date end = strToDate(endDatetime, DateUtil.DATA_TIME_PATTERN_1);
+        Date start = strToDate(startDatetime, DateUtil.DATA_TIME_PATTERN_7);
+        Date end = strToDate(endDatetime, DateUtil.DATA_TIME_PATTERN_7);
         int times = (int) ((end.getTime() - start.getTime()) / 60 / 60 / 1000);
         int leavingDays = (int) ((leavingEndDate.getTime()
                 - leavingStartDate.getTime()) / 60 / 60 / 1000);
@@ -431,11 +434,22 @@ public class DateUtil {
      * @create: 2018年5月8日 下午8:49:03 nyc
      * @history:
      */
-    public static int getHours(String startDatetime, String endDatetime) {
-        Date start = strToDate(startDatetime, DateUtil.DATA_TIME_PATTERN_7);
-        Date end = strToDate(endDatetime, DateUtil.DATA_TIME_PATTERN_7);
+    public static int getHours(Date start, String end) {
+        Calendar startCalendar = Calendar.getInstance();
+        startCalendar.setTime(start);
+        Date startDatetime = startCalendar.getTime();
+        int year = startCalendar.get(Calendar.YEAR);
+        int month = startCalendar.get(Calendar.MONTH);
+        int day = startCalendar.get(Calendar.DAY_OF_MONTH);
+        int second = startCalendar.get(Calendar.SECOND);
+
+        Calendar endCalendar = Calendar.getInstance();
+        String[] time = end.split(":");
+        endCalendar.set(year, month, day, StringValidater.toInteger(time[0]),
+            StringValidater.toInteger(time[1]), second);
         int hours = (int) Math
-            .ceil((double) (end.getTime() - start.getTime()) / 60 / 60 / 1000);
+            .ceil((double) (startDatetime.getTime() - start.getTime()) / 60 / 60
+                    / 1000);
         if (hours < 1) {
             hours = 1;
         }

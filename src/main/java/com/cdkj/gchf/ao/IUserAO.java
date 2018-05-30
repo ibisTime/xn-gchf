@@ -61,6 +61,6 @@ public interface IUserAO {
     public String doAddUser(XN631070Req req);
 
     // 校验登录名是否重复
-    public void doCheckLoginName(String loginName);
+    public boolean doCheckLoginName(String loginName);
 
 }

@@ -6,7 +6,6 @@ import java.io.PrintWriter;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -18,16 +17,14 @@ import com.cdkj.gchf.ao.IStaffAO;
 @Controller
 public class IdentityConroller {
 
-    private static Logger logger = Logger.getLogger(IdentityConroller.class);
-
     @Autowired
     public IStaffAO staffAO;
 
     @RequestMapping(value = "/ids/license", method = RequestMethod.GET)
     public void doTokenCallback(HttpServletRequest request,
             HttpServletResponse response) {
-        JSONObject json = JSONObject.parseObject(request.getParameter("json")
-            .toString());
+        JSONObject json = JSONObject
+            .parseObject(request.getParameter("json").toString());
         if ("cdkjws".equalsIgnoreCase(json.getString("license"))) {
             String staffFeat = staffAO.getStaffFeatList();
             PrintWriter writer;

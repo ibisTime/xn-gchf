@@ -1,5 +1,8 @@
 package com.cdkj.gchf.controller;
 
+import java.io.IOException;
+import java.io.PrintWriter;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -17,12 +20,20 @@ public class AttendanceController {
     IAttendanceAO attendanceAO;
 
     @RequestMapping(value = "/doClockIn", method = RequestMethod.POST)
-    public String doClockIn(HttpServletRequest request,
+    public void doClockIn(HttpServletRequest request,
             HttpServletResponse response) {
         String staffCode = request.getParameter("id");
         String projectCode = request.getParameter("unit_code");
         String attendTime = request.getParameter("attend_time");
-        attendanceAO.clockIn(projectCode, staffCode, attendTime);
-        return "";
+        String result = attendanceAO.clockIn(projectCode, staffCode,
+            attendTime);
+        PrintWriter writer;
+        try {
+            writer = response.getWriter();
+            writer.append(result);
+            writer.flush();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 }

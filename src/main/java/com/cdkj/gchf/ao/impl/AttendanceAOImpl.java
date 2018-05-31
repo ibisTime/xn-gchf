@@ -8,6 +8,7 @@ import org.apache.commons.collections.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.alibaba.fastjson.JSONArray;
 import com.cdkj.gchf.ao.IAttendanceAO;
 import com.cdkj.gchf.bo.IAttendanceBO;
 import com.cdkj.gchf.bo.IEmployBO;
@@ -27,6 +28,7 @@ import com.cdkj.gchf.enums.EGeneratePrefix;
 import com.cdkj.gchf.enums.EProjectStatus;
 import com.cdkj.gchf.enums.EUserKind;
 import com.cdkj.gchf.exception.BizException;
+import com.google.gson.Gson;
 
 @Service
 public class AttendanceAOImpl implements IAttendanceAO {
@@ -49,18 +51,24 @@ public class AttendanceAOImpl implements IAttendanceAO {
             staffCode);
         Report report = reportBO.getReportByProject(data.getProjectCode());
         int todayDays = report.getTodayDays();
+        Date date = new Date();
+
         if (EAttendanceStatus.Unpaied.getCode().equals(data.getStatus())) {
             throw new BizException("xn00000", "该员工今日已打卡");
         }
 
         if (EAttendanceStatus.TO_Start.getCode().equals(data.getStatus())) {
-            attendanceBO.toStart(data, EAttendanceStatus.TO_End.getCode());
+            data.setStartDatetime(date);
+            data.setStatus(EAttendanceStatus.TO_End.getCode());
+            attendanceBO.toStart(data);
             todayDays = todayDays + 1;
             reportBO.refreshTodayDays(report, todayDays);
 
         } else if (EAttendanceStatus.TO_End.getCode()
             .equals(data.getStatus())) {
-            attendanceBO.toEnd(data, EAttendanceStatus.Unpaied.getCode());
+            data.setEndDatetime(date);
+            data.setStatus(EAttendanceStatus.Unpaied.getCode());
+            attendanceBO.toEnd(data);
         }
 
     }
@@ -157,20 +165,27 @@ public class AttendanceAOImpl implements IAttendanceAO {
     }
 
     @Override
-    public void clockIn(String projectCode, String staffCode,
+    public String clockIn(String projectCode, String staffCode,
             String attendTime) {
+        JSONArray json = new JSONArray();
         Attendance data = attendanceBO.getAttendanceByProject(projectCode,
             staffCode);
+        if (data == null) {
+            json.add("该项目未生成考勤");
+            return new Gson().toJson(json);
+        }
         Report report = reportBO.getReportByProject(data.getProjectCode());
         int todayDays = report.getTodayDays();
         if (EAttendanceStatus.Unpaied.getCode().equals(data.getStatus())) {
-            throw new BizException("xn00000", "该员工今日已打卡");
+            json.add("该员工今日已打卡");
+            return new Gson().toJson(json);
         }
 
         if (EAttendanceStatus.TO_Start.getCode().equals(data.getStatus())) {
             data.setStartDatetime(
                 DateUtil.strToDate(attendTime, DateUtil.DATA_TIME_PATTERN_1));
-            attendanceBO.toStart(data, EAttendanceStatus.TO_End.getCode());
+            data.setStatus(EAttendanceStatus.TO_End.getCode());
+            attendanceBO.toStart(data);
             todayDays = todayDays + 1;
             reportBO.refreshTodayDays(report, todayDays);
 
@@ -178,8 +193,11 @@ public class AttendanceAOImpl implements IAttendanceAO {
             .equals(data.getStatus())) {
             data.setEndDatetime(
                 DateUtil.strToDate(attendTime, DateUtil.DATA_TIME_PATTERN_1));
-            attendanceBO.toEnd(data, EAttendanceStatus.Unpaied.getCode());
+            data.setStatus(EAttendanceStatus.TO_End.getCode());
+            attendanceBO.toEnd(data);
         }
+        json.add("打卡成功");
+        return new Gson().toJson(json);
 
     }
 

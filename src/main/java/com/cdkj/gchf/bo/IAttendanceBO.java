@@ -20,9 +20,9 @@ public interface IAttendanceBO extends IPaginableBO<Attendance> {
     public Attendance getAttendanceByProject(String projectCode,
             String staffCode);
 
-    public void toStart(Attendance data, String status);
+    public void toStart(Attendance data);
 
-    public void toEnd(Attendance data, String status);
+    public void toEnd(Attendance data);
 
     public void updateStatus(Attendance data);
 

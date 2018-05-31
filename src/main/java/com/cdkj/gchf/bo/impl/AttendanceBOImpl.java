@@ -74,20 +74,18 @@ public class AttendanceBOImpl extends PaginableBOImpl<Attendance>
         condition.setCreateDatetimeEnd(DateUtil.getTodayEnd());
         List<Attendance> list = attendanceDAO.selectList(condition);
         if (CollectionUtils.isEmpty(list)) {
-            throw new BizException("xn0000", "该项目未生成考勤表");
+            return null;
         }
         return list.get(0);
     }
 
     @Override
-    public void toStart(Attendance data, String status) {
-        data.setStatus(status);
+    public void toStart(Attendance data) {
         attendanceDAO.toStart(data);
     }
 
     @Override
-    public void toEnd(Attendance data, String status) {
-        data.setStatus(status);
+    public void toEnd(Attendance data) {
         attendanceDAO.toEnd(data);
     }
 

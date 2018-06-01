@@ -47,4 +47,6 @@ public interface IUserBO extends IPaginableBO<User> {
     public List<User> getUserByCompany(String code);
 
     public List<User> checkLoginName(String loginName);
+
+    public List<User> getUserByDepatment(String departmentCode);
 }

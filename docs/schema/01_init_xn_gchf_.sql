@@ -1,4 +1,4 @@
-﻿SET FOREIGN_KEY_CHECKS = 0;
+DROP TABLE  `thf_query_log`;
 
 DROP TABLE IF EXISTS  `thf_attendance`;
 CREATE TABLE `thf_attendance` (
@@ -17,9 +17,6 @@ CREATE TABLE `thf_attendance` (
   PRIMARY KEY (`code`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_estonian_ci;
 
-insert into `thf_attendance`(`code`,`project_code`,`project_name`,`staff_code`,`staff_name`,`staff_mobile`,`status`,`create_datetime`,`start_datetime`,`end_datetime`,`settle_datetime`,`remark`) values
-('AT201805181817217108991','P201805160546568583486','4号工地','S201805151636465848703','李佳凝',null,'2','2018-05-18 18:17:21','14:41','14:41',null,null),
-('AT201805260000000501052','P201805160546568583486','4号工地','S201805151636465848703','李佳凝',null,'1','2018-05-26 00:00:00','22:12',null,null,null);
 
 DROP TABLE IF EXISTS  `thf_bank_card`;
 CREATE TABLE `thf_bank_card` (
@@ -39,9 +36,6 @@ CREATE TABLE `thf_bank_card` (
   PRIMARY KEY (`code`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
-insert into `thf_bank_card`(`code`,`company_code`,`staff_code`,`staff_name`,`bank_code`,`bank_name`,`subbranch`,`bankcard_number`,`create_datetime`,`status`,`updater`,`update_datetime`,`remark`) values
-('BK201805160619102077756',null,'S201805151636465848703','李佳凝','ABC','中国农业银行','上海支行','62147000190002835776',null,'0','U201805142013427676188','2018-05-16 12:59:24',''),
-('BK201805212134368522312',null,'S201805191726075611437','宓永宝','PICC','中国人寿','科创支行','6241342621118136444',null,'0','U201805142013427676188','2018-05-23 17:44:24',null);
 DROP TABLE IF EXISTS  `thf_bcontract`;
 CREATE TABLE `thf_bcontract` (
   `code` varchar(32) NOT NULL COMMENT '编号',
@@ -236,20 +230,6 @@ CREATE TABLE `thf_project` (
   PRIMARY KEY (`code`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
-DROP TABLE IF EXISTS  `thf_query_log`;
-CREATE TABLE `thf_query_log` (
-  `code` varchar(32) NOT NULL COMMENT '编号',
-  `user_id` varchar(32) DEFAULT NULL COMMENT '用户id',
-  `staff_code` varchar(32) DEFAULT NULL COMMENT '员工编号',
-  `staff_name` varchar(64) DEFAULT NULL COMMENT '员工名称',
-  `id_no` varchar(64) DEFAULT NULL COMMENT '身份证号',
-  `pic1` text COMMENT '身份证头像',
-  PRIMARY KEY (`code`),
-  KEY `staff_code` (`staff_code`),
-  KEY `user_id` (`user_id`),
-  CONSTRAINT `staff_code` FOREIGN KEY (`staff_code`) REFERENCES `thf_staff` (`code`),
-  CONSTRAINT `user_id` FOREIGN KEY (`user_id`) REFERENCES `thf_user` (`user_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 DROP TABLE IF EXISTS  `thf_report`;
 CREATE TABLE `thf_report` (
@@ -392,7 +372,7 @@ CREATE TABLE `thf_user` (
 
 DROP TABLE IF EXISTS  `tsys_config`;
 CREATE TABLE `tsys_config` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
+ `id` int(11) NOT NULL AUTO_INCREMENT,
   `type` varchar(96) DEFAULT NULL,
   `ckey` varchar(765) DEFAULT NULL,
   `cvalue` text,
@@ -400,11 +380,11 @@ CREATE TABLE `tsys_config` (
   `update_datetime` datetime DEFAULT NULL,
   `remark` varchar(765) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=0 DEFAULT CHARSET=utf8;
 
 DROP TABLE IF EXISTS  `tsys_dict`;
 CREATE TABLE `tsys_dict` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
+ `id` int(11) NOT NULL AUTO_INCREMENT,
   `type` char(9) DEFAULT NULL COMMENT '类型',
   `parent_key` varchar(288) DEFAULT NULL COMMENT '父key',
   `dkey` varchar(288) DEFAULT NULL COMMENT 'key',
@@ -432,7 +412,7 @@ CREATE TABLE `tsys_menu` (
 
 DROP TABLE IF EXISTS  `tsys_menu_role`;
 CREATE TABLE `tsys_menu_role` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
+ `id` int(11) NOT NULL AUTO_INCREMENT,
   `role_code` varchar(96) DEFAULT NULL,
   `menu_code` varchar(96) DEFAULT NULL,
   `updater` varchar(96) DEFAULT NULL,
@@ -454,4 +434,30 @@ CREATE TABLE `tsys_role` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 
+DROP TABLE IF EXISTS `thf_event_remind`;
+CREATE TABLE `thf_event_remind` (
+  `code` varchar(32) NOT NULL COMMENT '编号',
+  `type` varchar(4) DEFAULT NULL COMMENT '异常类型',
+  `name` varchar(64) DEFAULT NULL COMMENT '姓名',
+  `mobile` varchar(16) DEFAULT NULL COMMENT '手机号',
+  `updater` varchar(32) DEFAULT NULL COMMENT '更新人',
+  `update_datetime` datetime DEFAULT NULL COMMENT '更新时间',
+  `remark` text COMMENT '备注',
+  PRIMARY KEY (`code`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+DROP TABLE IF EXISTS  `thf_query_log`;
+CREATE TABLE `thf_query_log` (
+  `code` varchar(32) NOT NULL COMMENT '编号',
+  `user_id` varchar(32) DEFAULT NULL COMMENT '用户id',
+  `staff_code` varchar(32) DEFAULT NULL COMMENT '员工编号',
+  `staff_name` varchar(64) DEFAULT NULL COMMENT '员工名称',
+  `id_no` varchar(64) DEFAULT NULL COMMENT '身份证号',
+  `pic1` text COMMENT '身份证头像',
+  PRIMARY KEY (`code`),
+  KEY `staff_code` (`staff_code`),
+  KEY `user_id` (`user_id`),
+  CONSTRAINT `staff_code` FOREIGN KEY (`staff_code`) REFERENCES `thf_staff` (`code`),
+  CONSTRAINT `user_id` FOREIGN KEY (`user_id`) REFERENCES `thf_user` (`user_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 

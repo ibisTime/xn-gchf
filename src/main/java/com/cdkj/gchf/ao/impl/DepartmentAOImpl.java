@@ -9,9 +9,11 @@ import org.springframework.stereotype.Service;
 
 import com.cdkj.gchf.ao.IDepartmentAO;
 import com.cdkj.gchf.bo.IDepartmentBO;
+import com.cdkj.gchf.bo.IUserBO;
 import com.cdkj.gchf.bo.base.Paginable;
 import com.cdkj.gchf.core.OrderNoGenerater;
 import com.cdkj.gchf.domain.Department;
+import com.cdkj.gchf.domain.User;
 import com.cdkj.gchf.dto.req.XN631030Req;
 import com.cdkj.gchf.dto.req.XN631032Req;
 import com.cdkj.gchf.enums.EGeneratePrefix;
@@ -21,7 +23,10 @@ import com.cdkj.gchf.exception.BizException;
 public class DepartmentAOImpl implements IDepartmentAO {
 
     @Autowired
-    private IDepartmentBO departmentBO;
+    IDepartmentBO departmentBO;
+
+    @Autowired
+    IUserBO userBO;
 
     @Override
     public String addDepartment(XN631030Req req) {
@@ -53,6 +58,11 @@ public class DepartmentAOImpl implements IDepartmentAO {
     @Override
     public void dropDepartment(String code) {
         Department data = departmentBO.getDepartment(code);
+        // 部门下是否有人
+        List<User> userList = userBO.getUserByDepatment(data.getCode());
+        if (CollectionUtils.isNotEmpty(userList)) {
+            throw new BizException("xn00000", "该部门下还有用户，无法删除");
+        }
         // 是否存在下级部门
         List<Department> list = departmentBO.isExsit(data.getCode());
         if (CollectionUtils.isNotEmpty(list)) {

@@ -49,7 +49,6 @@ public class BcontractAOImpl implements IBcontractAO {
 
         data.setProjectCode(project.getCode());
         data.setCompanyCode(project.getCompanyCode());
-
         data.setBname(req.getBname());
         data.setBmobile(req.getBmobile());
         data.setContentPic(req.getContentPic());
@@ -65,6 +64,7 @@ public class BcontractAOImpl implements IBcontractAO {
     @Override
     public int editBcontract(XN631372Req req) {
         PhoneUtil.checkMobile(req.getBmobile());
+
         Bcontract data = bcontractBO.getBcontract(req.getCode());
         data.setBname(req.getBname());
         data.setBmobile(req.getBmobile());

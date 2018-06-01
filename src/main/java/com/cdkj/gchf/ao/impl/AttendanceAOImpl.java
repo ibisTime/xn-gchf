@@ -49,6 +49,9 @@ public class AttendanceAOImpl implements IAttendanceAO {
     public void clockIn(String projectCode, String staffCode) {
         Attendance data = attendanceBO.getAttendanceByProject(projectCode,
             staffCode);
+        if (data == null) {
+            throw new BizException("xn00000", "没有该员工今日考勤");
+        }
         Report report = reportBO.getReportByProject(data.getProjectCode());
         int todayDays = report.getTodayDays();
         Date date = new Date();
@@ -79,7 +82,8 @@ public class AttendanceAOImpl implements IAttendanceAO {
         Paginable<Attendance> page = new Page<Attendance>();
         List<Attendance> list = new ArrayList<Attendance>();
         if (EUserKind.Owner.getCode().equals(condition.getKeyword())
-                || EUserKind.Owner.getCode().equals(condition.getKeyword())) {
+                || EUserKind.Supervise.getCode()
+                    .equals(condition.getKeyword())) {
             if (CollectionUtils.isEmpty(condition.getProjectCodeList())) {
                 page.setList(list);
                 return page;
@@ -100,7 +104,8 @@ public class AttendanceAOImpl implements IAttendanceAO {
     public List<Attendance> queryAttendanceList(Attendance condition) {
         List<Attendance> list = new ArrayList<Attendance>();
         if (EUserKind.Owner.getCode().equals(condition.getKeyword())
-                || EUserKind.Owner.getCode().equals(condition.getKeyword())) {
+                || EUserKind.Supervise.getCode()
+                    .equals(condition.getKeyword())) {
             if (CollectionUtils.isEmpty(condition.getProjectCodeList())) {
                 return list;
             }
@@ -198,7 +203,6 @@ public class AttendanceAOImpl implements IAttendanceAO {
         }
         json.add("打卡成功");
         return new Gson().toJson(json);
-
     }
 
 }

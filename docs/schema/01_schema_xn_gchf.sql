@@ -1,70 +1,80 @@
-insert into `thf_channel_bank`(`id`,`bank_code`,`bank_name`,`channel_type`,`status`,`channel_bank`,`max_order`,`order_amount`,`day_amount`,`month_amount`,`remark`) values
-('13','ICBC','中国工商银行','40','1',null,null,null,null,null,null),
-('15','CCB','中国建设银行','40','1',null,null,null,null,null,null),
-('16','BOC','中国银行','40','1',null,null,null,null,null,null),
-('17','BCM','中国交通银行','40','1',null,null,null,null,null,null),
-('18','CIB','兴业银行','40','1',null,null,null,null,null,null),
-('19','CITIC','中信银行','40','1',null,null,null,null,null,null),
-('20','CEB','中国光大银行','40','1',null,null,null,null,null,null),
-('21','PAB','平安银行','40','1',null,null,null,null,null,null),
-('22','PSBC','中国邮政储蓄银行','40','1',null,null,null,null,null,null);
+insert into `thf_channel_bank`(`bank_code`,`bank_name`,`channel_type`,`status`,`channel_bank`,`max_order`,`order_amount`,`day_amount`,`month_amount`,`remark`) values
+('ICBC','中国工商银行','40','1',null,null,null,null,null,null),
+('CCB','中国建设银行','40','1',null,null,null,null,null,null),
+('BOC','中国银行','40','1',null,null,null,null,null,null),
+('BCM','中国交通银行','40','1',null,null,null,null,null,null),
+('CIB','兴业银行','40','1',null,null,null,null,null,null),
+('CITIC','中信银行','40','1',null,null,null,null,null,null),
+('CEB','中国光大银行','40','1',null,null,null,null,null,null),
+('PAB','平安银行','40','1',null,null,null,null,null,null),
+('PSBC','中国邮政储蓄银行','40','1',null,null,null,null,null,null);
+
+
+insert into `tsys_role`(`code`,`type`,`name`,`updater`,`update_datetime`,`remark`) values
+('RO201800000000000001','P','超级管理员','USYS201800000000001',now(),null),
+('RO201800000000000002','B','银行端','USYS201800000000001',now(),null),
+('RO201800000000000003','O','业主端','USYS201800000000001',now(),null),
+('RO201800000000000004','S','监管端','USYS201800000000001',now(),null)
+
 
 
 insert into `thf_user`(`user_id`,`real_name`,`type`,`photo`,`login_name`,`mobile`,`login_pwd`,`login_pwd_strength`,`user_refree`,`create_datetime`,`role_code`,`company_code`,`company_name`,`province`,`city`,`area`,`bank_name`,`subbranch`,`department_code`,`updater`,`update_datetime`,`status`,`remark`) values
 ('USYS201800000000001','平台端','P',null,'admin',null,'21218cca77804d2ba1922c33e0151105','1',null,now(),'RO201800000000000001',null,null,null,null,null,null,null,'',null,null,'0',null);
 
-insert into `tsys_dict`(`id`,`type`,`parent_key`,`dkey`,`dvalue`,`updater`,`update_datetime`,`remark`) values
-('1','0',null,'user_kind','用户类型','admin',now(),null),
-('2','1','user_kind','P','平台用户','admin',now(),null),
-('3','1','user_kind','B','银行用户','admin',now(),null),
-('4','1','user_kind','O','业主单位','admin',now(),null),
-('5','1','user_kind','S','监管单位','admin',now(),null),
-('7','0',null,'user_status','用户状态','admin',now(),null),
-('8','1','user_status','0','正常','admin',now(),null),
-('9','1','user_status','1','人工锁定','admin',now(),null),
-('11','1','user_status','2','程序锁定','admin',now(),''),
-('12','0',null,'project_status','项目状态','admin',now(),null),
-('13','1','project_status','0','待提请审核','admin',now(),null),
-('14','1','project_status','1','待审核','admin',now(),null),
-('15','1','project_status','2','审核未通过','admin',now(),null),
-('16','1','project_status','5','项目结束','admin',now(),null),
-('17','0',null,'account_status','账户状态','admin',now(),null),
-('18','1','account_status','0','正常','admin',now(),null),
-('19','1','account_status','1','人工锁定','admin',now(),null),
-('20','1','account_status','2','程序锁定','admin',now(),null),
-('23','0',null,'staff_status','员工状态','admin',now(),null),
-('24','1','staff_status','0','在职','admin',now(),null),
-('25','1','staff_status','1','请假','admin',now(),null),
-('26','1','staff_status','2','离职','admin',now(),null),
-('27','0',null,'message_status','代发消息状态','admin',now(),null),
-('28','1','message_status','0','待发送','admin',now(),null),
-('29','1','message_status','1','待处理','admin',now(),null),
-('30','1','message_status','2','待反馈','admin',now(),null),
-('31','0',null,'salary_status','工资条状态','admin',now(),null),
-('32','1','salary_status','0','待人工复核','admin',now(),null),
-('33','1','salary_status','1','已审核待提交','admin',now(),null),
-('34','1','salary_status','2','已提交待发放','admin',now(),null),
-('35','1','salary_status','3','正常发放','admin',now(),null),
-('36','1','salary_status','4','部分发放','admin',now(),null),
-('37','1','salary_status','5','已补发','admin',now(),null),
-('38','0',null,'staff_type','务工人员类型','admin',now(),null),
-('39','1','staff_type','0','直招工人','admin',now(),null),
-('40','1','staff_type','1','劳务工人','admin',now(),null),
-('41','1','staff_type','2','包工工人','admin',now(),null),
-('42','1','staff_type','3','内勤人员','admin',now(),null),
-('43','0',null,'id_type','证件类型','admin',now(),null),
-('44','1','id_type','1','身份证','admin',now(),null),
-('45','0',null,'attendance_status','考勤状态','admin',now(),null),
-('46','1','attendance_status','0','待上班打卡','admin',now(),null),
-('47','1','attendance_status','1','待下班打卡','admin',now(),null),
-('48','1','attendance_status','2','已打卡待结算','admin',now(),null),
-('49','1','attendance_status','3','已结算','admin',now(),null),
-('54','0',null,'salary_log_type','日志类型','admin',now(),null),
-('55','1','salary_log_type','0','正常','admin',now(),null),
-('56','1','salary_log_type','1','异常','admin',now(),null),
-('58','1','project_status','3','在建','admin',now(),null),
-('59','1','project_status','4','停工','admin',now(),null),
-('60','1','message_status','3','已处理','admin',now(),null);
+insert into `tsys_dict`(`type`,`parent_key`,`dkey`,`dvalue`,`updater`,`update_datetime`,`remark`) values
+('0',null,'user_kind','用户类型','admin',now(),null),
+('1','user_kind','P','平台用户','admin',now(),null),
+('1','user_kind','B','银行用户','admin',now(),null),
+('1','user_kind','O','业主单位','admin',now(),null),
+('1','user_kind','S','监管单位','admin',now(),null),
+('0',null,'user_status','用户状态','admin',now(),null),
+('1','user_status','0','正常','admin',now(),null),
+('1','user_status','1','人工锁定','admin',now(),null),
+('1','user_status','2','程序锁定','admin',now(),''),
+('0',null,'project_status','项目状态','admin',now(),null),
+('1','project_status','0','待提请审核','admin',now(),null),
+('1','project_status','1','待审核','admin',now(),null),
+('1','project_status','2','审核未通过','admin',now(),null),
+('1','project_status','5','项目结束','admin',now(),null),
+('0',null,'account_status','账户状态','admin',now(),null),
+('1','account_status','0','正常','admin',now(),null),
+('1','account_status','1','人工锁定','admin',now(),null),
+('1','account_status','2','程序锁定','admin',now(),null),
+('0',null,'staff_status','员工状态','admin',now(),null),
+('1','staff_status','0','在职','admin',now(),null),
+('1','staff_status','1','请假','admin',now(),null),
+('1','staff_status','2','离职','admin',now(),null),
+('0',null,'message_status','代发消息状态','admin',now(),null),
+('1','message_status','0','待发送','admin',now(),null),
+('1','message_status','1','待处理','admin',now(),null),
+('1','message_status','2','待反馈','admin',now(),null),
+('0',null,'salary_status','工资条状态','admin',now(),null),
+('1','salary_status','0','待人工复核','admin',now(),null),
+('1','salary_status','1','已审核待提交','admin',now(),null),
+('1','salary_status','2','已提交待发放','admin',now(),null),
+('1','salary_status','3','正常发放','admin',now(),null),
+('1','salary_status','4','部分发放','admin',now(),null),
+('1','salary_status','5','已补发','admin',now(),null),
+('0',null,'staff_type','务工人员类型','admin',now(),null),
+('1','staff_type','0','直招工人','admin',now(),null),
+('1','staff_type','1','劳务工人','admin',now(),null),
+('1','staff_type','2','包工工人','admin',now(),null),
+('1','staff_type','3','内勤人员','admin',now(),null),
+('0',null,'id_type','证件类型','admin',now(),null),
+('1','id_type','1','身份证','admin',now(),null),
+('0',null,'attendance_status','考勤状态','admin',now(),null),
+('1','attendance_status','0','待上班打卡','admin',now(),null),
+('1','attendance_status','1','待下班打卡','admin',now(),null),
+('1','attendance_status','2','已打卡待结算','admin',now(),null),
+('1','attendance_status','3','已结算','admin',now(),null),
+('0',null,'salary_log_type','日志类型','admin',now(),null),
+('1','salary_log_type','0','正常','admin',now(),null),
+('1','salary_log_type','1','异常','admin',now(),null),
+('1','project_status','3','在建','admin',now(),null),
+('1','project_status','4','停工','admin',now(),null),
+('1','message_status','3','已处理','admin',now(),null);
+('0',NULL,'abnormal_type','事件类型','admin',now(),NULL),
+('1','abnormal_type','0','工资条异常','admin',now(),NULL);
 
 
 insert into `tsys_menu`(`code`,`name`,`type`,`url`,`order_no`,`updater`,`update_datetime`,`remark`,`parent_code`) values
@@ -172,12 +182,6 @@ insert into `tsys_menu`(`code`,`name`,`type`,`url`,`order_no`,`updater`,`update_
 ('SM201805261621476424511','工程进度','1','/hetong/jindu.htm','6','USYS201800000000001',now(),'','SM201804271918126145662'),
 ('SM201805261758591375743','办理入职','2','/addWorkers','1','USYS201800000000001',now(),'','SM201805031143039272323');
 
-
-insert into `tsys_role`(`code`,`type`,`name`,`updater`,`update_datetime`,`remark`) values
-('RO201800000000000001','P','超级管理员','USYS201800000000001',now(),null),
-('RO201800000000000002','B','银行端','USYS201800000000001',now(),null),
-('RO201800000000000003','O','业主端','USYS201800000000001',now(),null),
-('RO201800000000000004','S','监管端','USYS201800000000001',now(),null)
 
 insert into `tsys_menu_role`(`role_code`,`menu_code`,`updater`,`update_datetime`,`remark`) values
 ('SR201804261443398913168','GCHFSM201800001000000008','admin',now(),null),
@@ -371,3 +375,19 @@ insert into `tsys_menu_role`(`role_code`,`menu_code`,`updater`,`update_datetime`
 ('RO201800000000000004','SM201805251354520521925','USYS201800000000001',now(),null),
 ('RO201800000000000004','SM201805061714532327913','USYS201800000000001',now(),null),
 ('RO201800000000000004','SM201805261621476424511','USYS201800000000001',now(),null);
+
+insert  into `tsys_config`(`id`,`type`,`ckey`,`cvalue`,`updater`,`update_datetime`,`remark`) values 
+('sys_txt','telephone','0571-88888888','USYS201800000000001',now(),'联系电话'),
+('sys_txt','about_us','关于我们112','USYS201800000000001',now(),'关于我们'),
+('sys_txt','service_time','9:00-17:40','USYS201800000000001',now(),'服务时间'),
+('qiniu','qiniu_access_key','07KR5rNezHcXebD-GalrPw0npsAODOMVxygvdFFt','USYS201800000000001',now(),'七牛云key1'),
+('qiniu','qiniu_secret_key','nsMbXOfEtk3SvQ3GFHbKMozJua3jbTiGPIIwu4tq','USYS201800000000001',now(),'qiniu_secret_key'),
+('qiniu','qiniu_bucket','zwzj','USYS201800000000001',now(),'qiniu_bucket'),
+('qiniu','qiniu_domain','otoieuivb.bkt.clouddn.com','USYS201800000000001',now(),'访问域名'),
+('sys_txt','telephone','0571-88888888','USYS201800000000001',now(),'联系电话'),
+('sys_txt','about_us','关于我们112','USYS201800000000001',now(),'关于我们'),
+('sys_txt','service_time','9:00-17:40','USYS201800000000001',now(),'服务时间'),
+('qiniu','qiniu_access_key','07KR5rNezHcXebD-GalrPw0npsAODOMVxygvdFFt','USYS201800000000001',now(),'七牛云key1'),
+('qiniu','qiniu_secret_key','nsMbXOfEtk3SvQ3GFHbKMozJua3jbTiGPIIwu4tq','USYS201800000000001',now(),'qiniu_secret_key'),
+('qiniu','qiniu_bucket','zwzj','USYS201800000000001','2018-02-08 17:09:59','qiniu_bucket'),
+('qiniu','qiniu_domain','otoieuivb.bkt.clouddn.com','USYS201800000000001',now(),'访问域名');

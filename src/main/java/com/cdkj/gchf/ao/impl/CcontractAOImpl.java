@@ -65,15 +65,15 @@ public class CcontractAOImpl implements ICcontractAO {
         data.setStaffCode(req.getStaffCode());
         Staff staff = staffBO.getStaff(req.getStaffCode());
         data.setStaffMobile(staff.getMobile());
-
         data.setContentPic(req.getContentPic());
+
         data.setContractDatetime(DateUtil.strToDate(req.getContractDatetime(),
             DateUtil.FRONT_DATE_FORMAT_STRING));
         data.setUpdater(req.getUpdater());
         data.setUpdateDatetime(new Date());
         data.setRemark(req.getRemark());
-
         ccontractBO.saveCcontract(data);
+
         return code;
     }
 
@@ -85,8 +85,8 @@ public class CcontractAOImpl implements ICcontractAO {
             DateUtil.FRONT_DATE_FORMAT_STRING));
         data.setUpdater(req.getUpdater());
         data.setUpdateDatetime(new Date());
-        data.setRemark(req.getRemark());
 
+        data.setRemark(req.getRemark());
         ccontractBO.refreshCcontract(data);
     }
 

@@ -128,16 +128,14 @@ public class AttendanceAOImpl implements IAttendanceAO {
 
     // 定时器形成考勤记录
     public void createAttendance() {
-
         Project condition = new Project();
-
         Date date = new Date();
         // 获取已经开始的项目
         condition.setStatus(EProjectStatus.Building.getCode());
         List<Project> pList = projectBO.queryProject(condition);
         // 获取各个项目的上下班时间，形成考勤记录
         Attendance data = null;
-
+        System.out.println("===========开始生成考勤==============");
         String attendanceCode = null;
         for (Project project : pList) {
             // 获取项目下得所有未离职员工
@@ -164,7 +162,6 @@ public class AttendanceAOImpl implements IAttendanceAO {
 
                 attendanceBO.saveAttendance(data);
             }
-
         }
 
     }

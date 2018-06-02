@@ -167,7 +167,9 @@ public class MessageAOImpl implements IMessageAO {
         BankCard bankCard = null;
 
         for (Salary salary : list) {
-            if (ESalaryStatus.TO_Send.getCode().equals(salary.getStatus())) {
+            if (ESalaryStatus.TO_Send.getCode().equals(salary.getStatus())
+                    || ESalaryStatus.To_Approve.getCode()
+                        .equals(salary.getStatus())) {
                 throw new BizException("xn00000", "存在未审核的工资条，请核对后再发送");
             }
             salary.setStatus(ESalaryStatus.TO_Pay.getCode());

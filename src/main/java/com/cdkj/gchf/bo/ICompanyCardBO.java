@@ -17,9 +17,9 @@ public interface ICompanyCardBO extends IPaginableBO<CompanyCard> {
     public CompanyCard getCompanyCard(String code);
 
     public void saveCompanyCard(String companyCode, String projectCode,
-            String bankCode, String bankName, String bankCardNumber,
-            String subbranch, String updater, Date updateDatetime,
-            String remark);
+            String bankCode, String bankName, String accountName,
+            String bankCardNumber, String subbranch, String updater,
+            Date updateDatetime, String remark);
 
     public CompanyCard getCompanyCardByProject(String code);
 

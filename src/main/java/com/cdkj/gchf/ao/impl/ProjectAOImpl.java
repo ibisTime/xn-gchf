@@ -88,11 +88,12 @@ public class ProjectAOImpl implements IProjectAO {
         data.setUpdateDatetime(new Date());
         data.setRemark(req.getRemark());
         projectBO.saveProject(data);
+
         // 添加公司账户
         companyCardBO.saveCompanyCard(data.getCompanyCode(), code,
-            req.getBankCode(), req.getBankName(), req.getBankcardNumber(),
-            req.getSubbranch(), req.getUpdater(), data.getUpdateDatetime(),
-            req.getRemark());
+            req.getBankCode(), req.getBankName(), req.getAccountName(),
+            req.getBankcardNumber(), req.getSubbranch(), req.getUpdater(),
+            data.getUpdateDatetime(), req.getRemark());
         // 生成统计信息
         reportBO.saveReport(data.getCode(), data.getName());
         return code;
@@ -108,7 +109,8 @@ public class ProjectAOImpl implements IProjectAO {
         if (StringUtils.isNotBlank(user.getMobile())) {
             data.setChargeMobile(user.getMobile());
         }
-        if (!EProjectStatus.To_Audit.getCode().equals(data.getStatus())) {
+        if (!(EProjectStatus.To_Audit.getCode().equals(data.getStatus())
+                || EProjectStatus.UnPass.getCode().equals(data.getStatus()))) {
             throw new BizException("xn000", "该项目的状态无法修改");
         }
         data.setLongitude(req.getLongitude());
@@ -237,14 +239,14 @@ public class ProjectAOImpl implements IProjectAO {
         String status = EProjectStatus.Building.getCode();
         if (EBoolean.NO.getCode().equals(result)) {
             status = EProjectStatus.UnPass.getCode();
+            if (StringUtils.isBlank(approveNote)) {
+                approveNote = "您申请的项目[" + data.getName() + "]未通过审核,请修改后再提交申请";
+            }
         }
 
         data.setStatus(status);
         data.setApprover(approver);
         data.setApproveDatetime(new Date());
-        if (StringUtils.isBlank(approveNote)) {
-            approveNote = "您申请的项目[" + data.getName() + "]未通过审核,请修改后再提交申请";
-        }
         data.setApproveNote(approveNote);
         projectBO.approveProject(data);
         // 添加统计信息

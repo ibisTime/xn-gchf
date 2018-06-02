@@ -28,7 +28,7 @@ public class Ccontract extends ABaseDO {
     private String staffCode;
 
     // 员工手机号
-    private String staffMobile;
+    private String staffName;
 
     // 合同照片
     private String contentPic;
@@ -52,8 +52,8 @@ public class Ccontract extends ABaseDO {
     // 更新人名称
     private String updateName;
 
-    // 员工名称
-    private String staffName;
+    // 员工名称 staffMobile
+    private String staffMobile;
 
     // 用户类型
     private String kind;

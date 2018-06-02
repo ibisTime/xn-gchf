@@ -115,9 +115,7 @@ public class SalaryAOImpl implements ISalaryAO {
         }
         for (String code : codeList) {
             data = salaryBO.getSalary(code);
-            if (!(ESalaryStatus.To_Approve.getCode().equals(data.getStatus())
-                    || ESalaryStatus.Pay_Portion.getCode()
-                        .equals(data.getStatus()))) {
+            if (ESalaryStatus.To_Approve.getCode().equals(data.getStatus())) {
                 throw new BizException("xn0000", "存在不处于待审核状态的工资条");
             }
             data.setStatus(status);
@@ -184,7 +182,7 @@ public class SalaryAOImpl implements ISalaryAO {
         Date date = new Date();
         Project condition = new Project();
         List<Project> pList = projectBO.queryProject(condition);
-
+        System.err.println("===========开始生成工资条==============");
         for (Project project : pList) {
             // 获取项目的雇佣关系
             Employ eCondition = new Employ();
@@ -204,7 +202,6 @@ public class SalaryAOImpl implements ISalaryAO {
                 Integer number = 0;
 
                 for (Employ employ : eList) {
-                    System.err.println("===========开始成工资条==============");
                     Salary data = new Salary();
                     String code = OrderNoGenerater
                         .generate(EGeneratePrefix.Salary.getCode());
@@ -279,9 +276,10 @@ public class SalaryAOImpl implements ISalaryAO {
                     data.setCutAmount(cutAmount + leavingCut);
                     data.setCutNote("本月迟到：" + early + "天，早退：" + delay + "天，请假："
                             + leavingDays + "天，共计扣款："
-                            + (cutAmount + leavingCut) / 1000 + "元");
+                            + data.getCutAmount() / 1000 + "元");
                     data.setLeavingDays(leavingDays);
-                    data.setFactAmount(employ.getSalary() - leavingCut);
+                    data.setFactAmount(
+                        employ.getSalary() - data.getCutAmount());
                     data.setSupplyAmount(0L);
                     salaryBO.saveSalary(data);
 
@@ -299,6 +297,8 @@ public class SalaryAOImpl implements ISalaryAO {
                 message.setCode(mCode);
                 message.setProjectCode(project.getCode());
                 message.setProjectName(project.getName());
+                message.setMonth(calendar.get(Calendar.YEAR) + "/"
+                        + calendar.get(Calendar.MONTH));
                 CompanyCard card = companyCardBO
                     .getCompanyCardByProject(project.getCode());
 

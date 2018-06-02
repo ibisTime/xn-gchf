@@ -7,7 +7,7 @@
 		<result column="project_code" property="projectCode" />
 		<result column="staff_code" property="staffCode" />
 		
-		<result column="staff_mobile" property="staffMobile" />
+		<result column="staff_name" property="staffName" />
 		<result column="content_pic" property="contentPic" />
 		<result column="contract_datetime" property="contractDatetime" />
 		<result column="updater" property="updater" />
@@ -38,7 +38,7 @@
 				AND t.updater = #{updater}
 			</if>
 			<if test="keyword != null and keyword != '' ">
-				AND t.staff_mobile like "%"#{keyword}"%"
+				AND t.staff_name like "%"#{keyword}"%"
 			</if>
 			
 		</trim>
@@ -50,7 +50,7 @@
 		,t.project_code
 		,t.project_name
 		,t.staff_code
-		,t.staff_mobile
+		,t.staff_name
 		,t.content_pic
 		,t.contract_datetime
 		,t.updater
@@ -79,7 +79,7 @@
 		,project_code
 		,project_name
 		,staff_code
-		,staff_mobile
+		,staff_name
 		,content_pic
 		,contract_datetime
 		,updater
@@ -90,7 +90,7 @@
 		#{code}
 		,#{projectCode}
 		,#{projectName}
-		,#{staffCode}
+		,#{staffName}
 		,#{staffMobile}
 		,#{contentPic}
 		,#{contractDatetime}

@@ -376,7 +376,7 @@ insert into `tsys_menu_role`(`role_code`,`menu_code`,`updater`,`update_datetime`
 ('RO201800000000000004','SM201805061714532327913','USYS201800000000001',now(),null),
 ('RO201800000000000004','SM201805261621476424511','USYS201800000000001',now(),null);
 
-insert  into `tsys_config`(`id`,`type`,`ckey`,`cvalue`,`updater`,`update_datetime`,`remark`) values 
+insert  into `tsys_config`(`type`,`ckey`,`cvalue`,`updater`,`update_datetime`,`remark`) values 
 ('sys_txt','telephone','0571-88888888','USYS201800000000001',now(),'联系电话'),
 ('sys_txt','about_us','关于我们112','USYS201800000000001',now(),'关于我们'),
 ('sys_txt','service_time','9:00-17:40','USYS201800000000001',now(),'服务时间'),

@@ -166,8 +166,10 @@ public class StaffAOImpl implements IStaffAO {
         data.setRemark(req.getRemark());
         staffBO.refreshStaff(data);
         // 修改技能
-        for (Skill skill : req.getSkillList()) {
-            skillBO.refreshSkill(skill);
+        if (CollectionUtils.isNotEmpty(req.getSkillList())) {
+            for (Skill skill : req.getSkillList()) {
+                skillBO.refreshSkill(skill);
+            }
         }
     }
 
@@ -299,18 +301,20 @@ public class StaffAOImpl implements IStaffAO {
 
         // 添加技能信息
         String skillCode = null;
-        for (Skill sData : req.getSkillList()) {
-            Skill skill = new Skill();
-            skillCode = OrderNoGenerater
-                .generate(EGeneratePrefix.Skill.getCode());
-            skill.setCode(skillCode);
-            skill.setStaffCode(data.getCode());
-            skill.setStaffName(data.getName());
-            skill.setName(sData.getName());
+        if (CollectionUtils.isNotEmpty(req.getSkillList())) {
+            for (Skill sData : req.getSkillList()) {
+                Skill skill = new Skill();
+                skillCode = OrderNoGenerater
+                    .generate(EGeneratePrefix.Skill.getCode());
+                skill.setCode(skillCode);
+                skill.setStaffCode(data.getCode());
+                skill.setStaffName(data.getName());
+                skill.setName(sData.getName());
 
-            skill.setScore(sData.getScore());
-            skill.setPdf(sData.getPdf());
-            skillBO.saveSkill(skill);
+                skill.setScore(sData.getScore());
+                skill.setPdf(sData.getPdf());
+                skillBO.saveSkill(skill);
+            }
         }
 
     }

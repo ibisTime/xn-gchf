@@ -69,9 +69,6 @@ public class EmployAOImpl implements IEmployAO {
     public String joinIn(XN631460Req req) {
         String code = OrderNoGenerater
             .generate(EGeneratePrefix.Employ.getCode());
-        synchronized (EmployAOImpl.class) {
-
-        }
         Staff staff = staffBO.getStaff(req.getStaffCode());
 
         Date date = new Date();
@@ -82,9 +79,9 @@ public class EmployAOImpl implements IEmployAO {
         Project project = projectBO.getProject(req.getProjectCode());
         data.setProjectCode(req.getProjectCode());
 
-        if (EProjectStatus.End.getCode().equals(project.getStatus())
-                || EProjectStatus.Stop.getCode().equals(project.getStatus())) {
-            throw new BizException("xn0000", "该项目已经结束");
+        if (!(EProjectStatus.End.getCode().equals(project.getStatus())
+                || EProjectStatus.Stop.getCode().equals(project.getStatus()))) {
+            throw new BizException("xn0000", "该项目未通过审核或已停工");
         }
 
         data.setProjectName(project.getName());
@@ -137,6 +134,8 @@ public class EmployAOImpl implements IEmployAO {
                 / DateUtil.getMonthDays() * DateUtil.getRemainDays()
                 + report.getNextMonthSalary();
         report.setNextMonthSalary(nextMonthSalary);
+        report.setStaffOn(report.getStaffIn() + 1);
+        report.setStaffIn(report.getStaffIn() + 1);
         reportBO.staffIn(report);
 
         // 生成考勤
@@ -210,6 +209,9 @@ public class EmployAOImpl implements IEmployAO {
     public void leaveOffice(XN631462Req req) {
         Employ data = employBO.getEmployByStaff(req.getStaffCode(),
             req.getProjectCode());
+        if (data == null) {
+            throw new BizException("xn0000", "该员工未在该项目任职");
+        }
         if (EEmploytatus.Leave.getCode().equals(data.getStatus())) {
             throw new BizException("xn0000", "该员工已经离职");
         }

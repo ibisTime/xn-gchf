@@ -111,8 +111,8 @@
 		,#{bankName}
 		
 		,#{subbranch}
-		,#{accountName}
 		,#{bankcardNumber}
+		,#{accountName}
 		,#{status}
 		,#{createDatetime}
 		

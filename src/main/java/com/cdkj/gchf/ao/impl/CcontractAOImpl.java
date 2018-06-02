@@ -108,12 +108,10 @@ public class CcontractAOImpl implements ICcontractAO {
         }
 
         page = ccontractBO.getPaginable(start, limit, condition);
-        String updateName = null;
         for (Ccontract ccontract : page.getList()) {
             Staff staff = staffBO.getStaff(ccontract.getStaffCode());
-            ccontract.setStaffName(staff.getName());
-            updateName = getName(ccontract.getUpdater());
-            ccontract.setUpdateName(updateName);
+            ccontract.setStaffMobile(staff.getMobile());
+            ccontract.setUpdateName(getName(ccontract.getUpdater()));
         }
 
         return page;
@@ -122,19 +120,18 @@ public class CcontractAOImpl implements ICcontractAO {
     @Override
     public List<Ccontract> queryCcontractList(Ccontract condition) {
         List<Ccontract> list = null;
-        if (EUserKind.Supervise.getCode().equals(condition.getKind())) {
+        if (EUserKind.Supervise.getCode().equals(condition.getKind())
+                || EUserKind.Owner.getCode().equals(condition.getKind())) {
             if (CollectionUtils.isEmpty(condition.getProjectCodeList())) {
                 return list;
             }
         }
 
         list = ccontractBO.queryCcontractList(condition);
-        String updateName = null;
         for (Ccontract ccontract : list) {
             Staff staff = staffBO.getStaff(ccontract.getStaffCode());
-            ccontract.setStaffName(staff.getName());
-            updateName = getName(ccontract.getUpdater());
-            ccontract.setUpdateName(updateName);
+            ccontract.setStaffMobile(staff.getMobile());
+            ccontract.setUpdateName(getName(ccontract.getUpdater()));
         }
         return list;
     }
@@ -143,9 +140,8 @@ public class CcontractAOImpl implements ICcontractAO {
     public Ccontract getCcontract(String code) {
         Ccontract data = ccontractBO.getCcontract(code);
         Staff staff = staffBO.getStaff(data.getStaffCode());
-        data.setStaffName(staff.getName());
-        String updateName = getName(data.getUpdater());
-        data.setUpdateName(updateName);
+        data.setStaffMobile(staff.getMobile());
+        data.setUpdateName(getName(data.getUpdater()));
         return data;
     }
 

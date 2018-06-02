@@ -24,9 +24,9 @@ public class CompanyCardBOImpl extends PaginableBOImpl<CompanyCard>
     private ICompanyCardDAO companyCardDAO;
 
     public void saveCompanyCard(String companyCode, String projectCode,
-            String bankCode, String bankName, String bankCardNumber,
-            String subbranch, String updater, Date updateDatetime,
-            String remark) {
+            String bankCode, String bankName, String accountName,
+            String bankCardNumber, String subbranch, String updater,
+            Date updateDatetime, String remark) {
         CompanyCard data = new CompanyCard();
 
         String code = OrderNoGenerater
@@ -37,6 +37,7 @@ public class CompanyCardBOImpl extends PaginableBOImpl<CompanyCard>
 
         data.setBankCode(bankCode);
         data.setBankName(bankName);
+        data.setAccountName(accountName);
         data.setBankcardNumber(bankCardNumber);
         data.setSubbranch(subbranch);
 

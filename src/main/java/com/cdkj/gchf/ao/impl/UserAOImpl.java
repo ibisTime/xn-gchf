@@ -18,7 +18,6 @@ import com.cdkj.gchf.bo.ISYSRoleBO;
 import com.cdkj.gchf.bo.ISmsOutBO;
 import com.cdkj.gchf.bo.IUserBO;
 import com.cdkj.gchf.bo.base.Paginable;
-import com.cdkj.gchf.common.DateUtil;
 import com.cdkj.gchf.common.MD5Util;
 import com.cdkj.gchf.common.PhoneUtil;
 import com.cdkj.gchf.common.PwdUtil;
@@ -161,16 +160,14 @@ public class UserAOImpl implements IUserAO {
         if (newMobile.equals(oldMobile)) {
             throw new BizException("xn000000", "新手机与原手机一致");
         }
-        // 验证手机号
-        userBO.isMobileExist(newMobile);
         userBO.refreshMobile(user, newMobile, updater, remark);
-        smsOutBO.sendSmsOut(oldMobile,
-            "尊敬的" + PhoneUtil.hideMobile(oldMobile) + "用户，您于"
-                    + DateUtil.dateToStr(new Date(),
-                        DateUtil.DATA_TIME_PATTERN_1)
-                    + "提交的更改绑定手机号码服务已审核通过，现绑定手机号码为" + newMobile + "，同时您的登录名更改为"
-                    + newMobile + "，请妥善保管您的账户相关信息。",
-            "805061");
+        /*
+         * smsOutBO.sendSmsOut(oldMobile, "尊敬的" +
+         * PhoneUtil.hideMobile(oldMobile) + "用户，您于" + DateUtil.dateToStr(new
+         * Date(), DateUtil.DATA_TIME_PATTERN_1) + "提交的更改绑定手机号码服务已审核通过，现绑定手机号码为"
+         * + newMobile + "，同时您的登录名更改为" + newMobile + "，请妥善保管您的账户相关信息。",
+         * "805061");
+         */
     }
 
     @Override

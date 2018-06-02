@@ -124,13 +124,9 @@ public class MessageAOImpl implements IMessageAO {
         }
 
         list = messageBO.queryMessageList(condition);
-        String sendName = null;
-        String handleName = null;
         for (Message message : list) {
-            sendName = getName(message.getSender());
-            handleName = getName(message.getHandler());
-            message.setSendName(sendName);
-            message.setHandleName(handleName);
+            message.setSendName(getName(message.getSender()));
+            message.setHandleName(getName(message.getHandler()));
         }
         return list;
     }
@@ -138,12 +134,8 @@ public class MessageAOImpl implements IMessageAO {
     @Override
     public Message getMessage(String code) {
         Message data = messageBO.getMessage(code);
-        String sendName = null;
-        String handleName = null;
-        sendName = getName(data.getSender());
-        handleName = getName(data.getHandler());
-        data.setSendName(sendName);
-        data.setHandleName(handleName);
+        data.setSendName(getName(data.getSender()));
+        data.setHandleName(getName(data.getHandler()));
         return data;
     }
 

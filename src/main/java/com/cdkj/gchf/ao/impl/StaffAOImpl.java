@@ -177,10 +177,8 @@ public class StaffAOImpl implements IStaffAO {
     public Paginable<Staff> queryStaffPage(int start, int limit,
             Staff condition) {
         Paginable<Staff> page = staffBO.getPaginable(start, limit, condition);
-        String updateName = null;
         for (Staff staff : page.getList()) {
-            updateName = getName(staff.getUpdater());
-            staff.setUpdateName(updateName);
+            staff.setUpdateName(getName(staff.getUpdater()));
         }
         return page;
     }
@@ -188,10 +186,8 @@ public class StaffAOImpl implements IStaffAO {
     @Override
     public List<Staff> queryStaffList(Staff condition) {
         List<Staff> list = staffBO.queryStaffList(condition);
-        String updateName = null;
         for (Staff staff : list) {
-            updateName = getName(staff.getUpdater());
-            staff.setUpdateName(updateName);
+            staff.setUpdateName(getName(staff.getUpdater()));
         }
 
         return list;
@@ -202,8 +198,9 @@ public class StaffAOImpl implements IStaffAO {
         Staff data = staffBO.getStaff(code);
         BankCard bankCard = bankCardBO.getBankCardByStaff(data.getCode());
         data.setBankCard(bankCard);
-        String updateName = getName(data.getUpdater());
-        data.setUpdateName(updateName);
+        data.setUpdateName(getName(data.getUpdater()));
+        List<Skill> skillList = skillBO.querySkillByStaff(data.getCode());
+        data.setSkillList(skillList);
         return data;
     }
 
@@ -379,6 +376,9 @@ public class StaffAOImpl implements IStaffAO {
         data.setEmployList(employList);
         data.setSalaryList(salaryList);
         data.setAbnormalSalaryList(abnormalSalaryList);
+
+        List<Skill> skillList = skillBO.querySkillByStaff(data.getCode());
+        data.setSkillList(skillList);
         return data;
     }
 

@@ -11,11 +11,14 @@ import org.springframework.stereotype.Service;
 import com.cdkj.gchf.ao.ICompanyCardAO;
 import com.cdkj.gchf.bo.ICompanyCardBO;
 import com.cdkj.gchf.bo.IProjectBO;
+import com.cdkj.gchf.bo.IUserBO;
 import com.cdkj.gchf.bo.base.Page;
 import com.cdkj.gchf.bo.base.Paginable;
 import com.cdkj.gchf.domain.CompanyCard;
 import com.cdkj.gchf.domain.Project;
+import com.cdkj.gchf.domain.User;
 import com.cdkj.gchf.dto.req.XN631362Req;
+import com.cdkj.gchf.enums.EUser;
 import com.cdkj.gchf.enums.EUserKind;
 
 @Service
@@ -26,6 +29,9 @@ public class CompanyCardAOImpl implements ICompanyCardAO {
 
     @Autowired
     IProjectBO projectBO;
+
+    @Autowired
+    IUserBO userBO;
 
     @Override
     public void editCompanyCard(XN631362Req req) {
@@ -59,6 +65,7 @@ public class CompanyCardAOImpl implements ICompanyCardAO {
         for (CompanyCard companyCard : page.getList()) {
             project = projectBO.getProject(companyCard.getProjectCode());
             companyCard.setProjectName(project.getName());
+            companyCard.setUpdateName(getName(companyCard.getUpdater()));
         }
         return page;
     }
@@ -78,6 +85,7 @@ public class CompanyCardAOImpl implements ICompanyCardAO {
         for (CompanyCard companyCard : list) {
             project = projectBO.getProject(companyCard.getCompanyCode());
             companyCard.setProjectName(project.getName());
+            companyCard.setUpdateName((getName(companyCard.getUpdater())));
         }
 
         return list;
@@ -88,6 +96,20 @@ public class CompanyCardAOImpl implements ICompanyCardAO {
         CompanyCard data = companyCardBO.getCompanyCard(code);
         Project project = projectBO.getProject(data.getProjectCode());
         data.setProjectName(project.getName());
+        data.setUpdateName(getName(data.getUpdater()));
         return data;
+    }
+
+    private String getName(String userId) {
+        User user = userBO.getUserName(userId);
+        String name = null;
+        if (user != null) {
+            name = EUser.ADMIN.getCode();
+            if (!EUser.ADMIN.getCode().equals(user.getLoginName())) {
+                name = user.getRealName();
+            }
+        }
+        return name;
+
     }
 }

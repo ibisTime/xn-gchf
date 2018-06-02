@@ -161,13 +161,6 @@ public class UserAOImpl implements IUserAO {
             throw new BizException("xn000000", "新手机与原手机一致");
         }
         userBO.refreshMobile(user, newMobile, updater, remark);
-        /*
-         * smsOutBO.sendSmsOut(oldMobile, "尊敬的" +
-         * PhoneUtil.hideMobile(oldMobile) + "用户，您于" + DateUtil.dateToStr(new
-         * Date(), DateUtil.DATA_TIME_PATTERN_1) + "提交的更改绑定手机号码服务已审核通过，现绑定手机号码为"
-         * + newMobile + "，同时您的登录名更改为" + newMobile + "，请妥善保管您的账户相关信息。",
-         * "805061");
-         */
     }
 
     @Override
@@ -177,18 +170,11 @@ public class UserAOImpl implements IUserAO {
         if (oldLoginPwd.equals(newLoginPwd)) {
             throw new BizException("li01006", "新登录密码不能与原有密码重复");
         }
+        User user = userBO.getUser(userId);
         // 验证当前登录密码是否正确
         userBO.checkLoginPwd(userId, oldLoginPwd);
         // // 重置
-        // userBO.refreshLoginPwd(userId, newLoginPwd);
-        // 发送短信
-        User user = userBO.getUser(userId);
-        if (!EUserKind.Plat.getCode().equals(user.getType())) {
-            smsOutBO.sendSmsOut(user.getMobile(),
-                "尊敬的" + PhoneUtil.hideMobile(user.getMobile())
-                        + "用户，您的登录密码修改成功。请妥善保管您的账户相关信息。",
-                "631073");
-        }
+        userBO.refreshLoginPwd(user, newLoginPwd);
     }
 
     @Override

@@ -14,6 +14,10 @@ public class XN631512Req {
     @NotBlank(message = "编号不能为空")
     private String code;
 
+    // 类型
+    @NotBlank(message = "类型不能为空")
+    private String type;
+
     // 名字
     @NotBlank(message = "名字不能为空")
     private String name;
@@ -67,6 +71,14 @@ public class XN631512Req {
 
     public void setRemark(String remark) {
         this.remark = remark;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
     }
 
 }

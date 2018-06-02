@@ -55,12 +55,8 @@ public class EmployBOImpl extends PaginableBOImpl<Employ> implements IEmployBO {
     }
 
     @Override
-    public int refreshEmploy(Employ data) {
-        int count = 0;
-        if (StringUtils.isNotBlank(data.getCode())) {
-            count = employDAO.update(data);
-        }
-        return count;
+    public void refreshEmploy(Employ data) {
+        employDAO.update(data);
     }
 
     @Override
@@ -135,7 +131,6 @@ public class EmployBOImpl extends PaginableBOImpl<Employ> implements IEmployBO {
             Employ condition = new Employ();
             condition.setProjectCode(projectCode);
             condition.setStaffCode(staffCode);
-            condition.setStatus(EEmploytatus.Not_Leave.getCode());
             data = employDAO.select(condition);
         }
         return data;

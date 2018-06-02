@@ -205,4 +205,8 @@ public class UserBOImpl extends PaginableBOImpl<User> implements IUserBO {
         return userDAO.selectList(condition);
     }
 
+    @Override
+    public void refreshLoginPwd(String userId, String newLoginPwd) {
+    }
+
 }

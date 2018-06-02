@@ -56,13 +56,16 @@ public class EventRemindAOImpl implements IEventRemindAO {
 
     @Override
     public void editEventRemind(XN631512Req req) {
-        EventRemind data = eventRemindBO.getEventRemind(req.getCode());
+
         PhoneUtil.checkMobile(req.getMobile());
+
+        EventRemind data = eventRemindBO.getEventRemind(req.getCode());
         data.setName(req.getName());
         data.setMobile(req.getMobile());
         data.setUpdater(req.getUpdater());
-        Date date = new Date();
+        data.setType(req.getType());
 
+        Date date = new Date();
         data.setUpdateDatetime(date);
         data.setRemark(req.getRemark());
         eventRemindBO.refreshEventRemind(data);

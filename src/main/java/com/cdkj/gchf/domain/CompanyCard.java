@@ -68,6 +68,7 @@ public class CompanyCard extends ABaseDO {
     // 项目名称
     private String projectName;
 
+    // 项目编号List
     private List<String> projectCodeList;
 
     public void setCode(String code) {

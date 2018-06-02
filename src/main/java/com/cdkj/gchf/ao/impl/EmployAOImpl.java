@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.cdkj.gchf.ao.IEmployAO;
 import com.cdkj.gchf.bo.IAttendanceBO;
@@ -67,13 +68,11 @@ public class EmployAOImpl implements IEmployAO {
 
     @Override
     public String joinIn(XN631460Req req) {
+        Employ data = new Employ();
         String code = OrderNoGenerater
             .generate(EGeneratePrefix.Employ.getCode());
         Staff staff = staffBO.getStaff(req.getStaffCode());
-
         Date date = new Date();
-
-        Employ data = new Employ();
         data.setCode(code);
 
         Project project = projectBO.getProject(req.getProjectCode());
@@ -104,12 +103,21 @@ public class EmployAOImpl implements IEmployAO {
         data.setUpdateDatetime(date);
         data.setRemark(req.getRemark());
 
+        Employ checkData = employBO.getEmployByStaff(req.getStaffCode(),
+            req.getProjectCode());
+        // 防止重复办理入职
+        if (checkData != null) {
+            if (!EEmploytatus.Leave.getCode().equals(data.getStatus())) {
+                throw new BizException("xn00000", "该员工已入职该项目，请勿重复办理入职");
+            }
+            data.setCode(checkData.getCode());
+            data.setStatus(EEmploytatus.Work.getCode());
+            employBO.refreshEmploy(data);
+        }
         employBO.joinIn(data);
+
         // 录入合同
-        ccontractBO.isExist(req.getProjectCode(), req.getStaffCode());
-
         Ccontract ccontract = new Ccontract();
-
         String ccontractCode = OrderNoGenerater
             .generate(EGeneratePrefix.Ccontract.getCode());
         ccontract.setCode(ccontractCode);
@@ -125,6 +133,12 @@ public class EmployAOImpl implements IEmployAO {
         ccontract.setUpdater(req.getUpdater());
         ccontract.setUpdateDatetime(date);
         ccontract.setRemark(req.getRemark());
+
+        ccontract = ccontractBO.isExist(req.getProjectCode(),
+            req.getStaffCode());
+        if (ccontract != null) {
+            ccontractBO.refreshCcontract(ccontract);
+        }
         ccontractBO.saveCcontract(ccontract);
 
         // 计入累积入职
@@ -166,9 +180,13 @@ public class EmployAOImpl implements IEmployAO {
 
         Employ data = employBO.getEmployByStaff(req.getStaffCode(),
             req.getProjectCode());
-        if (!EEmploytatus.Work.getCode().equals(data.getStatus())) {
-            throw new BizException("xn0000", "该员工已从该项目离职");
+        if (EEmploytatus.Work.getCode().equals(data.getStatus())) {
+            throw new BizException("xn0000", "该员工已离职");
         }
+        if (EEmploytatus.Hoilday.getCode().equals(data.getStatus())) {
+            throw new BizException("xn0000", "该员工已在请假中");
+        }
+
         Date start = DateUtil.strToDate(req.getStartDatetime(),
             DateUtil.DATA_TIME_PATTERN_1);
         Date end = DateUtil.strToDate(req.getEndDatetime(),
@@ -206,6 +224,7 @@ public class EmployAOImpl implements IEmployAO {
     }
 
     @Override
+    @Transactional
     public void leaveOffice(XN631462Req req) {
         Employ data = employBO.getEmployByStaff(req.getStaffCode(),
             req.getProjectCode());
@@ -232,15 +251,15 @@ public class EmployAOImpl implements IEmployAO {
                 - AmountUtil.mul(daySalay, data.getLeavingDays()));
         reportBO.refreshNextMonthSalary(report);
 
-        Project project = projectBO.getProject(data.getCode());
+        Project project = projectBO.getProject(data.getProjectCode());
         staffLogBO.saveStaffLog(data, data.getStaffCode(),
             project.getCompanyCode(), project.getCode(), project.getName());
 
     }
 
     @Override
-    public int editEmploy(Employ data) {
-        return employBO.refreshEmploy(data);
+    public void editEmploy(Employ data) {
+        employBO.refreshEmploy(data);
     }
 
     @Override

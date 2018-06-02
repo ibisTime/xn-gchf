@@ -12,7 +12,7 @@ public interface IEmployBO extends IPaginableBO<Employ> {
 
     public int removeEmploy(String code);
 
-    public int refreshEmploy(Employ data);
+    public void refreshEmploy(Employ data);
 
     public List<Employ> queryEmployList(Employ condition);
 

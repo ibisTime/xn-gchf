@@ -19,7 +19,7 @@ public interface IEmployAO {
 
     public int dropEmploy(String code);
 
-    public int editEmploy(Employ data);
+    public void editEmploy(Employ data);
 
     public Paginable<Employ> queryEmployPage(int start, int limit,
             Employ condition);

@@ -50,10 +50,7 @@
 					</foreach>
 				</when>
 			</choose>
-			<if test="staffCode != null and staffCode != '' ">
-				AND t.staff_code = #{staffCode}
-			</if>
-			
+		
 			<if test="type != null and type != '' ">
 				AND t.type = #{type}
 			</if>

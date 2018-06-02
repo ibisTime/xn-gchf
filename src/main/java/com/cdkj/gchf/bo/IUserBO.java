@@ -49,4 +49,6 @@ public interface IUserBO extends IPaginableBO<User> {
     public List<User> checkLoginName(String loginName);
 
     public List<User> getUserByDepatment(String departmentCode);
+
+    public void refreshLoginPwd(String userId, String newLoginPwd);
 }

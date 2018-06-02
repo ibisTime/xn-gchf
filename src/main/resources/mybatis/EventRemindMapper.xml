@@ -91,6 +91,7 @@
 		SET
 		name = #{name}
 		,mobile = #{mobile}
+		,type = #{type}
 		,updater = #{updater}
 		,update_datetime = #{updateDatetime}
 		,remark = #{remark}

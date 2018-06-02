@@ -52,13 +52,11 @@ public class CcontractBOImpl extends PaginableBOImpl<Ccontract>
     }
 
     @Override
-    public void isExist(String projectCode, String staffCode) {
+    public Ccontract isExist(String projectCode, String staffCode) {
         Ccontract condition = new Ccontract();
         condition.setProjectCode(projectCode);
         condition.setStaffCode(staffCode);
-        Ccontract data = ccontractDAO.select(condition);
-        if (data != null) {
-            throw new BizException("xn0000", "该员工合同已录入");
-        }
+        return ccontractDAO.select(condition);
+
     }
 }

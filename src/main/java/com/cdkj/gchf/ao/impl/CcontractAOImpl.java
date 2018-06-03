@@ -5,6 +5,7 @@ import java.util.Date;
 import java.util.List;
 
 import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -110,7 +111,9 @@ public class CcontractAOImpl implements ICcontractAO {
         page = ccontractBO.getPaginable(start, limit, condition);
         for (Ccontract ccontract : page.getList()) {
             Staff staff = staffBO.getStaff(ccontract.getStaffCode());
-            ccontract.setStaffMobile(staff.getMobile());
+            if (StringUtils.isNotBlank(staff.getMobile())) {
+                ccontract.setStaffMobile(staff.getMobile());
+            }
             ccontract.setUpdateName(getName(ccontract.getUpdater()));
         }
 

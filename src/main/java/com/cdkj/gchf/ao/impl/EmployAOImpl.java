@@ -76,12 +76,10 @@ public class EmployAOImpl implements IEmployAO {
         data.setCode(code);
 
         Project project = projectBO.getProject(req.getProjectCode());
-        data.setProjectCode(req.getProjectCode());
-
-        if (!(EProjectStatus.End.getCode().equals(project.getStatus())
-                || EProjectStatus.Stop.getCode().equals(project.getStatus()))) {
+        if (!EProjectStatus.Building.getCode().equals(project.getStatus())) {
             throw new BizException("xn0000", "该项目未通过审核或已停工");
         }
+        data.setProjectCode(req.getProjectCode());
 
         data.setProjectName(project.getName());
         data.setStaffCode(staff.getCode());
@@ -120,12 +118,11 @@ public class EmployAOImpl implements IEmployAO {
         Ccontract ccontract = new Ccontract();
         String ccontractCode = OrderNoGenerater
             .generate(EGeneratePrefix.Ccontract.getCode());
-        ccontract.setCode(ccontractCode);
         ccontract.setProjectCode(req.getProjectCode());
 
         ccontract.setProjectName(project.getName());
-        ccontract.setStaffCode(req.getStaffCode());
-        ccontract.setStaffMobile(staff.getMobile());
+        ccontract.setStaffCode(staff.getCode());
+        ccontract.setStaffName(staff.getName());
         ccontract.setContentPic(req.getContentPic());
         ccontract.setContractDatetime(DateUtil.strToDate(
             req.getContractDatetime(), DateUtil.FRONT_DATE_FORMAT_STRING));
@@ -134,11 +131,13 @@ public class EmployAOImpl implements IEmployAO {
         ccontract.setUpdateDatetime(date);
         ccontract.setRemark(req.getRemark());
 
-        ccontract = ccontractBO.isExist(req.getProjectCode(),
+        Ccontract checkCcontract = ccontractBO.isExist(req.getProjectCode(),
             req.getStaffCode());
-        if (ccontract != null) {
+        if (checkCcontract != null) {
+            ccontract.setCode(checkCcontract.getCode());
             ccontractBO.refreshCcontract(ccontract);
         }
+        ccontract.setCode(ccontractCode);
         ccontractBO.saveCcontract(ccontract);
 
         // 计入累积入职

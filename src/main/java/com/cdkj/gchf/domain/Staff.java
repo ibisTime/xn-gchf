@@ -84,6 +84,9 @@ public class Staff extends ABaseDO {
     // 紧急联系人电话
     private String contactsMobile;
 
+    // 部门编号
+    private String departmentCode;
+
     // ***************db***********
     // 关键字模糊查询
     private String keyword;
@@ -370,6 +373,14 @@ public class Staff extends ABaseDO {
 
     public void setAbnormalSalaryList(List<Salary> abnormalSalaryList) {
         this.abnormalSalaryList = abnormalSalaryList;
+    }
+
+    public String getDepartmentCode() {
+        return departmentCode;
+    }
+
+    public void setDepartmentCode(String departmentCode) {
+        this.departmentCode = departmentCode;
     }
 
 }

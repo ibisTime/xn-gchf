@@ -178,17 +178,11 @@ public class ProjectAOImpl implements IProjectAO {
                 return list;
             }
         }
-        String approveName = null;
-        String updateName = null;
-        String chargeName = null;
         list = projectBO.queryProject(condition);
         for (Project project : list) {
-            approveName = getName(project.getApprover());
-            updateName = getName(project.getUpdater());
-            chargeName = getName(project.getChargeUser());
-            project.setApproveName(approveName);
-            project.setUpdateName(updateName);
-            project.setChargeName(chargeName);
+            project.setApproveName(getName(project.getApprover()));
+            project.setUpdateName(getName(project.getUpdater()));
+            project.setChargeName(getName(project.getChargeUser()));
         }
         return list;
     }
@@ -197,7 +191,8 @@ public class ProjectAOImpl implements IProjectAO {
     public void toApprove(XN631353Req req) {
 
         Project data = projectBO.getProject(req.getCode());
-        if (!EProjectStatus.To_Audit.getCode().equals(data.getStatus())) {
+        if (!(EProjectStatus.To_Audit.getCode().equals(data.getStatus())
+                || EProjectStatus.UnPass.getCode().equals(data.getStatus()))) {
             throw new BizException("xn0000", "项目不处于待提请审核状态");
         }
 

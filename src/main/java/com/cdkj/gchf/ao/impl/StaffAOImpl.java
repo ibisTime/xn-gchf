@@ -15,6 +15,7 @@ import com.alibaba.fastjson.JSONObject;
 import com.cdkj.gchf.ao.IStaffAO;
 import com.cdkj.gchf.bo.IBankCardBO;
 import com.cdkj.gchf.bo.ICcontractBO;
+import com.cdkj.gchf.bo.IDepartmentBO;
 import com.cdkj.gchf.bo.IEmployBO;
 import com.cdkj.gchf.bo.IProjectBO;
 import com.cdkj.gchf.bo.ISalaryBO;
@@ -70,6 +71,9 @@ public class StaffAOImpl implements IStaffAO {
 
     @Autowired
     ISkillBO skillBO;
+
+    @Autowired
+    IDepartmentBO departmentBO;
 
     @Override
     public String addStaff(XN631410Req req) {
@@ -128,7 +132,6 @@ public class StaffAOImpl implements IStaffAO {
         data.setMobile(req.getMobile());
         data.setName(req.getName());
 
-        data.setCompanyCode(user.getCompanyCode());
         data.setPict1(req.getPict1());
         data.setPict2(req.getPict2());
         data.setPict3(req.getPict3());
@@ -189,7 +192,6 @@ public class StaffAOImpl implements IStaffAO {
         for (Staff staff : list) {
             staff.setUpdateName(getName(staff.getUpdater()));
         }
-
         return list;
     }
 
@@ -236,15 +238,16 @@ public class StaffAOImpl implements IStaffAO {
         data.setName(req.getRealName());
         data.setSex(req.getSex());
         data.setIdNation(req.getIdNation());
+
         data.setBirthday(DateUtil.strToDate(req.getBirthday(),
             DateUtil.DB_DATE_FORMAT_STRING));
-
         data.setIdType(req.getIdKind());
         data.setIdNo(req.getIdNo());
         data.setIdAddress(req.getIdAddress());
         data.setIdPic(req.getIdPic());
-        data.setIdPolice(req.getIdPolice());
 
+        data.setPict1(req.getPic1());
+        data.setIdPolice(req.getIdPolice());
         data.setIdStartDate(DateUtil.strToDate(req.getIdStartDate(),
             DateUtil.DB_DATE_FORMAT_STRING));
         data.setIdEndDate(DateUtil.strToDate(req.getIdEndDate(),
@@ -393,6 +396,14 @@ public class StaffAOImpl implements IStaffAO {
         }
         return name;
 
+    }
+
+    @Override
+    public void doDepartmentCode(String code, String departmentCode,
+            String updater, String remark) {
+        Staff data = staffBO.getStaff(code);
+        departmentBO.getDepartment(departmentCode);
+        staffBO.doDepartmentCode(data, departmentCode, updater, remark);
     }
 
 }

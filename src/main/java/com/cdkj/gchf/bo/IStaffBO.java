@@ -22,4 +22,7 @@ public interface IStaffBO extends IPaginableBO<Staff> {
     public void saveStaffInfo(Staff data);
 
     public void refreshSalaryStatus(Staff staff);
+
+    public void doDepartmentCode(Staff data, String departmentCode,
+            String updater, String remark);
 }

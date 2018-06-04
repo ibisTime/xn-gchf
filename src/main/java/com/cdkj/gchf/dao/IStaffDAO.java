@@ -12,4 +12,6 @@ public interface IStaffDAO extends IBaseDAO<Staff> {
     void insertStaffInfo(Staff data);
 
     void updateSalaryStatus(Staff data);
+
+    void doDepartmentCode(Staff data);
 }

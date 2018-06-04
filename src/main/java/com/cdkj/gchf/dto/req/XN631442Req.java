@@ -26,9 +26,13 @@ public class XN631442Req {
     @NotBlank(message = "请假天数不能为空")
     private String leavingDays;
 
-    // （必填）扣款金额
-    @NotBlank(message = "扣款金额不能为空")
-    private String cutAmount;
+    // （必填）扣减金额
+    @NotBlank(message = "扣减金额不能为空")
+    private String cutAmount2;
+
+    // （必填）奖励金额
+    @NotBlank(message = "奖励金额不能为空")
+    private String awardAmount;
 
     // （必填）扣款说明
     @NotBlank(message = "扣款说明不能为空")
@@ -70,12 +74,20 @@ public class XN631442Req {
         this.leavingDays = leavingDays;
     }
 
-    public String getCutAmount() {
-        return cutAmount;
+    public String getCutAmount2() {
+        return cutAmount2;
     }
 
-    public void setCutAmount(String cutAmount) {
-        this.cutAmount = cutAmount;
+    public String getAwardAmount() {
+        return awardAmount;
+    }
+
+    public void setCutAmount2(String cutAmount2) {
+        this.cutAmount2 = cutAmount2;
+    }
+
+    public void setAwardAmount(String awardAmount) {
+        this.awardAmount = awardAmount;
     }
 
     public String getCutNote() {

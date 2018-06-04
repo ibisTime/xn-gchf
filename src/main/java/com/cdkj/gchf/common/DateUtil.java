@@ -400,6 +400,23 @@ public class DateUtil {
     }
 
     /**
+     * 某个时间是否在指定时间端内
+     * @param startDatetime
+     * @param endDatetime
+     * @return 
+     * @create: 2018年5月8日 下午2:14:27 nyc
+     * @history:
+     */
+    public static boolean isIn(Date startDatetime, Date checkDatetime,
+            Date endDatetime) {
+        if (startDatetime.before(checkDatetime)
+                && endDatetime.after(endDatetime)) {
+            return true;
+        }
+        return false;
+    }
+
+    /**
      * 计算请假时间
      * 不大于工作时间一半视为半天
      * @param start

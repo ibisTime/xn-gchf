@@ -4,6 +4,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
+import org.apache.commons.collections.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -78,20 +79,21 @@ public class SalaryAOImpl implements ISalaryAO {
             throw new BizException("xn00000", "该工资条不能修改");
         }
         // 计算修改后扣款、实际发薪的的差值
-        dif = data.getCutAmount() - StringValidater.toLong(req.getCutAmount());
+        dif = data.getCutAmount1()
+                - StringValidater.toLong(req.getCutAmount2());
         data.setEarlyDays(StringValidater.toInteger(req.getEarlyDays()));
         data.setDelayDays(StringValidater.toInteger(req.getDelayDays()));
         data.setLeavingDays(StringValidater.toDouble(req.getLeavingDays()));
         data.setTax(StringValidater.toLong(req.getTax()));
+        data.setCutAmount2(StringValidater.toLong(req.getCutAmount2()));
 
-        data.setCutAmount(StringValidater.toLong(req.getCutAmount()));
-        data.setCutNote(
-            "本月迟到：" + req.getEarlyDays() + "天，早退：" + req.getDelayDays()
-                    + "天，请假：" + req.getLeavingDays() + "天，共计扣款："
-                    + StringValidater.toLong(req.getCutAmount()) / 1000 + "元");
-        Long fact = data.getShouldAmount()
-                - StringValidater.toLong(req.getTax())
-                - StringValidater.toLong(req.getCutAmount());
+        data.setCutAmount1(data.getCutAmount1() + data.getCutAmount2());
+        data.setAwardAmount(StringValidater.toLong(req.getAwardAmount()));
+        data.setCutNote("本月迟到：" + req.getEarlyDays() + "天，早退："
+                + req.getDelayDays() + "天，请假：" + req.getLeavingDays()
+                + "天，共计扣款：" + data.getCutAmount1() / 1000 + "元");
+        Long fact = data.getShouldAmount() - data.getCutAmount1()
+                + data.getAwardAmount();
         data.setFactAmount(fact);
         salaryBO.refreshSalary(data);
 
@@ -115,7 +117,7 @@ public class SalaryAOImpl implements ISalaryAO {
         }
         for (String code : codeList) {
             data = salaryBO.getSalary(code);
-            if (ESalaryStatus.To_Approve.getCode().equals(data.getStatus())) {
+            if (!ESalaryStatus.To_Approve.getCode().equals(data.getStatus())) {
                 throw new BizException("xn0000", "存在不处于待审核状态的工资条");
             }
             data.setStatus(status);
@@ -179,10 +181,12 @@ public class SalaryAOImpl implements ISalaryAO {
     @Transactional
     public void createSalary() {
         // 获取已经开始的项目
+        Calendar calendar = Calendar.getInstance();
         Date date = new Date();
         Project condition = new Project();
         List<Project> pList = projectBO.queryProject(condition);
-        System.err.println("===========开始生成工资条==============");
+        System.err.println(calendar.get(Calendar.YEAR) + "/"
+                + calendar.get(Calendar.MONTH) + "的工资条==============");
         for (Project project : pList) {
             // 获取项目的雇佣关系
             Employ eCondition = new Employ();
@@ -190,7 +194,6 @@ public class SalaryAOImpl implements ISalaryAO {
             List<Employ> eList = employBO.queryEmployList(eCondition);
 
             // 若当前时间是工资条生成时间,形成工资条
-            Calendar calendar = Calendar.getInstance();
             int day = calendar.get(Calendar.DAY_OF_MONTH);
             if (day == StringValidater
                 .toInteger(project.getSalaryCreateDatetime())) {
@@ -213,8 +216,6 @@ public class SalaryAOImpl implements ISalaryAO {
                     data.setStaffCode(employ.getStaffCode());
                     data.setMonth(calendar.get(Calendar.YEAR) + "/"
                             + calendar.get(Calendar.MONTH));
-                    data.setShouldAmount(employ.getSalary());
-
                     data.setCreateDatetime(date);
                     data.setStatus(ESalaryStatus.To_Approve.getCode());
 
@@ -230,10 +231,12 @@ public class SalaryAOImpl implements ISalaryAO {
                     List<Attendance> aList = attendanceBO
                         .queryAttendanceList(aCondition);
 
+                    if (CollectionUtils.isEmpty(aList)) {
+                        break;
+                    }
                     // 计算上月迟到和早退小时
                     int early = 0;
                     int delay = 0;
-                    long cutAmount = 0L;
 
                     for (Attendance attendance : aList) {
                         // 迟到
@@ -243,20 +246,18 @@ public class SalaryAOImpl implements ISalaryAO {
 
                         if (attendance.getStartDatetime() != null && isNormal) {
                             // 计算
-                            early += 1;
-                            cutAmount += employ.getCutAmount() * DateUtil
-                                .getHours(attendance.getStartDatetime(),
-                                    project.getAttendanceStarttime());
+                            early += DateUtil.getHours(
+                                attendance.getStartDatetime(),
+                                project.getAttendanceStarttime());
                         }
 
                         // 早退
                         isNormal = DateUtil.compare(attendance.getEndDatetime(),
                             project.getAttendanceEndtime());
                         if (attendance.getEndDatetime() != null && !isNormal) {
-                            early += 1;
-                            cutAmount += employ.getCutAmount() * DateUtil
-                                .getHours(attendance.getEndDatetime(),
-                                    project.getAttendanceEndtime());
+                            early += DateUtil.getHours(
+                                attendance.getEndDatetime(),
+                                project.getAttendanceEndtime());
                         }
                         // 修改考勤状态
                         attendance.setStatus(EAttendanceStatus.Paied.getCode());
@@ -269,17 +270,25 @@ public class SalaryAOImpl implements ISalaryAO {
                     if (employ.getLeavingDays() != null) {
                         leavingDays = employ.getLeavingDays();
                     }
+
+                    Long cutAmount = AmountUtil.mul(employ.getCutAmount(),
+                        (early + delay));
+
                     Long leavingCut = AmountUtil.mul(
                         employ.getSalary() / DateUtil.getMonthDays(),
                         employ.getLeavingDays());
 
-                    data.setCutAmount(cutAmount + leavingCut);
+                    data.setCutAmount1(cutAmount + leavingCut);
                     data.setCutNote("本月迟到：" + early + "天，早退：" + delay + "天，请假："
                             + leavingDays + "天，共计扣款："
-                            + data.getCutAmount() / 1000 + "元");
+                            + data.getCutAmount1() / 1000 + "元");
                     data.setLeavingDays(leavingDays);
+
+                    // 获取上工天数，计算工资
+                    data.setShouldAmount(
+                        AmountUtil.mul(employ.getSalary(), aList.size()));
                     data.setFactAmount(
-                        employ.getSalary() - data.getCutAmount());
+                        data.getShouldAmount() - data.getCutAmount1());
                     data.setSupplyAmount(0L);
                     salaryBO.saveSalary(data);
 

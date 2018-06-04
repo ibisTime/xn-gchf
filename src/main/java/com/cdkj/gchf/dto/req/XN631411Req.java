@@ -54,6 +54,10 @@ public class XN631411Req {
     @NotBlank(message = "证件有效开始时间不能为空")
     private String idStartDate;
 
+    // 免冠照片
+    @NotBlank(message = "免冠照片不能为空")
+    private String pic1;
+
     // （必填）特征值
     @NotBlank(message = "特征值不能为空")
     private String feat;
@@ -152,6 +156,14 @@ public class XN631411Req {
 
     public void setSex(String sex) {
         this.sex = sex;
+    }
+
+    public String getPic1() {
+        return pic1;
+    }
+
+    public void setPic1(String pic1) {
+        this.pic1 = pic1;
     }
 
 }

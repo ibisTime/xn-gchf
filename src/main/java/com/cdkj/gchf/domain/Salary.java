@@ -47,7 +47,13 @@ public class Salary extends ABaseDO {
     private Long supplyAmount;
 
     // 扣款金额
-    private Long cutAmount;
+    private Long cutAmount1;
+
+    // 扣减金额
+    private Long cutAmount2;
+
+    // 奖励金额
+    private Long awardAmount;
 
     // 扣款说明
     private String cutNote;
@@ -226,12 +232,20 @@ public class Salary extends ABaseDO {
         this.payAmount = payAmount;
     }
 
-    public Long getCutAmount() {
-        return cutAmount;
+    public Long getCutAmount1() {
+        return cutAmount1;
     }
 
-    public void setCutAmount(Long cutAmount) {
-        this.cutAmount = cutAmount;
+    public Long getCutAmount2() {
+        return cutAmount2;
+    }
+
+    public void setCutAmount1(Long cutAmount1) {
+        this.cutAmount1 = cutAmount1;
+    }
+
+    public void setCutAmount2(Long cutAmount2) {
+        this.cutAmount2 = cutAmount2;
     }
 
     public Long getTax() {
@@ -368,6 +382,14 @@ public class Salary extends ABaseDO {
 
     public void setBankcardNumber(String bankcardNumber) {
         this.bankcardNumber = bankcardNumber;
+    }
+
+    public Long getAwardAmount() {
+        return awardAmount;
+    }
+
+    public void setAwardAmount(Long awardAmount) {
+        this.awardAmount = awardAmount;
     }
 
 }

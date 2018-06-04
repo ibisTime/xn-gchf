@@ -13,9 +13,11 @@
 		<result column="should_amount" property="shouldAmount" />
 		<result column="fact_amount" property="factAmount" />
 		<result column="pay_amount" property="payAmount" />
-		<result column="cut_amount" property="cutAmount" />
-		<result column="supply_amount" property="supplyAmount" />
+		<result column="cut_amount1" property="cutAmount1" />
+		<result column="cut_amount2" property="cutAmount2" />
+		<result column="award_amount" property="awardAmount" />
 		
+		<result column="supply_amount" property="supplyAmount" />
 		<result column="cut_note" property="cutNote" />
 		<result column="tax" property="tax" />
 		<result column="delay_days" property="delayDays" />
@@ -90,7 +92,9 @@
 		,t.should_amount
 		,t.fact_amount
 		,t.pay_amount
-		,t.cut_amount
+		,t.cut_amount1
+		,t.cut_amount2
+		,t.award_amount
 		
 		,t.supply_amount
 		,t.cut_note
@@ -135,7 +139,8 @@
 		,month
 		,should_amount
 		,fact_amount
-		,cut_amount
+		,cut_amount1
+		,cut_amount2
 		,cut_note
 		,delay_days
 		,early_days
@@ -152,7 +157,8 @@
 		,#{month}
 		,#{shouldAmount}
 		,#{factAmount}
-		,#{cutAmount}
+		,#{cutAmount1}
+		,#{cutAmount2}
 		,#{cutNote}
 		,#{delayDays}
 		,#{earlyDays}
@@ -166,7 +172,9 @@
 		UPDATE thf_salary
 		SET
 		fact_amount = #{factAmount}
-		,cut_amount = #{cutAmount}
+		,cut_amount1 = #{cutAmount1}
+		,cut_amount2 = #{cutAmount2}
+		,award_amount = #{awardAmount}
 		,cut_note = #{cutNote}
 		,tax = #{tax}
 		,delay_days = #{delayDays}

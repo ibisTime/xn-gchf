@@ -4,7 +4,7 @@
 <mapper namespace="com.cdkj.gchf.dao.IStaffDAO">
 	<resultMap id="staff_DB_Result" type="staff">
 		<result column="code" property="code" />
-		<result column="company_code" property="companyCode" />
+		<result column="department_code" property="departmentCode" />
 		<result column="name" property="name" />
 		<result column="mobile" property="mobile" />
 		
@@ -37,8 +37,8 @@
 			<if test="code != null and code != '' ">
 				AND t.code = #{code}
 			</if>
-			<if test="companyCode != null and companyCode != '' ">
-				AND t.company_code = #{companyCode}
+			<if test="departmentCode != null and departmentCode != '' ">
+				AND t.department_code = #{departmentCode}
 			</if>
 			<if test="idNo != null and idNo != '' ">
 				AND t.id_no = #{idNo}
@@ -62,7 +62,7 @@
 	<select id="select_staff" parameterType="staff" resultMap="staff_DB_Result">
 		SELECT
 		t.code
-		,t.company_code
+		,t.department_code
 		,t.name
 		,t.mobile
 		
@@ -107,7 +107,7 @@
 		INSERT INTO
 		thf_staff(
 		code
-		,company_code
+		,department_code
 		,name
 		,mobile
 		
@@ -134,7 +134,7 @@
 		)
 		VALUES(
 		#{code}
-		,#{companyCode}
+		,#{departmentCode}
 		,#{name}
 		,#{mobile}
 		

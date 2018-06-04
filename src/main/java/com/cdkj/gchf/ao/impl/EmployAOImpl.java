@@ -147,7 +147,7 @@ public class EmployAOImpl implements IEmployAO {
                 / DateUtil.getMonthDays() * DateUtil.getRemainDays()
                 + report.getNextMonthSalary();
         report.setNextMonthSalary(nextMonthSalary);
-        report.setStaffOn(report.getStaffIn() + 1);
+        report.setStaffOn(report.getStaffOn() + 1);
         report.setStaffIn(report.getStaffIn() + 1);
         reportBO.staffIn(report);
 
@@ -169,8 +169,8 @@ public class EmployAOImpl implements IEmployAO {
         attendanceBO.saveAttendance(attendance);
         staffLogBO.saveStaffLog(data, staff.getName(), project.getCompanyCode(),
             project.getCode(), project.getName());
-        staff.setSalaryStatus(EStaffSalaryStatus.Normal.getCode());
-        staffBO.refreshSalaryStatus(staff);
+        // staff.setSalaryStatus(EStaffSalaryStatus.Normal.getCode());
+        // staffBO.refreshSalaryStatus(staff);
         return code;
     }
 
@@ -208,7 +208,6 @@ public class EmployAOImpl implements IEmployAO {
         double leadingDays = data.getLeavingDays()
                 + DateUtil.getDays(project.getAttendanceStarttime(),
                     project.getAttendanceEndtime(), start, end);
-        data.setLeavingDays(leadingDays);
 
         // 累积请假天数
         data.setTotalLeavingDays(data.getTotalLeavingDays() + leadingDays);
@@ -269,8 +268,6 @@ public class EmployAOImpl implements IEmployAO {
     @Override
     public Paginable<Employ> queryEmployPage(int start, int limit,
             Employ condition) {
-        System.out.println(
-            condition.getStaffCode() + "," + condition.getProjectCodeList());
         Paginable<Employ> page = employBO.getPaginable(start, limit, condition);
         List<Employ> list = page.getList();
         for (Employ employ : list) {
@@ -323,14 +320,28 @@ public class EmployAOImpl implements IEmployAO {
         Employ eCondition = new Employ();
         eCondition.setStatus(EEmploytatus.Not_Leave.getCode());
         List<Employ> eList = employBO.queryEmployList(eCondition);
+        Project project = null;
         for (Employ employ : eList) {
             String status = EEmploytatus.Work.getCode();
+            project = projectBO.getProject(employ.getCode());
             // 今天是否请假
             if (employ.getStartDatetime() != null
                     && employ.getEndDatetime() != null) {
                 if (DateUtil.isIn(employ.getStartDatetime(),
                     employ.getEndDatetime())) {
                     status = EEmploytatus.Hoilday.getCode();
+                    // 请假时间是否跨月
+                    Date endDatetime = employ.getEndDatetime();
+                    if (DateUtil.isIn(employ.getStartDatetime(),
+                        DateUtil.getLastDay(), employ.getEndDatetime())) {
+                        endDatetime = DateUtil.getLastDay();
+                    }
+                    // 计算请假时间
+                    double leadingDays = employ.getLeavingDays()
+                            + DateUtil.getDays(project.getAttendanceStarttime(),
+                                project.getAttendanceEndtime(),
+                                employ.getStartDatetime(), endDatetime);
+                    employ.setLeavingDays(leadingDays);
                 }
             }
             employ.setStatus(status);

@@ -102,7 +102,7 @@
 	<update id="update_staff_in" parameterType="report">
 		UPDATE thf_report
 		SET
-		staff_in = staff_in
+		staff_in = #{staffIn}
 		,staff_on = #{staffOn}
 		,next_month_salary = #{nextMonthSalary}
 		WHERE code = #{code}

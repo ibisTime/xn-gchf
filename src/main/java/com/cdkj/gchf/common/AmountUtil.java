@@ -35,4 +35,7 @@ public class AmountUtil {
         return Long.valueOf(CalculationUtil.multDown(amountString));
     }
 
+    public static void main(String[] args) {
+        System.out.println(AmountUtil.mul(1000L, 2.0));
+    }
 }

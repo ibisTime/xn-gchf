@@ -1,5 +1,6 @@
 package com.cdkj.gchf.bo.impl;
 
+import java.util.Date;
 import java.util.List;
 
 import org.apache.commons.lang3.StringUtils;
@@ -73,5 +74,16 @@ public class StaffBOImpl extends PaginableBOImpl<Staff> implements IStaffBO {
     @Override
     public void refreshSalaryStatus(Staff data) {
         staffDAO.updateSalaryStatus(data);
+    }
+
+    @Override
+    public void doDepartmentCode(Staff data, String departmentCode,
+            String updater, String remark) {
+        data.setDepartmentCode(departmentCode);
+        data.setUpdater(updater);
+        Date date = new Date();
+        data.setUpdateDatetime(date);
+        data.setRemark(remark);
+        staffDAO.doDepartmentCode(data);
     }
 }

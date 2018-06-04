@@ -42,4 +42,8 @@ public interface IStaffAO {
     // 根据身份证号获取员工信息
     public Staff getStaffByIdNo(String idNo, List<String> projetCodeList);
 
+    // 修改设置部门
+    public void doDepartmentCode(String code, String departmentCode,
+            String updater, String remark);
+
 }

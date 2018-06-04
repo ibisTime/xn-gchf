@@ -1,6 +1,5 @@
 package com.cdkj.gchf.bo.impl;
 
-import java.util.Date;
 import java.util.List;
 
 import org.apache.commons.lang3.StringUtils;
@@ -9,10 +8,8 @@ import org.springframework.stereotype.Component;
 
 import com.cdkj.gchf.bo.ISalaryBO;
 import com.cdkj.gchf.bo.base.PaginableBOImpl;
-import com.cdkj.gchf.core.OrderNoGenerater;
 import com.cdkj.gchf.dao.ISalaryDAO;
 import com.cdkj.gchf.domain.Salary;
-import com.cdkj.gchf.enums.EGeneratePrefix;
 import com.cdkj.gchf.enums.ESalaryStatus;
 import com.cdkj.gchf.exception.BizException;
 
@@ -59,38 +56,6 @@ public class SalaryBOImpl extends PaginableBOImpl<Salary> implements ISalaryBO {
     public void payAmount(Salary salary) {
         salaryDAO.payAmount(salary);
 
-    }
-
-    @Override
-    public void saveNewSalay(Salary salary, String mCode, Long payAmount) {
-        Salary data = new Salary();
-        String code = OrderNoGenerater
-            .generate(EGeneratePrefix.Salary.getCode());
-        data.setCode(code);
-        data.setMessageCode(mCode);
-        data.setStaffCode(salary.getStaffCode());
-
-        data.setProjectCode(salary.getProjectCode());
-        data.setProjectName(salary.getProjectName());
-        data.setMonth(salary.getMonth());
-        data.setShouldAmount(salary.getFactAmount() - payAmount);
-        data.setFactAmount(salary.getFactAmount() - payAmount);
-
-        data.setCutAmount(0L);
-        data.setTax(0L);
-        data.setDelayDays(0);
-        data.setEarlyDays(0);
-
-        data.setLeavingDays(0.0);
-        data.setCreateDatetime(new Date());
-        data.setApproveUser(salary.getApproveUser());
-        data.setApproveDatetime(salary.getApproveDatetime());
-        data.setApproveNote(salary.getApproveNote());
-
-        data.setStatus(ESalaryStatus.Pay_Portion.getCode());
-        data.setRemark(salary.getRemark());
-        data.setLatePayDatetime(salary.getLatePayDatetime());
-        salaryDAO.insert(data);
     }
 
     @Override

@@ -199,7 +199,6 @@
 		status = #{status}
 		,start_datetime = #{startDatetime}
 		,end_datetime = #{endDatetime}
-		,leaving_days = #{leavingDays}
 		,total_leaving_days = #{totalLeavingDays}
 		,updater = #{updater}
 		,update_datetime = #{updateDatetime}
@@ -222,6 +221,7 @@
 		UPDATE thf_employ
 		SET
 		status = #{status}
+		,leaving_days = #{leavingDays}
 		WHERE code = #{code}
 	</update>
 	

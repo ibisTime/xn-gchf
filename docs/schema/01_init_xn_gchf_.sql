@@ -159,10 +159,10 @@ CREATE TABLE `thf_message` (
   `subbranch` text COMMENT '开户行',
   `bankcard_number` varchar(64) DEFAULT NULL COMMENT '银行卡号',
   `month` varchar(32) DEFAULT NULL COMMENT '工资所属月份',
-  `total_amount` bigint(20) DEFAULT NULL COMMENT '本月累计发薪',
-  `number` int(11) DEFAULT NULL COMMENT '领薪人数',
-  `total_cut_amount` bigint(20) DEFAULT NULL COMMENT '本月累计扣款',
-  `total_tax` bigint(20) DEFAULT NULL COMMENT '本月累计税费',
+  `total_amount` bigint(20) DEFAULT '0' COMMENT '本月累计发薪',
+  `number` int(11) DEFAULT '0' COMMENT '领薪人数',
+  `total_cut_amount` bigint(20) DEFAULT '0' COMMENT '本月累计扣款',
+  `total_tax` bigint(20) DEFAULT '0' COMMENT '本月累计税费',
   `title` text COMMENT '标题',
   `content` text COMMENT '消息内容',
   `create_datetime` datetime DEFAULT NULL COMMENT '创建时间',
@@ -236,18 +236,19 @@ CREATE TABLE `thf_report` (
   `code` varchar(32) NOT NULL COMMENT '编号',
   `project_code` varchar(32) DEFAULT NULL COMMENT '项目编号',
   `project_name` varchar(255) DEFAULT NULL COMMENT '项目名称',
-  `today_days` int(11) DEFAULT NULL COMMENT '今日上工人数',
-  `last_month_salary` bigint(20) DEFAULT NULL COMMENT '上月实际发薪金额',
-  `next_month_salary` bigint(20) DEFAULT NULL COMMENT '下月预计发薪金额',
-  `total_salary` bigint(20) DEFAULT NULL COMMENT '累计发薪金额',
-  `staff_on` bigint(11) DEFAULT NULL COMMENT '目前在职人数',
-  `staff_in` bigint(11) DEFAULT NULL COMMENT '累计入职人数',
-  `staff_out` bigint(11) DEFAULT NULL COMMENT '累计离职人数',
-  `leaving_days` int(11) DEFAULT NULL COMMENT '累计请假人次',
-  `working_days` int(11) DEFAULT NULL COMMENT '累计出工人次',
+  `today_days` int(11) DEFAULT '0' COMMENT '今日上工人数',
+  `last_month_salary` bigint(20) DEFAULT '0' COMMENT '上月实际发薪金额',
+  `next_month_salary` bigint(20) DEFAULT '0' COMMENT '下月预计发薪金额',
+  `total_salary` bigint(20) DEFAULT '0' COMMENT '累计发薪金额',
+  `staff_on` bigint(11) DEFAULT '0' COMMENT '目前在职人数',
+  `staff_in` bigint(11) DEFAULT '0' COMMENT '累计入职人数',
+  `staff_out` bigint(11) DEFAULT '0' COMMENT '累计离职人数',
+  `leaving_days` int(11) DEFAULT '0' COMMENT '累计请假人次',
+  `working_days` int(11) DEFAULT '0' COMMENT '累计出工人次',
   `remark` text COMMENT '备注',
   PRIMARY KEY (`code`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
 
 DROP TABLE IF EXISTS  `thf_salary`;
 CREATE TABLE `thf_salary` (

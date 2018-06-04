@@ -21,8 +21,8 @@ public class Staff extends ABaseDO {
     // 姓名
     private String name;
 
-    // 公司编号
-    private String companyCode;
+    // 部门编号
+    private String departmentCode;
 
     // 手机号
     private String mobile;
@@ -83,9 +83,6 @@ public class Staff extends ABaseDO {
 
     // 紧急联系人电话
     private String contactsMobile;
-
-    // 部门编号
-    private String departmentCode;
 
     // ***************db***********
     // 关键字模糊查询
@@ -277,14 +274,6 @@ public class Staff extends ABaseDO {
 
     public void setBankCard(BankCard bankCard) {
         this.bankCard = bankCard;
-    }
-
-    public String getCompanyCode() {
-        return companyCode;
-    }
-
-    public void setCompanyCode(String companyCode) {
-        this.companyCode = companyCode;
     }
 
     public List<String> getProjectCodeList() {

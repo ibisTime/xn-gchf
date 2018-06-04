@@ -19,8 +19,6 @@ public interface ISalaryBO extends IPaginableBO<Salary> {
 
     public void payAmount(Salary salary);
 
-    public void saveNewSalay(Salary salary, String mCode, Long payAmount);
-
     public List<Salary> getSalaryByStaff(String staffCode, String projectCode);
 
     public Salary querySalayByStatus(String projectCode, String staffCode,

@@ -29,6 +29,7 @@ public class XN631413Req {
     private String pict3;
 
     // （必填）更新人
+    @NotBlank(message = "更新人不能为空")
     private String updater;
 
     // （必填）银行别称

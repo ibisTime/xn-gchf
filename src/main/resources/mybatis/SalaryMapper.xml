@@ -10,15 +10,17 @@
 		<result column="project_name" property="projectName" />
 		
 		<result column="month" property="month" />
+		<result column="month_days" property="monthDays" />
 		<result column="should_amount" property="shouldAmount" />
 		<result column="fact_amount" property="factAmount" />
 		<result column="pay_amount" property="payAmount" />
+		
 		<result column="cut_amount1" property="cutAmount1" />
 		<result column="cut_amount2" property="cutAmount2" />
 		<result column="award_amount" property="awardAmount" />
-		
 		<result column="supply_amount" property="supplyAmount" />
 		<result column="cut_note" property="cutNote" />
+		
 		<result column="tax" property="tax" />
 		<result column="delay_days" property="delayDays" />
 		<result column="early_days" property="earlyDays" />
@@ -89,6 +91,7 @@
 		,t.project_name
 		
 		,t.month
+		,t.month_days
 		,t.should_amount
 		,t.fact_amount
 		,t.pay_amount
@@ -136,16 +139,19 @@
 		,staff_code
 		,project_code
 		,project_name
+		
 		,month
 		,should_amount
 		,fact_amount
 		,cut_amount1
 		,cut_amount2
+		
 		,cut_note
 		,delay_days
 		,early_days
 		,leaving_days
 		,create_datetime
+		
 		,status
 		)
 		VALUES(
@@ -154,14 +160,18 @@
 		,#{staffCode}
 		,#{projectCode}
 		,#{projectName}
+		
 		,#{month}
+		,#{monthDays}
 		,#{shouldAmount}
 		,#{factAmount}
 		,#{cutAmount1}
+		
 		,#{cutAmount2}
 		,#{cutNote}
 		,#{delayDays}
 		,#{earlyDays}
+		
 		,#{leavingDays}
 		,#{createDatetime}
 		,#{status}

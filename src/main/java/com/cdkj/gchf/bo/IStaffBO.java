@@ -25,4 +25,6 @@ public interface IStaffBO extends IPaginableBO<Staff> {
 
     public void doDepartmentCode(Staff data, String departmentCode,
             String updater, String remark);
+
+    public void allotDepartment(Staff staff);
 }

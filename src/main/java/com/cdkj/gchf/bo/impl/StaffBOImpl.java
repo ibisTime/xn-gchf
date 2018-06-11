@@ -86,4 +86,9 @@ public class StaffBOImpl extends PaginableBOImpl<Staff> implements IStaffBO {
         data.setRemark(remark);
         staffDAO.doDepartmentCode(data);
     }
+
+    @Override
+    public void allotDepartment(Staff data) {
+        staffDAO.allotDepartment(data);
+    }
 }

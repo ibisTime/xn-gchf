@@ -90,11 +90,9 @@ public class EmployAOImpl implements IEmployAO {
         data.setPosition(req.getPosition());
         data.setSalary(StringValidater.toLong(req.getSalary()));
         data.setCutAmount(StringValidater.toLong(req.getCutAmount()));
-        userBO.getUser(req.getUpUser());
-        data.setUpUser(req.getUpUser());
-
         data.setJoinDatetime(DateUtil.strToDate(req.getJoinDatetime(),
             DateUtil.FRONT_DATE_FORMAT_STRING));
+
         data.setStatus(EEmploytatus.Work.getCode());
         data.setSalaryStatus(EStaffSalaryStatus.Normal.getCode());
         data.setUpdater(req.getUpdater());
@@ -143,9 +141,8 @@ public class EmployAOImpl implements IEmployAO {
         // 计入累积入职
         Report report = reportBO.getReportByProject(project.getCode());
 
-        Long nextMonthSalary = StringValidater.toLong(req.getSalary())
-                / DateUtil.getMonthDays() * DateUtil.getRemainDays()
-                + report.getNextMonthSalary();
+        Long nextMonthSalary = AmountUtil.mul(data.getSalary(),
+            DateUtil.getMonthDays()) + report.getNextMonthSalary();
         report.setNextMonthSalary(nextMonthSalary);
         report.setStaffOn(report.getStaffOn() + 1);
         report.setStaffIn(report.getStaffIn() + 1);
@@ -169,14 +166,14 @@ public class EmployAOImpl implements IEmployAO {
         attendanceBO.saveAttendance(attendance);
         staffLogBO.saveStaffLog(data, staff.getName(), project.getCompanyCode(),
             project.getCode(), project.getName());
-        // staff.setSalaryStatus(EStaffSalaryStatus.Normal.getCode());
-        // staffBO.refreshSalaryStatus(staff);
+        // 为员工添加部门
+        staff.setDepartmentCode(req.getDepartmentCode());
+        staffBO.allotDepartment(staff);
         return code;
     }
 
     @Override
     public void toHoliday(XN631461Req req) {
-
         Employ data = employBO.getEmployByStaff(req.getStaffCode(),
             req.getProjectCode());
         if (EEmploytatus.Work.getCode().equals(data.getStatus())) {
@@ -244,9 +241,8 @@ public class EmployAOImpl implements IEmployAO {
         reportBO.refreshStaffOn(report);
 
         // 修改下月预发工资
-        long daySalay = data.getSalary() / DateUtil.getMonthDays();
         report.setNextMonthSalary(report.getNextMonthSalary()
-                - AmountUtil.mul(daySalay, data.getLeavingDays()));
+                - AmountUtil.mul(data.getSalary(), DateUtil.getMonthDays()));
         reportBO.refreshNextMonthSalary(report);
 
         Project project = projectBO.getProject(data.getProjectCode());
@@ -273,6 +269,7 @@ public class EmployAOImpl implements IEmployAO {
         for (Employ employ : list) {
             Staff staff = staffBO.getStaff(employ.getStaffCode());
             employ.setStaff(staff);
+
             employ.setUpUserName(getName(employ.getUpUser()));
             employ.setUpdateName(getName(employ.getUpdater()));
         }

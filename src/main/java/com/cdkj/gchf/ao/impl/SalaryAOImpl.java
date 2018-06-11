@@ -19,6 +19,7 @@ import com.cdkj.gchf.bo.IMessageBO;
 import com.cdkj.gchf.bo.IProjectBO;
 import com.cdkj.gchf.bo.ISalaryBO;
 import com.cdkj.gchf.bo.IStaffBO;
+import com.cdkj.gchf.bo.IUserBO;
 import com.cdkj.gchf.bo.base.Paginable;
 import com.cdkj.gchf.common.AmountUtil;
 import com.cdkj.gchf.common.DateUtil;
@@ -32,12 +33,14 @@ import com.cdkj.gchf.domain.Message;
 import com.cdkj.gchf.domain.Project;
 import com.cdkj.gchf.domain.Salary;
 import com.cdkj.gchf.domain.Staff;
+import com.cdkj.gchf.domain.User;
 import com.cdkj.gchf.dto.req.XN631442Req;
 import com.cdkj.gchf.enums.EAttendanceStatus;
 import com.cdkj.gchf.enums.EBoolean;
 import com.cdkj.gchf.enums.EGeneratePrefix;
 import com.cdkj.gchf.enums.EMessageStatus;
 import com.cdkj.gchf.enums.ESalaryStatus;
+import com.cdkj.gchf.enums.EUser;
 import com.cdkj.gchf.exception.BizException;
 
 @Service
@@ -69,6 +72,9 @@ public class SalaryAOImpl implements ISalaryAO {
 
     @Autowired
     IMessageLogAO messageLogAO;
+
+    @Autowired
+    IUserBO userBO;
 
     @Override
     public void editSalary(XN631442Req req) {
@@ -133,10 +139,15 @@ public class SalaryAOImpl implements ISalaryAO {
             Salary condition) {
         Paginable<Salary> page = salaryBO.getPaginable(start, limit, condition);
         Staff staff = null;
+        Employ employ = null;
+
         for (Salary salary : page.getList()) {
             staff = staffBO.getStaff(salary.getStaffCode());
             salary.setStaffName(staff.getName());
             salary.setStaffMobile(staff.getMobile());
+            employ = employBO.getEmployByStaff(salary.getStaffCode(),
+                salary.getProjectCode());
+            salary.setUpUserName(getName(employ.getUpUser()));
         }
         return page;
     }
@@ -148,7 +159,7 @@ public class SalaryAOImpl implements ISalaryAO {
         BankCard bankCard = null;
         CompanyCard companyCard = null;
         Staff staff = null;
-
+        Employ employ = null;
         for (Salary salary : list) {
             bankCard = bankCardBO.getBankCardByStaff(salary.getStaffCode());
             salary.setBankCard(bankCard);
@@ -156,8 +167,12 @@ public class SalaryAOImpl implements ISalaryAO {
                 .getCompanyCardByProject(salary.getProjectCode());
             salary.setCompanyCard(companyCard);
             staff = staffBO.getStaff(salary.getStaffCode());
+
             salary.setStaffName(staff.getName());
             salary.setStaffMobile(staff.getMobile());
+            employ = employBO.getEmployByStaff(salary.getStaffCode(),
+                salary.getProjectCode());
+            salary.setUpUserName(getName(employ.getUpUser()));
         }
         return list;
     }
@@ -174,6 +189,9 @@ public class SalaryAOImpl implements ISalaryAO {
         Staff staff = staffBO.getStaff(data.getStaffCode());
         data.setStaffName(staff.getName());
         data.setStaffMobile(staff.getMobile());
+        Employ employ = employBO.getEmployByStaff(data.getStaffCode(),
+            data.getProjectCode());
+        data.setUpUserName(getName(employ.getUpUser()));
         return data;
     }
 
@@ -210,12 +228,15 @@ public class SalaryAOImpl implements ISalaryAO {
                         .generate(EGeneratePrefix.Salary.getCode());
                     data.setCode(code);
                     data.setMessageCode(mCode);
-
                     data.setProjectCode(project.getCode());
+
                     data.setProjectName(project.getName());
                     data.setStaffCode(employ.getStaffCode());
                     data.setMonth(calendar.get(Calendar.YEAR) + "/"
                             + calendar.get(Calendar.MONTH));
+                    data.setMonthDays(DateUtil
+                        .getMonthDays(calendar.get(Calendar.MONTH) - 1));
+
                     data.setCreateDatetime(date);
                     data.setStatus(ESalaryStatus.To_Approve.getCode());
 
@@ -274,13 +295,12 @@ public class SalaryAOImpl implements ISalaryAO {
                     Long cutAmount = AmountUtil.mul(employ.getCutAmount(),
                         (early + delay));
 
-                    Long leavingCut = AmountUtil.mul(
-                        employ.getSalary() / DateUtil.getMonthDays(),
+                    Long leavingCut = AmountUtil.mul(employ.getSalary(),
                         employ.getLeavingDays());
 
                     data.setCutAmount1(cutAmount + leavingCut);
-                    data.setCutNote("本月迟到：" + early + "天，早退：" + delay + "天，请假："
-                            + leavingDays + "天，共计扣款："
+                    data.setCutNote("本月共迟到：" + early + "小时，早退：" + delay
+                            + "小时，请假：" + leavingDays + "天，总计扣款："
                             + data.getCutAmount1() / 1000 + "元");
                     data.setLeavingDays(leavingDays);
 
@@ -326,7 +346,18 @@ public class SalaryAOImpl implements ISalaryAO {
                 messageBO.saveMessage(message);
             }
         }
-
     }
 
+    private String getName(String userId) {
+        User user = userBO.getUserName(userId);
+        String name = null;
+        if (user != null) {
+            name = EUser.ADMIN.getCode();
+            if (!EUser.ADMIN.getCode().equals(user.getLoginName())) {
+                name = user.getRealName();
+            }
+        }
+        return name;
+
+    }
 }

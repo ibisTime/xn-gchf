@@ -30,9 +30,8 @@ public class XN631460Req {
     @NotBlank(message = "薪酬不能为空")
     private String salary;
 
-    // （必填）上级
-    @NotBlank(message = "上级不能为空")
-    private String upUser;
+    // （必填）所属部门
+    private String departmentCode;
 
     // （必填）入职时间
     @NotBlank(message = "入职时间不能为空")
@@ -97,12 +96,12 @@ public class XN631460Req {
         this.salary = salary;
     }
 
-    public String getUpUser() {
-        return upUser;
+    public String getDepartmentCode() {
+        return departmentCode;
     }
 
-    public void setUpUser(String upUser) {
-        this.upUser = upUser;
+    public void setDepartmentCode(String departmentCode) {
+        this.departmentCode = departmentCode;
     }
 
     public String getJoinDatetime() {

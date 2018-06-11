@@ -34,6 +34,9 @@ public class Salary extends ABaseDO {
     // 所属月份
     private String month;
 
+    // 本月天数
+    private Integer monthDays;
+
     // 应发工资
     private Long shouldAmount;
 
@@ -119,6 +122,9 @@ public class Salary extends ABaseDO {
 
     // 项目编号List
     private List<String> projectCodeList;
+
+    // 隶属上级
+    private String upUserName;
 
     public void setCode(String code) {
         this.code = code;
@@ -390,6 +396,22 @@ public class Salary extends ABaseDO {
 
     public void setAwardAmount(Long awardAmount) {
         this.awardAmount = awardAmount;
+    }
+
+    public Integer getMonthDays() {
+        return monthDays;
+    }
+
+    public void setMonthDays(Integer monthDays) {
+        this.monthDays = monthDays;
+    }
+
+    public String getUpUserName() {
+        return upUserName;
+    }
+
+    public void setUpUserName(String upUserName) {
+        this.upUserName = upUserName;
     }
 
 }

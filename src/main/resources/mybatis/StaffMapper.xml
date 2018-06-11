@@ -4,8 +4,8 @@
 <mapper namespace="com.cdkj.gchf.dao.IStaffDAO">
 	<resultMap id="staff_DB_Result" type="staff">
 		<result column="code" property="code" />
-		<result column="department_code" property="departmentCode" />
-		<result column="name" property="name" />
+<!-- 		<result column="department_code" property="departmentCode" />
+ -->		<result column="name" property="name" />
 		<result column="mobile" property="mobile" />
 		
 		<result column="id_type" property="idType" />
@@ -37,9 +37,9 @@
 			<if test="code != null and code != '' ">
 				AND t.code = #{code}
 			</if>
-			<if test="departmentCode != null and departmentCode != '' ">
+			<!-- <if test="departmentCode != null and departmentCode != '' ">
 				AND t.department_code = #{departmentCode}
-			</if>
+			</if> -->
 			<if test="idNo != null and idNo != '' ">
 				AND t.id_no = #{idNo}
 			</if>
@@ -62,7 +62,6 @@
 	<select id="select_staff" parameterType="staff" resultMap="staff_DB_Result">
 		SELECT
 		t.code
-		,t.department_code
 		,t.name
 		,t.mobile
 		
@@ -107,7 +106,6 @@
 		INSERT INTO
 		thf_staff(
 		code
-		,department_code
 		,name
 		,mobile
 		
@@ -134,7 +132,6 @@
 		)
 		VALUES(
 		#{code}
-		,#{departmentCode}
 		,#{name}
 		,#{mobile}
 		
@@ -197,5 +194,12 @@
 		salary_status = #{salaryStatus}
 		WHERE code = #{code}
 	</update>
+	
+<!-- 	<update id="allot_department" parameterType="staff">
+		UPDATE thf_staff
+		SET
+		department_code = #{departmentCode}
+		WHERE code = #{code}
+	</update> -->
 
 </mapper>

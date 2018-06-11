@@ -487,12 +487,36 @@ public class DateUtil {
         return flag;
     }
 
-    // 获取本月天数
+    /**
+      * 获取当月当前剩余天数
+      * @param month
+      * @return 
+      * @create: 2018年6月5日 上午10:04:44 nyc
+      * @history:
+      */
     public static int getMonthDays() {
+        int allDays = DateUtil.getMonthDays(Calendar.MONTH);
+        int passDays = Calendar.DAY_OF_MONTH;
+        return allDays - passDays;
+    }
+
+    /**
+     * 获取指定月份天数
+     * @param month
+     * @return 
+     * @create: 2018年6月5日 上午10:04:44 nyc
+     * @history:
+     */
+    public static int getMonthDays(int month) {
         Calendar calendar = Calendar.getInstance();
+        calendar.set(Calendar.MONTH, month);
         calendar.set(Calendar.DAY_OF_MONTH, 1);
         calendar.roll(Calendar.DAY_OF_MONTH, -1);
         return calendar.get(Calendar.DATE);
+    }
+
+    public static void main(String[] args) {
+        System.out.println(DateUtil.getMonthDays());
     }
 
 }

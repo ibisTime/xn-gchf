@@ -168,7 +168,6 @@ public class EmployAOImpl implements IEmployAO {
             project.getCode(), project.getName());
         // 为员工添加部门
         staff.setDepartmentCode(req.getDepartmentCode());
-        staffBO.allotDepartment(staff);
         return code;
     }
 

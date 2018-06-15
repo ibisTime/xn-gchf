@@ -2,208 +2,144 @@ package com.cdkj.gchf.dto.req;
 
 import org.hibernate.validator.constraints.NotBlank;
 
+/**
+ * 建档
+ * @author: nyc 
+ * @since: 2018年4月29日 下午8:37:32 
+ * @history:
+ */
 public class XN631410Req {
-    // （必填）员工编号
-    private String staffCode;
 
-    // （必填）项目编号
-    @NotBlank(message = "项目编号不能为空")
-    private String projectCode;
+    // （必填）姓名
+    @NotBlank(message = "姓名不能为空")
+    private String realName;
 
-    // （必填）证件类型
-    @NotBlank(message = "证件类型不能为空")
-    private String idType;
+    // （必填）性别
+    @NotBlank(message = "性别不能为空")
+    private String sex;
+
+    // （必填）民族
+    @NotBlank(message = "民族不能为空")
+    private String idNation;
 
     // （必填）身份证号
     @NotBlank(message = "身份证号不能为空")
     private String idNo;
 
-    // （必填）联系方式
-    @NotBlank(message = "联系方式不能为空")
-    private String mobile;
+    // （必填）身份证上头像
+    @NotBlank(message = "身份证上头像不能为空")
+    private String idPic;
 
-    // （必填）姓名
-    @NotBlank(message = "姓名不能为空")
-    private String name;
+    // （必填）出生年月日
+    @NotBlank(message = "出生年月日不能为空")
+    private String birthday;
 
-    // （必填）免冠照片
-    private String pict1;
+    // （必填）籍贯
+    @NotBlank(message = "籍贯不能为空")
+    private String idAddress;
 
-    // （必填）手持身份张照片
-    private String pict2;
+    // （必填）签发机关
+    @NotBlank(message = "签发机关不能为空")
+    private String idPolice;
 
-    // （必填）身份证正反面照片+签名
-    private String pict3;
+    // （必填）证件有效结束时间
+    @NotBlank(message = "证件有效结束时间不能为空")
+    private String idEndDate;
+
+    // （必填）证件有效开始时间
+    @NotBlank(message = "证件有效开始时间不能为空")
+    private String idStartDate;
 
     // （必填）更新人
+    @NotBlank(message = "更新人不能为空")
     private String updater;
 
-    // （必填）银行别称
-    private String bankCode;
-
-    // （必填）银行名称
-    private String bankName;
-
-    // （必填）银行卡号
-    private String bankcardNumber;
-
-    // （必填）开户行
-    private String subbranch;
-
-    // （必填）合同照片
-    private String contentPic;
-
-    // 签约时间
-    private String contractDatetime;
-
-    // 特征值
-    private String feat;
-
-    // （选填）备注
-    private String remark;
-
-    public String getIdType() {
-        return idType;
+    public String getRealName() {
+        return realName;
     }
 
-    public void setIdType(String idType) {
-        this.idType = idType;
+    public String getSex() {
+        return sex;
+    }
+
+    public String getIdNation() {
+        return idNation;
     }
 
     public String getIdNo() {
         return idNo;
     }
 
-    public void setIdNo(String idNo) {
-        this.idNo = idNo;
+    public String getIdPic() {
+        return idPic;
     }
 
-    public String getMobile() {
-        return mobile;
+    public String getBirthday() {
+        return birthday;
     }
 
-    public void setMobile(String mobile) {
-        this.mobile = mobile;
+    public String getIdAddress() {
+        return idAddress;
     }
 
-    public String getName() {
-        return name;
+    public String getIdPolice() {
+        return idPolice;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public String getIdEndDate() {
+        return idEndDate;
     }
 
-    public String getPict1() {
-        return pict1;
-    }
-
-    public void setPict1(String pict1) {
-        this.pict1 = pict1;
-    }
-
-    public String getPict2() {
-        return pict2;
-    }
-
-    public void setPict2(String pict2) {
-        this.pict2 = pict2;
-    }
-
-    public String getPict3() {
-        return pict3;
-    }
-
-    public void setPict3(String pict3) {
-        this.pict3 = pict3;
+    public String getIdStartDate() {
+        return idStartDate;
     }
 
     public String getUpdater() {
         return updater;
     }
 
+    public void setRealName(String realName) {
+        this.realName = realName;
+    }
+
+    public void setSex(String sex) {
+        this.sex = sex;
+    }
+
+    public void setIdNation(String idNation) {
+        this.idNation = idNation;
+    }
+
+    public void setIdNo(String idNo) {
+        this.idNo = idNo;
+    }
+
+    public void setIdPic(String idPic) {
+        this.idPic = idPic;
+    }
+
+    public void setBirthday(String birthday) {
+        this.birthday = birthday;
+    }
+
+    public void setIdAddress(String idAddress) {
+        this.idAddress = idAddress;
+    }
+
+    public void setIdPolice(String idPolice) {
+        this.idPolice = idPolice;
+    }
+
+    public void setIdEndDate(String idEndDate) {
+        this.idEndDate = idEndDate;
+    }
+
+    public void setIdStartDate(String idStartDate) {
+        this.idStartDate = idStartDate;
+    }
+
     public void setUpdater(String updater) {
         this.updater = updater;
-    }
-
-    public String getRemark() {
-        return remark;
-    }
-
-    public void setRemark(String remark) {
-        this.remark = remark;
-    }
-
-    public String getBankCode() {
-        return bankCode;
-    }
-
-    public void setBankCode(String bankCode) {
-        this.bankCode = bankCode;
-    }
-
-    public String getBankName() {
-        return bankName;
-    }
-
-    public void setBankName(String bankName) {
-        this.bankName = bankName;
-    }
-
-    public String getBankcardNumber() {
-        return bankcardNumber;
-    }
-
-    public void setBankcardNumber(String bankcardNumber) {
-        this.bankcardNumber = bankcardNumber;
-    }
-
-    public String getSubbranch() {
-        return subbranch;
-    }
-
-    public void setSubbranch(String subbranch) {
-        this.subbranch = subbranch;
-    }
-
-    public String getProjectCode() {
-        return projectCode;
-    }
-
-    public void setProjectCode(String projectCode) {
-        this.projectCode = projectCode;
-    }
-
-    public String getContractDatetime() {
-        return contractDatetime;
-    }
-
-    public void setContractDatetime(String contractDatetime) {
-        this.contractDatetime = contractDatetime;
-    }
-
-    public String getContentPic() {
-        return contentPic;
-    }
-
-    public void setContentPic(String contentPic) {
-        this.contentPic = contentPic;
-    }
-
-    public String getFeat() {
-        return feat;
-    }
-
-    public void setFeat(String feat) {
-        this.feat = feat;
-    }
-
-    public String getStaffCode() {
-        return staffCode;
-    }
-
-    public void setStaffCode(String staffCode) {
-        this.staffCode = staffCode;
     }
 
 }

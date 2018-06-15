@@ -67,28 +67,30 @@ public class StaffBOImpl extends PaginableBOImpl<Staff> implements IStaffBO {
     }
 
     @Override
-    public void saveStaffInfo(Staff data) {
-        staffDAO.insertStaffInfo(data);
+    public void refreshStaffInfo(Staff data) {
+        staffDAO.updateStaffInfo(data);
     }
 
     @Override
-    public void refreshSalaryStatus(Staff data) {
-        staffDAO.updateSalaryStatus(data);
-    }
-
-    @Override
-    public void doDepartmentCode(Staff data, String departmentCode,
-            String updater, String remark) {
-        data.setDepartmentCode(departmentCode);
+    public void refreshFeat(Staff data, String pict1, String feat,
+            String updater) {
+        data.setPict1(pict1);
+        data.setFeat(feat);
         data.setUpdater(updater);
         Date date = new Date();
         data.setUpdateDatetime(date);
-        data.setRemark(remark);
-        staffDAO.doDepartmentCode(data);
+
+        staffDAO.updateFeat(data);
     }
 
     @Override
-    public void allotDepartment(Staff data) {
-        staffDAO.allotDepartment(data);
+    public void refreshIdPict(Staff data) {
+        staffDAO.updateIdPict(data);
+    }
+
+    @Override
+    public void allotDepartment(Staff staff) {
+        // TODO Auto-generated method stub
+
     }
 }

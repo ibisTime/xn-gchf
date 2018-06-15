@@ -226,7 +226,6 @@ public class MessageAOImpl implements IMessageAO {
                     + StringValidater.toLong(req.getPayAmount());
             // 改变员工薪资状态
             Staff staff = staffBO.getStaff(salary.getStaffCode());
-            staffBO.refreshSalaryStatus(staff);
 
             // 发送提示短信
             List<EventRemind> erList = eventRemindBO

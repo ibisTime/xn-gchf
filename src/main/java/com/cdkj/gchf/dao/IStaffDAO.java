@@ -9,11 +9,12 @@ public interface IStaffDAO extends IBaseDAO<Staff> {
 
     void update(Staff data);
 
-    void insertStaffInfo(Staff data);
+    // 补充特征值
+    void updateFeat(Staff data);
 
-    void updateSalaryStatus(Staff data);
+    // 补充身份证照片
+    void updateIdPict(Staff data);
 
-    void doDepartmentCode(Staff data);
-
-    void allotDepartment(Staff data);
+    // 补全信息
+    void updateStaffInfo(Staff data);
 }

@@ -63,8 +63,11 @@ public class Staff extends ABaseDO {
     // 手持身份张照片
     private String pict2;
 
-    // 身份证正反面照片+签名
+    // 身份证正面照
     private String pict3;
+
+    // 身份证反面照
+    private String pict4;
 
     // 更新人
     private String updater;
@@ -158,6 +161,14 @@ public class Staff extends ABaseDO {
 
     public void setSex(String sex) {
         this.sex = sex;
+    }
+
+    public String getPict4() {
+        return pict4;
+    }
+
+    public void setPict4(String pict4) {
+        this.pict4 = pict4;
     }
 
     public String getIdNation() {

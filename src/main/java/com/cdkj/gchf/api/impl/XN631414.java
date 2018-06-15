@@ -23,8 +23,7 @@ public class XN631414 extends AProcessor {
 
     @Override
     public Object doBusiness() throws BizException {
-        staffAO.doDepartmentCode(req.getCode(), req.getDepartmentCode(),
-            req.getUpdater(), req.getRemark());
+        staffAO.editIdPict(req);
         return new Boolean(true);
     }
 

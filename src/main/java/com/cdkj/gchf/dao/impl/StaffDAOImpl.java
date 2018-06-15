@@ -51,24 +51,19 @@ public class StaffDAOImpl extends AMybatisTemplate implements IStaffDAO {
     }
 
     @Override
-    public void insertStaffInfo(Staff data) {
-        super.update(NAMESPACE.concat("insert_staff_info"), data);
-
+    public void updateFeat(Staff data) {
+        super.update(NAMESPACE.concat("update_feat"), data);
     }
 
     @Override
-    public void updateSalaryStatus(Staff data) {
-        super.update(NAMESPACE.concat("update_salary_status"), data);
+    public void updateIdPict(Staff data) {
+        super.update(NAMESPACE.concat("update_idPict"), data);
     }
 
     @Override
-    public void doDepartmentCode(Staff data) {
-        super.update(NAMESPACE.concat("update_salary_status"), data);
-    }
+    public void updateStaffInfo(Staff data) {
+        super.update(NAMESPACE.concat("update_StaffInfo"), data);
 
-    @Override
-    public void allotDepartment(Staff data) {
-        // super.update(NAMESPACE.concat("allot_department"), data);
     }
 
 }

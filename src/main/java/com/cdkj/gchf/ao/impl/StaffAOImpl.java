@@ -27,22 +27,19 @@ import com.cdkj.gchf.common.DateUtil;
 import com.cdkj.gchf.common.PhoneUtil;
 import com.cdkj.gchf.core.OrderNoGenerater;
 import com.cdkj.gchf.domain.BankCard;
-import com.cdkj.gchf.domain.Ccontract;
 import com.cdkj.gchf.domain.Employ;
-import com.cdkj.gchf.domain.Project;
 import com.cdkj.gchf.domain.Salary;
 import com.cdkj.gchf.domain.Skill;
 import com.cdkj.gchf.domain.Staff;
 import com.cdkj.gchf.domain.User;
 import com.cdkj.gchf.dto.req.XN631410Req;
-import com.cdkj.gchf.dto.req.XN631411Req;
 import com.cdkj.gchf.dto.req.XN631412Req;
 import com.cdkj.gchf.dto.req.XN631413Req;
-import com.cdkj.gchf.enums.EBankCardStatus;
+import com.cdkj.gchf.dto.req.XN631414Req;
 import com.cdkj.gchf.enums.EGeneratePrefix;
+import com.cdkj.gchf.enums.EIDKind;
 import com.cdkj.gchf.enums.ESalaryStatus;
 import com.cdkj.gchf.enums.EUser;
-import com.cdkj.gchf.exception.BizException;
 import com.google.gson.Gson;
 
 @Service
@@ -77,80 +74,53 @@ public class StaffAOImpl implements IStaffAO {
 
     @Override
     public String addStaff(XN631410Req req) {
-        PhoneUtil.checkMobile(req.getMobile());
         Date date = new Date();
-        String code = null;
-        User user = userBO.getUser(req.getUpdater());
-        Staff staff = null;
-        BankCard bankCard = new BankCard();
-        Ccontract ccontract = new Ccontract();
-
-        Project project = projectBO.getProject(req.getProjectCode());
-        // 合同信息
-        String ccontractCode = OrderNoGenerater
-            .generate(EGeneratePrefix.Ccontract.getCode());
-        ccontract.setCode(ccontractCode);
-        ccontract.setProjectName(project.getName());
-        ccontract.setProjectCode(project.getCode());
-        ccontract.setStaffMobile(req.getMobile());
-
-        ccontract.setProjectName(project.getName());
-        ccontract.setContentPic(req.getContentPic());
-        ccontract.setContractDatetime(DateUtil.strToDate(
-            req.getContractDatetime(), DateUtil.FRONT_DATE_FORMAT_STRING));
-        ccontract.setUpdater(req.getUpdater());
-
-        ccontract.setUpdateDatetime(date);
-        ccontract.setRemark(req.getRemark());
-        // 工资卡信息 ;
-        bankCard.setBankCode(req.getBankCode());
-        bankCard.setBankName(req.getBankName());
-        bankCard.setBankcardNumber(req.getBankcardNumber());
-
-        bankCard.setSubbranch(req.getSubbranch());
-        bankCard.setUpdater(req.getUpdater());
-        bankCard.setUpdateDatetime(date);
-        bankCard.setRemark(req.getRemark());
-
-        if (StringUtils.isNotBlank(req.getStaffCode())) {
-            staff = staffBO.getStaff(req.getStaffCode());
-            code = staff.getCode();
-            // 更新银行卡信息
-            bankCard = bankCardBO.getBankCardByStaff(code);
-            bankCardBO.refreshBankCard(bankCard);
-            // 添加新合同信息
-            ccontract.setStaffCode(code);
-            ccontractBO.saveCcontract(ccontract);
-            return code;
-        }
+        String code = OrderNoGenerater
+            .generate(EGeneratePrefix.Staff.getCode());
 
         Staff data = new Staff();
-        code = OrderNoGenerater.generate(EGeneratePrefix.Staff.getCode());
         data.setCode(code);
-        data.setIdType(req.getIdType());
+        data.setName(req.getRealName());
+        data.setSex(req.getSex());
+        data.setIdNation(req.getIdNation());
+
+        data.setBirthday(DateUtil.strToDate(req.getBirthday(),
+            DateUtil.DB_DATE_FORMAT_STRING));
+        data.setIdType(EIDKind.IDCard.getCode());
         data.setIdNo(req.getIdNo());
-        data.setMobile(req.getMobile());
-        data.setName(req.getName());
+        data.setIdAddress(req.getIdAddress());
+        data.setIdPic(req.getIdPic());
 
-        data.setPict1(req.getPict1());
-        data.setPict2(req.getPict2());
-        data.setPict3(req.getPict3());
-
+        data.setIdPolice(req.getIdPolice());
+        data.setIdStartDate(DateUtil.strToDate(req.getIdStartDate(),
+            DateUtil.DB_DATE_FORMAT_STRING));
+        data.setIdEndDate(DateUtil.strToDate(req.getIdEndDate(),
+            DateUtil.DB_DATE_FORMAT_STRING));
         data.setUpdater(req.getUpdater());
         data.setUpdateDatetime(date);
-        data.setRemark(req.getRemark());
-        data.setFeat(req.getFeat());
         staffBO.saveStaff(data);
-        // 添加工资卡
-        bankCard.setStaffCode(code);
-        bankCard.setStaffName(req.getName());
-        bankCardBO.addBankCard(bankCard);
-
-        // 添加新合同信息
-        ccontract.setStaffCode(code);
-        ccontractBO.saveCcontract(ccontract);
-
         return code;
+    }
+
+    @Override
+    public void editFeat(String code, String pict1, String feat,
+            String updater) {
+        Staff data = staffBO.getStaff(code);
+        staffBO.refreshFeat(data, pict1, feat, updater);
+
+    }
+
+    @Override
+    public void editIdPict(XN631414Req req) {
+        Staff data = staffBO.getStaff(req.getCode());
+        data.setPict2(req.getPict2());
+        data.setPict3(req.getPict3());
+        data.setPict4(req.getPict4());
+        data.setUpdater(req.getUpdater());
+
+        Date date = new Date();
+        data.setUpdateDatetime(date);
+        staffBO.refreshIdPict(data);
     }
 
     @Override
@@ -207,97 +177,18 @@ public class StaffAOImpl implements IStaffAO {
     }
 
     @Override
-    public String getStaffFeatList() {
-        JSONArray array = new JSONArray();
-        JSONObject obj = new JSONObject(new LinkedHashMap());
-        List<Staff> list = staffBO.getStaffFeatList();
-        for (Staff staff : list) {
-            if (StringUtils.isNotBlank(staff.getFeat())) {
-                obj.put("id", staff.getCode());
-                obj.put("name", staff.getName());
-                obj.put("feat", staff.getFeat());
-                array.add(obj);
-            }
-        }
-        return new Gson().toJson(array);
-    }
-
-    @Override
-    public String addStaff(XN631411Req req) {
-        String code = OrderNoGenerater
-            .generate(EGeneratePrefix.Staff.getCode());
-        Staff data = null;
-        if (StringUtils.isNotBlank(req.getIdNo())) {
-            data = staffBO.getStaffByIdNo(req.getIdNo());
-            if (data != null) {
-                throw new BizException("xn000000", "档案库中已有此人的资料，无需重复建档");
-            }
-        }
-        data = new Staff();
-        data.setCode(code);
-        data.setName(req.getRealName());
-        data.setSex(req.getSex());
-        data.setIdNation(req.getIdNation());
-
-        data.setBirthday(DateUtil.strToDate(req.getBirthday(),
-            DateUtil.DB_DATE_FORMAT_STRING));
-        data.setIdType(req.getIdKind());
-        data.setIdNo(req.getIdNo());
-        data.setIdAddress(req.getIdAddress());
-        data.setIdPic(req.getIdPic());
-
-        data.setPict1(req.getPic1());
-        data.setIdPolice(req.getIdPolice());
-        data.setIdStartDate(DateUtil.strToDate(req.getIdStartDate(),
-            DateUtil.DB_DATE_FORMAT_STRING));
-        data.setIdEndDate(DateUtil.strToDate(req.getIdEndDate(),
-            DateUtil.DB_DATE_FORMAT_STRING));
-        data.setFeat(req.getFeat());
-
-        staffBO.saveStaff(data);
-        return code;
-    }
-
-    @Override
-    public void addStaffInfo(XN631413Req req) {
+    public void editStaffInfo(XN631413Req req) {
         PhoneUtil.checkMobile(req.getMobile());
         PhoneUtil.checkMobile(req.getContactsMobile());
-
         Date date = new Date();
         Staff data = staffBO.getStaff(req.getCode());
-        data.setPict1(req.getPict1());
-        data.setPict2(req.getPict2());
-        data.setPict3(req.getPict3());
-
         data.setContacts(req.getContacts());
+
         data.setMobile(req.getContactsMobile());
         data.setUpdater(req.getUpdater());
         data.setUpdateDatetime(date);
-
         data.setRemark(req.getRemark());
-        staffBO.saveStaffInfo(data);
-
-        // 添加工资卡
-        BankCard bankCard = new BankCard();
-        bankCard.setStaffName(data.getName());
-        bankCard.setBankCode(req.getBankCode());
-        bankCard.setBankName(req.getBankName());
-        bankCard.setBankcardNumber(req.getBankcardNumber());
-
-        bankCard.setStatus(EBankCardStatus.Normal.getCode());
-        bankCard.setSubbranch(req.getSubbranch());
-        bankCard.setUpdater(req.getUpdater());
-        bankCard.setUpdateDatetime(date);
-        bankCard.setRemark(req.getRemark());
-
-        BankCard card = bankCardBO.getBankCardByStaff(data.getCode());
-        if (card == null) {
-            bankCard.setStaffCode(data.getCode());
-            bankCardBO.addBankCard(bankCard);
-        } else {
-            bankCard.setCode(card.getCode());
-            bankCardBO.refreshBankCard(bankCard);
-        }
+        staffBO.refreshStaffInfo(data);
 
         // 添加技能信息
         String skillCode = null;
@@ -399,11 +290,19 @@ public class StaffAOImpl implements IStaffAO {
     }
 
     @Override
-    public void doDepartmentCode(String code, String departmentCode,
-            String updater, String remark) {
-        Staff data = staffBO.getStaff(code);
-        departmentBO.getDepartment(departmentCode);
-        staffBO.doDepartmentCode(data, departmentCode, updater, remark);
+    public String getStaffFeatList() {
+        JSONArray array = new JSONArray();
+        JSONObject obj = new JSONObject(new LinkedHashMap());
+        List<Staff> list = staffBO.getStaffFeatList();
+        for (Staff staff : list) {
+            if (StringUtils.isNotBlank(staff.getFeat())) {
+                obj.put("id", staff.getCode());
+                obj.put("name", staff.getName());
+                obj.put("feat", staff.getFeat());
+                array.add(obj);
+            }
+        }
+        return new Gson().toJson(array);
     }
 
 }

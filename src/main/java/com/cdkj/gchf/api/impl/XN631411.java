@@ -11,7 +11,7 @@ import com.cdkj.gchf.exception.ParaException;
 import com.cdkj.gchf.spring.SpringContextHolder;
 
 /**
- * 录入身份证和特征值
+ * 录入免冠照片以及特征值
  * @author: nyc 
  * @since: 2018年4月29日 下午8:37:32 
  * @history:
@@ -24,8 +24,9 @@ public class XN631411 extends AProcessor {
 
     @Override
     public Object doBusiness() throws BizException {
-
-        return new PKCodeRes(staffAO.addStaff(req));
+        staffAO.editFeat(req.getCode(), req.getPict1(), req.getFeat(),
+            req.getUpdater());
+        return new PKCodeRes();
     }
 
     @Override

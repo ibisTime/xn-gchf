@@ -19,12 +19,13 @@ public interface IStaffBO extends IPaginableBO<Staff> {
 
     public Staff getStaffByIdNo(String idNo);
 
-    public void saveStaffInfo(Staff data);
+    public void refreshFeat(Staff data, String pict1, String feat,
+            String updater);
 
-    public void refreshSalaryStatus(Staff staff);
-
-    public void doDepartmentCode(Staff data, String departmentCode,
-            String updater, String remark);
+    public void refreshIdPict(Staff data);
 
     public void allotDepartment(Staff staff);
+
+    public void refreshStaffInfo(Staff data);
+
 }

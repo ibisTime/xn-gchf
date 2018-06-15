@@ -11,7 +11,7 @@ import com.cdkj.gchf.exception.ParaException;
 import com.cdkj.gchf.spring.SpringContextHolder;
 
 /**
- * 录入务工人员
+ * 建档
  * @author: nyc 
  * @since: 2018年4月29日 下午8:37:32 
  * @history:
@@ -24,7 +24,6 @@ public class XN631410 extends AProcessor {
 
     @Override
     public Object doBusiness() throws BizException {
-
         return new PKCodeRes(staffAO.addStaff(req));
     }
 

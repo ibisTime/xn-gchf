@@ -4,8 +4,8 @@
 <mapper namespace="com.cdkj.gchf.dao.IStaffDAO">
 	<resultMap id="staff_DB_Result" type="staff">
 		<result column="code" property="code" />
-<!-- 		<result column="department_code" property="departmentCode" />
- -->		<result column="name" property="name" />
+		<result column="department_code" property="departmentCode" />
+		<result column="name" property="name" />
 		<result column="mobile" property="mobile" />
 		
 		<result column="id_type" property="idType" />
@@ -37,9 +37,9 @@
 			<if test="code != null and code != '' ">
 				AND t.code = #{code}
 			</if>
-			<!-- <if test="departmentCode != null and departmentCode != '' ">
+			<if test="departmentCode != null and departmentCode != '' ">
 				AND t.department_code = #{departmentCode}
-			</if> -->
+			</if>
 			<if test="idNo != null and idNo != '' ">
 				AND t.id_no = #{idNo}
 			</if>
@@ -64,6 +64,7 @@
 		t.code
 		,t.name
 		,t.mobile
+		,t.department_code
 		
 		,t.id_type
 		,t.id_no
@@ -80,7 +81,9 @@
 		,t.pict1
 		,t.pict2
 		,t.pict3
+		,t.pict4
 		,t.updater
+		
 		,t.update_datetime
 		,t.remark
 		,t.feat
@@ -106,18 +109,19 @@
 		INSERT INTO
 		thf_staff(
 		code
+		,department_code
 		,name
 		,mobile
-		
 		,id_type
 		,id_no
 		,sex
+		
 		,birthday
 		,id_nation
 		,id_address
-		
 		,id_pic
 		,id_police
+		
 		,id_startDate
 		,id_endDate
 	
@@ -125,6 +129,7 @@
 		,pict1
 		,pict2
 		,pict3
+		,pict4
 		,updater
 		,update_datetime
 		,remark
@@ -132,6 +137,7 @@
 		)
 		VALUES(
 		#{code}
+		,#{departmentCode}
 		,#{name}
 		,#{mobile}
 		
@@ -150,6 +156,8 @@
 		,#{pict1}
 		,#{pict2}
 		,#{pict3}
+		,#{pict4}
+		
 		,#{updater}
 		,#{updateDatetime}
 		,#{remark}
@@ -174,32 +182,37 @@
 	</update>
 
 
-	<update id="insert_staff_info" parameterType="staff">
+	<update id="update_StaffInfo" parameterType="staff">
+		UPDATE thf_staff
+		SET
+		contacts = #{contacts}
+		,updater = #{updater}
+		,contacts_mobile = #{contactsMobile}
+		,update_datetime = #{updateDatetime}
+		,remark = #{remark}
+		WHERE code = #{code}
+	</update>
+	
+	
+	<update id="update_feat" parameterType="staff">
 		UPDATE thf_staff
 		SET
 		pict1 = #{pict1}
-		,pict2 = #{pict2}
-		,pict3 = #{pict3}
+		,feat = #{feat}
 		,updater = #{updater}
 		,update_datetime = #{updateDatetime}
-		,remark = #{remark}
-		,contacts = #{contacts}
-		,contacts_mobile = #{contactsMobile}
 		WHERE code = #{code}
 	</update>
 	
-	<update id="update_salary_status" parameterType="staff">
+	<update id="update_StaffInfo" parameterType="staff">
 		UPDATE thf_staff
 		SET
-		salary_status = #{salaryStatus}
+		pict2 = #{pict2}
+		,pict3 = #{pict3}
+		,pict4 = #{pict4}
+		,updater = #{updater}
+		,update_datetime = #{updateDatetime}
 		WHERE code = #{code}
 	</update>
-	
-<!-- 	<update id="allot_department" parameterType="staff">
-		UPDATE thf_staff
-		SET
-		department_code = #{departmentCode}
-		WHERE code = #{code}
-	</update> -->
 
 </mapper>

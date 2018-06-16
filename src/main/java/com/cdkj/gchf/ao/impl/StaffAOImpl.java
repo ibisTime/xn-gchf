@@ -74,11 +74,16 @@ public class StaffAOImpl implements IStaffAO {
 
     @Override
     public String addStaff(XN631410Req req) {
+        Staff data = staffBO.getStaffByIdNo(req.getIdNo());
+        if (null != data) {
+            return data.getCode();
+        }
+
         Date date = new Date();
         String code = OrderNoGenerater
             .generate(EGeneratePrefix.Staff.getCode());
 
-        Staff data = new Staff();
+        data = new Staff();
         data.setCode(code);
         data.setName(req.getRealName());
         data.setSex(req.getSex());

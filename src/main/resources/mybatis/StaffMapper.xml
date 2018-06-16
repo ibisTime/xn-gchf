@@ -204,7 +204,7 @@
 		WHERE code = #{code}
 	</update>
 	
-	<update id="update_StaffInfo" parameterType="staff">
+	<update id="update_idPict" parameterType="staff">
 		UPDATE thf_staff
 		SET
 		pict2 = #{pict2}

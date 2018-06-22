@@ -22,10 +22,6 @@ public class XN631032Req {
     @NotBlank(message = "编号不能为空")
     private String code;
 
-    // （必填）公司编号
-    @NotBlank(message = "公司编号不能为空")
-    private String companyCode;
-
     // （必填）名称
     @NotBlank(message = "名称不能为空")
     private String name;
@@ -47,14 +43,6 @@ public class XN631032Req {
 
     public void setCode(String code) {
         this.code = code;
-    }
-
-    public String getCompanyCode() {
-        return companyCode;
-    }
-
-    public void setCompanyCode(String companyCode) {
-        this.companyCode = companyCode;
     }
 
     public String getName() {

@@ -72,10 +72,4 @@ public class DepartmentBOImpl extends PaginableBOImpl<Department>
         return departmentDAO.selectList(condition);
     }
 
-    @Override
-    public List<Department> getDepartmentByCompanyCode(String companyCode) {
-        Department condition = new Department();
-        condition.setCompanyCode(companyCode);
-        return departmentDAO.selectList(condition);
-    }
 }

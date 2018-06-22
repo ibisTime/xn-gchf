@@ -16,7 +16,6 @@ import com.cdkj.gchf.bo.IUserBO;
 import com.cdkj.gchf.bo.base.Paginable;
 import com.cdkj.gchf.core.OrderNoGenerater;
 import com.cdkj.gchf.domain.Company;
-import com.cdkj.gchf.domain.Department;
 import com.cdkj.gchf.domain.Project;
 import com.cdkj.gchf.domain.User;
 import com.cdkj.gchf.enums.EGeneratePrefix;
@@ -64,12 +63,6 @@ public class CompanyAOImpl implements ICompanyAO {
         List<User> userList = userBO.getUserByCompany(data.getCode());
         if (CollectionUtils.isNotEmpty(userList)) {
             throw new BizException("xn00000", "该公司下下仍有人员，无法删除");
-        }
-        // 该公司下是否存在部门
-        List<Department> list = departmentBO
-            .getDepartmentByCompanyCode(data.getCode());
-        if (CollectionUtils.isNotEmpty(list)) {
-            throw new BizException("xn00000", "该公司下还有部门，无法删除");
         }
         companyBO.removeCompany(data);
     }

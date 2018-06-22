@@ -29,7 +29,7 @@ public class XN631035 extends AProcessor {
     @Override
     public Object doBusiness() throws BizException {
         Department condition = new Department();
-        condition.setCompanyCode(req.getCompanyCode());
+        condition.setDepartmentCode(req.getDepartmentCode());
         condition.setParentCode(req.getParentCode());
         condition.setKeyword(req.getKeyword());
 

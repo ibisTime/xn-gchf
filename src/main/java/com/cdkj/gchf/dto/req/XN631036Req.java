@@ -25,7 +25,7 @@ public class XN631036Req extends APageReq {
 
     // （必填）公司编号
     @NotBlank(message = "公司编号不能为空")
-    private String companyCode;
+    private String departmentCode;
 
     // （选填）上级部门编号
     private String parentCode;
@@ -33,12 +33,12 @@ public class XN631036Req extends APageReq {
     // （选填）关键字 部门名称，部门负责人名称，手机号模糊查询
     private String keyword;
 
-    public String getCompanyCode() {
-        return companyCode;
+    public String getDepartmentCode() {
+        return departmentCode;
     }
 
-    public void setCompanyCode(String companyCode) {
-        this.companyCode = companyCode;
+    public void setDepartmentCode(String departmentCode) {
+        this.departmentCode = departmentCode;
     }
 
     public String getKeyword() {

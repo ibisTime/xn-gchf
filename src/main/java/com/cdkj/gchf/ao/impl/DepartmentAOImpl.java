@@ -34,7 +34,7 @@ public class DepartmentAOImpl implements IDepartmentAO {
         String code = OrderNoGenerater
             .generate(EGeneratePrefix.Department.getCode());
         data.setCode(code);
-        data.setCompanyCode(req.getCompanyCode());
+        data.setDepartmentCode(req.getDepartment());
         data.setName(req.getName());
         data.setLeader(req.getLeader());
         data.setLeadeMobile(req.getLeadeMobile());
@@ -47,7 +47,6 @@ public class DepartmentAOImpl implements IDepartmentAO {
     @Override
     public void editDepartment(XN631032Req req) {
         Department data = departmentBO.getDepartment(req.getCode());
-        data.setCompanyCode(req.getCompanyCode());
         data.setName(req.getName());
         data.setLeader(req.getLeader());
         data.setLeadeMobile(req.getLeadeMobile());

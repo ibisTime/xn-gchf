@@ -27,6 +27,8 @@ public class DateUtil {
 
     public static final String DATA_TIME_PATTERN_7 = "HH:mm";
 
+    public static final String DATA_TIME_PATTERN_8 = "yyyy-MM-dd%HH:mm:ss";
+
     public static final String TIME_BEGIN = " 00:00:00";
 
     public static final String TIME_MIDDLE = " 12:00:00";

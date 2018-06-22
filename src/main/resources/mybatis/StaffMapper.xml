@@ -23,6 +23,7 @@
 		<result column="pict1" property="pict1" />
 		<result column="pict2" property="pict2" />
 		<result column="pict3" property="pict3" />
+		<result column="pict4" property="pict4" />
 		<result column="updater" property="updater" />
 		<result column="update_datetime" property="updateDatetime" />
 		

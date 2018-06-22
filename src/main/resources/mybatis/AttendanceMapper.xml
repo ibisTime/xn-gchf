@@ -4,12 +4,16 @@
 <mapper namespace="com.cdkj.gchf.dao.IAttendanceDAO">
 	<resultMap id="attendance_DB_Result" type="attendance">
 		<result column="code" property="code" />
+		<result column="terminal_code" property="terminalCode" />
 		<result column="project_code" property="projectCode" />
 		<result column="project_name" property="projectName" />
 		<result column="staff_code" property="staffCode" />
+		
 		<result column="staff_name" property="staffName" />
 		<result column="staff_mobile" property="staffMobile" />
+		<result column="sim" property="sim" />
 		<result column="status" property="status" />
+		
 		<result column="create_datetime" property="createDatetime" />
 		<result column="start_datetime" property="startDatetime" />
 		<result column="end_datetime" property="endDatetime" />
@@ -124,6 +128,8 @@
 		UPDATE thf_attendance
 		SET
 		status = #{status}
+		,sim = #{sim}
+		,terminal_code = #{terminalCode}
 		,start_datetime = #{startDatetime}
 		WHERE code = #{code}
 	</update>
@@ -132,6 +138,8 @@
 		UPDATE thf_attendance
 		SET
 		status = #{status}
+		,sim = #{sim}
+		,terminal_code = #{terminalCode}
 		,end_datetime = #{endDatetime}
 		WHERE code = #{code}
 	</update>

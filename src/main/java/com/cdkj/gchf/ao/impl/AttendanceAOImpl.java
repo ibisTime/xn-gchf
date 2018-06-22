@@ -8,7 +8,7 @@ import org.apache.commons.collections.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.alibaba.fastjson.JSONArray;
+import com.alibaba.fastjson.JSONObject;
 import com.cdkj.gchf.ao.IAttendanceAO;
 import com.cdkj.gchf.bo.IAttendanceBO;
 import com.cdkj.gchf.bo.IEmployBO;
@@ -167,38 +167,44 @@ public class AttendanceAOImpl implements IAttendanceAO {
     }
 
     @Override
-    public String clockIn(String projectCode, String staffCode,
-            String attendTime) {
-        JSONArray json = new JSONArray();
+    public String clockIn(String sim, String projectCode, String staffCode,
+            String attendTime, String terminalCode) {
+        JSONObject json = new JSONObject();
+        System.out.println("获取考勤记录了");
         Attendance data = attendanceBO.getAttendanceByProject(projectCode,
             staffCode);
         if (data == null) {
-            json.add("该项目未生成考勤");
+            json.put("result", true);
             return new Gson().toJson(json);
         }
-        Report report = reportBO.getReportByProject(data.getProjectCode());
-        int todayDays = report.getTodayDays();
-        if (EAttendanceStatus.Unpaied.getCode().equals(data.getStatus())) {
-            json.add("该员工今日已打卡");
-            return new Gson().toJson(json);
-        }
+
+        data.setSim(sim);
+        data.setTerminalCode(terminalCode);
 
         if (EAttendanceStatus.TO_Start.getCode().equals(data.getStatus())) {
-            data.setStartDatetime(
-                DateUtil.strToDate(attendTime, DateUtil.DATA_TIME_PATTERN_1));
+
+            data.setStartDatetime(DateUtil.strToDate(
+                attendTime.replace("%", " "), DateUtil.DATA_TIME_PATTERN_1));
             data.setStatus(EAttendanceStatus.TO_End.getCode());
             attendanceBO.toStart(data);
+
+            // 统计上工人数
+            Report report = reportBO.getReportByProject(data.getProjectCode());
+            if (null == report) {
+
+            }
+            int todayDays = report.getTodayDays();
             todayDays = todayDays + 1;
             reportBO.refreshTodayDays(report, todayDays);
-
-        } else if (EAttendanceStatus.TO_End.getCode()
-            .equals(data.getStatus())) {
+        } else {
             data.setEndDatetime(
                 DateUtil.strToDate(attendTime, DateUtil.DATA_TIME_PATTERN_1));
             data.setStatus(EAttendanceStatus.TO_End.getCode());
             attendanceBO.toEnd(data);
         }
-        json.add("打卡成功");
+        System.out.println("都结束了");
+        json.put("result", true);
+        System.out.println("json" + new Gson().toJson(json));
         return new Gson().toJson(json);
     }
 

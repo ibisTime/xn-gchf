@@ -21,6 +21,4 @@ public interface IDepartmentBO extends IPaginableBO<Department> {
 
     public List<Department> isExsit(String code);
 
-    public List<Department> getDepartmentByCompanyCode(String companyCode);
-
 }

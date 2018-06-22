@@ -20,7 +20,7 @@ public interface IAttendanceAO {
 
     public Attendance getAttendance(String code);
 
-    public String clockIn(String projectCode, String staffCode,
-            String attendTime);
+    public String clockIn(String sim, String projectCode, String staffCode,
+            String attendTime, String terminalCode);
 
 }

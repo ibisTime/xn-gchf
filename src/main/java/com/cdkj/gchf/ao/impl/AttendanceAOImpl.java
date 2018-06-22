@@ -174,7 +174,7 @@ public class AttendanceAOImpl implements IAttendanceAO {
         Attendance data = attendanceBO.getAttendanceByProject(projectCode,
             staffCode);
         if (data == null) {
-            json.put("result", true);
+            json.put("result", false);
             return new Gson().toJson(json);
         }
 
@@ -191,7 +191,8 @@ public class AttendanceAOImpl implements IAttendanceAO {
             // 统计上工人数
             Report report = reportBO.getReportByProject(data.getProjectCode());
             if (null == report) {
-
+                json.put("result", false);
+                return new Gson().toJson(json);
             }
             int todayDays = report.getTodayDays();
             todayDays = todayDays + 1;

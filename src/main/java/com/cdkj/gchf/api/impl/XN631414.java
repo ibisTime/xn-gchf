@@ -5,6 +5,7 @@ import com.cdkj.gchf.api.AProcessor;
 import com.cdkj.gchf.common.JsonUtil;
 import com.cdkj.gchf.core.ObjValidater;
 import com.cdkj.gchf.dto.req.XN631414Req;
+import com.cdkj.gchf.dto.res.BooleanRes;
 import com.cdkj.gchf.exception.BizException;
 import com.cdkj.gchf.exception.ParaException;
 import com.cdkj.gchf.spring.SpringContextHolder;
@@ -24,7 +25,7 @@ public class XN631414 extends AProcessor {
     @Override
     public Object doBusiness() throws BizException {
         staffAO.editIdPict(req);
-        return new Boolean(true);
+        return new BooleanRes(true);
     }
 
     @Override

@@ -297,9 +297,9 @@ public class StaffAOImpl implements IStaffAO {
     @Override
     public String getStaffFeatList() {
         JSONArray array = new JSONArray();
-        JSONObject obj = new JSONObject(new LinkedHashMap());
         List<Staff> list = staffBO.getStaffFeatList();
         for (Staff staff : list) {
+            JSONObject obj = new JSONObject(new LinkedHashMap());
             if (StringUtils.isNotBlank(staff.getFeat())) {
                 obj.put("id", staff.getCode());
                 obj.put("name", staff.getName());

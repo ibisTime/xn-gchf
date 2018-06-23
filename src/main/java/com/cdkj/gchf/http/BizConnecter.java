@@ -28,6 +28,8 @@ public class BizConnecter {
 
     public static final String CERTI_URL = PropertiesUtil.Config.CERTI_URL;
 
+    public static final String FEAT_URL = PropertiesUtil.Config.FEAT_URL;
+
     public static final String POST_URL = "...";
 
     public static <T> T getBizData(String code, String json, Class<T> clazz) {
@@ -58,6 +60,15 @@ public class BizConnecter {
         return data;
     }
 
+    public static String getFeat(String pict1) {
+        try {
+            return PostSimulater.requestPostFeat(FEAT_URL, pict1);
+        } catch (Exception e) {
+            throw new BizException("Biz000", "链接请求超时，请联系管理员");
+        }
+
+    }
+
     private static String getPostUrl(String code) {
         String postUrl = POST_URL;
         if (code.startsWith("626") || "625917".equals(code)) {
@@ -69,4 +80,5 @@ public class BizConnecter {
         }
         return postUrl;
     }
+
 }

@@ -79,8 +79,8 @@ public class PostSimulater {
             }
             // 返回值
             StringBuffer resposne = new StringBuffer();
-            BufferedReader reader = new BufferedReader(new InputStreamReader(
-                con.getInputStream()));
+            BufferedReader reader = new BufferedReader(
+                new InputStreamReader(con.getInputStream()));
             String responseMessage = "";
             while ((responseMessage = reader.readLine()) != null) {
                 resposne.append(responseMessage);
@@ -129,6 +129,11 @@ public class PostSimulater {
         return requestPostForm(urlString, formProperties, new Properties());
     }
 
+    public static String requestPostFeat(String urlString,
+            String formProperties) throws Exception {
+        return requestPostFeat(urlString, formProperties, new Properties());
+    }
+
     /**  
      * 以POST方式向指定地址提交表单<br>  
      * arg0=urlencode(value0)&arg1=urlencode(value1)  
@@ -164,6 +169,15 @@ public class PostSimulater {
         return requestPost(urlString, str.getBytes(CHARACTER_ENCODING),
             requestProperties);
 
+    }
+
+    private static String requestPostFeat(String urlString,
+            String formProperties, Properties requestProperties)
+            throws Exception {
+        requestProperties.setProperty(CONTENT_TYPE,
+            "application/x-www-form-urlencoded");
+        return requestPost(urlString,
+            formProperties.getBytes(CHARACTER_ENCODING), requestProperties);
     }
 
     /**  

@@ -37,6 +37,8 @@ public class PropertiesUtil {
 
         public static String ETH_URL_OTHER = props.getProperty("ETH_URL_OTHER");
 
+        public static String FEAT_URL = props.getProperty("FEAT_URL");
+
         public static String KEY_STORE_PATH = props
             .getProperty("KEY_STORE_PATH");
 

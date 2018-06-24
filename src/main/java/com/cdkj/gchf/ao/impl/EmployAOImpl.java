@@ -20,9 +20,7 @@ import com.cdkj.gchf.bo.base.Paginable;
 import com.cdkj.gchf.common.AmountUtil;
 import com.cdkj.gchf.common.DateUtil;
 import com.cdkj.gchf.core.OrderNoGenerater;
-import com.cdkj.gchf.core.StringValidater;
 import com.cdkj.gchf.domain.Attendance;
-import com.cdkj.gchf.domain.Ccontract;
 import com.cdkj.gchf.domain.Employ;
 import com.cdkj.gchf.domain.Project;
 import com.cdkj.gchf.domain.Report;
@@ -87,17 +85,17 @@ public class EmployAOImpl implements IEmployAO {
         data.setStaffMobile(staff.getMobile());
         data.setType(req.getType());
 
-        data.setPosition(req.getPosition());
-        data.setSalary(StringValidater.toLong(req.getSalary()));
-        data.setCutAmount(StringValidater.toLong(req.getCutAmount()));
-        data.setJoinDatetime(DateUtil.strToDate(req.getJoinDatetime(),
-            DateUtil.FRONT_DATE_FORMAT_STRING));
+        // data.setPosition(req.getPosition());
+        // data.setSalary(StringValidater.toLong(req.getSalary()));
+        // data.setCutAmount(StringValidater.toLong(req.getCutAmount()));
+        // data.setJoinDatetime(DateUtil.strToDate(req.getJoinDatetime(),
+        // DateUtil.FRONT_DATE_FORMAT_STRING));
 
         data.setStatus(EEmploytatus.Work.getCode());
         data.setSalaryStatus(EStaffSalaryStatus.Normal.getCode());
-        data.setUpdater(req.getUpdater());
+        // data.setUpdater(req.getUpdater());
         data.setUpdateDatetime(date);
-        data.setRemark(req.getRemark());
+        // data.setRemark(req.getRemark());
 
         Employ checkData = employBO.getEmployByStaff(req.getStaffCode(),
             req.getProjectCode());
@@ -113,30 +111,30 @@ public class EmployAOImpl implements IEmployAO {
         employBO.joinIn(data);
 
         // 录入合同
-        Ccontract ccontract = new Ccontract();
-        String ccontractCode = OrderNoGenerater
-            .generate(EGeneratePrefix.Ccontract.getCode());
-        ccontract.setProjectCode(req.getProjectCode());
+        // Ccontract ccontract = new Ccontract();
+        // String ccontractCode = OrderNoGenerater
+        // .generate(EGeneratePrefix.Ccontract.getCode());
+        // ccontract.setProjectCode(req.getProjectCode());
+        //
+        // ccontract.setProjectName(project.getName());
+        // ccontract.setStaffCode(staff.getCode());
+        // ccontract.setStaffName(staff.getName());
+        // ccontract.setContentPic(req.getContentPic());
+        // ccontract.setContractDatetime(DateUtil.strToDate(
+        // req.getContractDatetime(), DateUtil.FRONT_DATE_FORMAT_STRING));
+        //
+        // ccontract.setUpdater(req.getUpdater());
+        // ccontract.setUpdateDatetime(date);
+        // ccontract.setRemark(req.getRemark());
 
-        ccontract.setProjectName(project.getName());
-        ccontract.setStaffCode(staff.getCode());
-        ccontract.setStaffName(staff.getName());
-        ccontract.setContentPic(req.getContentPic());
-        ccontract.setContractDatetime(DateUtil.strToDate(
-            req.getContractDatetime(), DateUtil.FRONT_DATE_FORMAT_STRING));
-
-        ccontract.setUpdater(req.getUpdater());
-        ccontract.setUpdateDatetime(date);
-        ccontract.setRemark(req.getRemark());
-
-        Ccontract checkCcontract = ccontractBO.isExist(req.getProjectCode(),
-            req.getStaffCode());
-        if (checkCcontract != null) {
-            ccontract.setCode(checkCcontract.getCode());
-            ccontractBO.refreshCcontract(ccontract);
-        }
-        ccontract.setCode(ccontractCode);
-        ccontractBO.saveCcontract(ccontract);
+        // Ccontract checkCcontract = ccontractBO.isExist(req.getProjectCode(),
+        // req.getStaffCode());
+        // if (checkCcontract != null) {
+        // ccontract.setCode(checkCcontract.getCode());
+        // ccontractBO.refreshCcontract(ccontract);
+        // }
+        // ccontract.setCode(ccontractCode);
+        // ccontractBO.saveCcontract(ccontract);
 
         // 计入累积入职
         Report report = reportBO.getReportByProject(project.getCode());
@@ -166,8 +164,6 @@ public class EmployAOImpl implements IEmployAO {
         attendanceBO.saveAttendance(attendance);
         staffLogBO.saveStaffLog(data, staff.getName(), project.getCompanyCode(),
             project.getCode(), project.getName());
-        // 为员工添加部门
-        staff.setDepartmentCode(req.getDepartmentCode());
         return code;
     }
 

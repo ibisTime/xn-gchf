@@ -6,20 +6,13 @@
 	</settings> -->
 	<typeAliases>
 		<typeAlias alias="user" type="com.cdkj.gchf.domain.User" />
-		<typeAlias alias="blacklist" type="com.cdkj.gchf.domain.Blacklist" />
-		<typeAlias alias="userRelation" type="com.cdkj.gchf.domain.UserRelation" />
-		<typeAlias alias="cNavigate" type="com.cdkj.gchf.domain.CNavigate" />
-		<typeAlias alias="fieldTimes" type="com.cdkj.gchf.domain.FieldTimes" />
+		
+		
+		
+		
 		<typeAlias alias="sysMenu" type="com.cdkj.gchf.domain.SYSMenu" />
 		<typeAlias alias="sysRole" type="com.cdkj.gchf.domain.SYSRole" />
 		<typeAlias alias="sysMenuRole" type="com.cdkj.gchf.domain.SYSMenuRole" />
-		<typeAlias alias="account" type="com.cdkj.gchf.domain.Account" />
-		<typeAlias alias="jour" type="com.cdkj.gchf.domain.Jour" />
-		<typeAlias alias="exchangeCurrency" type="com.cdkj.gchf.domain.ExchangeCurrency" />
-		<typeAlias alias="charge" type="com.cdkj.gchf.domain.Charge" />
-		<typeAlias alias="withdraw" type="com.cdkj.gchf.domain.Withdraw" />
-		<typeAlias alias="hlOrder" type="com.cdkj.gchf.domain.HLOrder" />
-		
 		<typeAlias alias="sysDict" type="com.cdkj.gchf.domain.SYSDict" />
 		<typeAlias alias="sysConfig" type="com.cdkj.gchf.domain.SYSConfig" />
 

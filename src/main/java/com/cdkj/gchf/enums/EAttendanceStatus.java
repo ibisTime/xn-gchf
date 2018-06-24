@@ -8,9 +8,9 @@ public enum EAttendanceStatus {
     TO_Start("0", "待上班打卡"), TO_End("1", "待下班打卡"), Unpaied("2",
             "已打卡待结算"), Paied("3", "已结算");
 
-    public static Map<String, EAccountType> getAccountTypeResultMap() {
-        Map<String, EAccountType> map = new HashMap<String, EAccountType>();
-        for (EAccountType type : EAccountType.values()) {
+    public static Map<String, EAttendanceStatus> getAccountTypeResultMap() {
+        Map<String, EAttendanceStatus> map = new HashMap<String, EAttendanceStatus>();
+        for (EAttendanceStatus type : EAttendanceStatus.values()) {
             map.put(type.getCode(), type);
         }
         return map;

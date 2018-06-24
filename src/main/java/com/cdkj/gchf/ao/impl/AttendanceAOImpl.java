@@ -185,7 +185,7 @@ public class AttendanceAOImpl implements IAttendanceAO {
 
         data.setSim(sim);
         data.setTerminalCode(terminalCode);
-
+        // 上班打卡
         if (EAttendanceStatus.TO_Start.getCode().equals(data.getStatus())) {
 
             data.setStartDatetime(DateUtil.strToDate(
@@ -202,13 +202,13 @@ public class AttendanceAOImpl implements IAttendanceAO {
             int todayDays = report.getTodayDays();
             todayDays = todayDays + 1;
             reportBO.refreshTodayDays(report, todayDays);
-        } else {
+        } else { // 下班打卡
             data.setEndDatetime(
                 DateUtil.strToDate(attendTime, DateUtil.DATA_TIME_PATTERN_1));
             data.setStatus(EAttendanceStatus.TO_End.getCode());
             attendanceBO.toEnd(data);
         }
-        System.out.println("都结束了");
+        // @TODO 用log4j System.out.println("都结束了");
         json.put("result", true);
         System.out.println("json" + new Gson().toJson(json));
         return new Gson().toJson(json);

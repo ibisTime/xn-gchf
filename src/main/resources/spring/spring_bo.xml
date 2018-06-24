@@ -16,13 +16,8 @@
 		<property name="paginableDAO" ref="userDAOImpl" />
 	</bean>
 	
-	<bean id="blacklistBO" class="com.cdkj.gchf.bo.impl.BlacklistBOImpl">
-		<property name="paginableDAO" ref="blacklistDAOImpl"/>
-	</bean>
+
 	
-	<bean id="userRelationBO" class="com.cdkj.gchf.bo.impl.UserRelationBOImpl">
-		<property name="paginableDAO" ref="userRelationDAOImpl" />
-	</bean>
 	
 	<bean id="sysMenuBO" class="com.cdkj.gchf.bo.impl.SYSMenuBOImpl">
 		<property name="paginableDAO" ref="sysMenuDAOImpl"/>
@@ -37,33 +32,9 @@
 		<property name="paginableDAO" ref="sysMenuRoleDAOImpl"/>
 	</bean>
 
-	<bean id="cNavigateBO" class="com.cdkj.gchf.bo.impl.CNavigateBOImpl">
-		<property name="paginableDAO" ref="cNavigateDAOImpl"/>
-	</bean>
-	
-	<bean id="accountBO" class="com.cdkj.gchf.bo.impl.AccountBOImpl">
-		<property name="paginableDAO" ref="accountDAOImpl" />
-	</bean>
-	<bean id="jourBO" class="com.cdkj.gchf.bo.impl.JourBOImpl">
-		<property name="paginableDAO" ref="jourDAOImpl" />
-	</bean>
 
 	
-	<bean id="exchangeCurrencyBO" class="com.cdkj.gchf.bo.impl.ExchangeCurrencyBOImpl">
-		<property name="paginableDAO" ref="exchangeCurrencyDAOImpl"/>
-	</bean>
-
-	<bean id="chargeBO" class="com.cdkj.gchf.bo.impl.ChargeBOImpl">
-		<property name="paginableDAO" ref="chargeDAOImpl"/>
-	</bean>	
 	
-	<bean id="withdrawBO" class="com.cdkj.gchf.bo.impl.WithdrawBOImpl">
-		<property name="paginableDAO" ref="withdrawDAOImpl"/>
-	</bean>	
-	
-	<bean id="hlOrderBO" class="com.cdkj.gchf.bo.impl.HLOrderBOImpl">
-		<property name="paginableDAO" ref="hlOrderDAOImpl" />
-	</bean>
 
 	<bean id="sysDictBO" class="com.cdkj.gchf.bo.impl.SYSDictBOImpl">
 		<property name="paginableDAO" ref="sysDictDAOImpl"/>

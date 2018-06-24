@@ -14,13 +14,13 @@ public class XN631355Req {
     @NotBlank(message = "编号不能为空")
     private String code;
 
-    // 更新人
-    @NotBlank(message = "更新人不能为空")
-    private String updater;
-
     // 项目结束时间
     @NotBlank(message = "项目结束时间不能为空")
     private String endDatetime;
+
+    // 更新人
+    @NotBlank(message = "更新人不能为空")
+    private String updater;
 
     // 备注
     private String remark;

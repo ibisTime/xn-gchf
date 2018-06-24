@@ -5,7 +5,7 @@ import com.cdkj.gchf.api.AProcessor;
 import com.cdkj.gchf.common.JsonUtil;
 import com.cdkj.gchf.core.ObjValidater;
 import com.cdkj.gchf.dto.req.XN631071Req;
-import com.cdkj.gchf.dto.res.XN630052Res;
+import com.cdkj.gchf.dto.res.XN631071Res;
 import com.cdkj.gchf.exception.BizException;
 import com.cdkj.gchf.exception.ParaException;
 import com.cdkj.gchf.spring.SpringContextHolder;
@@ -24,7 +24,7 @@ public class XN631071 extends AProcessor {
 
     @Override
     public Object doBusiness() throws BizException {
-        return new XN630052Res(userAO.doLogin(req.getType(), req.getLoginName(),
+        return new XN631071Res(userAO.doLogin(req.getType(), req.getLoginName(),
             req.getLoginPwd()));
     }
 

@@ -1,13 +1,13 @@
 package com.cdkj.gchf.dto.res;
 
-public class XN001102Res {
-    // 用户编号
+public class XN631071Res {
+
     private String userId;
 
-    public XN001102Res() {
+    public XN631071Res() {
     }
 
-    public XN001102Res(String userId) {
+    public XN631071Res(String userId) {
         this.userId = userId;
     }
 
@@ -18,4 +18,5 @@ public class XN001102Res {
     public void setUserId(String userId) {
         this.userId = userId;
     }
+
 }

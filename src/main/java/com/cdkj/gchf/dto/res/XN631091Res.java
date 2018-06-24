@@ -1,13 +1,13 @@
 package com.cdkj.gchf.dto.res;
 
-public class XN805951Res {
+public class XN631091Res {
     // 上传凭证
     private String uploadToken;
 
-    public XN805951Res() {
+    public XN631091Res() {
     }
 
-    public XN805951Res(String uploadToken) {
+    public XN631091Res(String uploadToken) {
         this.uploadToken = uploadToken;
     }
 

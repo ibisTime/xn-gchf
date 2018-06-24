@@ -11,7 +11,10 @@ import com.cdkj.gchf.exception.ParaException;
 import com.cdkj.gchf.spring.SpringContextHolder;
 
 /**
- * 考勤打卡
+ * 手动考勤打卡：
+ * 
+ * 
+ * @TODO 分为2个接口上班打卡，下班打卡。入参为考勤code和具体时间。
  * @author: nyc 
  * @since: 2018年4月30日 下午9:11:05 
  * @history:

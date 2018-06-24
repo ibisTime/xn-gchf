@@ -31,6 +31,7 @@
 		<result column="updater" property="updater" />
 		<result column="update_datetime" property="updateDatetime" />
 		<result column="remark" property="remark" />
+		<result column="department_code" property="departmentCode" />
 	</resultMap>
 	
 	<sql id="where_condition">
@@ -98,6 +99,10 @@
 			<if test="keyword != null and keyword != '' ">
 				AND (t.name like "%"#{keyword}"%" OR  t.charge_mobile like "%"#{keyword}"%")
 			</if>
+			
+			<if test="departmentCode != null and departmentCode != '' ">
+				AND t.department_code = #{departmentCode}
+			</if>
 		</trim>
 	</sql>
 	
@@ -131,6 +136,7 @@
 		,t.updater
 		,t.update_datetime
 		,t.remark
+		,t.department_code
 		FROM
 		thf_project t
 		<include refid="where_condition" />
@@ -175,6 +181,7 @@
 		,update_datetime
 		
 		,remark
+		,department_code
 		)
 		VALUES(
 		#{code}
@@ -201,6 +208,7 @@
 		,#{updateDatetime}
 		
 		,#{remark}
+		,#{departmentCode}
 		)
 	</insert>
 	

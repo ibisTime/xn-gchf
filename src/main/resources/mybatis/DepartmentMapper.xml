@@ -4,7 +4,6 @@
 <mapper namespace="com.cdkj.gchf.dao.IDepartmentDAO">
 	<resultMap id="department_DB_Result" type="department">
 		<result column="code" property="code" />
-		<result column="department_code" property="departmentCode" />
 		<result column="name" property="name" />
 		<result column="leader" property="leader" />
 		<result column="leade_mobile" property="leadeMobile" />
@@ -19,9 +18,6 @@
 			<if test="parentCode != null and parentCode != '' ">
 				AND t.parent_code = #{parentCode}
 			</if>
-			<if test="departmentCode != null and departmentCode != '' ">
-				AND t.department_code = #{departmentCode}
-			</if>
 			<if test="keyword != null and keyword != '' ">
 				AND (t.name LIKE "%"#{keyword}"%" OR t.leade_mobile LIKE "%"#{keyword}"%" OR t.leader LIKE "%"#{keyword}"%" )
 			</if>
@@ -31,7 +27,6 @@
 	<select id="select_department" parameterType="department" resultMap="department_DB_Result">
 		SELECT
 		t.code
-		,t.department_code
 		,t.name
 		,t.leader
 		,t.leade_mobile
@@ -57,7 +52,6 @@
 		INSERT INTO
 		thf_department(
 		code
-		,department_code
 		,name
 		,leader
 		,leade_mobile
@@ -65,7 +59,6 @@
 		)
 		VALUES(
 		#{code}
-		,#{departmentCode}
 		,#{name}
 		,#{leader}
 		,#{leadeMobile}

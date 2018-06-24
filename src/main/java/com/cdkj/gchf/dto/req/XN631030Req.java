@@ -18,10 +18,6 @@ import org.hibernate.validator.constraints.NotBlank;
  */
 public class XN631030Req {
 
-    // （必填）项目编号
-    @NotBlank(message = "项目编号")
-    private String Department;
-
     // （必填）名称
     @NotBlank(message = "名称不能为空")
     private String name;
@@ -36,14 +32,6 @@ public class XN631030Req {
 
     // （选填）上级部门编号
     private String parentCode;
-
-    public String getDepartment() {
-        return Department;
-    }
-
-    public void setDepartment(String department) {
-        Department = department;
-    }
 
     public String getName() {
         return name;

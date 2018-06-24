@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 
 import com.cdkj.gchf.ao.IProjectAO;
 import com.cdkj.gchf.bo.ICompanyCardBO;
+import com.cdkj.gchf.bo.IDepartmentBO;
 import com.cdkj.gchf.bo.IEmployBO;
 import com.cdkj.gchf.bo.IProjectBO;
 import com.cdkj.gchf.bo.IReportBO;
@@ -20,6 +21,7 @@ import com.cdkj.gchf.bo.base.Paginable;
 import com.cdkj.gchf.common.DateUtil;
 import com.cdkj.gchf.core.OrderNoGenerater;
 import com.cdkj.gchf.domain.CompanyCard;
+import com.cdkj.gchf.domain.Department;
 import com.cdkj.gchf.domain.Employ;
 import com.cdkj.gchf.domain.Project;
 import com.cdkj.gchf.domain.Report;
@@ -53,6 +55,9 @@ public class ProjectAOImpl implements IProjectAO {
     @Autowired
     IEmployBO employBO;
 
+    @Autowired
+    IDepartmentBO departmentBO;
+
     @Override
     public String addProject(XN631350Req req) {
         Project data = new Project();
@@ -60,6 +65,7 @@ public class ProjectAOImpl implements IProjectAO {
             .generate(EGeneratePrefix.Project.getCode());
         data.setCode(code);
         data.setCompanyCode(req.getCompanyCode());
+        data.setDepartmentCode(req.getDepartmentCode());
         data.setName(req.getName());
         data.setChargeUser(req.getChargeUser());
         User user = userBO.getUser(req.getChargeUser());
@@ -84,7 +90,6 @@ public class ProjectAOImpl implements IProjectAO {
 
         data.setStatus(EProjectStatus.To_Audit.getCode());
         data.setUpdater(req.getUpdater());
-
         data.setUpdateDatetime(new Date());
         data.setRemark(req.getRemark());
         projectBO.saveProject(data);
@@ -94,8 +99,7 @@ public class ProjectAOImpl implements IProjectAO {
             req.getBankCode(), req.getBankName(), req.getAccountName(),
             req.getBankcardNumber(), req.getSubbranch(), req.getUpdater(),
             data.getUpdateDatetime(), req.getRemark());
-        // 生成统计信息
-        reportBO.saveReport(data.getCode(), data.getName());
+
         return code;
     }
 
@@ -144,10 +148,14 @@ public class ProjectAOImpl implements IProjectAO {
         }
 
         page = projectBO.getPaginable(start, limit, condition);
+        Department department = null;
         for (Project project : page.getList()) {
+            department = departmentBO
+                .getDepartment(project.getDepartmentCode());
             project.setApproveName(getName(project.getApprover()));
             project.setUpdateName(getName(project.getUpdater()));
             project.setChargeName(getName(project.getChargeUser()));
+            project.setDepartmentName(department.getName());
         }
         return page;
     }
@@ -160,6 +168,7 @@ public class ProjectAOImpl implements IProjectAO {
         data.setCompanyCard(companyCard);
         Report report = reportBO.getReportByProject(data.getCode());
         data.setReport(report);
+
         // 补全名字信息
         String approveName = getName(data.getApprover());
         String updateName = getName(data.getUpdater());
@@ -167,6 +176,10 @@ public class ProjectAOImpl implements IProjectAO {
         data.setApproveName(approveName);
         data.setUpdateName(updateName);
         data.setChargeName(chargeName);
+
+        Department department = departmentBO
+            .getDepartment(data.getDepartmentCode());
+        data.setDepartmentName(department.getName());
         return data;
     }
 
@@ -179,10 +192,15 @@ public class ProjectAOImpl implements IProjectAO {
             }
         }
         list = projectBO.queryProject(condition);
+
+        Department department = null;
         for (Project project : list) {
+            department = departmentBO
+                .getDepartment(project.getDepartmentCode());
             project.setApproveName(getName(project.getApprover()));
             project.setUpdateName(getName(project.getUpdater()));
             project.setChargeName(getName(project.getChargeUser()));
+            project.setDepartmentName(department.getName());
         }
         return list;
     }
@@ -231,12 +249,12 @@ public class ProjectAOImpl implements IProjectAO {
         if (!EProjectStatus.UnApprove.getCode().equals(data.getStatus())) {
             throw new BizException("xn0000", "该工程项目未处于待审核状态");
         }
-        String status = EProjectStatus.Building.getCode();
-        if (EBoolean.NO.getCode().equals(result)) {
-            status = EProjectStatus.UnPass.getCode();
-            if (StringUtils.isBlank(approveNote)) {
-                approveNote = "您申请的项目[" + data.getName() + "]未通过审核,请修改后再提交申请";
-            }
+        String status = EProjectStatus.UnPass.getCode();
+
+        if (EBoolean.YES.getCode().equals(result)) {
+            status = EProjectStatus.Building.getCode();
+            // 添加统计信息
+            reportBO.saveReport(data.getCode(), data.getName());
         }
 
         data.setStatus(status);
@@ -244,7 +262,7 @@ public class ProjectAOImpl implements IProjectAO {
         data.setApproveDatetime(new Date());
         data.setApproveNote(approveNote);
         projectBO.approveProject(data);
-        // 添加统计信息
+
     }
 
     @Override

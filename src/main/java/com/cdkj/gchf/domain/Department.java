@@ -15,9 +15,6 @@ public class Department extends ABaseDO {
     // 编号
     private String code;
 
-    // 所属项目编号
-    private String departmentCode;
-
     // 部门名称
     private String name;
 
@@ -44,14 +41,6 @@ public class Department extends ABaseDO {
 
     public String getCode() {
         return code;
-    }
-
-    public String getDepartmentCode() {
-        return departmentCode;
-    }
-
-    public void setDepartmentCode(String departmentCode) {
-        this.departmentCode = departmentCode;
     }
 
     public void setName(String name) {

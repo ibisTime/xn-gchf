@@ -8,8 +8,6 @@
  */
 package com.cdkj.gchf.dto.req;
 
-import org.hibernate.validator.constraints.NotBlank;
-
 /**
  * 列表查询部门
  * @author: nyc 
@@ -23,23 +21,11 @@ public class XN631036Req extends APageReq {
      */
     private static final long serialVersionUID = -2933873153129154020L;
 
-    // （必填）公司编号
-    @NotBlank(message = "公司编号不能为空")
-    private String departmentCode;
-
     // （选填）上级部门编号
     private String parentCode;
 
     // （选填）关键字 部门名称，部门负责人名称，手机号模糊查询
     private String keyword;
-
-    public String getDepartmentCode() {
-        return departmentCode;
-    }
-
-    public void setDepartmentCode(String departmentCode) {
-        this.departmentCode = departmentCode;
-    }
 
     public String getKeyword() {
         return keyword;

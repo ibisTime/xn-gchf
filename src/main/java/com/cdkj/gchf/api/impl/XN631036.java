@@ -27,7 +27,6 @@ public class XN631036 extends AProcessor {
     @Override
     public Object doBusiness() throws BizException {
         Department condition = new Department();
-        condition.setDepartmentCode(req.getDepartmentCode());
         condition.setParentCode(req.getParentCode());
         condition.setKeyword(req.getKeyword());
 

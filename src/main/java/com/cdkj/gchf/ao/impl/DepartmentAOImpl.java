@@ -34,7 +34,6 @@ public class DepartmentAOImpl implements IDepartmentAO {
         String code = OrderNoGenerater
             .generate(EGeneratePrefix.Department.getCode());
         data.setCode(code);
-        data.setDepartmentCode(req.getDepartment());
         data.setName(req.getName());
         data.setLeader(req.getLeader());
         data.setLeadeMobile(req.getLeadeMobile());

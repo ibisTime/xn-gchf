@@ -1,11 +1,6 @@
 package com.cdkj.gchf.dto.req;
 
-import java.util.List;
-
 import org.hibernate.validator.constraints.NotBlank;
-import org.hibernate.validator.constraints.NotEmpty;
-
-import com.cdkj.gchf.domain.Department;
 
 public class XN631350Req {
 
@@ -92,14 +87,6 @@ public class XN631350Req {
     // 备注
     private String remark;
 
-    // 部门List
-    @NotEmpty(message = "部门不能为空")
-    private List<Department> depList;
-
-    // 部门编号
-    @NotBlank(message = "部门编号不能为空")
-    private String departmentCode;
-
     public String getBankcardNumber() {
         return bankcardNumber;
     }
@@ -130,14 +117,6 @@ public class XN631350Req {
 
     public void setName(String name) {
         this.name = name;
-    }
-
-    public String getDepartmentCode() {
-        return departmentCode;
-    }
-
-    public void setDepartmentCode(String departmentCode) {
-        this.departmentCode = departmentCode;
     }
 
     public String getChargeUser() {
@@ -274,14 +253,6 @@ public class XN631350Req {
 
     public void setAccountName(String accountName) {
         this.accountName = accountName;
-    }
-
-    public List<Department> getDepList() {
-        return depList;
-    }
-
-    public void setDepList(List<Department> depList) {
-        this.depList = depList;
     }
 
 }

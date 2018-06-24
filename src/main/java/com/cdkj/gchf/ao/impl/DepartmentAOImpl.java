@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.cdkj.gchf.ao.IDepartmentAO;
+import com.cdkj.gchf.ao.IProjectAO;
 import com.cdkj.gchf.bo.IDepartmentBO;
 import com.cdkj.gchf.bo.IUserBO;
 import com.cdkj.gchf.bo.base.Paginable;
@@ -28,6 +29,9 @@ public class DepartmentAOImpl implements IDepartmentAO {
     @Autowired
     IUserBO userBO;
 
+    @Autowired
+    IProjectAO projectAO;
+
     @Override
     public String addDepartment(XN631030Req req) {
         Department data = new Department();
@@ -38,6 +42,7 @@ public class DepartmentAOImpl implements IDepartmentAO {
         data.setLeader(req.getLeader());
         data.setLeadeMobile(req.getLeadeMobile());
 
+        data.setProjectCode(req.getProjectCode());
         data.setParentCode(req.getParentCode());
         departmentBO.saveDepartment(data);
         return code;

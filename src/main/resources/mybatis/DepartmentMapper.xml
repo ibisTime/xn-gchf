@@ -8,13 +8,16 @@
 		<result column="leader" property="leader" />
 		<result column="leade_mobile" property="leadeMobile" />
 		<result column="parent_code" property="parentCode" />
+		<result column="project_code" property="projectCode" />
 	</resultMap>
 	<sql id="where_condition">
 		<trim prefix="WHERE" prefixOverrides="AND | OR">
 			<if test="code != null and code != '' ">
 				AND t.code = #{code}
 			</if>
-			
+			<if test="projectCode != null and projectCode != '' ">
+				AND t.project_code = #{projectCode}
+			</if>
 			<if test="parentCode != null and parentCode != '' ">
 				AND t.parent_code = #{parentCode}
 			</if>
@@ -31,6 +34,7 @@
 		,t.leader
 		,t.leade_mobile
 		,t.parent_code
+		,t.project_code
 		FROM
 		thf_department t
 		<include refid="where_condition" />
@@ -56,6 +60,7 @@
 		,leader
 		,leade_mobile
 		,parent_code
+		,project_code
 		)
 		VALUES(
 		#{code}
@@ -63,6 +68,7 @@
 		,#{leader}
 		,#{leadeMobile}
 		,#{parentCode}
+		,#{projectCode}
 		)
 	</insert>
 

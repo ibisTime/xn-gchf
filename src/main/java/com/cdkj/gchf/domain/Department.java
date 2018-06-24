@@ -27,6 +27,9 @@ public class Department extends ABaseDO {
     // 上级部门编号
     private String parentCode;
 
+    // 项目编号
+    private String projectCode;
+
     // ***************db*************
 
     // 关键字模糊查询
@@ -49,6 +52,14 @@ public class Department extends ABaseDO {
 
     public String getName() {
         return name;
+    }
+
+    public String getProjectCode() {
+        return projectCode;
+    }
+
+    public void setProjectCode(String projectCode) {
+        this.projectCode = projectCode;
     }
 
     public String getLeadeMobile() {

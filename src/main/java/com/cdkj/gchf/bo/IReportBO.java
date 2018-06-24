@@ -31,4 +31,6 @@ public interface IReportBO extends IPaginableBO<Report> {
 
     public void refreshNextMonthSalary(Report data);
 
+    public void resetTodayDays(Report report);
+
 }

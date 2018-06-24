@@ -84,9 +84,6 @@ public class Project extends ABaseDO {
     // 备注
     private String remark;
 
-    // 部门编号
-    private String departmentCode;
-
     // ************************db*****************
 
     // 关键字
@@ -109,9 +106,6 @@ public class Project extends ABaseDO {
 
     // 负责人名称
     private String chargeName;
-
-    // 部门名称
-    private String departmentName;
 
     private List<String> projectCodeList;
 
@@ -233,14 +227,6 @@ public class Project extends ABaseDO {
 
     public void setUpdater(String updater) {
         this.updater = updater;
-    }
-
-    public String getDepartmentCode() {
-        return departmentCode;
-    }
-
-    public void setDepartmentCode(String departmentCode) {
-        this.departmentCode = departmentCode;
     }
 
     public Date getUpdateDatetime() {
@@ -377,14 +363,6 @@ public class Project extends ABaseDO {
 
     public void setProjectCodeList(List<String> projectCodeList) {
         this.projectCodeList = projectCodeList;
-    }
-
-    public String getDepartmentName() {
-        return departmentName;
-    }
-
-    public void setDepartmentName(String departmentName) {
-        this.departmentName = departmentName;
     }
 
 }

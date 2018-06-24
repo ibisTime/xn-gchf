@@ -65,7 +65,6 @@ public class ProjectAOImpl implements IProjectAO {
             .generate(EGeneratePrefix.Project.getCode());
         data.setCode(code);
         data.setCompanyCode(req.getCompanyCode());
-        data.setDepartmentCode(req.getDepartmentCode());
         data.setName(req.getName());
         data.setChargeUser(req.getChargeUser());
         User user = userBO.getUser(req.getChargeUser());
@@ -148,14 +147,10 @@ public class ProjectAOImpl implements IProjectAO {
         }
 
         page = projectBO.getPaginable(start, limit, condition);
-        Department department = null;
         for (Project project : page.getList()) {
-            department = departmentBO
-                .getDepartment(project.getDepartmentCode());
             project.setApproveName(getName(project.getApprover()));
             project.setUpdateName(getName(project.getUpdater()));
             project.setChargeName(getName(project.getChargeUser()));
-            project.setDepartmentName(department.getName());
         }
         return page;
     }
@@ -176,10 +171,6 @@ public class ProjectAOImpl implements IProjectAO {
         data.setApproveName(approveName);
         data.setUpdateName(updateName);
         data.setChargeName(chargeName);
-
-        Department department = departmentBO
-            .getDepartment(data.getDepartmentCode());
-        data.setDepartmentName(department.getName());
         return data;
     }
 
@@ -195,12 +186,9 @@ public class ProjectAOImpl implements IProjectAO {
 
         Department department = null;
         for (Project project : list) {
-            department = departmentBO
-                .getDepartment(project.getDepartmentCode());
             project.setApproveName(getName(project.getApprover()));
             project.setUpdateName(getName(project.getUpdater()));
             project.setChargeName(getName(project.getChargeUser()));
-            project.setDepartmentName(department.getName());
         }
         return list;
     }

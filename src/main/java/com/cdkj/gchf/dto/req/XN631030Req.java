@@ -33,6 +33,18 @@ public class XN631030Req {
     // （选填）上级部门编号
     private String parentCode;
 
+    // 项目编号
+    @NotBlank(message = "项目编号不能为空")
+    private String projectCode;
+
+    public String getProjectCode() {
+        return projectCode;
+    }
+
+    public void setProjectCode(String projectCode) {
+        this.projectCode = projectCode;
+    }
+
     public String getName() {
         return name;
     }

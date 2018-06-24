@@ -162,6 +162,11 @@ public class AttendanceAOImpl implements IAttendanceAO {
 
                 attendanceBO.saveAttendance(data);
             }
+
+            // 昨天上工人数清零
+            Report report = reportBO.getReportByProject(project.getCode());
+            report.setTodayDays(0);
+            reportBO.resetTodayDays(report);
         }
 
     }

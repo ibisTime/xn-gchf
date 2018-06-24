@@ -27,6 +27,17 @@ public class XN631036Req extends APageReq {
     // （选填）关键字 部门名称，部门负责人名称，手机号模糊查询
     private String keyword;
 
+    // 项目编号
+    private String projectCode;
+
+    public String getProjectCode() {
+        return projectCode;
+    }
+
+    public void setProjectCode(String projectCode) {
+        this.projectCode = projectCode;
+    }
+
     public String getKeyword() {
         return keyword;
     }

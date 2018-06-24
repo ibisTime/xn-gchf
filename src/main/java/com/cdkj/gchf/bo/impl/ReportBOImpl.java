@@ -112,4 +112,8 @@ public class ReportBOImpl extends PaginableBOImpl<Report> implements IReportBO {
     public void refreshNextMonthSalary(Report data) {
         reportDAO.updateNextMonthSalary(data);
     }
+
+    @Override
+    public void resetTodayDays(Report report) {
+    }
 }

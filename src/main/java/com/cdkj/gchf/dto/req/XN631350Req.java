@@ -10,6 +10,7 @@ import com.cdkj.gchf.domain.Department;
 public class XN631350Req {
 
     // 公司编号 （必填）
+    @NotBlank(message = "公司编号不能为空")
     private String companyCode;
 
     // 项目名称
@@ -23,6 +24,10 @@ public class XN631350Req {
     // 纬度
     @NotBlank(message = "纬度不能为空")
     private String latitude;
+
+    // 经度
+    @NotBlank(message = "经度不能为空")
+    private String longitude;
 
     // 省
     @NotBlank(message = "省不能为空")
@@ -52,10 +57,6 @@ public class XN631350Req {
     @NotBlank(message = "工资条形成时间不能为空")
     private String salaryCreateDatetime;
 
-    // 修改人
-    @NotBlank(message = "修改人不能为空")
-    private String updater;
-
     // 上班时间
     @NotBlank(message = "上班时间不能为空")
     private String attendanceStarttime;
@@ -64,20 +65,9 @@ public class XN631350Req {
     @NotBlank(message = "下班时间不能为空")
     private String attendanceEndtime;
 
-    // 备注
-    private String remark;
-
-    // 部门编号
-    @NotBlank(message = "部门编号不能为空")
-    private String departmentCode;
-
     // 账户别称
     @NotBlank(message = "账户别称不能为空")
     private String bankCode;
-
-    // 账户号
-    @NotBlank(message = "账户号不能为空")
-    private String bankcardNumber;
 
     // 银行名
     @NotBlank(message = "银行名不能为空")
@@ -87,17 +77,28 @@ public class XN631350Req {
     @NotBlank(message = "开户行不能为空")
     private String subbranch;
 
-    // 经度
-    @NotBlank(message = "经度不能为空")
-    private String longitude;
-
     // 户名
     @NotBlank(message = "户名不能为空")
     private String accountName;
 
+    // 账户号
+    @NotBlank(message = "账户号不能为空")
+    private String bankcardNumber;
+
+    // 修改人
+    @NotBlank(message = "修改人不能为空")
+    private String updater;
+
+    // 备注
+    private String remark;
+
     // 部门List
     @NotEmpty(message = "部门不能为空")
     private List<Department> depList;
+
+    // 部门编号
+    @NotBlank(message = "部门编号不能为空")
+    private String departmentCode;
 
     public String getBankcardNumber() {
         return bankcardNumber;

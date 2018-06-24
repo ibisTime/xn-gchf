@@ -13,20 +13,25 @@ public class XN631413Req {
     private String code;
 
     // （必填）联系方式
-    @NotBlank(message = "联系方式不能为空")
+    // @NotBlank(message = "联系方式不能为空")
     private String mobile;
 
-    // （必填）免冠照片
-    @NotBlank(message = "免冠照片不能为空")
-    private String pict1;
+    // （必填）紧急联系人
+    // @NotBlank(message = "紧急联系人不能为空")
+    private String contacts;
 
-    // （必填）手持身份张照片
-    @NotBlank(message = "手持身份张照片不能为空")
-    private String pict2;
+    // （必填）紧急联系人电话
+    // @NotBlank(message = "紧急联系人电话不能为空")
+    private String contactsMobile;
 
-    // （必填）身份证正反面照片+签名
-    @NotBlank(message = "身份证正反面照片+签名不能为空")
-    private String pict3;
+    // 职位
+    private String position;
+
+    // 薪资
+    private String salary;
+
+    // 迟到/早退扣款金额
+    private String cutAmount;
 
     // （必填）更新人
     @NotBlank(message = "更新人不能为空")
@@ -48,14 +53,6 @@ public class XN631413Req {
     @NotBlank(message = "开户行不能为空")
     private String subbranch;
 
-    // 紧急联系人
-    @NotBlank(message = "紧急联系人不能为空")
-    private String contacts;
-
-    // 紧急联系人电话
-    @NotBlank(message = "紧急联系人电话不能为空")
-    private String contactsMobile;
-
     // 技能
     private List<Skill> skillList;
 
@@ -76,30 +73,6 @@ public class XN631413Req {
 
     public void setMobile(String mobile) {
         this.mobile = mobile;
-    }
-
-    public String getPict1() {
-        return pict1;
-    }
-
-    public void setPict1(String pict1) {
-        this.pict1 = pict1;
-    }
-
-    public String getPict2() {
-        return pict2;
-    }
-
-    public void setPict2(String pict2) {
-        this.pict2 = pict2;
-    }
-
-    public String getPict3() {
-        return pict3;
-    }
-
-    public void setPict3(String pict3) {
-        this.pict3 = pict3;
     }
 
     public String getUpdater() {
@@ -172,6 +145,30 @@ public class XN631413Req {
 
     public void setSkillList(List<Skill> skillList) {
         this.skillList = skillList;
+    }
+
+    public String getPosition() {
+        return position;
+    }
+
+    public String getSalary() {
+        return salary;
+    }
+
+    public String getCutAmount() {
+        return cutAmount;
+    }
+
+    public void setPosition(String position) {
+        this.position = position;
+    }
+
+    public void setSalary(String salary) {
+        this.salary = salary;
+    }
+
+    public void setCutAmount(String cutAmount) {
+        this.cutAmount = cutAmount;
     }
 
 }

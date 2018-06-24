@@ -65,6 +65,7 @@ public class EmployAOImpl implements IEmployAO {
     ICcontractBO ccontractBO;
 
     @Override
+    @Transactional
     public String joinIn(XN631460Req req) {
         Employ data = new Employ();
         String code = OrderNoGenerater
@@ -110,6 +111,37 @@ public class EmployAOImpl implements IEmployAO {
         }
         employBO.joinIn(data);
 
+        // 计入累积入职
+        Report report = reportBO.getReportByProject(project.getCode());
+        if (null != report) {
+            // Long nextMonthSalary = AmountUtil.mul(data.getSalary(),
+            // DateUtil.getMonthDays()) + report.getNextMonthSalary();
+            // report.setNextMonthSalary(nextMonthSalary);
+            report.setStaffOn(report.getStaffOn() + 1);
+            report.setStaffIn(report.getStaffIn() + 1);
+            reportBO.staffIn(report);
+        }
+
+        // 生成考勤
+        Attendance attendance = new Attendance();
+
+        String attendanceCode = OrderNoGenerater
+            .generate(EGeneratePrefix.Attendance.getCode());
+        attendance.setCode(attendanceCode);
+        attendance.setProjectCode(project.getCode());
+        attendance.setProjectName(project.getName());
+
+        attendance.setStaffCode(staff.getCode());
+        attendance.setStaffName(staff.getName());
+        attendance.setStaffMobile(staff.getMobile());
+        attendance.setStatus(EAttendanceStatus.TO_Start.getCode());
+        attendance.setCreateDatetime(date);
+
+        attendanceBO.saveAttendance(attendance);
+        staffLogBO.saveStaffLog(data, staff.getName(), project.getCompanyCode(),
+            project.getCode(), project.getName());
+        return code;
+
         // 录入合同
         // Ccontract ccontract = new Ccontract();
         // String ccontractCode = OrderNoGenerater
@@ -136,35 +168,6 @@ public class EmployAOImpl implements IEmployAO {
         // ccontract.setCode(ccontractCode);
         // ccontractBO.saveCcontract(ccontract);
 
-        // 计入累积入职
-        Report report = reportBO.getReportByProject(project.getCode());
-
-        // Long nextMonthSalary = AmountUtil.mul(data.getSalary(),
-        // DateUtil.getMonthDays()) + report.getNextMonthSalary();
-        // report.setNextMonthSalary(nextMonthSalary);
-        report.setStaffOn(report.getStaffOn() + 1);
-        report.setStaffIn(report.getStaffIn() + 1);
-        reportBO.staffIn(report);
-
-        // 生成考勤
-        Attendance attendance = new Attendance();
-
-        String attendanceCode = OrderNoGenerater
-            .generate(EGeneratePrefix.Attendance.getCode());
-        attendance.setCode(attendanceCode);
-        attendance.setProjectCode(project.getCode());
-        attendance.setProjectName(project.getName());
-
-        attendance.setStaffCode(staff.getCode());
-        attendance.setStaffName(staff.getName());
-        attendance.setStaffMobile(staff.getMobile());
-        attendance.setStatus(EAttendanceStatus.TO_Start.getCode());
-        attendance.setCreateDatetime(date);
-
-        attendanceBO.saveAttendance(attendance);
-        staffLogBO.saveStaffLog(data, staff.getName(), project.getCompanyCode(),
-            project.getCode(), project.getName());
-        return code;
     }
 
     @Override

@@ -162,7 +162,9 @@ public class ProjectAOImpl implements IProjectAO {
             .getCompanyCardByProject(data.getCode());
         data.setCompanyCard(companyCard);
         Report report = reportBO.getReportByProject(data.getCode());
-        data.setReport(report);
+        if (report != null) {
+            data.setReport(report);
+        }
 
         // 补全名字信息
         String approveName = getName(data.getApprover());

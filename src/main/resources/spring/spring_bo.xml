@@ -16,8 +16,6 @@
 		<property name="paginableDAO" ref="userDAOImpl" />
 	</bean>
 	
-
-	
 	
 	<bean id="sysMenuBO" class="com.cdkj.gchf.bo.impl.SYSMenuBOImpl">
 		<property name="paginableDAO" ref="sysMenuDAOImpl"/>
@@ -31,9 +29,6 @@
 	<bean id="sysMenuRoleBO" class="com.cdkj.gchf.bo.impl.SYSMenuRoleBOImpl">
 		<property name="paginableDAO" ref="sysMenuRoleDAOImpl"/>
 	</bean>
-
-
-	
 	
 
 	<bean id="sysDictBO" class="com.cdkj.gchf.bo.impl.SYSDictBOImpl">

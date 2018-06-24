@@ -8,8 +8,6 @@
 		<typeAlias alias="user" type="com.cdkj.gchf.domain.User" />
 		
 		
-		
-		
 		<typeAlias alias="sysMenu" type="com.cdkj.gchf.domain.SYSMenu" />
 		<typeAlias alias="sysRole" type="com.cdkj.gchf.domain.SYSRole" />
 		<typeAlias alias="sysMenuRole" type="com.cdkj.gchf.domain.SYSMenuRole" />

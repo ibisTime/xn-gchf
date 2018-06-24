@@ -71,6 +71,9 @@ public class ReportBOImpl extends PaginableBOImpl<Report> implements IReportBO {
             Report condition = new Report();
             condition.setProjectCode(proejctCode);
             data = reportDAO.select(condition);
+            if (null == data) {
+                throw new BizException("xn0000", "该项目的统计信息不存在");
+            }
         }
         return data;
     }

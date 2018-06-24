@@ -139,9 +139,9 @@ public class EmployAOImpl implements IEmployAO {
         // 计入累积入职
         Report report = reportBO.getReportByProject(project.getCode());
 
-        Long nextMonthSalary = AmountUtil.mul(data.getSalary(),
-            DateUtil.getMonthDays()) + report.getNextMonthSalary();
-        report.setNextMonthSalary(nextMonthSalary);
+        // Long nextMonthSalary = AmountUtil.mul(data.getSalary(),
+        // DateUtil.getMonthDays()) + report.getNextMonthSalary();
+        // report.setNextMonthSalary(nextMonthSalary);
         report.setStaffOn(report.getStaffOn() + 1);
         report.setStaffIn(report.getStaffIn() + 1);
         reportBO.staffIn(report);

@@ -34,7 +34,6 @@
 			<if test="staffCode != null and staffCode != '' ">
 				AND t.staff_code = #{staffCode}
 			</if>
-			
 			<if test="keyword != null and keyword != '' ">
 				AND (t.staff_mobile like "%"#{keyword}"%" OR t.staff_name like "%"#{keyword}"%") 
 			</if>
@@ -108,22 +107,6 @@
 		)
 	</insert>
 
-	<update id="update_attendance" parameterType="attendance">
-		UPDATE thf_attendance
-		SET
-		project_code = #{projectCode}
-		,project_name = #{projectName}
-		,staff_code = #{staffCode}
-		,staff_mobile = #{staffMobile}
-		,status = #{status}
-		,create_datetime = #{createDatetime}
-		,start_datetime = #{startDatetime}
-		,end_datetime = #{endDatetime}
-		,settle_datetime = #{settleDatetime}
-		,remark = #{remark}
-		WHERE code = #{code}
-	</update>
-
 	<update id="to_start" parameterType="attendance">
 		UPDATE thf_attendance
 		SET
@@ -151,4 +134,21 @@
 		,settle_datetime = #{settleDatetime}
 		WHERE code = #{code}
 	</update>
+	
+	<update id="attendance_startClockIn" parameterType="attendance">
+		UPDATE thf_attendance
+		SET
+		status = #{status}
+		,start_datetime = #{startDatetime}
+		WHERE code = #{code}
+	</update>
+	
+	<update id="attendance_endClockIn" parameterType="attendance">
+		UPDATE thf_attendance
+		SET
+		status = #{status}
+		,end_datetime = #{endDatetime}
+		WHERE code = #{code}
+	</update>
+	
 </mapper>

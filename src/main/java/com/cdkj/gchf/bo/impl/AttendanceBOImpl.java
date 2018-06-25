@@ -27,22 +27,37 @@ public class AttendanceBOImpl extends PaginableBOImpl<Attendance>
     }
 
     @Override
-    public int removeAttendance(String code) {
-        int count = 0;
-        if (StringUtils.isNotBlank(code)) {
-            Attendance data = new Attendance();
-            data.setCode(code);
-            count = attendanceDAO.delete(data);
-        }
-        return count;
+    public void toStart(Attendance data) {
+        attendanceDAO.toStart(data);
     }
 
     @Override
-    public int refreshAttendance(Attendance data) {
-        int count = 0;
-        if (StringUtils.isNotBlank(data.getCode())) {
-        }
-        return count;
+    public void toEnd(Attendance data) {
+        attendanceDAO.toEnd(data);
+    }
+
+    @Override
+    public void updateStatus(Attendance data) {
+        data.setSettleDatetime(new Date());
+        attendanceDAO.updateStatus(data);
+    }
+
+    @Override
+    public void startClockIn(String code, String status, Date startDatetime) {
+        Attendance data = new Attendance();
+        data.setCode(code);
+        data.setStatus(status);
+        data.setStartDatetime(startDatetime);
+        attendanceDAO.updateStartClockIn(data);
+    }
+
+    @Override
+    public void endClockIn(String code, String status, Date endDatetime) {
+        Attendance data = new Attendance();
+        data.setCode(code);
+        data.setStatus(status);
+        data.setEndDatetime(endDatetime);
+        attendanceDAO.updateEndClockIn(data);
     }
 
     @Override
@@ -77,21 +92,5 @@ public class AttendanceBOImpl extends PaginableBOImpl<Attendance>
             return null;
         }
         return list.get(0);
-    }
-
-    @Override
-    public void toStart(Attendance data) {
-        attendanceDAO.toStart(data);
-    }
-
-    @Override
-    public void toEnd(Attendance data) {
-        attendanceDAO.toEnd(data);
-    }
-
-    @Override
-    public void updateStatus(Attendance data) {
-        data.setSettleDatetime(new Date());
-        attendanceDAO.updateStatus(data);
     }
 }

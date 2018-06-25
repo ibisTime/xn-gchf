@@ -16,13 +16,9 @@ public class XN631350Req {
     @NotBlank(message = "负责人编号不能为空")
     private String chargeUser;
 
-    // 纬度
-    @NotBlank(message = "纬度不能为空")
-    private String latitude;
-
-    // 经度
-    @NotBlank(message = "经度不能为空")
-    private String longitude;
+    // 负责人手机号
+    @NotBlank(message = "负责人负责人手机号不能为空")
+    private String chargeMobile;
 
     // 省
     @NotBlank(message = "省不能为空")
@@ -40,17 +36,13 @@ public class XN631350Req {
     @NotBlank(message = "地址不能为空")
     private String address;
 
-    // 项目开始时间
-    @NotBlank(message = "项目开始时间不能为空")
-    private String startDatetime;
+    // 纬度
+    @NotBlank(message = "纬度不能为空")
+    private String latitude;
 
-    // 薪资发放时间
-    @NotBlank(message = "薪资发放时间不能为空")
-    private String salaryDatetime;
-
-    // 工资条形成时间
-    @NotBlank(message = "工资条形成时间不能为空")
-    private String salaryCreateDatetime;
+    // 经度
+    @NotBlank(message = "经度不能为空")
+    private String longitude;
 
     // 上班时间
     @NotBlank(message = "上班时间不能为空")
@@ -59,6 +51,18 @@ public class XN631350Req {
     // 下班时间
     @NotBlank(message = "下班时间不能为空")
     private String attendanceEndtime;
+
+    // 项目开始时间
+    @NotBlank(message = "项目开始时间不能为空")
+    private String startDatetime;
+
+    // 工资条形成时间
+    @NotBlank(message = "工资条形成时间不能为空")
+    private String salaryCreateDatetime;
+
+    // 薪资发放时间
+    @NotBlank(message = "薪资发放时间不能为空")
+    private String salaryDatetime;
 
     // 账户别称
     @NotBlank(message = "账户别称不能为空")
@@ -125,6 +129,14 @@ public class XN631350Req {
 
     public void setChargeUser(String chargeUser) {
         this.chargeUser = chargeUser;
+    }
+
+    public String getChargeMobile() {
+        return chargeMobile;
+    }
+
+    public void setChargeMobile(String chargeMobile) {
+        this.chargeMobile = chargeMobile;
     }
 
     public String getLongitude() {

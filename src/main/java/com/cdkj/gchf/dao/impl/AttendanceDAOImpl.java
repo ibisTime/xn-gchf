@@ -19,7 +19,7 @@ public class AttendanceDAOImpl extends AMybatisTemplate
 
     @Override
     public int delete(Attendance data) {
-        return super.delete(NAMESPACE.concat("delete_attendance"), data);
+        return 0;
     }
 
     @Override
@@ -60,6 +60,16 @@ public class AttendanceDAOImpl extends AMybatisTemplate
     @Override
     public void updateStatus(Attendance data) {
         super.update(NAMESPACE.concat("update_status"), data);
+    }
+
+    @Override
+    public int updateStartClockIn(Attendance data) {
+        return super.update(NAMESPACE.concat("attendance_startClockIn"), data);
+    }
+
+    @Override
+    public int updateEndClockIn(Attendance data) {
+        return super.update(NAMESPACE.concat("attendance_endClockIn"), data);
     }
 
 }

@@ -1,5 +1,6 @@
 package com.cdkj.gchf.bo;
 
+import java.util.Date;
 import java.util.List;
 
 import com.cdkj.gchf.bo.base.IPaginableBO;
@@ -9,9 +10,19 @@ public interface IAttendanceBO extends IPaginableBO<Attendance> {
 
     public void saveAttendance(Attendance data);
 
-    public int removeAttendance(String code);
+    // 考勤系统上班打卡
+    public void toStart(Attendance data);
 
-    public int refreshAttendance(Attendance data);
+    // 考勤系统下班打卡
+    public void toEnd(Attendance data);
+
+    // 手动上班打卡
+    public void startClockIn(String code, String status, Date startDatetime);
+
+    // 手动下班打卡
+    public void endClockIn(String code, String status, Date endDatetime);
+
+    public void updateStatus(Attendance data);
 
     public List<Attendance> queryAttendanceList(Attendance condition);
 
@@ -19,11 +30,4 @@ public interface IAttendanceBO extends IPaginableBO<Attendance> {
 
     public Attendance getAttendanceByProject(String projectCode,
             String staffCode);
-
-    public void toStart(Attendance data);
-
-    public void toEnd(Attendance data);
-
-    public void updateStatus(Attendance data);
-
 }

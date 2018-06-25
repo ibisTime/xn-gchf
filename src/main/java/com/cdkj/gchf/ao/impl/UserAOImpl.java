@@ -86,6 +86,7 @@ public class UserAOImpl implements IUserAO {
         if (EUserKind.Owner.getCode().equals(req.getType())) {
             Company company = companyBO.getCompany(req.getCompanyCode());
             data.setCompanyCode(company.getCode());
+            data.setCompanyName(company.getName());
         }
         if (EUserKind.Bank.getCode().equals(req.getType())) {
             data.setLoginName(req.getLoginName());

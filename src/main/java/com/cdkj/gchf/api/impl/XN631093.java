@@ -19,8 +19,6 @@ public class XN631093 extends AProcessor {
 
     @Override
     public Object doBusiness() throws BizException {
-        String result = BizConnecter.getFeat(req.getPict1());
-
         return BizConnecter.getFeat(req.getPict1());
     }
 

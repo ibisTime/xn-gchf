@@ -205,24 +205,30 @@ DROP TABLE IF EXISTS  `thf_project`;
 CREATE TABLE `thf_project` (
   `code` varchar(32) NOT NULL COMMENT '编号',
   `company_code` varchar(32) DEFAULT NULL COMMENT '公司编号',
+  `company_name` varchar(255) DEFAULT NULL COMMENT '公司名称',
+  `department_code` varchar(32) DEFAULT NULL COMMENT '部门编号',
   `name` varchar(255) DEFAULT NULL COMMENT '项目名称',
   `charge_user` varchar(32) DEFAULT NULL COMMENT '负责人编号',
-  `attendance_endtime` varchar(64) DEFAULT NULL COMMENT '下班时间',
   `charge_mobile` varchar(16) DEFAULT NULL COMMENT '负责人手机号',
+  
   `attendance_starttime` varchar(64) DEFAULT NULL COMMENT '上班时间',
+  `attendance_endtime` varchar(64) DEFAULT NULL COMMENT '下班时间',
   `start_datetime` datetime DEFAULT NULL COMMENT '项目开始时间',
-  `salary_create_datetime` varchar(64) DEFAULT NULL COMMENT '工资条形成时间',
   `end_datetime` datetime DEFAULT NULL COMMENT '项目结束时间',
+  `salary_create_datetime` varchar(64) DEFAULT NULL COMMENT '工资条形成时间',
+  
   `longitude` varchar(255) DEFAULT NULL COMMENT '经度',
   `latitude` varchar(255) DEFAULT NULL COMMENT '纬度',
   `province` varchar(255) DEFAULT NULL COMMENT '省',
   `city` varchar(255) DEFAULT NULL COMMENT '市',
   `area` varchar(255) DEFAULT NULL COMMENT '区',
+  
   `address` text COMMENT '地址',
   `salary_datetime` varchar(64) DEFAULT NULL COMMENT '薪资发放时间',
   `status` varchar(4) DEFAULT NULL COMMENT '状态',
   `approver` varchar(32) DEFAULT NULL COMMENT '审核人',
   `approve_datetime` datetime DEFAULT NULL COMMENT '审核时间',
+  
   `approve_note` varchar(255) DEFAULT NULL COMMENT '审核备注',
   `updater` varchar(32) DEFAULT NULL COMMENT '修改人',
   `update_datetime` datetime DEFAULT NULL COMMENT '修改时间',
@@ -462,3 +468,15 @@ CREATE TABLE `thf_query_log` (
   CONSTRAINT `user_id` FOREIGN KEY (`user_id`) REFERENCES `thf_user` (`user_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
+DROP TABLE IF EXISTS  `thf_subbranch`;
+CREATE TABLE `thf_subbranch` (
+  `code` varchar(32) NOT NULL COMMENT '编号',
+  `bank_code` varchar(32) DEFAULT NULL COMMENT '银行编号',
+  `bank_alias` varchar(255) DEFAULT NULL COMMENT '银行别名',
+  `bank_name` varchar(255) DEFAULT NULL COMMENT '银行名称',
+  `subbranch_name` varchar(255) DEFAULT NULL COMMENT '支行名称',
+  `updater` varchar(32) DEFAULT NULL COMMENT '更新人',
+  `update_datetime` datetime DEFAULT NULL COMMENT '更新时间',
+  `remark` text COMMENT '备注',
+  PRIMARY KEY (`code`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;

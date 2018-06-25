@@ -1,5 +1,6 @@
 package com.cdkj.gchf.ao;
 
+import java.util.Date;
 import java.util.List;
 
 import org.springframework.stereotype.Component;
@@ -11,7 +12,15 @@ import com.cdkj.gchf.domain.Attendance;
 public interface IAttendanceAO {
     static final String DEFAULT_ORDER_COLUMN = "code";
 
-    public void clockIn(String projectCode, String staffCode);
+    // 上班考勤手动打卡
+    public void startWorkClockIn(String code, Date startDatetime);
+
+    // 下班考勤手动打卡
+    public void endWorkClockIn(String code, Date endDatetime);
+
+    // 闸机考勤系统调用
+    public String clockIn(String sim, String projectCode, String staffCode,
+            String attendTime, String terminalCode);
 
     public Paginable<Attendance> queryAttendancePage(int start, int limit,
             Attendance condition);
@@ -19,8 +28,5 @@ public interface IAttendanceAO {
     public List<Attendance> queryAttendanceList(Attendance condition);
 
     public Attendance getAttendance(String code);
-
-    public String clockIn(String sim, String projectCode, String staffCode,
-            String attendTime, String terminalCode);
 
 }

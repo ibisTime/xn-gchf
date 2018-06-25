@@ -21,11 +21,17 @@ public class Project extends ABaseDO {
     // 公司编号
     private String companyCode;
 
-    // 负责人编号
+    // 负责人
     private String chargeUser;
 
     // 负责人手机号
     private String chargeMobile;
+
+    // 上班时间（09：30）
+    private String attendanceStarttime;
+
+    // 下班时间（17：30）
+    private String attendanceEndtime;
 
     // 项目开始时间
     private Date startDatetime;
@@ -33,11 +39,8 @@ public class Project extends ABaseDO {
     // 项目结束时间
     private Date endDatetime;
 
-    // 上班时间
-    private String attendanceStarttime;
-
-    // 下班时间
-    private String attendanceEndtime;
+    // 工资条形成时间（每个月的几号）
+    private String salaryCreateDatetime;
 
     // 经度
     private String longitude;
@@ -57,10 +60,7 @@ public class Project extends ABaseDO {
     // 地址
     private String address;
 
-    // 工资条形成时间
-    private String salaryCreateDatetime;
-
-    // 薪资发放时间
+    // 薪资发放时间（每个月的几号）
     private String salaryDatetime;
 
     // 状态
@@ -103,9 +103,6 @@ public class Project extends ABaseDO {
 
     // 用户类型
     private String kind;
-
-    // 负责人名称
-    private String chargeName;
 
     private List<String> projectCodeList;
 
@@ -347,14 +344,6 @@ public class Project extends ABaseDO {
 
     public void setKind(String kind) {
         this.kind = kind;
-    }
-
-    public String getChargeName() {
-        return chargeName;
-    }
-
-    public void setChargeName(String chargeName) {
-        this.chargeName = chargeName;
     }
 
     public List<String> getProjectCodeList() {

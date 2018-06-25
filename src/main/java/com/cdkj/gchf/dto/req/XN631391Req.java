@@ -3,19 +3,19 @@ package com.cdkj.gchf.dto.req;
 import org.hibernate.validator.constraints.NotBlank;
 
 /**
- * 手动上班打卡
+ * 手动下班打卡
  * @author: silver 
  * @since: 2018年6月25日 下午1:54:33 
  * @history:
  */
-public class XN631390Req {
+public class XN631391Req {
     // 考勤编号
     @NotBlank
     private String code;
 
     // 上班考勤时间
     @NotBlank
-    private String startDatetime;
+    private String endDatetime;
 
     public String getCode() {
         return code;
@@ -25,12 +25,12 @@ public class XN631390Req {
         this.code = code;
     }
 
-    public String getStartDatetime() {
-        return startDatetime;
+    public String getEndDatetime() {
+        return endDatetime;
     }
 
-    public void setStartDatetime(String startDatetime) {
-        this.startDatetime = startDatetime;
+    public void setEndDatetime(String endDatetime) {
+        this.endDatetime = endDatetime;
     }
 
 }

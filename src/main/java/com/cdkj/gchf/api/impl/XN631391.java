@@ -5,7 +5,7 @@ import com.cdkj.gchf.api.AProcessor;
 import com.cdkj.gchf.common.DateUtil;
 import com.cdkj.gchf.common.JsonUtil;
 import com.cdkj.gchf.core.ObjValidater;
-import com.cdkj.gchf.dto.req.XN631390Req;
+import com.cdkj.gchf.dto.req.XN631391Req;
 import com.cdkj.gchf.dto.res.BooleanRes;
 import com.cdkj.gchf.exception.BizException;
 import com.cdkj.gchf.exception.ParaException;
@@ -17,24 +17,24 @@ import com.cdkj.gchf.spring.SpringContextHolder;
  * @since: 2018年6月25日 下午1:54:05 
  * @history:
  */
-public class XN631390 extends AProcessor {
+public class XN631391 extends AProcessor {
 
     private IAttendanceAO attendanceAO = SpringContextHolder
         .getBean(IAttendanceAO.class);
 
-    private XN631390Req req = null;
+    private XN631391Req req = null;
 
     @Override
     public Object doBusiness() throws BizException {
-        attendanceAO.startWorkClockIn(req.getCode(), DateUtil
-            .strToDate(req.getStartDatetime(), DateUtil.DATA_TIME_PATTERN_1));
+        attendanceAO.endWorkClockIn(req.getCode(), DateUtil
+            .strToDate(req.getEndDatetime(), DateUtil.DATA_TIME_PATTERN_1));
         return new BooleanRes(true);
     }
 
     @Override
     public void doCheck(String inputparams, String operator)
             throws ParaException {
-        req = JsonUtil.json2Bean(inputparams, XN631390Req.class);
+        req = JsonUtil.json2Bean(inputparams, XN631391Req.class);
         ObjValidater.validateReq(req);
     }
 

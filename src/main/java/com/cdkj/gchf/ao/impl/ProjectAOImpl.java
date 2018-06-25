@@ -21,7 +21,6 @@ import com.cdkj.gchf.bo.base.Paginable;
 import com.cdkj.gchf.common.DateUtil;
 import com.cdkj.gchf.core.OrderNoGenerater;
 import com.cdkj.gchf.domain.CompanyCard;
-import com.cdkj.gchf.domain.Department;
 import com.cdkj.gchf.domain.Employ;
 import com.cdkj.gchf.domain.Project;
 import com.cdkj.gchf.domain.Report;
@@ -67,30 +66,26 @@ public class ProjectAOImpl implements IProjectAO {
         data.setCompanyCode(req.getCompanyCode());
         data.setName(req.getName());
         data.setChargeUser(req.getChargeUser());
-        User user = userBO.getUser(req.getChargeUser());
-        if (StringUtils.isNotBlank(user.getMobile())) {
-            data.setChargeMobile(user.getMobile());
-        }
+        data.setChargeMobile(req.getChargeMobile());
 
-        data.setStartDatetime(DateUtil.strToDate(req.getStartDatetime(),
-            DateUtil.FRONT_DATE_FORMAT_STRING));
-
-        data.setLongitude(req.getLongitude());
-        data.setLatitude(req.getLatitude());
         data.setProvince(req.getProvince());
         data.setCity(req.getCity());
-
         data.setArea(req.getArea());
         data.setAddress(req.getAddress());
-        data.setSalaryCreateDatetime(req.getSalaryCreateDatetime());
-        data.setSalaryDatetime(req.getSalaryDatetime());
+        data.setLongitude(req.getLongitude());
+
+        data.setLatitude(req.getLatitude());
         data.setAttendanceStarttime(req.getAttendanceStarttime());
         data.setAttendanceEndtime(req.getAttendanceEndtime());
+        data.setStartDatetime(DateUtil.strToDate(req.getStartDatetime(),
+            DateUtil.FRONT_DATE_FORMAT_STRING));
+        data.setSalaryCreateDatetime(req.getSalaryCreateDatetime());
 
-        data.setStatus(EProjectStatus.To_Audit.getCode());
+        data.setSalaryDatetime(req.getSalaryDatetime());
         data.setUpdater(req.getUpdater());
-        data.setUpdateDatetime(new Date());
         data.setRemark(req.getRemark());
+        data.setStatus(EProjectStatus.To_Audit.getCode());
+        data.setUpdateDatetime(new Date());
         projectBO.saveProject(data);
 
         // 添加公司账户
@@ -150,7 +145,6 @@ public class ProjectAOImpl implements IProjectAO {
         for (Project project : page.getList()) {
             project.setApproveName(getName(project.getApprover()));
             project.setUpdateName(getName(project.getUpdater()));
-            project.setChargeName(getName(project.getChargeUser()));
         }
         return page;
     }
@@ -169,10 +163,8 @@ public class ProjectAOImpl implements IProjectAO {
         // 补全名字信息
         String approveName = getName(data.getApprover());
         String updateName = getName(data.getUpdater());
-        String chargeName = getName(data.getChargeUser());
         data.setApproveName(approveName);
         data.setUpdateName(updateName);
-        data.setChargeName(chargeName);
         return data;
     }
 
@@ -186,11 +178,9 @@ public class ProjectAOImpl implements IProjectAO {
         }
         list = projectBO.queryProject(condition);
 
-        Department department = null;
         for (Project project : list) {
             project.setApproveName(getName(project.getApprover()));
             project.setUpdateName(getName(project.getUpdater()));
-            project.setChargeName(getName(project.getChargeUser()));
         }
         return list;
     }
@@ -303,6 +293,5 @@ public class ProjectAOImpl implements IProjectAO {
             }
         }
         return name;
-
     }
 }

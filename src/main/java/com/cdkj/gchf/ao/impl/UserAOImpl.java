@@ -16,6 +16,7 @@ import com.cdkj.gchf.bo.IProjectBO;
 import com.cdkj.gchf.bo.ISYSMenuRoleBO;
 import com.cdkj.gchf.bo.ISYSRoleBO;
 import com.cdkj.gchf.bo.ISmsOutBO;
+import com.cdkj.gchf.bo.ISubbranchBO;
 import com.cdkj.gchf.bo.IUserBO;
 import com.cdkj.gchf.bo.base.Paginable;
 import com.cdkj.gchf.common.MD5Util;
@@ -58,7 +59,11 @@ public class UserAOImpl implements IUserAO {
     @Autowired
     private IProjectBO projectBO;
 
+    @Autowired
+    private ISubbranchBO subbranchBO;
+
     @Override
+    @Transactional
     public String doAddUser(XN631070Req req) {
         if (StringUtils.isNotBlank(req.getMobile())) {
             PhoneUtil.checkMobile(req.getMobile());
@@ -92,6 +97,8 @@ public class UserAOImpl implements IUserAO {
             data.setLoginName(req.getLoginName());
             data.setBankName(req.getBankName());
             data.setSubbranch(req.getSubbranch());
+            subbranchBO.saveSubbranch(req.getBankCode(), req.getBankName(),
+                req.getSubbranch());
         }
 
         data.setProvince(req.getProvince());

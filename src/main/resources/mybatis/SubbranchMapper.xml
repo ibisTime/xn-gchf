@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cdkj.gchf.dao.ISubbranchDAO">
+	<resultMap id="subbranch_DB_Result" type="subbranch">
+		<result column="code" property="code" />
+		<result column="bank_code" property="bankCode" />
+		<result column="bank_name" property="bankName" />
+		<result column="subbranch_name" property="subbranchName" />
+		
+		<result column="updater" property="updater" />
+		<result column="update_datetime" property="updateDatetime" />
+		<result column="remark" property="remark" />
+	</resultMap>
+	<sql id="where_condition">
+		<trim prefix="WHERE" prefixOverrides="AND | OR">
+			<if test="code != null and code != '' ">
+				AND t.code = #{code}
+			</if>
+			<if test="bankName != null and bankName != '' ">
+				AND t.bank_name = #{bankName}
+			</if>
+			<if test="subbranchName != null and subbranchName != '' ">
+				AND t.subbranch_name = #{subbranchName}
+			</if>
+		</trim>
+	</sql>
+	<select id="select_subbranch" parameterType="subbranch" resultMap="subbranch_DB_Result">
+		SELECT
+		t.code
+		,t.bank_code
+		,t.bank_name
+		,t.subbranch_name
+		,t.updater
+		,t.update_datetime
+		,t.remark
+		FROM
+		thf_subbranch t
+		<include refid="where_condition" />
+		<trim prefix="ORDER BY ">
+			<if test="order != null and order != '' ">
+				t.${order}
+			</if>
+		</trim>
+	</select>
+
+	<select id="select_subbranch_count" parameterType="subbranch"
+		resultType="java.lang.Long">
+		SELECT count(1) FROM thf_subbranch t
+		<include refid="where_condition" />
+	</select>
+
+	<insert id="insert_subbranch" parameterType="subbranch">
+		INSERT INTO
+		thf_subbranch(
+		code
+		,bank_code
+		,bank_name
+		,subbranch_name
+		,updater
+		,update_datetime
+		,remark
+		)
+		VALUES(
+		#{code}
+		,#{bankCode}
+		,#{bankName}
+		,#{subbranchName}
+		,#{updater}
+		,#{updateDatetime}
+		,#{remark}
+		)
+	</insert>
+
+</mapper>

@@ -34,7 +34,10 @@ public class XN631070Req {
     // (选填) 银行名称
     private String bankName;
 
-    // （选填） 省
+    // (选填) 银行编号
+    private String bankCode;
+
+    // （选填） 所属支行
     private String subbranch;
 
     // （选填） 市
@@ -43,7 +46,7 @@ public class XN631070Req {
     // （选填） 区
     private String area;
 
-    // （选填） 所属支行
+    // （选填） 省
     private String province;
 
     // 推荐人（选填）
@@ -154,6 +157,14 @@ public class XN631070Req {
 
     public void setBankName(String bankName) {
         this.bankName = bankName;
+    }
+
+    public String getBankCode() {
+        return bankCode;
+    }
+
+    public void setBankCode(String bankCode) {
+        this.bankCode = bankCode;
     }
 
 }

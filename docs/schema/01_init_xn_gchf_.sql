@@ -472,7 +472,6 @@ DROP TABLE IF EXISTS  `thf_subbranch`;
 CREATE TABLE `thf_subbranch` (
   `code` varchar(32) NOT NULL COMMENT '编号',
   `bank_code` varchar(32) DEFAULT NULL COMMENT '银行编号',
-  `bank_alias` varchar(255) DEFAULT NULL COMMENT '银行别名',
   `bank_name` varchar(255) DEFAULT NULL COMMENT '银行名称',
   `subbranch_name` varchar(255) DEFAULT NULL COMMENT '支行名称',
   `updater` varchar(32) DEFAULT NULL COMMENT '更新人',

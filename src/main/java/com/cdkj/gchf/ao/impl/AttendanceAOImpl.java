@@ -5,6 +5,8 @@ import java.util.Date;
 import java.util.List;
 
 import org.apache.commons.collections.CollectionUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -23,7 +25,7 @@ import com.cdkj.gchf.domain.Employ;
 import com.cdkj.gchf.domain.Project;
 import com.cdkj.gchf.domain.Report;
 import com.cdkj.gchf.enums.EAttendanceStatus;
-import com.cdkj.gchf.enums.EEmploytatus;
+import com.cdkj.gchf.enums.EEmploystatus;
 import com.cdkj.gchf.enums.EGeneratePrefix;
 import com.cdkj.gchf.enums.EProjectStatus;
 import com.cdkj.gchf.enums.EUserKind;
@@ -32,6 +34,8 @@ import com.google.gson.Gson;
 
 @Service
 public class AttendanceAOImpl implements IAttendanceAO {
+    private static final Logger logger = LoggerFactory
+        .getLogger(AttendanceAOImpl.class);
 
     @Autowired
     private IAttendanceBO attendanceBO;
@@ -135,13 +139,13 @@ public class AttendanceAOImpl implements IAttendanceAO {
         List<Project> pList = projectBO.queryProject(condition);
         // 获取各个项目的上下班时间，形成考勤记录
         Attendance data = null;
-        System.out.println("===========开始生成考勤==============");
+        logger.info("===========开始生成考勤==============");
         String attendanceCode = null;
         for (Project project : pList) {
             // 获取项目下得所有未离职员工
             Employ eCondition = new Employ();
             eCondition.setProjectCode(project.getCode());
-            eCondition.setStatus(EEmploytatus.Work.getCode());
+            eCondition.setStatus(EEmploystatus.Work.getCode());
 
             List<Employ> eList = employBO.queryEmployList(eCondition);
 
@@ -175,7 +179,7 @@ public class AttendanceAOImpl implements IAttendanceAO {
     public String clockIn(String sim, String projectCode, String staffCode,
             String attendTime, String terminalCode) {
         JSONObject json = new JSONObject();
-        System.out.println("获取考勤记录了");
+        logger.info("===========获取考勤记录==============");
         Attendance data = attendanceBO.getAttendanceByProject(projectCode,
             staffCode);
         if (data == null) {
@@ -208,9 +212,9 @@ public class AttendanceAOImpl implements IAttendanceAO {
             data.setStatus(EAttendanceStatus.TO_End.getCode());
             attendanceBO.toEnd(data);
         }
-        // @TODO 用log4j System.out.println("都结束了");
+        logger.info("===========考勤成功==============");
         json.put("result", true);
-        System.out.println("json" + new Gson().toJson(json));
+        logger.info("json" + new Gson().toJson(json));
         return new Gson().toJson(json);
     }
 

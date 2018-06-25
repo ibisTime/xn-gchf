@@ -99,16 +99,16 @@ public class XN631413Req {
         this.bankName = bankName;
     }
 
+    public String getSubbranch() {
+        return subbranch;
+    }
+
     public String getBankcardNumber() {
         return bankcardNumber;
     }
 
     public void setBankcardNumber(String bankcardNumber) {
         this.bankcardNumber = bankcardNumber;
-    }
-
-    public String getSubbranch() {
-        return subbranch;
     }
 
     public void setSubbranch(String subbranch) {

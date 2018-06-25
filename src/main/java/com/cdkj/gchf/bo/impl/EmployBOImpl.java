@@ -13,7 +13,7 @@ import com.cdkj.gchf.common.DateUtil;
 import com.cdkj.gchf.dao.IEmployDAO;
 import com.cdkj.gchf.domain.Employ;
 import com.cdkj.gchf.domain.Salary;
-import com.cdkj.gchf.enums.EEmploytatus;
+import com.cdkj.gchf.enums.EEmploystatus;
 import com.cdkj.gchf.exception.BizException;
 
 @Component
@@ -36,7 +36,7 @@ public class EmployBOImpl extends PaginableBOImpl<Employ> implements IEmployBO {
             String remark) {
         data.setLeavingDatetime(DateUtil.strToDate(leavingDatetime,
             DateUtil.FRONT_DATE_FORMAT_STRING));
-        data.setStatus(EEmploytatus.Leave.getCode());
+        data.setStatus(EEmploystatus.Leave.getCode());
         data.setUpdater(updater);
         data.setUpdateDatetime(new Date());
         data.setRemark(remark);

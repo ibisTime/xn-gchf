@@ -1,10 +1,10 @@
 package com.cdkj.gchf.enums;
 
-public enum EEmploytatus {
+public enum EEmploystatus {
     Work("0", "在职"), Hoilday("1", "请假"), Leave("2", "离职"), Not_Leave("0,1",
             "未离职");
 
-    EEmploytatus(String code, String value) {
+    EEmploystatus(String code, String value) {
         this.code = code;
         this.value = value;
     }

@@ -37,8 +37,10 @@ import com.cdkj.gchf.domain.User;
 import com.cdkj.gchf.dto.req.XN631442Req;
 import com.cdkj.gchf.enums.EAttendanceStatus;
 import com.cdkj.gchf.enums.EBoolean;
+import com.cdkj.gchf.enums.EEmploystatus;
 import com.cdkj.gchf.enums.EGeneratePrefix;
 import com.cdkj.gchf.enums.EMessageStatus;
+import com.cdkj.gchf.enums.EProjectStatus;
 import com.cdkj.gchf.enums.ESalaryStatus;
 import com.cdkj.gchf.enums.EUser;
 import com.cdkj.gchf.exception.BizException;
@@ -202,21 +204,24 @@ public class SalaryAOImpl implements ISalaryAO {
         Calendar calendar = Calendar.getInstance();
         Date date = new Date();
         Project condition = new Project();
-        List<Project> pList = projectBO.queryProject(condition);
+        condition.setStatus(EProjectStatus.Building.getCode());
+        List<Project> projectsList = projectBO.queryProject(condition);
+
         System.err.println(calendar.get(Calendar.YEAR) + "/"
                 + calendar.get(Calendar.MONTH) + "的工资条==============");
-        for (Project project : pList) {
+        for (Project project : projectsList) {
             // 获取项目的雇佣关系
-            Employ eCondition = new Employ();
-            eCondition.setProjectCode(project.getCode());
-            List<Employ> eList = employBO.queryEmployList(eCondition);
+            Employ employCondition = new Employ();
+            employCondition.setProjectCode(project.getCode());
+            employCondition.setStatus(EEmploystatus.Not_Leave.getCode());
+            List<Employ> eList = employBO.queryEmployList(employCondition);
 
             // 若当前时间是工资条生成时间,形成工资条
             int day = calendar.get(Calendar.DAY_OF_MONTH);
             if (day == StringValidater
                 .toInteger(project.getSalaryCreateDatetime())) {
                 // 生成工资条
-                String mCode = OrderNoGenerater
+                String messageCode = OrderNoGenerater
                     .generate(EGeneratePrefix.Message.getCode());
                 Long totalAmount = 0L;
                 Long totalCutAmount = 0L;
@@ -227,7 +232,7 @@ public class SalaryAOImpl implements ISalaryAO {
                     String code = OrderNoGenerater
                         .generate(EGeneratePrefix.Salary.getCode());
                     data.setCode(code);
-                    data.setMessageCode(mCode);
+                    data.setMessageCode(messageCode);
                     data.setProjectCode(project.getCode());
 
                     data.setProjectName(project.getName());
@@ -245,21 +250,22 @@ public class SalaryAOImpl implements ISalaryAO {
                         .getFristDay(DateUtil.getMonth() - 2);
                     Date endDatetime = DateUtil
                         .getLastDay(DateUtil.getMonth() - 2);
-                    Attendance aCondition = new Attendance();
-                    aCondition.setCreateDatetimeStart(startDatetime);
-                    aCondition.setCreateDatetimeEnd(endDatetime);
-                    aCondition.setStatus(EAttendanceStatus.Unpaied.getCode());
-                    List<Attendance> aList = attendanceBO
-                        .queryAttendanceList(aCondition);
+                    Attendance attendanceCondition = new Attendance();
+                    attendanceCondition.setCreateDatetimeStart(startDatetime);
+                    attendanceCondition.setCreateDatetimeEnd(endDatetime);
+                    attendanceCondition
+                        .setStatus(EAttendanceStatus.Unpaied.getCode());
+                    List<Attendance> attendanceList = attendanceBO
+                        .queryAttendanceList(attendanceCondition);
 
-                    if (CollectionUtils.isEmpty(aList)) {
+                    if (CollectionUtils.isEmpty(attendanceList)) {
                         break;
                     }
                     // 计算上月迟到和早退小时
                     int early = 0;
                     int delay = 0;
 
-                    for (Attendance attendance : aList) {
+                    for (Attendance attendance : attendanceList) {
                         // 迟到
                         boolean isNormal = DateUtil.compare(
                             attendance.getStartDatetime(),
@@ -305,8 +311,8 @@ public class SalaryAOImpl implements ISalaryAO {
                     data.setLeavingDays(leavingDays);
 
                     // 获取上工天数，计算工资
-                    data.setShouldAmount(
-                        AmountUtil.mul(employ.getSalary(), aList.size()));
+                    data.setShouldAmount(AmountUtil.mul(employ.getSalary(),
+                        attendanceList.size()));
                     data.setFactAmount(
                         data.getShouldAmount() - data.getCutAmount1());
                     data.setSupplyAmount(0L);
@@ -323,7 +329,7 @@ public class SalaryAOImpl implements ISalaryAO {
 
                 // 生成代发消息
                 Message message = new Message();
-                message.setCode(mCode);
+                message.setCode(messageCode);
                 message.setProjectCode(project.getCode());
                 message.setProjectName(project.getName());
                 message.setMonth(calendar.get(Calendar.YEAR) + "/"

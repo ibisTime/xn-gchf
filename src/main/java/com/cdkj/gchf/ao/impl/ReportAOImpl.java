@@ -13,7 +13,7 @@ import com.cdkj.gchf.bo.base.Paginable;
 import com.cdkj.gchf.domain.Employ;
 import com.cdkj.gchf.domain.Project;
 import com.cdkj.gchf.domain.Report;
-import com.cdkj.gchf.enums.EEmploytatus;
+import com.cdkj.gchf.enums.EEmploystatus;
 import com.cdkj.gchf.enums.EProjectStatus;
 
 @Service
@@ -68,7 +68,7 @@ public class ReportAOImpl implements IReportAO {
             // 获取项目下得所有未离职员工
             Employ eCondition = new Employ();
             eCondition.setProjectCode(project.getCode());
-            eCondition.setStatus(EEmploytatus.Not_Leave.getCode());
+            eCondition.setStatus(EEmploystatus.Not_Leave.getCode());
             report = reportBO.getReportByProject(project.getCode());
             // 下月预计发放金额
             long nextMonthSalary = employBO.getSalaryCount(eCondition);

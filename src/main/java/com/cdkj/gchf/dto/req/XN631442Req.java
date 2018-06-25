@@ -14,18 +14,6 @@ public class XN631442Req {
     @NotBlank(message = "编号不能为空")
     private String code;
 
-    // （必填）迟到天数
-    @NotBlank(message = "迟到天数不能为空")
-    private String delayDays;
-
-    // （必填）早退天数
-    @NotBlank(message = "早退天数不能为空")
-    private String earlyDays;
-
-    // （必填）请假天数
-    @NotBlank(message = "请假天数不能为空")
-    private String leavingDays;
-
     // （必填）扣减金额
     @NotBlank(message = "扣减金额不能为空")
     private String cutAmount2;
@@ -38,40 +26,12 @@ public class XN631442Req {
     @NotBlank(message = "扣款说明不能为空")
     private String cutNote;
 
-    // （必填）税费
-    @NotBlank(message = "税费不能为空")
-    private String tax;
-
     public String getCode() {
         return code;
     }
 
     public void setCode(String code) {
         this.code = code;
-    }
-
-    public String getDelayDays() {
-        return delayDays;
-    }
-
-    public void setDelayDays(String delayDays) {
-        this.delayDays = delayDays;
-    }
-
-    public String getEarlyDays() {
-        return earlyDays;
-    }
-
-    public void setEarlyDays(String earlyDays) {
-        this.earlyDays = earlyDays;
-    }
-
-    public String getLeavingDays() {
-        return leavingDays;
-    }
-
-    public void setLeavingDays(String leavingDays) {
-        this.leavingDays = leavingDays;
     }
 
     public String getCutAmount2() {
@@ -96,14 +56,6 @@ public class XN631442Req {
 
     public void setCutNote(String cutNote) {
         this.cutNote = cutNote;
-    }
-
-    public String getTax() {
-        return tax;
-    }
-
-    public void setTax(String tax) {
-        this.tax = tax;
     }
 
 }

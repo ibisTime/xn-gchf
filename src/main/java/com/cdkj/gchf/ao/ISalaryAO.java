@@ -14,15 +14,18 @@ public interface ISalaryAO {
 
     public void editSalary(XN631442Req req);
 
+    // 审核工资条
+    public void approveSalary(List<String> list, String approver,
+            String approveNote, String result);
+
+    // 定时生成工资条
+    public void createSalary();
+
     public Paginable<Salary> querySalaryPage(int start, int limit,
             Salary condition);
 
     public List<Salary> querySalaryList(Salary condition);
 
     public Salary getSalary(String code);
-
-    // 审核工资条
-    public void approveSalary(List<String> list, String approver,
-            String approveNote, String result);
 
 }

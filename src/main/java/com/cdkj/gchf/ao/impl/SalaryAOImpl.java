@@ -5,6 +5,8 @@ import java.util.Date;
 import java.util.List;
 
 import org.apache.commons.collections.CollectionUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -47,6 +49,8 @@ import com.cdkj.gchf.exception.BizException;
 
 @Service
 public class SalaryAOImpl implements ISalaryAO {
+    private static final Logger logger = LoggerFactory
+        .getLogger(AttendanceAOImpl.class);
 
     @Autowired
     ISalaryBO salaryBO;
@@ -80,7 +84,6 @@ public class SalaryAOImpl implements ISalaryAO {
 
     @Override
     public void editSalary(XN631442Req req) {
-
         Long dif = 0L;
         Salary data = salaryBO.getSalary(req.getCode());
         if (!ESalaryStatus.To_Approve.getCode().equals(data.getStatus())) {
@@ -89,16 +92,11 @@ public class SalaryAOImpl implements ISalaryAO {
         // 计算修改后扣款、实际发薪的的差值
         dif = data.getCutAmount1()
                 - StringValidater.toLong(req.getCutAmount2());
-        data.setEarlyDays(StringValidater.toInteger(req.getEarlyDays()));
-        data.setDelayDays(StringValidater.toInteger(req.getDelayDays()));
-        data.setLeavingDays(StringValidater.toDouble(req.getLeavingDays()));
-        data.setTax(StringValidater.toLong(req.getTax()));
         data.setCutAmount2(StringValidater.toLong(req.getCutAmount2()));
-
         data.setCutAmount1(data.getCutAmount1() + data.getCutAmount2());
         data.setAwardAmount(StringValidater.toLong(req.getAwardAmount()));
-        data.setCutNote("本月迟到：" + req.getEarlyDays() + "天，早退："
-                + req.getDelayDays() + "天，请假：" + req.getLeavingDays()
+        data.setCutNote("本月迟到：" + data.getEarlyDays() + "天，早退："
+                + data.getDelayDays() + "天，请假：" + data.getLeavingDays()
                 + "天，共计扣款：" + data.getCutAmount1() / 1000 + "元");
         Long fact = data.getShouldAmount() - data.getCutAmount1()
                 + data.getAwardAmount();
@@ -199,6 +197,7 @@ public class SalaryAOImpl implements ISalaryAO {
 
     // 定时器形成工资条
     @Transactional
+    @Override
     public void createSalary() {
         // 获取已经开始的项目
         Calendar calendar = Calendar.getInstance();
@@ -207,10 +206,9 @@ public class SalaryAOImpl implements ISalaryAO {
         condition.setStatus(EProjectStatus.Building.getCode());
         List<Project> projectsList = projectBO.queryProject(condition);
 
-        System.err.println(calendar.get(Calendar.YEAR) + "/"
-                + calendar.get(Calendar.MONTH) + "的工资条==============");
+        logger.info("===========开始生成工资条==============");
         for (Project project : projectsList) {
-            // 获取项目的雇佣关系
+            logger.info("===========获取项目的雇佣关系==============");
             Employ employCondition = new Employ();
             employCondition.setProjectCode(project.getCode());
             employCondition.setStatus(EEmploystatus.Not_Leave.getCode());
@@ -220,7 +218,7 @@ public class SalaryAOImpl implements ISalaryAO {
             int day = calendar.get(Calendar.DAY_OF_MONTH);
             if (day == StringValidater
                 .toInteger(project.getSalaryCreateDatetime())) {
-                // 生成工资条
+                logger.info("===========生成工资条==============");
                 String messageCode = OrderNoGenerater
                     .generate(EGeneratePrefix.Message.getCode());
                 Long totalAmount = 0L;
@@ -228,6 +226,7 @@ public class SalaryAOImpl implements ISalaryAO {
                 Integer number = 0;
 
                 for (Employ employ : eList) {
+                    logger.info("===========为每个雇员生成工资条==============");
                     Salary data = new Salary();
                     String code = OrderNoGenerater
                         .generate(EGeneratePrefix.Salary.getCode());
@@ -259,6 +258,7 @@ public class SalaryAOImpl implements ISalaryAO {
                         .queryAttendanceList(attendanceCondition);
 
                     if (CollectionUtils.isEmpty(attendanceList)) {
+                        logger.info("===========不存在考勤记录==============");
                         break;
                     }
                     // 计算上月迟到和早退小时
@@ -352,6 +352,7 @@ public class SalaryAOImpl implements ISalaryAO {
                 messageBO.saveMessage(message);
             }
         }
+        logger.info("===========添加工资条完成==============");
     }
 
     private String getName(String userId) {

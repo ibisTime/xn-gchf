@@ -49,7 +49,7 @@ public class Salary extends ABaseDO {
     // 补发金额
     private Long supplyAmount;
 
-    // 扣款金额
+    // 扣款总额
     private Long cutAmount1;
 
     // 扣减金额

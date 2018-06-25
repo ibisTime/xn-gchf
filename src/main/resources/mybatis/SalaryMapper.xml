@@ -141,17 +141,18 @@
 		,project_name
 		
 		,month
+		,month_days
 		,should_amount
 		,fact_amount
 		,cut_amount1
-		,cut_amount2
 		
+		,cut_amount2
 		,cut_note
 		,delay_days
 		,early_days
 		,leaving_days
-		,create_datetime
 		
+		,create_datetime
 		,status
 		)
 		VALUES(
@@ -171,8 +172,8 @@
 		,#{cutNote}
 		,#{delayDays}
 		,#{earlyDays}
-		
 		,#{leavingDays}
+		
 		,#{createDatetime}
 		,#{status}
 		)

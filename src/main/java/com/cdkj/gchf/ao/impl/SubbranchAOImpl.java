@@ -30,7 +30,13 @@ public class SubbranchAOImpl implements ISubbranchAO {
 
     @Override
     public List<Subbranch> querySubbranchList(Subbranch condition) {
-        return subbranchBO.querySubbranchList(condition);
+        List<Subbranch> subbranchList = subbranchBO
+            .querySubbranchList(condition);
+        for (Subbranch subbranch : subbranchList) {
+            subbranch.setBankSubbranchName(
+                subbranch.getBankName().concat(subbranch.getSubbranchName()));
+        }
+        return subbranchList;
     }
 
     @Override

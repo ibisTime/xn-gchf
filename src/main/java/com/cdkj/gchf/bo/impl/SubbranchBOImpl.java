@@ -36,6 +36,8 @@ public class SubbranchBOImpl extends PaginableBOImpl<Subbranch>
             Subbranch condition = new Subbranch();
             condition.setBankName(bankName);
             condition.setSubbranchName(subbranchName);
+
+            // 不存在银行信息时，添加一条数据
             if (CollectionUtils.isEmpty(querySubbranchList(condition))) {
                 Subbranch subbranch = new Subbranch();
                 code = OrderNoGenerater

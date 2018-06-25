@@ -35,6 +35,18 @@ public class Subbranch extends ABaseDO {
     // 备注
     private String remark;
 
+    /****************db properties*******************/
+    // 拼接银行名称和支行名称
+    private String bankSubbranchName;
+
+    public String getBankSubbranchName() {
+        return bankSubbranchName;
+    }
+
+    public void setBankSubbranchName(String bankSubbranchName) {
+        this.bankSubbranchName = bankSubbranchName;
+    }
+
     public void setCode(String code) {
         this.code = code;
     }

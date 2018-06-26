@@ -9,14 +9,11 @@ insert into `thf_channel_bank`(`bank_code`,`bank_name`,`channel_type`,`status`,`
 ('PAB','平安银行','40','1',null,null,null,null,null,null),
 ('PSBC','中国邮政储蓄银行','40','1',null,null,null,null,null,null);
 
-
 insert into `tsys_role`(`code`,`type`,`name`,`updater`,`update_datetime`,`remark`) values
 ('RO201800000000000001','P','超级管理员','USYS201800000000001',now(),null),
 ('RO201800000000000002','B','银行端','USYS201800000000001',now(),null),
 ('RO201800000000000003','O','业主端','USYS201800000000001',now(),null),
 ('RO201800000000000004','S','监管端','USYS201800000000001',now(),null)
-
-
 
 insert into `thf_user`(`user_id`,`real_name`,`type`,`photo`,`login_name`,`mobile`,`login_pwd`,`login_pwd_strength`,`user_refree`,`create_datetime`,`role_code`,`company_code`,`company_name`,`province`,`city`,`area`,`bank_name`,`subbranch`,`department_code`,`updater`,`update_datetime`,`status`,`remark`) values
 ('USYS201800000000001','平台端','P',null,'admin',null,'21218cca77804d2ba1922c33e0151105','1',null,now(),'RO201800000000000001',null,null,null,null,null,null,null,'',null,null,'0',null);
@@ -75,7 +72,6 @@ insert into `tsys_dict`(`type`,`parent_key`,`dkey`,`dvalue`,`updater`,`update_da
 ('1','message_status','3','已处理','admin',now(),null);
 ('0',NULL,'abnormal_type','事件类型','admin',now(),NULL),
 ('1','abnormal_type','0','工资条异常','admin',now(),NULL);
-
 
 insert into `tsys_menu`(`code`,`name`,`type`,`url`,`order_no`,`updater`,`update_datetime`,`remark`,`parent_code`) values
 ('GCHFSM201800000000000000','根目录','1','#','1','admin',now(),'',''),
@@ -181,7 +177,8 @@ insert into `tsys_menu`(`code`,`name`,`type`,`url`,`order_no`,`updater`,`update_
 ('SM201805261021084049823','离职申请','2','/quit','17','USYS201800000000001',now(),'','SM201804271923251312840'),
 ('SM201805261621476424511','工程进度','1','/hetong/jindu.htm','6','USYS201800000000001',now(),'','SM201804271918126145662'),
 ('SM201805261758591375743','办理入职','2','/addWorkers','1','USYS201800000000001',now(),'','SM201805031143039272323');
-
+('SM201806252143270574752','人员建档','1','/staff/jiandang.htm','1','USYS201800000000001',now(),'','SM201804262112397419688'),
+('SM201806252141430605486','部门管理','2','/addBumen','19','USYS201800000000001',now(),'','SM201804271923251312840'),
 
 insert into `tsys_menu_role`(`role_code`,`menu_code`,`updater`,`update_datetime`,`remark`) values
 ('SR201804261443398913168','GCHFSM201800001000000008','admin',now(),null),
@@ -375,6 +372,8 @@ insert into `tsys_menu_role`(`role_code`,`menu_code`,`updater`,`update_datetime`
 ('RO201800000000000004','SM201805251354520521925','USYS201800000000001',now(),null),
 ('RO201800000000000004','SM201805061714532327913','USYS201800000000001',now(),null),
 ('RO201800000000000004','SM201805261621476424511','USYS201800000000001',now(),null);
+('RO201800000000000003','SM201806252143270574752','USYS201800000000001',now(),null);
+('RO201800000000000003','SM201806252141430605486','USYS201800000000001',now(),null);
 
 insert  into `tsys_config`(`type`,`ckey`,`cvalue`,`updater`,`update_datetime`,`remark`) values 
 ('sys_txt','telephone','0571-88888888','USYS201800000000001',now(),'联系电话'),

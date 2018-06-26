@@ -5,7 +5,6 @@ import java.util.Date;
 import java.util.List;
 
 import org.apache.commons.collections.CollectionUtils;
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -102,11 +101,8 @@ public class ProjectAOImpl implements IProjectAO {
         Project data = projectBO.getProject(req.getCode());
         data.setName(req.getName());
 
-        User user = userBO.getUser(req.getChargeUser());
         data.setChargeUser(req.getChargeUser());
-        if (StringUtils.isNotBlank(user.getMobile())) {
-            data.setChargeMobile(user.getMobile());
-        }
+        data.setChargeMobile(req.getChargeMobile());
         if (!(EProjectStatus.To_Audit.getCode().equals(data.getStatus())
                 || EProjectStatus.UnPass.getCode().equals(data.getStatus()))) {
             throw new BizException("xn000", "该项目的状态无法修改");
@@ -130,64 +126,7 @@ public class ProjectAOImpl implements IProjectAO {
     }
 
     @Override
-    public Paginable<Project> queryProjectPage(int start, int limit,
-            Project condition) {
-        Paginable<Project> page = new Page<Project>();
-        List<Project> list = new ArrayList<Project>();
-        if (EUserKind.Supervise.getCode().equals(condition.getKind())) {
-            if (CollectionUtils.isEmpty(condition.getProjectCodeList())) {
-                page.setList(list);
-                return page;
-            }
-        }
-
-        page = projectBO.getPaginable(start, limit, condition);
-        for (Project project : page.getList()) {
-            project.setApproveName(getName(project.getApprover()));
-            project.setUpdateName(getName(project.getUpdater()));
-        }
-        return page;
-    }
-
-    @Override
-    public Project getProject(String code) {
-        Project data = projectBO.getProject(code);
-        CompanyCard companyCard = companyCardBO
-            .getCompanyCardByProject(data.getCode());
-        data.setCompanyCard(companyCard);
-        Report report = reportBO.getReportByProject(data.getCode());
-        if (report != null) {
-            data.setReport(report);
-        }
-
-        // 补全名字信息
-        String approveName = getName(data.getApprover());
-        String updateName = getName(data.getUpdater());
-        data.setApproveName(approveName);
-        data.setUpdateName(updateName);
-        return data;
-    }
-
-    @Override
-    public List<Project> queryProjectList(Project condition) {
-        List<Project> list = new ArrayList<Project>();
-        if (EUserKind.Supervise.getCode().equals(condition.getKind())) {
-            if (CollectionUtils.isEmpty(condition.getProjectCodeList())) {
-                return list;
-            }
-        }
-        list = projectBO.queryProject(condition);
-
-        for (Project project : list) {
-            project.setApproveName(getName(project.getApprover()));
-            project.setUpdateName(getName(project.getUpdater()));
-        }
-        return list;
-    }
-
-    @Override
     public void toApprove(XN631353Req req) {
-
         Project data = projectBO.getProject(req.getCode());
         if (!(EProjectStatus.To_Audit.getCode().equals(data.getStatus())
                 || EProjectStatus.UnPass.getCode().equals(data.getStatus()))) {
@@ -195,11 +134,8 @@ public class ProjectAOImpl implements IProjectAO {
         }
 
         data.setName(req.getName());
-        User user = userBO.getUser(req.getChargeUser());
         data.setChargeUser(req.getChargeUser());
-        if (StringUtils.isNotBlank(user.getMobile())) {
-            data.setChargeMobile(user.getMobile());
-        }
+        data.setChargeMobile(req.getChargeMobile());
         data.setStartDatetime(DateUtil.strToDate(req.getStartDatetime(),
             DateUtil.FRONT_DATE_FORMAT_STRING));
         data.setLongitude(req.getLongitude());
@@ -281,6 +217,62 @@ public class ProjectAOImpl implements IProjectAO {
             throw new BizException("xn000", "项目未处于停工状态,无需重新开工");
         }
         projectBO.restartProject(data, updater, remark);
+    }
+
+    @Override
+    public Paginable<Project> queryProjectPage(int start, int limit,
+            Project condition) {
+        Paginable<Project> page = new Page<Project>();
+        List<Project> list = new ArrayList<Project>();
+        if (EUserKind.Supervise.getCode().equals(condition.getKind())) {
+            if (CollectionUtils.isEmpty(condition.getProjectCodeList())) {
+                page.setList(list);
+                return page;
+            }
+        }
+
+        page = projectBO.getPaginable(start, limit, condition);
+        for (Project project : page.getList()) {
+            project.setApproveName(getName(project.getApprover()));
+            project.setUpdateName(getName(project.getUpdater()));
+        }
+        return page;
+    }
+
+    @Override
+    public Project getProject(String code) {
+        Project data = projectBO.getProject(code);
+        CompanyCard companyCard = companyCardBO
+            .getCompanyCardByProject(data.getCode());
+        data.setCompanyCard(companyCard);
+        Report report = reportBO.getReportByProject(data.getCode());
+        if (report != null) {
+            data.setReport(report);
+        }
+
+        // 补全名字信息
+        String approveName = getName(data.getApprover());
+        String updateName = getName(data.getUpdater());
+        data.setApproveName(approveName);
+        data.setUpdateName(updateName);
+        return data;
+    }
+
+    @Override
+    public List<Project> queryProjectList(Project condition) {
+        List<Project> list = new ArrayList<Project>();
+        if (EUserKind.Supervise.getCode().equals(condition.getKind())) {
+            if (CollectionUtils.isEmpty(condition.getProjectCodeList())) {
+                return list;
+            }
+        }
+        list = projectBO.queryProject(condition);
+
+        for (Project project : list) {
+            project.setApproveName(getName(project.getApprover()));
+            project.setUpdateName(getName(project.getUpdater()));
+        }
+        return list;
     }
 
     private String getName(String userId) {

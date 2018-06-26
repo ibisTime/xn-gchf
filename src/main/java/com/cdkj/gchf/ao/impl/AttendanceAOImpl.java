@@ -160,6 +160,7 @@ public class AttendanceAOImpl implements IAttendanceAO {
             report.setTodayDays(0);
             reportBO.resetTodayDays(report);
         }
+        logger.info("===========生成考勤结束==============");
 
     }
 

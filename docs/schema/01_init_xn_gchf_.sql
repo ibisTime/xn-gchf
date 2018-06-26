@@ -1,4 +1,3 @@
-DROP TABLE  `thf_query_log`;
 
 DROP TABLE IF EXISTS  `thf_attendance`;
 CREATE TABLE `thf_attendance` (
@@ -58,6 +57,7 @@ CREATE TABLE `thf_ccontract` (
   `project_code` varchar(32) DEFAULT NULL COMMENT '项目编号',
   `project_name` varchar(255) DEFAULT NULL COMMENT '项目名称',
   `staff_code` varchar(32) DEFAULT NULL COMMENT '员工编号',
+  `staff_name` varchar(255) DEFAULT NULL COMMENT '员工姓名',
   `staff_mobile` varchar(16) DEFAULT NULL COMMENT '员工手机号',
   `content_pic` varchar(255) DEFAULT NULL COMMENT '合同照片',
   `contract_datetime` datetime DEFAULT NULL COMMENT '签约时间',
@@ -115,6 +115,7 @@ DROP TABLE IF EXISTS  `thf_department`;
 CREATE TABLE `thf_department` (
   `code` varchar(32) NOT NULL COMMENT '编号',
   `company_code` varchar(32) DEFAULT NULL COMMENT '公司编号',
+  `project_code` varchar(32) DEFAULT NULL COMMENT '项目编号',
   `name` varchar(255) DEFAULT NULL COMMENT '部门名称',
   `leader` varchar(255) DEFAULT NULL COMMENT '部门负责人',
   `leade_mobile` varchar(16) DEFAULT NULL COMMENT '负责人手机号',
@@ -264,10 +265,14 @@ CREATE TABLE `thf_salary` (
   `message_code` varchar(32) DEFAULT NULL COMMENT '消息编号',
   `staff_code` varchar(32) DEFAULT NULL COMMENT '员工编号',
   `month` varchar(32) DEFAULT '0' COMMENT '所属月份',
+  `month_days` bigint(20) DEFAULT '0' COMMENT '本月天数',
   `should_amount` bigint(20) DEFAULT '0' COMMENT '应发工资',
   `fact_amount` bigint(20) DEFAULT '0' COMMENT '实发工资',
   `pay_amount` bigint(20) DEFAULT '0' COMMENT '已发放金额',
-  `cut_amount` bigint(20) DEFAULT '0' COMMENT '扣款金额',
+  `supply_amount` bigint(20) DEFAULT NULL COMMENT '补发薪资',
+  `cut_amount1` bigint(20) DEFAULT '0' COMMENT '扣款金额',
+  `cut_amount2` bigint(20) DEFAULT '0' COMMENT '扣减金额',
+  `award_amount` bigint(20) DEFAULT '0' COMMENT '奖励金额',
   `cut_note` text COMMENT '扣款说明',
   `tax` bigint(20) DEFAULT '0' COMMENT '税费',
   `delay_days` int(11) DEFAULT '0' COMMENT '迟到天数',
@@ -280,7 +285,6 @@ CREATE TABLE `thf_salary` (
   `approve_note` text COMMENT '审核说明',
   `remark` text COMMENT '备注',
   `late_pay_datetime` datetime DEFAULT NULL COMMENT '最近一次发放时间',
-  `supply_amount` bigint(20) DEFAULT NULL COMMENT '补发薪资',
   PRIMARY KEY (`code`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
@@ -311,6 +315,7 @@ DROP TABLE IF EXISTS  `thf_staff`;
 CREATE TABLE `thf_staff` (
   `code` varchar(32) NOT NULL COMMENT '编号',
   `company_code` varchar(32) DEFAULT NULL COMMENT '公司编号',
+  `department_code` varchar(32) DEFAULT NULL COMMENT '部门编号',
   `name` varchar(64) DEFAULT NULL COMMENT '姓名',
   `mobile` varchar(16) DEFAULT NULL COMMENT '手机号',
   `id_type` varchar(4) DEFAULT NULL COMMENT '证件类型',
@@ -323,9 +328,10 @@ CREATE TABLE `thf_staff` (
   `id_endDate` datetime DEFAULT NULL COMMENT '有效截止时间',
   `id_pic` text COMMENT '身份证头像',
   `id_police` text COMMENT '签发机关',
-  `pict1` varchar(255) DEFAULT NULL COMMENT '免冠照片',
-  `pict2` varchar(255) DEFAULT NULL COMMENT '手持身份张照片',
-  `pict3` varchar(255) DEFAULT NULL COMMENT '身份证正反面照片+签名',
+  `pict1` mediumtext DEFAULT NULL COMMENT '免冠照片',
+  `pict2` mediumtext DEFAULT NULL COMMENT '手持身份张照片',
+  `pict3` mediumtext DEFAULT NULL COMMENT '身份证正反面照片+签名',
+  `pict4` mediumtext DEFAULT NULL COMMENT '身份证反面照',
   `updater` varchar(32) DEFAULT NULL COMMENT '更新人',
   `update_datetime` datetime DEFAULT NULL COMMENT '更新时间',
   `feat` text COMMENT '特征值',

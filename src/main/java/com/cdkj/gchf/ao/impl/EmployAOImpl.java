@@ -3,6 +3,8 @@ package com.cdkj.gchf.ao.impl;
 import java.util.Date;
 import java.util.List;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -20,7 +22,9 @@ import com.cdkj.gchf.bo.base.Paginable;
 import com.cdkj.gchf.common.AmountUtil;
 import com.cdkj.gchf.common.DateUtil;
 import com.cdkj.gchf.core.OrderNoGenerater;
+import com.cdkj.gchf.core.StringValidater;
 import com.cdkj.gchf.domain.Attendance;
+import com.cdkj.gchf.domain.Ccontract;
 import com.cdkj.gchf.domain.Employ;
 import com.cdkj.gchf.domain.Project;
 import com.cdkj.gchf.domain.Report;
@@ -39,6 +43,8 @@ import com.cdkj.gchf.exception.BizException;
 
 @Service
 public class EmployAOImpl implements IEmployAO {
+    private static final Logger logger = LoggerFactory
+        .getLogger(AttendanceAOImpl.class);
 
     @Autowired
     IEmployBO employBO;
@@ -79,24 +85,24 @@ public class EmployAOImpl implements IEmployAO {
             throw new BizException("xn0000", "该项目未通过审核或已停工");
         }
         data.setProjectCode(req.getProjectCode());
-
         data.setProjectName(project.getName());
         data.setStaffCode(staff.getCode());
         data.setStaffName(staff.getName());
         data.setStaffMobile(staff.getMobile());
-        data.setType(req.getType());
 
-        // data.setPosition(req.getPosition());
-        // data.setSalary(StringValidater.toLong(req.getSalary()));
-        // data.setCutAmount(StringValidater.toLong(req.getCutAmount()));
-        // data.setJoinDatetime(DateUtil.strToDate(req.getJoinDatetime(),
-        // DateUtil.FRONT_DATE_FORMAT_STRING));
+        data.setType(req.getType());
+        data.setPosition(req.getPosition());
+        data.setUpUser(req.getDepartmentCode());
+        data.setSalary(StringValidater.toLong(req.getSalary()));
+        data.setCutAmount(StringValidater.toLong(req.getCutAmount()));
 
         data.setStatus(EEmploystatus.Work.getCode());
+        data.setJoinDatetime(DateUtil.strToDate(req.getJoinDatetime(),
+            DateUtil.FRONT_DATE_FORMAT_STRING));
         data.setSalaryStatus(EStaffSalaryStatus.Normal.getCode());
-        // data.setUpdater(req.getUpdater());
+        data.setUpdater(req.getUpdater());
         data.setUpdateDatetime(date);
-        // data.setRemark(req.getRemark());
+        data.setRemark(req.getRemark());
 
         Employ checkData = employBO.getEmployByStaff(req.getStaffCode(),
             req.getProjectCode());
@@ -114,9 +120,9 @@ public class EmployAOImpl implements IEmployAO {
         // 计入累积入职
         Report report = reportBO.getReportByProject(project.getCode());
         if (null != report) {
-            // Long nextMonthSalary = AmountUtil.mul(data.getSalary(),
-            // DateUtil.getMonthDays()) + report.getNextMonthSalary();
-            // report.setNextMonthSalary(nextMonthSalary);
+            Long nextMonthSalary = AmountUtil.mul(data.getSalary(),
+                DateUtil.getMonthDays()) + report.getNextMonthSalary();
+            report.setNextMonthSalary(nextMonthSalary);
             report.setStaffOn(report.getStaffOn() + 1);
             report.setStaffIn(report.getStaffIn() + 1);
             reportBO.staffIn(report);
@@ -140,34 +146,33 @@ public class EmployAOImpl implements IEmployAO {
         attendanceBO.saveAttendance(attendance);
         staffLogBO.saveStaffLog(data, staff.getName(), project.getCompanyCode(),
             project.getCode(), project.getName());
-        return code;
 
         // 录入合同
-        // Ccontract ccontract = new Ccontract();
-        // String ccontractCode = OrderNoGenerater
-        // .generate(EGeneratePrefix.Ccontract.getCode());
-        // ccontract.setProjectCode(req.getProjectCode());
-        //
-        // ccontract.setProjectName(project.getName());
-        // ccontract.setStaffCode(staff.getCode());
-        // ccontract.setStaffName(staff.getName());
-        // ccontract.setContentPic(req.getContentPic());
-        // ccontract.setContractDatetime(DateUtil.strToDate(
-        // req.getContractDatetime(), DateUtil.FRONT_DATE_FORMAT_STRING));
-        //
-        // ccontract.setUpdater(req.getUpdater());
-        // ccontract.setUpdateDatetime(date);
-        // ccontract.setRemark(req.getRemark());
+        Ccontract ccontract = new Ccontract();
+        String ccontractCode = OrderNoGenerater
+            .generate(EGeneratePrefix.Ccontract.getCode());
+        ccontract.setProjectCode(req.getProjectCode());
 
-        // Ccontract checkCcontract = ccontractBO.isExist(req.getProjectCode(),
-        // req.getStaffCode());
-        // if (checkCcontract != null) {
-        // ccontract.setCode(checkCcontract.getCode());
-        // ccontractBO.refreshCcontract(ccontract);
-        // }
-        // ccontract.setCode(ccontractCode);
-        // ccontractBO.saveCcontract(ccontract);
+        ccontract.setProjectName(project.getName());
+        ccontract.setStaffCode(staff.getCode());
+        ccontract.setStaffName(staff.getName());
+        ccontract.setContentPic(req.getContentPic());
+        ccontract.setContractDatetime(DateUtil.strToDate(
+            req.getContractDatetime(), DateUtil.FRONT_DATE_FORMAT_STRING));
 
+        ccontract.setUpdater(req.getUpdater());
+        ccontract.setUpdateDatetime(date);
+        ccontract.setRemark(req.getRemark());
+
+        Ccontract checkCcontract = ccontractBO.isExist(req.getProjectCode(),
+            req.getStaffCode());
+        if (checkCcontract != null) {
+            ccontract.setCode(checkCcontract.getCode());
+            ccontractBO.refreshCcontract(ccontract);
+        }
+        ccontract.setCode(ccontractCode);
+        ccontractBO.saveCcontract(ccontract);
+        return code;
     }
 
     @Override
@@ -316,9 +321,10 @@ public class EmployAOImpl implements IEmployAO {
         eCondition.setStatus(EEmploystatus.Not_Leave.getCode());
         List<Employ> eList = employBO.queryEmployList(eCondition);
         Project project = null;
+        logger.info("===========开始更新员工状态==============");
         for (Employ employ : eList) {
             String status = EEmploystatus.Work.getCode();
-            project = projectBO.getProject(employ.getCode());
+            project = projectBO.getProject(employ.getProjectCode());
             // 今天是否请假
             if (employ.getStartDatetime() != null
                     && employ.getEndDatetime() != null) {
@@ -342,7 +348,7 @@ public class EmployAOImpl implements IEmployAO {
             employ.setStatus(status);
             employBO.updateStatus(employ);
         }
-
+        logger.info("===========结束更新员工状态==============");
     }
 
 }

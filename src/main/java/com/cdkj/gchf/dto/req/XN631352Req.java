@@ -16,6 +16,10 @@ public class XN631352Req {
     @NotBlank(message = "负责人编号不能为空")
     private String chargeUser;
 
+    // 负责人电话
+    @NotBlank(message = "负责人电话不能为空")
+    private String chargeMobile;
+
     // 经度
     @NotBlank(message = "经度不能为空")
     private String longitude;
@@ -117,6 +121,14 @@ public class XN631352Req {
 
     public void setCity(String city) {
         this.city = city;
+    }
+
+    public String getChargeMobile() {
+        return chargeMobile;
+    }
+
+    public void setChargeMobile(String chargeMobile) {
+        this.chargeMobile = chargeMobile;
     }
 
     public String getArea() {

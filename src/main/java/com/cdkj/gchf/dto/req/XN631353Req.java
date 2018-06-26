@@ -22,6 +22,10 @@ public class XN631353Req {
     @NotBlank(message = "负责人编号不能为空")
     private String chargeUser;
 
+    // 负责人电话
+    @NotBlank(message = "负责人电话不能为空")
+    private String chargeMobile;
+
     // 项目开始时间
     @NotBlank(message = "项目开始时间不能为空")
     private String startDatetime;
@@ -79,6 +83,14 @@ public class XN631353Req {
 
     public void setCode(String code) {
         this.code = code;
+    }
+
+    public String getChargeMobile() {
+        return chargeMobile;
+    }
+
+    public void setChargeMobile(String chargeMobile) {
+        this.chargeMobile = chargeMobile;
     }
 
     public String getName() {

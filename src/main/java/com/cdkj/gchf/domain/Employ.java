@@ -39,7 +39,7 @@ public class Employ extends ABaseDO {
     // 所在职位
     private String position;
 
-    // 上级编号
+    // 上级部门
     private String upUser;
 
     // 薪酬

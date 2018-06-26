@@ -24,19 +24,6 @@ public class XN631413Req {
     // @NotBlank(message = "紧急联系人电话不能为空")
     private String contactsMobile;
 
-    // 职位
-    private String position;
-
-    // 薪资
-    private String salary;
-
-    // 迟到/早退扣款金额
-    private String cutAmount;
-
-    // （必填）更新人
-    @NotBlank(message = "更新人不能为空")
-    private String updater;
-
     // （必填）银行别称
     @NotBlank(message = "银行别称不能为空")
     private String bankCode;
@@ -55,6 +42,10 @@ public class XN631413Req {
 
     // 技能
     private List<Skill> skillList;
+
+    // （必填）更新人
+    @NotBlank(message = "更新人不能为空")
+    private String updater;
 
     // （选填）备注
     private String remark;
@@ -145,30 +136,6 @@ public class XN631413Req {
 
     public void setSkillList(List<Skill> skillList) {
         this.skillList = skillList;
-    }
-
-    public String getPosition() {
-        return position;
-    }
-
-    public String getSalary() {
-        return salary;
-    }
-
-    public String getCutAmount() {
-        return cutAmount;
-    }
-
-    public void setPosition(String position) {
-        this.position = position;
-    }
-
-    public void setSalary(String salary) {
-        this.salary = salary;
-    }
-
-    public void setCutAmount(String cutAmount) {
-        this.cutAmount = cutAmount;
     }
 
 }

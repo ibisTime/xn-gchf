@@ -24,44 +24,14 @@ public class ProjectBOImpl extends PaginableBOImpl<Project>
     private IProjectDAO projectDAO;
 
     @Override
-    public long getTotalCount(Project condition) {
-        return projectDAO.selectTotalCount(condition);
-    }
-
-    @Override
     public void saveProject(Project data) {
         projectDAO.insert(data);
 
     }
 
     @Override
-    public Project getProject(String code) {
-        Project data = null;
-        if (StringUtils.isNotBlank(code)) {
-            Project condition = new Project();
-            condition.setCode(code);
-            data = projectDAO.select(condition);
-            if (data == null) {
-                throw new BizException("xn0000", "该项目不存在");
-            }
-        }
-        return data;
-    }
-
-    @Override
     public int editProject(Project data) {
         return projectDAO.update(data);
-    }
-
-    @Override
-    public List<Project> queryProject(Project condition) {
-        return projectDAO.selectList(condition);
-    }
-
-    @Override
-    public List<Project> queryProjectpig(int start, int pageSize,
-            Project condition) {
-        return projectDAO.selectList(condition, start, pageSize);
     }
 
     @Override
@@ -120,4 +90,33 @@ public class ProjectBOImpl extends PaginableBOImpl<Project>
         return projectCodeList;
     }
 
+    @Override
+    public List<Project> queryProjectpig(int start, int pageSize,
+            Project condition) {
+        return projectDAO.selectList(condition, start, pageSize);
+    }
+
+    @Override
+    public Project getProject(String code) {
+        Project data = null;
+        if (StringUtils.isNotBlank(code)) {
+            Project condition = new Project();
+            condition.setCode(code);
+            data = projectDAO.select(condition);
+            if (data == null) {
+                throw new BizException("xn0000", "该项目不存在");
+            }
+        }
+        return data;
+    }
+
+    @Override
+    public List<Project> queryProject(Project condition) {
+        return projectDAO.selectList(condition);
+    }
+
+    @Override
+    public long getTotalCount(Project condition) {
+        return projectDAO.selectTotalCount(condition);
+    }
 }

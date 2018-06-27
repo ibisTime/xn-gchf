@@ -21,6 +21,9 @@ public class Staff extends ABaseDO {
     // 姓名
     private String name;
 
+    // 公司编号
+    private String companyCode;
+
     // 部门编号
     private String departmentCode;
 
@@ -381,6 +384,14 @@ public class Staff extends ABaseDO {
 
     public void setDepartmentCode(String departmentCode) {
         this.departmentCode = departmentCode;
+    }
+
+    public String getCompanyCode() {
+        return companyCode;
+    }
+
+    public void setCompanyCode(String companyCode) {
+        this.companyCode = companyCode;
     }
 
 }

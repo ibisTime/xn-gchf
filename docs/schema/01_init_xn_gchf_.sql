@@ -1,3 +1,4 @@
+DROP TABLE IF EXISTS  `thf_query_log`;
 
 DROP TABLE IF EXISTS  `thf_attendance`;
 CREATE TABLE `thf_attendance` (
@@ -300,6 +301,7 @@ CREATE TABLE `thf_salary_log` (
   PRIMARY KEY (`code`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
+
 DROP TABLE IF EXISTS  `thf_skill`;
 CREATE TABLE `thf_skill` (
   `code` varchar(32) NOT NULL COMMENT '编号',
@@ -459,7 +461,18 @@ CREATE TABLE `thf_event_remind` (
   PRIMARY KEY (`code`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
-DROP TABLE IF EXISTS  `thf_query_log`;
+DROP TABLE IF EXISTS  `thf_subbranch`;
+CREATE TABLE `thf_subbranch` (
+  `code` varchar(32) NOT NULL COMMENT '编号',
+  `bank_code` varchar(32) DEFAULT NULL COMMENT '银行编号',
+  `bank_name` varchar(255) DEFAULT NULL COMMENT '银行名称',
+  `subbranch_name` varchar(255) DEFAULT NULL COMMENT '支行名称',
+  `updater` varchar(32) DEFAULT NULL COMMENT '更新人',
+  `update_datetime` datetime DEFAULT NULL COMMENT '更新时间',
+  `remark` text COMMENT '备注',
+  PRIMARY KEY (`code`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
 CREATE TABLE `thf_query_log` (
   `code` varchar(32) NOT NULL COMMENT '编号',
   `user_id` varchar(32) DEFAULT NULL COMMENT '用户id',
@@ -472,16 +485,4 @@ CREATE TABLE `thf_query_log` (
   KEY `user_id` (`user_id`),
   CONSTRAINT `staff_code` FOREIGN KEY (`staff_code`) REFERENCES `thf_staff` (`code`),
   CONSTRAINT `user_id` FOREIGN KEY (`user_id`) REFERENCES `thf_user` (`user_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
-DROP TABLE IF EXISTS  `thf_subbranch`;
-CREATE TABLE `thf_subbranch` (
-  `code` varchar(32) NOT NULL COMMENT '编号',
-  `bank_code` varchar(32) DEFAULT NULL COMMENT '银行编号',
-  `bank_name` varchar(255) DEFAULT NULL COMMENT '银行名称',
-  `subbranch_name` varchar(255) DEFAULT NULL COMMENT '支行名称',
-  `updater` varchar(32) DEFAULT NULL COMMENT '更新人',
-  `update_datetime` datetime DEFAULT NULL COMMENT '更新时间',
-  `remark` text COMMENT '备注',
-  PRIMARY KEY (`code`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;

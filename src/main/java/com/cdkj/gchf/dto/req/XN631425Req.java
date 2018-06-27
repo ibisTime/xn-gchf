@@ -13,6 +13,9 @@ public class XN631425Req extends APageReq {
      */
     private static final long serialVersionUID = -2799896855768659683L;
 
+    // （业主端必填）公司编号
+    private String companyCode;
+
     // （选填）银行别称
     private String bankCode;
 
@@ -27,9 +30,6 @@ public class XN631425Req extends APageReq {
 
     // （选填）更新人
     private String updater;
-
-    // （选填）公司编号
-    private String companyCode;
 
     // （选填）公司名称
     private String companyName;

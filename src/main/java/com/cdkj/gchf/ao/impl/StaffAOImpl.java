@@ -87,6 +87,7 @@ public class StaffAOImpl implements IStaffAO {
 
         data = new Staff();
         data.setCode(code);
+        data.setCompanyCode(req.getCompanyCode());
         data.setName(req.getRealName());
         data.setSex(req.getSex());
         data.setIdNation(req.getIdNation());
@@ -210,6 +211,7 @@ public class StaffAOImpl implements IStaffAO {
         String bankCardCode = OrderNoGenerater
             .generate(EGeneratePrefix.BankCard.getCode());
         bankCard.setCode(bankCardCode);
+        bankCard.setCompanyCode(data.getCompanyCode());
         bankCard.setStaffCode(req.getCode());
         bankCard.setStaffName(data.getName());
         bankCard.setBankCode(req.getBankCode());

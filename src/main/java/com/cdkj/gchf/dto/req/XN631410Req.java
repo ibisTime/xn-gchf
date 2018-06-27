@@ -9,6 +9,9 @@ import org.hibernate.validator.constraints.NotBlank;
  * @history:
  */
 public class XN631410Req {
+    // （必填）公司编号
+    @NotBlank(message = "公司编号不能为空")
+    private String companyCode;
 
     // （必填）姓名
     @NotBlank(message = "姓名不能为空")
@@ -53,6 +56,14 @@ public class XN631410Req {
     // （必填）更新人
     @NotBlank(message = "更新人不能为空")
     private String updater;
+
+    public String getCompanyCode() {
+        return companyCode;
+    }
+
+    public void setCompanyCode(String companyCode) {
+        this.companyCode = companyCode;
+    }
 
     public String getRealName() {
         return realName;

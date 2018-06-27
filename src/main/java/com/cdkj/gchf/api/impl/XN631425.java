@@ -28,12 +28,12 @@ public class XN631425 extends AProcessor {
     @Override
     public Object doBusiness() throws BizException {
         BankCard condition = new BankCard();
+        condition.setCompanyCode(req.getCompanyCode());
         condition.setUpdater(req.getUpdater());
         condition.setStaffCode(req.getStaffCode());
         condition.setStatus(req.getStatus());
         condition.setUpdater(req.getUpdater());
         condition.setKeyword(req.getKeyword());
-
         condition.setKind(req.getKind());
 
         String column = req.getOrderColumn();

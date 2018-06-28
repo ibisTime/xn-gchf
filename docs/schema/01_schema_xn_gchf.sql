@@ -13,6 +13,8 @@ CREATE TABLE `thf_attendance` (
   `start_datetime` varchar(64) COLLATE utf8_estonian_ci DEFAULT NULL COMMENT '上班时间',
   `end_datetime` varchar(64) COLLATE utf8_estonian_ci DEFAULT NULL COMMENT '下班时间',
   `settle_datetime` datetime DEFAULT NULL COMMENT '结算时间',
+  `sim` DECIMAL(4,2) DEFAULT NULL COMMENT '相似度' ,
+  `terminal_code` VARCHAR(32) DEFAULT NULL COMMENT '终端编号' ;
   `remark` text COLLATE utf8_estonian_ci COMMENT '备注',
   PRIMARY KEY (`code`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_estonian_ci;

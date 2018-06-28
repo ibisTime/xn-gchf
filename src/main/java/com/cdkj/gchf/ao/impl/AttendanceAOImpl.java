@@ -79,7 +79,7 @@ public class AttendanceAOImpl implements IAttendanceAO {
     public String clockIn(String sim, String projectCode, String staffCode,
             String attendTime, String terminalCode) {
         JSONObject json = new JSONObject();
-        logger.info("===========获取考勤记录==============");
+        logger.info("----------------------获取考勤记录----------------------");
         Attendance data = attendanceBO.getAttendanceByProject(projectCode,
             staffCode);
         if (data == null) {
@@ -109,10 +109,10 @@ public class AttendanceAOImpl implements IAttendanceAO {
         } else { // 下班打卡
             data.setEndDatetime(
                 DateUtil.strToDate(attendTime, DateUtil.DATA_TIME_PATTERN_1));
-            data.setStatus(EAttendanceStatus.TO_End.getCode());
+            data.setStatus(EAttendanceStatus.Unpaied.getCode());
             attendanceBO.toEnd(data);
         }
-        logger.info("===========考勤成功==============");
+        logger.info("----------------------考勤成功----------------------");
         json.put("result", true);
         logger.info("json" + new Gson().toJson(json));
         return new Gson().toJson(json);

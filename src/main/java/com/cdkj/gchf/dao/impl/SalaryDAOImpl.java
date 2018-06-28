@@ -46,6 +46,13 @@ public class SalaryDAOImpl extends AMybatisTemplate implements ISalaryDAO {
     }
 
     @Override
+    public List<Salary> selectMonthlySalarySumByProject(Salary data) {
+        return super.selectList(
+            NAMESPACE.concat("select_monthlySalarySumByProject"), data,
+            Salary.class);
+    }
+
+    @Override
     public void update(Salary data) {
         super.update(NAMESPACE.concat("update_salary"), data);
     }
@@ -65,5 +72,4 @@ public class SalaryDAOImpl extends AMybatisTemplate implements ISalaryDAO {
     public void updateStatus(Salary data) {
         super.update(NAMESPACE.concat("update_status"), data);
     }
-
 }

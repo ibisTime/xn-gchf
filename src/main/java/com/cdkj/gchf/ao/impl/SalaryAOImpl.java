@@ -1,5 +1,6 @@
 package com.cdkj.gchf.ao.impl;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -37,6 +38,7 @@ import com.cdkj.gchf.domain.Salary;
 import com.cdkj.gchf.domain.Staff;
 import com.cdkj.gchf.domain.User;
 import com.cdkj.gchf.dto.req.XN631442Req;
+import com.cdkj.gchf.dto.res.XN631448Res;
 import com.cdkj.gchf.enums.EAttendanceStatus;
 import com.cdkj.gchf.enums.EBoolean;
 import com.cdkj.gchf.enums.EEmploystatus;
@@ -366,5 +368,23 @@ public class SalaryAOImpl implements ISalaryAO {
         }
         return name;
 
+    }
+
+    @Override
+    public List<XN631448Res> getMohtnSalarySumByProject(String projectCode) {
+        List<Salary> salaryList = salaryBO
+            .selectMonthlySalarySumByProject(projectCode);
+        List<XN631448Res> resList = new ArrayList<XN631448Res>();
+
+        if (CollectionUtils.isNotEmpty(salaryList)) {
+            for (Salary salary : salaryList) {
+                XN631448Res res = new XN631448Res();
+                res.setProjectCode(projectCode);
+                res.setMonth(salary.getMonth());
+                res.setTotalSalary(String.valueOf(salary.getFactAmount()));
+                resList.add(res);
+            }
+        }
+        return resList;
     }
 }

@@ -102,4 +102,11 @@ public class SalaryBOImpl extends PaginableBOImpl<Salary> implements ISalaryBO {
         return list;
     }
 
+    @Override
+    public List<Salary> selectMonthlySalarySumByProject(String projectCode) {
+        Salary condition = new Salary();
+        condition.setProjectCode(projectCode);
+        return salaryDAO.selectMonthlySalarySumByProject(condition);
+    }
+
 }

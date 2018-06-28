@@ -7,6 +7,7 @@ import org.springframework.stereotype.Component;
 import com.cdkj.gchf.bo.base.Paginable;
 import com.cdkj.gchf.domain.Salary;
 import com.cdkj.gchf.dto.req.XN631442Req;
+import com.cdkj.gchf.dto.res.XN631448Res;
 
 @Component
 public interface ISalaryAO {
@@ -28,4 +29,5 @@ public interface ISalaryAO {
 
     public Salary getSalary(String code);
 
+    public List<XN631448Res> getMohtnSalarySumByProject(String projectCode);
 }

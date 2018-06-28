@@ -193,9 +193,10 @@
 	<update id="update_StaffInfo" parameterType="staff">
 		UPDATE thf_staff
 		SET
-		contacts = #{contacts}
-		,updater = #{updater}
+		mobile = #{mobile}
+		,contacts = #{contacts}
 		,contacts_mobile = #{contactsMobile}
+		,updater = #{updater}
 		,update_datetime = #{updateDatetime}
 		,remark = #{remark}
 		WHERE code = #{code}

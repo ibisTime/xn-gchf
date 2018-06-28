@@ -49,7 +49,6 @@
 			<if test="staffCode != null and staffCode != '' ">
 				AND t.staff_code = #{staffCode}
 			</if>
-			
 			<choose>
 				<when test="projectCode != null and projectCode != '' ">
 					AND t.project_code = #{projectCode}
@@ -78,7 +77,6 @@
 					</foreach>
 				</when>
 			</choose>
-			
 		</trim>
 	</sql>
 	
@@ -130,6 +128,12 @@
 		<include refid="where_condition" />
 	</select>
 
+	<select id="select_monthlySalarySumByProject" parameterType="salary"
+		resultMap="salary_DB_Result">
+		SELECT SUM(t.fact_amount) as fact_amount, t.month, t.project_code FROM thf_salary t
+		<include refid="where_condition" />
+		GROUP BY t.month, t.project_code
+	</select>
 
 	<insert id="insert_salary" parameterType="salary">
 		INSERT INTO

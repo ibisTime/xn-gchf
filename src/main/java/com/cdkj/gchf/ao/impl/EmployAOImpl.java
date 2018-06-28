@@ -309,7 +309,8 @@ public class EmployAOImpl implements IEmployAO {
     private String getName(String userId) {
         User user = userBO.getUserName(userId);
         String name = EUser.ADMIN.getCode();
-        if (!EUser.ADMIN.getCode().equals(user.getLoginName())) {
+        if (null != user
+                && !EUser.ADMIN.getCode().equals(user.getLoginName())) {
             name = user.getRealName();
         }
         return name;

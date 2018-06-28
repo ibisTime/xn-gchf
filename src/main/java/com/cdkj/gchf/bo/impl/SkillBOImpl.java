@@ -8,8 +8,10 @@ import org.springframework.stereotype.Component;
 
 import com.cdkj.gchf.bo.ISkillBO;
 import com.cdkj.gchf.bo.base.PaginableBOImpl;
+import com.cdkj.gchf.core.OrderNoGenerater;
 import com.cdkj.gchf.dao.ISkillDAO;
 import com.cdkj.gchf.domain.Skill;
+import com.cdkj.gchf.enums.EGeneratePrefix;
 import com.cdkj.gchf.exception.BizException;
 
 @Component
@@ -25,7 +27,20 @@ public class SkillBOImpl extends PaginableBOImpl<Skill> implements ISkillBO {
 
     @Override
     public void refreshSkill(Skill data) {
+        String skillCode = null;
+        if (null != data) {
+            skillCode = OrderNoGenerater
+                .generate(EGeneratePrefix.Skill.getCode());
+            data.setCode(skillCode);
+        }
         skillDAO.update(data);
+    }
+
+    @Override
+    public void dropSkillByStaff(String staffCode) {
+        Skill skill = new Skill();
+        skill.setStaffCode(staffCode);
+        skillDAO.deleteByStaff(skill);
     }
 
     @Override
@@ -53,5 +68,4 @@ public class SkillBOImpl extends PaginableBOImpl<Skill> implements ISkillBO {
         condition.setStaffCode(staffCode);
         return skillDAO.selectList(condition);
     }
-
 }

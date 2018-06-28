@@ -7,11 +7,15 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import com.cdkj.gchf.bo.ICompanyBO;
 import com.cdkj.gchf.bo.ICompanyCardBO;
+import com.cdkj.gchf.bo.IProjectBO;
 import com.cdkj.gchf.bo.base.PaginableBOImpl;
 import com.cdkj.gchf.core.OrderNoGenerater;
 import com.cdkj.gchf.dao.ICompanyCardDAO;
+import com.cdkj.gchf.domain.Company;
 import com.cdkj.gchf.domain.CompanyCard;
+import com.cdkj.gchf.domain.Project;
 import com.cdkj.gchf.enums.EBankCardStatus;
 import com.cdkj.gchf.enums.EGeneratePrefix;
 import com.cdkj.gchf.exception.BizException;
@@ -19,9 +23,14 @@ import com.cdkj.gchf.exception.BizException;
 @Component
 public class CompanyCardBOImpl extends PaginableBOImpl<CompanyCard>
         implements ICompanyCardBO {
-
     @Autowired
     private ICompanyCardDAO companyCardDAO;
+
+    @Autowired
+    private ICompanyBO companyBO;
+
+    @Autowired
+    private IProjectBO projectBO;
 
     public void saveCompanyCard(String companyCode, String projectCode,
             String bankCode, String bankName, String accountName,
@@ -46,12 +55,16 @@ public class CompanyCardBOImpl extends PaginableBOImpl<CompanyCard>
         data.setUpdater(updater);
         data.setUpdateDatetime(updateDatetime);
         data.setRemark(remark);
+
+        Company company = companyBO.getCompany(companyCode);
+        if (null != company) {
+            data.setCompanyName(company.getName());
+        }
+        Project project = projectBO.getProject(projectCode);
+        if (null != project) {
+            data.setProjectName(project.getName());
+        }
         companyCardDAO.insert(data);
-
-    }
-
-    @Override
-    public void removeCompanyCard(String code) {
     }
 
     @Override
@@ -75,6 +88,8 @@ public class CompanyCardBOImpl extends PaginableBOImpl<CompanyCard>
             if (data == null) {
                 throw new BizException("xn0000", "公司账户不存在");
             }
+            data.setBankSubbranch(
+                data.getBankName().concat(data.getSubbranch()));
         }
         return data;
     }
@@ -89,6 +104,8 @@ public class CompanyCardBOImpl extends PaginableBOImpl<CompanyCard>
             if (data == null) {
                 throw new BizException("xn0000", "公司账户不存在");
             }
+            data.setBankSubbranch(
+                data.getBankName().concat(data.getSubbranch()));
         }
         return data;
     }

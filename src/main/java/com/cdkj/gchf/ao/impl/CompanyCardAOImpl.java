@@ -15,7 +15,6 @@ import com.cdkj.gchf.bo.IUserBO;
 import com.cdkj.gchf.bo.base.Page;
 import com.cdkj.gchf.bo.base.Paginable;
 import com.cdkj.gchf.domain.CompanyCard;
-import com.cdkj.gchf.domain.Project;
 import com.cdkj.gchf.domain.User;
 import com.cdkj.gchf.dto.req.XN631362Req;
 import com.cdkj.gchf.enums.EUser;
@@ -61,10 +60,7 @@ public class CompanyCardAOImpl implements ICompanyCardAO {
         }
         // 补全信息
         page = companyCardBO.getPaginable(start, limit, condition);
-        Project project = null;
         for (CompanyCard companyCard : page.getList()) {
-            project = projectBO.getProject(companyCard.getProjectCode());
-            companyCard.setProjectName(project.getName());
             companyCard.setUpdateName(getName(companyCard.getUpdater()));
         }
         return page;
@@ -81,10 +77,7 @@ public class CompanyCardAOImpl implements ICompanyCardAO {
 
         // 补全信息
         list = companyCardBO.queryCompanyCardList(condition);
-        Project project = null;
         for (CompanyCard companyCard : list) {
-            project = projectBO.getProject(companyCard.getCompanyCode());
-            companyCard.setProjectName(project.getName());
             companyCard.setUpdateName((getName(companyCard.getUpdater())));
         }
 
@@ -94,8 +87,6 @@ public class CompanyCardAOImpl implements ICompanyCardAO {
     @Override
     public CompanyCard getCompanyCard(String code) {
         CompanyCard data = companyCardBO.getCompanyCard(code);
-        Project project = projectBO.getProject(data.getProjectCode());
-        data.setProjectName(project.getName());
         data.setUpdateName(getName(data.getUpdater()));
         return data;
     }
@@ -110,6 +101,5 @@ public class CompanyCardAOImpl implements ICompanyCardAO {
             }
         }
         return name;
-
     }
 }

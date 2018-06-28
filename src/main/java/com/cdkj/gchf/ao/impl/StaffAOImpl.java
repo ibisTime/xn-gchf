@@ -37,7 +37,6 @@ import com.cdkj.gchf.dto.req.XN631410Req;
 import com.cdkj.gchf.dto.req.XN631412Req;
 import com.cdkj.gchf.dto.req.XN631413Req;
 import com.cdkj.gchf.dto.req.XN631414Req;
-import com.cdkj.gchf.enums.EBankCardStatus;
 import com.cdkj.gchf.enums.EGeneratePrefix;
 import com.cdkj.gchf.enums.EIDKind;
 import com.cdkj.gchf.enums.ESalaryStatus;
@@ -206,43 +205,32 @@ public class StaffAOImpl implements IStaffAO {
         data.setRemark(req.getRemark());
         staffBO.refreshStaffInfo(data);
 
-        // 添加工资卡信息
-        BankCard bankCard = new BankCard();
-        String bankCardCode = OrderNoGenerater
-            .generate(EGeneratePrefix.BankCard.getCode());
-        bankCard.setCode(bankCardCode);
-        bankCard.setCompanyCode(data.getCompanyCode());
-        bankCard.setStaffCode(req.getCode());
-        bankCard.setStaffName(data.getName());
-        bankCard.setBankCode(req.getBankCode());
+        // 每个员工只有一张工资卡;不存在时添加工资卡信息，存在时修改工资卡信息
+        BankCard bankCardCondition = new BankCard();
+        bankCardCondition.setStaffCode(req.getCode());
+        if (CollectionUtils
+            .isEmpty(bankCardBO.queryBankCardList(bankCardCondition))) {
+            bankCardBO.addBankCard(req, data);
+        } else {
+            BankCard bankCard = bankCardBO.getBankCardByStaff(req.getCode());
+            bankCard.setBankCode(req.getBankCode());
+            bankCard.setBankName(req.getBankName());
+            bankCard.setSubbranch(req.getSubbranch());
+            bankCard.setBankcardNumber(req.getBankcardNumber());
+            bankCard.setUpdater(req.getUpdater());
 
-        bankCard.setBankName(req.getBankName());
-        bankCard.setSubbranch(req.getSubbranch());
-        bankCard.setBankcardNumber(req.getBankcardNumber());
-        bankCard.setStatus(EBankCardStatus.Normal.getCode());
-        bankCard.setUpdater(req.getUpdater());
+            bankCard.setUpdateDatetime(new Date());
+            bankCardBO.refreshBankCard(bankCard);
+        }
 
-        bankCard.setUpdateDatetime(date);
-        bankCardBO.addBankCard(bankCard);
-
+        // 删除之前的技能信息
+        skillBO.dropSkillByStaff(req.getCode());
         // 添加技能信息
-        String skillCode = null;
         if (CollectionUtils.isNotEmpty(req.getSkillList())) {
-            for (Skill sData : req.getSkillList()) {
-                Skill skill = new Skill();
-                skillCode = OrderNoGenerater
-                    .generate(EGeneratePrefix.Skill.getCode());
-                skill.setCode(skillCode);
-                skill.setStaffCode(data.getCode());
-                skill.setStaffName(data.getName());
-                skill.setName(sData.getName());
-
-                skill.setScore(sData.getScore());
-                skill.setPdf(sData.getPdf());
+            for (Skill skill : req.getSkillList()) {
                 skillBO.saveSkill(skill);
             }
         }
-
     }
 
     @Override

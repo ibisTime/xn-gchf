@@ -2,7 +2,6 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.cdkj.gchf.dao.ISkillDAO">
-
 	<resultMap type="skill" id="skill_DB_Result">
 		<result column="code" property="code"/>
 		<result column="staff_code" property="staffCode" />
@@ -76,4 +75,8 @@
 		,pdf = #{pdf}
 		WHERE code = #{code}
 	</update>
+	
+	<delete id="delete_skillByStaff">
+		DELETE FROM thf_skill WHERE staff_code = #{staffCode}
+	</delete>
 </mapper>

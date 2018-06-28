@@ -5,16 +5,18 @@
 	<resultMap id="companyCard_DB_Result" type="companyCard">
 		<result column="code" property="code" />
 		<result column="company_code" property="companyCode" />
+		<result column="company_name" property="companyName" />
 		<result column="project_code" property="projectCode" />
+		<result column="project_name" property="projectName" />
+		
 		<result column="bank_code" property="bankCode" />
 		<result column="bank_name" property="bankName" />
-		
 		<result column="subbranch" property="subbranch" />
 		<result column="account_name" property="accountName"/>
 		<result column="bankcard_number" property="bankcardNumber" />
+		
 		<result column="status" property="status" />
 		<result column="create_datetime" property="createDatetime" />
-		
 		<result column="updater" property="updater" />
 		<result column="update_datetime" property="updateDatetime" />
 		<result column="remark" property="remark" />
@@ -41,13 +43,12 @@
 			<if test="status != null and status !='' ">
 				AND t.status = #{status}
 			</if>
-			
-			
 			<if test="companyCode != null and companyCode !='' ">
 				AND t.company_code = #{companyCode}
 			</if>
 			<if test="keyword != null and keyword != '' ">
-				AND (t.bank_name like "%"#{keyword}"%" OR  t.subbranch like "%"#{keyword}"%"  OR  t.bankcard_number like "%"#{keyword}"%")
+				AND (t.bank_name like "%"#{keyword}"%" OR  t.subbranch like "%"#{keyword}"%"  OR  t.bankcard_number like "%"#{keyword}"%" 
+						OR  t.account_name like "%"#{keyword}"%" OR  t.project_name like "%"#{keyword}"%")
 			</if>
 		</trim>
 	</sql>
@@ -55,16 +56,18 @@
 		SELECT
 		t.code
 		,t.company_code
+		,t.company_name
 		,t.project_code
+		,t.project_name
+		
 		,t.bank_code
 		,t.bank_name
-		
 		,t.subbranch
 		,t.account_name
 		,t.bankcard_number
+		
 		,t.status
 		,t.create_datetime
-		
 		,t.updater
 		,t.update_datetime
 		,t.remark
@@ -89,16 +92,18 @@
 		thf_company_card(
 		code
 		,company_code
+		,company_name
 		,project_code
+		,project_name
+		
 		,bank_code
 		,bank_name
-		
 		,subbranch
 		,bankcard_number
 		,account_name
+		
 		,status
 		,create_datetime
-		
 		,updater
 		,update_datetime
 		,remark
@@ -106,16 +111,18 @@
 		VALUES(
 		#{code}
 		,#{companyCode}
+		,#{companyName}
 		,#{projectCode}
+		,#{projectName}
+		
 		,#{bankCode}
 		,#{bankName}
-		
 		,#{subbranch}
 		,#{bankcardNumber}
 		,#{accountName}
+		
 		,#{status}
 		,#{createDatetime}
-		
 		,#{updater}
 		,#{updateDatetime}
 		,#{remark}
@@ -136,6 +143,4 @@
 		,remark = #{remark}
 		WHERE code = #{code}
 	</update>
-
-
 </mapper>

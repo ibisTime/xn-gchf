@@ -6,10 +6,12 @@ import com.cdkj.gchf.bo.base.IPaginableBO;
 import com.cdkj.gchf.domain.Skill;
 
 public interface ISkillBO extends IPaginableBO<Skill> {
-
     void saveSkill(Skill data);
 
     void refreshSkill(Skill skill);
+
+    // 根据员工删除技能
+    public void dropSkillByStaff(String staffCode);
 
     List<Skill> querySkillList(Skill condition);
 

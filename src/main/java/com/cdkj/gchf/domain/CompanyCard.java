@@ -24,6 +24,12 @@ public class CompanyCard extends ABaseDO {
     // 项目编号
     private String projectCode;
 
+    // 公司名称
+    private String companyName;
+
+    // 项目名称
+    private String projectName;
+
     // 银行行别
     private String bankCode;
 
@@ -65,11 +71,27 @@ public class CompanyCard extends ABaseDO {
     // 用户类型
     private String kind;
 
-    // 项目名称
-    private String projectName;
-
     // 项目编号List
     private List<String> projectCodeList;
+
+    // 银行+支行
+    private String bankSubbranch;
+
+    public String getCompanyName() {
+        return companyName;
+    }
+
+    public void setCompanyName(String companyName) {
+        this.companyName = companyName;
+    }
+
+    public String getBankSubbranch() {
+        return bankSubbranch;
+    }
+
+    public void setBankSubbranch(String bankSubbranch) {
+        this.bankSubbranch = bankSubbranch;
+    }
 
     public void setCode(String code) {
         this.code = code;

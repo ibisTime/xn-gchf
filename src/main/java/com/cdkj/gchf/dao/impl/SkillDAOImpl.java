@@ -22,6 +22,11 @@ public class SkillDAOImpl extends AMybatisTemplate implements ISkillDAO {
     }
 
     @Override
+    public int deleteByStaff(Skill data) {
+        return super.delete(NAMESPACE.concat("delete_skillByStaff"), data);
+    }
+
+    @Override
     public Skill select(Skill condition) {
         return null;
     }

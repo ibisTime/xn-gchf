@@ -125,7 +125,7 @@ public class EmployAOImpl implements IEmployAO {
             report.setNextMonthSalary(nextMonthSalary);
             report.setStaffOn(report.getStaffOn() + 1);
             report.setStaffIn(report.getStaffIn() + 1);
-            reportBO.staffIn(report);
+            reportBO.refreshStaffIn(report);
         }
 
         // 生成考勤

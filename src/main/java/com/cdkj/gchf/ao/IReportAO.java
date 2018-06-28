@@ -11,12 +11,6 @@ import com.cdkj.gchf.domain.Report;
 public interface IReportAO {
     static final String DEFAULT_ORDER_COLUMN = "code";
 
-    public String addReport(Report data);
-
-    public void dropReport(String code);
-
-    public void editReport(Report data);
-
     public Paginable<Report> queryReportPage(int start, int limit,
             Report condition);
 

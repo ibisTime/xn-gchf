@@ -36,6 +36,7 @@ import com.cdkj.gchf.domain.User;
 import com.cdkj.gchf.dto.req.XN631410Req;
 import com.cdkj.gchf.dto.req.XN631412Req;
 import com.cdkj.gchf.dto.req.XN631413Req;
+import com.cdkj.gchf.dto.req.XN631413ReqSkill;
 import com.cdkj.gchf.dto.req.XN631414Req;
 import com.cdkj.gchf.enums.EGeneratePrefix;
 import com.cdkj.gchf.enums.EIDKind;
@@ -155,36 +156,6 @@ public class StaffAOImpl implements IStaffAO {
     }
 
     @Override
-    public Paginable<Staff> queryStaffPage(int start, int limit,
-            Staff condition) {
-        Paginable<Staff> page = staffBO.getPaginable(start, limit, condition);
-        for (Staff staff : page.getList()) {
-            staff.setUpdateName(getName(staff.getUpdater()));
-        }
-        return page;
-    }
-
-    @Override
-    public List<Staff> queryStaffList(Staff condition) {
-        List<Staff> list = staffBO.queryStaffList(condition);
-        for (Staff staff : list) {
-            staff.setUpdateName(getName(staff.getUpdater()));
-        }
-        return list;
-    }
-
-    @Override
-    public Staff getStaff(String code) {
-        Staff data = staffBO.getStaff(code);
-        BankCard bankCard = bankCardBO.getBankCardByStaff(data.getCode());
-        data.setBankCard(bankCard);
-        data.setUpdateName(getName(data.getUpdater()));
-        List<Skill> skillList = skillBO.querySkillByStaff(data.getCode());
-        data.setSkillList(skillList);
-        return data;
-    }
-
-    @Override
     @Transactional
     public void editStaffInfo(XN631413Req req) {
         if (StringUtils.isNotBlank(req.getMobile())) {
@@ -227,8 +198,8 @@ public class StaffAOImpl implements IStaffAO {
         skillBO.dropSkillByStaff(req.getCode());
         // 添加技能信息
         if (CollectionUtils.isNotEmpty(req.getSkillList())) {
-            for (Skill skill : req.getSkillList()) {
-                skillBO.saveSkill(skill);
+            for (XN631413ReqSkill reqSkill : req.getSkillList()) {
+                skillBO.saveSkill(data.getCode(), data.getName(), reqSkill);
             }
         }
     }
@@ -311,6 +282,36 @@ public class StaffAOImpl implements IStaffAO {
         }
         return name;
 
+    }
+
+    @Override
+    public Paginable<Staff> queryStaffPage(int start, int limit,
+            Staff condition) {
+        Paginable<Staff> page = staffBO.getPaginable(start, limit, condition);
+        for (Staff staff : page.getList()) {
+            staff.setUpdateName(getName(staff.getUpdater()));
+        }
+        return page;
+    }
+
+    @Override
+    public List<Staff> queryStaffList(Staff condition) {
+        List<Staff> list = staffBO.queryStaffList(condition);
+        for (Staff staff : list) {
+            staff.setUpdateName(getName(staff.getUpdater()));
+        }
+        return list;
+    }
+
+    @Override
+    public Staff getStaff(String code) {
+        Staff data = staffBO.getStaff(code);
+        BankCard bankCard = bankCardBO.getBankCardByStaff(data.getCode());
+        data.setBankCard(bankCard);
+        data.setUpdateName(getName(data.getUpdater()));
+        List<Skill> skillList = skillBO.querySkillByStaff(data.getCode());
+        data.setSkillList(skillList);
+        return data;
     }
 
     @Override

@@ -42,29 +42,6 @@ public class ReportBOImpl extends PaginableBOImpl<Report> implements IReportBO {
     }
 
     @Override
-    public void removeReport(String code) {
-    }
-
-    @Override
-    public List<Report> queryReportList(Report condition) {
-        return reportDAO.selectList(condition);
-    }
-
-    @Override
-    public Report getReport(String code) {
-        Report data = null;
-        if (StringUtils.isNotBlank(code)) {
-            Report condition = new Report();
-            condition.setCode(code);
-            data = reportDAO.select(condition);
-            if (data == null) {
-                throw new BizException("xn0000", "统计信息不存在");
-            }
-        }
-        return data;
-    }
-
-    @Override
     public Report getReportByProject(String proejctCode) {
         Report data = null;
         if (StringUtils.isNotBlank(proejctCode)) {
@@ -77,7 +54,7 @@ public class ReportBOImpl extends PaginableBOImpl<Report> implements IReportBO {
     }
 
     @Override
-    public void staffIn(Report data) {
+    public void refreshStaffIn(Report data) {
         reportDAO.updateStaffIn(data);
     }
 
@@ -116,5 +93,24 @@ public class ReportBOImpl extends PaginableBOImpl<Report> implements IReportBO {
 
     @Override
     public void resetTodayDays(Report report) {
+    }
+
+    @Override
+    public List<Report> queryReportList(Report condition) {
+        return reportDAO.selectList(condition);
+    }
+
+    @Override
+    public Report getReport(String code) {
+        Report data = null;
+        if (StringUtils.isNotBlank(code)) {
+            Report condition = new Report();
+            condition.setCode(code);
+            data = reportDAO.select(condition);
+            if (data == null) {
+                throw new BizException("xn0000", "统计信息不存在");
+            }
+        }
+        return data;
     }
 }

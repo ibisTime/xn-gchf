@@ -29,19 +29,6 @@ public class ReportAOImpl implements IReportAO {
     private IEmployBO employBO;
 
     @Override
-    public String addReport(Report data) {
-        return null;
-    }
-
-    @Override
-    public void editReport(Report data) {
-    }
-
-    @Override
-    public void dropReport(String code) {
-    }
-
-    @Override
     public Paginable<Report> queryReportPage(int start, int limit,
             Report condition) {
         return reportBO.getPaginable(start, limit, condition);

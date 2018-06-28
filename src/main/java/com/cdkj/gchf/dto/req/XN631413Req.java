@@ -4,8 +4,6 @@ import java.util.List;
 
 import org.hibernate.validator.constraints.NotBlank;
 
-import com.cdkj.gchf.domain.Skill;
-
 public class XN631413Req {
 
     // （必填）编号
@@ -41,7 +39,7 @@ public class XN631413Req {
     private String subbranch;
 
     // 技能
-    private List<Skill> skillList;
+    private List<XN631413ReqSkill> skillList;
 
     // （必填）更新人
     @NotBlank(message = "更新人不能为空")
@@ -130,11 +128,11 @@ public class XN631413Req {
         this.contactsMobile = contactsMobile;
     }
 
-    public List<Skill> getSkillList() {
+    public List<XN631413ReqSkill> getSkillList() {
         return skillList;
     }
 
-    public void setSkillList(List<Skill> skillList) {
+    public void setSkillList(List<XN631413ReqSkill> skillList) {
         this.skillList = skillList;
     }
 

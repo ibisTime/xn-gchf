@@ -6,18 +6,9 @@ import com.cdkj.gchf.bo.base.IPaginableBO;
 import com.cdkj.gchf.domain.Report;
 
 public interface IReportBO extends IPaginableBO<Report> {
-
-    public void removeReport(String code);
-
-    public List<Report> queryReportList(Report condition);
-
-    public Report getReport(String code);
-
-    public Report getReportByProject(String code);
-
-    public void staffIn(Report report);
-
     public void saveReport(String projectCode, String name);
+
+    public void refreshStaffIn(Report report);
 
     public void refreshStaffOut(Report data);
 
@@ -33,4 +24,9 @@ public interface IReportBO extends IPaginableBO<Report> {
 
     public void resetTodayDays(Report report);
 
+    public List<Report> queryReportList(Report condition);
+
+    public Report getReport(String code);
+
+    public Report getReportByProject(String code);
 }

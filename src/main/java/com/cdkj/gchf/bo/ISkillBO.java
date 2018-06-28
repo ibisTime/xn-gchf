@@ -4,9 +4,10 @@ import java.util.List;
 
 import com.cdkj.gchf.bo.base.IPaginableBO;
 import com.cdkj.gchf.domain.Skill;
+import com.cdkj.gchf.dto.req.XN631413ReqSkill;
 
 public interface ISkillBO extends IPaginableBO<Skill> {
-    void saveSkill(Skill data);
+    void saveSkill(String staffCode, String staffName, XN631413ReqSkill req);
 
     void refreshSkill(Skill skill);
 

@@ -9,8 +9,10 @@ import org.springframework.stereotype.Component;
 import com.cdkj.gchf.bo.ISkillBO;
 import com.cdkj.gchf.bo.base.PaginableBOImpl;
 import com.cdkj.gchf.core.OrderNoGenerater;
+import com.cdkj.gchf.core.StringValidater;
 import com.cdkj.gchf.dao.ISkillDAO;
 import com.cdkj.gchf.domain.Skill;
+import com.cdkj.gchf.dto.req.XN631413ReqSkill;
 import com.cdkj.gchf.enums.EGeneratePrefix;
 import com.cdkj.gchf.exception.BizException;
 
@@ -21,8 +23,19 @@ public class SkillBOImpl extends PaginableBOImpl<Skill> implements ISkillBO {
     ISkillDAO skillDAO;
 
     @Override
-    public void saveSkill(Skill data) {
-        skillDAO.insert(data);
+    public void saveSkill(String staffCode, String staffName,
+            XN631413ReqSkill req) {
+        Skill skill = new Skill();
+        String skillCode = OrderNoGenerater
+            .generate(EGeneratePrefix.Skill.getCode());
+        skill.setCode(skillCode);
+        skill.setStaffCode(staffCode);
+        skill.setStaffName(staffName);
+        skill.setScore(StringValidater.toInteger(req.getScore()));
+        skill.setPdf(req.getPdf());
+        skill.setName(req.getName());
+
+        skillDAO.insert(skill);
     }
 
     @Override

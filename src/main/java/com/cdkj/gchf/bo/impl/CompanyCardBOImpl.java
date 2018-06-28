@@ -70,7 +70,6 @@ public class CompanyCardBOImpl extends PaginableBOImpl<CompanyCard>
     @Override
     public void refreshCompanyCard(CompanyCard data) {
         companyCardDAO.update(data);
-
     }
 
     @Override

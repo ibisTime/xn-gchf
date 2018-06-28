@@ -7,6 +7,7 @@ import java.util.List;
 import org.apache.commons.collections.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.cdkj.gchf.ao.IProjectAO;
 import com.cdkj.gchf.bo.ICompanyCardBO;
@@ -97,6 +98,7 @@ public class ProjectAOImpl implements IProjectAO {
     }
 
     @Override
+    @Transactional
     public void editProject(XN631352Req req) {
         Project data = projectBO.getProject(req.getCode());
         data.setName(req.getName());
@@ -123,6 +125,20 @@ public class ProjectAOImpl implements IProjectAO {
         data.setUpdateDatetime(new Date());
         data.setRemark(req.getRemark());
         projectBO.editProject(data);
+
+        // 更新账户信息
+        CompanyCard companyCard = companyCardBO
+            .getCompanyCardByProject(req.getCode());
+        companyCard.setBankCode(req.getBankCode());
+        companyCard.setBankName(req.getBankName());
+        companyCard.setBankcardNumber(req.getBankcardNumber());
+        companyCard.setSubbranch(req.getSubbranch());
+
+        companyCard.setAccountName(req.getAccountName());
+        companyCard.setUpdater(req.getUpdater());
+        companyCard.setUpdateDatetime(new Date());
+        companyCard.setRemark(req.getRemark());
+        companyCardBO.refreshCompanyCard(companyCard);
     }
 
     @Override

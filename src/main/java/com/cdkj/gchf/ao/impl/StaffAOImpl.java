@@ -239,12 +239,13 @@ public class StaffAOImpl implements IStaffAO {
         // 所在项目及工资条
         List<Employ> employList = new ArrayList<Employ>();
         List<Salary> salaryList = new ArrayList<Salary>();
-        for (String projectCode : projectCodeList) {
-            employList
-                .add(employBO.getEmployByStaff(data.getCode(), projectCode));
-            // salaryList
-            // .add(salaryBO.getSalaryByStaff(data.getCode(), projectCode));
+        if (CollectionUtils.isNotEmpty(projectCodeList)) {
+            for (String projectCode : projectCodeList) {
+                employList.add(
+                    employBO.getEmployByStaff(data.getCode(), projectCode));
+            }
         }
+
         data.setEmployList(employList);
         data.setSalaryList(salaryList);
         // 工资卡

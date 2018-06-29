@@ -112,7 +112,7 @@ INSERT INTO `tsys_config` (`id`,`type`,`ckey`,`cvalue`,`updater`,`update_datetim
 /*
 -- Query: SELECT * FROM dev_xn_gchf.tsys_menu
 LIMIT 0, 1000
--- Date: 2018-06-29 13:56
+-- Date: 2018-06-29 17:50
 */
 INSERT INTO `tsys_menu` (`code`,`name`,`type`,`url`,`order_no`,`updater`,`update_datetime`,`remark`,`parent_code`) VALUES ('GCHFSM201800000000000000','根目录','1','#','1','admin',now(),'','');
 INSERT INTO `tsys_menu` (`code`,`name`,`type`,`url`,`order_no`,`updater`,`update_datetime`,`remark`,`parent_code`) VALUES ('GCHFSM201800001000000001','系统管理','1','#','1','admin',now(),'','GCHFSM201800000000000000');
@@ -213,7 +213,7 @@ INSERT INTO `tsys_menu` (`code`,`name`,`type`,`url`,`order_no`,`updater`,`update
 INSERT INTO `tsys_menu` (`code`,`name`,`type`,`url`,`order_no`,`updater`,`update_datetime`,`remark`,`parent_code`) VALUES ('SM201805251516327463058','历史事件','1','/staff/allStafferrHistory.htm','2','USYS201800000000001',now(),'','SM201805061714532327913');
 INSERT INTO `tsys_menu` (`code`,`name`,`type`,`url`,`order_no`,`updater`,`update_datetime`,`remark`,`parent_code`) VALUES ('SM201805251544130622832','转换为正常','2','/Transformation','2','USYS201800000000001',now(),'','SM201805071518444813149');
 INSERT INTO `tsys_menu` (`code`,`name`,`type`,`url`,`order_no`,`updater`,`update_datetime`,`remark`,`parent_code`) VALUES ('SM201805261001490495192','请假','2','/weekday','3','USYS201800000000001',now(),'','SM201805031143039272323');
-INSERT INTO `tsys_menu` (`code`,`name`,`type`,`url`,`order_no`,`updater`,`update_datetime`,`remark`,`parent_code`) VALUES ('SM201805261021084049823','离职申请','2','/quit','17','USYS201800000000001',now(),'','SM201804271923251312840');
+INSERT INTO `tsys_menu` (`code`,`name`,`type`,`url`,`order_no`,`updater`,`update_datetime`,`remark`,`parent_code`) VALUES ('SM201805261021084049823','离职申请','2','/quit','17','USYS201800000000001','2018-06-29 16:12:33','','SM201805031143039272323');
 INSERT INTO `tsys_menu` (`code`,`name`,`type`,`url`,`order_no`,`updater`,`update_datetime`,`remark`,`parent_code`) VALUES ('SM201805261621476424511','工程进度','1','/hetong/jindu.htm','6','USYS201800000000001',now(),'','SM201804271918126145662');
 INSERT INTO `tsys_menu` (`code`,`name`,`type`,`url`,`order_no`,`updater`,`update_datetime`,`remark`,`parent_code`) VALUES ('SM201805261758591375743','办理入职','2','/addWorkers','1','USYS201800000000001',now(),'','SM201805031143039272323');
 INSERT INTO `tsys_menu` (`code`,`name`,`type`,`url`,`order_no`,`updater`,`update_datetime`,`remark`,`parent_code`) VALUES ('SM201806252141430605486','部门管理','2','/addBumen','19','USYS201800000000001',now(),'','SM201804271923251312840');
@@ -223,7 +223,7 @@ INSERT INTO `tsys_menu` (`code`,`name`,`type`,`url`,`order_no`,`updater`,`update
 /*
 -- Query: SELECT * FROM dev_xn_gchf.tsys_menu_role
 LIMIT 0, 1000
--- Date: 2018-06-29 13:57
+-- Date: 2018-06-29 17:52
 */
 INSERT INTO `tsys_menu_role` (`id`,`role_code`,`menu_code`,`updater`,`update_datetime`,`remark`) VALUES (1,'SR201804261443398913168','GCHFSM201800001000000008','admin',now(),NULL);
 INSERT INTO `tsys_menu_role` (`id`,`role_code`,`menu_code`,`updater`,`update_datetime`,`remark`) VALUES (8,'SR201805251644020984824','SM201805061714532327913','U201805142013427676188',now(),NULL);
@@ -324,52 +324,54 @@ INSERT INTO `tsys_menu_role` (`id`,`role_code`,`menu_code`,`updater`,`update_dat
 INSERT INTO `tsys_menu_role` (`id`,`role_code`,`menu_code`,`updater`,`update_datetime`,`remark`) VALUES (302,'RO201800000000000001','SM201804261722548756668','USYS201800000000001',now(),NULL);
 INSERT INTO `tsys_menu_role` (`id`,`role_code`,`menu_code`,`updater`,`update_datetime`,`remark`) VALUES (303,'RO201800000000000001','SM201804261800542746171','USYS201800000000001',now(),NULL);
 INSERT INTO `tsys_menu_role` (`id`,`role_code`,`menu_code`,`updater`,`update_datetime`,`remark`) VALUES (304,'RO201800000000000001','SM201804261921017207214','USYS201800000000001',now(),NULL);
-INSERT INTO `tsys_menu_role` (`id`,`role_code`,`menu_code`,`updater`,`update_datetime`,`remark`) VALUES (368,'RO201800000000000003','GCHFSM201800000000000000','USYS201800000000001',now(),NULL);
-INSERT INTO `tsys_menu_role` (`id`,`role_code`,`menu_code`,`updater`,`update_datetime`,`remark`) VALUES (369,'RO201800000000000003','SM201804262121064388530','USYS201800000000001',now(),NULL);
-INSERT INTO `tsys_menu_role` (`id`,`role_code`,`menu_code`,`updater`,`update_datetime`,`remark`) VALUES (370,'RO201800000000000003','SM201804271923251312840','USYS201800000000001',now(),NULL);
-INSERT INTO `tsys_menu_role` (`id`,`role_code`,`menu_code`,`updater`,`update_datetime`,`remark`) VALUES (371,'RO201800000000000003','SM201804291425230875702','USYS201800000000001',now(),NULL);
-INSERT INTO `tsys_menu_role` (`id`,`role_code`,`menu_code`,`updater`,`update_datetime`,`remark`) VALUES (372,'RO201800000000000003','SM201805021513358511912','USYS201800000000001',now(),NULL);
-INSERT INTO `tsys_menu_role` (`id`,`role_code`,`menu_code`,`updater`,`update_datetime`,`remark`) VALUES (373,'RO201800000000000003','SM201805021608214954446','USYS201800000000001',now(),NULL);
-INSERT INTO `tsys_menu_role` (`id`,`role_code`,`menu_code`,`updater`,`update_datetime`,`remark`) VALUES (374,'RO201800000000000003','SM201805031143039272323','USYS201800000000001',now(),NULL);
-INSERT INTO `tsys_menu_role` (`id`,`role_code`,`menu_code`,`updater`,`update_datetime`,`remark`) VALUES (375,'RO201800000000000003','SM201805031622490571847','USYS201800000000001',now(),NULL);
-INSERT INTO `tsys_menu_role` (`id`,`role_code`,`menu_code`,`updater`,`update_datetime`,`remark`) VALUES (376,'RO201800000000000003','SM201805071518444813149','USYS201800000000001',now(),NULL);
-INSERT INTO `tsys_menu_role` (`id`,`role_code`,`menu_code`,`updater`,`update_datetime`,`remark`) VALUES (377,'RO201800000000000003','SM201805101326343014288','USYS201800000000001',now(),NULL);
-INSERT INTO `tsys_menu_role` (`id`,`role_code`,`menu_code`,`updater`,`update_datetime`,`remark`) VALUES (378,'RO201800000000000003','SM201805122203323176704','USYS201800000000001',now(),NULL);
-INSERT INTO `tsys_menu_role` (`id`,`role_code`,`menu_code`,`updater`,`update_datetime`,`remark`) VALUES (379,'RO201800000000000003','SM201806252143270574752','USYS201800000000001',now(),NULL);
-INSERT INTO `tsys_menu_role` (`id`,`role_code`,`menu_code`,`updater`,`update_datetime`,`remark`) VALUES (380,'RO201800000000000003','SM201805122244282147848','USYS201800000000001',now(),NULL);
-INSERT INTO `tsys_menu_role` (`id`,`role_code`,`menu_code`,`updater`,`update_datetime`,`remark`) VALUES (381,'RO201800000000000003','SM201805122244587461594','USYS201800000000001',now(),NULL);
-INSERT INTO `tsys_menu_role` (`id`,`role_code`,`menu_code`,`updater`,`update_datetime`,`remark`) VALUES (382,'RO201800000000000003','SM201805122246258158393','USYS201800000000001',now(),NULL);
-INSERT INTO `tsys_menu_role` (`id`,`role_code`,`menu_code`,`updater`,`update_datetime`,`remark`) VALUES (383,'RO201800000000000003','SM201805261021084049823','USYS201800000000001',now(),NULL);
-INSERT INTO `tsys_menu_role` (`id`,`role_code`,`menu_code`,`updater`,`update_datetime`,`remark`) VALUES (384,'RO201800000000000003','SM201806252141430605486','USYS201800000000001',now(),NULL);
-INSERT INTO `tsys_menu_role` (`id`,`role_code`,`menu_code`,`updater`,`update_datetime`,`remark`) VALUES (385,'RO201800000000000003','SM201804291350415659355','USYS201800000000001',now(),NULL);
-INSERT INTO `tsys_menu_role` (`id`,`role_code`,`menu_code`,`updater`,`update_datetime`,`remark`) VALUES (386,'RO201800000000000003','SM201804291425476906723','USYS201800000000001',now(),NULL);
-INSERT INTO `tsys_menu_role` (`id`,`role_code`,`menu_code`,`updater`,`update_datetime`,`remark`) VALUES (387,'RO201800000000000003','SM201805021608430535380','USYS201800000000001',now(),NULL);
-INSERT INTO `tsys_menu_role` (`id`,`role_code`,`menu_code`,`updater`,`update_datetime`,`remark`) VALUES (388,'RO201800000000000003','SM201805021637202209454','USYS201800000000001',now(),NULL);
-INSERT INTO `tsys_menu_role` (`id`,`role_code`,`menu_code`,`updater`,`update_datetime`,`remark`) VALUES (389,'RO201800000000000003','SM201805022048193922921','USYS201800000000001',now(),NULL);
-INSERT INTO `tsys_menu_role` (`id`,`role_code`,`menu_code`,`updater`,`update_datetime`,`remark`) VALUES (390,'RO201800000000000003','SM201805031623038864903','USYS201800000000001',now(),NULL);
-INSERT INTO `tsys_menu_role` (`id`,`role_code`,`menu_code`,`updater`,`update_datetime`,`remark`) VALUES (391,'RO201800000000000003','SM201805032049250384279','USYS201800000000001',now(),NULL);
-INSERT INTO `tsys_menu_role` (`id`,`role_code`,`menu_code`,`updater`,`update_datetime`,`remark`) VALUES (392,'RO201800000000000003','SM201805101326483303672','USYS201800000000001',now(),NULL);
-INSERT INTO `tsys_menu_role` (`id`,`role_code`,`menu_code`,`updater`,`update_datetime`,`remark`) VALUES (393,'RO201800000000000003','SM201805122247268142994','USYS201800000000001',now(),NULL);
-INSERT INTO `tsys_menu_role` (`id`,`role_code`,`menu_code`,`updater`,`update_datetime`,`remark`) VALUES (394,'RO201800000000000003','SM201805151541147523361','USYS201800000000001',now(),NULL);
-INSERT INTO `tsys_menu_role` (`id`,`role_code`,`menu_code`,`updater`,`update_datetime`,`remark`) VALUES (395,'RO201800000000000003','SM201805251516327463058','USYS201800000000001',now(),NULL);
-INSERT INTO `tsys_menu_role` (`id`,`role_code`,`menu_code`,`updater`,`update_datetime`,`remark`) VALUES (396,'RO201800000000000003','SM201804271918126145662','USYS201800000000001',now(),NULL);
-INSERT INTO `tsys_menu_role` (`id`,`role_code`,`menu_code`,`updater`,`update_datetime`,`remark`) VALUES (397,'RO201800000000000003','SM201805021609039267284','USYS201800000000001',now(),NULL);
-INSERT INTO `tsys_menu_role` (`id`,`role_code`,`menu_code`,`updater`,`update_datetime`,`remark`) VALUES (398,'RO201800000000000003','SM201805021637409537163','USYS201800000000001',now(),NULL);
-INSERT INTO `tsys_menu_role` (`id`,`role_code`,`menu_code`,`updater`,`update_datetime`,`remark`) VALUES (399,'RO201800000000000003','SM201805022048376225056','USYS201800000000001',now(),NULL);
-INSERT INTO `tsys_menu_role` (`id`,`role_code`,`menu_code`,`updater`,`update_datetime`,`remark`) VALUES (400,'RO201800000000000003','SM201805061739537493514','USYS201800000000001',now(),NULL);
-INSERT INTO `tsys_menu_role` (`id`,`role_code`,`menu_code`,`updater`,`update_datetime`,`remark`) VALUES (401,'RO201800000000000003','SM201805142231375155440','USYS201800000000001',now(),NULL);
-INSERT INTO `tsys_menu_role` (`id`,`role_code`,`menu_code`,`updater`,`update_datetime`,`remark`) VALUES (402,'RO201800000000000003','SM201805231252504327898','USYS201800000000001',now(),NULL);
-INSERT INTO `tsys_menu_role` (`id`,`role_code`,`menu_code`,`updater`,`update_datetime`,`remark`) VALUES (403,'RO201800000000000003','SM201805261001490495192','USYS201800000000001',now(),NULL);
-INSERT INTO `tsys_menu_role` (`id`,`role_code`,`menu_code`,`updater`,`update_datetime`,`remark`) VALUES (404,'RO201800000000000003','SM201804262112397419688','USYS201800000000001',now(),NULL);
-INSERT INTO `tsys_menu_role` (`id`,`role_code`,`menu_code`,`updater`,`update_datetime`,`remark`) VALUES (405,'RO201800000000000003','SM201804262118246417123','USYS201800000000001',now(),NULL);
-INSERT INTO `tsys_menu_role` (`id`,`role_code`,`menu_code`,`updater`,`update_datetime`,`remark`) VALUES (406,'RO201800000000000003','SM201805122247567061152','USYS201800000000001',now(),NULL);
-INSERT INTO `tsys_menu_role` (`id`,`role_code`,`menu_code`,`updater`,`update_datetime`,`remark`) VALUES (407,'RO201800000000000003','SM201804262009375685547','USYS201800000000001',now(),NULL);
-INSERT INTO `tsys_menu_role` (`id`,`role_code`,`menu_code`,`updater`,`update_datetime`,`remark`) VALUES (408,'RO201800000000000003','SM201805041411074644391','USYS201800000000001',now(),NULL);
-INSERT INTO `tsys_menu_role` (`id`,`role_code`,`menu_code`,`updater`,`update_datetime`,`remark`) VALUES (409,'RO201800000000000003','SM201805251354520521925','USYS201800000000001',now(),NULL);
-INSERT INTO `tsys_menu_role` (`id`,`role_code`,`menu_code`,`updater`,`update_datetime`,`remark`) VALUES (410,'RO201800000000000003','SM201805031341536277279','USYS201800000000001',now(),NULL);
-INSERT INTO `tsys_menu_role` (`id`,`role_code`,`menu_code`,`updater`,`update_datetime`,`remark`) VALUES (411,'RO201800000000000003','SM201805061714532327913','USYS201800000000001',now(),NULL);
-INSERT INTO `tsys_menu_role` (`id`,`role_code`,`menu_code`,`updater`,`update_datetime`,`remark`) VALUES (412,'RO201800000000000003','SM201805122248245127470','USYS201800000000001',now(),NULL);
-INSERT INTO `tsys_menu_role` (`id`,`role_code`,`menu_code`,`updater`,`update_datetime`,`remark`) VALUES (413,'RO201800000000000003','SM201805261621476424511','USYS201800000000001',now(),NULL);
-INSERT INTO `tsys_menu_role` (`id`,`role_code`,`menu_code`,`updater`,`update_datetime`,`remark`) VALUES (414,'RO201800000000000003','SM201805031342142928555','USYS201800000000001',now(),NULL);
-INSERT INTO `tsys_menu_role` (`id`,`role_code`,`menu_code`,`updater`,`update_datetime`,`remark`) VALUES (415,'RO201800000000000003','SM201805122249222019735','USYS201800000000001',now(),NULL);
-INSERT INTO `tsys_menu_role` (`id`,`role_code`,`menu_code`,`updater`,`update_datetime`,`remark`) VALUES (416,'RO201800000000000003','SM201805142040150952935','USYS201800000000001',now(),NULL);
+INSERT INTO `tsys_menu_role` (`id`,`role_code`,`menu_code`,`updater`,`update_datetime`,`remark`) VALUES (417,'RO201800000000000003','GCHFSM201800000000000000','USYS201800000000001',now(),NULL);
+INSERT INTO `tsys_menu_role` (`id`,`role_code`,`menu_code`,`updater`,`update_datetime`,`remark`) VALUES (418,'RO201800000000000003','SM201804262121064388530','USYS201800000000001',now(),NULL);
+INSERT INTO `tsys_menu_role` (`id`,`role_code`,`menu_code`,`updater`,`update_datetime`,`remark`) VALUES (419,'RO201800000000000003','SM201804271923251312840','USYS201800000000001',now(),NULL);
+INSERT INTO `tsys_menu_role` (`id`,`role_code`,`menu_code`,`updater`,`update_datetime`,`remark`) VALUES (420,'RO201800000000000003','SM201804291425230875702','USYS201800000000001',now(),NULL);
+INSERT INTO `tsys_menu_role` (`id`,`role_code`,`menu_code`,`updater`,`update_datetime`,`remark`) VALUES (421,'RO201800000000000003','SM201805021513358511912','USYS201800000000001',now(),NULL);
+INSERT INTO `tsys_menu_role` (`id`,`role_code`,`menu_code`,`updater`,`update_datetime`,`remark`) VALUES (422,'RO201800000000000003','SM201805021608214954446','USYS201800000000001',now(),NULL);
+INSERT INTO `tsys_menu_role` (`id`,`role_code`,`menu_code`,`updater`,`update_datetime`,`remark`) VALUES (423,'RO201800000000000003','SM201805031143039272323','USYS201800000000001',now(),NULL);
+INSERT INTO `tsys_menu_role` (`id`,`role_code`,`menu_code`,`updater`,`update_datetime`,`remark`) VALUES (424,'RO201800000000000003','SM201805031622490571847','USYS201800000000001',now(),NULL);
+INSERT INTO `tsys_menu_role` (`id`,`role_code`,`menu_code`,`updater`,`update_datetime`,`remark`) VALUES (425,'RO201800000000000003','SM201805071518444813149','USYS201800000000001',now(),NULL);
+INSERT INTO `tsys_menu_role` (`id`,`role_code`,`menu_code`,`updater`,`update_datetime`,`remark`) VALUES (426,'RO201800000000000003','SM201805101326343014288','USYS201800000000001',now(),NULL);
+INSERT INTO `tsys_menu_role` (`id`,`role_code`,`menu_code`,`updater`,`update_datetime`,`remark`) VALUES (427,'RO201800000000000003','SM201805122203323176704','USYS201800000000001',now(),NULL);
+INSERT INTO `tsys_menu_role` (`id`,`role_code`,`menu_code`,`updater`,`update_datetime`,`remark`) VALUES (428,'RO201800000000000003','SM201806252143270574752','USYS201800000000001',now(),NULL);
+INSERT INTO `tsys_menu_role` (`id`,`role_code`,`menu_code`,`updater`,`update_datetime`,`remark`) VALUES (429,'RO201800000000000003','SM201805122244282147848','USYS201800000000001',now(),NULL);
+INSERT INTO `tsys_menu_role` (`id`,`role_code`,`menu_code`,`updater`,`update_datetime`,`remark`) VALUES (430,'RO201800000000000003','SM201805122244587461594','USYS201800000000001',now(),NULL);
+INSERT INTO `tsys_menu_role` (`id`,`role_code`,`menu_code`,`updater`,`update_datetime`,`remark`) VALUES (431,'RO201800000000000003','SM201805122246258158393','USYS201800000000001',now(),NULL);
+INSERT INTO `tsys_menu_role` (`id`,`role_code`,`menu_code`,`updater`,`update_datetime`,`remark`) VALUES (432,'RO201800000000000003','SM201805261021084049823','USYS201800000000001',now(),NULL);
+INSERT INTO `tsys_menu_role` (`id`,`role_code`,`menu_code`,`updater`,`update_datetime`,`remark`) VALUES (433,'RO201800000000000003','SM201806252141430605486','USYS201800000000001',now(),NULL);
+INSERT INTO `tsys_menu_role` (`id`,`role_code`,`menu_code`,`updater`,`update_datetime`,`remark`) VALUES (434,'RO201800000000000003','SM201804291350415659355','USYS201800000000001',now(),NULL);
+INSERT INTO `tsys_menu_role` (`id`,`role_code`,`menu_code`,`updater`,`update_datetime`,`remark`) VALUES (435,'RO201800000000000003','SM201804291425476906723','USYS201800000000001',now(),NULL);
+INSERT INTO `tsys_menu_role` (`id`,`role_code`,`menu_code`,`updater`,`update_datetime`,`remark`) VALUES (436,'RO201800000000000003','SM201805021608430535380','USYS201800000000001',now(),NULL);
+INSERT INTO `tsys_menu_role` (`id`,`role_code`,`menu_code`,`updater`,`update_datetime`,`remark`) VALUES (437,'RO201800000000000003','SM201805021637202209454','USYS201800000000001',now(),NULL);
+INSERT INTO `tsys_menu_role` (`id`,`role_code`,`menu_code`,`updater`,`update_datetime`,`remark`) VALUES (438,'RO201800000000000003','SM201805022048193922921','USYS201800000000001',now(),NULL);
+INSERT INTO `tsys_menu_role` (`id`,`role_code`,`menu_code`,`updater`,`update_datetime`,`remark`) VALUES (439,'RO201800000000000003','SM201805031623038864903','USYS201800000000001',now(),NULL);
+INSERT INTO `tsys_menu_role` (`id`,`role_code`,`menu_code`,`updater`,`update_datetime`,`remark`) VALUES (440,'RO201800000000000003','SM201805032049250384279','USYS201800000000001',now(),NULL);
+INSERT INTO `tsys_menu_role` (`id`,`role_code`,`menu_code`,`updater`,`update_datetime`,`remark`) VALUES (441,'RO201800000000000003','SM201805101326483303672','USYS201800000000001',now(),NULL);
+INSERT INTO `tsys_menu_role` (`id`,`role_code`,`menu_code`,`updater`,`update_datetime`,`remark`) VALUES (442,'RO201800000000000003','SM201805122247268142994','USYS201800000000001',now(),NULL);
+INSERT INTO `tsys_menu_role` (`id`,`role_code`,`menu_code`,`updater`,`update_datetime`,`remark`) VALUES (443,'RO201800000000000003','SM201805151541147523361','USYS201800000000001',now(),NULL);
+INSERT INTO `tsys_menu_role` (`id`,`role_code`,`menu_code`,`updater`,`update_datetime`,`remark`) VALUES (444,'RO201800000000000003','SM201805251516327463058','USYS201800000000001',now(),NULL);
+INSERT INTO `tsys_menu_role` (`id`,`role_code`,`menu_code`,`updater`,`update_datetime`,`remark`) VALUES (445,'RO201800000000000003','SM201804271918126145662','USYS201800000000001',now(),NULL);
+INSERT INTO `tsys_menu_role` (`id`,`role_code`,`menu_code`,`updater`,`update_datetime`,`remark`) VALUES (446,'RO201800000000000003','SM201805021609039267284','USYS201800000000001',now(),NULL);
+INSERT INTO `tsys_menu_role` (`id`,`role_code`,`menu_code`,`updater`,`update_datetime`,`remark`) VALUES (447,'RO201800000000000003','SM201805021637409537163','USYS201800000000001',now(),NULL);
+INSERT INTO `tsys_menu_role` (`id`,`role_code`,`menu_code`,`updater`,`update_datetime`,`remark`) VALUES (448,'RO201800000000000003','SM201805022048376225056','USYS201800000000001',now(),NULL);
+INSERT INTO `tsys_menu_role` (`id`,`role_code`,`menu_code`,`updater`,`update_datetime`,`remark`) VALUES (449,'RO201800000000000003','SM201805061739537493514','USYS201800000000001',now(),NULL);
+INSERT INTO `tsys_menu_role` (`id`,`role_code`,`menu_code`,`updater`,`update_datetime`,`remark`) VALUES (450,'RO201800000000000003','SM201805142231375155440','USYS201800000000001',now(),NULL);
+INSERT INTO `tsys_menu_role` (`id`,`role_code`,`menu_code`,`updater`,`update_datetime`,`remark`) VALUES (451,'RO201800000000000003','SM201805231252504327898','USYS201800000000001',now(),NULL);
+INSERT INTO `tsys_menu_role` (`id`,`role_code`,`menu_code`,`updater`,`update_datetime`,`remark`) VALUES (452,'RO201800000000000003','SM201805261001490495192','USYS201800000000001',now(),NULL);
+INSERT INTO `tsys_menu_role` (`id`,`role_code`,`menu_code`,`updater`,`update_datetime`,`remark`) VALUES (453,'RO201800000000000003','SM201804262112397419688','USYS201800000000001',now(),NULL);
+INSERT INTO `tsys_menu_role` (`id`,`role_code`,`menu_code`,`updater`,`update_datetime`,`remark`) VALUES (454,'RO201800000000000003','SM201804262118246417123','USYS201800000000001',now(),NULL);
+INSERT INTO `tsys_menu_role` (`id`,`role_code`,`menu_code`,`updater`,`update_datetime`,`remark`) VALUES (455,'RO201800000000000003','SM201805122247567061152','USYS201800000000001',now(),NULL);
+INSERT INTO `tsys_menu_role` (`id`,`role_code`,`menu_code`,`updater`,`update_datetime`,`remark`) VALUES (456,'RO201800000000000003','SM201804262009375685547','USYS201800000000001',now(),NULL);
+INSERT INTO `tsys_menu_role` (`id`,`role_code`,`menu_code`,`updater`,`update_datetime`,`remark`) VALUES (457,'RO201800000000000003','SM201805041411074644391','USYS201800000000001',now(),NULL);
+INSERT INTO `tsys_menu_role` (`id`,`role_code`,`menu_code`,`updater`,`update_datetime`,`remark`) VALUES (458,'RO201800000000000003','SM201805251354520521925','USYS201800000000001',now(),NULL);
+INSERT INTO `tsys_menu_role` (`id`,`role_code`,`menu_code`,`updater`,`update_datetime`,`remark`) VALUES (459,'RO201800000000000003','SM201805031341536277279','USYS201800000000001',now(),NULL);
+INSERT INTO `tsys_menu_role` (`id`,`role_code`,`menu_code`,`updater`,`update_datetime`,`remark`) VALUES (460,'RO201800000000000003','SM201805061714532327913','USYS201800000000001',now(),NULL);
+INSERT INTO `tsys_menu_role` (`id`,`role_code`,`menu_code`,`updater`,`update_datetime`,`remark`) VALUES (461,'RO201800000000000003','SM201805122248245127470','USYS201800000000001',now(),NULL);
+INSERT INTO `tsys_menu_role` (`id`,`role_code`,`menu_code`,`updater`,`update_datetime`,`remark`) VALUES (462,'RO201800000000000003','SM201805261621476424511','USYS201800000000001',now(),NULL);
+INSERT INTO `tsys_menu_role` (`id`,`role_code`,`menu_code`,`updater`,`update_datetime`,`remark`) VALUES (463,'RO201800000000000003','SM201805031342142928555','USYS201800000000001',now(),NULL);
+INSERT INTO `tsys_menu_role` (`id`,`role_code`,`menu_code`,`updater`,`update_datetime`,`remark`) VALUES (464,'RO201800000000000003','SM201805122249222019735','USYS201800000000001',now(),NULL);
+INSERT INTO `tsys_menu_role` (`id`,`role_code`,`menu_code`,`updater`,`update_datetime`,`remark`) VALUES (465,'RO201800000000000003','SM201805142040150952935','USYS201800000000001',now(),NULL);
+INSERT INTO `tsys_menu_role` (`id`,`role_code`,`menu_code`,`updater`,`update_datetime`,`remark`) VALUES (466,'RO201800000000000003','SM201804262037546867086','USYS201800000000001',now(),NULL);
+INSERT INTO `tsys_menu_role` (`id`,`role_code`,`menu_code`,`updater`,`update_datetime`,`remark`) VALUES (467,'RO201800000000000003','SM201805041050394705600','USYS201800000000001',now(),NULL);

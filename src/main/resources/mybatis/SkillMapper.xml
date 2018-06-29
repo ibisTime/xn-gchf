@@ -71,7 +71,7 @@
 		UPDATE thf_skill
 		SET
 		name = #{name}
-		,score = #{sroce}
+		,score = #{score}
 		,pdf = #{pdf}
 		WHERE code = #{code}
 	</update>

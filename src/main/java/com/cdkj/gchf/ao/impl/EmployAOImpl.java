@@ -88,7 +88,6 @@ public class EmployAOImpl implements IEmployAO {
         data.setProjectName(project.getName());
         data.setStaffCode(staff.getCode());
         data.setStaffName(staff.getName());
-        data.setStaffMobile(staff.getMobile());
 
         data.setType(req.getType());
         data.setPosition(req.getPosition());
@@ -130,7 +129,6 @@ public class EmployAOImpl implements IEmployAO {
 
         // 生成考勤
         Attendance attendance = new Attendance();
-
         String attendanceCode = OrderNoGenerater
             .generate(EGeneratePrefix.Attendance.getCode());
         attendance.setCode(attendanceCode);
@@ -139,7 +137,6 @@ public class EmployAOImpl implements IEmployAO {
 
         attendance.setStaffCode(staff.getCode());
         attendance.setStaffName(staff.getName());
-        attendance.setStaffMobile(staff.getMobile());
         attendance.setStatus(EAttendanceStatus.TO_Start.getCode());
         attendance.setCreateDatetime(date);
 
@@ -179,7 +176,7 @@ public class EmployAOImpl implements IEmployAO {
     public void toHoliday(XN631461Req req) {
         Employ data = employBO.getEmployByStaff(req.getStaffCode(),
             req.getProjectCode());
-        if (EEmploystatus.Work.getCode().equals(data.getStatus())) {
+        if (EEmploystatus.Leave.getCode().equals(data.getStatus())) {
             throw new BizException("xn0000", "该员工已离职");
         }
         if (EEmploystatus.Hoilday.getCode().equals(data.getStatus())) {

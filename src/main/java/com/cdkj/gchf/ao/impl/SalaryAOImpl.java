@@ -97,9 +97,9 @@ public class SalaryAOImpl implements ISalaryAO {
         data.setCutAmount2(StringValidater.toLong(req.getCutAmount2()));
         data.setCutAmount1(data.getCutAmount1() + data.getCutAmount2());
         data.setAwardAmount(StringValidater.toLong(req.getAwardAmount()));
-        data.setCutNote("本月迟到：" + data.getEarlyDays() + "天，早退："
-                + data.getDelayDays() + "天，请假：" + data.getLeavingDays()
-                + "天，共计扣款：" + data.getCutAmount1() / 1000 + "元");
+        data.setCutNote("本月迟到：" + data.getEarlyDays() + "小时，早退："
+                + data.getDelayDays() + "小时，请假：" + data.getLeavingDays()
+                + "小时，总计扣款：" + data.getCutAmount1() / 1000 + "元");
         Long fact = data.getShouldAmount() - data.getCutAmount1()
                 + data.getAwardAmount();
         data.setFactAmount(fact);

@@ -43,6 +43,14 @@ public class AttendanceBOImpl extends PaginableBOImpl<Attendance>
     }
 
     @Override
+    public void updateStaffMobile(String staffCode, String mobile) {
+        Attendance data = new Attendance();
+        data.setStaffCode(staffCode);
+        data.setStaffMobile(mobile);
+        attendanceDAO.updateStaffMobile(data);
+    }
+
+    @Override
     public void startClockIn(String code, String status, Date startDatetime) {
         Attendance data = new Attendance();
         data.setCode(code);

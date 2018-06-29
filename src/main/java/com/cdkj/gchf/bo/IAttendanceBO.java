@@ -24,6 +24,9 @@ public interface IAttendanceBO extends IPaginableBO<Attendance> {
 
     public void updateStatus(Attendance data);
 
+    // 更新员工手机号
+    public void updateStaffMobile(String staffCode, String mobile);
+
     public List<Attendance> queryAttendanceList(Attendance condition);
 
     public Attendance getAttendance(String code);

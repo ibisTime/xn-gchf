@@ -14,6 +14,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.cdkj.gchf.ao.IStaffAO;
+import com.cdkj.gchf.bo.IAttendanceBO;
 import com.cdkj.gchf.bo.IBankCardBO;
 import com.cdkj.gchf.bo.ICcontractBO;
 import com.cdkj.gchf.bo.IDepartmentBO;
@@ -73,6 +74,9 @@ public class StaffAOImpl implements IStaffAO {
 
     @Autowired
     IDepartmentBO departmentBO;
+
+    @Autowired
+    private IAttendanceBO attendanceBO;
 
     @Override
     public String addStaff(XN631410Req req) {
@@ -202,6 +206,9 @@ public class StaffAOImpl implements IStaffAO {
                 skillBO.saveSkill(data.getCode(), data.getName(), reqSkill);
             }
         }
+
+        // 更新考勤员工号码信息
+        attendanceBO.updateStaffMobile(req.getCode(), req.getMobile());
     }
 
     @Override

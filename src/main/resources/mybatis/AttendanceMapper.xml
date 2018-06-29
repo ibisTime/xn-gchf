@@ -83,7 +83,6 @@
 		,project_name
 		,staff_code
 		,staff_name
-		,staff_mobile
 		,status
 		,create_datetime
 		,start_datetime
@@ -97,7 +96,6 @@
 		,#{projectName}
 		,#{staffCode}
 		,#{staffName}
-		,#{staffMobile}
 		,#{status}
 		,#{createDatetime}
 		,#{startDatetime}
@@ -151,4 +149,10 @@
 		WHERE code = #{code}
 	</update>
 	
+	<update id="attendance_updateStaffMobile" parameterType="attendance">
+		UPDATE thf_attendance
+		SET
+		staff_mobile = #{staffMobile}
+		WHERE staff_code = #{staffCode}
+	</update>
 </mapper>

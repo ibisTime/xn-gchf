@@ -136,7 +136,6 @@
 		,project_name
 		,staff_code
 		,staff_name
-		,staff_mobile
 		,type
 		,position
 		,up_user
@@ -155,7 +154,6 @@
 		,#{projectName}
 		,#{staffCode}
 		,#{staffName}
-		,#{staffMobile}
 		,#{type}
 		,#{position}
 		,#{upUser}

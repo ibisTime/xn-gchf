@@ -20,4 +20,8 @@ public interface IAttendanceDAO extends IBaseDAO<Attendance> {
     public int updateEndClockIn(Attendance data);
 
     void updateStatus(Attendance data);
+
+    // 更新员工手机号
+    public int updateStaffMobile(Attendance data);
+
 }

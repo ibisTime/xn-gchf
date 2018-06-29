@@ -190,7 +190,7 @@ public class MessageAOImpl implements IMessageAO {
                 throw new BizException("xn00000",
                     "员工[" + salary.getStaffName() + "]的工资已全部发放");
             }
-            if (salary.getFactAmount() == StringValidater
+            if (salary.getFactAmount() > StringValidater
                 .toLong(req.getPayAmount())) {
                 // 添加工资日志
                 SalaryLog salaryLog = new SalaryLog();

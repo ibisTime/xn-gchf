@@ -1,5 +1,6 @@
 package com.cdkj.gchf.bo.impl;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.commons.lang3.StringUtils;
@@ -106,6 +107,13 @@ public class SalaryBOImpl extends PaginableBOImpl<Salary> implements ISalaryBO {
     public List<Salary> selectMonthlySalarySumByProject(String projectCode) {
         Salary condition = new Salary();
         condition.setProjectCode(projectCode);
+
+        // 只统计已发工资的记录
+        List<String> statusList = new ArrayList<String>();
+        statusList.add(ESalaryStatus.Payed.getCode());
+        statusList.add(ESalaryStatus.Pay_Portion.getCode());
+        statusList.add(ESalaryStatus.Pay_Again.getCode());
+        condition.setStatusList(statusList);
         return salaryDAO.selectMonthlySalarySumByProject(condition);
     }
 

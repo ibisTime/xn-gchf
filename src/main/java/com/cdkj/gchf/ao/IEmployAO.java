@@ -17,9 +17,14 @@ public interface IEmployAO {
     // 入职
     public String joinIn(XN631460Req req);
 
-    public int dropEmploy(String code);
+    // 请假
+    public void toHoliday(XN631461Req req);
 
-    public void editEmploy(Employ data);
+    // 离职
+    public void leaveOffice(XN631462Req req);
+
+    // 每天凌晨更新请假状态
+    public void updateEmployStatusDaily();
 
     public Paginable<Employ> queryEmployPage(int start, int limit,
             Employ condition);
@@ -27,11 +32,4 @@ public interface IEmployAO {
     public List<Employ> queryEmployList(Employ condition);
 
     public Employ getEmploy(String code);
-
-    // 请假
-    public void toHoliday(XN631461Req req);
-
-    // 离职
-    public void leaveOffice(XN631462Req req);
-
 }

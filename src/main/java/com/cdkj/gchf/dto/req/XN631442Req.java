@@ -9,22 +9,25 @@ import org.hibernate.validator.constraints.NotBlank;
  * @history:
  */
 public class XN631442Req {
-
     // （必填）编号
     @NotBlank(message = "编号不能为空")
     private String code;
 
-    // （必填）扣减金额
-    @NotBlank(message = "扣减金额不能为空")
-    private String cutAmount2;
-
-    // （必填）奖励金额
-    @NotBlank(message = "奖励金额不能为空")
+    // 奖励金额
     private String awardAmount;
 
-    // （必填）扣款说明
-    @NotBlank(message = "扣款说明不能为空")
-    private String cutNote;
+    // 税费
+    private String tax;
+
+    // 扣减金额
+    private String cutAmount;
+
+    // 申请调整的人
+    @NotBlank(message = "修改人不能为空")
+    private String applyUser;
+
+    // 申请调整说明
+    private String applyNote;
 
     public String getCode() {
         return code;
@@ -34,28 +37,44 @@ public class XN631442Req {
         this.code = code;
     }
 
-    public String getCutAmount2() {
-        return cutAmount2;
-    }
-
     public String getAwardAmount() {
         return awardAmount;
-    }
-
-    public void setCutAmount2(String cutAmount2) {
-        this.cutAmount2 = cutAmount2;
     }
 
     public void setAwardAmount(String awardAmount) {
         this.awardAmount = awardAmount;
     }
 
-    public String getCutNote() {
-        return cutNote;
+    public String getTax() {
+        return tax;
     }
 
-    public void setCutNote(String cutNote) {
-        this.cutNote = cutNote;
+    public void setTax(String tax) {
+        this.tax = tax;
+    }
+
+    public String getCutAmount() {
+        return cutAmount;
+    }
+
+    public void setCutAmount(String cutAmount) {
+        this.cutAmount = cutAmount;
+    }
+
+    public String getApplyUser() {
+        return applyUser;
+    }
+
+    public void setApplyUser(String applyUser) {
+        this.applyUser = applyUser;
+    }
+
+    public String getApplyNote() {
+        return applyNote;
+    }
+
+    public void setApplyNote(String applyNote) {
+        this.applyNote = applyNote;
     }
 
 }

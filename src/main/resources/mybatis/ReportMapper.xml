@@ -98,7 +98,6 @@
 		)
 	</insert>
 
-
 	<update id="update_staff_in" parameterType="report">
 		UPDATE thf_report
 		SET
@@ -145,11 +144,17 @@
 		WHERE code = #{code}
 	</update>
 	
-	
 	<update id="update_next_month_salary" parameterType="report">
 		UPDATE thf_report
 		SET
 		next_month_salary = #{nextMonthSalary}
+		WHERE code = #{code}
+	</update>
+	
+	<update id="update_resetTodayDays" parameterType="report">
+		UPDATE thf_report
+		SET
+		today_days = #{todayDays}
 		WHERE code = #{code}
 	</update>
 </mapper>

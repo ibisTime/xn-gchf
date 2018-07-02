@@ -27,13 +27,13 @@ public class AttendanceBOImpl extends PaginableBOImpl<Attendance>
     }
 
     @Override
-    public void toStart(Attendance data) {
-        attendanceDAO.toStart(data);
+    public void startWorkMachineClockIn(Attendance data) {
+        attendanceDAO.updateStartMachineClockIn(data);
     }
 
     @Override
-    public void toEnd(Attendance data) {
-        attendanceDAO.toEnd(data);
+    public void endWorkMachineClockIn(Attendance data) {
+        attendanceDAO.updateEndMachineClockIn(data);
     }
 
     @Override
@@ -51,21 +51,23 @@ public class AttendanceBOImpl extends PaginableBOImpl<Attendance>
     }
 
     @Override
-    public void startClockIn(String code, String status, Date startDatetime) {
+    public void startWorkManualClockIn(String code, String status,
+            Date startDatetime) {
         Attendance data = new Attendance();
         data.setCode(code);
         data.setStatus(status);
         data.setStartDatetime(startDatetime);
-        attendanceDAO.updateStartClockIn(data);
+        attendanceDAO.updateStartManualClockIn(data);
     }
 
     @Override
-    public void endClockIn(String code, String status, Date endDatetime) {
+    public void endWorkManualClockIn(String code, String status,
+            Date endDatetime) {
         Attendance data = new Attendance();
         data.setCode(code);
         data.setStatus(status);
         data.setEndDatetime(endDatetime);
-        attendanceDAO.updateEndClockIn(data);
+        attendanceDAO.updateEndManualClockIn(data);
     }
 
     @Override

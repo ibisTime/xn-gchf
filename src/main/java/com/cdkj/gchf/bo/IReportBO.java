@@ -22,7 +22,7 @@ public interface IReportBO extends IPaginableBO<Report> {
 
     public void refreshNextMonthSalary(Report data);
 
-    public void resetTodayDays(Report report);
+    public void resetTodayDays(String projectCode);
 
     public List<Report> queryReportList(Report condition);
 

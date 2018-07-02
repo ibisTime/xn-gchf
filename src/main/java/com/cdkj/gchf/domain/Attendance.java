@@ -18,9 +18,6 @@ public class Attendance extends ABaseDO {
     // 编号
     private String code;
 
-    // 设备编号
-    private String terminalCode;
-
     // 项目编号
     private String projectCode;
 
@@ -36,9 +33,6 @@ public class Attendance extends ABaseDO {
     // 员工手机号
     private String staffMobile;
 
-    // 相似度
-    private String sim;
-
     // 出工状态
     private String status;
 
@@ -53,6 +47,12 @@ public class Attendance extends ABaseDO {
 
     // 结算时间
     private Date settleDatetime;
+
+    // 相似度
+    private String sim;
+
+    // 设备编号
+    private String terminalCode;
 
     // 备注
     private String remark;

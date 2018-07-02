@@ -8,6 +8,8 @@
  */
 package com.cdkj.gchf.api.impl;
 
+import com.cdkj.gchf.ao.IAttendanceAO;
+import com.cdkj.gchf.ao.IEmployAO;
 import com.cdkj.gchf.ao.ISalaryAO;
 import com.cdkj.gchf.api.AProcessor;
 import com.cdkj.gchf.common.JsonUtil;
@@ -27,6 +29,11 @@ import com.cdkj.gchf.spring.SpringContextHolder;
 public class XN631999 extends AProcessor {
     private ISalaryAO salaryAO = SpringContextHolder.getBean(ISalaryAO.class);
 
+    private IEmployAO employAO = SpringContextHolder.getBean(IEmployAO.class);
+
+    private IAttendanceAO attendanceAO = SpringContextHolder
+        .getBean(IAttendanceAO.class);
+
     private XN631999Req req = null;
 
     /** 
@@ -35,7 +42,13 @@ public class XN631999 extends AProcessor {
     @Override
     public Object doBusiness() throws BizException {
         if ("888888".equals(req.getPassword())) {
-            salaryAO.createSalary();
+            if ("createSalary".equals(req.getMethod())) {
+                salaryAO.createSalary();
+            } else if ("updateEmployStatusDaily".equals(req.getMethod())) {
+                employAO.updateEmployStatusDaily();
+            } else if ("createAttendanceDaily".equals(req.getMethod())) {
+                attendanceAO.createAttendanceDaily();
+            }
         }
         return new BooleanRes(true);
     }

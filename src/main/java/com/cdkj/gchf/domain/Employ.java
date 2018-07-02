@@ -42,10 +42,10 @@ public class Employ extends ABaseDO {
     // 上级部门
     private String upUser;
 
-    // 薪酬
+    // 薪酬（日薪）
     private Long salary;
 
-    // 迟到早退扣款金额
+    // 迟到早退扣款时薪
     private Long cutAmount;
 
     // 状态
@@ -60,14 +60,14 @@ public class Employ extends ABaseDO {
     // 最近一次请假开始时间
     private Date startDatetime;
 
-    // 最近一次请假结束时间
-    private Date endDatetime;
+    // 最近一次请假天数
+    private Integer lastLeavingDays;
 
     // 本月请假天数
-    private Double leavingDays;
+    private Integer leavingDays;
 
     // 累积请假天数
-    private Double totalLeavingDays;
+    private Integer totalLeavingDays;
 
     // 更新人
     private String updater;
@@ -232,14 +232,6 @@ public class Employ extends ABaseDO {
         this.startDatetime = startDatetime;
     }
 
-    public Date getEndDatetime() {
-        return endDatetime;
-    }
-
-    public void setEndDatetime(Date endDatetime) {
-        this.endDatetime = endDatetime;
-    }
-
     public String getKeyword() {
         return keyword;
     }
@@ -288,19 +280,19 @@ public class Employ extends ABaseDO {
         this.statusList = statusList;
     }
 
-    public Double getLeavingDays() {
+    public Integer getLeavingDays() {
         return leavingDays;
     }
 
-    public void setLeavingDays(Double leavingDays) {
+    public void setLeavingDays(Integer leavingDays) {
         this.leavingDays = leavingDays;
     }
 
-    public Double getTotalLeavingDays() {
+    public Integer getTotalLeavingDays() {
         return totalLeavingDays;
     }
 
-    public void setTotalLeavingDays(Double totalLeavingDays) {
+    public void setTotalLeavingDays(Integer totalLeavingDays) {
         this.totalLeavingDays = totalLeavingDays;
     }
 
@@ -327,4 +319,13 @@ public class Employ extends ABaseDO {
     public void setSalaryStatus(String salaryStatus) {
         this.salaryStatus = salaryStatus;
     }
+
+    public Integer getLastLeavingDays() {
+        return lastLeavingDays;
+    }
+
+    public void setLastLeavingDays(Integer lastLeavingDays) {
+        this.lastLeavingDays = lastLeavingDays;
+    }
+
 }

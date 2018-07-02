@@ -1,5 +1,6 @@
 package com.cdkj.gchf.common;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
@@ -373,12 +374,13 @@ public class DateUtil {
      * @history:
      */
 
-    public static boolean compare(Date start, String end) {
+    public static boolean compare(String start, String end) {
         boolean flag = false;
         if (start != null) {
+            Date startDate = DateUtil.strToDate(start, DATA_TIME_PATTERN_7);
             Date endDate = DateUtil.strToDate(end,
                 DateUtil.DATA_TIME_PATTERN_7);
-            if (-1 == start.compareTo(endDate)) {
+            if (-1 == startDate.compareTo(endDate)) {
                 flag = true;
             }
         }
@@ -453,6 +455,7 @@ public class DateUtil {
      * @create: 2018年5月8日 下午8:49:03 nyc
      * @history:
      */
+    // sdf.parse("2018-06-04 10:31:00"), "09:30")
     public static int getHours(Date start, String end) {
         Calendar startCalendar = Calendar.getInstance();
         startCalendar.setTime(start);
@@ -466,11 +469,15 @@ public class DateUtil {
         String[] time = end.split(":");
         endCalendar.set(year, month, day, StringValidater.toInteger(time[0]),
             StringValidater.toInteger(time[1]), second);
-        int hours = (int) Math
-            .ceil((double) (startDatetime.getTime() - start.getTime()) / 60 / 60
-                    / 1000);
-        if (hours < 1) {
-            hours = 1;
+
+        int minute = (int) Math
+            .abs(((endCalendar.getTime().getTime() - startDatetime.getTime())
+                    / (59 * 1000)));
+        int hours = 0;
+        if (minute % 60 == 0) {
+            hours = minute / 60;
+        } else if (minute % 60 != 0) {
+            hours = minute / 60 + 1;
         }
         return hours;
     }
@@ -517,8 +524,9 @@ public class DateUtil {
         return calendar.get(Calendar.DATE);
     }
 
-    public static void main(String[] args) {
-        System.out.println(DateUtil.getMonthDays());
+    public static void main(String[] args) throws ParseException {
+        SimpleDateFormat sdf = new SimpleDateFormat(DATA_TIME_PATTERN_1);
+        System.out.println(getHours(sdf.parse("2018-06-04 10:30:00"), "09:30"));
     }
 
 }

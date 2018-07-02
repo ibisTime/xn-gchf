@@ -22,9 +22,9 @@ public class XN631461Req {
     @NotBlank(message = "开始时间不能为空")
     private String startDatetime;
 
-    // （必填）结束时间
-    @NotBlank(message = "结束时间不能为空")
-    private String endDatetime;
+    // （必填）请假天数
+    @NotBlank(message = "请假天数不能为空")
+    private String lastLeavingDays;
 
     // （必填）更新人
     @NotBlank(message = "更新人不能为空")
@@ -49,12 +49,12 @@ public class XN631461Req {
         this.startDatetime = startDatetime;
     }
 
-    public String getEndDatetime() {
-        return endDatetime;
+    public String getLastLeavingDays() {
+        return lastLeavingDays;
     }
 
-    public void setEndDatetime(String endDatetime) {
-        this.endDatetime = endDatetime;
+    public void setLastLeavingDays(String lastLeavingDays) {
+        this.lastLeavingDays = lastLeavingDays;
     }
 
     public String getUpdater() {

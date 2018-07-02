@@ -17,9 +17,9 @@
 	 <bean class="org.springframework.scheduling.quartz.SchedulerFactoryBean">  
        <property name="triggers">  
            <list>
+           	  <ref bean="updateEmployStatusTrigger"/> 
            	  <ref bean="attendanceDailyTrigger"/> 
            	  <ref bean="salaryDailyTrigger"/> 
-           	  <ref bean="updateEmployStatusTrigger"/> 
            	  <ref bean="nextMonthSalaryTrigger"/> 
  		   </list>  
        </property>  
@@ -46,7 +46,7 @@
 	</bean> 
 	<bean id="createAttendanceDaily" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">   
         <property name="targetObject" ref="attendanceAOImpl"/>  
-        <property name="targetMethod" value="createAttendance"/>  
+        <property name="targetMethod" value="createAttendanceDaily"/>  
         <property name="concurrent" value="true"/> <!--   是否允许任务并发执行。当值为false时，表示必须等到前一个线程处理完毕后才再启一个新的线程 -->
 	</bean>
 	
@@ -57,7 +57,7 @@
 	</bean>
 	<bean id="updateEmployStatus" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">   
         <property name="targetObject" ref="employAOImpl"/>  
-        <property name="targetMethod" value="updateStatus"/>  
+        <property name="targetMethod" value="updateEmployStatusDaily"/>  
         <property name="concurrent" value="true"/> <!--   是否允许任务并发执行。当值为false时，表示必须等到前一个线程处理完毕后才再启一个新的线程 -->
 	</bean>
 		

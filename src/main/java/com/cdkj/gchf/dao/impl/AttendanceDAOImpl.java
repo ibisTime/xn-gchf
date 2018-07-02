@@ -48,13 +48,13 @@ public class AttendanceDAOImpl extends AMybatisTemplate
     }
 
     @Override
-    public void toStart(Attendance data) {
-        super.update(NAMESPACE.concat("to_start"), data);
+    public void updateStartMachineClockIn(Attendance data) {
+        super.update(NAMESPACE.concat("update_startMachineClockIn"), data);
     }
 
     @Override
-    public void toEnd(Attendance data) {
-        super.update(NAMESPACE.concat("to_end"), data);
+    public void updateEndMachineClockIn(Attendance data) {
+        super.update(NAMESPACE.concat("update_endMachineClockIn"), data);
     }
 
     @Override
@@ -63,13 +63,14 @@ public class AttendanceDAOImpl extends AMybatisTemplate
     }
 
     @Override
-    public int updateStartClockIn(Attendance data) {
-        return super.update(NAMESPACE.concat("attendance_startClockIn"), data);
+    public int updateStartManualClockIn(Attendance data) {
+        return super.update(NAMESPACE.concat("update_startManualClockIn"),
+            data);
     }
 
     @Override
-    public int updateEndClockIn(Attendance data) {
-        return super.update(NAMESPACE.concat("attendance_endClockIn"), data);
+    public int updateEndManualClockIn(Attendance data) {
+        return super.update(NAMESPACE.concat("update_endManualClockIn"), data);
     }
 
     @Override

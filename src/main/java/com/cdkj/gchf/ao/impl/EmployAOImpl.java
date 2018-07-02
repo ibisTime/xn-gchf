@@ -173,6 +173,7 @@ public class EmployAOImpl implements IEmployAO {
     }
 
     @Override
+    @Transactional
     public void toHoliday(XN631461Req req) {
         Employ data = employBO.getEmployByStaff(req.getStaffCode(),
             req.getProjectCode());
@@ -184,38 +185,30 @@ public class EmployAOImpl implements IEmployAO {
         }
 
         Date start = DateUtil.strToDate(req.getStartDatetime(),
-            DateUtil.DATA_TIME_PATTERN_1);
-        Date end = DateUtil.strToDate(req.getEndDatetime(),
-            DateUtil.DATA_TIME_PATTERN_1);
-
-        if (start == null || end == null) {
+            DateUtil.FRONT_DATE_FORMAT_STRING);
+        if (start == null) {
             throw new BizException("xn0000", "时间格式不正确");
         }
-        if (start.after(end)) {
-            throw new BizException("xn0000", "开始时间不能大于结束时间");
-        }
 
-        // 统计请假人数
+        Integer lastLeadingDays = StringValidater
+            .toInteger(req.getLastLeavingDays());
+
+        // 更新统计请假人数
         Report report = reportBO.getReportByProject(data.getProjectCode());
         report.setLeavingDays(report.getLeavingDays() + 1);
         reportBO.refreshLeavingDays(report);
 
-        Project project = projectBO.getProject(data.getProjectCode());
-        // 统计请假天数
-        double leadingDays = data.getLeavingDays()
-                + DateUtil.getDays(project.getAttendanceStarttime(),
-                    project.getAttendanceEndtime(), start, end);
-
-        // 累积请假天数
-        data.setTotalLeavingDays(data.getTotalLeavingDays() + leadingDays);
+        // 更新雇佣状态
+        data.setTotalLeavingDays(data.getTotalLeavingDays() + lastLeadingDays);
+        data.setLeavingDays(data.getLeavingDays() + lastLeadingDays);
         data.setStartDatetime(start);
-        data.setEndDatetime(end);
+        data.setLastLeavingDays(lastLeadingDays);
         data.setUpdater(req.getUpdater());
         data.setUpdateDatetime(new Date());
 
+        data.setStatus(EEmploystatus.Hoilday.getCode());
         data.setRemark(req.getRemark());
         employBO.toHoliday(data);
-
     }
 
     @Override
@@ -249,16 +242,6 @@ public class EmployAOImpl implements IEmployAO {
         staffLogBO.saveStaffLog(data, data.getStaffCode(),
             project.getCompanyCode(), project.getCode(), project.getName());
 
-    }
-
-    @Override
-    public void editEmploy(Employ data) {
-        employBO.refreshEmploy(data);
-    }
-
-    @Override
-    public int dropEmploy(String code) {
-        return employBO.removeEmploy(code);
     }
 
     @Override
@@ -311,36 +294,25 @@ public class EmployAOImpl implements IEmployAO {
             name = user.getRealName();
         }
         return name;
-
     }
 
-    public void updateStatus() {
+    // 每天凌晨将请假到期的员工更新为在职
+    @Override
+    public void updateEmployStatusDaily() {
         Employ eCondition = new Employ();
         eCondition.setStatus(EEmploystatus.Not_Leave.getCode());
         List<Employ> eList = employBO.queryEmployList(eCondition);
-        Project project = null;
         logger.info("===========开始更新员工状态==============");
+
         for (Employ employ : eList) {
             String status = EEmploystatus.Work.getCode();
-            project = projectBO.getProject(employ.getProjectCode());
-            // 今天是否请假
             if (employ.getStartDatetime() != null
-                    && employ.getEndDatetime() != null) {
+                    && employ.getLastLeavingDays() != null) {
+                // 如果今天请假则跳出循环，请假开始时间也算为1天
                 if (DateUtil.isIn(employ.getStartDatetime(),
-                    employ.getEndDatetime())) {
-                    status = EEmploystatus.Hoilday.getCode();
-                    // 请假时间是否跨月
-                    Date endDatetime = employ.getEndDatetime();
-                    if (DateUtil.isIn(employ.getStartDatetime(),
-                        DateUtil.getLastDay(), employ.getEndDatetime())) {
-                        endDatetime = DateUtil.getLastDay();
-                    }
-                    // 计算请假时间
-                    double leadingDays = employ.getLeavingDays()
-                            + DateUtil.getDays(project.getAttendanceStarttime(),
-                                project.getAttendanceEndtime(),
-                                employ.getStartDatetime(), endDatetime);
-                    employ.setLeavingDays(leadingDays);
+                    DateUtil.getRelativeDateOfDays(employ.getStartDatetime(),
+                        employ.getLastLeavingDays() - 1))) {
+                    break;
                 }
             }
             employ.setStatus(status);
@@ -348,5 +320,4 @@ public class EmployAOImpl implements IEmployAO {
         }
         logger.info("===========结束更新员工状态==============");
     }
-
 }

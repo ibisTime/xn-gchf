@@ -8,16 +8,16 @@ public interface IAttendanceDAO extends IBaseDAO<Attendance> {
     String NAMESPACE = IAttendanceDAO.class.getName().concat(".");
 
     // 考勤系统上班打卡
-    void toStart(Attendance data);
+    void updateStartMachineClockIn(Attendance data);
 
     // 考勤系统下班打卡
-    void toEnd(Attendance data);
+    void updateEndMachineClockIn(Attendance data);
 
     // 手动上班打卡
-    public int updateStartClockIn(Attendance data);
+    public int updateStartManualClockIn(Attendance data);
 
     // 手动下班打卡
-    public int updateEndClockIn(Attendance data);
+    public int updateEndManualClockIn(Attendance data);
 
     void updateStatus(Attendance data);
 

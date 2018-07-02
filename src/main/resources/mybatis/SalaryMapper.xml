@@ -5,36 +5,39 @@
 	<resultMap id="salary_DB_Result" type="salary">
 		<result column="code" property="code" />
 		<result column="message_code" property="messageCode" />
-		<result column="staff_code" property="staffCode" />
 		<result column="project_code" property="projectCode" />
 		<result column="project_name" property="projectName" />
+		<result column="staff_code" property="staffCode" />
 		
+		<result column="staff_name" property="staffName" />
 		<result column="month" property="month" />
-		<result column="month_days" property="monthDays" />
-		<result column="should_amount" property="shouldAmount" />
-		<result column="fact_amount" property="factAmount" />
-		<result column="pay_amount" property="payAmount" />
-		
-		<result column="cut_amount1" property="cutAmount1" />
-		<result column="cut_amount2" property="cutAmount2" />
-		<result column="award_amount" property="awardAmount" />
-		<result column="supply_amount" property="supplyAmount" />
-		<result column="cut_note" property="cutNote" />
-		
-		<result column="tax" property="tax" />
-		<result column="delay_days" property="delayDays" />
-		<result column="early_days" property="earlyDays" />
 		<result column="leaving_days" property="leavingDays" />
+		<result column="attendance_days" property="attendanceDays" />
+		<result column="delay_hours" property="delayHours" />
 		
+		<result column="early_hours" property="earlyHours" />
+		<result column="should_amount" property="shouldAmount" />
+		<result column="cut_amount" property="cutAmount" />
+		<result column="award_amount" property="awardAmount" />
+		<result column="tax" property="tax" />
+		
+		<result column="fact_amount" property="factAmount" />
+		<result column="fact_amount_remark" property="factAmountRemark" />
+		<result column="pay_amount" property="payAmount" />
+		<result column="supply_amount" property="supplyAmount" />
+		<result column="late_pay_datetime" property="latePayDatetime" />
+		
+		<result column="apply_user" property="applyUser" />
+		<result column="apply_datetime" property="applyDatetime" />
+		<result column="apply_note" property="applyNote" />
 		<result column="create_datetime" property="createDatetime" />
 		<result column="status" property="status" />
+		
 		<result column="approve_user" property="approveUser" />
 		<result column="approve_datetime" property="approveDatetime" />
 		<result column="approve_note" property="approveNote" />
-		
-		<result column="remark" property="remark" />
-		<result column="late_pay_datetime" property="latePayDatetime" />
 	</resultMap>
+	
 	<sql id="where_condition">
 		<trim prefix="WHERE" prefixOverrides="AND | OR">
 			<if test="code != null and code != '' ">
@@ -83,34 +86,37 @@
 	<select id="select_salary" parameterType="salary" resultMap="salary_DB_Result">
 		SELECT
 		t.code
-		,t.message_code
-		,t.staff_code
 		,t.project_code
 		,t.project_name
+		,t.message_code
+		,t.staff_code
 		
+		,t.staff_name
 		,t.month
-		,t.month_days
-		,t.should_amount
-		,t.fact_amount
-		,t.pay_amount
-		,t.cut_amount1
-		,t.cut_amount2
-		,t.award_amount
-		
-		,t.supply_amount
-		,t.cut_note
-		,t.tax
-		,t.delay_days
-		,t.early_days
-		
 		,t.leaving_days
-		,t.create_datetime
+		,t.attendance_days
+		,t.delay_hours
+		
+		,t.early_hours
+		,t.should_amount
 		,t.status
+		,t.create_datetime
+		,t.cut_amount
+		
+		,t.award_amount
+		,t.tax
+		,t.apply_user
+		,t.apply_datetime
+		,t.apply_note
+		
 		,t.approve_user
 		,t.approve_datetime
-		
 		,t.approve_note
-		,t.remark
+		,t.fact_amount
+		,t.fact_amount_remark
+		
+		,t.pay_amount
+		,t.supply_amount
 		,t.late_pay_datetime
 		FROM
 		thf_salary t
@@ -139,65 +145,55 @@
 		INSERT INTO
 		thf_salary(
 		code
-		,message_code
-		,staff_code
 		,project_code
 		,project_name
+		,message_code
+		,staff_code
 		
+		,staff_name
 		,month
-		,month_days
-		,should_amount
-		,fact_amount
-		,cut_amount1
-		
-		,cut_amount2
-		,cut_note
-		,delay_days
-		,early_days
 		,leaving_days
+		,attendance_days
+		,delay_hours
 		
-		,create_datetime
+		,early_hours
+		,should_amount
 		,status
+		,create_datetime
 		)
 		VALUES(
 		#{code}
-		,#{messageCode}
-		,#{staffCode}
 		,#{projectCode}
 		,#{projectName}
+		,#{messageCode}
+		,#{staffCode}
 		
+		,#{staffName}
 		,#{month}
-		,#{monthDays}
-		,#{shouldAmount}
-		,#{factAmount}
-		,#{cutAmount1}
-		
-		,#{cutAmount2}
-		,#{cutNote}
-		,#{delayDays}
-		,#{earlyDays}
 		,#{leavingDays}
+		,#{attendanceDays}
+		,#{delayHours}
 		
-		,#{createDatetime}
+		,#{earlyHours}
+		,#{shouldAmount}
 		,#{status}
+		,#{createDatetime}
 		)
 	</insert>
 
 	<update id="update_salary" parameterType="salary">
 		UPDATE thf_salary
 		SET
-		fact_amount = #{factAmount}
-		,cut_amount1 = #{cutAmount1}
-		,cut_amount2 = #{cutAmount2}
+		cut_amount = #{cutAmount}
 		,award_amount = #{awardAmount}
-		,cut_note = #{cutNote}
 		,tax = #{tax}
-		,delay_days = #{delayDays}
-		,early_days = #{earlyDays}
-		,leaving_days = #{leavingDays}
+		,apply_user = #{applyUser}
+		,apply_datetime = #{applyDatetime}
+		,apply_note = #{applyNote}
+		,fact_amount = #{factAmount}
+		,fact_amount_remark = #{factAmountRemark}
 		WHERE code = #{code}
 	</update>
-	
 	
 	<update id="approve_salary" parameterType="salary">
 		UPDATE thf_salary

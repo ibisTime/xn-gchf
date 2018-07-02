@@ -40,7 +40,7 @@ public class AttendanceController {
         String terminalCode = json.getString("terminal_code");
         logger
             .info("----------------------提交考勤记录，考虑落地本地----------------------");
-        String result = attendanceAO.clockIn(sim, projectCode, staffCode,
+        String result = attendanceAO.manchineClockIn(sim, projectCode, staffCode,
             attendTime, terminalCode);
         logger.info("----------------------返回考勤结果----------------------");
         /**

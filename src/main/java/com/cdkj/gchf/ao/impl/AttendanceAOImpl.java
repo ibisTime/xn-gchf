@@ -16,6 +16,7 @@ import com.cdkj.gchf.bo.IAttendanceBO;
 import com.cdkj.gchf.bo.IEmployBO;
 import com.cdkj.gchf.bo.IProjectBO;
 import com.cdkj.gchf.bo.IReportBO;
+import com.cdkj.gchf.bo.IStaffBO;
 import com.cdkj.gchf.bo.base.Page;
 import com.cdkj.gchf.bo.base.Paginable;
 import com.cdkj.gchf.common.DateUtil;
@@ -24,6 +25,7 @@ import com.cdkj.gchf.domain.Attendance;
 import com.cdkj.gchf.domain.Employ;
 import com.cdkj.gchf.domain.Project;
 import com.cdkj.gchf.domain.Report;
+import com.cdkj.gchf.domain.Staff;
 import com.cdkj.gchf.enums.EAttendanceStatus;
 import com.cdkj.gchf.enums.EEmploystatus;
 import com.cdkj.gchf.enums.EGeneratePrefix;
@@ -49,8 +51,11 @@ public class AttendanceAOImpl implements IAttendanceAO {
     @Autowired
     private IReportBO reportBO;
 
+    @Autowired
+    private IStaffBO staffBO;
+
     @Override
-    public void startWorkClockIn(String code, Date startDatetime) {
+    public void startWorkManualClockIn(String code, Date startDatetime) {
         Attendance data = attendanceBO.getAttendance(code);
         if (null == data) {
             throw new BizException("xn00000", "没有该员工今日考勤");
@@ -59,11 +64,12 @@ public class AttendanceAOImpl implements IAttendanceAO {
         if (null == data.getEndDatetime()) {
             status = EAttendanceStatus.TO_End.getCode();
         }
-        attendanceBO.startClockIn(code, status, startDatetime);
+
+        attendanceBO.startWorkManualClockIn(code, status, startDatetime);
     }
 
     @Override
-    public void endWorkClockIn(String code, Date endDatetime) {
+    public void endWorkManualClockIn(String code, Date endDatetime) {
         Attendance data = attendanceBO.getAttendance(code);
         if (null == data) {
             throw new BizException("xn00000", "没有该员工今日考勤");
@@ -72,12 +78,13 @@ public class AttendanceAOImpl implements IAttendanceAO {
         if (null == data.getStartDatetime()) {
             status = EAttendanceStatus.TO_Start.getCode();
         }
-        attendanceBO.endClockIn(code, status, endDatetime);
+
+        attendanceBO.endWorkManualClockIn(code, status, endDatetime);
     }
 
     @Override
-    public String clockIn(String sim, String projectCode, String staffCode,
-            String attendTime, String terminalCode) {
+    public String manchineClockIn(String sim, String projectCode,
+            String staffCode, String attendTime, String terminalCode) {
         JSONObject json = new JSONObject();
         logger.info("----------------------获取考勤记录----------------------");
         Attendance data = attendanceBO.getAttendanceByProject(projectCode,
@@ -95,7 +102,7 @@ public class AttendanceAOImpl implements IAttendanceAO {
             data.setStartDatetime(DateUtil.strToDate(
                 attendTime.replace("%", " "), DateUtil.DATA_TIME_PATTERN_1));
             data.setStatus(EAttendanceStatus.TO_End.getCode());
-            attendanceBO.toStart(data);
+            attendanceBO.startWorkMachineClockIn(data);
 
             // 统计上工人数
             Report report = reportBO.getReportByProject(data.getProjectCode());
@@ -107,10 +114,11 @@ public class AttendanceAOImpl implements IAttendanceAO {
             todayDays = todayDays + 1;
             reportBO.refreshTodayDays(report, todayDays);
         } else { // 下班打卡
-            data.setEndDatetime(
-                DateUtil.strToDate(attendTime, DateUtil.DATA_TIME_PATTERN_1));
+            Date endDatetime = DateUtil.strToDate(attendTime,
+                DateUtil.DATA_TIME_PATTERN_1);
+            data.setEndDatetime(endDatetime);
             data.setStatus(EAttendanceStatus.Unpaied.getCode());
-            attendanceBO.toEnd(data);
+            attendanceBO.endWorkMachineClockIn(data);
         }
         logger.info("----------------------考勤成功----------------------");
         json.put("result", true);
@@ -118,50 +126,44 @@ public class AttendanceAOImpl implements IAttendanceAO {
         return new Gson().toJson(json);
     }
 
-    // 定时器形成考勤记录
-    public void createAttendance() {
+    // 定时器每天凌晨形成考勤记录
+    @Override
+    public void createAttendanceDaily() {
+        Date now = new Date();
+        // 获取在建的项目
         Project condition = new Project();
-        Date date = new Date();
-        // 获取已经开始的项目
         condition.setStatus(EProjectStatus.Building.getCode());
         List<Project> pList = projectBO.queryProject(condition);
-        // 获取各个项目的上下班时间，形成考勤记录
-        Attendance data = null;
         logger.info("===========开始生成考勤==============");
-        String attendanceCode = null;
+
         for (Project project : pList) {
             // 获取项目下得所有未离职员工
             Employ eCondition = new Employ();
             eCondition.setProjectCode(project.getCode());
             eCondition.setStatus(EEmploystatus.Work.getCode());
-
             List<Employ> eList = employBO.queryEmployList(eCondition);
 
             for (Employ employ : eList) {
-                data = new Attendance();
-                attendanceCode = OrderNoGenerater
+                Staff staff = staffBO.getStaff(employ.getStaffCode());
+                Attendance data = new Attendance();
+                String attendanceCode = OrderNoGenerater
                     .generate(EGeneratePrefix.Attendance.getCode());
                 data.setCode(attendanceCode);
                 data.setProjectCode(project.getCode());
                 data.setProjectName(project.getName());
-
                 data.setStaffCode(employ.getStaffCode());
                 data.setStaffName(employ.getStaffName());
-                data.setStaffMobile(employ.getStaffMobile());
 
+                data.setStaffMobile(staff.getMobile());
                 data.setStatus(EAttendanceStatus.TO_Start.getCode());
-                data.setCreateDatetime(date);
-
+                data.setCreateDatetime(now);
                 attendanceBO.saveAttendance(data);
             }
 
             // 昨天上工人数清零
-            Report report = reportBO.getReportByProject(project.getCode());
-            report.setTodayDays(0);
-            reportBO.resetTodayDays(report);
+            reportBO.resetTodayDays(project.getCode());
         }
         logger.info("===========生成考勤结束==============");
-
     }
 
     @Override

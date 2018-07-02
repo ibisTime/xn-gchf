@@ -4,20 +4,20 @@
 <mapper namespace="com.cdkj.gchf.dao.IAttendanceDAO">
 	<resultMap id="attendance_DB_Result" type="attendance">
 		<result column="code" property="code" />
-		<result column="terminal_code" property="terminalCode" />
 		<result column="project_code" property="projectCode" />
 		<result column="project_name" property="projectName" />
 		<result column="staff_code" property="staffCode" />
-		
 		<result column="staff_name" property="staffName" />
-		<result column="staff_mobile" property="staffMobile" />
-		<result column="sim" property="sim" />
-		<result column="status" property="status" />
 		
+		<result column="staff_mobile" property="staffMobile" />
+		<result column="status" property="status" />
 		<result column="create_datetime" property="createDatetime" />
 		<result column="start_datetime" property="startDatetime" />
 		<result column="end_datetime" property="endDatetime" />
+		
 		<result column="settle_datetime" property="settleDatetime" />
+		<result column="sim" property="sim" />
+		<result column="terminal_code" property="terminalCode" />
 		<result column="remark" property="remark" />
 	</resultMap>
 	<sql id="where_condition">
@@ -58,6 +58,8 @@
 		,t.start_datetime
 		,t.end_datetime
 		,t.settle_datetime
+		,t.sim
+		,t.terminal_code
 		,t.remark
 		FROM
 		thf_attendance t
@@ -105,7 +107,7 @@
 		)
 	</insert>
 
-	<update id="to_start" parameterType="attendance">
+	<update id="update_startMachineClockIn" parameterType="attendance">
 		UPDATE thf_attendance
 		SET
 		status = #{status}
@@ -115,7 +117,7 @@
 		WHERE code = #{code}
 	</update>
 	
-	<update id="to_end" parameterType="attendance">
+	<update id="update_endMachineClockIn" parameterType="attendance">
 		UPDATE thf_attendance
 		SET
 		status = #{status}
@@ -133,7 +135,7 @@
 		WHERE code = #{code}
 	</update>
 	
-	<update id="attendance_startClockIn" parameterType="attendance">
+	<update id="update_startManualClockIn" parameterType="attendance">
 		UPDATE thf_attendance
 		SET
 		status = #{status}
@@ -141,7 +143,7 @@
 		WHERE code = #{code}
 	</update>
 	
-	<update id="attendance_endClockIn" parameterType="attendance">
+	<update id="update_endManualClockIn" parameterType="attendance">
 		UPDATE thf_attendance
 		SET
 		status = #{status}

@@ -16,7 +16,6 @@ import com.cdkj.gchf.exception.BizException;
 
 @Component
 public class ReportBOImpl extends PaginableBOImpl<Report> implements IReportBO {
-
     @Autowired
     private IReportDAO reportDAO;
 
@@ -92,7 +91,12 @@ public class ReportBOImpl extends PaginableBOImpl<Report> implements IReportBO {
     }
 
     @Override
-    public void resetTodayDays(Report report) {
+    public void resetTodayDays(String projectCode) {
+        Report report = getReportByProject(projectCode);
+        Report data = new Report();
+        data.setCode(report.getCode());
+        data.setTodayDays(0);
+        reportDAO.updateResetTodayDays(data);
     }
 
     @Override

@@ -21,12 +21,24 @@ public class XN631999Req {
     @NotBlank
     private String password;
 
+    // 方法
+    @NotBlank
+    private String method;
+
     public String getPassword() {
         return password;
     }
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public String getMethod() {
+        return method;
+    }
+
+    public void setMethod(String method) {
+        this.method = method;
     }
 
 }

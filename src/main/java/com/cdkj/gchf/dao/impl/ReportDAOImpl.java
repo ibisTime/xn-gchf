@@ -80,4 +80,9 @@ public class ReportDAOImpl extends AMybatisTemplate implements IReportDAO {
         super.update(NAMESPACE.concat("update_next_month_salary"), data);
     }
 
+    @Override
+    public int updateResetTodayDays(Report data) {
+        return super.update(NAMESPACE.concat("update_resetTodayDays"), data);
+    }
+
 }

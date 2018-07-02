@@ -11,16 +11,18 @@ public interface IAttendanceBO extends IPaginableBO<Attendance> {
     public void saveAttendance(Attendance data);
 
     // 考勤系统上班打卡
-    public void toStart(Attendance data);
+    public void startWorkMachineClockIn(Attendance data);
 
     // 考勤系统下班打卡
-    public void toEnd(Attendance data);
+    public void endWorkMachineClockIn(Attendance data);
 
     // 手动上班打卡
-    public void startClockIn(String code, String status, Date startDatetime);
+    public void startWorkManualClockIn(String code, String status,
+            Date startDatetime);
 
     // 手动下班打卡
-    public void endClockIn(String code, String status, Date endDatetime);
+    public void endWorkManualClockIn(String code, String status,
+            Date endDatetime);
 
     public void updateStatus(Attendance data);
 

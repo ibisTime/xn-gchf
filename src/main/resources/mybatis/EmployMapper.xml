@@ -20,7 +20,7 @@
 		<result column="join_datetime" property="joinDatetime" />
 		<result column="leaving_datetime" property="leavingDatetime" />
 		<result column="start_datetime" property="startDatetime" />
-		<result column="end_datetime" property="endDatetime" />
+		<result column="last_leaving_days" property="lastLeavingDays" />
 		<result column="leaving_days" property="leavingDays" />
 		
 		<result column="total_leaving_days" property="totalLeavingDays" />
@@ -99,7 +99,7 @@
 		,t.join_datetime
 		,t.leaving_datetime
 		,t.start_datetime
-		,t.end_datetime
+		,t.last_leaving_days
 		,t.leaving_days
 		
 		,t.total_leaving_days
@@ -196,7 +196,8 @@
 		SET
 		status = #{status}
 		,start_datetime = #{startDatetime}
-		,end_datetime = #{endDatetime}
+		,last_leaving_days = #{lastLeavingDays}
+		,leaving_days = #{leavingDays}
 		,total_leaving_days = #{totalLeavingDays}
 		,updater = #{updater}
 		,update_datetime = #{updateDatetime}
@@ -219,7 +220,6 @@
 		UPDATE thf_employ
 		SET
 		status = #{status}
-		,leaving_days = #{leavingDays}
 		WHERE code = #{code}
 	</update>
 	
@@ -230,7 +230,7 @@
 		WHERE code = #{code}
 	</update>
 
-	<update id="update_salary_status" parameterType="employ">
+	<update id="update_salaryStatus" parameterType="employ">
 		UPDATE thf_employ
 		SET
 		salary_status = #{salaryStatus}

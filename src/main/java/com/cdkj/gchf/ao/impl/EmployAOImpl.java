@@ -271,7 +271,7 @@ public class EmployAOImpl implements IEmployAO {
                 // 如果今天请假则跳出循环，请假开始时间也算为1天
                 if (DateUtil.isIn(employ.getStartDatetime(),
                     DateUtil.getRelativeDateOfDays(employ.getStartDatetime(),
-                        employ.getLastLeavingDays() - 1))) {
+                        employ.getLastLeavingDays()))) {
                     break;
                 }
             }

@@ -54,17 +54,13 @@ public class LeaveBOImpl extends PaginableBOImpl<Leave> implements ILeaveBO {
         data.setProjectName(project.getName());
 
         data.setStartDatetime(startDatetime);
+        data.setEndDatetime(
+            DateUtil.getRelativeDateOfDays(startDatetime, leaveDays));
         data.setLeaveDays(leaveDays);
         data.setUpdater(updater);
         data.setUpdateDatetime(new Date());
         data.setRemark(remark);
-        
-        Date endDatetime = DateUtil.getRelativeDateOfDays(startDatetime, leaveDays - 1);
-        endDatetime = DateUtil.getEndDatetime(endDatetime.toString());
-        data.setEndDatetime(
-            endDatetime);
-        
-        
+
         leaveDAO.insert(data);
         return code;
     }

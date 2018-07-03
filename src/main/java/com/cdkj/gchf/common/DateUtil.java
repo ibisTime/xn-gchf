@@ -455,7 +455,6 @@ public class DateUtil {
      * @create: 2018年5月8日 下午8:49:03 nyc
      * @history:
      */
-    // sdf.parse("2018-06-04 10:31:00"), "09:30")
     public static int getHours(Date start, String end) {
         Calendar startCalendar = Calendar.getInstance();
         startCalendar.setTime(start);

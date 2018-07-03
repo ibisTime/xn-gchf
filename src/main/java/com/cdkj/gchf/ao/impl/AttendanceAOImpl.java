@@ -55,31 +55,36 @@ public class AttendanceAOImpl implements IAttendanceAO {
     private IStaffBO staffBO;
 
     @Override
-    public void startWorkManualClockIn(String code, Date startDatetime) {
-        Attendance data = attendanceBO.getAttendance(code);
-        if (null == data) {
-            throw new BizException("xn00000", "没有该员工今日考勤");
-        }
-        String status = EAttendanceStatus.Unpaied.getCode();
-        if (null == data.getEndDatetime()) {
-            status = EAttendanceStatus.TO_End.getCode();
-        }
+    public void startWorkManualClockIn(List<String> codeList,
+            Date startDatetime) {
+        for (String code : codeList) {
+            Attendance data = attendanceBO.getAttendance(code);
+            if (null == data) {
+                throw new BizException("xn00000", "没有该员工今日考勤");
+            }
+            String status = EAttendanceStatus.Unpaied.getCode();
+            if (null == data.getEndDatetime()) {
+                status = EAttendanceStatus.TO_End.getCode();
+            }
 
-        attendanceBO.startWorkManualClockIn(code, status, startDatetime);
+            attendanceBO.startWorkManualClockIn(code, status, startDatetime);
+        }
     }
 
     @Override
-    public void endWorkManualClockIn(String code, Date endDatetime) {
-        Attendance data = attendanceBO.getAttendance(code);
-        if (null == data) {
-            throw new BizException("xn00000", "没有该员工今日考勤");
-        }
-        String status = EAttendanceStatus.Unpaied.getCode();
-        if (null == data.getStartDatetime()) {
-            status = EAttendanceStatus.TO_Start.getCode();
-        }
+    public void endWorkManualClockIn(List<String> codeList, Date endDatetime) {
+        for (String code : codeList) {
+            Attendance data = attendanceBO.getAttendance(code);
+            if (null == data) {
+                throw new BizException("xn00000", "没有该员工今日考勤");
+            }
+            String status = EAttendanceStatus.Unpaied.getCode();
+            if (null == data.getStartDatetime()) {
+                status = EAttendanceStatus.TO_Start.getCode();
+            }
 
-        attendanceBO.endWorkManualClockIn(code, status, endDatetime);
+            attendanceBO.endWorkManualClockIn(code, status, endDatetime);
+        }
     }
 
     @Override

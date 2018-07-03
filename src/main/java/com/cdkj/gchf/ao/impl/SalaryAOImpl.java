@@ -91,9 +91,20 @@ public class SalaryAOImpl implements ISalaryAO {
         if (!ESalaryStatus.To_Approve.getCode().equals(data.getStatus())) {
             throw new BizException("xn00000", "该工资条不能修改");
         }
+
+        // 更新每月累积发薪、扣款、税费
+        Message message = messageBO.getMessage(data.getMessageCode());
+        message.setTotalAmount(message.getTotalAmount() - data.getAwardAmount()
+                + StringValidater.toLong(req.getAwardAmount()));
+        message
+            .setTotalCutAmount(message.getTotalCutAmount() - data.getCutAmount()
+                    + StringValidater.toLong(req.getCutAmount()));
+        message.setTotalTax(message.getTotalTax() - data.getTax()
+                + StringValidater.toLong(req.getTax()));
+        messageBO.refreshMessage(message);
+
         Employ employ = employBO.getEmployByStaff(data.getStaffCode(),
             data.getProjectCode());
-
         data.setAwardAmount(StringValidater.toLong(req.getAwardAmount()));
         data.setTax(StringValidater.toLong(req.getTax()));
         data.setCutAmount(StringValidater.toLong(req.getCutAmount()));
@@ -114,15 +125,6 @@ public class SalaryAOImpl implements ISalaryAO {
                 + "元；人工扣款：" + data.getCutAmount() / 1000 + "元；奖励："
                 + data.getAwardAmount() / 1000 + "元。");
         salaryBO.refreshSalary(data);
-
-        // 更新每月累积发薪、扣款、税费
-        Message message = messageBO.getMessage(data.getMessageCode());
-        message
-            .setTotalAmount(message.getTotalAmount() + data.getAwardAmount());
-        message.setTotalCutAmount(
-            message.getTotalCutAmount() + data.getCutAmount());
-        message.setTotalTax(message.getTotalTax() + data.getTax());
-        messageBO.refreshMessage(message);
     }
 
     @Override
@@ -368,7 +370,6 @@ public class SalaryAOImpl implements ISalaryAO {
             }
         }
         return name;
-
     }
 
     @Override

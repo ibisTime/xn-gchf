@@ -1,6 +1,9 @@
 package com.cdkj.gchf.dto.req;
 
+import java.util.List;
+
 import org.hibernate.validator.constraints.NotBlank;
+import org.hibernate.validator.constraints.NotEmpty;
 
 /**
  * 手动上班打卡
@@ -10,19 +13,19 @@ import org.hibernate.validator.constraints.NotBlank;
  */
 public class XN631390Req {
     // 考勤编号
-    @NotBlank
-    private String code;
+    @NotEmpty
+    private List<String> codeList;
 
     // 上班考勤时间
     @NotBlank
     private String startDatetime;
 
-    public String getCode() {
-        return code;
+    public List<String> getCodeList() {
+        return codeList;
     }
 
-    public void setCode(String code) {
-        this.code = code;
+    public void setCodeList(List<String> codeList) {
+        this.codeList = codeList;
     }
 
     public String getStartDatetime() {

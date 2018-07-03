@@ -13,14 +13,15 @@ public interface IAttendanceAO {
     static final String DEFAULT_ORDER_COLUMN = "code";
 
     // 上班考勤手动打卡
-    public void startWorkManualClockIn(String code, Date startDatetime);
+    public void startWorkManualClockIn(List<String> codeList,
+            Date startDatetime);
 
     // 下班考勤手动打卡
-    public void endWorkManualClockIn(String code, Date endDatetime);
+    public void endWorkManualClockIn(List<String> codeList, Date endDatetime);
 
     // 闸机考勤系统调用
-    public String manchineClockIn(String sim, String projectCode, String staffCode,
-            String attendTime, String terminalCode);
+    public String manchineClockIn(String sim, String projectCode,
+            String staffCode, String attendTime, String terminalCode);
 
     // 定时器每天凌晨形成考勤记录
     public void createAttendanceDaily();

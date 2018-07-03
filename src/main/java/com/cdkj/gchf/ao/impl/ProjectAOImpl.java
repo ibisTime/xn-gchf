@@ -29,7 +29,7 @@ import com.cdkj.gchf.dto.req.XN631350Req;
 import com.cdkj.gchf.dto.req.XN631352Req;
 import com.cdkj.gchf.dto.req.XN631353Req;
 import com.cdkj.gchf.enums.EBoolean;
-import com.cdkj.gchf.enums.EEmploystatus;
+import com.cdkj.gchf.enums.EEmployStatus;
 import com.cdkj.gchf.enums.EGeneratePrefix;
 import com.cdkj.gchf.enums.EProjectStatus;
 import com.cdkj.gchf.enums.EUser;
@@ -208,11 +208,11 @@ public class ProjectAOImpl implements IProjectAO {
         // 项目结束，员工离职
         Employ condition = new Employ();
         condition.setProjectCode(data.getCode());
-        condition.setStatus(EEmploystatus.Not_Leave.getCode());
+        condition.setStatus(EEmployStatus.Not_Leave.getCode());
         List<Employ> list = employBO.queryEmployList(condition);
 
         for (Employ employ : list) {
-            employ.setStatus(EEmploystatus.Leave.getCode());
+            employ.setStatus(EEmployStatus.Leave.getCode());
             employBO.updateStatus(employ);
         }
     }

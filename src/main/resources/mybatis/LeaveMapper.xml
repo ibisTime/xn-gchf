@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cdkj.gchf.dao.ILeaveDAO">
+	<resultMap id="leave_DB_Result" type="leave">
+		<result column="code" property="code" />
+		<result column="staff_code" property="staffCode" />
+		<result column="project_code" property="projectCode" />
+		<result column="staff_name" property="staffName" />
+		<result column="project_name" property="projectName" />
+		
+		<result column="start_datetime" property="startDatetime" />
+		<result column="end_datetime" property="endDatetime" />
+		<result column="leave_days" property="leaveDays" />
+		<result column="status" property="status" />
+		<result column="updater" property="updater" />
+		
+		<result column="update_datetime" property="updateDatetime" />
+		<result column="remark" property="remark" />
+	</resultMap>
+	<sql id="where_condition">
+		<trim prefix="WHERE" prefixOverrides="AND | OR">
+			<if test="code != null and code != '' ">
+				AND t.code = #{code}
+			</if>
+			<if test="staffCode != null and staffCode != '' ">
+				AND t.staff_code = #{staffCode}
+			</if>
+			<if test="projectCode != null and projectCode != '' ">
+				AND t.project_code = #{projectCode}
+			</if>
+			<if test="startDatetime != null and startDatetime != '' ">
+				<![CDATA[AND t.start_datetime >= #{startDatetime}]]>
+			</if>
+			<if test="endDatetime != null and endDatetime != '' ">
+				<![CDATA[AND t.end_datetime <= #{endDatetime}]]>
+			</if>
+		</trim>
+	</sql>
+	<select id="select_leave" parameterType="leave" resultMap="leave_DB_Result">
+		SELECT
+		t.code
+		,t.staff_code
+		,t.project_code
+		,t.staff_name
+		,t.project_name
+		
+		,t.start_datetime
+		,t.end_datetime
+		,t.leave_days
+		,t.status
+		,t.updater
+		
+		,t.update_datetime
+		,t.remark
+		FROM
+		thf_leave t
+		<include refid="where_condition" />
+		<trim prefix="ORDER BY ">
+			<if test="order != null and order != '' ">
+				t.${order}
+			</if>
+		</trim>
+	</select>
+
+	<select id="select_leave_count" parameterType="leave"
+		resultType="java.lang.Long">
+		SELECT count(1) FROM thf_leave t
+		<include refid="where_condition" />
+	</select>
+	
+	<select id="select_monthLeaveDays" parameterType="leave"
+		resultType="java.lang.Long">
+		SELECT IFNULL(SUM(t.leave_days), 0) FROM thf_leave t
+		<include refid="where_condition" />
+	</select>
+
+	<insert id="insert_leave" parameterType="leave">
+		INSERT INTO
+		thf_leave(
+		code
+		,staff_code
+		,project_code
+		,staff_name
+		,project_name
+		
+		,start_datetime
+		,end_datetime
+		,leave_days
+		,status
+		,updater
+		
+		,update_datetime
+		,remark
+		)
+		VALUES(
+		#{code}
+		,#{staffCode}
+		,#{projectCode}
+		,#{staffName}
+		,#{projectName}
+		
+		,#{startDatetime}
+		,#{endDatetime}
+		,#{leaveDays}
+		,#{status}
+		,#{updater}
+		
+		,#{updateDatetime}
+		,#{remark}
+		)
+	</insert>
+
+	<update id="update_leave" parameterType="leave">
+		UPDATE thf_leave
+		SET
+		staff_code = #{staffCode}
+		,project_code = #{projectCode}
+		,staff_name = #{staffName}
+		,project_name = #{projectName}
+		
+		,start_datetime = #{startDatetime}
+		,end_datetime = #{endDatetime}
+		,leave_days = #{leaveDays}
+		,status = #{status}
+		,updater = #{updater}
+		
+		,update_datetime = #{updateDatetime}
+		,remark = #{remark}
+		WHERE code = #{code}
+	</update>
+</mapper>

@@ -144,7 +144,6 @@ CREATE TABLE `thf_employ` (
   `start_datetime` datetime DEFAULT NULL COMMENT '最近一次请假开始时间',
   `last_leaving_days` int(11) DEFAULT NULL COMMENT '最近一次请假天数',
   `total_leaving_days` int(11) DEFAULT '0.0' COMMENT '累积请假天数',
-  `leaving_days` int(11) DEFAULT '0.0' COMMENT '本月请假天数',
   `updater` varchar(32) DEFAULT NULL COMMENT '更新人',
   `update_datetime` datetime DEFAULT NULL COMMENT '更新时间',
   `remark` text COMMENT '备注',
@@ -487,4 +486,22 @@ CREATE TABLE `thf_query_log` (
   KEY `user_id` (`user_id`),
   CONSTRAINT `staff_code` FOREIGN KEY (`staff_code`) REFERENCES `thf_staff` (`code`),
   CONSTRAINT `user_id` FOREIGN KEY (`user_id`) REFERENCES `thf_user` (`user_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+##请假明细
+DROP TABLE IF EXISTS  `thf_leave`;
+CREATE TABLE `thf_leave` (
+  `code` varchar(32) NOT NULL COMMENT '编号',
+  `staff_code` varchar(32) DEFAULT NULL COMMENT '员工编号',
+  `project_code` varchar(32) DEFAULT NULL COMMENT '项目编号',
+  `staff_name` varchar(32) DEFAULT NULL COMMENT '员工姓名',
+  `project_name` varchar(255) DEFAULT NULL COMMENT '项目名称',
+  `start_datetime` datetime DEFAULT NULL COMMENT '请假开始日期（包括当天）',
+  `end_datetime` datetime DEFAULT NULL COMMENT '请假结束日期',
+  `leave_days` int(11) DEFAULT NULL COMMENT '请假天数',
+  `status` varchar(4) DEFAULT NULL COMMENT '状态',
+  `updater` varchar(32) DEFAULT NULL COMMENT '更新人',
+  `update_datetime` datetime DEFAULT NULL COMMENT '更新时间',
+  `remark` varchar(255) COMMENT '备注',
+  PRIMARY KEY (`code`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;

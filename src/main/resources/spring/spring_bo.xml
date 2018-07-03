@@ -16,11 +16,9 @@
 		<property name="paginableDAO" ref="userDAOImpl" />
 	</bean>
 	
-	
 	<bean id="sysMenuBO" class="com.cdkj.gchf.bo.impl.SYSMenuBOImpl">
 		<property name="paginableDAO" ref="sysMenuDAOImpl"/>
 	</bean>
-	
 	
 	<bean id="sysRoleBO" class="com.cdkj.gchf.bo.impl.SYSRoleBOImpl">
 		<property name="paginableDAO" ref="sysRoleDAOImpl"/>
@@ -30,7 +28,6 @@
 		<property name="paginableDAO" ref="sysMenuRoleDAOImpl"/>
 	</bean>
 	
-
 	<bean id="sysDictBO" class="com.cdkj.gchf.bo.impl.SYSDictBOImpl">
 		<property name="paginableDAO" ref="sysDictDAOImpl"/>
 	</bean>	
@@ -112,5 +109,8 @@
 	<bean id="eventRemindBO" class="com.cdkj.gchf.bo.impl.EventRemindBOImpl">
 		<property name="paginableDAO" ref="eventRemindDAOImpl"/>
 	</bean>	
+	
+	<bean id="leaveBO" class="com.cdkj.gchf.bo.impl.LeaveBOImpl">
+		<property name="paginableDAO" ref="leaveDAOImpl"/>
+	</bean>	
 </beans>
-

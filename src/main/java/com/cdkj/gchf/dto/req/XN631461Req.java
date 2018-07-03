@@ -24,7 +24,7 @@ public class XN631461Req {
 
     // （必填）请假天数
     @NotBlank(message = "请假天数不能为空")
-    private String lastLeavingDays;
+    private String leaveDays;
 
     // （必填）更新人
     @NotBlank(message = "更新人不能为空")
@@ -49,12 +49,12 @@ public class XN631461Req {
         this.startDatetime = startDatetime;
     }
 
-    public String getLastLeavingDays() {
-        return lastLeavingDays;
+    public String getLeaveDays() {
+        return leaveDays;
     }
 
-    public void setLastLeavingDays(String lastLeavingDays) {
-        this.lastLeavingDays = lastLeavingDays;
+    public void setLeaveDays(String leaveDays) {
+        this.leaveDays = leaveDays;
     }
 
     public String getUpdater() {

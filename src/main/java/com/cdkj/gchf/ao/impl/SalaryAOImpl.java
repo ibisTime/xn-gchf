@@ -18,6 +18,7 @@ import com.cdkj.gchf.bo.IAttendanceBO;
 import com.cdkj.gchf.bo.IBankCardBO;
 import com.cdkj.gchf.bo.ICompanyCardBO;
 import com.cdkj.gchf.bo.IEmployBO;
+import com.cdkj.gchf.bo.ILeaveBO;
 import com.cdkj.gchf.bo.IMessageBO;
 import com.cdkj.gchf.bo.IProjectBO;
 import com.cdkj.gchf.bo.ISalaryBO;
@@ -41,7 +42,7 @@ import com.cdkj.gchf.dto.req.XN631442Req;
 import com.cdkj.gchf.dto.res.XN631448Res;
 import com.cdkj.gchf.enums.EAttendanceStatus;
 import com.cdkj.gchf.enums.EBoolean;
-import com.cdkj.gchf.enums.EEmploystatus;
+import com.cdkj.gchf.enums.EEmployStatus;
 import com.cdkj.gchf.enums.EGeneratePrefix;
 import com.cdkj.gchf.enums.EMessageStatus;
 import com.cdkj.gchf.enums.EProjectStatus;
@@ -83,6 +84,9 @@ public class SalaryAOImpl implements ISalaryAO {
 
     @Autowired
     IUserBO userBO;
+
+    @Autowired
+    ILeaveBO leaveBO;
 
     @Override
     @Transactional
@@ -231,7 +235,7 @@ public class SalaryAOImpl implements ISalaryAO {
                 "===========为项目【" + project.getName() + "】生成工资条==============");
             Employ employCondition = new Employ();
             employCondition.setProjectCode(project.getCode());
-            employCondition.setStatus(EEmploystatus.Not_Leave.getCode());
+            employCondition.setStatus(EEmployStatus.Not_Leave.getCode());
             List<Employ> eList = employBO.queryEmployList(employCondition);
 
             // 若当前时间是工资条生成时间,形成工资条
@@ -277,7 +281,9 @@ public class SalaryAOImpl implements ISalaryAO {
                     data.setStaffName(employ.getStaffName());
                     data.setMonth(calendar.get(Calendar.YEAR) + "/"
                             + calendar.get(Calendar.MONTH));
-                    data.setLeavingDays(employ.getLeavingDays());
+                    data.setLeavingDays(
+                        leaveBO.getMonthLeaveDays(employ.getStaffCode(),
+                            project.getCode(), calendar.get(Calendar.MONTH)));
                     data.setAttendanceDays(attendanceList.size());
 
                     // 计算上月迟到和早退小时
@@ -326,10 +332,6 @@ public class SalaryAOImpl implements ISalaryAO {
                     totalAmount += shouldAmount;
                     totalCutAmount += cutAmount;
                     number = number + 1;
-
-                    // 清空上月累积请假天数
-                    data.setLeavingDays(0);
-                    employBO.updateLeavingDays(data);
                 }
 
                 // 生成代发消息

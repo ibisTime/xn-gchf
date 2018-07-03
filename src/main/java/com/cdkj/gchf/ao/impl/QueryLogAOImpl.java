@@ -19,7 +19,7 @@ import com.cdkj.gchf.domain.Project;
 import com.cdkj.gchf.domain.QueryLog;
 import com.cdkj.gchf.domain.Staff;
 import com.cdkj.gchf.domain.User;
-import com.cdkj.gchf.enums.EEmploystatus;
+import com.cdkj.gchf.enums.EEmployStatus;
 import com.cdkj.gchf.enums.EStaffSalaryStatus;
 
 @Service
@@ -83,7 +83,7 @@ public class QueryLogAOImpl implements IQueryLogAO {
 
         for (QueryLog queryLog : page.getList()) {
             eCondition.setStaffCode(queryLog.getStaffCode());
-            eCondition.setStatus(EEmploystatus.Not_Leave.getCode());
+            eCondition.setStatus(EEmployStatus.Not_Leave.getCode());
             eCondition.setProjectCodeList(projectCodeList);
             employList = employBO.queryEmployList(eCondition);
 
@@ -121,7 +121,7 @@ public class QueryLogAOImpl implements IQueryLogAO {
         List<Employ> employList = null;
         for (QueryLog queryLog : list) {
             eCondition.setStaffCode(queryLog.getCode());
-            eCondition.setStatus(EEmploystatus.Not_Leave.getCode());
+            eCondition.setStatus(EEmployStatus.Not_Leave.getCode());
             eCondition.setProjectCodeList(projectCodeList);
             employList = employBO.queryEmployList(eCondition);
             queryLog.setEmployList(employList);

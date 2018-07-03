@@ -40,6 +40,8 @@
 		<typeAlias alias="skill" type="com.cdkj.gchf.domain.Skill" />
 		<typeAlias alias="eventRemind" type="com.cdkj.gchf.domain.EventRemind" />
 		<typeAlias alias="subbranch" type="com.cdkj.gchf.domain.Subbranch" />
+		
+		<typeAlias alias="leave" type="com.cdkj.gchf.domain.Leave" />
 	</typeAliases>
 </configuration>
 

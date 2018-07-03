@@ -1,10 +1,10 @@
 package com.cdkj.gchf.bo;
 
+import java.util.Date;
 import java.util.List;
 
 import com.cdkj.gchf.bo.base.IPaginableBO;
 import com.cdkj.gchf.domain.Employ;
-import com.cdkj.gchf.domain.Salary;
 
 public interface IEmployBO extends IPaginableBO<Employ> {
 
@@ -18,7 +18,9 @@ public interface IEmployBO extends IPaginableBO<Employ> {
 
     public Employ getEmploy(String code);
 
-    public void toHoliday(Employ data);
+    // 更新请假状态
+    public void toHoliday(String staffCode, String projectCode,
+            Date startDatetime, Integer leaveDays);
 
     public void leaveOffice(Employ data, String leavingDatetime, String updater,
             String remark);
@@ -28,8 +30,6 @@ public interface IEmployBO extends IPaginableBO<Employ> {
     public long getSalaryCount(Employ eCondition);
 
     public void updateStatus(Employ employ);
-
-    public void updateLeavingDays(Salary data);
 
     public void isExist(String projectCode, String staffCode);
 

@@ -7,7 +7,6 @@ import org.springframework.stereotype.Component;
 import com.cdkj.gchf.bo.base.Paginable;
 import com.cdkj.gchf.domain.Employ;
 import com.cdkj.gchf.dto.req.XN631460Req;
-import com.cdkj.gchf.dto.req.XN631461Req;
 import com.cdkj.gchf.dto.req.XN631462Req;
 
 @Component
@@ -16,9 +15,6 @@ public interface IEmployAO {
 
     // 入职
     public String joinIn(XN631460Req req);
-
-    // 请假
-    public void toHoliday(XN631461Req req);
 
     // 离职
     public void leaveOffice(XN631462Req req);

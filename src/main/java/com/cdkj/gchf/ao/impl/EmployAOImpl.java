@@ -31,10 +31,9 @@ import com.cdkj.gchf.domain.Report;
 import com.cdkj.gchf.domain.Staff;
 import com.cdkj.gchf.domain.User;
 import com.cdkj.gchf.dto.req.XN631460Req;
-import com.cdkj.gchf.dto.req.XN631461Req;
 import com.cdkj.gchf.dto.req.XN631462Req;
 import com.cdkj.gchf.enums.EAttendanceStatus;
-import com.cdkj.gchf.enums.EEmploystatus;
+import com.cdkj.gchf.enums.EEmployStatus;
 import com.cdkj.gchf.enums.EGeneratePrefix;
 import com.cdkj.gchf.enums.EProjectStatus;
 import com.cdkj.gchf.enums.EStaffSalaryStatus;
@@ -95,7 +94,7 @@ public class EmployAOImpl implements IEmployAO {
         data.setSalary(StringValidater.toLong(req.getSalary()));
         data.setCutAmount(StringValidater.toLong(req.getCutAmount()));
 
-        data.setStatus(EEmploystatus.Work.getCode());
+        data.setStatus(EEmployStatus.Work.getCode());
         data.setJoinDatetime(DateUtil.strToDate(req.getJoinDatetime(),
             DateUtil.FRONT_DATE_FORMAT_STRING));
         data.setSalaryStatus(EStaffSalaryStatus.Normal.getCode());
@@ -107,11 +106,11 @@ public class EmployAOImpl implements IEmployAO {
             req.getProjectCode());
         // 防止重复办理入职
         if (checkData != null) {
-            if (!EEmploystatus.Leave.getCode().equals(data.getStatus())) {
+            if (!EEmployStatus.Leave.getCode().equals(data.getStatus())) {
                 throw new BizException("xn00000", "该员工已入职该项目，请勿重复办理入职");
             }
             data.setCode(checkData.getCode());
-            data.setStatus(EEmploystatus.Work.getCode());
+            data.setStatus(EEmployStatus.Work.getCode());
             employBO.refreshEmploy(data);
         }
         employBO.joinIn(data);
@@ -174,52 +173,13 @@ public class EmployAOImpl implements IEmployAO {
 
     @Override
     @Transactional
-    public void toHoliday(XN631461Req req) {
-        Employ data = employBO.getEmployByStaff(req.getStaffCode(),
-            req.getProjectCode());
-        if (EEmploystatus.Leave.getCode().equals(data.getStatus())) {
-            throw new BizException("xn0000", "该员工已离职");
-        }
-        if (EEmploystatus.Hoilday.getCode().equals(data.getStatus())) {
-            throw new BizException("xn0000", "该员工已在请假中");
-        }
-
-        Date start = DateUtil.strToDate(req.getStartDatetime(),
-            DateUtil.FRONT_DATE_FORMAT_STRING);
-        if (start == null) {
-            throw new BizException("xn0000", "时间格式不正确");
-        }
-
-        Integer lastLeadingDays = StringValidater
-            .toInteger(req.getLastLeavingDays());
-
-        // 更新统计请假人数
-        Report report = reportBO.getReportByProject(data.getProjectCode());
-        report.setLeavingDays(report.getLeavingDays() + 1);
-        reportBO.refreshLeavingDays(report);
-
-        // 更新雇佣状态
-        data.setTotalLeavingDays(data.getTotalLeavingDays() + lastLeadingDays);
-        data.setLeavingDays(data.getLeavingDays() + lastLeadingDays);
-        data.setStartDatetime(start);
-        data.setLastLeavingDays(lastLeadingDays);
-        data.setUpdater(req.getUpdater());
-        data.setUpdateDatetime(new Date());
-
-        data.setStatus(EEmploystatus.Hoilday.getCode());
-        data.setRemark(req.getRemark());
-        employBO.toHoliday(data);
-    }
-
-    @Override
-    @Transactional
     public void leaveOffice(XN631462Req req) {
         Employ data = employBO.getEmployByStaff(req.getStaffCode(),
             req.getProjectCode());
         if (data == null) {
             throw new BizException("xn0000", "该员工未在该项目任职");
         }
-        if (EEmploystatus.Leave.getCode().equals(data.getStatus())) {
+        if (EEmployStatus.Leave.getCode().equals(data.getStatus())) {
             throw new BizException("xn0000", "该员工已经离职");
         }
         employBO.leaveOffice(data, req.getLeavingDatetime(), req.getUpdater(),
@@ -300,12 +260,12 @@ public class EmployAOImpl implements IEmployAO {
     @Override
     public void updateEmployStatusDaily() {
         Employ eCondition = new Employ();
-        eCondition.setStatus(EEmploystatus.Not_Leave.getCode());
+        eCondition.setStatus(EEmployStatus.Not_Leave.getCode());
         List<Employ> eList = employBO.queryEmployList(eCondition);
         logger.info("===========开始更新员工状态==============");
 
         for (Employ employ : eList) {
-            String status = EEmploystatus.Work.getCode();
+            String status = EEmployStatus.Work.getCode();
             if (employ.getStartDatetime() != null
                     && employ.getLastLeavingDays() != null) {
                 // 如果今天请假则跳出循环，请假开始时间也算为1天

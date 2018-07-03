@@ -21,7 +21,6 @@
 		<result column="leaving_datetime" property="leavingDatetime" />
 		<result column="start_datetime" property="startDatetime" />
 		<result column="last_leaving_days" property="lastLeavingDays" />
-		<result column="leaving_days" property="leavingDays" />
 		
 		<result column="total_leaving_days" property="totalLeavingDays" />
 		<result column="updater" property="updater" />
@@ -100,7 +99,6 @@
 		,t.leaving_datetime
 		,t.start_datetime
 		,t.last_leaving_days
-		,t.leaving_days
 		
 		,t.total_leaving_days
 		,t.updater
@@ -197,11 +195,7 @@
 		status = #{status}
 		,start_datetime = #{startDatetime}
 		,last_leaving_days = #{lastLeavingDays}
-		,leaving_days = #{leavingDays}
 		,total_leaving_days = #{totalLeavingDays}
-		,updater = #{updater}
-		,update_datetime = #{updateDatetime}
-		,remark = #{remark}
 		WHERE code = #{code}
 	</update>
 
@@ -220,13 +214,6 @@
 		UPDATE thf_employ
 		SET
 		status = #{status}
-		WHERE code = #{code}
-	</update>
-	
-	<update id="update_leavingDays" parameterType="employ">
-		UPDATE thf_employ
-		SET
-		leaving_days = #{leavingDays}
 		WHERE code = #{code}
 	</update>
 

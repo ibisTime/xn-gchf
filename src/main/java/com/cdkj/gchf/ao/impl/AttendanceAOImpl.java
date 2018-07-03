@@ -27,7 +27,7 @@ import com.cdkj.gchf.domain.Project;
 import com.cdkj.gchf.domain.Report;
 import com.cdkj.gchf.domain.Staff;
 import com.cdkj.gchf.enums.EAttendanceStatus;
-import com.cdkj.gchf.enums.EEmploystatus;
+import com.cdkj.gchf.enums.EEmployStatus;
 import com.cdkj.gchf.enums.EGeneratePrefix;
 import com.cdkj.gchf.enums.EProjectStatus;
 import com.cdkj.gchf.enums.EUserKind;
@@ -145,7 +145,7 @@ public class AttendanceAOImpl implements IAttendanceAO {
             // 获取项目下得所有未离职员工
             Employ eCondition = new Employ();
             eCondition.setProjectCode(project.getCode());
-            eCondition.setStatus(EEmploystatus.Work.getCode());
+            eCondition.setStatus(EEmployStatus.Work.getCode());
             List<Employ> eList = employBO.queryEmployList(eCondition);
 
             for (Employ employ : eList) {

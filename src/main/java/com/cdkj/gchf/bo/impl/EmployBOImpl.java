@@ -12,8 +12,7 @@ import com.cdkj.gchf.bo.base.PaginableBOImpl;
 import com.cdkj.gchf.common.DateUtil;
 import com.cdkj.gchf.dao.IEmployDAO;
 import com.cdkj.gchf.domain.Employ;
-import com.cdkj.gchf.domain.Salary;
-import com.cdkj.gchf.enums.EEmploystatus;
+import com.cdkj.gchf.enums.EEmployStatus;
 import com.cdkj.gchf.exception.BizException;
 
 @Component
@@ -27,7 +26,13 @@ public class EmployBOImpl extends PaginableBOImpl<Employ> implements IEmployBO {
     }
 
     @Override
-    public void toHoliday(Employ data) {
+    public void toHoliday(String staffCode, String projectCode,
+            Date startDatetime, Integer leaveDays) {
+        Employ data = getEmployByStaff(staffCode, projectCode);
+        data.setStartDatetime(startDatetime);
+        data.setLastLeavingDays(leaveDays);
+        data.setTotalLeavingDays(data.getTotalLeavingDays() + leaveDays);
+        data.setStatus(EEmployStatus.Hoilday.getCode());
         employDAO.toHoliday(data);
     }
 
@@ -36,7 +41,7 @@ public class EmployBOImpl extends PaginableBOImpl<Employ> implements IEmployBO {
             String remark) {
         data.setLeavingDatetime(DateUtil.strToDate(leavingDatetime,
             DateUtil.FRONT_DATE_FORMAT_STRING));
-        data.setStatus(EEmploystatus.Leave.getCode());
+        data.setStatus(EEmployStatus.Leave.getCode());
         data.setUpdater(updater);
         data.setUpdateDatetime(new Date());
         data.setRemark(remark);
@@ -100,11 +105,6 @@ public class EmployBOImpl extends PaginableBOImpl<Employ> implements IEmployBO {
     @Override
     public void updateStatus(Employ data) {
         employDAO.updateStatus(data);
-    }
-
-    @Override
-    public void updateLeavingDays(Salary data) {
-        employDAO.updateLeavingDays(data);
     }
 
     @Override

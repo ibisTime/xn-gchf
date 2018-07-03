@@ -63,9 +63,6 @@ public class Employ extends ABaseDO {
     // 最近一次请假天数
     private Integer lastLeavingDays;
 
-    // 本月请假天数
-    private Integer leavingDays;
-
     // 累积请假天数
     private Integer totalLeavingDays;
 
@@ -278,14 +275,6 @@ public class Employ extends ABaseDO {
 
     public void setStatusList(List<String> statusList) {
         this.statusList = statusList;
-    }
-
-    public Integer getLeavingDays() {
-        return leavingDays;
-    }
-
-    public void setLeavingDays(Integer leavingDays) {
-        this.leavingDays = leavingDays;
     }
 
     public Integer getTotalLeavingDays() {

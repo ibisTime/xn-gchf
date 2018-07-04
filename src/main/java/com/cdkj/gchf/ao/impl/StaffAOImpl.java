@@ -43,6 +43,7 @@ import com.cdkj.gchf.enums.EGeneratePrefix;
 import com.cdkj.gchf.enums.EIDKind;
 import com.cdkj.gchf.enums.ESalaryStatus;
 import com.cdkj.gchf.enums.EUser;
+import com.cdkj.gchf.exception.BizException;
 import com.google.gson.Gson;
 
 @Service
@@ -238,6 +239,10 @@ public class StaffAOImpl implements IStaffAO {
     @Override
     public Staff getStaffByIdNo(String idNo, List<String> projectCodeList) {
         Staff data = staffBO.getStaffByIdNo(idNo);
+        if (null == data) {
+            throw new BizException("xn0000", "该身份证对应的员工不存在！");
+        }
+
         // 所在项目及工资条
         List<Employ> employList = new ArrayList<Employ>();
         List<Salary> salaryList = new ArrayList<Salary>();
@@ -259,16 +264,20 @@ public class StaffAOImpl implements IStaffAO {
             }
         }
 
-        for (Salary salary : salaryList) {
-            // 工资卡
-            BankCard bankCard = bankCardBO.getBankCardByStaff(data.getCode());
-            salary.setBankCard(bankCard);
-            salary.setBankcardNumber(bankCard.getBankcardNumber());
-            if (ESalaryStatus.Pay_Portion.getCode()
-                .equals(salary.getStatus())) {
-                abnormalSalaryList.add(salary);
+        if (CollectionUtils.isNotEmpty(salaryList)) {
+            for (Salary salary : salaryList) {
+                // 工资卡
+                BankCard bankCard = bankCardBO
+                    .getBankCardByStaff(data.getCode());
+                salary.setBankCard(bankCard);
+                salary.setBankcardNumber(bankCard.getBankcardNumber());
+                if (ESalaryStatus.Pay_Portion.getCode()
+                    .equals(salary.getStatus())) {
+                    abnormalSalaryList.add(salary);
+                }
             }
         }
+
         data.setEmployList(employList);
         data.setSalaryList(salaryList);
         data.setAbnormalSalaryList(abnormalSalaryList);

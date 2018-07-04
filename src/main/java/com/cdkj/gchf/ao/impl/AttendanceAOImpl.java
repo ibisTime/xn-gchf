@@ -93,7 +93,7 @@ public class AttendanceAOImpl implements IAttendanceAO {
         JSONObject json = new JSONObject();
         logger.info("----------------------获取考勤记录----------------------");
         Attendance data = attendanceBO.getAttendanceByProject(projectCode,
-            staffCode);
+            staffCode, attendTime);
         if (data == null) {
             json.put("result", false);
             return new Gson().toJson(json);
@@ -127,7 +127,6 @@ public class AttendanceAOImpl implements IAttendanceAO {
         }
         logger.info("----------------------考勤成功----------------------");
         json.put("result", true);
-        logger.info("json" + new Gson().toJson(json));
         return new Gson().toJson(json);
     }
 

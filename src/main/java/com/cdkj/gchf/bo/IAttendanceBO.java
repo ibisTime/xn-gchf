@@ -34,5 +34,5 @@ public interface IAttendanceBO extends IPaginableBO<Attendance> {
     public Attendance getAttendance(String code);
 
     public Attendance getAttendanceByProject(String projectCode,
-            String staffCode);
+            String staffCode, String attendTime);
 }

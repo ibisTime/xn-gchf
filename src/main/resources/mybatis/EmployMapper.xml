@@ -182,7 +182,6 @@
 		,join_datetime = #{joinDatetime}
 		,leaving_datetime = #{leavingDatetime}
 		,start_datetime = #{startDatetime}
-		,end_datetime = #{endDatetime}
 		,updater = #{updater}
 		,update_datetime = #{updateDatetime}
 		,remark = #{remark}

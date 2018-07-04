@@ -251,7 +251,7 @@ public class SalaryAOImpl implements ISalaryAO {
                 for (Employ employ : eList) {
                     logger.info("===========为雇员【" + employ.getStaffName()
                             + "】生成工资条==============");
-                    // 统计上个月工人考勤
+                    // 统计上个月工人正常考勤天数
                     Date startDatetime = DateUtil
                         .getFristDay(DateUtil.getMonth() - 2);
                     Date endDatetime = DateUtil
@@ -281,6 +281,7 @@ public class SalaryAOImpl implements ISalaryAO {
                     data.setStaffName(employ.getStaffName());
                     data.setMonth(calendar.get(Calendar.YEAR) + "/"
                             + calendar.get(Calendar.MONTH));
+                    // 统计上个月员工请假天数
                     data.setLeavingDays(
                         leaveBO.getMonthLeaveDays(employ.getStaffCode(),
                             project.getCode(), calendar.get(Calendar.MONTH)));
@@ -290,7 +291,7 @@ public class SalaryAOImpl implements ISalaryAO {
                     int earlyHours = 0;
                     int delayHours = 0;
                     for (Attendance attendance : attendanceList) {
-                        // 计算迟到小时数
+                        // 迟到小时数
                         boolean isLess = DateUtil.compare(
                             DateUtil.dateToStr(attendance.getStartDatetime(),
                                 DateUtil.DATA_TIME_PATTERN_7),
@@ -301,7 +302,7 @@ public class SalaryAOImpl implements ISalaryAO {
                                 project.getAttendanceStarttime());
                         }
 
-                        // 计算早退小时数
+                        // 早退小时数
                         boolean isGreater = DateUtil.compare(
                             DateUtil.dateToStr(attendance.getEndDatetime(),
                                 DateUtil.DATA_TIME_PATTERN_7),
@@ -318,11 +319,12 @@ public class SalaryAOImpl implements ISalaryAO {
                     data.setEarlyHours(earlyHours);
                     data.setDelayHours(delayHours);
 
-                    // 应发工资（attendanceDays*日薪-（delayHours+earlyHours）*扣款时薪）
+                    // 计算应发工资（attendanceDays*日薪-（delayHours+earlyHours）*扣款时薪）
                     Long cutAmount = AmountUtil.mul(employ.getCutAmount(),
                         (earlyHours + delayHours));
                     Long shouldAmount = AmountUtil.mul(employ.getSalary(),
                         attendanceList.size()) - cutAmount;
+
                     data.setShouldAmount(shouldAmount);
                     data.setStatus(ESalaryStatus.To_Approve.getCode());
                     data.setCreateDatetime(date);

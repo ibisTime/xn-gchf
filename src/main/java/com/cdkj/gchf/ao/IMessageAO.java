@@ -12,8 +12,6 @@ import com.cdkj.gchf.dto.req.XN631439Req;
 public interface IMessageAO {
     static final String DEFAULT_ORDER_COLUMN = "code";
 
-    public String addMessage(Message data);
-
     public Paginable<Message> queryMessagePage(int start, int limit,
             Message condition);
 

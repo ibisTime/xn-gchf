@@ -85,6 +85,7 @@
 		,project_name
 		,staff_code
 		,staff_name
+		,staff_mobile
 		,status
 		,create_datetime
 		,start_datetime
@@ -98,6 +99,7 @@
 		,#{projectName}
 		,#{staffCode}
 		,#{staffName}
+		,#{staffMobile}
 		,#{status}
 		,#{createDatetime}
 		,#{startDatetime}
@@ -127,7 +129,7 @@
 		WHERE code = #{code}
 	</update>
 	
-	<update id="update_status" parameterType="attendance">
+	<update id="update_settleStatus" parameterType="attendance">
 		UPDATE thf_attendance
 		SET
 		status = #{status}

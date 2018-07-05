@@ -193,6 +193,16 @@
 		,total_tax = #{totalTax}
 		WHERE code = #{code}
 	</update>
+	
+	<update id="update_message4DropSalary" parameterType="message">
+		UPDATE thf_message
+		SET
+		total_amount = #{totalAmount}
+		,total_cut_amount = #{totalCutAmount}
+		,total_tax = #{totalTax}
+		,number = #{number}
+		WHERE code = #{code}
+	</update>
 
 	<update id="send_message" parameterType="message">
 		UPDATE thf_message
@@ -225,4 +235,9 @@
 		WHERE code = #{code}
 	</update>
 
+	<delete id="delete_notExistSalary" parameterType="message">
+		DELETE FROM thf_message WHERE code = #{code}
+		AND NOT EXISTS (SELECT 1 FROM thf_salary WHERE thf_salary.message_code = thf_message.code)
+	</delete>
+	
 </mapper>

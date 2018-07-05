@@ -58,8 +58,8 @@ public class AttendanceDAOImpl extends AMybatisTemplate
     }
 
     @Override
-    public void updateStatus(Attendance data) {
-        super.update(NAMESPACE.concat("update_status"), data);
+    public void updateSettleStatus(Attendance data) {
+        super.update(NAMESPACE.concat("update_settleStatus"), data);
     }
 
     @Override

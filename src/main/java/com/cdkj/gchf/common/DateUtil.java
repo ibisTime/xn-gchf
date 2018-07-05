@@ -320,6 +320,45 @@ public class DateUtil {
     }
 
     /**
+     * 获取当指定年份和月份第一天
+     * @param year
+     * @param month
+     * @return 
+     * @create: 2018年5月11日 下午1:58:15 nyc
+     * @history:
+     */
+    public static Date getFristDay(int year, int month) {
+        Calendar calendar = Calendar.getInstance();
+        calendar.set(Calendar.YEAR, year);
+        calendar.set(Calendar.MONTH, month);
+        calendar.set(Calendar.DAY_OF_MONTH, 1);
+        calendar.set(Calendar.HOUR_OF_DAY, 0);
+        calendar.set(Calendar.MINUTE, 0);
+        calendar.set(Calendar.SECOND, 0);
+        return calendar.getTime();
+    }
+
+    /**
+     * 获取指定年份和月份最后一天
+     * @param year
+     * @param month
+     * @return 
+     * @create: 2018年5月11日 下午1:58:15 nyc
+     * @history:
+     */
+    public static Date getLastDay(int year, int month) {
+        Calendar calendar = Calendar.getInstance();
+        calendar.set(Calendar.YEAR, year);
+        calendar.set(Calendar.MONTH, month);
+        calendar.set(Calendar.DAY_OF_MONTH,
+            calendar.getActualMaximum(Calendar.DAY_OF_MONTH));
+        calendar.set(Calendar.HOUR_OF_DAY, 23);
+        calendar.set(Calendar.MINUTE, 59);
+        calendar.set(Calendar.SECOND, 59);
+        return calendar.getTime();
+    }
+
+    /**
      * 获取当前月份最后一天
      * @param month
      * @return 
@@ -524,8 +563,8 @@ public class DateUtil {
     }
 
     public static void main(String[] args) throws ParseException {
-        SimpleDateFormat sdf = new SimpleDateFormat(DATA_TIME_PATTERN_1);
-        System.out.println(getHours(sdf.parse("2018-06-04 10:30:00"), "09:30"));
+        String[] salaryDate = "2018/6".split("/");
+        System.out.println(getLastDay(2018, 5));
     }
 
 }

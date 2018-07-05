@@ -230,5 +230,8 @@
 		status = #{status}
 		WHERE code = #{code}
 	</update>
-
+	
+	<delete id="delete_salary" parameterType="salary">
+		DELETE FROM thf_salary WHERE code = #{code}
+	</delete>
 </mapper>

@@ -9,6 +9,9 @@ public interface ISalaryBO extends IPaginableBO<Salary> {
 
     public void saveSalary(Salary data);
 
+    // 删除工资条
+    public void dropSalary(String code);
+
     public void refreshSalary(Salary data);
 
     public void approveSalary(Salary data);

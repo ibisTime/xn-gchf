@@ -7,29 +7,81 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import com.cdkj.gchf.bo.ICompanyCardBO;
 import com.cdkj.gchf.bo.IMessageBO;
+import com.cdkj.gchf.bo.IProjectBO;
 import com.cdkj.gchf.bo.base.PaginableBOImpl;
 import com.cdkj.gchf.dao.IMessageDAO;
+import com.cdkj.gchf.domain.CompanyCard;
 import com.cdkj.gchf.domain.Message;
+import com.cdkj.gchf.domain.Project;
 import com.cdkj.gchf.enums.EMessageStatus;
 import com.cdkj.gchf.exception.BizException;
 
 @Component
 public class MessageBOImpl extends PaginableBOImpl<Message>
         implements IMessageBO {
-
     @Autowired
     private IMessageDAO messageDAO;
 
-    public void saveMessage(Message data) {
-        messageDAO.insert(data);
+    @Autowired
+    private IProjectBO projectBO;
+
+    @Autowired
+    private ICompanyCardBO companyCardBO;
+
+    @Override
+    public void saveMessage(String code, String projectCode, String month,
+            Long totalAmount, Long totalCutAmount, Integer number) {
+        Project project = projectBO.getProject(projectCode);
+        Message message = new Message();
+        message.setCode(code);
+        message.setProjectCode(project.getCode());
+        message.setProjectName(project.getName());
+        message.setMonth(month);
+        CompanyCard card = companyCardBO
+            .getCompanyCardByProject(project.getCode());
+
+        message.setBankCode(card.getBankCode());
+        message.setBankName(card.getBankName());
+        message.setSubbranch(card.getSubbranch());
+        message.setBankcardNumber(card.getBankcardNumber());
+        message.setCreateDatetime(new Date());
+
+        message.setTotalAmount(totalAmount);
+        message.setTotalCutAmount(totalCutAmount);
+        message.setNumber(number);
+        message.setDownload(0);
+        message.setStatus(EMessageStatus.TO_Send.getCode());
+        messageDAO.insert(message);
     }
 
     @Override
     public void sendMessage(Message data) {
-
         messageDAO.sendMessage(data);
+    }
 
+    @Override
+    public void refreshMessage(Message data) {
+        messageDAO.update(data);
+    }
+
+    @Override
+    public void refreshMessage4DropSalary(String code, Long totalAmount,
+            Long totalCutAmount, Long totalTax) {
+        Message message = getMessage(code);
+        message.setTotalAmount(message.getTotalAmount() - totalAmount);
+        message.setTotalCutAmount(message.getTotalCutAmount() - totalCutAmount);
+        message.setTotalTax(message.getTotalTax() - totalTax);
+        message.setNumber(message.getNumber() - 1);
+        messageDAO.update4DropSalary(message);
+    }
+
+    @Override
+    public void dropNotExistSalary(String code) {
+        Message message = new Message();
+        message.setCode(code);
+        messageDAO.deleteNotExistSalary(message);
     }
 
     @Override
@@ -44,15 +96,6 @@ public class MessageBOImpl extends PaginableBOImpl<Message>
             }
         }
         return data;
-    }
-
-    @Override
-    public void removeMessage(String code) {
-    }
-
-    @Override
-    public void refreshMessage(Message data) {
-        messageDAO.update(data);
     }
 
     @Override
@@ -74,5 +117,4 @@ public class MessageBOImpl extends PaginableBOImpl<Message>
     public void downLoad(Message data) {
         messageDAO.downLoad(data);
     }
-
 }

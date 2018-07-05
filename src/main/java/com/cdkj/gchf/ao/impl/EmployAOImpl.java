@@ -72,17 +72,26 @@ public class EmployAOImpl implements IEmployAO {
     @Override
     @Transactional
     public String joinIn(XN631460Req req) {
-        Employ data = new Employ();
-        String code = OrderNoGenerater
-            .generate(EGeneratePrefix.Employ.getCode());
-        Staff staff = staffBO.getStaff(req.getStaffCode());
-        Date date = new Date();
-        data.setCode(code);
-
         Project project = projectBO.getProject(req.getProjectCode());
         if (!EProjectStatus.Building.getCode().equals(project.getStatus())) {
             throw new BizException("xn0000", "该项目未通过审核或已停工");
         }
+
+        Employ checkData = employBO.getEmployByStaff(req.getStaffCode(),
+            req.getProjectCode());
+        // 防止重复办理入职
+        if (checkData != null && !EEmployStatus.Leave.getCode()
+            .equals(checkData.getStatus())) {
+            throw new BizException("xn0000", "该员工已入职该项目，请勿重复办理入职");
+        }
+
+        Employ data = new Employ();
+        Date date = new Date();
+        String code = OrderNoGenerater
+            .generate(EGeneratePrefix.Employ.getCode());
+        Staff staff = staffBO.getStaff(req.getStaffCode());
+
+        data.setCode(code);
         data.setProjectCode(req.getProjectCode());
         data.setProjectName(project.getName());
         data.setStaffCode(staff.getCode());
@@ -101,30 +110,12 @@ public class EmployAOImpl implements IEmployAO {
         data.setUpdater(req.getUpdater());
         data.setUpdateDatetime(date);
         data.setRemark(req.getRemark());
-
-        Employ checkData = employBO.getEmployByStaff(req.getStaffCode(),
-            req.getProjectCode());
-        // 防止重复办理入职
-        if (checkData != null) {
-            if (!EEmployStatus.Leave.getCode().equals(data.getStatus())) {
-                throw new BizException("xn00000", "该员工已入职该项目，请勿重复办理入职");
-            }
-            data.setCode(checkData.getCode());
-            data.setStatus(EEmployStatus.Work.getCode());
-            employBO.refreshEmploy(data);
-        }
         employBO.joinIn(data);
 
         // 计入累积入职
-        Report report = reportBO.getReportByProject(project.getCode());
-        if (null != report) {
-            Long nextMonthSalary = AmountUtil.mul(data.getSalary(),
-                DateUtil.getMonthDays()) + report.getNextMonthSalary();
-            report.setNextMonthSalary(nextMonthSalary);
-            report.setStaffOn(report.getStaffOn() + 1);
-            report.setStaffIn(report.getStaffIn() + 1);
-            reportBO.refreshStaffIn(report);
-        }
+        Long nextMonthSalary = AmountUtil.mul(data.getSalary(),
+            DateUtil.getMonthDays());
+        reportBO.refreshStaffIn(project.getCode(), nextMonthSalary);
 
         // 生成考勤
         Attendance attendance = new Attendance();
@@ -138,24 +129,20 @@ public class EmployAOImpl implements IEmployAO {
         attendance.setStaffName(staff.getName());
         attendance.setStatus(EAttendanceStatus.TO_Start.getCode());
         attendance.setCreateDatetime(date);
-
         attendanceBO.saveAttendance(attendance);
-        staffLogBO.saveStaffLog(data, staff.getName(), project.getCompanyCode(),
-            project.getCode(), project.getName());
 
         // 录入合同
         Ccontract ccontract = new Ccontract();
         String ccontractCode = OrderNoGenerater
             .generate(EGeneratePrefix.Ccontract.getCode());
         ccontract.setProjectCode(req.getProjectCode());
-
         ccontract.setProjectName(project.getName());
         ccontract.setStaffCode(staff.getCode());
         ccontract.setStaffName(staff.getName());
+
         ccontract.setContentPic(req.getContentPic());
         ccontract.setContractDatetime(DateUtil.strToDate(
             req.getContractDatetime(), DateUtil.FRONT_DATE_FORMAT_STRING));
-
         ccontract.setUpdater(req.getUpdater());
         ccontract.setUpdateDatetime(date);
         ccontract.setRemark(req.getRemark());
@@ -168,6 +155,10 @@ public class EmployAOImpl implements IEmployAO {
         }
         ccontract.setCode(ccontractCode);
         ccontractBO.saveCcontract(ccontract);
+
+        // 记录员工日志
+        staffLogBO.saveStaffLog(data, staff.getName(), project.getCompanyCode(),
+            project.getCode(), project.getName());
         return code;
     }
 

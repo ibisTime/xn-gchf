@@ -22,6 +22,12 @@ public interface ISalaryAO {
     // 定时生成工资条
     public void createSalary();
 
+    // 手动生成工资条
+    public void createSalaryManual(String projectCode, String month);
+
+    // 批量删除工资条
+    public void dropSalaryList(List<String> salaryCodeList);
+
     public Paginable<Salary> querySalaryPage(int start, int limit,
             Salary condition);
 

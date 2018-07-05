@@ -44,7 +44,6 @@ import com.cdkj.gchf.enums.EAttendanceStatus;
 import com.cdkj.gchf.enums.EBoolean;
 import com.cdkj.gchf.enums.EEmployStatus;
 import com.cdkj.gchf.enums.EGeneratePrefix;
-import com.cdkj.gchf.enums.EMessageStatus;
 import com.cdkj.gchf.enums.EProjectStatus;
 import com.cdkj.gchf.enums.ESalaryStatus;
 import com.cdkj.gchf.enums.EUser;
@@ -87,6 +86,201 @@ public class SalaryAOImpl implements ISalaryAO {
 
     @Autowired
     ILeaveBO leaveBO;
+
+    // 定时器形成工资条
+    @Override
+    @Transactional
+    public void createSalary() {
+        // 获取已经开始的项目
+        Calendar calendar = Calendar.getInstance();
+        Project condition = new Project();
+        condition.setStatus(EProjectStatus.Building.getCode());
+        List<Project> projectsList = projectBO.queryProject(condition);
+
+        logger.info("===========开始生成工资条==============");
+        for (Project project : projectsList) {
+            // 若当前时间是工资条生成时间,形成工资条
+            int day = calendar.get(Calendar.DAY_OF_MONTH);
+            if (day == StringValidater
+                .toInteger(project.getSalaryCreateDatetime())) {
+                createSalary4Project(project, calendar.get(Calendar.YEAR),
+                    calendar.get(Calendar.MONTH) - 1);
+            }
+        }
+        logger.info("===========生成工资条完成==============");
+    }
+
+    // 手工生成工资条
+    @Override
+    @Transactional
+    public void createSalaryManual(String projectCode, String month) {
+        Project project = projectBO.getProject(projectCode);
+        if (null != project) {
+            String[] salaryDate = month.split("-");
+            createSalary4Project(project,
+                StringValidater.toInteger(salaryDate[0]),
+                StringValidater.toInteger(salaryDate[1]));
+        }
+    }
+
+    private void createSalary4Project(Project project, int year, int month) {
+        logger.info(
+            "===========为项目【" + project.getName() + "】生成工资条==============");
+
+        Calendar calendar = Calendar.getInstance();
+        List<Employ> employList = employBO.queryEmployListByProject(
+            project.getCode(), EEmployStatus.Not_Leave.getCode());
+        String messageCode = OrderNoGenerater
+            .generate(EGeneratePrefix.Message.getCode());
+
+        // 待发消息薪资总额（所有员工）
+        Long totalAmount = 0L;
+
+        // 待发消息扣款总额（所有员工）
+        Long totalCutAmount = 0L;
+
+        // 待发消息员工数量
+        Integer number = 0;
+
+        for (Employ employ : employList) {
+            logger.info("===========为雇员【" + employ.getStaffName()
+                    + "】生成工资条==============");
+
+            // 统计指定月份的工人正常考勤天数
+            Date startDatetime = DateUtil.getFristDay(year, month);
+            Date endDatetime = DateUtil.getLastDay(year, month);
+            List<Attendance> attendanceList = attendanceBO
+                .queryAttendanceListByStaff(employ.getStaffCode(),
+                    employ.getProjectCode(), startDatetime, endDatetime,
+                    EAttendanceStatus.Unpaied.getCode());
+
+            if (CollectionUtils.isEmpty(attendanceList)) {
+                logger.info("===========雇员【" + employ.getStaffName()
+                        + "】不存在考勤记录==============");
+                break;
+            }
+
+            Salary data = new Salary();
+            String code = OrderNoGenerater
+                .generate(EGeneratePrefix.Salary.getCode());
+            data.setCode(code);
+            data.setMessageCode(messageCode);
+            data.setProjectCode(project.getCode());
+            data.setProjectName(project.getName());
+
+            data.setStaffCode(employ.getStaffCode());
+            data.setStaffName(employ.getStaffName());
+            data.setMonth(calendar.get(Calendar.YEAR) + "/"
+                    + calendar.get(Calendar.MONTH));
+
+            // 统计上个月员工请假天数和正常考勤天数
+            data.setLeavingDays(leaveBO.getMonthLeaveDays(employ.getStaffCode(),
+                project.getCode(), calendar.get(Calendar.MONTH)));
+            data.setAttendanceDays(attendanceList.size());
+
+            // 计算上月迟到和早退小时
+            int earlyHours = 0;
+            int delayHours = 0;
+            for (Attendance attendance : attendanceList) {
+                // 迟到小时数
+                boolean isLess = DateUtil.compare(
+                    DateUtil.dateToStr(attendance.getStartDatetime(),
+                        DateUtil.DATA_TIME_PATTERN_7),
+                    project.getAttendanceStarttime());
+                if (attendance.getStartDatetime() != null && !isLess) {
+                    delayHours += DateUtil.getHours(
+                        attendance.getStartDatetime(),
+                        project.getAttendanceStarttime());
+                }
+
+                // 早退小时数
+                boolean isGreater = DateUtil.compare(
+                    DateUtil.dateToStr(attendance.getEndDatetime(),
+                        DateUtil.DATA_TIME_PATTERN_7),
+                    project.getAttendanceEndtime());
+                if (attendance.getEndDatetime() != null && isGreater) {
+                    earlyHours += DateUtil.getHours(attendance.getEndDatetime(),
+                        project.getAttendanceEndtime());
+                }
+                // 将考勤状态更新为【已结算】
+                attendanceBO.updateSettleStatus(attendance.getCode(),
+                    EAttendanceStatus.Paied.getCode(), new Date());
+            }
+            data.setEarlyHours(earlyHours);
+            data.setDelayHours(delayHours);
+
+            // 计算应发工资（attendanceDays*日薪-（delayHours+earlyHours）*扣款时薪）
+            Long cutAmount = AmountUtil.mul(employ.getCutAmount(),
+                (earlyHours + delayHours));
+            Long shouldAmount = AmountUtil.mul(employ.getSalary(),
+                attendanceList.size()) - cutAmount;
+
+            data.setShouldAmount(shouldAmount);
+            data.setStatus(ESalaryStatus.To_Approve.getCode());
+            data.setCreateDatetime(new Date());
+            salaryBO.saveSalary(data);
+
+            // 待发消息中的字段
+            totalAmount += shouldAmount;
+            totalCutAmount += cutAmount;
+            number = number + 1;
+        }
+
+        // 生成代发消息
+        if (number > 0) {
+            String salaryMonth = calendar.get(Calendar.YEAR) + "/"
+                    + calendar.get(Calendar.MONTH);
+            messageBO.saveMessage(messageCode, project.getCode(), salaryMonth,
+                totalAmount, totalCutAmount, number);
+        }
+    }
+
+    @Override
+    @Transactional
+    public void dropSalaryList(List<String> salaryCodeList) {
+        for (String salaryCode : salaryCodeList) {
+            // 将工资所属月份的考勤状态更新为【已打卡待结算】
+            Salary salary = salaryBO.getSalary(salaryCode);
+
+            if (!ESalaryStatus.To_Approve.getCode()
+                .equals(salary.getStatus())) {
+                throw new BizException("xn000",
+                    "员工" + salary.getStaffName() + "工资已审核，无法删除！");
+            }
+
+            String[] salaryDate = salary.getMonth().split("/");
+            Date startDatetime = DateUtil.getFristDay(
+                StringValidater.toInteger(salaryDate[0]),
+                StringValidater.toInteger(salaryDate[1]) - 1);
+            Date endDatetime = DateUtil.getLastDay(
+                StringValidater.toInteger(salaryDate[0]),
+                StringValidater.toInteger(salaryDate[1]) - 1);
+
+            List<Attendance> attendanceList = attendanceBO
+                .queryAttendanceListByStaff(salary.getStaffCode(),
+                    salary.getProjectCode(), startDatetime, endDatetime,
+                    EAttendanceStatus.Paied.getCode());
+
+            if (CollectionUtils.isNotEmpty(attendanceList)) {
+                for (Attendance attendance : attendanceList) {
+                    attendanceBO.updateSettleStatus(attendance.getCode(),
+                        EAttendanceStatus.Unpaied.getCode(), null);
+                }
+            }
+
+            // 减去代发消息的统计字段：1、每月累积发薪；2、每月共计扣款；3、每月共计税费
+            Long totalAmount = salary.getShouldAmount() - salary.getCutAmount()
+                    + salary.getAwardAmount();
+            messageBO.refreshMessage4DropSalary(salary.getMessageCode(),
+                totalAmount, salary.getCutAmount(), salary.getTax());
+
+            // 删除工资条
+            salaryBO.dropSalary(salaryCode);
+
+            // 当所有工资条都删除完后，删除代发消息
+            messageBO.dropNotExistSalary(salary.getMessageCode());
+        }
+    }
 
     @Override
     @Transactional
@@ -176,7 +370,6 @@ public class SalaryAOImpl implements ISalaryAO {
 
     @Override
     public List<Salary> querySalaryList(Salary condition) {
-
         List<Salary> list = salaryBO.querySalaryList(condition);
         BankCard bankCard = null;
         CompanyCard companyCard = null;
@@ -218,164 +411,6 @@ public class SalaryAOImpl implements ISalaryAO {
         return data;
     }
 
-    // 定时器形成工资条
-    @Transactional
-    @Override
-    public void createSalary() {
-        // 获取已经开始的项目
-        Calendar calendar = Calendar.getInstance();
-        Date date = new Date();
-        Project condition = new Project();
-        condition.setStatus(EProjectStatus.Building.getCode());
-        List<Project> projectsList = projectBO.queryProject(condition);
-
-        logger.info("===========开始生成工资条==============");
-        for (Project project : projectsList) {
-            logger.info(
-                "===========为项目【" + project.getName() + "】生成工资条==============");
-            Employ employCondition = new Employ();
-            employCondition.setProjectCode(project.getCode());
-            employCondition.setStatus(EEmployStatus.Not_Leave.getCode());
-            List<Employ> eList = employBO.queryEmployList(employCondition);
-
-            // 若当前时间是工资条生成时间,形成工资条
-            int day = calendar.get(Calendar.DAY_OF_MONTH);
-            if (day == StringValidater
-                .toInteger(project.getSalaryCreateDatetime())) {
-                String messageCode = OrderNoGenerater
-                    .generate(EGeneratePrefix.Message.getCode());
-                Long totalAmount = 0L;
-                Long totalCutAmount = 0L;
-                Integer number = 0;
-
-                for (Employ employ : eList) {
-                    logger.info("===========为雇员【" + employ.getStaffName()
-                            + "】生成工资条==============");
-                    // 统计上个月工人正常考勤天数
-                    Date startDatetime = DateUtil
-                        .getFristDay(DateUtil.getMonth() - 2);
-                    Date endDatetime = DateUtil
-                        .getLastDay(DateUtil.getMonth() - 2);
-                    Attendance attendanceCondition = new Attendance();
-                    attendanceCondition.setCreateDatetimeStart(startDatetime);
-                    attendanceCondition.setCreateDatetimeEnd(endDatetime);
-                    attendanceCondition
-                        .setStatus(EAttendanceStatus.Unpaied.getCode());
-                    List<Attendance> attendanceList = attendanceBO
-                        .queryAttendanceList(attendanceCondition);
-                    if (CollectionUtils.isEmpty(attendanceList)) {
-                        logger.info("===========雇员【" + employ.getStaffName()
-                                + "】不存在考勤记录==============");
-                        break;
-                    }
-
-                    Salary data = new Salary();
-                    String code = OrderNoGenerater
-                        .generate(EGeneratePrefix.Salary.getCode());
-                    data.setCode(code);
-                    data.setMessageCode(messageCode);
-                    data.setProjectCode(project.getCode());
-                    data.setProjectName(project.getName());
-                    data.setStaffCode(employ.getStaffCode());
-
-                    data.setStaffName(employ.getStaffName());
-                    data.setMonth(calendar.get(Calendar.YEAR) + "/"
-                            + calendar.get(Calendar.MONTH));
-                    // 统计上个月员工请假天数
-                    data.setLeavingDays(
-                        leaveBO.getMonthLeaveDays(employ.getStaffCode(),
-                            project.getCode(), calendar.get(Calendar.MONTH)));
-                    data.setAttendanceDays(attendanceList.size());
-
-                    // 计算上月迟到和早退小时
-                    int earlyHours = 0;
-                    int delayHours = 0;
-                    for (Attendance attendance : attendanceList) {
-                        // 迟到小时数
-                        boolean isLess = DateUtil.compare(
-                            DateUtil.dateToStr(attendance.getStartDatetime(),
-                                DateUtil.DATA_TIME_PATTERN_7),
-                            project.getAttendanceStarttime());
-                        if (attendance.getStartDatetime() != null && !isLess) {
-                            delayHours += DateUtil.getHours(
-                                attendance.getStartDatetime(),
-                                project.getAttendanceStarttime());
-                        }
-
-                        // 早退小时数
-                        boolean isGreater = DateUtil.compare(
-                            DateUtil.dateToStr(attendance.getEndDatetime(),
-                                DateUtil.DATA_TIME_PATTERN_7),
-                            project.getAttendanceEndtime());
-                        if (attendance.getEndDatetime() != null && isGreater) {
-                            earlyHours += DateUtil.getHours(
-                                attendance.getEndDatetime(),
-                                project.getAttendanceEndtime());
-                        }
-                        // 修改考勤状态
-                        attendance.setStatus(EAttendanceStatus.Paied.getCode());
-                        attendanceBO.updateStatus(attendance);
-                    }
-                    data.setEarlyHours(earlyHours);
-                    data.setDelayHours(delayHours);
-
-                    // 计算应发工资（attendanceDays*日薪-（delayHours+earlyHours）*扣款时薪）
-                    Long cutAmount = AmountUtil.mul(employ.getCutAmount(),
-                        (earlyHours + delayHours));
-                    Long shouldAmount = AmountUtil.mul(employ.getSalary(),
-                        attendanceList.size()) - cutAmount;
-
-                    data.setShouldAmount(shouldAmount);
-                    data.setStatus(ESalaryStatus.To_Approve.getCode());
-                    data.setCreateDatetime(date);
-                    salaryBO.saveSalary(data);
-
-                    // 待发消息中的字段
-                    totalAmount += shouldAmount;
-                    totalCutAmount += cutAmount;
-                    number = number + 1;
-                }
-
-                // 生成代发消息
-                Message message = new Message();
-                message.setCode(messageCode);
-                message.setProjectCode(project.getCode());
-                message.setProjectName(project.getName());
-                message.setMonth(calendar.get(Calendar.YEAR) + "/"
-                        + calendar.get(Calendar.MONTH));
-                CompanyCard card = companyCardBO
-                    .getCompanyCardByProject(project.getCode());
-
-                message.setBankCode(card.getBankCode());
-                message.setBankName(card.getBankName());
-                message.setSubbranch(card.getSubbranch());
-                message.setBankcardNumber(card.getBankcardNumber());
-                message.setCreateDatetime(new Date());
-
-                message.setTotalAmount(totalAmount - totalCutAmount);
-                message.setTotalCutAmount(totalCutAmount);
-                message.setNumber(number);
-                message.setDownload(0);
-                message.setStatus(EMessageStatus.TO_Send.getCode());
-
-                messageBO.saveMessage(message);
-            }
-        }
-        logger.info("===========添加工资条完成==============");
-    }
-
-    private String getName(String userId) {
-        User user = userBO.getUserName(userId);
-        String name = null;
-        if (user != null) {
-            name = EUser.ADMIN.getCode();
-            if (!EUser.ADMIN.getCode().equals(user.getLoginName())) {
-                name = user.getRealName();
-            }
-        }
-        return name;
-    }
-
     @Override
     public List<XN631448Res> getMohtnSalarySumByProject(String projectCode) {
         List<Salary> salaryList = salaryBO
@@ -392,5 +427,17 @@ public class SalaryAOImpl implements ISalaryAO {
             }
         }
         return resList;
+    }
+
+    private String getName(String userId) {
+        User user = userBO.getUserName(userId);
+        String name = null;
+        if (user != null) {
+            name = EUser.ADMIN.getCode();
+            if (!EUser.ADMIN.getCode().equals(user.getLoginName())) {
+                name = user.getRealName();
+            }
+        }
+        return name;
     }
 }

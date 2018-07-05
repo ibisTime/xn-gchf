@@ -41,11 +41,11 @@ public class ReportBOImpl extends PaginableBOImpl<Report> implements IReportBO {
     }
 
     @Override
-    public Report getReportByProject(String proejctCode) {
+    public Report getReportByProject(String projectCode) {
         Report data = null;
-        if (StringUtils.isNotBlank(proejctCode)) {
+        if (StringUtils.isNotBlank(projectCode)) {
             Report condition = new Report();
-            condition.setProjectCode(proejctCode);
+            condition.setProjectCode(projectCode);
             data = reportDAO.select(condition);
 
         }
@@ -53,8 +53,15 @@ public class ReportBOImpl extends PaginableBOImpl<Report> implements IReportBO {
     }
 
     @Override
-    public void refreshStaffIn(Report data) {
-        reportDAO.updateStaffIn(data);
+    public void refreshStaffIn(String projectCode, Long nextMonthSalary) {
+        Report data = getReportByProject(projectCode);
+        if (null != data) {
+            data.setNextMonthSalary(
+                data.getNextMonthSalary() + nextMonthSalary);
+            data.setStaffOn(data.getStaffOn() + 1);
+            data.setStaffIn(data.getStaffIn() + 1);
+            reportDAO.updateStaffIn(data);
+        }
     }
 
     @Override

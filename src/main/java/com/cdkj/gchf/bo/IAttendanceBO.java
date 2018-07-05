@@ -24,12 +24,18 @@ public interface IAttendanceBO extends IPaginableBO<Attendance> {
     public void endWorkManualClockIn(String code, String status,
             Date endDatetime);
 
-    public void updateStatus(Attendance data);
+    // 更新薪资结算状态
+    public void updateSettleStatus(String code, String status,
+            Date settleDatetime);
 
     // 更新员工手机号
     public void updateStaffMobile(String staffCode, String mobile);
 
     public List<Attendance> queryAttendanceList(Attendance condition);
+
+    public List<Attendance> queryAttendanceListByStaff(String staffCode,
+            String projectCode, Date startDatetime, Date endDatetime,
+            String status);
 
     public Attendance getAttendance(String code);
 

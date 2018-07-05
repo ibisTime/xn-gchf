@@ -19,7 +19,7 @@ public interface IAttendanceDAO extends IBaseDAO<Attendance> {
     // 手动下班打卡
     public int updateEndManualClockIn(Attendance data);
 
-    void updateStatus(Attendance data);
+    void updateSettleStatus(Attendance data);
 
     // 更新员工手机号
     public int updateStaffMobile(Attendance data);

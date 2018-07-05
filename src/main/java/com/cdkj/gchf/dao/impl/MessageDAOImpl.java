@@ -18,7 +18,12 @@ public class MessageDAOImpl extends AMybatisTemplate implements IMessageDAO {
 
     @Override
     public int delete(Message data) {
-        return super.delete(NAMESPACE.concat("delete_message"), data);
+        return 0;
+    }
+
+    @Override
+    public int deleteNotExistSalary(Message data) {
+        return super.delete(NAMESPACE.concat("delete_notExistSalary"), data);
     }
 
     @Override
@@ -48,6 +53,12 @@ public class MessageDAOImpl extends AMybatisTemplate implements IMessageDAO {
     @Override
     public void update(Message data) {
         super.update(NAMESPACE.concat("update_message"), data);
+    }
+
+    @Override
+    public int update4DropSalary(Message data) {
+        return super.update(NAMESPACE.concat("update_message4DropSalary"),
+            data);
     }
 
     @Override

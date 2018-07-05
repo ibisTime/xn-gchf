@@ -9,6 +9,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.alibaba.fastjson.JSONObject;
 import com.cdkj.gchf.ao.IAttendanceAO;
@@ -88,10 +89,11 @@ public class AttendanceAOImpl implements IAttendanceAO {
     }
 
     @Override
+    @Transactional
     public String manchineClockIn(String sim, String projectCode,
             String staffCode, String attendTime, String terminalCode) {
         JSONObject json = new JSONObject();
-        logger.info("----------------------获取考勤记录----------------------");
+        logger.info("===========获取员工" + staffCode + "==============");
         Attendance data = attendanceBO.getAttendanceByProject(projectCode,
             staffCode, attendTime);
         if (data == null) {
@@ -101,7 +103,7 @@ public class AttendanceAOImpl implements IAttendanceAO {
 
         data.setSim(sim);
         data.setTerminalCode(terminalCode);
-        // 上班打卡
+        // 将第一次打卡记为上班打卡
         if (EAttendanceStatus.TO_Start.getCode().equals(data.getStatus())) {
 
             data.setStartDatetime(DateUtil.strToDate(
@@ -118,20 +120,22 @@ public class AttendanceAOImpl implements IAttendanceAO {
             int todayDays = report.getTodayDays();
             todayDays = todayDays + 1;
             reportBO.refreshTodayDays(report, todayDays);
-        } else { // 下班打卡
+        } else {
+            // 以后的每次打卡都是下班打卡
             Date endDatetime = DateUtil.strToDate(attendTime,
                 DateUtil.DATA_TIME_PATTERN_1);
             data.setEndDatetime(endDatetime);
             data.setStatus(EAttendanceStatus.Unpaied.getCode());
             attendanceBO.endWorkMachineClockIn(data);
         }
-        logger.info("----------------------考勤成功----------------------");
+        logger.info("===========员工" + staffCode + "考勤成功==============");
         json.put("result", true);
         return new Gson().toJson(json);
     }
 
     // 定时器每天凌晨形成考勤记录
     @Override
+    @Transactional
     public void createAttendanceDaily() {
         Date now = new Date();
         // 获取在建的项目

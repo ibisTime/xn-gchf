@@ -25,6 +25,13 @@ public class SalaryBOImpl extends PaginableBOImpl<Salary> implements ISalaryBO {
     }
 
     @Override
+    public void dropSalary(String code) {
+        Salary salary = new Salary();
+        salary.setCode(code);
+        salaryDAO.delete(salary);
+    }
+
+    @Override
     public void refreshSalary(Salary data) {
         salaryDAO.update(data);
     }

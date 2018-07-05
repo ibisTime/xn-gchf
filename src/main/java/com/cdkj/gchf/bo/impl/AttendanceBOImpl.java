@@ -37,9 +37,13 @@ public class AttendanceBOImpl extends PaginableBOImpl<Attendance>
     }
 
     @Override
-    public void updateStatus(Attendance data) {
-        data.setSettleDatetime(new Date());
-        attendanceDAO.updateStatus(data);
+    public void updateSettleStatus(String code, String status,
+            Date settleDatetime) {
+        Attendance data = new Attendance();
+        data.setCode(code);
+        data.setStatus(status);
+        data.setSettleDatetime(settleDatetime);
+        attendanceDAO.updateSettleStatus(data);
     }
 
     @Override
@@ -71,11 +75,6 @@ public class AttendanceBOImpl extends PaginableBOImpl<Attendance>
     }
 
     @Override
-    public List<Attendance> queryAttendanceList(Attendance condition) {
-        return attendanceDAO.selectList(condition);
-    }
-
-    @Override
     public Attendance getAttendance(String code) {
         Attendance data = null;
         if (StringUtils.isNotBlank(code)) {
@@ -102,5 +101,23 @@ public class AttendanceBOImpl extends PaginableBOImpl<Attendance>
             return null;
         }
         return list.get(0);
+    }
+
+    @Override
+    public List<Attendance> queryAttendanceListByStaff(String staffCode,
+            String projectCode, Date startDatetime, Date endDatetime,
+            String status) {
+        Attendance condition = new Attendance();
+        condition.setStaffCode(staffCode);
+        condition.setProjectCode(projectCode);
+        condition.setCreateDatetimeStart(startDatetime);
+        condition.setCreateDatetimeEnd(endDatetime);
+        condition.setStatus(status);
+        return queryAttendanceList(condition);
+    }
+
+    @Override
+    public List<Attendance> queryAttendanceList(Attendance condition) {
+        return attendanceDAO.selectList(condition);
     }
 }

@@ -49,19 +49,40 @@ public class EmployBOImpl extends PaginableBOImpl<Employ> implements IEmployBO {
     }
 
     @Override
-    public int removeEmploy(String code) {
-        int count = 0;
-        if (StringUtils.isNotBlank(code)) {
-            Employ data = new Employ();
-            data.setCode(code);
-            count = employDAO.delete(data);
-        }
-        return count;
+    public long getSalaryCount(Employ condition) {
+        return employDAO.getSalaryCount(condition);
     }
 
     @Override
-    public void refreshEmploy(Employ data) {
-        employDAO.update(data);
+    public void updateStatus(Employ data) {
+        employDAO.updateStatus(data);
+    }
+
+    @Override
+    public void updateSalaryStatus(Employ data) {
+        employDAO.updateSalaryStatus(data);
+    }
+
+    @Override
+    public Employ getEmployByStaff(String staffCode, String projectCode) {
+        Employ data = null;
+        if (StringUtils.isNotBlank(staffCode)
+                && StringUtils.isNotBlank(projectCode)) {
+            Employ condition = new Employ();
+            condition.setProjectCode(projectCode);
+            condition.setStaffCode(staffCode);
+            data = employDAO.select(condition);
+        }
+        return data;
+    }
+
+    @Override
+    public List<Employ> queryEmployListByProject(String projectCode,
+            String status) {
+        Employ condition = new Employ();
+        condition.setProjectCode(projectCode);
+        condition.setStatus(status);
+        return queryEmployList(condition);
     }
 
     @Override
@@ -82,63 +103,4 @@ public class EmployBOImpl extends PaginableBOImpl<Employ> implements IEmployBO {
         }
         return data;
     }
-
-    @Override
-    public Employ getEmployStaff(String staffCode) {
-        Employ data = null;
-        if (StringUtils.isNotBlank(staffCode)) {
-            Employ condition = new Employ();
-            condition.setStaffCode(staffCode);
-            data = employDAO.select(condition);
-            if (data == null) {
-                throw new BizException("xn0000", "该雇佣信息不存在");
-            }
-        }
-        return data;
-    }
-
-    @Override
-    public long getSalaryCount(Employ condition) {
-        return employDAO.getSalaryCount(condition);
-    }
-
-    @Override
-    public void updateStatus(Employ data) {
-        employDAO.updateStatus(data);
-    }
-
-    @Override
-    public void isExist(String projectCode, String staffCode) {
-
-        Employ data = null;
-        if (StringUtils.isNotBlank(staffCode)
-                && StringUtils.isNotBlank(projectCode)) {
-            Employ condition = new Employ();
-            condition.setProjectCode(projectCode);
-            condition.setStaffCode(staffCode);
-            data = employDAO.select(condition);
-            if (data != null) {
-                throw new BizException("xn00000", "该员工已入职");
-            }
-        }
-    }
-
-    @Override
-    public Employ getEmployByStaff(String staffCode, String projectCode) {
-        Employ data = null;
-        if (StringUtils.isNotBlank(staffCode)
-                && StringUtils.isNotBlank(projectCode)) {
-            Employ condition = new Employ();
-            condition.setProjectCode(projectCode);
-            condition.setStaffCode(staffCode);
-            data = employDAO.select(condition);
-        }
-        return data;
-    }
-
-    @Override
-    public void updateSalaryStatus(Employ data) {
-        employDAO.updateSalaryStatus(data);
-    }
-
 }

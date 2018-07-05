@@ -89,57 +89,6 @@ public class MessageAOImpl implements IMessageAO {
     IProjectBO projectBO;
 
     @Override
-    public String addMessage(Message data) {
-        messageBO.saveMessage(data);
-        return null;
-    }
-
-    @Override
-    public Paginable<Message> queryMessagePage(int start, int limit,
-            Message condition) {
-        Paginable<Message> page = new Page<Message>();
-        List<Message> list = new ArrayList<Message>();
-        if (EUserKind.Supervise.getCode().equals(condition.getKind())) {
-            if (CollectionUtils.isEmpty(condition.getProjectCodeList())) {
-                page.setList(list);
-                return page;
-            }
-
-        }
-        page = messageBO.getPaginable(start, limit, condition);
-        for (Message message : page.getList()) {
-            message.setSendName(getName(message.getSender()));
-            message.setHandleName(getName(message.getHandler()));
-        }
-        return page;
-    }
-
-    @Override
-    public List<Message> queryMessageList(Message condition) {
-        List<Message> list = new ArrayList<Message>();
-        if (EUserKind.Supervise.getCode().equals(condition.getKind())) {
-            if (CollectionUtils.isEmpty(condition.getProjectCodeList())) {
-                return list;
-            }
-        }
-
-        list = messageBO.queryMessageList(condition);
-        for (Message message : list) {
-            message.setSendName(getName(message.getSender()));
-            message.setHandleName(getName(message.getHandler()));
-        }
-        return list;
-    }
-
-    @Override
-    public Message getMessage(String code) {
-        Message data = messageBO.getMessage(code);
-        data.setSendName(getName(data.getSender()));
-        data.setHandleName(getName(data.getHandler()));
-        return data;
-    }
-
-    @Override
     @Transactional
     public void sendMessage(String code, String title, String content,
             String sender, String sendNote) {
@@ -287,7 +236,49 @@ public class MessageAOImpl implements IMessageAO {
         return name;
     }
 
-    public static void main(String[] args) {
-        System.out.println(EAbnormalType.getEAbnormalType("0"));
+    @Override
+    public Paginable<Message> queryMessagePage(int start, int limit,
+            Message condition) {
+        Paginable<Message> page = new Page<Message>();
+        List<Message> list = new ArrayList<Message>();
+        if (EUserKind.Supervise.getCode().equals(condition.getKind())) {
+            if (CollectionUtils.isEmpty(condition.getProjectCodeList())) {
+                page.setList(list);
+                return page;
+            }
+
+        }
+        page = messageBO.getPaginable(start, limit, condition);
+        for (Message message : page.getList()) {
+            message.setSendName(getName(message.getSender()));
+            message.setHandleName(getName(message.getHandler()));
+        }
+        return page;
     }
+
+    @Override
+    public List<Message> queryMessageList(Message condition) {
+        List<Message> list = new ArrayList<Message>();
+        if (EUserKind.Supervise.getCode().equals(condition.getKind())) {
+            if (CollectionUtils.isEmpty(condition.getProjectCodeList())) {
+                return list;
+            }
+        }
+
+        list = messageBO.queryMessageList(condition);
+        for (Message message : list) {
+            message.setSendName(getName(message.getSender()));
+            message.setHandleName(getName(message.getHandler()));
+        }
+        return list;
+    }
+
+    @Override
+    public Message getMessage(String code) {
+        Message data = messageBO.getMessage(code);
+        data.setSendName(getName(data.getSender()));
+        data.setHandleName(getName(data.getHandler()));
+        return data;
+    }
+
 }

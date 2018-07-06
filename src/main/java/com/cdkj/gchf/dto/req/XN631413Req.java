@@ -4,22 +4,25 @@ import java.util.List;
 
 import org.hibernate.validator.constraints.NotBlank;
 
+/**
+ * 补录员工信息
+ * @author: silver 
+ * @since: 2018年7月6日 下午12:40:48 
+ * @history:
+ */
 public class XN631413Req {
 
     // （必填）编号
     @NotBlank(message = "编号不能为空")
     private String code;
 
-    // （必填）联系方式
-    // @NotBlank(message = "联系方式不能为空")
+    // （选填）联系方式
     private String mobile;
 
-    // （必填）紧急联系人
-    // @NotBlank(message = "紧急联系人不能为空")
+    // （选填）紧急联系人
     private String contacts;
 
-    // （必填）紧急联系人电话
-    // @NotBlank(message = "紧急联系人电话不能为空")
+    // （选填）紧急联系人电话
     private String contactsMobile;
 
     // （必填）银行别称
@@ -37,6 +40,18 @@ public class XN631413Req {
     // （必填）开户行
     @NotBlank(message = "开户行不能为空")
     private String subbranch;
+
+    // （必填）合同项目编号
+    @NotBlank(message = "合同项目编号不能为空")
+    private String projectCode;
+
+    // （必填）签约合同
+    @NotBlank(message = "签约合同不能为空")
+    private String contentPic;
+
+    // （必填）签约时间
+    @NotBlank(message = "签约时间不能为空")
+    private String contractDatetime;
 
     // 技能
     private List<XN631413ReqSkill> skillList;
@@ -134,6 +149,30 @@ public class XN631413Req {
 
     public void setSkillList(List<XN631413ReqSkill> skillList) {
         this.skillList = skillList;
+    }
+
+    public String getContentPic() {
+        return contentPic;
+    }
+
+    public void setContentPic(String contentPic) {
+        this.contentPic = contentPic;
+    }
+
+    public String getContractDatetime() {
+        return contractDatetime;
+    }
+
+    public void setContractDatetime(String contractDatetime) {
+        this.contractDatetime = contractDatetime;
+    }
+
+    public String getProjectCode() {
+        return projectCode;
+    }
+
+    public void setProjectCode(String projectCode) {
+        this.projectCode = projectCode;
     }
 
 }

@@ -46,8 +46,20 @@ public class BankCardBOImpl extends PaginableBOImpl<BankCard>
     }
 
     @Override
-    public void refreshBankCard(BankCard bankCard) {
-        bankCardDAO.update(bankCard);
+    public void refreshBankCard(String code, String bankCode, String bankName,
+            String subbranch, String bankcardNumber, String updater,
+            String remark) {
+        BankCard data = new BankCard();
+        data.setCode(code);
+        data.setBankCode(bankCode);
+        data.setBankName(bankName);
+        data.setSubbranch(subbranch);
+        data.setBankcardNumber(bankcardNumber);
+
+        data.setUpdater(updater);
+        data.setUpdateDatetime(new Date());
+        data.setRemark(remark);
+        bankCardDAO.update(data);
     }
 
     @Override

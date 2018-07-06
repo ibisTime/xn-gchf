@@ -42,12 +42,10 @@ public class XN631460Req {
     @NotBlank(message = "扣款规则不能为空")
     private String cutAmount;
 
-    // （必填）签约合同
-    @NotBlank(message = "签约合同不能为空")
+    // （选填）签约合同
     private String contentPic;
 
-    // （必填）签约时间
-    @NotBlank(message = "签约时间不能为空")
+    // （选填）签约时间
     private String contractDatetime;
 
     // （必填）更新人

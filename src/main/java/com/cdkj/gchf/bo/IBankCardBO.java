@@ -10,7 +10,10 @@ import com.cdkj.gchf.dto.req.XN631413Req;
 public interface IBankCardBO extends IPaginableBO<BankCard> {
     public void addBankCard(XN631413Req req, Staff staff);
 
-    public void refreshBankCard(BankCard bankCard);
+    // 更新银行卡信息
+    public void refreshBankCard(String code, String bankCode, String bankName,
+            String subbranch, String bankcardNumber, String updater,
+            String remark);
 
     public List<BankCard> queryBankCardList(BankCard condition);
 

@@ -29,6 +29,7 @@ import com.cdkj.gchf.common.DateUtil;
 import com.cdkj.gchf.common.PhoneUtil;
 import com.cdkj.gchf.core.OrderNoGenerater;
 import com.cdkj.gchf.domain.BankCard;
+import com.cdkj.gchf.domain.Ccontract;
 import com.cdkj.gchf.domain.Employ;
 import com.cdkj.gchf.domain.Salary;
 import com.cdkj.gchf.domain.Skill;
@@ -189,14 +190,24 @@ public class StaffAOImpl implements IStaffAO {
             bankCardBO.addBankCard(req, data);
         } else {
             BankCard bankCard = bankCardBO.getBankCardByStaff(req.getCode());
-            bankCard.setBankCode(req.getBankCode());
-            bankCard.setBankName(req.getBankName());
-            bankCard.setSubbranch(req.getSubbranch());
-            bankCard.setBankcardNumber(req.getBankcardNumber());
-            bankCard.setUpdater(req.getUpdater());
+            bankCardBO.refreshBankCard(bankCard.getCode(), req.getBankCode(),
+                req.getBankName(), req.getSubbranch(), req.getBankcardNumber(),
+                req.getUpdater(), null);
+        }
 
-            bankCard.setUpdateDatetime(new Date());
-            bankCardBO.refreshBankCard(bankCard);
+        // 若存在合同则更新，否则添加
+        Ccontract checkCcontract = ccontractBO.isExist(req.getProjectCode(),
+            data.getCode());
+        Date contractDatetime = DateUtil.strToDate(req.getContractDatetime(),
+            DateUtil.FRONT_DATE_FORMAT_STRING);
+        if (checkCcontract != null) {
+            ccontractBO.refreshCcontract(checkCcontract.getCode(),
+                req.getContentPic(), contractDatetime, req.getUpdater(),
+                req.getRemark());
+        } else {
+            ccontractBO.saveCcontract(data.getCode(), req.getProjectCode(),
+                req.getContentPic(), contractDatetime, req.getUpdater(),
+                req.getRemark());
         }
 
         // 删除之前的技能信息

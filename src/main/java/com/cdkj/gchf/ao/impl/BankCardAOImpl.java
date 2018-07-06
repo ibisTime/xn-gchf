@@ -1,7 +1,6 @@
 package com.cdkj.gchf.ao.impl;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,16 +27,9 @@ public class BankCardAOImpl implements IBankCardAO {
 
     @Override
     public void editBankCard(XN631422Req req) {
-        BankCard data = bankCardBO.getBankCard(req.getCode());
-        data.setBankCode(req.getBankCode());
-        data.setBankName(req.getBankName());
-        data.setSubbranch(req.getSubbranch());
-        data.setBankcardNumber(req.getBankcardNumber());
-
-        data.setUpdater(req.getUpdater());
-        data.setUpdateDatetime(new Date());
-        data.setRemark(req.getRemark());
-        bankCardBO.refreshBankCard(data);
+        bankCardBO.refreshBankCard(req.getCode(), req.getBankCode(),
+            req.getBankName(), req.getSubbranch(), req.getBankcardNumber(),
+            req.getUpdater(), req.getRemark());
     }
 
     @Override

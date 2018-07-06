@@ -239,7 +239,6 @@ public class SalaryAOImpl implements ISalaryAO {
     @Transactional
     public void dropSalaryList(List<String> salaryCodeList) {
         for (String salaryCode : salaryCodeList) {
-            // 将工资所属月份的考勤状态更新为【已打卡待结算】
             Salary salary = salaryBO.getSalary(salaryCode);
 
             if (!ESalaryStatus.To_Approve.getCode()
@@ -261,6 +260,7 @@ public class SalaryAOImpl implements ISalaryAO {
                     salary.getProjectCode(), startDatetime, endDatetime,
                     EAttendanceStatus.Paied.getCode());
 
+            // 将工资所属月份的考勤状态更新为【已打卡待结算】
             if (CollectionUtils.isNotEmpty(attendanceList)) {
                 for (Attendance attendance : attendanceList) {
                     attendanceBO.updateSettleStatus(attendance.getCode(),

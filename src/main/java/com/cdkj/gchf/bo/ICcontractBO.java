@@ -1,17 +1,20 @@
 package com.cdkj.gchf.bo;
 
+import java.util.Date;
 import java.util.List;
 
 import com.cdkj.gchf.bo.base.IPaginableBO;
 import com.cdkj.gchf.domain.Ccontract;
 
 public interface ICcontractBO extends IPaginableBO<Ccontract> {
+    // 保存合同
+    public String saveCcontract(String staffCode, String projectCode,
+            String contentPic, Date contractDatetime, String updater,
+            String remark);
 
-    public void saveCcontract(Ccontract data);
-
-    public void removeCcontract(String code);
-
-    public void refreshCcontract(Ccontract data);
+    // 修改合同
+    public void refreshCcontract(String code, String contentPic,
+            Date contractDatetime, String updater, String remark);
 
     public List<Ccontract> queryCcontractList(Ccontract condition);
 

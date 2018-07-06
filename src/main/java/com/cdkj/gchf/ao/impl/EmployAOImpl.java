@@ -3,6 +3,7 @@ package com.cdkj.gchf.ao.impl;
 import java.util.Date;
 import java.util.List;
 
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,7 +25,6 @@ import com.cdkj.gchf.common.DateUtil;
 import com.cdkj.gchf.core.OrderNoGenerater;
 import com.cdkj.gchf.core.StringValidater;
 import com.cdkj.gchf.domain.Attendance;
-import com.cdkj.gchf.domain.Ccontract;
 import com.cdkj.gchf.domain.Employ;
 import com.cdkj.gchf.domain.Project;
 import com.cdkj.gchf.domain.Report;
@@ -131,30 +131,14 @@ public class EmployAOImpl implements IEmployAO {
         attendance.setCreateDatetime(date);
         attendanceBO.saveAttendance(attendance);
 
-        // 录入合同
-        Ccontract ccontract = new Ccontract();
-        String ccontractCode = OrderNoGenerater
-            .generate(EGeneratePrefix.Ccontract.getCode());
-        ccontract.setProjectCode(req.getProjectCode());
-        ccontract.setProjectName(project.getName());
-        ccontract.setStaffCode(staff.getCode());
-        ccontract.setStaffName(staff.getName());
-
-        ccontract.setContentPic(req.getContentPic());
-        ccontract.setContractDatetime(DateUtil.strToDate(
-            req.getContractDatetime(), DateUtil.FRONT_DATE_FORMAT_STRING));
-        ccontract.setUpdater(req.getUpdater());
-        ccontract.setUpdateDatetime(date);
-        ccontract.setRemark(req.getRemark());
-
-        Ccontract checkCcontract = ccontractBO.isExist(req.getProjectCode(),
-            req.getStaffCode());
-        if (checkCcontract != null) {
-            ccontract.setCode(checkCcontract.getCode());
-            ccontractBO.refreshCcontract(ccontract);
+        // 添加合同信息
+        if (StringUtils.isNotBlank(req.getContentPic())) {
+            Date contractDatetime = DateUtil.strToDate(
+                req.getContractDatetime(), DateUtil.FRONT_DATE_FORMAT_STRING);
+            ccontractBO.saveCcontract(req.getStaffCode(), req.getProjectCode(),
+                req.getContentPic(), contractDatetime, req.getUpdater(),
+                req.getRemark());
         }
-        ccontract.setCode(ccontractCode);
-        ccontractBO.saveCcontract(ccontract);
 
         // 记录员工日志
         staffLogBO.saveStaffLog(data, staff.getName(), project.getCompanyCode(),

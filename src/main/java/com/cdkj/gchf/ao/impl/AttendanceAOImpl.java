@@ -56,6 +56,7 @@ public class AttendanceAOImpl implements IAttendanceAO {
     private IStaffBO staffBO;
 
     @Override
+    @Transactional
     public void startWorkManualClockIn(List<String> codeList,
             Date startDatetime) {
         for (String code : codeList) {
@@ -63,26 +64,27 @@ public class AttendanceAOImpl implements IAttendanceAO {
             if (null == data) {
                 throw new BizException("xn00000", "没有该员工今日考勤");
             }
-            String status = EAttendanceStatus.Unpaied.getCode();
-            if (null == data.getEndDatetime()) {
-                status = EAttendanceStatus.TO_End.getCode();
+            if (EAttendanceStatus.Paied.getCode().equals(data.getStatus())) {
+                throw new BizException("xn00000", "考勤已结算，无法打卡！");
             }
+            String status = EAttendanceStatus.Unpaied.getCode();
 
             attendanceBO.startWorkManualClockIn(code, status, startDatetime);
         }
     }
 
     @Override
+    @Transactional
     public void endWorkManualClockIn(List<String> codeList, Date endDatetime) {
         for (String code : codeList) {
             Attendance data = attendanceBO.getAttendance(code);
             if (null == data) {
                 throw new BizException("xn00000", "没有该员工今日考勤");
             }
-            String status = EAttendanceStatus.Unpaied.getCode();
-            if (null == data.getStartDatetime()) {
-                status = EAttendanceStatus.TO_Start.getCode();
+            if (EAttendanceStatus.Paied.getCode().equals(data.getStatus())) {
+                throw new BizException("xn00000", "考勤已结算，无法打卡！");
             }
+            String status = EAttendanceStatus.Unpaied.getCode();
 
             attendanceBO.endWorkManualClockIn(code, status, endDatetime);
         }
@@ -93,10 +95,12 @@ public class AttendanceAOImpl implements IAttendanceAO {
     public String manchineClockIn(String sim, String projectCode,
             String staffCode, String attendTime, String terminalCode) {
         JSONObject json = new JSONObject();
-        logger.info("===========获取员工" + staffCode + "==============");
         Attendance data = attendanceBO.getAttendanceByProject(projectCode,
-            staffCode, attendTime);
+            staffCode,
+            DateUtil.strToDate(attendTime, DateUtil.FRONT_DATE_FORMAT_STRING));
         if (data == null) {
+            logger.info("----------------------员工" + staffCode
+                    + "考勤记录不存在----------------------");
             json.put("result", false);
             return new Gson().toJson(json);
         }
@@ -105,7 +109,8 @@ public class AttendanceAOImpl implements IAttendanceAO {
         data.setTerminalCode(terminalCode);
         // 将第一次打卡记为上班打卡
         if (EAttendanceStatus.TO_Start.getCode().equals(data.getStatus())) {
-
+            logger.info("----------------------员工" + staffCode
+                    + "上班打卡----------------------");
             data.setStartDatetime(DateUtil.strToDate(
                 attendTime.replace("%", " "), DateUtil.DATA_TIME_PATTERN_1));
             data.setStatus(EAttendanceStatus.TO_End.getCode());
@@ -122,13 +127,14 @@ public class AttendanceAOImpl implements IAttendanceAO {
             reportBO.refreshTodayDays(report, todayDays);
         } else {
             // 以后的每次打卡都是下班打卡
+            logger.info("----------------------员工" + staffCode
+                    + "下班打卡----------------------");
             Date endDatetime = DateUtil.strToDate(attendTime,
                 DateUtil.DATA_TIME_PATTERN_1);
             data.setEndDatetime(endDatetime);
             data.setStatus(EAttendanceStatus.Unpaied.getCode());
             attendanceBO.endWorkMachineClockIn(data);
         }
-        logger.info("===========员工" + staffCode + "考勤成功==============");
         json.put("result", true);
         return new Gson().toJson(json);
     }

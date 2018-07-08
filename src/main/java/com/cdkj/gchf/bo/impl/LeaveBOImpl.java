@@ -67,12 +67,12 @@ public class LeaveBOImpl extends PaginableBOImpl<Leave> implements ILeaveBO {
 
     @Override
     public Integer getMonthLeaveDays(String staffCode, String projectCode,
-            Integer month) {
+            Date startDatetime, Date endDatetime) {
         Leave condition = new Leave();
         condition.setStaffCode(staffCode);
         condition.setProjectCode(projectCode);
-        condition.setStartDatetime(DateUtil.getFristDay(month));
-        condition.setEndDatetime(DateUtil.getLastDay(month));
+        condition.setStartDatetime(startDatetime);
+        condition.setEndDatetime(endDatetime);
         return leaveDAO.selectMonthLeaveDays(condition);
     }
 

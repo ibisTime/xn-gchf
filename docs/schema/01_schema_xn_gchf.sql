@@ -488,7 +488,6 @@ CREATE TABLE `thf_query_log` (
   CONSTRAINT `user_id` FOREIGN KEY (`user_id`) REFERENCES `thf_user` (`user_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
-##请假明细
 DROP TABLE IF EXISTS  `thf_leave`;
 CREATE TABLE `thf_leave` (
   `code` varchar(32) NOT NULL COMMENT '编号',

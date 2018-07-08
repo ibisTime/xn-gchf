@@ -20,6 +20,9 @@ public interface ICcontractBO extends IPaginableBO<Ccontract> {
 
     public Ccontract getCcontract(String code);
 
+    // 根据员工编号获取合同
+    public Ccontract getCcontractByStaff(String staffCode);
+
     public Ccontract isExist(String projectCode, String staffCode);
 
 }

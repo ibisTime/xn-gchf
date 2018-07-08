@@ -215,6 +215,14 @@
 		status = #{status}
 		WHERE code = #{code}
 	</update>
+	
+	<update id="update_leavingStatus" parameterType="employ">
+		UPDATE thf_employ
+		SET
+		status = #{status}
+		,leaving_datetime = #{leavingDatetime}
+		WHERE code = #{code}
+	</update>
 
 	<update id="update_salaryStatus" parameterType="employ">
 		UPDATE thf_employ

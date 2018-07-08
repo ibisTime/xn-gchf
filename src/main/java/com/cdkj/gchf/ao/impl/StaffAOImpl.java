@@ -244,6 +244,8 @@ public class StaffAOImpl implements IStaffAO {
         // 技能
         List<Skill> skillList = skillBO.querySkillByStaff(data.getCode());
         data.setSkillList(skillList);
+        // 合同
+        data.setCcontract(ccontractBO.getCcontractByStaff(code));
         return data;
     }
 

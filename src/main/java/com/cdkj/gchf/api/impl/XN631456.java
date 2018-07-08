@@ -2,7 +2,6 @@ package com.cdkj.gchf.api.impl;
 
 import org.apache.commons.lang3.StringUtils;
 
-import com.cdkj.gchf.ao.IProgressAO;
 import com.cdkj.gchf.ao.ISalaryLogAO;
 import com.cdkj.gchf.api.AProcessor;
 import com.cdkj.gchf.common.JsonUtil;
@@ -38,7 +37,7 @@ public class XN631456 extends AProcessor {
 
         String column = req.getOrderColumn();
         if (StringUtils.isBlank(column)) {
-            column = IProgressAO.DEFAULT_ORDER_COLUMN;
+            column = ISalaryLogAO.DEFAULT_ORDER_COLUMN;
         }
         condition.setOrder(column, req.getOrderDir());
         return salaryAO.querySalaryLogList(condition);

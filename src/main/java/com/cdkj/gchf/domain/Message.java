@@ -40,13 +40,13 @@ public class Message extends ABaseDO {
     // 所属月份
     private String month;
 
-    // 每月累积发薪（当月所有（员工的shouldAmount - 迟到早退扣款）+ 奖励金额 ）
+    // 每月累积发薪（当月所有（员工的shouldAmount - 迟到早退扣款）+ 奖励金额 - 手动扣款）
     private Long totalAmount;
 
     // 每月领薪人数
     private Integer number;
 
-    // 每月共计扣款（当月所有员工的迟到早退扣款）
+    // 每月共计扣款（当月所有员工的迟到早退扣款 + 手动扣款）
     private Long totalCutAmount;
 
     // 每月共计税费

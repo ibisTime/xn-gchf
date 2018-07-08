@@ -90,12 +90,14 @@ public class AttendanceBOImpl extends PaginableBOImpl<Attendance>
 
     @Override
     public Attendance getAttendanceByProject(String projectCode,
-            String staffCode, String attendTime) {
+            String staffCode, Date attendTime) {
         Attendance condition = new Attendance();
         condition.setProjectCode(projectCode);
         condition.setStaffCode(staffCode);
-        condition.setCreateDatetimeStart(DateUtil.getStartDatetime(attendTime));
-        condition.setCreateDatetimeEnd(DateUtil.getEndDatetime(attendTime));
+        condition.setCreateDatetimeStart(DateUtil.getStartDatetime(
+            DateUtil.dateToStr(attendTime, DateUtil.FRONT_DATE_FORMAT_STRING)));
+        condition.setCreateDatetimeEnd(DateUtil.getEndDatetime(
+            DateUtil.dateToStr(attendTime, DateUtil.FRONT_DATE_FORMAT_STRING)));
         List<Attendance> list = attendanceDAO.selectList(condition);
         if (CollectionUtils.isEmpty(list)) {
             return null;

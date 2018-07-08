@@ -20,4 +20,6 @@ public interface IEmployDAO extends IBaseDAO<Employ> {
     // 修改工资发放状态
     void updateSalaryStatus(Employ data);
 
+    // 更新离职状态
+    public void updateLeavingStatus(Employ employ);
 }

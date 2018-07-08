@@ -160,6 +160,8 @@
 		,should_amount
 		,status
 		,create_datetime
+		,fact_amount
+		,fact_amount_remark
 		)
 		VALUES(
 		#{code}
@@ -178,6 +180,8 @@
 		,#{shouldAmount}
 		,#{status}
 		,#{createDatetime}
+		,#{factAmount}
+		,#{factAmountRemark}
 		)
 	</insert>
 

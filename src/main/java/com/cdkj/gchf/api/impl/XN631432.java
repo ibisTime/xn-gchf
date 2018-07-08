@@ -13,7 +13,7 @@ import com.cdkj.gchf.exception.ParaException;
 import com.cdkj.gchf.spring.SpringContextHolder;
 
 /**
- * 发送代发消息
+ * 反馈代发消息
  * @author: nyc 
  * @since: 2018年5月1日 上午11:48:15 
  * @history:

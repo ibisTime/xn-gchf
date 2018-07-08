@@ -213,6 +213,8 @@ public class ProjectAOImpl implements IProjectAO {
 
         for (Employ employ : list) {
             employ.setStatus(EEmployStatus.Leave.getCode());
+            employ.setLeavingDatetime(DateUtil.strToDate(endDatetime,
+                DateUtil.FRONT_DATE_FORMAT_STRING));
             employBO.updateStatus(employ);
         }
     }

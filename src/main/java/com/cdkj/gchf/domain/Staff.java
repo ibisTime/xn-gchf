@@ -118,6 +118,9 @@ public class Staff extends ABaseDO {
     // 薪资发放状态
     private String salaryStatus;
 
+    // 合同
+    private Ccontract ccontract;
+
     public void setCode(String code) {
         this.code = code;
     }
@@ -392,6 +395,14 @@ public class Staff extends ABaseDO {
 
     public void setCompanyCode(String companyCode) {
         this.companyCode = companyCode;
+    }
+
+    public Ccontract getCcontract() {
+        return ccontract;
+    }
+
+    public void setCcontract(Ccontract ccontract) {
+        this.ccontract = ccontract;
     }
 
 }

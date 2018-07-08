@@ -85,7 +85,7 @@ public class Salary extends ABaseDO {
     // 审核说明
     private String approveNote;
 
-    // 应发工资（业主审核之后的最终应发金额：shouldAmount-cutAmount+awardAmount-tax）
+    // 应发工资（业主修改之后的最终应发金额：shouldAmount-cutAmount+awardAmount-tax）
     private Long factAmount;
 
     // 备注（针对factAmount的说明）

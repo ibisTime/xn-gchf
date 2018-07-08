@@ -103,4 +103,9 @@ public class EmployBOImpl extends PaginableBOImpl<Employ> implements IEmployBO {
         }
         return data;
     }
+
+    @Override
+    public void updateLeavingStatus(Employ employ) {
+        employDAO.updateLeavingStatus(employ);
+    }
 }

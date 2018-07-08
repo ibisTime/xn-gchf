@@ -20,7 +20,7 @@ public interface ILeaveBO extends IPaginableBO<Leave> {
 
     // 获取指定月份请假天数
     public Integer getMonthLeaveDays(String staffCode, String projectCode,
-            Integer month);
+            Date startDatetime, Date endDatetime);
 
     public List<Leave> queryLeaveList(Leave condition);
 

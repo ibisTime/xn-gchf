@@ -25,8 +25,8 @@ public class XN631431 extends AProcessor {
     @Override
     public Object doBusiness() throws BizException {
 
-        return messageAO.downLoad(req.getCode(), req.getDownload(),
-            req.getBackDownload());
+        return messageAO.downLoad(req.getUserId(), req.getCode(),
+            req.getDownload(), req.getBackDownload());
     }
 
     @Override

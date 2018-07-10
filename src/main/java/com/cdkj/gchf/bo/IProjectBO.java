@@ -29,6 +29,9 @@ public interface IProjectBO extends IPaginableBO<Project> {
 
     public void stopProject(Project data, String updater, String remark);
 
+    // 更新项目发放薪资可延迟天数
+    public void editSalaryDelayDays(Project project);
+
     public void restartProject(Project data, String updater, String remark);
 
     public List<String> queryProjectCodeList(Project condition);

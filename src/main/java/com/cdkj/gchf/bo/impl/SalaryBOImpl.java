@@ -96,21 +96,6 @@ public class SalaryBOImpl extends PaginableBOImpl<Salary> implements ISalaryBO {
     }
 
     @Override
-    public List<Salary> getAbnormalSalaryByStaff(String staffCode,
-            String projectCode) {
-        List<Salary> list = null;
-        if (StringUtils.isNotBlank(staffCode)
-                && StringUtils.isNotBlank(projectCode)) {
-            Salary condition = new Salary();
-            condition.setStaffCode(staffCode);
-            condition.setProjectCode(projectCode);
-            condition.setStatus(ESalaryStatus.Pay_Portion.getCode());
-            list = salaryDAO.selectList(condition);
-        }
-        return list;
-    }
-
-    @Override
     public List<Salary> selectMonthlySalarySumByProject(String projectCode) {
         Salary condition = new Salary();
         condition.setProjectCode(projectCode);
@@ -119,6 +104,8 @@ public class SalaryBOImpl extends PaginableBOImpl<Salary> implements ISalaryBO {
         List<String> statusList = new ArrayList<String>();
         statusList.add(ESalaryStatus.Payed.getCode());
         statusList.add(ESalaryStatus.Pay_Portion.getCode());
+        statusList.add(ESalaryStatus.Pay_Delay.getCode());
+        statusList.add(ESalaryStatus.Pay_Delay_Portion.getCode());
         statusList.add(ESalaryStatus.Pay_Again.getCode());
         condition.setStatusList(statusList);
         return salaryDAO.selectMonthlySalarySumByProject(condition);

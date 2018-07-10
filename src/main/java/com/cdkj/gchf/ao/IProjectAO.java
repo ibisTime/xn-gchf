@@ -24,16 +24,6 @@ public interface IProjectAO {
     public void approveProject(String code, String result, String auditor,
             String remark);
 
-    // 分页查询
-    Paginable<Project> queryProjectPage(int start, int limit,
-            Project condition);
-
-    // 详情查询
-    public Project getProject(String code);
-
-    // 列表查询
-    public List<Project> queryProjectList(Project condition);
-
     // 项目结束
     public void projectEnd(String code, String endDatetime, String updater,
             String remark);
@@ -44,4 +34,16 @@ public interface IProjectAO {
     // 项目重新开工
     public void restartProject(String code, String updater, String remark);
 
+    // 更新项目发放薪资可延迟天数
+    public void editSalaryDelayDays(String code, Integer salaryDelayDays);
+
+    // 分页查询
+    Paginable<Project> queryProjectPage(int start, int limit,
+            Project condition);
+
+    // 详情查询
+    public Project getProject(String code);
+
+    // 列表查询
+    public List<Project> queryProjectList(Project condition);
 }

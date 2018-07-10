@@ -32,7 +32,4 @@ public interface ISalaryBO extends IPaginableBO<Salary> {
 
     public Salary getSalary(String code);
 
-    public List<Salary> getAbnormalSalaryByStaff(String code,
-            String projectCode);
-
 }

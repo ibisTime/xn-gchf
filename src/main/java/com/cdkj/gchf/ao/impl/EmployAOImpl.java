@@ -114,7 +114,7 @@ public class EmployAOImpl implements IEmployAO {
 
         // 计入累积入职
         Long nextMonthSalary = AmountUtil.mul(data.getSalary(),
-            DateUtil.getMonthDays());
+            DateUtil.getRemainDays());
         reportBO.refreshStaffIn(project.getCode(), nextMonthSalary);
 
         // 生成考勤
@@ -170,7 +170,7 @@ public class EmployAOImpl implements IEmployAO {
 
         // 修改下月预发工资
         report.setNextMonthSalary(report.getNextMonthSalary()
-                - AmountUtil.mul(data.getSalary(), DateUtil.getMonthDays()));
+                - AmountUtil.mul(data.getSalary(), DateUtil.getRemainDays()));
         reportBO.refreshNextMonthSalary(report);
 
         Project project = projectBO.getProject(data.getProjectCode());

@@ -25,6 +25,7 @@ public interface IMessageAO {
     public void approveMessage(String code, String handler, String handleNote,
             List<XN631439Req> list);
 
-    public Message downLoad(String code, String download, String backDownload);
+    public Message downLoad(String userId, String code, String download,
+            String backDownload);
 
 }

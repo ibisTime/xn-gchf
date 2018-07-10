@@ -63,13 +63,13 @@ public class Staff extends ABaseDO {
     // 免冠照片
     private String pict1;
 
-    // 手持身份张照片
+    // 身份证正面照
     private String pict2;
 
-    // 身份证正面照
+    // 身份证反面照
     private String pict3;
 
-    // 身份证反面照
+    // 手持身份张照片
     private String pict4;
 
     // 更新人

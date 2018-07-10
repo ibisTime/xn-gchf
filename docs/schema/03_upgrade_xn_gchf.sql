@@ -12,6 +12,9 @@ ADD COLUMN `terminal_code` VARCHAR(32) DEFAULT NULL COMMENT '终端编号' AFTER
 ALTER TABLE `thf_employ` 
 DROP COLUMN `leaving_days`;
 
+ALTER TABLE `thf_project` 
+ADD COLUMN `salary_delay_days` INT NULL DEFAULT 0 COMMENT '薪资发放可延迟天数（监管端填写）' AFTER `salary_datetime`;
+
 CREATE TABLE `thf_leave` (
   `code` varchar(32) NOT NULL COMMENT '编号',
   `staff_code` varchar(32) DEFAULT NULL COMMENT '员工编号',

@@ -141,6 +141,21 @@ public class StaffAOImpl implements IStaffAO {
     @Transactional
     public void editStaff(XN631412Req req) {
         PhoneUtil.checkMobile(req.getMobile());
+
+        // 重新识别上传的免冠照
+        // String featResult = BizConnecter.getFeat(req.getPict1());
+        // Pattern pattern = Pattern.compile("(?<=\\{)(.+?)(?=\\})");
+        // Matcher matcher = pattern.matcher(featResult);
+        // String featString = null;
+        // while (matcher.find()) {
+        // featString = matcher.group();
+        // }
+        // JSONObject featJson = JSONObject.parseObject("{" + featString + "}");
+        // if (featJson.getString("data").equals("error")
+        // || featJson.getString("data").equals("NOFACE")) {
+        // throw new BizException("xn000", "请上传对准人脸的免冠照！");
+        // }
+
         Date date = new Date();
         Staff data = staffBO.getStaff(req.getCode());
         data.setMobile(req.getMobile());
@@ -148,6 +163,8 @@ public class StaffAOImpl implements IStaffAO {
         data.setPict1(req.getPict1());
         data.setPict2(req.getPict2());
         data.setPict3(req.getPict3());
+        data.setPict4(req.getPict4());
+        // data.setFeat(featJson.getString("data"));
         data.setUpdater(req.getUpdater());
 
         data.setUpdateDatetime(date);
@@ -263,17 +280,13 @@ public class StaffAOImpl implements IStaffAO {
         Employ employ = null;
 
         if (CollectionUtils.isNotEmpty(projectCodeList)) {
-            List<Salary> sList = new ArrayList<Salary>();
             for (String projectCode : projectCodeList) {
                 employ = employBO.getEmployByStaff(data.getCode(), projectCode);
                 if (employ != null) {
                     employList.add(employ);
                 }
-                sList = salaryBO.getAbnormalSalaryByStaff(data.getCode(),
+                salaryList = salaryBO.getSalaryByStaff(data.getCode(),
                     projectCode);
-                if (CollectionUtils.isNotEmpty(sList)) {
-                    salaryList.addAll(sList);
-                }
             }
         }
 

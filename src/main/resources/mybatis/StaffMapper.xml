@@ -183,6 +183,8 @@
 		,pict1 = #{pict1}
 		,pict2 = #{pict2}
 		,pict3 = #{pict3}
+		,pict4 = #{pict4}
+		,feat = #{feat}
 		,updater = #{updater}
 		,update_datetime = #{updateDatetime}
 		,remark = #{remark}

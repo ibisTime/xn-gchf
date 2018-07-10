@@ -26,7 +26,6 @@ public class ProjectBOImpl extends PaginableBOImpl<Project>
     @Override
     public void saveProject(Project data) {
         projectDAO.insert(data);
-
     }
 
     @Override
@@ -78,6 +77,13 @@ public class ProjectBOImpl extends PaginableBOImpl<Project>
         data.setStatus(EProjectStatus.Building.getCode());
         data.setRemark(remark);
         projectDAO.restartProject(data);
+    }
+
+    @Override
+    public void editSalaryDelayDays(Project project) {
+        if (null != project) {
+            projectDAO.updateSalaryDelayDays(project);
+        }
     }
 
     @Override

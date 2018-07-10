@@ -23,6 +23,7 @@
 		<result column="address" property="address" />
 		<result column="salary_create_datetime" property="salaryCreateDatetime" />
 		<result column="salary_datetime" property="salaryDatetime" />
+		<result column="salary_delay_days" property="salaryDelayDays" />
 		<result column="status" property="status" />
 		<result column="approver" property="approver" />
 	
@@ -49,7 +50,6 @@
 					</foreach>
 				</when>
 			</choose>
-			
 			
 			<if test="province != null and province != '' ">
 				AND t.province = #{province}
@@ -124,6 +124,7 @@
 		,t.address
 		,t.salary_create_datetime
 		,t.salary_datetime
+		,t.salary_delay_days
 		,t.status
 		,t.approver
 		
@@ -294,7 +295,6 @@
 		WHERE code = #{code}
 	</update>
 	
-	
 	<update id="restart_project" parameterType="project">
 		UPDATE thf_project
 		SET
@@ -302,6 +302,13 @@
 		,updater = #{updater}
 		,update_datetime = #{updateDatetime}
 		,remark = #{remark}
+		WHERE code = #{code}
+	</update>
+	
+	<update id="update_salaryDelayDays" parameterType="project">
+		UPDATE thf_project
+		SET
+		salary_delay_days = #{salaryDelayDays}
 		WHERE code = #{code}
 	</update>
 </mapper>

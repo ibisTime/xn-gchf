@@ -26,13 +26,17 @@ public class XN631412Req {
     @NotBlank(message = "免冠照片不能为空")
     private String pict1;
 
-    // （必填）手持身份张照片
-    @NotBlank(message = "手持身份张照片不能为空")
+    // （必填）身份证正面照
+    @NotBlank(message = "身份证正面照不能为空")
     private String pict2;
 
-    // （必填）身份证正反面照片+签名
-    @NotBlank(message = "身份证正反面照片+签名不能为空")
+    // （必填）身份证反面照
+    @NotBlank(message = "身份证反面照不能为空")
     private String pict3;
+
+    // （必填）手持身份证照
+    @NotBlank(message = "手持身份证照不能为空")
+    private String pict4;
 
     // （必填）更新人
     @NotBlank(message = "更新人不能为空")
@@ -106,6 +110,14 @@ public class XN631412Req {
 
     public void setSkillList(List<Skill> skillList) {
         this.skillList = skillList;
+    }
+
+    public String getPict4() {
+        return pict4;
+    }
+
+    public void setPict4(String pict4) {
+        this.pict4 = pict4;
     }
 
 }

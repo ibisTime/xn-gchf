@@ -1,6 +1,7 @@
 package com.cdkj.gchf.ao.impl;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -36,14 +37,12 @@ import com.cdkj.gchf.domain.Message;
 import com.cdkj.gchf.domain.Project;
 import com.cdkj.gchf.domain.Report;
 import com.cdkj.gchf.domain.Salary;
-import com.cdkj.gchf.domain.SalaryLog;
 import com.cdkj.gchf.domain.Staff;
 import com.cdkj.gchf.domain.User;
 import com.cdkj.gchf.dto.req.XN631439Req;
 import com.cdkj.gchf.enums.EAbnormalType;
 import com.cdkj.gchf.enums.EGeneratePrefix;
 import com.cdkj.gchf.enums.EMessageStatus;
-import com.cdkj.gchf.enums.ESalaryLogType;
 import com.cdkj.gchf.enums.ESalaryStatus;
 import com.cdkj.gchf.enums.EUser;
 import com.cdkj.gchf.enums.EUserKind;
@@ -128,30 +127,53 @@ public class MessageAOImpl implements IMessageAO {
             List<XN631439Req> list) {
         Message data = messageBO.getMessage(code);
         Long lastMonthSalary = 0L;
-        String status = ESalaryStatus.Payed.getCode();
+        String projectCode = null;
         String messageCode = OrderNoGenerater
             .generate(EGeneratePrefix.Message.getCode());
 
         for (XN631439Req req : list) {
+            String status = ESalaryStatus.Payed.getCode();
             Salary salary = salaryBO.getSalary(req.getCode());
+            if (!salary.getProjectCode().equals(projectCode)) {
+                projectCode = salary.getProjectCode();
+            }
+            Project project = projectBO.getProject(projectCode);
+
             // 防止重复发放
             if (ESalaryStatus.Payed.getCode().equals(salary.getStatus())) {
                 throw new BizException("xn00000",
                     "员工[" + salary.getStaffName() + "]的工资已全部发放");
             }
-            if (salary.getFactAmount() > StringValidater
-                .toLong(req.getPayAmount())) {
-                // 添加工资日志
-                SalaryLog salaryLog = new SalaryLog();
-                String salaryLogCode = OrderNoGenerater
-                    .generate(EGeneratePrefix.SalaryLog.getCode());
-                salaryLog.setCode(salaryLogCode);
-                salaryLog.setSalaryCode(salary.getCode());
-                salaryLog.setType(ESalaryLogType.Abnormal.getCode());
-                salaryLog.setStaffCode(salary.getStaffCode());
 
-                salaryLogBO.saveSalaryLog(salaryLog);
+            // 判断工资是否少发和迟发
+            Date latePayDatetime = DateUtil.strToDate(req.getLatePayDatetime(),
+                DateUtil.FRONT_DATE_FORMAT_STRING);// 实际发薪时间
+            Long payAmount = StringValidater.toLong(req.getPayAmount());// 实际发薪金额
+            String[] salaryDate = salary.getMonth().split("/");
+            Integer salaryYeay = StringValidater.toInteger(salaryDate[0]);
+            Integer salaryMonth = StringValidater.toInteger(salaryDate[1]);
+            Integer salaryDay = StringValidater.toInteger(
+                project.getSalaryDatetime()) + project.getSalaryDelayDays();
+
+            Calendar latestSalaryDate = Calendar.getInstance();
+            latestSalaryDate.set(salaryYeay, salaryMonth - 1, salaryDay);// 最迟发薪时间
+            Boolean isLess = false;// 是否少发
+            Boolean isDelay = false;// 是否迟发
+
+            if (salary.getFactAmount() > payAmount) {
+                isLess = true;
+            }
+            if (latestSalaryDate.getTime().getTime() < latePayDatetime
+                .getTime()) {
+                isDelay = true;
+            }
+
+            if (isLess && isDelay) {
+                status = ESalaryStatus.Pay_Delay_Portion.getCode();
+            } else if (isLess && !isDelay) {
                 status = ESalaryStatus.Pay_Portion.getCode();
+            } else if (isDelay && !isLess) {
+                status = ESalaryStatus.Pay_Delay.getCode();
             }
 
             Long supplyAmount = salary.getFactAmount()
@@ -159,8 +181,7 @@ public class MessageAOImpl implements IMessageAO {
             salary.setPayAmount(StringValidater.toLong(req.getPayAmount()));
             salary.setSupplyAmount(supplyAmount);
             salary.setStatus(status);
-            salary.setLatePayDatetime(DateUtil.strToDate(
-                req.getLatePayDatetime(), DateUtil.FRONT_DATE_FORMAT_STRING));
+            salary.setLatePayDatetime(latePayDatetime);
             salary.setMessageCode(messageCode);
             salaryBO.payAmount(salary);
 
@@ -171,6 +192,7 @@ public class MessageAOImpl implements IMessageAO {
             employBO.updateSalaryStatus(employ);
             lastMonthSalary = lastMonthSalary
                     + StringValidater.toLong(req.getPayAmount());
+
             // 改变员工薪资状态
             Staff staff = staffBO.getStaff(salary.getStaffCode());
 
@@ -178,18 +200,20 @@ public class MessageAOImpl implements IMessageAO {
             List<EventRemind> erList = eventRemindBO
                 .getEventRemindByType(EAbnormalType.Salary_Abnormal.getCode());
             if (CollectionUtils.isNotEmpty(erList)) {
-                Project project = null;
+                Project employProject = null;
                 Company company = null;
 
                 for (EventRemind eventRemind : erList) {
-                    project = projectBO.getProject(employ.getProjectCode());
-                    company = companyBO.getCompany(project.getCompanyCode());
+                    employProject = projectBO
+                        .getProject(employ.getProjectCode());
+                    company = companyBO
+                        .getCompany(employProject.getCompanyCode());
                     smsOutBO
                         .sendSmsOut(eventRemind.getMobile(),
                             "尊敬的" + PhoneUtil
                                 .hideMobile(eventRemind.getMobile()) + "，"
                                     + company.getName() + "的"
-                                    + project.getName() + "出现工资拖欠，员工"
+                                    + employProject.getName() + "出现工资拖欠，员工"
                                     + staff.getName() + "," + salary.getMonth()
                                     + "的工资为" + (salary.getFactAmount() / 1000)
                                     + "发放薪资为"
@@ -212,11 +236,14 @@ public class MessageAOImpl implements IMessageAO {
     }
 
     @Override
-    public Message downLoad(String code, String download, String backDownload) {
+    public Message downLoad(String userId, String code, String download,
+            String backDownload) {
         Message data = messageBO.getMessage(code);
+        User user = userBO.getUser(userId);
         data.setDownload(StringValidater.toInteger(download));
         data.setBackDownload(StringValidater.toInteger(backDownload));
-        if (EMessageStatus.TO_Deal.getCode().equals(data.getStatus())) {
+        if (EMessageStatus.TO_Deal.getCode().equals(data.getStatus())
+                && EUserKind.Bank.getCode().equals(user.getType())) {
             data.setStatus(EMessageStatus.TO_Feedback.getCode());
         }
 

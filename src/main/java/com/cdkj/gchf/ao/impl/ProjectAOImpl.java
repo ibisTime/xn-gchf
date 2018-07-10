@@ -238,6 +238,16 @@ public class ProjectAOImpl implements IProjectAO {
     }
 
     @Override
+    public void editSalaryDelayDays(String code, Integer salaryDelayDays) {
+        Project data = projectBO.getProject(code);
+        if (!EProjectStatus.Building.getCode().equals(data.getStatus())) {
+            throw new BizException("xn000", "项目未处于在建状态,无法设置薪资发放可延迟天数");
+        }
+        data.setSalaryDelayDays(salaryDelayDays);
+        projectBO.editSalaryDelayDays(data);
+    }
+
+    @Override
     public Paginable<Project> queryProjectPage(int start, int limit,
             Project condition) {
         Paginable<Project> page = new Page<Project>();

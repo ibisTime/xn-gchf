@@ -23,4 +23,7 @@ public interface IProjectDAO extends IBaseDAO<Project> {
 
     public void restartProject(Project data);
 
+    // 更新项目发放薪资可延迟天数
+    public int updateSalaryDelayDays(Project data);
+
 }

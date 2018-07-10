@@ -122,7 +122,7 @@
 
 	<select id="select_salary_count" parameterType="employ"
 		resultType="java.lang.Long">
-		SELECT count(t.salary) FROM thf_employ t
+		SELECT IFNULL(SUM(t.salary * 30),0) FROM thf_employ t
 		<include refid="where_condition" />
 	</select>
 

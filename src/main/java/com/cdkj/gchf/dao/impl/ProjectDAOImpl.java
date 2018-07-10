@@ -80,4 +80,8 @@ public class ProjectDAOImpl extends AMybatisTemplate implements IProjectDAO {
         super.update(NAMESPACE.concat("restart_project"), data);
     }
 
+    @Override
+    public int updateSalaryDelayDays(Project data) {
+        return super.update(NAMESPACE.concat("update_salaryDelayDays"), data);
+    }
 }

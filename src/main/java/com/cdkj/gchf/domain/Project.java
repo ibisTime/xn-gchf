@@ -63,6 +63,9 @@ public class Project extends ABaseDO {
     // 薪资发放时间（每个月的几号）
     private String salaryDatetime;
 
+    // 薪资发放可延迟天数（监管端填写）
+    private Integer salaryDelayDays;
+
     // 状态
     private String status;
 
@@ -304,6 +307,14 @@ public class Project extends ABaseDO {
 
     public void setSalaryDatetime(String salaryDatetime) {
         this.salaryDatetime = salaryDatetime;
+    }
+
+    public Integer getSalaryDelayDays() {
+        return salaryDelayDays;
+    }
+
+    public void setSalaryDelayDays(Integer salaryDelayDays) {
+        this.salaryDelayDays = salaryDelayDays;
     }
 
     public CompanyCard getCompanyCard() {

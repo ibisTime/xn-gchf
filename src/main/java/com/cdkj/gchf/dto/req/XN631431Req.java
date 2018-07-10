@@ -11,6 +11,9 @@ import org.hibernate.validator.constraints.NotBlank;
  * @history:
  */
 public class XN631431Req {
+    // 用户编号
+    @NotBlank(message = "用户编号不能为空")
+    private String userId;
 
     // 编号
     @NotBlank(message = "编号不能为空")
@@ -25,6 +28,14 @@ public class XN631431Req {
     @NotBlank(message = "下载次数不能为空")
     @Min(value = 0)
     private String backDownload;
+
+    public String getUserId() {
+        return userId;
+    }
+
+    public void setUserId(String userId) {
+        this.userId = userId;
+    }
 
     public String getCode() {
         return code;

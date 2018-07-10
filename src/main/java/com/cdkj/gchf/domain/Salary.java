@@ -94,7 +94,7 @@ public class Salary extends ABaseDO {
     // 已发工资（银行回填，即务工人员到手的工资）
     private Long payAmount;
 
-    // 补发工资（多次补发就累加）
+    // 补发工资（应发薪资 - 银行实发薪资）
     private Long supplyAmount;
 
     // 最近一次发放时间

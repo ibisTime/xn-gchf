@@ -39,7 +39,7 @@ public class SalaryLogAOImpl implements ISalaryLogAO {
     private IStaffBO staffBO;
 
     @Override
-    public String addsalaryLog(String salaryCode, String handler,
+    public String addSalaryLog(String salaryCode, String handler,
             String handleNote) {
 
         SalaryLog data = new SalaryLog();

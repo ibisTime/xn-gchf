@@ -112,10 +112,9 @@ INSERT INTO `tsys_config` (`id`,`type`,`ckey`,`cvalue`,`updater`,`update_datetim
 INSERT INTO `tsys_config` (`id`,`type`,`ckey`,`cvalue`,`updater`,`update_datetime`,`remark`) VALUES (14,'qiniu','qiniu_domain','otoieuivb.bkt.clouddn.com','USYS201800000000001',now(),'访问域名');
 
 /*
--- Query: SELECT * FROM dev_xn_gchf.tsys_menu
+-- Query: SELECT * FROM test_xn_gchf.tsys_menu
 LIMIT 0, 1000
-
--- Date: 2018-07-09 20:54
+-- Date: 2018-07-10 16:08
 */
 INSERT INTO `tsys_menu` (`code`,`name`,`type`,`url`,`order_no`,`updater`,`update_datetime`,`remark`,`parent_code`) VALUES ('GCHFSM201800000000000000','根目录','1','#','1','admin',now(),'','');
 INSERT INTO `tsys_menu` (`code`,`name`,`type`,`url`,`order_no`,`updater`,`update_datetime`,`remark`,`parent_code`) VALUES ('GCHFSM201800001000000001','系统管理','1','#','1','admin',now(),'','GCHFSM201800000000000000');
@@ -215,8 +214,8 @@ INSERT INTO `tsys_menu` (`code`,`name`,`type`,`url`,`order_no`,`updater`,`update
 INSERT INTO `tsys_menu` (`code`,`name`,`type`,`url`,`order_no`,`updater`,`update_datetime`,`remark`,`parent_code`) VALUES ('SM201805251354520521925','查看考勤','1','/newProj/kaoqin.htm','5','USYS201800000000001',now(),'','SM201804271918126145662');
 INSERT INTO `tsys_menu` (`code`,`name`,`type`,`url`,`order_no`,`updater`,`update_datetime`,`remark`,`parent_code`) VALUES ('SM201805251516327463058','历史事件','1','/staff/allStafferrHistory.htm','2','USYS201800000000001',now(),'','SM201805061714532327913');
 INSERT INTO `tsys_menu` (`code`,`name`,`type`,`url`,`order_no`,`updater`,`update_datetime`,`remark`,`parent_code`) VALUES ('SM201805251544130622832','转换为正常','2','/Transformation','2','USYS201800000000001',now(),'','SM201805071518444813149');
-INSERT INTO `tsys_menu` (`code`,`name`,`type`,`url`,`order_no`,`updater`,`update_datetime`,`remark`,`parent_code`) VALUES ('SM201805261001490495192','申请请假','2','/weekday','3','USYS201800000000001','2018-07-08 14:47:48','','SM201805031143039272323');
-INSERT INTO `tsys_menu` (`code`,`name`,`type`,`url`,`order_no`,`updater`,`update_datetime`,`remark`,`parent_code`) VALUES ('SM201805261021084049823','离职申请','2','/quit','17','USYS201800000000001','2018-06-29 16:12:33','','SM201805031143039272323');
+INSERT INTO `tsys_menu` (`code`,`name`,`type`,`url`,`order_no`,`updater`,`update_datetime`,`remark`,`parent_code`) VALUES ('SM201805261001490495192','申请请假','2','/weekday','3','USYS201800000000001',now(),'','SM201805031143039272323');
+INSERT INTO `tsys_menu` (`code`,`name`,`type`,`url`,`order_no`,`updater`,`update_datetime`,`remark`,`parent_code`) VALUES ('SM201805261021084049823','离职申请','2','/quit','17','USYS201800000000001',now(),'','SM201805031143039272323');
 INSERT INTO `tsys_menu` (`code`,`name`,`type`,`url`,`order_no`,`updater`,`update_datetime`,`remark`,`parent_code`) VALUES ('SM201805261621476424511','工程进度','1','/hetong/jindu.htm','6','USYS201800000000001',now(),'','SM201804271918126145662');
 INSERT INTO `tsys_menu` (`code`,`name`,`type`,`url`,`order_no`,`updater`,`update_datetime`,`remark`,`parent_code`) VALUES ('SM201805261758591375743','办理入职','2','/addWorkers','1','USYS201800000000001',now(),'','SM201805031143039272323');
 INSERT INTO `tsys_menu` (`code`,`name`,`type`,`url`,`order_no`,`updater`,`update_datetime`,`remark`,`parent_code`) VALUES ('SM201806252141430605486','部门管理','2','/addBumen','19','USYS201800000000001',now(),'','SM201804271923251312840');
@@ -226,10 +225,9 @@ INSERT INTO `tsys_menu` (`code`,`name`,`type`,`url`,`order_no`,`updater`,`update
 INSERT INTO `tsys_menu` (`code`,`name`,`type`,`url`,`order_no`,`updater`,`update_datetime`,`remark`,`parent_code`) VALUES ('SM201807091728303553393','发薪可延迟天数','2','/salaryDelayDays','20','USYS201800000000001',now(),'','SM201804271923251312840');
 
 /*
--- Query: SELECT * FROM dev_xn_gchf.tsys_menu_role
+-- Query: SELECT * FROM test_xn_gchf.tsys_menu_role
 LIMIT 0, 1000
-
--- Date: 2018-07-09 20:57
+-- Date: 2018-07-10 16:09
 */
 INSERT INTO `tsys_menu_role` (`id`,`role_code`,`menu_code`,`updater`,`update_datetime`,`remark`) VALUES (1,'SR201804261443398913168','GCHFSM201800001000000008','admin',now(),NULL);
 INSERT INTO `tsys_menu_role` (`id`,`role_code`,`menu_code`,`updater`,`update_datetime`,`remark`) VALUES (8,'SR201805251644020984824','SM201805061714532327913','U201805142013427676188',now(),NULL);

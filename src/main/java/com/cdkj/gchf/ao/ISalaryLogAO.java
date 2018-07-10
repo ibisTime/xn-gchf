@@ -18,7 +18,7 @@ public interface ISalaryLogAO {
 
     public SalaryLog getSalaryLog(String code);
 
-    public String addsalaryLog(String code, String handler, String handleNote);
+    public String addSalaryLog(String code, String handler, String handleNote);
 
     public String changeToNormal(String salaryCode, String handler,
             String handleNote);

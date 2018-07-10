@@ -156,14 +156,14 @@ public class MessageAOImpl implements IMessageAO {
                 project.getSalaryDatetime()) + project.getSalaryDelayDays();
 
             Calendar latestSalaryDate = Calendar.getInstance();
-            latestSalaryDate.set(salaryYeay, salaryMonth - 1, salaryDay);// 最迟发薪时间
+            latestSalaryDate.set(salaryYeay, salaryMonth, salaryDay);// 最迟发薪时间
             Boolean isLess = false;// 是否少发
             Boolean isDelay = false;// 是否迟发
 
-            if (salary.getFactAmount() > payAmount) {
+            if (payAmount < salary.getFactAmount()) {
                 isLess = true;
             }
-            if (latestSalaryDate.getTime().getTime() < latePayDatetime
+            if (latePayDatetime.getTime() > latestSalaryDate.getTime()
                 .getTime()) {
                 isDelay = true;
             }

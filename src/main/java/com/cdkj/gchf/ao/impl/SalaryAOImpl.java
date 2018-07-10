@@ -223,7 +223,8 @@ public class SalaryAOImpl implements ISalaryAO {
 
             int delayEarlyHours = data.getDelayHours() + data.getEarlyHours();
             data.setFactAmountRemark("日薪：" + employ.getSalary() / 1000
-                    + "元；迟到早退：" + delayEarlyHours + "小时，总计扣款："
+                    + "元；迟到早退扣款：" + delayEarlyHours + "小时*"
+                    + employ.getCutAmount() / 1000 + "元="
                     + delayEarlyHours * employ.getCutAmount() / 1000 + "元；");
             salaryBO.saveSalary(data);
 
@@ -298,11 +299,12 @@ public class SalaryAOImpl implements ISalaryAO {
 
         Message message = messageBO.getMessage(data.getMessageCode());
 
-        // 减去之前的奖励，加上现在的奖励；加上之前的扣款，减去现在的扣款
+        // 减去之前的奖励，加上现在的奖励；加上之前的扣款，减去现在的扣款；加上之前的税费，减去现在的税费
         message.setTotalAmount(message.getTotalAmount() - data.getAwardAmount()
                 + StringValidater.toLong(req.getAwardAmount())
                 + data.getCutAmount()
-                - StringValidater.toLong(req.getCutAmount()));
+                - StringValidater.toLong(req.getCutAmount()) + data.getTax()
+                - StringValidater.toLong(req.getTax()));
 
         // 减去之前的扣款，加上现在的扣款
         message

@@ -297,28 +297,33 @@ public class SalaryAOImpl implements ISalaryAO {
             throw new BizException("xn00000", "该工资条不能修改");
         }
 
+        Long awardAmount = StringValidater.toLong(req.getAwardAmount());// 奖励金额
+        Long cutAmount = StringValidater.toLong(req.getCutAmount());// 扣减金额
+        Long taxAmount = StringValidater.toLong(req.getTax());// 税费
+
+        // 判断扣款金额是否过大导致负数
+        if ((cutAmount + taxAmount) > (data.getShouldAmount() + awardAmount)) {
+            throw new BizException("xn0000", "扣款金额过大，请重新输入！");
+        }
+
         Message message = messageBO.getMessage(data.getMessageCode());
 
         // 减去之前的奖励，加上现在的奖励；加上之前的扣款，减去现在的扣款；加上之前的税费，减去现在的税费
         message.setTotalAmount(message.getTotalAmount() - data.getAwardAmount()
-                + StringValidater.toLong(req.getAwardAmount())
-                + data.getCutAmount()
-                - StringValidater.toLong(req.getCutAmount()) + data.getTax()
-                - StringValidater.toLong(req.getTax()));
+                + awardAmount + data.getCutAmount() - cutAmount + data.getTax()
+                - taxAmount);
 
         // 减去之前的扣款，加上现在的扣款
-        message
-            .setTotalCutAmount(message.getTotalCutAmount() - data.getCutAmount()
-                    + StringValidater.toLong(req.getCutAmount()));
+        message.setTotalCutAmount(
+            message.getTotalCutAmount() - data.getCutAmount() + cutAmount);
 
         // 减去之前的税费，加上现在的税费
-        message.setTotalTax(message.getTotalTax() - data.getTax()
-                + StringValidater.toLong(req.getTax()));
+        message.setTotalTax(message.getTotalTax() - data.getTax() + taxAmount);
         messageBO.refreshMessage(message);
 
-        data.setAwardAmount(StringValidater.toLong(req.getAwardAmount()));
-        data.setTax(StringValidater.toLong(req.getTax()));
-        data.setCutAmount(StringValidater.toLong(req.getCutAmount()));
+        data.setAwardAmount(awardAmount);
+        data.setTax(taxAmount);
+        data.setCutAmount(cutAmount);
         data.setApplyNote(req.getApplyNote());
         data.setApplyUser(req.getApplyUser());
         data.setApplyDatetime(new Date());

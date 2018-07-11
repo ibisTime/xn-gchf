@@ -10,6 +10,7 @@ ADD COLUMN `sim` DECIMAL(4,2) DEFAULT NULL COMMENT '相似度' AFTER `settle_dat
 ADD COLUMN `terminal_code` VARCHAR(32) DEFAULT NULL COMMENT '终端编号' AFTER `sim`;
 
 ALTER TABLE `thf_employ` 
+ADD COLUMN `last_leaving_days` int(11) DEFAULT NULL COMMENT '最近一次请假天数' AFTER `start_datetime`,
 DROP COLUMN `leaving_days`;
 
 ALTER TABLE `thf_project` 

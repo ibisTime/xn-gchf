@@ -31,7 +31,7 @@ public class Message extends ABaseDO {
     // 银行名称
     private String bankName;
 
-    // 开户行
+    // 支行名称
     private String subbranch;
 
     // 银行卡号
@@ -107,6 +107,9 @@ public class Message extends ABaseDO {
 
     // 项目编号List
     private List<String> projectCodeList;
+
+    // 公司账户
+    private CompanyCard companyCard;
 
     public void setCode(String code) {
         this.code = code;
@@ -346,6 +349,14 @@ public class Message extends ABaseDO {
 
     public void setTotalTax(Long totalTax) {
         this.totalTax = totalTax;
+    }
+
+    public CompanyCard getCompanyCard() {
+        return companyCard;
+    }
+
+    public void setCompanyCard(CompanyCard companyCard) {
+        this.companyCard = companyCard;
     }
 
 }

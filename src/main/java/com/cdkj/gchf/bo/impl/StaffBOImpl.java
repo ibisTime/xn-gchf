@@ -48,8 +48,9 @@ public class StaffBOImpl extends PaginableBOImpl<Staff> implements IStaffBO {
     }
 
     @Override
-    public List<Staff> getStaffFeatList() {
+    public List<Staff> getStaffFeatList(List<String> staffCodeList) {
         Staff condition = new Staff();
+        condition.setCodeList(staffCodeList);
         return staffDAO.selectList(condition);
 
     }

@@ -41,16 +41,13 @@ public class XN631413Req {
     @NotBlank(message = "开户行不能为空")
     private String subbranch;
 
-    // （必填）合同项目编号
-    @NotBlank(message = "合同项目编号不能为空")
+    // （选填）合同项目编号
     private String projectCode;
 
-    // （必填）签约合同
-    @NotBlank(message = "签约合同不能为空")
+    // （选填）签约合同
     private String contentPic;
 
-    // （必填）签约时间
-    @NotBlank(message = "签约时间不能为空")
+    // （选填）签约时间
     private String contractDatetime;
 
     // 技能

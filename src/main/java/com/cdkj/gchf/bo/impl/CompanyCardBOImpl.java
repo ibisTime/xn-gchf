@@ -89,6 +89,7 @@ public class CompanyCardBOImpl extends PaginableBOImpl<CompanyCard>
             }
             data.setBankSubbranch(
                 data.getBankName().concat(data.getSubbranch()));
+
         }
         return data;
     }

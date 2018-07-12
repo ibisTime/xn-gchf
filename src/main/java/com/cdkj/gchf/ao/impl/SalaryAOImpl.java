@@ -396,6 +396,7 @@ public class SalaryAOImpl implements ISalaryAO {
 
             salary.setStaffName(staff.getName());
             salary.setStaffMobile(staff.getMobile());
+            salary.setStaffIdNo(staff.getIdNo());
             employ = employBO.getEmployByStaff(salary.getStaffCode(),
                 salary.getProjectCode());
             salary.setUpUserName(getName(employ.getUpUser()));

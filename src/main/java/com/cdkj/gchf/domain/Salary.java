@@ -120,6 +120,9 @@ public class Salary extends ABaseDO {
     // 员工手机号
     private String staffMobile;
 
+    // 员工身份证号
+    private String staffIdNo;
+
     // 状态类型
     private List<String> statusList;
 
@@ -445,6 +448,14 @@ public class Salary extends ABaseDO {
 
     public void setApproveUserName(String approveUserName) {
         this.approveUserName = approveUserName;
+    }
+
+    public String getStaffIdNo() {
+        return staffIdNo;
+    }
+
+    public void setStaffIdNo(String staffIdNo) {
+        this.staffIdNo = staffIdNo;
     }
 
 }

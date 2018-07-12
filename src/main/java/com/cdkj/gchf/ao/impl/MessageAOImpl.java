@@ -89,12 +89,11 @@ public class MessageAOImpl implements IMessageAO {
 
     @Override
     @Transactional
-    public void sendMessage(String code, String title, String content,
-            String sender, String sendNote) {
+    public void sendMessage(String code, String title, String sender,
+            String sendNote) {
 
         Message data = messageBO.getMessage(code);
         data.setTitle(title);
-        data.setContent(content);
         data.setSender(sender);
         data.setSendDatetime(new Date());
         data.setSendNote(sendNote);

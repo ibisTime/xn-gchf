@@ -121,6 +121,9 @@ public class Staff extends ABaseDO {
     // 合同
     private Ccontract ccontract;
 
+    // 编号列表
+    private List<String> codeList;
+
     public void setCode(String code) {
         this.code = code;
     }
@@ -403,6 +406,14 @@ public class Staff extends ABaseDO {
 
     public void setCcontract(Ccontract ccontract) {
         this.ccontract = ccontract;
+    }
+
+    public List<String> getCodeList() {
+        return codeList;
+    }
+
+    public void setCodeList(List<String> codeList) {
+        this.codeList = codeList;
     }
 
 }

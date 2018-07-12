@@ -94,6 +94,9 @@ public class MessageBOImpl extends PaginableBOImpl<Message>
             if (data == null) {
                 throw new BizException("xn0000", "代发消息不存在");
             }
+            CompanyCard card = companyCardBO
+                .getCompanyCardByProject(data.getProjectCode());
+            data.setCompanyCard(card);
         }
         return data;
     }

@@ -19,8 +19,8 @@ public interface IMessageAO {
 
     public Message getMessage(String code);
 
-    public void sendMessage(String code, String title, String content,
-            String sender, String sendNote);
+    public void sendMessage(String code, String title, String sender,
+            String sendNote);
 
     public void approveMessage(String code, String handler, String handleNote,
             List<XN631439Req> list);

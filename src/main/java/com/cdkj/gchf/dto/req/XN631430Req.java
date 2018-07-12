@@ -18,10 +18,6 @@ public class XN631430Req {
     @NotBlank(message = "标题不能为空")
     private String title;
 
-    // 内容
-    @NotBlank(message = "内容不能为空")
-    private String content;
-
     // 发送人
     @NotBlank(message = "发送人不能为空")
     private String sender;
@@ -59,14 +55,6 @@ public class XN631430Req {
 
     public void setTitle(String title) {
         this.title = title;
-    }
-
-    public String getContent() {
-        return content;
-    }
-
-    public void setContent(String content) {
-        this.content = content;
     }
 
 }

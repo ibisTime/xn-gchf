@@ -33,8 +33,8 @@ public interface IStaffAO {
 
     public Staff getStaff(String code);
 
-    // 获取特征值
-    public String getStaffFeatList();
+    // 根据项目获取特征值
+    public String getStaffFeatList(String projectCode);
 
     // 补全信息
     public void editStaffInfo(XN631413Req req);

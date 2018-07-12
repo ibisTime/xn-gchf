@@ -40,6 +40,7 @@ import com.cdkj.gchf.dto.req.XN631412Req;
 import com.cdkj.gchf.dto.req.XN631413Req;
 import com.cdkj.gchf.dto.req.XN631413ReqSkill;
 import com.cdkj.gchf.dto.req.XN631414Req;
+import com.cdkj.gchf.enums.EEmployStatus;
 import com.cdkj.gchf.enums.EGeneratePrefix;
 import com.cdkj.gchf.enums.EIDKind;
 import com.cdkj.gchf.enums.ESalaryStatus;
@@ -181,13 +182,6 @@ public class StaffAOImpl implements IStaffAO {
     @Override
     @Transactional
     public void editStaffInfo(XN631413Req req) {
-        if (StringUtils.isNotBlank(req.getMobile())) {
-            PhoneUtil.checkMobile(req.getMobile());
-        }
-        if (StringUtils.isNotBlank(req.getContactsMobile())) {
-            PhoneUtil.checkMobile(req.getContactsMobile());
-        }
-
         Date date = new Date();
         Staff data = staffBO.getStaff(req.getCode());
         data.setContacts(req.getContacts());
@@ -221,7 +215,8 @@ public class StaffAOImpl implements IStaffAO {
             ccontractBO.refreshCcontract(checkCcontract.getCode(),
                 req.getContentPic(), contractDatetime, req.getUpdater(),
                 req.getRemark());
-        } else {
+        } else if (null != req.getProjectCode()
+                && null != req.getContentPic()) {
             ccontractBO.saveCcontract(data.getCode(), req.getProjectCode(),
                 req.getContentPic(), contractDatetime, req.getUpdater(),
                 req.getRemark());
@@ -357,9 +352,21 @@ public class StaffAOImpl implements IStaffAO {
     }
 
     @Override
-    public String getStaffFeatList() {
+    public String getStaffFeatList(String projectCode) {
+        Employ employCondition = new Employ();
+        employCondition.setProjectCode(projectCode);
+        List<Employ> employList = employBO.queryEmployListByProject(projectCode,
+            EEmployStatus.Not_Leave.getCode());
+
+        List<String> staffCodeList = new ArrayList<String>();
+        if (CollectionUtils.isNotEmpty(employList)) {
+            for (Employ employ : employList) {
+                staffCodeList.add(employ.getStaffCode());
+            }
+        }
+
         JSONArray array = new JSONArray();
-        List<Staff> list = staffBO.getStaffFeatList();
+        List<Staff> list = staffBO.getStaffFeatList(staffCodeList);
         for (Staff staff : list) {
             JSONObject obj = new JSONObject(new LinkedHashMap());
             if (StringUtils.isNotBlank(staff.getFeat())) {

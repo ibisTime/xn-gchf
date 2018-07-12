@@ -67,7 +67,11 @@ public class AttendanceAOImpl implements IAttendanceAO {
             if (EAttendanceStatus.Paied.getCode().equals(data.getStatus())) {
                 throw new BizException("xn00000", "考勤已结算，无法打卡！");
             }
-            String status = EAttendanceStatus.Unpaied.getCode();
+
+            String status = EAttendanceStatus.TO_End.getCode();
+            if (null != data.getEndDatetime()) {
+                status = EAttendanceStatus.Unpaied.getCode();
+            }
 
             attendanceBO.startWorkManualClockIn(code, status, startDatetime);
         }
@@ -84,7 +88,11 @@ public class AttendanceAOImpl implements IAttendanceAO {
             if (EAttendanceStatus.Paied.getCode().equals(data.getStatus())) {
                 throw new BizException("xn00000", "考勤已结算，无法打卡！");
             }
-            String status = EAttendanceStatus.Unpaied.getCode();
+
+            String status = EAttendanceStatus.TO_Start.getCode();
+            if (null != data.getStartDatetime()) {
+                status = EAttendanceStatus.Unpaied.getCode();
+            }
 
             attendanceBO.endWorkManualClockIn(code, status, endDatetime);
         }
@@ -221,7 +229,6 @@ public class AttendanceAOImpl implements IAttendanceAO {
                     .after(condition.getCreateDatetimeEnd())) {
             throw new BizException("xn0000", "开始时间不能大于结束时间");
         }
-
         return attendanceBO.queryAttendanceList(condition);
     }
 

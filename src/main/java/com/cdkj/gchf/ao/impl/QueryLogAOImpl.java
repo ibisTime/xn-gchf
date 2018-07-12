@@ -43,7 +43,7 @@ public class QueryLogAOImpl implements IQueryLogAO {
     @Override
     public String addQueryLog(String userId, String idNo) {
         userBO.getUser(userId);
-        Staff staff = staffBO.getStaffByIdNo(idNo);
+        Staff staff = staffBO.getStaff(idNo, null);
         QueryLog data = queryLogBO.isExist(userId, idNo);
         if (data != null) {
             return data.getCode();

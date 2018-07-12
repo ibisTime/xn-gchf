@@ -3,6 +3,7 @@ package com.cdkj.gchf.bo.impl;
 import java.util.Date;
 import java.util.List;
 
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -26,6 +27,28 @@ public class StaffBOImpl extends PaginableBOImpl<Staff> implements IStaffBO {
     @Override
     public void refreshStaff(Staff data) {
         staffDAO.update(data);
+    }
+
+    @Override
+    public void refreshStaffInfo(Staff data) {
+        staffDAO.updateStaffInfo(data);
+    }
+
+    @Override
+    public void refreshFeat(Staff data, String pict1, String feat,
+            String updater) {
+        data.setPict1(pict1);
+        data.setFeat(feat);
+        data.setUpdater(updater);
+        Date date = new Date();
+        data.setUpdateDatetime(date);
+
+        staffDAO.updateFeat(data);
+    }
+
+    @Override
+    public void refreshIdPict(Staff data) {
+        staffDAO.updateIdPict(data);
     }
 
     @Override
@@ -56,42 +79,23 @@ public class StaffBOImpl extends PaginableBOImpl<Staff> implements IStaffBO {
     }
 
     @Override
-    public Staff getStaffByIdNo(String idNo) {
+    public Staff getStaff(String idNo, String companyCode) {
         Staff data = null;
-        if (StringUtils.isNotBlank(idNo)) {
+        if (StringUtils.isNotBlank(idNo)
+                && StringUtils.isNotBlank(companyCode)) {
             Staff condition = new Staff();
             condition.setIdNo(idNo);
+            condition.setCompanyCode(companyCode);
             data = staffDAO.select(condition);
+        } else if (StringUtils.isNotBlank(idNo)
+                && StringUtils.isBlank(companyCode)) {
+            Staff condition = new Staff();
+            condition.setIdNo(idNo);
+            List<Staff> staffList = queryStaffList(condition);
+            if (CollectionUtils.isNotEmpty(staffList)) {
+                data = staffList.get(0);
+            }
         }
         return data;
-
-    }
-
-    @Override
-    public void refreshStaffInfo(Staff data) {
-        staffDAO.updateStaffInfo(data);
-    }
-
-    @Override
-    public void refreshFeat(Staff data, String pict1, String feat,
-            String updater) {
-        data.setPict1(pict1);
-        data.setFeat(feat);
-        data.setUpdater(updater);
-        Date date = new Date();
-        data.setUpdateDatetime(date);
-
-        staffDAO.updateFeat(data);
-    }
-
-    @Override
-    public void refreshIdPict(Staff data) {
-        staffDAO.updateIdPict(data);
-    }
-
-    @Override
-    public void allotDepartment(Staff staff) {
-        // TODO Auto-generated method stub
-
     }
 }

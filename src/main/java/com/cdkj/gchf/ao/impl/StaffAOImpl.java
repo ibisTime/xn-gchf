@@ -31,6 +31,7 @@ import com.cdkj.gchf.core.OrderNoGenerater;
 import com.cdkj.gchf.domain.BankCard;
 import com.cdkj.gchf.domain.Ccontract;
 import com.cdkj.gchf.domain.Employ;
+import com.cdkj.gchf.domain.Project;
 import com.cdkj.gchf.domain.Salary;
 import com.cdkj.gchf.domain.Skill;
 import com.cdkj.gchf.domain.Staff;
@@ -83,7 +84,7 @@ public class StaffAOImpl implements IStaffAO {
 
     @Override
     public String addStaff(XN631410Req req) {
-        Staff data = staffBO.getStaffByIdNo(req.getIdNo());
+        Staff data = staffBO.getStaff(req.getIdNo(), req.getCompanyCode());
         if (null != data) {
             return data.getCode();
         }
@@ -193,19 +194,6 @@ public class StaffAOImpl implements IStaffAO {
         data.setRemark(req.getRemark());
         staffBO.refreshStaffInfo(data);
 
-        // 每个员工只有一张工资卡;不存在时添加工资卡信息，存在时修改工资卡信息
-        BankCard bankCardCondition = new BankCard();
-        bankCardCondition.setStaffCode(req.getCode());
-        if (CollectionUtils
-            .isEmpty(bankCardBO.queryBankCardList(bankCardCondition))) {
-            bankCardBO.addBankCard(req, data);
-        } else {
-            BankCard bankCard = bankCardBO.getBankCardByStaff(req.getCode());
-            bankCardBO.refreshBankCard(bankCard.getCode(), req.getBankCode(),
-                req.getBankName(), req.getSubbranch(), req.getBankcardNumber(),
-                req.getUpdater(), null);
-        }
-
         // 若存在合同则更新，否则添加
         Ccontract checkCcontract = ccontractBO.isExist(req.getProjectCode(),
             data.getCode());
@@ -262,8 +250,15 @@ public class StaffAOImpl implements IStaffAO {
     }
 
     @Override
-    public Staff getStaffByIdNo(String idNo, List<String> projectCodeList) {
-        Staff data = staffBO.getStaffByIdNo(idNo);
+    public Staff getStaffByIdNo(String idNo, String companyCode,
+            List<String> projectCodeList) {
+        // 监管端查询时，公司编号为项目列表所在的公司
+        if (CollectionUtils.isNotEmpty(projectCodeList)) {
+            Project project = projectBO.getProject(projectCodeList.get(0));
+            companyCode = project.getCompanyCode();
+        }
+
+        Staff data = staffBO.getStaff(idNo, companyCode);
         if (null == data) {
             throw new BizException("xn0000", "该身份证对应的员工不存在！");
         }
@@ -327,6 +322,7 @@ public class StaffAOImpl implements IStaffAO {
         Paginable<Staff> page = staffBO.getPaginable(start, limit, condition);
         for (Staff staff : page.getList()) {
             staff.setUpdateName(getName(staff.getUpdater()));
+            staff.setBankCard(bankCardBO.getBankCardByStaff(staff.getCode()));
         }
         return page;
     }

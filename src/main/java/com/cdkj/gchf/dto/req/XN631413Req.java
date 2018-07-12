@@ -25,22 +25,6 @@ public class XN631413Req {
     // （选填）紧急联系人电话
     private String contactsMobile;
 
-    // （必填）银行别称
-    @NotBlank(message = "银行别称不能为空")
-    private String bankCode;
-
-    // （必填）银行名称
-    @NotBlank(message = "银行名称不能为空")
-    private String bankName;
-
-    // （必填）银行卡号
-    @NotBlank(message = "银行卡号不能为空")
-    private String bankcardNumber;
-
-    // （必填）开户行
-    @NotBlank(message = "开户行不能为空")
-    private String subbranch;
-
     // （选填）合同项目编号
     private String projectCode;
 
@@ -82,38 +66,6 @@ public class XN631413Req {
 
     public void setUpdater(String updater) {
         this.updater = updater;
-    }
-
-    public String getBankCode() {
-        return bankCode;
-    }
-
-    public void setBankCode(String bankCode) {
-        this.bankCode = bankCode;
-    }
-
-    public String getBankName() {
-        return bankName;
-    }
-
-    public void setBankName(String bankName) {
-        this.bankName = bankName;
-    }
-
-    public String getSubbranch() {
-        return subbranch;
-    }
-
-    public String getBankcardNumber() {
-        return bankcardNumber;
-    }
-
-    public void setBankcardNumber(String bankcardNumber) {
-        this.bankcardNumber = bankcardNumber;
-    }
-
-    public void setSubbranch(String subbranch) {
-        this.subbranch = subbranch;
     }
 
     public String getRemark() {

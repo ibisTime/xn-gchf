@@ -43,6 +43,7 @@ public interface IStaffAO {
     public Staff getStaffInfo(String code, List<String> projetCodeList);
 
     // 根据身份证号获取员工信息
-    public Staff getStaffByIdNo(String idNo, List<String> projetCodeList);
+    public Staff getStaffByIdNo(String idNo, String companyCode,
+            List<String> projetCodeList);
 
 }

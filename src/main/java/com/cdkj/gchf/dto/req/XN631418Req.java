@@ -16,6 +16,10 @@ public class XN631418Req {
     @NotBlank(message = "身份证号不能为空")
     private String idNo;
 
+    // （选填）公司编号，业主端使用
+    private String companyCode;
+
+    // （选填）项目编号列表，手持端使用
     private List<String> projectCodeList;
 
     public String getIdNo() {
@@ -32,6 +36,14 @@ public class XN631418Req {
 
     public void setProjectCodeList(List<String> projectCodeList) {
         this.projectCodeList = projectCodeList;
+    }
+
+    public String getCompanyCode() {
+        return companyCode;
+    }
+
+    public void setCompanyCode(String companyCode) {
+        this.companyCode = companyCode;
     }
 
 }

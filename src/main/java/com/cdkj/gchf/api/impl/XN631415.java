@@ -2,7 +2,6 @@ package com.cdkj.gchf.api.impl;
 
 import org.apache.commons.lang3.StringUtils;
 
-import com.cdkj.gchf.ao.IProgressAO;
 import com.cdkj.gchf.ao.IStaffAO;
 import com.cdkj.gchf.api.AProcessor;
 import com.cdkj.gchf.common.JsonUtil;
@@ -36,7 +35,7 @@ public class XN631415 extends AProcessor {
 
         String column = req.getOrderColumn();
         if (StringUtils.isBlank(column)) {
-            column = IProgressAO.DEFAULT_ORDER_COLUMN;
+            column = IStaffAO.DEFAULT_ORDER_COLUMN;
         }
         condition.setOrder(column, req.getOrderDir());
 

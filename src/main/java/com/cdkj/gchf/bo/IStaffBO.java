@@ -11,21 +11,20 @@ public interface IStaffBO extends IPaginableBO<Staff> {
 
     public void refreshStaff(Staff data);
 
-    public List<Staff> queryStaffList(Staff condition);
-
-    public Staff getStaff(String code);
-
-    public List<Staff> getStaffFeatList(List<String> staffCodeList);
-
-    public Staff getStaffByIdNo(String idNo);
-
     public void refreshFeat(Staff data, String pict1, String feat,
             String updater);
 
     public void refreshIdPict(Staff data);
 
-    public void allotDepartment(Staff staff);
-
     public void refreshStaffInfo(Staff data);
+
+    public List<Staff> queryStaffList(Staff condition);
+
+    public List<Staff> getStaffFeatList(List<String> staffCodeList);
+
+    public Staff getStaff(String code);
+
+    // 获取项目下改id的员工
+    public Staff getStaff(String idNo, String companyCode);
 
 }

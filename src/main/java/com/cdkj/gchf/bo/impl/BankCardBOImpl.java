@@ -12,8 +12,7 @@ import com.cdkj.gchf.bo.base.PaginableBOImpl;
 import com.cdkj.gchf.core.OrderNoGenerater;
 import com.cdkj.gchf.dao.IBankCardDAO;
 import com.cdkj.gchf.domain.BankCard;
-import com.cdkj.gchf.domain.Staff;
-import com.cdkj.gchf.dto.req.XN631413Req;
+import com.cdkj.gchf.dto.req.XN631420Req;
 import com.cdkj.gchf.enums.EBankCardStatus;
 import com.cdkj.gchf.enums.EGeneratePrefix;
 import com.cdkj.gchf.exception.BizException;
@@ -25,14 +24,14 @@ public class BankCardBOImpl extends PaginableBOImpl<BankCard>
     private IBankCardDAO bankCardDAO;
 
     @Override
-    public void addBankCard(XN631413Req req, Staff staff) {
+    public String addBankCard(XN631420Req req) {
         BankCard bankCard = new BankCard();
         String bankCardCode = OrderNoGenerater
             .generate(EGeneratePrefix.BankCard.getCode());
         bankCard.setCode(bankCardCode);
-        bankCard.setCompanyCode(staff.getCompanyCode());
-        bankCard.setStaffCode(req.getCode());
-        bankCard.setStaffName(staff.getName());
+        bankCard.setCompanyCode(req.getCompanyCode());
+        bankCard.setStaffCode(req.getStaffCode());
+        bankCard.setStaffName(req.getStaffName());
         bankCard.setBankCode(req.getBankCode());
 
         bankCard.setBankName(req.getBankName());
@@ -40,9 +39,12 @@ public class BankCardBOImpl extends PaginableBOImpl<BankCard>
         bankCard.setBankcardNumber(req.getBankcardNumber());
         bankCard.setStatus(EBankCardStatus.Normal.getCode());
         bankCard.setUpdater(req.getUpdater());
-        bankCard.setUpdateDatetime(new Date());
 
+        bankCard.setUpdateDatetime(new Date());
+        bankCard.setCreateDatetime(new Date());
+        bankCard.setRemark(req.getRemark());
         bankCardDAO.insert(bankCard);
+        return bankCardCode;
     }
 
     @Override
@@ -60,6 +62,19 @@ public class BankCardBOImpl extends PaginableBOImpl<BankCard>
         data.setUpdateDatetime(new Date());
         data.setRemark(remark);
         bankCardDAO.update(data);
+    }
+
+    @Override
+    public BankCard isBankCardExist(String staffCode, String companyCode) {
+        BankCard data = null;
+        if (StringUtils.isNotBlank(staffCode)
+                && StringUtils.isNotBlank(companyCode)) {
+            BankCard condition = new BankCard();
+            condition.setStaffCode(staffCode);
+            condition.setCompanyCode(companyCode);
+            data = bankCardDAO.select(condition);
+        }
+        return data;
     }
 
     @Override

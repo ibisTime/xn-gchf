@@ -13,8 +13,10 @@ import com.cdkj.gchf.bo.base.Page;
 import com.cdkj.gchf.bo.base.Paginable;
 import com.cdkj.gchf.domain.BankCard;
 import com.cdkj.gchf.domain.User;
+import com.cdkj.gchf.dto.req.XN631420Req;
 import com.cdkj.gchf.dto.req.XN631422Req;
 import com.cdkj.gchf.enums.EUser;
+import com.cdkj.gchf.exception.BizException;
 
 @Service
 public class BankCardAOImpl implements IBankCardAO {
@@ -26,10 +28,31 @@ public class BankCardAOImpl implements IBankCardAO {
     private IUserBO userBO;
 
     @Override
+    public String addBankCard(XN631420Req req) {
+        BankCard data = bankCardBO.isBankCardExist(req.getStaffCode(),
+            req.getCompanyCode());
+        if (null != data) {
+            throw new BizException("XN000", "该员工已有工资卡，请勿重复添加！");
+        }
+
+        return bankCardBO.addBankCard(req);
+    }
+
+    @Override
     public void editBankCard(XN631422Req req) {
         bankCardBO.refreshBankCard(req.getCode(), req.getBankCode(),
             req.getBankName(), req.getSubbranch(), req.getBankcardNumber(),
             req.getUpdater(), req.getRemark());
+    }
+
+    @Override
+    public boolean isBankCardExist(String staffCode, String companyCode) {
+        BankCard bankCard = bankCardBO.isBankCardExist(staffCode, companyCode);
+        if (null == bankCard) {
+            return false;
+        } else {
+            return true;
+        }
     }
 
     @Override
@@ -71,6 +94,5 @@ public class BankCardAOImpl implements IBankCardAO {
             }
         }
         return name;
-
     }
 }

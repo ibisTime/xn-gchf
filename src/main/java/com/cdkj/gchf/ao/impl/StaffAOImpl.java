@@ -29,7 +29,6 @@ import com.cdkj.gchf.common.DateUtil;
 import com.cdkj.gchf.common.PhoneUtil;
 import com.cdkj.gchf.core.OrderNoGenerater;
 import com.cdkj.gchf.domain.BankCard;
-import com.cdkj.gchf.domain.Ccontract;
 import com.cdkj.gchf.domain.Employ;
 import com.cdkj.gchf.domain.Project;
 import com.cdkj.gchf.domain.Salary;
@@ -39,7 +38,6 @@ import com.cdkj.gchf.domain.User;
 import com.cdkj.gchf.dto.req.XN631410Req;
 import com.cdkj.gchf.dto.req.XN631412Req;
 import com.cdkj.gchf.dto.req.XN631413Req;
-import com.cdkj.gchf.dto.req.XN631413ReqSkill;
 import com.cdkj.gchf.dto.req.XN631414Req;
 import com.cdkj.gchf.enums.EEmployStatus;
 import com.cdkj.gchf.enums.EGeneratePrefix;
@@ -172,55 +170,31 @@ public class StaffAOImpl implements IStaffAO {
         data.setUpdateDatetime(date);
         data.setRemark(req.getRemark());
         staffBO.refreshStaff(data);
-        // 修改技能
-        if (CollectionUtils.isNotEmpty(req.getSkillList())) {
-            for (Skill skill : req.getSkillList()) {
-                skillBO.refreshSkill(skill);
-            }
-        }
     }
 
     @Override
     @Transactional
     public void editStaffInfo(XN631413Req req) {
-        Date date = new Date();
         Staff data = staffBO.getStaff(req.getCode());
+        data.setMobile(req.getMobile());
         data.setContacts(req.getContacts());
         data.setContactsMobile(req.getContactsMobile());
 
-        data.setMobile(req.getMobile());
         data.setUpdater(req.getUpdater());
-        data.setUpdateDatetime(date);
+        data.setUpdateDatetime(new Date());
         data.setRemark(req.getRemark());
         staffBO.refreshStaffInfo(data);
 
-        // 若存在合同则更新，否则添加
-        Ccontract checkCcontract = ccontractBO.isExist(req.getProjectCode(),
-            data.getCode());
-        Date contractDatetime = DateUtil.strToDate(req.getContractDatetime(),
-            DateUtil.FRONT_DATE_FORMAT_STRING);
-        if (checkCcontract != null) {
-            ccontractBO.refreshCcontract(checkCcontract.getCode(),
-                req.getContentPic(), contractDatetime, req.getUpdater(),
-                req.getRemark());
-        } else if (null != req.getProjectCode()
-                && null != req.getContentPic()) {
-            ccontractBO.saveCcontract(data.getCode(), req.getProjectCode(),
-                req.getContentPic(), contractDatetime, req.getUpdater(),
-                req.getRemark());
+        // 保存工资卡信息,如果已有工资条则修改，否则新增
+        BankCard bankCard = bankCardBO.getBankCardByStaff(data.getCode());
+        if (null != bankCard) {
+            bankCardBO.refreshBankCard(bankCard.getCode(), req.getBankCode(),
+                req.getBankName(), req.getSubbranch(), req.getBankcardNumber(),
+                req.getUpdater(), req.getRemark());
+        } else {
+            bankCardBO.addBankCard(data, req.getBankCode(), req.getBankName(),
+                req.getSubbranch(), req.getBankcardNumber(), req.getUpdater());
         }
-
-        // 删除之前的技能信息
-        skillBO.dropSkillByStaff(req.getCode());
-        // 添加技能信息
-        if (CollectionUtils.isNotEmpty(req.getSkillList())) {
-            for (XN631413ReqSkill reqSkill : req.getSkillList()) {
-                skillBO.saveSkill(data.getCode(), data.getName(), reqSkill);
-            }
-        }
-
-        // 更新考勤员工号码信息
-        attendanceBO.updateStaffMobile(req.getCode(), req.getMobile());
     }
 
     @Override

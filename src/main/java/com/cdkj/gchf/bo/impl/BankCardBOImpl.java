@@ -12,6 +12,7 @@ import com.cdkj.gchf.bo.base.PaginableBOImpl;
 import com.cdkj.gchf.core.OrderNoGenerater;
 import com.cdkj.gchf.dao.IBankCardDAO;
 import com.cdkj.gchf.domain.BankCard;
+import com.cdkj.gchf.domain.Staff;
 import com.cdkj.gchf.dto.req.XN631420Req;
 import com.cdkj.gchf.enums.EBankCardStatus;
 import com.cdkj.gchf.enums.EGeneratePrefix;
@@ -43,6 +44,30 @@ public class BankCardBOImpl extends PaginableBOImpl<BankCard>
         bankCard.setUpdateDatetime(new Date());
         bankCard.setCreateDatetime(new Date());
         bankCard.setRemark(req.getRemark());
+        bankCardDAO.insert(bankCard);
+        return bankCardCode;
+    }
+
+    @Override
+    public String addBankCard(Staff staff, String bankCode, String bankName,
+            String subbranch, String bankcardNumber, String updater) {
+        BankCard bankCard = new BankCard();
+        String bankCardCode = OrderNoGenerater
+            .generate(EGeneratePrefix.BankCard.getCode());
+        bankCard.setCode(bankCardCode);
+        bankCard.setCompanyCode(staff.getCompanyCode());
+        bankCard.setStaffCode(staff.getCode());
+        bankCard.setStaffName(staff.getName());
+        bankCard.setBankCode(bankCode);
+
+        bankCard.setBankName(bankName);
+        bankCard.setSubbranch(subbranch);
+        bankCard.setBankcardNumber(bankcardNumber);
+        bankCard.setStatus(EBankCardStatus.Normal.getCode());
+        bankCard.setUpdater(updater);
+
+        bankCard.setUpdateDatetime(new Date());
+        bankCard.setCreateDatetime(new Date());
         bankCardDAO.insert(bankCard);
         return bankCardCode;
     }

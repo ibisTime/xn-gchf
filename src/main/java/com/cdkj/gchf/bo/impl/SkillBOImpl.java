@@ -12,7 +12,8 @@ import com.cdkj.gchf.core.OrderNoGenerater;
 import com.cdkj.gchf.core.StringValidater;
 import com.cdkj.gchf.dao.ISkillDAO;
 import com.cdkj.gchf.domain.Skill;
-import com.cdkj.gchf.dto.req.XN631413ReqSkill;
+import com.cdkj.gchf.dto.req.XN631500Req;
+import com.cdkj.gchf.dto.req.XN631502Req;
 import com.cdkj.gchf.enums.EGeneratePrefix;
 import com.cdkj.gchf.exception.BizException;
 
@@ -23,30 +24,41 @@ public class SkillBOImpl extends PaginableBOImpl<Skill> implements ISkillBO {
     ISkillDAO skillDAO;
 
     @Override
-    public void saveSkill(String staffCode, String staffName,
-            XN631413ReqSkill req) {
+    public String saveSkill(String staffCode, String staffName,
+            XN631500Req req) {
         Skill skill = new Skill();
         String skillCode = OrderNoGenerater
             .generate(EGeneratePrefix.Skill.getCode());
         skill.setCode(skillCode);
+        skill.setName(req.getName());
         skill.setStaffCode(staffCode);
         skill.setStaffName(staffName);
-        skill.setScore(StringValidater.toInteger(req.getScore()));
-        skill.setPdf(req.getPdf());
-        skill.setName(req.getName());
+        if (null != req.getScore()) {
+            skill.setScore(StringValidater.toInteger(req.getScore()));
+        }
 
+        skill.setPdf(req.getPdf());
         skillDAO.insert(skill);
+        return skillCode;
     }
 
     @Override
-    public void refreshSkill(Skill data) {
-        String skillCode = null;
-        if (null != data) {
-            skillCode = OrderNoGenerater
-                .generate(EGeneratePrefix.Skill.getCode());
-            data.setCode(skillCode);
+    public void refreshSkill(XN631502Req req) {
+        Skill data = new Skill();
+        data.setCode(req.getCode());
+        data.setName(req.getName());
+        data.setPdf(req.getPdf());
+        if (null != req.getScore()) {
+            data.setScore(StringValidater.toInteger(req.getScore()));
         }
         skillDAO.update(data);
+    }
+
+    @Override
+    public void dropSkill(String code) {
+        Skill skill = new Skill();
+        skill.setCode(code);
+        skillDAO.delete(skill);
     }
 
     @Override

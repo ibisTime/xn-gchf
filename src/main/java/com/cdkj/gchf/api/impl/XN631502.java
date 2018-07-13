@@ -1,36 +1,37 @@
 package com.cdkj.gchf.api.impl;
 
-import com.cdkj.gchf.ao.IStaffAO;
+import com.cdkj.gchf.ao.ISkillAO;
 import com.cdkj.gchf.api.AProcessor;
 import com.cdkj.gchf.common.JsonUtil;
 import com.cdkj.gchf.core.ObjValidater;
-import com.cdkj.gchf.dto.req.XN631418Req;
+import com.cdkj.gchf.dto.req.XN631502Req;
+import com.cdkj.gchf.dto.res.BooleanRes;
 import com.cdkj.gchf.exception.BizException;
 import com.cdkj.gchf.exception.ParaException;
 import com.cdkj.gchf.spring.SpringContextHolder;
 
 /**
- * 监管端查询务工人员
- * @author: nyc 
- * @since: 2018年4月29日 下午8:37:32 
+ * 修改技能
+ * @author: silver 
+ * @since: 2018年7月12日 下午3:36:05 
  * @history:
  */
-public class XN631418 extends AProcessor {
+public class XN631502 extends AProcessor {
 
-    private IStaffAO staffAO = SpringContextHolder.getBean(IStaffAO.class);
+    private ISkillAO skillAO = SpringContextHolder.getBean(ISkillAO.class);
 
-    private XN631418Req req = null;
+    private XN631502Req req = null;
 
     @Override
     public Object doBusiness() throws BizException {
-        return staffAO.getStaffByIdNo(req.getIdNo(), req.getCompanyCode(),
-            req.getProjectCodeList());
+        skillAO.editSkill(req);
+        return new BooleanRes(true);
     }
 
     @Override
     public void doCheck(String inputparams, String operator)
             throws ParaException {
-        req = JsonUtil.json2Bean(inputparams, XN631418Req.class);
+        req = JsonUtil.json2Bean(inputparams, XN631502Req.class);
         ObjValidater.validateReq(req);
     }
 

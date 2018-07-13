@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.cdkj.gchf.ao.IProjectAO;
+import com.cdkj.gchf.bo.ICompanyBO;
 import com.cdkj.gchf.bo.ICompanyCardBO;
 import com.cdkj.gchf.bo.IDepartmentBO;
 import com.cdkj.gchf.bo.IEmployBO;
@@ -20,6 +21,7 @@ import com.cdkj.gchf.bo.base.Page;
 import com.cdkj.gchf.bo.base.Paginable;
 import com.cdkj.gchf.common.DateUtil;
 import com.cdkj.gchf.core.OrderNoGenerater;
+import com.cdkj.gchf.domain.Company;
 import com.cdkj.gchf.domain.CompanyCard;
 import com.cdkj.gchf.domain.Employ;
 import com.cdkj.gchf.domain.Project;
@@ -57,13 +59,19 @@ public class ProjectAOImpl implements IProjectAO {
     @Autowired
     IDepartmentBO departmentBO;
 
+    @Autowired
+    private ICompanyBO companyBO;
+
     @Override
     public String addProject(XN631350Req req) {
         Project data = new Project();
+        Company company = companyBO.getCompany(req.getCompanyCode());
+
         String code = OrderNoGenerater
             .generate(EGeneratePrefix.Project.getCode());
         data.setCode(code);
         data.setCompanyCode(req.getCompanyCode());
+        data.setCompanyName(company.getName());
         data.setName(req.getName());
         data.setChargeUser(req.getChargeUser());
         data.setChargeMobile(req.getChargeMobile());

@@ -24,6 +24,9 @@ public class Employ extends ABaseDO {
     // 项目编号
     private String projectName;
 
+    // 部门编号
+    private String departmentCode;
+
     // 员工编号
     private String staffCode;
 
@@ -315,6 +318,14 @@ public class Employ extends ABaseDO {
 
     public void setLastLeavingDays(Integer lastLeavingDays) {
         this.lastLeavingDays = lastLeavingDays;
+    }
+
+    public String getDepartmentCode() {
+        return departmentCode;
+    }
+
+    public void setDepartmentCode(String departmentCode) {
+        this.departmentCode = departmentCode;
     }
 
 }

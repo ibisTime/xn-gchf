@@ -21,6 +21,9 @@ public class Project extends ABaseDO {
     // 公司编号
     private String companyCode;
 
+    // 公司名称
+    private String companyName;
+
     // 负责人
     private String chargeUser;
 
@@ -363,6 +366,14 @@ public class Project extends ABaseDO {
 
     public void setProjectCodeList(List<String> projectCodeList) {
         this.projectCodeList = projectCodeList;
+    }
+
+    public String getCompanyName() {
+        return companyName;
+    }
+
+    public void setCompanyName(String companyName) {
+        this.companyName = companyName;
     }
 
 }

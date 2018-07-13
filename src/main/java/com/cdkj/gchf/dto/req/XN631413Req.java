@@ -1,41 +1,41 @@
 package com.cdkj.gchf.dto.req;
 
-import java.util.List;
-
 import org.hibernate.validator.constraints.NotBlank;
 
 /**
- * 补录员工信息
+ * 录入档案信息
  * @author: silver 
- * @since: 2018年7月6日 下午12:40:48 
+ * @since: 2018年7月12日 下午5:02:20 
  * @history:
  */
 public class XN631413Req {
-
     // （必填）编号
     @NotBlank(message = "编号不能为空")
     private String code;
 
-    // （选填）联系方式
+    // （必填）联系方式
+    @NotBlank
     private String mobile;
 
-    // （选填）紧急联系人
+    // （必填）紧急联系人
+    @NotBlank
     private String contacts;
 
-    // （选填）紧急联系人电话
+    // （必填）紧急联系人电话
+    @NotBlank
     private String contactsMobile;
 
-    // （选填）合同项目编号
-    private String projectCode;
+    // 银行行别
+    private String bankCode;
 
-    // （选填）签约合同
-    private String contentPic;
+    // 银行名称
+    private String bankName;
 
-    // （选填）签约时间
-    private String contractDatetime;
+    // 开户支行
+    private String subbranch;
 
-    // 技能
-    private List<XN631413ReqSkill> skillList;
+    // 银行卡号
+    private String bankcardNumber;
 
     // （必填）更新人
     @NotBlank(message = "更新人不能为空")
@@ -60,22 +60,6 @@ public class XN631413Req {
         this.mobile = mobile;
     }
 
-    public String getUpdater() {
-        return updater;
-    }
-
-    public void setUpdater(String updater) {
-        this.updater = updater;
-    }
-
-    public String getRemark() {
-        return remark;
-    }
-
-    public void setRemark(String remark) {
-        this.remark = remark;
-    }
-
     public String getContacts() {
         return contacts;
     }
@@ -92,36 +76,52 @@ public class XN631413Req {
         this.contactsMobile = contactsMobile;
     }
 
-    public List<XN631413ReqSkill> getSkillList() {
-        return skillList;
+    public String getBankCode() {
+        return bankCode;
     }
 
-    public void setSkillList(List<XN631413ReqSkill> skillList) {
-        this.skillList = skillList;
+    public void setBankCode(String bankCode) {
+        this.bankCode = bankCode;
     }
 
-    public String getContentPic() {
-        return contentPic;
+    public String getBankName() {
+        return bankName;
     }
 
-    public void setContentPic(String contentPic) {
-        this.contentPic = contentPic;
+    public void setBankName(String bankName) {
+        this.bankName = bankName;
     }
 
-    public String getContractDatetime() {
-        return contractDatetime;
+    public String getSubbranch() {
+        return subbranch;
     }
 
-    public void setContractDatetime(String contractDatetime) {
-        this.contractDatetime = contractDatetime;
+    public void setSubbranch(String subbranch) {
+        this.subbranch = subbranch;
     }
 
-    public String getProjectCode() {
-        return projectCode;
+    public String getBankcardNumber() {
+        return bankcardNumber;
     }
 
-    public void setProjectCode(String projectCode) {
-        this.projectCode = projectCode;
+    public void setBankcardNumber(String bankcardNumber) {
+        this.bankcardNumber = bankcardNumber;
+    }
+
+    public String getUpdater() {
+        return updater;
+    }
+
+    public void setUpdater(String updater) {
+        this.updater = updater;
+    }
+
+    public String getRemark() {
+        return remark;
+    }
+
+    public void setRemark(String remark) {
+        this.remark = remark;
     }
 
 }

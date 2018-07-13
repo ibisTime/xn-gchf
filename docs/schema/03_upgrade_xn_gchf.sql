@@ -69,3 +69,8 @@ CREATE TABLE `thf_salary` (
   `late_pay_datetime` datetime DEFAULT NULL COMMENT '最近一次发放时间',
   PRIMARY KEY (`code`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+
+##V1.2.1
+ALTER TABLE `thf_employ` 
+ADD COLUMN `department_code` VARCHAR(32) NULL COMMENT '部门编号' AFTER `project_name`;

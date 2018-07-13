@@ -9,6 +9,9 @@ import org.hibernate.validator.constraints.NotBlank;
  * @history:
  */
 public class XN631460Req {
+    // （必填）员工编号
+    @NotBlank(message = "员工编号不能为空")
+    private String staffCode;
 
     // （必填）项目编码
     @NotBlank(message = "项目编号不能为空")
@@ -17,10 +20,6 @@ public class XN631460Req {
     // （必填）所属部门
     @NotBlank(message = "所属部门编号")
     private String departmentCode;
-
-    // （必填）员工编号
-    @NotBlank(message = "员工编号不能为空")
-    private String staffCode;
 
     // （必填）类别
     @NotBlank(message = "类别不能为空")
@@ -38,15 +37,9 @@ public class XN631460Req {
     @NotBlank(message = "入职时间不能为空")
     private String joinDatetime;
 
-    // （必填）扣款规则
-    @NotBlank(message = "扣款规则不能为空")
+    // （必填）迟到早退扣款金额
+    @NotBlank(message = "迟到早退扣款金额不能为空")
     private String cutAmount;
-
-    // （选填）签约合同
-    private String contentPic;
-
-    // （选填）签约时间
-    private String contractDatetime;
 
     // （必填）更新人
     @NotBlank(message = "更新不能为空")
@@ -113,22 +106,6 @@ public class XN631460Req {
 
     public void setCutAmount(String cutAmount) {
         this.cutAmount = cutAmount;
-    }
-
-    public String getContentPic() {
-        return contentPic;
-    }
-
-    public void setContentPic(String contentPic) {
-        this.contentPic = contentPic;
-    }
-
-    public String getContractDatetime() {
-        return contractDatetime;
-    }
-
-    public void setContractDatetime(String contractDatetime) {
-        this.contractDatetime = contractDatetime;
     }
 
     public String getUpdater() {

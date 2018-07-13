@@ -6,6 +6,7 @@
 		<result column="code" property="code" />
 		<result column="name" property="name" />
 		<result column="company_code" property="companyCode" />
+		<result column="company_name" property="companyName" />
 		<result column="charge_user" property="chargeUser" />
 		
 		<result column="charge_mobile" property="chargeMobile" />
@@ -107,6 +108,7 @@
 		t.code
 		,t.name
 		,t.company_code
+		,t.company_name
 		,t.charge_user
 		
 		,t.charge_mobile
@@ -156,6 +158,7 @@
 		code
 		,name
 		,company_code
+		,company_name
 		,charge_user
 		
 		,charge_mobile
@@ -182,6 +185,7 @@
 		#{code}
 		,#{name}
 		,#{companyCode}
+		,#{companyName}
 		,#{chargeUser}
 		
 		,#{chargeMobile}

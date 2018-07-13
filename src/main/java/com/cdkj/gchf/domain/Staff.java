@@ -124,6 +124,9 @@ public class Staff extends ABaseDO {
     // 编号列表
     private List<String> codeList;
 
+    // 公司名称
+    private String companyName;
+
     public void setCode(String code) {
         this.code = code;
     }
@@ -414,6 +417,14 @@ public class Staff extends ABaseDO {
 
     public void setCodeList(List<String> codeList) {
         this.codeList = codeList;
+    }
+
+    public String getCompanyName() {
+        return companyName;
+    }
+
+    public void setCompanyName(String companyName) {
+        this.companyName = companyName;
     }
 
 }

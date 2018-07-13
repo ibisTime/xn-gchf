@@ -8,17 +8,21 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import com.cdkj.gchf.bo.ICompanyBO;
 import com.cdkj.gchf.bo.IStaffBO;
 import com.cdkj.gchf.bo.base.PaginableBOImpl;
 import com.cdkj.gchf.dao.IStaffDAO;
+import com.cdkj.gchf.domain.Company;
 import com.cdkj.gchf.domain.Staff;
 import com.cdkj.gchf.exception.BizException;
 
 @Component
 public class StaffBOImpl extends PaginableBOImpl<Staff> implements IStaffBO {
-
     @Autowired
     private IStaffDAO staffDAO;
+
+    @Autowired
+    private ICompanyBO companyBO;
 
     public void saveStaff(Staff data) {
         staffDAO.insert(data);
@@ -87,6 +91,7 @@ public class StaffBOImpl extends PaginableBOImpl<Staff> implements IStaffBO {
             condition.setIdNo(idNo);
             condition.setCompanyCode(companyCode);
             data = staffDAO.select(condition);
+            initStaff(data);
         } else if (StringUtils.isNotBlank(idNo)
                 && StringUtils.isBlank(companyCode)) {
             Staff condition = new Staff();
@@ -94,8 +99,14 @@ public class StaffBOImpl extends PaginableBOImpl<Staff> implements IStaffBO {
             List<Staff> staffList = queryStaffList(condition);
             if (CollectionUtils.isNotEmpty(staffList)) {
                 data = staffList.get(0);
+                initStaff(data);
             }
         }
         return data;
+    }
+
+    private void initStaff(Staff data) {
+        Company company = companyBO.getCompany(data.getCompanyCode());
+        data.setCompanyName(company.getName());
     }
 }

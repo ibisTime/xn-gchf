@@ -76,6 +76,10 @@
 		WHERE code = #{code}
 	</update>
 	
+	<delete id="delete_skill">
+		DELETE FROM thf_skill WHERE code = #{code}
+	</delete>
+	
 	<delete id="delete_skillByStaff">
 		DELETE FROM thf_skill WHERE staff_code = #{staffCode}
 	</delete>

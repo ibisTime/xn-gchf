@@ -6,6 +6,7 @@
 		<result column="code" property="code" />
 		<result column="project_code" property="projectCode" />
 		<result column="project_name" property="projectName" />
+		<result column="department_code" property="departmentCode" />
 		<result column="staff_code" property="staffCode" />
 		<result column="staff_name" property="staffName" />
 		<result column="staff_mobile" property="staffMobile" />
@@ -36,6 +37,9 @@
 			</if>
 			<if test="staffCode != null and staffCode != '' ">
 				AND t.staff_code = #{staffCode}
+			</if>
+			<if test="departmentCode != null and departmentCode != '' ">
+				AND t.department_code = #{departmentCode}
 			</if>
 			
 			<choose>
@@ -83,6 +87,7 @@
 		t.code
 		,t.project_code
 		,t.project_name
+		,t.department_code
 		,t.staff_code
 		,t.staff_name
 		,t.staff_mobile
@@ -132,8 +137,10 @@
 		code
 		,project_code
 		,project_name
+		,department_code
 		,staff_code
 		,staff_name
+		,staff_mobile
 		,type
 		,position
 		,up_user
@@ -150,8 +157,10 @@
 		#{code}
 		,#{projectCode}
 		,#{projectName}
+		,#{departmentCode}
 		,#{staffCode}
 		,#{staffName}
+		,#{staffMobile}
 		,#{type}
 		,#{position}
 		,#{upUser}

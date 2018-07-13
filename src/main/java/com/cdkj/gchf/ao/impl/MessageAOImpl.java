@@ -278,6 +278,11 @@ public class MessageAOImpl implements IMessageAO {
         for (Message message : page.getList()) {
             message.setSendName(getName(message.getSender()));
             message.setHandleName(getName(message.getHandler()));
+
+            Project project = projectBO.getProject(message.getProjectCode());
+            Company company = companyBO.getCompany(project.getCompanyCode());
+            message.setCompanyCode(company.getCode());
+            message.setCompanyName(company.getName());
         }
         return page;
     }

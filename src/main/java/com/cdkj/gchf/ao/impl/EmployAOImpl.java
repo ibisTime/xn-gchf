@@ -3,7 +3,6 @@ package com.cdkj.gchf.ao.impl;
 import java.util.Date;
 import java.util.List;
 
-import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -94,8 +93,10 @@ public class EmployAOImpl implements IEmployAO {
         data.setCode(code);
         data.setProjectCode(req.getProjectCode());
         data.setProjectName(project.getName());
+        data.setDepartmentCode(req.getDepartmentCode());
         data.setStaffCode(staff.getCode());
         data.setStaffName(staff.getName());
+        data.setStaffMobile(staff.getMobile());
 
         data.setType(req.getType());
         data.setPosition(req.getPosition());
@@ -130,15 +131,6 @@ public class EmployAOImpl implements IEmployAO {
         attendance.setStatus(EAttendanceStatus.TO_Start.getCode());
         attendance.setCreateDatetime(date);
         attendanceBO.saveAttendance(attendance);
-
-        // 添加合同信息
-        if (StringUtils.isNotBlank(req.getContentPic())) {
-            Date contractDatetime = DateUtil.strToDate(
-                req.getContractDatetime(), DateUtil.FRONT_DATE_FORMAT_STRING);
-            ccontractBO.saveCcontract(req.getStaffCode(), req.getProjectCode(),
-                req.getContentPic(), contractDatetime, req.getUpdater(),
-                req.getRemark());
-        }
 
         // 记录员工日志
         staffLogBO.saveStaffLog(data, staff.getName(), project.getCompanyCode(),

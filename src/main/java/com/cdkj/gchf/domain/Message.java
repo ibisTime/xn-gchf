@@ -111,6 +111,12 @@ public class Message extends ABaseDO {
     // 公司账户
     private CompanyCard companyCard;
 
+    // 公司编号
+    private String companyCode;
+
+    // 公司名称
+    private String companyName;
+
     public void setCode(String code) {
         this.code = code;
     }
@@ -357,6 +363,22 @@ public class Message extends ABaseDO {
 
     public void setCompanyCard(CompanyCard companyCard) {
         this.companyCard = companyCard;
+    }
+
+    public String getCompanyCode() {
+        return companyCode;
+    }
+
+    public void setCompanyCode(String companyCode) {
+        this.companyCode = companyCode;
+    }
+
+    public String getCompanyName() {
+        return companyName;
+    }
+
+    public void setCompanyName(String companyName) {
+        this.companyName = companyName;
     }
 
 }

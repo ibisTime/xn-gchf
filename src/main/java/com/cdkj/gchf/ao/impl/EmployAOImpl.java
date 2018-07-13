@@ -161,27 +161,20 @@ public class EmployAOImpl implements IEmployAO {
 
         Employ employ = employBO.getEmploy(req.getCode());
 
-        // 计入累积入职和离职
-        if (!req.getProjectCode().equals(employ.getProjectCode())) {
-            Long nextMonthSalary = AmountUtil.mul(
-                StringValidater.toLong(req.getSalary()),
-                DateUtil.getRemainDays());
-            reportBO.refreshStaffIn(project.getCode(), nextMonthSalary);
-            leaveOffice(employ);
-        }
-
         // 修改入职
         employ.setProjectCode(req.getProjectCode());
         employ.setProjectName(project.getName());
         employ.setDepartmentCode(req.getDepartmentCode());
         employ.setType(req.getType());
         employ.setPosition(req.getPosition());
+
         employ.setSalary(StringValidater.toLong(req.getSalary()));
         employ.setJoinDatetime(DateUtil.strToDate(req.getJoinDatetime(),
             DateUtil.FRONT_DATE_FORMAT_STRING));
         employ.setCutAmount(StringValidater.toLong(req.getCutAmount()));
         employ.setUpdater(req.getUpdater());
         employ.setUpdateDatetime(new Date());
+
         employ.setRemark(req.getRemark());
         employBO.editEmploy(employ);
 
@@ -204,15 +197,6 @@ public class EmployAOImpl implements IEmployAO {
         employBO.leaveOffice(data, req.getLeavingDatetime(), req.getUpdater(),
             req.getRemark());
 
-        leaveOffice(data);
-
-        Project project = projectBO.getProject(data.getProjectCode());
-        staffLogBO.saveStaffLog(data, data.getStaffCode(),
-            project.getCompanyCode(), project.getCode(), project.getName());
-
-    }
-
-    private void leaveOffice(Employ data) {
         // 统计累积离职人数
         Report report = reportBO.getReportByProject(data.getProjectCode());
         report.setStaffOut(report.getStaffOut() + 1);
@@ -226,6 +210,11 @@ public class EmployAOImpl implements IEmployAO {
         report.setNextMonthSalary(report.getNextMonthSalary()
                 - AmountUtil.mul(data.getSalary(), DateUtil.getRemainDays()));
         reportBO.refreshNextMonthSalary(report);
+
+        Project project = projectBO.getProject(data.getProjectCode());
+        staffLogBO.saveStaffLog(data, data.getStaffCode(),
+            project.getCompanyCode(), project.getCode(), project.getName());
+
     }
 
     @Override
@@ -234,6 +223,10 @@ public class EmployAOImpl implements IEmployAO {
         Paginable<Employ> page = employBO.getPaginable(start, limit, condition);
         List<Employ> list = page.getList();
         for (Employ employ : list) {
+            // 员工信息
+            Staff staff = staffBO.getStaffBrief(employ.getStaffCode());
+            employ.setStaff(staff);
+
             initEmploy(employ);
         }
         page.setList(list);
@@ -245,6 +238,10 @@ public class EmployAOImpl implements IEmployAO {
         // 补充信息
         List<Employ> list = employBO.queryEmployList(condition);
         for (Employ employ : list) {
+            // 员工信息
+            Staff staff = staffBO.getStaffBrief(employ.getStaffCode());
+            employ.setStaff(staff);
+
             initEmploy(employ);
         }
         return list;
@@ -253,15 +250,15 @@ public class EmployAOImpl implements IEmployAO {
     @Override
     public Employ getEmploy(String code) {
         Employ data = employBO.getEmploy(code);
+        // 员工信息
+        Staff staff = staffBO.getStaff(data.getStaffCode());
+        data.setStaff(staff);
+
         initEmploy(data);
         return data;
     }
 
     private void initEmploy(Employ employ) {
-        // 员工信息
-        Staff staff = staffBO.getStaffBrief(employ.getStaffCode());
-        employ.setStaff(staff);
-
         // 公司名称
         Company company = companyBO.getCompany(employ.getCompanyCode());
         employ.setCompanyName(company.getName());

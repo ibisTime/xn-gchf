@@ -21,12 +21,6 @@ public class Staff extends ABaseDO {
     // 姓名
     private String name;
 
-    // 公司编号
-    private String companyCode;
-
-    // 部门编号
-    private String departmentCode;
-
     // 手机号
     private String mobile;
 
@@ -385,22 +379,6 @@ public class Staff extends ABaseDO {
 
     public void setAbnormalSalaryList(List<Salary> abnormalSalaryList) {
         this.abnormalSalaryList = abnormalSalaryList;
-    }
-
-    public String getDepartmentCode() {
-        return departmentCode;
-    }
-
-    public void setDepartmentCode(String departmentCode) {
-        this.departmentCode = departmentCode;
-    }
-
-    public String getCompanyCode() {
-        return companyCode;
-    }
-
-    public void setCompanyCode(String companyCode) {
-        this.companyCode = companyCode;
     }
 
     public Ccontract getCcontract() {

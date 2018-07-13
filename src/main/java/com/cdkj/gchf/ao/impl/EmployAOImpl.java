@@ -12,6 +12,8 @@ import org.springframework.transaction.annotation.Transactional;
 import com.cdkj.gchf.ao.IEmployAO;
 import com.cdkj.gchf.bo.IAttendanceBO;
 import com.cdkj.gchf.bo.ICcontractBO;
+import com.cdkj.gchf.bo.ICompanyBO;
+import com.cdkj.gchf.bo.IDepartmentBO;
 import com.cdkj.gchf.bo.IEmployBO;
 import com.cdkj.gchf.bo.IProjectBO;
 import com.cdkj.gchf.bo.IReportBO;
@@ -24,6 +26,8 @@ import com.cdkj.gchf.common.DateUtil;
 import com.cdkj.gchf.core.OrderNoGenerater;
 import com.cdkj.gchf.core.StringValidater;
 import com.cdkj.gchf.domain.Attendance;
+import com.cdkj.gchf.domain.Company;
+import com.cdkj.gchf.domain.Department;
 import com.cdkj.gchf.domain.Employ;
 import com.cdkj.gchf.domain.Project;
 import com.cdkj.gchf.domain.Report;
@@ -31,6 +35,7 @@ import com.cdkj.gchf.domain.Staff;
 import com.cdkj.gchf.domain.User;
 import com.cdkj.gchf.dto.req.XN631460Req;
 import com.cdkj.gchf.dto.req.XN631462Req;
+import com.cdkj.gchf.dto.req.XN631463Req;
 import com.cdkj.gchf.enums.EAttendanceStatus;
 import com.cdkj.gchf.enums.EEmployStatus;
 import com.cdkj.gchf.enums.EGeneratePrefix;
@@ -68,6 +73,12 @@ public class EmployAOImpl implements IEmployAO {
     @Autowired
     ICcontractBO ccontractBO;
 
+    @Autowired
+    private IDepartmentBO departmentBO;
+
+    @Autowired
+    private ICompanyBO companyBO;
+
     @Override
     @Transactional
     public String joinIn(XN631460Req req) {
@@ -91,6 +102,7 @@ public class EmployAOImpl implements IEmployAO {
         Staff staff = staffBO.getStaff(req.getStaffCode());
 
         data.setCode(code);
+        data.setCompanyCode(req.getCompanyCode());
         data.setProjectCode(req.getProjectCode());
         data.setProjectName(project.getName());
         data.setDepartmentCode(req.getDepartmentCode());
@@ -128,6 +140,7 @@ public class EmployAOImpl implements IEmployAO {
 
         attendance.setStaffCode(staff.getCode());
         attendance.setStaffName(staff.getName());
+        attendance.setStaffMobile(staff.getMobile());
         attendance.setStatus(EAttendanceStatus.TO_Start.getCode());
         attendance.setCreateDatetime(date);
         attendanceBO.saveAttendance(attendance);
@@ -136,6 +149,45 @@ public class EmployAOImpl implements IEmployAO {
         staffLogBO.saveStaffLog(data, staff.getName(), project.getCompanyCode(),
             project.getCode(), project.getName());
         return code;
+    }
+
+    @Override
+    @Transactional
+    public void editEmploy(XN631463Req req) {
+        Project project = projectBO.getProject(req.getProjectCode());
+        if (!EProjectStatus.Building.getCode().equals(project.getStatus())) {
+            throw new BizException("xn0000", "该项目未通过审核或已停工");
+        }
+
+        Employ employ = employBO.getEmploy(req.getCode());
+
+        // 计入累积入职和离职
+        if (!req.getProjectCode().equals(employ.getProjectCode())) {
+            Long nextMonthSalary = AmountUtil.mul(
+                StringValidater.toLong(req.getSalary()),
+                DateUtil.getRemainDays());
+            reportBO.refreshStaffIn(project.getCode(), nextMonthSalary);
+            leaveOffice(employ);
+        }
+
+        // 修改入职
+        employ.setProjectCode(req.getProjectCode());
+        employ.setProjectName(project.getName());
+        employ.setDepartmentCode(req.getDepartmentCode());
+        employ.setType(req.getType());
+        employ.setPosition(req.getPosition());
+        employ.setSalary(StringValidater.toLong(req.getSalary()));
+        employ.setJoinDatetime(DateUtil.strToDate(req.getJoinDatetime(),
+            DateUtil.FRONT_DATE_FORMAT_STRING));
+        employ.setCutAmount(StringValidater.toLong(req.getCutAmount()));
+        employ.setUpdater(req.getUpdater());
+        employ.setUpdateDatetime(new Date());
+        employ.setRemark(req.getRemark());
+        employBO.editEmploy(employ);
+
+        // 记录员工日志
+        staffLogBO.saveStaffLog(employ, employ.getStaffName(),
+            project.getCompanyCode(), project.getCode(), project.getName());
     }
 
     @Override
@@ -151,6 +203,16 @@ public class EmployAOImpl implements IEmployAO {
         }
         employBO.leaveOffice(data, req.getLeavingDatetime(), req.getUpdater(),
             req.getRemark());
+
+        leaveOffice(data);
+
+        Project project = projectBO.getProject(data.getProjectCode());
+        staffLogBO.saveStaffLog(data, data.getStaffCode(),
+            project.getCompanyCode(), project.getCode(), project.getName());
+
+    }
+
+    private void leaveOffice(Employ data) {
         // 统计累积离职人数
         Report report = reportBO.getReportByProject(data.getProjectCode());
         report.setStaffOut(report.getStaffOut() + 1);
@@ -164,11 +226,6 @@ public class EmployAOImpl implements IEmployAO {
         report.setNextMonthSalary(report.getNextMonthSalary()
                 - AmountUtil.mul(data.getSalary(), DateUtil.getRemainDays()));
         reportBO.refreshNextMonthSalary(report);
-
-        Project project = projectBO.getProject(data.getProjectCode());
-        staffLogBO.saveStaffLog(data, data.getStaffCode(),
-            project.getCompanyCode(), project.getCode(), project.getName());
-
     }
 
     @Override
@@ -177,11 +234,7 @@ public class EmployAOImpl implements IEmployAO {
         Paginable<Employ> page = employBO.getPaginable(start, limit, condition);
         List<Employ> list = page.getList();
         for (Employ employ : list) {
-            Staff staff = staffBO.getStaff(employ.getStaffCode());
-            employ.setStaff(staff);
-
-            employ.setUpUserName(getName(employ.getUpUser()));
-            employ.setUpdateName(getName(employ.getUpdater()));
+            initEmploy(employ);
         }
         page.setList(list);
         return page;
@@ -192,11 +245,7 @@ public class EmployAOImpl implements IEmployAO {
         // 补充信息
         List<Employ> list = employBO.queryEmployList(condition);
         for (Employ employ : list) {
-            Staff staff = staffBO.getStaff(employ.getStaffCode());
-            employ.setStaff(staff);
-            employ.setStaff(staff);
-            employ.setUpUserName(getName(employ.getUpUser()));
-            employ.setUpdateName(getName(employ.getUpdater()));
+            initEmploy(employ);
         }
         return list;
     }
@@ -204,13 +253,29 @@ public class EmployAOImpl implements IEmployAO {
     @Override
     public Employ getEmploy(String code) {
         Employ data = employBO.getEmploy(code);
-        Staff staff = staffBO.getStaff(data.getStaffCode());
-        data.setStaff(staff);
-        String upUesrName = getName(data.getUpUser());
-        String updateName = getName(data.getUpdater());
-        data.setUpUserName(upUesrName);
-        data.setUpdateName(updateName);
+        initEmploy(data);
         return data;
+    }
+
+    private void initEmploy(Employ employ) {
+        // 员工信息
+        Staff staff = staffBO.getStaffBrief(employ.getStaffCode());
+        employ.setStaff(staff);
+
+        // 公司名称
+        Company company = companyBO.getCompany(employ.getCompanyCode());
+        employ.setCompanyName(company.getName());
+
+        // 部门名称
+        Department department = departmentBO
+            .getDepartment(employ.getDepartmentCode());
+        employ.setDepartmentName(department.getName());
+
+        // 上级人员
+        employ.setUpUserName(getName(employ.getUpUser()));
+
+        // 更新人
+        employ.setUpdateName(getName(employ.getUpdater()));
     }
 
     private String getName(String userId) {

@@ -18,7 +18,10 @@ public class XN631465Req extends APageReq {
     // （选填）关键字
     private String keyword;
 
-    // （必填）项目编号
+    // (选填)公司编号
+    private String companyCode;
+
+    // （选填）项目编号
     private String projectCode;
 
     // （选填）状态
@@ -38,9 +41,6 @@ public class XN631465Req extends APageReq {
 
     // 状态列表
     private List<String> statusList;
-
-    // 编号列表
-    private List<String> companyCodeList;
 
     public String getKeyword() {
         return keyword;
@@ -98,20 +98,20 @@ public class XN631465Req extends APageReq {
         this.statusList = statusList;
     }
 
-    public List<String> getCompanyCodeList() {
-        return companyCodeList;
-    }
-
-    public void setCompanyCodeList(List<String> companyCodeList) {
-        this.companyCodeList = companyCodeList;
-    }
-
     public String getStaffCode() {
         return staffCode;
     }
 
     public void setStaffCode(String staffCode) {
         this.staffCode = staffCode;
+    }
+
+    public String getCompanyCode() {
+        return companyCode;
+    }
+
+    public void setCompanyCode(String companyCode) {
+        this.companyCode = companyCode;
     }
 
 }

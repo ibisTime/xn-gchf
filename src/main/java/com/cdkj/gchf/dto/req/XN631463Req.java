@@ -3,19 +3,15 @@ package com.cdkj.gchf.dto.req;
 import org.hibernate.validator.constraints.NotBlank;
 
 /**
- * 员工入职
- * @author: nyc 
- * @since: 2018年4月29日 下午7:32:21 
+ * 修改入职信息
+ * @author: silver 
+ * @since: 2018年7月13日 上午11:47:02 
  * @history:
  */
-public class XN631460Req {
-    // （必填）员工编号
-    @NotBlank(message = "员工编号不能为空")
-    private String staffCode;
-
-    // （必填）公司编号
-    @NotBlank
-    private String companyCode;
+public class XN631463Req {
+    // （必填）编号
+    @NotBlank(message = "编号不能为空")
+    private String code;
 
     // （必填）项目编码
     @NotBlank(message = "项目编号不能为空")
@@ -58,14 +54,6 @@ public class XN631460Req {
 
     public void setProjectCode(String projectCode) {
         this.projectCode = projectCode;
-    }
-
-    public String getStaffCode() {
-        return staffCode;
-    }
-
-    public void setStaffCode(String staffCode) {
-        this.staffCode = staffCode;
     }
 
     public String getType() {
@@ -132,12 +120,12 @@ public class XN631460Req {
         this.type = type;
     }
 
-    public String getCompanyCode() {
-        return companyCode;
+    public String getCode() {
+        return code;
     }
 
-    public void setCompanyCode(String companyCode) {
-        this.companyCode = companyCode;
+    public void setCode(String code) {
+        this.code = code;
     }
 
 }

@@ -28,6 +28,12 @@ public class StaffDAOImpl extends AMybatisTemplate implements IStaffDAO {
     }
 
     @Override
+    public Staff selectBrief(Staff data) {
+        return super.select(NAMESPACE.concat("select_staffBrief"), data,
+            Staff.class);
+    }
+
+    @Override
     public long selectTotalCount(Staff condition) {
         return super.selectTotalCount(NAMESPACE.concat("select_staff_count"),
             condition);
@@ -65,5 +71,4 @@ public class StaffDAOImpl extends AMybatisTemplate implements IStaffDAO {
         super.update(NAMESPACE.concat("update_StaffInfo"), data);
 
     }
-
 }

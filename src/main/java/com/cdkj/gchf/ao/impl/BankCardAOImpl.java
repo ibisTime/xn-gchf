@@ -81,6 +81,7 @@ public class BankCardAOImpl implements IBankCardAO {
     public BankCard getBankCard(String code) {
         BankCard data = bankCardBO.getBankCard(code);
         data.setUpdateName(getName(data.getUpdater()));
+        data.setBankSubbranchName(data.getBankName() + data.getSubbranch());
         return data;
     }
 

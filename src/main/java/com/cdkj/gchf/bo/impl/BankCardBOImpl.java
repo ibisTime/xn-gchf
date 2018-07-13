@@ -55,7 +55,6 @@ public class BankCardBOImpl extends PaginableBOImpl<BankCard>
         String bankCardCode = OrderNoGenerater
             .generate(EGeneratePrefix.BankCard.getCode());
         bankCard.setCode(bankCardCode);
-        bankCard.setCompanyCode(staff.getCompanyCode());
         bankCard.setStaffCode(staff.getCode());
         bankCard.setStaffName(staff.getName());
         bankCard.setBankCode(bankCode);
@@ -128,6 +127,10 @@ public class BankCardBOImpl extends PaginableBOImpl<BankCard>
             BankCard condition = new BankCard();
             condition.setStaffCode(staffCode);
             data = bankCardDAO.select(condition);
+            if (data != null) {
+                data.setBankSubbranchName(
+                    data.getBankName() + data.getSubbranch());
+            }
         }
         return data;
     }

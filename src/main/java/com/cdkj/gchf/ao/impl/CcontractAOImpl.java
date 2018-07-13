@@ -52,6 +52,9 @@ public class CcontractAOImpl implements ICcontractAO {
         if (!EProjectStatus.Building.getCode().equals(project.getStatus())) {
             throw new BizException("xn00000", "该项目还未通过审核");
         }
+        if (null != ccontractBO.getCcontractByStaff(req.getStaffCode())) {
+            throw new BizException("XN000", "员工已存在合同，请勿重复添加!");
+        }
 
         Date contractDatetime = DateUtil.strToDate(req.getContractDatetime(),
             DateUtil.FRONT_DATE_FORMAT_STRING);

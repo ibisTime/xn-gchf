@@ -28,7 +28,7 @@ public class XN631425 extends AProcessor {
     @Override
     public Object doBusiness() throws BizException {
         BankCard condition = new BankCard();
-        condition.setCompanyCode(req.getCompanyCode());
+        // condition.setCompanyCode(req.getCompanyCode());//现在工资卡只和档案关联，这里暂时取消
         condition.setUpdater(req.getUpdater());
         condition.setStaffCode(req.getStaffCode());
         condition.setStatus(req.getStatus());

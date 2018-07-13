@@ -46,6 +46,7 @@ public class CcontractBOImpl extends PaginableBOImpl<Ccontract>
         ccontract.setStaffCode(staffCode);
         ccontract.setStaffName(staff.getName());
 
+        ccontract.setStaffMobile(staff.getMobile());
         ccontract.setContentPic(contentPic);
         ccontract.setContractDatetime(contractDatetime);
         ccontract.setUpdater(updater);

@@ -7,10 +7,14 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import com.cdkj.gchf.bo.ICompanyBO;
+import com.cdkj.gchf.bo.IDepartmentBO;
 import com.cdkj.gchf.bo.IEmployBO;
 import com.cdkj.gchf.bo.base.PaginableBOImpl;
 import com.cdkj.gchf.common.DateUtil;
 import com.cdkj.gchf.dao.IEmployDAO;
+import com.cdkj.gchf.domain.Company;
+import com.cdkj.gchf.domain.Department;
 import com.cdkj.gchf.domain.Employ;
 import com.cdkj.gchf.enums.EEmployStatus;
 import com.cdkj.gchf.exception.BizException;
@@ -20,6 +24,12 @@ public class EmployBOImpl extends PaginableBOImpl<Employ> implements IEmployBO {
 
     @Autowired
     private IEmployDAO employDAO;
+
+    @Autowired
+    private IDepartmentBO departmentBO;
+
+    @Autowired
+    private ICompanyBO companyBO;
 
     public void joinIn(Employ data) {
         employDAO.insert(data);
@@ -49,6 +59,11 @@ public class EmployBOImpl extends PaginableBOImpl<Employ> implements IEmployBO {
     }
 
     @Override
+    public void editEmploy(Employ data) {
+        employDAO.update(data);
+    }
+
+    @Override
     public long getSalaryCount(Employ condition) {
         return employDAO.getSalaryCount(condition);
     }
@@ -72,6 +87,10 @@ public class EmployBOImpl extends PaginableBOImpl<Employ> implements IEmployBO {
             condition.setProjectCode(projectCode);
             condition.setStaffCode(staffCode);
             data = employDAO.select(condition);
+            if (null != data) {
+                initEmploy(data);
+            }
+
         }
         return data;
     }
@@ -107,5 +126,16 @@ public class EmployBOImpl extends PaginableBOImpl<Employ> implements IEmployBO {
     @Override
     public void updateLeavingStatus(Employ employ) {
         employDAO.updateLeavingStatus(employ);
+    }
+
+    private void initEmploy(Employ employ) {
+        // 公司名称
+        Company company = companyBO.getCompany(employ.getCompanyCode());
+        employ.setCompanyName(company.getName());
+
+        // 部门名称
+        Department department = departmentBO
+            .getDepartment(employ.getDepartmentCode());
+        employ.setDepartmentName(department.getName());
     }
 }

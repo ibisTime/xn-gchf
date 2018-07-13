@@ -3,16 +3,15 @@ package com.cdkj.gchf.bo.impl;
 import java.util.Date;
 import java.util.List;
 
-import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import com.cdkj.gchf.bo.ICompanyBO;
 import com.cdkj.gchf.bo.IStaffBO;
 import com.cdkj.gchf.bo.base.PaginableBOImpl;
+import com.cdkj.gchf.dao.IBankCardDAO;
 import com.cdkj.gchf.dao.IStaffDAO;
-import com.cdkj.gchf.domain.Company;
+import com.cdkj.gchf.domain.BankCard;
 import com.cdkj.gchf.domain.Staff;
 import com.cdkj.gchf.exception.BizException;
 
@@ -22,7 +21,7 @@ public class StaffBOImpl extends PaginableBOImpl<Staff> implements IStaffBO {
     private IStaffDAO staffDAO;
 
     @Autowired
-    private ICompanyBO companyBO;
+    private IBankCardDAO bankCardDAO;
 
     public void saveStaff(Staff data) {
         staffDAO.insert(data);
@@ -75,6 +74,23 @@ public class StaffBOImpl extends PaginableBOImpl<Staff> implements IStaffBO {
     }
 
     @Override
+    public Staff getStaffBrief(String code) {
+        Staff data = null;
+        if (StringUtils.isNotBlank(code)) {
+            Staff condition = new Staff();
+            condition.setCode(code);
+            data = staffDAO.selectBrief(condition);
+            if (data == null) {
+                throw new BizException("xn0000", "员工不存在");
+            }
+            BankCard bankCard = new BankCard();
+            bankCard.setStaffCode(code);
+            data.setBankCard(bankCardDAO.select(bankCard));
+        }
+        return data;
+    }
+
+    @Override
     public List<Staff> getStaffFeatList(List<String> staffCodeList) {
         Staff condition = new Staff();
         condition.setCodeList(staffCodeList);
@@ -83,30 +99,13 @@ public class StaffBOImpl extends PaginableBOImpl<Staff> implements IStaffBO {
     }
 
     @Override
-    public Staff getStaff(String idNo, String companyCode) {
+    public Staff getStaffByIdNo(String idNo) {
         Staff data = null;
-        if (StringUtils.isNotBlank(idNo)
-                && StringUtils.isNotBlank(companyCode)) {
+        if (StringUtils.isNotBlank(idNo)) {
             Staff condition = new Staff();
             condition.setIdNo(idNo);
-            condition.setCompanyCode(companyCode);
             data = staffDAO.select(condition);
-            initStaff(data);
-        } else if (StringUtils.isNotBlank(idNo)
-                && StringUtils.isBlank(companyCode)) {
-            Staff condition = new Staff();
-            condition.setIdNo(idNo);
-            List<Staff> staffList = queryStaffList(condition);
-            if (CollectionUtils.isNotEmpty(staffList)) {
-                data = staffList.get(0);
-                initStaff(data);
-            }
         }
         return data;
-    }
-
-    private void initStaff(Staff data) {
-        Company company = companyBO.getCompany(data.getCompanyCode());
-        data.setCompanyName(company.getName());
     }
 }

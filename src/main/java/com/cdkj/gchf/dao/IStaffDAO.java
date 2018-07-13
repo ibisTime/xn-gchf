@@ -17,4 +17,7 @@ public interface IStaffDAO extends IBaseDAO<Staff> {
 
     // 补全信息
     void updateStaffInfo(Staff data);
+
+    // 查询员工简介信息
+    public Staff selectBrief(Staff data);
 }

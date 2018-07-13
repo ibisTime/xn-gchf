@@ -8,6 +8,7 @@ import com.cdkj.gchf.bo.base.Paginable;
 import com.cdkj.gchf.domain.Employ;
 import com.cdkj.gchf.dto.req.XN631460Req;
 import com.cdkj.gchf.dto.req.XN631462Req;
+import com.cdkj.gchf.dto.req.XN631463Req;
 
 @Component
 public interface IEmployAO {
@@ -18,6 +19,9 @@ public interface IEmployAO {
 
     // 离职
     public void leaveOffice(XN631462Req req);
+
+    // 修改入职信息
+    public void editEmploy(XN631463Req req);
 
     // 每天凌晨更新请假状态
     public void updateEmployStatusDaily();

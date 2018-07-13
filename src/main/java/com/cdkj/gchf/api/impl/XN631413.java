@@ -5,12 +5,13 @@ import com.cdkj.gchf.api.AProcessor;
 import com.cdkj.gchf.common.JsonUtil;
 import com.cdkj.gchf.core.ObjValidater;
 import com.cdkj.gchf.dto.req.XN631413Req;
+import com.cdkj.gchf.dto.res.BooleanRes;
 import com.cdkj.gchf.exception.BizException;
 import com.cdkj.gchf.exception.ParaException;
 import com.cdkj.gchf.spring.SpringContextHolder;
 
 /**
- * 录入务工人员
+ * 录入建档信息
  * @author: nyc 
  * @since: 2018年4月29日 下午8:37:32 
  * @history:
@@ -24,7 +25,7 @@ public class XN631413 extends AProcessor {
     @Override
     public Object doBusiness() throws BizException {
         staffAO.editStaffInfo(req);
-        return new Boolean(true);
+        return new BooleanRes(true);
     }
 
     @Override

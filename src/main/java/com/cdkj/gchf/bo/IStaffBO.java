@@ -24,7 +24,9 @@ public interface IStaffBO extends IPaginableBO<Staff> {
 
     public Staff getStaff(String code);
 
-    // 获取项目下改id的员工
-    public Staff getStaff(String idNo, String companyCode);
+    // 根据身份证查询员工
+    public Staff getStaffByIdNo(String idNo);
 
+    // 查询员工简介信息
+    public Staff getStaffBrief(String code);
 }

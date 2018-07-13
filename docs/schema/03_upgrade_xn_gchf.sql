@@ -73,4 +73,19 @@ CREATE TABLE `thf_salary` (
 
 ##V1.2.1
 ALTER TABLE `thf_employ` 
+ADD COLUMN `company_code` VARCHAR(32) NULL COMMENT '公司编号' AFTER `code`,
 ADD COLUMN `department_code` VARCHAR(32) NULL COMMENT '部门编号' AFTER `project_name`;
+update thf_employ set company_code = (select company_code from thf_project where thf_employ.project_code = thf_project.code);
+
+ALTER TABLE `thf_staff` 
+DROP COLUMN `skill_pdf`,
+DROP COLUMN `department_code`,
+DROP COLUMN `company_code`,
+CHANGE COLUMN `remark` `remark` TEXT NULL DEFAULT NULL COMMENT '备注' AFTER `contacts_mobile`;
+
+ALTER TABLE `thf_project` 
+DROP COLUMN `department_code`;
+
+ALTER TABLE `thf_department` 
+DROP COLUMN `company_code`;
+

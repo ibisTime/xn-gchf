@@ -28,14 +28,14 @@ public class XN631465 extends AProcessor {
     public Object doBusiness() throws BizException {
         Employ condition = new Employ();
         condition.setKeyword(req.getKeyword());
+        condition.setCompanyCode(req.getCompanyCode());
         condition.setProjectCode(req.getProjectCode());
         condition.setStatus(req.getStatus());
         condition.setType(req.getType());
-        condition.setUpUser(req.getUpUser());
 
+        condition.setUpUser(req.getUpUser());
         condition.setStatusList(req.getStatusList());
         condition.setUpdater(req.getUpdater());
-        condition.setProjectCodeList(req.getCompanyCodeList());
         condition.setStaffCode(req.getStaffCode());
 
         String column = req.getOrderColumn();

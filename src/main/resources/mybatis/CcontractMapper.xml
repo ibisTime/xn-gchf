@@ -6,8 +6,9 @@
 		<result column="code" property="code" />
 		<result column="project_code" property="projectCode" />
 		<result column="staff_code" property="staffCode" />
-		
 		<result column="staff_name" property="staffName" />
+		<result column="staff_mobile" property="staffMobile" />
+		
 		<result column="content_pic" property="contentPic" />
 		<result column="contract_datetime" property="contractDatetime" />
 		<result column="updater" property="updater" />
@@ -51,6 +52,7 @@
 		,t.project_name
 		,t.staff_code
 		,t.staff_name
+		,t.staff_mobile
 		,t.content_pic
 		,t.contract_datetime
 		,t.updater
@@ -80,6 +82,7 @@
 		,project_name
 		,staff_code
 		,staff_name
+		,staff_mobile
 		,content_pic
 		,contract_datetime
 		,updater
@@ -92,6 +95,7 @@
 		,#{projectName}
 		,#{staffCode}
 		,#{staffName}
+		,#{staffMobile}
 		,#{contentPic}
 		,#{contractDatetime}
 		,#{updater}
@@ -110,6 +114,4 @@
 		,remark = #{remark}
 		WHERE code = #{code}
 	</update>
-
-
 </mapper>

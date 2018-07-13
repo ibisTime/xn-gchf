@@ -63,6 +63,9 @@ public class BankCard extends ABaseDO {
 
     private List<Employ> list;
 
+    // 银行名称 + 支行名称
+    private String bankSubbranchName;
+
     public void setCode(String code) {
         this.code = code;
     }
@@ -197,6 +200,14 @@ public class BankCard extends ABaseDO {
 
     public void setList(List<Employ> list) {
         this.list = list;
+    }
+
+    public String getBankSubbranchName() {
+        return bankSubbranchName;
+    }
+
+    public void setBankSubbranchName(String bankSubbranchName) {
+        this.bankSubbranchName = bankSubbranchName;
     }
 
 }

@@ -22,7 +22,6 @@ import com.cdkj.gchf.bo.IProjectBO;
 import com.cdkj.gchf.bo.ISalaryBO;
 import com.cdkj.gchf.bo.ISkillBO;
 import com.cdkj.gchf.bo.IStaffBO;
-import com.cdkj.gchf.bo.ISubbranchBO;
 import com.cdkj.gchf.bo.IUserBO;
 import com.cdkj.gchf.bo.base.Paginable;
 import com.cdkj.gchf.common.DateUtil;
@@ -33,7 +32,6 @@ import com.cdkj.gchf.domain.Employ;
 import com.cdkj.gchf.domain.Salary;
 import com.cdkj.gchf.domain.Skill;
 import com.cdkj.gchf.domain.Staff;
-import com.cdkj.gchf.domain.Subbranch;
 import com.cdkj.gchf.domain.User;
 import com.cdkj.gchf.dto.req.XN631410Req;
 import com.cdkj.gchf.dto.req.XN631412Req;
@@ -76,9 +74,6 @@ public class StaffAOImpl implements IStaffAO {
 
     @Autowired
     IDepartmentBO departmentBO;
-
-    @Autowired
-    private ISubbranchBO SubbranchBO;
 
     @Override
     public String addStaff(XN631410Req req) {
@@ -183,23 +178,6 @@ public class StaffAOImpl implements IStaffAO {
         data.setUpdateDatetime(new Date());
         data.setRemark(req.getRemark());
         staffBO.refreshStaffInfo(data);
-
-        // 1、如果填写了银行信息
-        // 2、保存工资卡信息：如果已有工资卡则修改，否则新增
-        BankCard bankCard = bankCardBO.getBankCardByStaff(data.getCode());
-        Subbranch subbranch = SubbranchBO.getSubbranch(req.getSubbranch());
-        if (null != subbranch) {
-            if (null != bankCard) {
-                bankCardBO.refreshBankCard(bankCard.getCode(),
-                    req.getBankCode(), req.getBankName(),
-                    subbranch.getSubbranchName(), req.getBankcardNumber(),
-                    req.getUpdater(), req.getRemark());
-            } else {
-                bankCardBO.addBankCard(data, req.getBankCode(),
-                    req.getBankName(), subbranch.getSubbranchName(),
-                    req.getBankcardNumber(), req.getUpdater());
-            }
-        }
     }
 
     @Override

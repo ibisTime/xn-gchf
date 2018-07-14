@@ -89,3 +89,6 @@ DROP COLUMN `department_code`;
 ALTER TABLE `thf_department` 
 DROP COLUMN `company_code`;
 
+ALTER TABLE `thf_bank_card` 
+ADD COLUMN `project_code` VARCHAR(32) NULL COMMENT '项目编号' AFTER `company_code`;
+

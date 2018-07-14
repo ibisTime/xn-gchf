@@ -45,6 +45,18 @@ public class XN631460Req {
     @NotBlank(message = "迟到早退扣款金额不能为空")
     private String cutAmount;
 
+    // 银行行别
+    private String bankCode;
+
+    // 银行名称
+    private String bankName;
+
+    // 开户支行
+    private String subbranch;
+
+    // 银行卡号
+    private String bankcardNumber;
+
     // （必填）更新人
     @NotBlank(message = "更新不能为空")
     private String updater;
@@ -138,6 +150,38 @@ public class XN631460Req {
 
     public void setCompanyCode(String companyCode) {
         this.companyCode = companyCode;
+    }
+
+    public String getBankCode() {
+        return bankCode;
+    }
+
+    public void setBankCode(String bankCode) {
+        this.bankCode = bankCode;
+    }
+
+    public String getBankName() {
+        return bankName;
+    }
+
+    public void setBankName(String bankName) {
+        this.bankName = bankName;
+    }
+
+    public String getSubbranch() {
+        return subbranch;
+    }
+
+    public void setSubbranch(String subbranch) {
+        this.subbranch = subbranch;
+    }
+
+    public String getBankcardNumber() {
+        return bankcardNumber;
+    }
+
+    public void setBankcardNumber(String bankcardNumber) {
+        this.bankcardNumber = bankcardNumber;
     }
 
 }

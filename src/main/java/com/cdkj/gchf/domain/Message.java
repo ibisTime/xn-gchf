@@ -117,6 +117,9 @@ public class Message extends ABaseDO {
     // 公司名称
     private String companyName;
 
+    // 消息所属公司项目
+    private String sendCompanyProject;
+
     public void setCode(String code) {
         this.code = code;
     }
@@ -379,6 +382,14 @@ public class Message extends ABaseDO {
 
     public void setCompanyName(String companyName) {
         this.companyName = companyName;
+    }
+
+    public String getSendCompanyProject() {
+        return sendCompanyProject;
+    }
+
+    public void setSendCompanyProject(String sendCompanyProject) {
+        this.sendCompanyProject = sendCompanyProject;
     }
 
 }

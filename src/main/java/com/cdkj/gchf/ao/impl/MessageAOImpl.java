@@ -6,6 +6,7 @@ import java.util.Date;
 import java.util.List;
 
 import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -111,11 +112,19 @@ public class MessageAOImpl implements IMessageAO {
             }
             salary.setStatus(ESalaryStatus.TO_Pay.getCode());
             salaryBO.refreshStatus(salary);
-            bankCard = bankCardBO.getBankCardByStaff(salary.getStaffCode());
+
+            // 判断该员工在该工程下是否有银行卡
+            bankCard = bankCardBO.getBankCard(salary.getStaffCode(),
+                data.getProjectCode());
             if (bankCard == null) {
                 throw new BizException("xn00000",
                     "员工：" + salary.getStaffName() + "，未录入银行卡信息，请补全信息后再发送");
+            } else if (StringUtils.isBlank(bankCard.getBankcardNumber())
+                    || StringUtils.isBlank(bankCard.getBankName())) {
+                throw new BizException("xn00000",
+                    "员工：" + salary.getStaffName() + "，请补全银行卡信息后再发送");
             }
+
         }
         messageBO.sendMessage(data);
     }
@@ -300,6 +309,10 @@ public class MessageAOImpl implements IMessageAO {
         for (Message message : list) {
             message.setSendName(getName(message.getSender()));
             message.setHandleName(getName(message.getHandler()));
+
+            Project project = projectBO.getProject(message.getProjectCode());
+            message.setSendCompanyProject(
+                project.getCompanyName().concat(project.getName()));
         }
         return list;
     }

@@ -8,10 +8,12 @@ import org.springframework.stereotype.Service;
 
 import com.cdkj.gchf.ao.IBankCardAO;
 import com.cdkj.gchf.bo.IBankCardBO;
+import com.cdkj.gchf.bo.IProjectBO;
 import com.cdkj.gchf.bo.IUserBO;
 import com.cdkj.gchf.bo.base.Page;
 import com.cdkj.gchf.bo.base.Paginable;
 import com.cdkj.gchf.domain.BankCard;
+import com.cdkj.gchf.domain.Project;
 import com.cdkj.gchf.domain.User;
 import com.cdkj.gchf.dto.req.XN631420Req;
 import com.cdkj.gchf.dto.req.XN631422Req;
@@ -27,10 +29,13 @@ public class BankCardAOImpl implements IBankCardAO {
     @Autowired
     private IUserBO userBO;
 
+    @Autowired
+    private IProjectBO projectBO;
+
     @Override
     public String addBankCard(XN631420Req req) {
         BankCard data = bankCardBO.isBankCardExist(req.getStaffCode(),
-            req.getCompanyCode());
+            req.getProjectCode());
         if (null != data) {
             throw new BizException("XN000", "该员工已有工资卡，请勿重复添加！");
         }
@@ -46,22 +51,12 @@ public class BankCardAOImpl implements IBankCardAO {
     }
 
     @Override
-    public boolean isBankCardExist(String staffCode, String companyCode) {
-        BankCard bankCard = bankCardBO.isBankCardExist(staffCode, companyCode);
-        if (null == bankCard) {
-            return false;
-        } else {
-            return true;
-        }
-    }
-
-    @Override
     public Paginable<BankCard> queryBankCardPage(int start, int limit,
             BankCard condition) {
         Paginable<BankCard> page = new Page<BankCard>();
         page = bankCardBO.getPaginable(start, limit, condition);
         for (BankCard bankCard : page.getList()) {
-            bankCard.setUpdateName(getName(bankCard.getUpdater()));
+            initBankcard(bankCard);
         }
         return page;
     }
@@ -71,18 +66,26 @@ public class BankCardAOImpl implements IBankCardAO {
         List<BankCard> list = new ArrayList<BankCard>();
         list = bankCardBO.queryBankCardList(condition);
         for (BankCard bankCard : list) {
-            bankCard.setUpdateName(getName(bankCard.getUpdater()));
+            initBankcard(bankCard);
         }
-
         return list;
     }
 
     @Override
     public BankCard getBankCard(String code) {
         BankCard data = bankCardBO.getBankCard(code);
+        initBankcard(data);
+        return data;
+    }
+
+    private void initBankcard(BankCard data) {
         data.setUpdateName(getName(data.getUpdater()));
         data.setBankSubbranchName(data.getBankName() + data.getSubbranch());
-        return data;
+        Project project = projectBO.getProject(data.getProjectCode());
+        if (null != project) {
+            data.setProjectName(project.getName());
+            data.setCompanyName(project.getCompanyName());
+        }
     }
 
     private String getName(String userId) {

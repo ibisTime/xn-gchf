@@ -18,9 +18,6 @@ public interface IBankCardAO {
 
     public void editBankCard(XN631422Req req);
 
-    // 判断员工工资卡是否存在
-    public boolean isBankCardExist(String staffCode, String companyCode);
-
     public Paginable<BankCard> queryBankCardPage(int start, int limit,
             BankCard condition);
 

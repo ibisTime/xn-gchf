@@ -14,6 +14,10 @@ public class XN631420Req {
     @NotBlank(message = "公司编号不能为空")
     private String companyCode;
 
+    // 项目编号
+    @NotBlank(message = "项目编号不能为空")
+    private String projectCode;
+
     // 员工编号
     @NotBlank(message = "员工编号不能为空")
     private String staffCode;
@@ -115,6 +119,14 @@ public class XN631420Req {
 
     public void setUpdater(String updater) {
         this.updater = updater;
+    }
+
+    public String getProjectCode() {
+        return projectCode;
+    }
+
+    public void setProjectCode(String projectCode) {
+        this.projectCode = projectCode;
     }
 
 }

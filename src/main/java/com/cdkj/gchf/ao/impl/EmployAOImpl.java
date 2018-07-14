@@ -11,6 +11,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.cdkj.gchf.ao.IEmployAO;
 import com.cdkj.gchf.bo.IAttendanceBO;
+import com.cdkj.gchf.bo.IBankCardBO;
 import com.cdkj.gchf.bo.ICcontractBO;
 import com.cdkj.gchf.bo.ICompanyBO;
 import com.cdkj.gchf.bo.IDepartmentBO;
@@ -26,6 +27,7 @@ import com.cdkj.gchf.common.DateUtil;
 import com.cdkj.gchf.core.OrderNoGenerater;
 import com.cdkj.gchf.core.StringValidater;
 import com.cdkj.gchf.domain.Attendance;
+import com.cdkj.gchf.domain.BankCard;
 import com.cdkj.gchf.domain.Company;
 import com.cdkj.gchf.domain.Department;
 import com.cdkj.gchf.domain.Employ;
@@ -78,6 +80,9 @@ public class EmployAOImpl implements IEmployAO {
 
     @Autowired
     private ICompanyBO companyBO;
+
+    @Autowired
+    private IBankCardBO bankCardBO;
 
     @Override
     @Transactional
@@ -145,6 +150,11 @@ public class EmployAOImpl implements IEmployAO {
         attendance.setCreateDatetime(date);
         attendanceBO.saveAttendance(attendance);
 
+        // 添加银行卡信息
+        bankCardBO.addBankCard(staff, req.getCompanyCode(),
+            req.getProjectCode(), req.getBankCode(), req.getBankName(),
+            req.getSubbranch(), req.getBankcardNumber(), req.getUpdater());
+
         // 记录员工日志
         staffLogBO.saveStaffLog(data, staff.getName(), project.getCompanyCode(),
             project.getCode(), project.getName());
@@ -177,6 +187,20 @@ public class EmployAOImpl implements IEmployAO {
 
         employ.setRemark(req.getRemark());
         employBO.editEmploy(employ);
+
+        // 如果没有工资卡则新增，否则修改
+        Staff staff = staffBO.getStaff(employ.getStaffCode());
+        BankCard bankCard = bankCardBO.getBankCard(employ.getStaffCode(),
+            employ.getProjectCode());
+        if (null != bankCard) {
+            bankCardBO.refreshBankCard(bankCard.getCode(), req.getBankCode(),
+                req.getBankName(), req.getSubbranch(), req.getBankcardNumber(),
+                req.getUpdater(), req.getRemark());
+        } else {
+            bankCardBO.addBankCard(staff, employ.getCompanyCode(),
+                req.getProjectCode(), req.getBankCode(), req.getBankName(),
+                req.getSubbranch(), req.getBankcardNumber(), req.getUpdater());
+        }
 
         // 记录员工日志
         staffLogBO.saveStaffLog(employ, employ.getStaffName(),

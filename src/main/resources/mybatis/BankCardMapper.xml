@@ -5,13 +5,16 @@
 	<resultMap id="bankCard_DB_Result" type="bankCard">
 		<result column="code" property="code" />
 		<result column="company_code" property="companyCode" />
+		<result column="project_code" property="projectCode" />
 		<result column="staff_code" property="staffCode" />
 		<result column="staff_name" property="staffName" />
+		
 		<result column="bank_code" property="bankCode" />
 		<result column="bank_name" property="bankName" />
 		<result column="subbranch" property="subbranch" />
 		<result column="bankcard_number" property="bankcardNumber" />
 		<result column="create_datetime" property="createDatetime" />
+		
 		<result column="status" property="status" />
 		<result column="updater" property="updater" />
 		<result column="update_datetime" property="updateDatetime" />
@@ -24,6 +27,9 @@
 			</if>
 			<if test="companyCode != null and companyCode != '' ">
 				AND t.company_code = #{companyCode}
+			</if>
+			<if test="projectCode != null and projectCode != '' ">
+				AND t.project_code = #{projectCode}
 			</if>
 			<if test="staffCode != null and staffCode != '' ">
 				AND t.staff_code = #{staffCode}
@@ -46,6 +52,7 @@
 		SELECT
 		t.code
 		,t.company_code
+		,t.project_code
 		,t.staff_code
 		,t.staff_name
 		,t.bank_code
@@ -78,6 +85,7 @@
 		thf_bank_card(
 		code
 		,company_code
+		,project_code
 		,staff_code
 		,staff_name
 		,bank_code
@@ -93,6 +101,7 @@
 		VALUES(
 		#{code}
 		,#{companyCode}
+		,#{projectCode}
 		,#{staffCode}
 		,#{staffName}
 		,#{bankCode}

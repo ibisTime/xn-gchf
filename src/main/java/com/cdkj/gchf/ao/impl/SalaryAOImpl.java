@@ -387,7 +387,8 @@ public class SalaryAOImpl implements ISalaryAO {
         Staff staff = null;
         Employ employ = null;
         for (Salary salary : list) {
-            bankCard = bankCardBO.getBankCardByStaff(salary.getStaffCode());
+            bankCard = bankCardBO.getBankCard(salary.getStaffCode(),
+                salary.getProjectCode());
             salary.setBankCard(bankCard);
             companyCard = companyCardBO
                 .getCompanyCardByProject(salary.getProjectCode());

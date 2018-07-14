@@ -16,6 +16,9 @@ public class XN631425Req extends APageReq {
     // （业主端必填）公司编号
     private String companyCode;
 
+    // 项目编号
+    private String projectCode;
+
     // （选填）银行别称
     private String bankCode;
 
@@ -99,6 +102,14 @@ public class XN631425Req extends APageReq {
 
     public void setKind(String kind) {
         this.kind = kind;
+    }
+
+    public String getProjectCode() {
+        return projectCode;
+    }
+
+    public void setProjectCode(String projectCode) {
+        this.projectCode = projectCode;
     }
 
 }

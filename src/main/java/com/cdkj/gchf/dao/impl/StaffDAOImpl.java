@@ -52,6 +52,12 @@ public class StaffDAOImpl extends AMybatisTemplate implements IStaffDAO {
     }
 
     @Override
+    public List<Staff> selectListBrief(Staff condition, int start, int count) {
+        return super.selectList(NAMESPACE.concat("select_staffBrief"), start,
+            count, condition, Staff.class);
+    }
+
+    @Override
     public void update(Staff data) {
         super.update(NAMESPACE.concat("update_staff"), data);
     }

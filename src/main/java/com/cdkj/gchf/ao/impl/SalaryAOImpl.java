@@ -113,20 +113,24 @@ public class SalaryAOImpl implements ISalaryAO {
     // 手工生成工资条
     @Override
     @Transactional
-    public void createSalaryManual(String projectCode, String month) {
+    public int createSalaryManual(String projectCode, String month) {
         Project project = projectBO.getProject(projectCode);
+        Integer salaryNumber = 0;// 工资条数量
+
         if (!EProjectStatus.Building.getCode().equals(project.getStatus())) {
             throw new BizException("xn0000", "项目状态不是在建，无法生成工资条！");
         }
         if (null != project) {
             String[] salaryDate = month.split("-");
-            createSalary4Project(project,
+            salaryNumber = createSalary4Project(project,
                 StringValidater.toInteger(salaryDate[0]),
                 StringValidater.toInteger(salaryDate[1]));
         }
+
+        return salaryNumber;
     }
 
-    private void createSalary4Project(Project project, int year, int month) {
+    private int createSalary4Project(Project project, int year, int month) {
         logger.info(
             "===========为项目【" + project.getName() + "】生成工资条==============");
 
@@ -141,7 +145,7 @@ public class SalaryAOImpl implements ISalaryAO {
         // 待发消息扣款总额（所有员工）
         Long totalCutAmount = 0L;
 
-        // 待发消息员工数量
+        // 待发消息员工数量，生成的工资条数量
         Integer number = 0;
 
         for (Employ employ : employList) {
@@ -215,6 +219,8 @@ public class SalaryAOImpl implements ISalaryAO {
                 (earlyHours + delayHours));
             Long shouldAmount = AmountUtil.mul(employ.getSalary(),
                 attendanceList.size()) - cutAmount;
+            if (shouldAmount < 0)
+                shouldAmount = 0L;// 应发工资不应该出现负数
 
             data.setShouldAmount(shouldAmount);
             data.setFactAmount(shouldAmount);
@@ -240,6 +246,8 @@ public class SalaryAOImpl implements ISalaryAO {
             messageBO.saveMessage(messageCode, project.getCode(), salaryMonth,
                 totalAmount, totalCutAmount, number);
         }
+
+        return number;
     }
 
     @Override
@@ -373,27 +381,17 @@ public class SalaryAOImpl implements ISalaryAO {
     @Override
     public List<Salary> querySalaryList(Salary condition) {
         List<Salary> list = salaryBO.querySalaryList(condition);
-        BankCard bankCard = null;
-        CompanyCard companyCard = null;
-        Staff staff = null;
-        Employ employ = null;
         for (Salary salary : list) {
-            bankCard = bankCardBO.getBankCard(salary.getStaffCode(),
-                salary.getProjectCode());
-            salary.setBankCard(bankCard);
-            companyCard = companyCardBO
-                .getCompanyCardByProject(salary.getProjectCode());
-            salary.setCompanyCard(companyCard);
-            staff = staffBO.getStaff(salary.getStaffCode());
-
-            salary.setStaffName(staff.getName());
-            salary.setStaffMobile(staff.getMobile());
-            salary.setStaffIdNo(staff.getIdNo());
-            employ = employBO.getEmployByStaff(salary.getStaffCode(),
-                salary.getProjectCode());
-            salary.setUpUserName(getName(employ.getUpUser()));
+            initSalary(salary);
         }
         return list;
+    }
+
+    @Override
+    public Salary getSalary(String code) {
+        Salary data = salaryBO.getSalary(code);
+        initSalary(data);
+        return data;
     }
 
     private void initSalary(Salary salary) {
@@ -431,25 +429,6 @@ public class SalaryAOImpl implements ISalaryAO {
         bankCard = bankCardBO.getBankCard(salary.getStaffCode(),
             salary.getProjectCode());
         salary.setBankCard(bankCard);
-    }
-
-    @Override
-    public Salary getSalary(String code) {
-        Salary data = salaryBO.getSalary(code);
-        BankCard bankCard = bankCardBO.getBankCardByStaff(data.getStaffCode());
-        data.setBankCard(bankCard);
-        CompanyCard companyCard = companyCardBO
-            .getCompanyCardByProject(data.getProjectCode());
-        data.setCompanyCard(companyCard);
-
-        Staff staff = staffBO.getStaff(data.getStaffCode());
-        data.setStaffMobile(staff.getMobile());
-        Employ employ = employBO.getEmployByStaff(data.getStaffCode(),
-            data.getProjectCode());
-        data.setUpUserName(getName(employ.getUpUser()));
-        data.setApplyUserName(getName(data.getApplyUser()));
-        data.setApproveUserName(getName(data.getApproveUser()));
-        return data;
     }
 
     @Override

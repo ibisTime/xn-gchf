@@ -20,6 +20,13 @@ public interface IStaffBO extends IPaginableBO<Staff> {
 
     public List<Staff> queryStaffList(Staff condition);
 
+    // 列表查询员工简介
+    public List<Staff> queryStaffListBrief(Staff condition, int start,
+            int count);
+
+    // 查询数量
+    public long queryTotalCount(Staff condition);
+
     public List<Staff> getStaffFeatList(List<String> staffCodeList);
 
     public Staff getStaff(String code);

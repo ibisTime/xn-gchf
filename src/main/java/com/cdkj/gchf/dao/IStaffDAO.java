@@ -1,5 +1,7 @@
 package com.cdkj.gchf.dao;
 
+import java.util.List;
+
 import com.cdkj.gchf.dao.base.IBaseDAO;
 import com.cdkj.gchf.domain.Staff;
 
@@ -20,4 +22,7 @@ public interface IStaffDAO extends IBaseDAO<Staff> {
 
     // 查询员工简介信息
     public Staff selectBrief(Staff data);
+
+    // 列表查询员工简介
+    public List<Staff> selectListBrief(Staff condition, int start, int count);
 }

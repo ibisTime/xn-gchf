@@ -23,10 +23,12 @@ import com.cdkj.gchf.bo.ISalaryBO;
 import com.cdkj.gchf.bo.ISkillBO;
 import com.cdkj.gchf.bo.IStaffBO;
 import com.cdkj.gchf.bo.IUserBO;
+import com.cdkj.gchf.bo.base.Page;
 import com.cdkj.gchf.bo.base.Paginable;
 import com.cdkj.gchf.common.DateUtil;
 import com.cdkj.gchf.common.PhoneUtil;
 import com.cdkj.gchf.core.OrderNoGenerater;
+import com.cdkj.gchf.dao.base.IBaseDAO;
 import com.cdkj.gchf.domain.BankCard;
 import com.cdkj.gchf.domain.Employ;
 import com.cdkj.gchf.domain.Salary;
@@ -74,6 +76,8 @@ public class StaffAOImpl implements IStaffAO {
 
     @Autowired
     IDepartmentBO departmentBO;
+
+    private IBaseDAO<Staff> paginableDAO;
 
     @Override
     public String addStaff(XN631410Req req) {
@@ -279,11 +283,21 @@ public class StaffAOImpl implements IStaffAO {
     @Override
     public Paginable<Staff> queryStaffPage(int start, int limit,
             Staff condition) {
-        Paginable<Staff> page = staffBO.getPaginable(start, limit, condition);
+        // 重写分页查，加快查询时间
+        long totalCount = staffBO.getTotalCount(condition);
+
+        Paginable<Staff> page = new Page<Staff>(start, limit, totalCount);
+
+        List<Staff> dataList = staffBO.queryStaffListBrief(condition, start,
+            limit);
+
+        page.setList(dataList);
+
         for (Staff staff : page.getList()) {
             staff.setUpdateName(getName(staff.getUpdater()));
             staff.setBankCard(bankCardBO.getBankCardByStaff(staff.getCode()));
         }
+
         return page;
     }
 

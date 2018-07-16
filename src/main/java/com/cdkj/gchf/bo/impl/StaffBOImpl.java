@@ -60,6 +60,17 @@ public class StaffBOImpl extends PaginableBOImpl<Staff> implements IStaffBO {
     }
 
     @Override
+    public List<Staff> queryStaffListBrief(Staff condition, int start,
+            int count) {
+        return staffDAO.selectListBrief(condition, start, count);
+    }
+
+    @Override
+    public long queryTotalCount(Staff condition) {
+        return staffDAO.selectTotalCount(condition);
+    }
+
+    @Override
     public Staff getStaff(String code) {
         Staff data = null;
         if (StringUtils.isNotBlank(code)) {

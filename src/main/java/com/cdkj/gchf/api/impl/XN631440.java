@@ -5,7 +5,7 @@ import com.cdkj.gchf.api.AProcessor;
 import com.cdkj.gchf.common.JsonUtil;
 import com.cdkj.gchf.core.ObjValidater;
 import com.cdkj.gchf.dto.req.XN631440Req;
-import com.cdkj.gchf.dto.res.BooleanRes;
+import com.cdkj.gchf.dto.res.XN631440Res;
 import com.cdkj.gchf.exception.BizException;
 import com.cdkj.gchf.exception.ParaException;
 import com.cdkj.gchf.spring.SpringContextHolder;
@@ -23,8 +23,9 @@ public class XN631440 extends AProcessor {
 
     @Override
     public Object doBusiness() throws BizException {
-        salaryAO.createSalaryManual(req.getProjectCode(), req.getMonth());
-        return new BooleanRes(true);
+        Integer salaryNumber = salaryAO.createSalaryManual(req.getProjectCode(),
+            req.getMonth());
+        return new XN631440Res(String.valueOf(salaryNumber));
     }
 
     @Override

@@ -23,7 +23,7 @@ public interface ISalaryAO {
     public void createSalary();
 
     // 手动生成工资条
-    public void createSalaryManual(String projectCode, String month);
+    public int createSalaryManual(String projectCode, String month);
 
     // 批量删除工资条
     public void dropSalaryList(List<String> salaryCodeList);

@@ -51,6 +51,9 @@ public class XN631435Req extends APageReq {
     // 工资所属月份
     private String month;
 
+    // 公司编号
+    private String companyCode;
+
     public String getProjectCode() {
         return projectCode;
     }
@@ -145,6 +148,14 @@ public class XN631435Req extends APageReq {
 
     public void setMonth(String month) {
         this.month = month;
+    }
+
+    public String getCompanyCode() {
+        return companyCode;
+    }
+
+    public void setCompanyCode(String companyCode) {
+        this.companyCode = companyCode;
     }
 
 }

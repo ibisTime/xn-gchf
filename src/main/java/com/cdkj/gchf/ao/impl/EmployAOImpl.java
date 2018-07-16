@@ -290,7 +290,9 @@ public class EmployAOImpl implements IEmployAO {
         // 部门名称
         Department department = departmentBO
             .getDepartment(employ.getDepartmentCode());
-        employ.setDepartmentName(department.getName());
+        if (null != department) {
+            employ.setDepartmentName(department.getName());
+        }
 
         // 上级人员
         employ.setUpUserName(getName(employ.getUpUser()));

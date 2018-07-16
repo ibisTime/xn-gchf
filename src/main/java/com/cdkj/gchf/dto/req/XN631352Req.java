@@ -60,26 +60,6 @@ public class XN631352Req {
     @NotBlank(message = "下班时间不能为空")
     private String attendanceEndtime;
 
-    // 账户别称
-    @NotBlank(message = "账户别称不能为空")
-    private String bankCode;
-
-    // 银行名
-    @NotBlank(message = "银行名不能为空")
-    private String bankName;
-
-    // 开户行
-    @NotBlank(message = "开户行不能为空")
-    private String subbranch;
-
-    // 户名
-    @NotBlank(message = "户名不能为空")
-    private String accountName;
-
-    // 账户号
-    @NotBlank(message = "账户号不能为空")
-    private String bankcardNumber;
-
     // 修改人
     @NotBlank(message = "修改人不能为空")
     private String updater;
@@ -213,46 +193,6 @@ public class XN631352Req {
 
     public void setAttendanceEndtime(String attendanceEndtime) {
         this.attendanceEndtime = attendanceEndtime;
-    }
-
-    public String getBankCode() {
-        return bankCode;
-    }
-
-    public void setBankCode(String bankCode) {
-        this.bankCode = bankCode;
-    }
-
-    public String getBankName() {
-        return bankName;
-    }
-
-    public void setBankName(String bankName) {
-        this.bankName = bankName;
-    }
-
-    public String getSubbranch() {
-        return subbranch;
-    }
-
-    public void setSubbranch(String subbranch) {
-        this.subbranch = subbranch;
-    }
-
-    public String getAccountName() {
-        return accountName;
-    }
-
-    public void setAccountName(String accountName) {
-        this.accountName = accountName;
-    }
-
-    public String getBankcardNumber() {
-        return bankcardNumber;
-    }
-
-    public void setBankcardNumber(String bankcardNumber) {
-        this.bankcardNumber = bankcardNumber;
     }
 
 }

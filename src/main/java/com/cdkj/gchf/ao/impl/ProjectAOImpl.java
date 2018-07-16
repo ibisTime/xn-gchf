@@ -137,12 +137,6 @@ public class ProjectAOImpl implements IProjectAO {
         // 更新账户信息
         CompanyCard companyCard = companyCardBO
             .getCompanyCardByProject(req.getCode());
-        companyCard.setBankCode(req.getBankCode());
-        companyCard.setBankName(req.getBankName());
-        companyCard.setBankcardNumber(req.getBankcardNumber());
-        companyCard.setSubbranch(req.getSubbranch());
-
-        companyCard.setAccountName(req.getAccountName());
         companyCard.setUpdater(req.getUpdater());
         companyCard.setUpdateDatetime(new Date());
         companyCard.setRemark(req.getRemark());

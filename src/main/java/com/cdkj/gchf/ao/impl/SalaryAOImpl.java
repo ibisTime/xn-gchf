@@ -363,18 +363,9 @@ public class SalaryAOImpl implements ISalaryAO {
     public Paginable<Salary> querySalaryPage(int start, int limit,
             Salary condition) {
         Paginable<Salary> page = salaryBO.getPaginable(start, limit, condition);
-        Staff staff = null;
-        Employ employ = null;
 
         for (Salary salary : page.getList()) {
-            staff = staffBO.getStaff(salary.getStaffCode());
-            salary.setStaffName(staff.getName());
-            salary.setStaffMobile(staff.getMobile());
-            employ = employBO.getEmployByStaff(salary.getStaffCode(),
-                salary.getProjectCode());
-            salary.setUpUserName(getName(employ.getUpUser()));
-            salary.setApplyUserName(getName(salary.getApplyUser()));
-            salary.setApproveUserName(getName(salary.getApproveUser()));
+            initSalary(salary);
         }
         return page;
     }
@@ -403,6 +394,43 @@ public class SalaryAOImpl implements ISalaryAO {
             salary.setUpUserName(getName(employ.getUpUser()));
         }
         return list;
+    }
+
+    private void initSalary(Salary salary) {
+        Staff staff = null;
+        Employ employ = null;
+        BankCard bankCard = null;
+        CompanyCard companyCard = null;
+
+        staff = staffBO.getStaff(salary.getStaffCode());
+        if (null != staff) {
+            salary.setStaffName(staff.getName());
+            salary.setStaffMobile(staff.getMobile());
+            salary.setStaffIdNo(staff.getIdNo());
+        }
+
+        // 隶属上级名称
+        employ = employBO.getEmployByStaff(salary.getStaffCode(),
+            salary.getProjectCode());
+        if (null != employ) {
+            salary.setUpUserName(getName(employ.getUpUser()));
+        }
+
+        // 修改人
+        salary.setApplyUserName(getName(salary.getApplyUser()));
+
+        // 审核人
+        salary.setApproveUserName(getName(salary.getApproveUser()));
+
+        // 公司账户
+        companyCard = companyCardBO
+            .getCompanyCardByProject(salary.getProjectCode());
+        salary.setCompanyCard(companyCard);
+
+        // 银行卡
+        bankCard = bankCardBO.getBankCard(salary.getStaffCode(),
+            salary.getProjectCode());
+        salary.setBankCard(bankCard);
     }
 
     @Override

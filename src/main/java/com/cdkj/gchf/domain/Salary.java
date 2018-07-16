@@ -138,6 +138,12 @@ public class Salary extends ABaseDO {
     // 审核人
     private String approveUserName;
 
+    // 工资所属项目负责人
+    private String projectChargeUser;
+
+    // 工资所属项目负责人手机号
+    private String projectChargeUserMobile;
+
     public String getCode() {
         return code;
     }
@@ -456,6 +462,22 @@ public class Salary extends ABaseDO {
 
     public void setStaffIdNo(String staffIdNo) {
         this.staffIdNo = staffIdNo;
+    }
+
+    public String getProjectChargeUser() {
+        return projectChargeUser;
+    }
+
+    public void setProjectChargeUser(String projectChargeUser) {
+        this.projectChargeUser = projectChargeUser;
+    }
+
+    public String getProjectChargeUserMobile() {
+        return projectChargeUserMobile;
+    }
+
+    public void setProjectChargeUserMobile(String projectChargeUserMobile) {
+        this.projectChargeUserMobile = projectChargeUserMobile;
     }
 
 }

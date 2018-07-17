@@ -288,8 +288,8 @@ public class StaffAOImpl implements IStaffAO {
 
         Paginable<Staff> page = new Page<Staff>(start, limit, totalCount);
 
-        List<Staff> dataList = staffBO.queryStaffListBrief(condition, start,
-            limit);
+        List<Staff> dataList = staffBO.queryStaffListBrief(condition,
+            page.getStart(), page.getPageSize());
 
         page.setList(dataList);
 

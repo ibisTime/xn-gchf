@@ -120,6 +120,12 @@ public class Message extends ABaseDO {
     // 消息所属公司项目
     private String sendCompanyProject;
 
+    // 消息所属项目负责人
+    private String projectChargeUser;
+
+    // 消息所属项目负责人手机号
+    private String projectChargeUserMobile;
+
     public void setCode(String code) {
         this.code = code;
     }
@@ -390,6 +396,22 @@ public class Message extends ABaseDO {
 
     public void setSendCompanyProject(String sendCompanyProject) {
         this.sendCompanyProject = sendCompanyProject;
+    }
+
+    public String getProjectChargeUser() {
+        return projectChargeUser;
+    }
+
+    public void setProjectChargeUser(String projectChargeUser) {
+        this.projectChargeUser = projectChargeUser;
+    }
+
+    public String getProjectChargeUserMobile() {
+        return projectChargeUserMobile;
+    }
+
+    public void setProjectChargeUserMobile(String projectChargeUserMobile) {
+        this.projectChargeUserMobile = projectChargeUserMobile;
     }
 
 }

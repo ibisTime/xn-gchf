@@ -138,6 +138,9 @@ public class Salary extends ABaseDO {
     // 审核人
     private String approveUserName;
 
+    // 公司名称
+    private String companyName;
+
     // 工资所属项目负责人
     private String projectChargeUser;
 
@@ -478,6 +481,14 @@ public class Salary extends ABaseDO {
 
     public void setProjectChargeUserMobile(String projectChargeUserMobile) {
         this.projectChargeUserMobile = projectChargeUserMobile;
+    }
+
+    public String getCompanyName() {
+        return companyName;
+    }
+
+    public void setCompanyName(String companyName) {
+        this.companyName = companyName;
     }
 
 }

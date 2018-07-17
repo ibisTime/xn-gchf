@@ -285,13 +285,7 @@ public class MessageAOImpl implements IMessageAO {
         }
         page = messageBO.getPaginable(start, limit, condition);
         for (Message message : page.getList()) {
-            message.setSendName(getName(message.getSender()));
-            message.setHandleName(getName(message.getHandler()));
-
-            Project project = projectBO.getProject(message.getProjectCode());
-            Company company = companyBO.getCompany(project.getCompanyCode());
-            message.setCompanyCode(company.getCode());
-            message.setCompanyName(company.getName());
+            initMessage(message);
         }
         return page;
     }
@@ -307,12 +301,7 @@ public class MessageAOImpl implements IMessageAO {
 
         list = messageBO.queryMessageList(condition);
         for (Message message : list) {
-            message.setSendName(getName(message.getSender()));
-            message.setHandleName(getName(message.getHandler()));
-
-            Project project = projectBO.getProject(message.getProjectCode());
-            message.setSendCompanyProject(
-                project.getCompanyName().concat(project.getName()));
+            initMessage(message);
         }
         return list;
     }
@@ -320,9 +309,23 @@ public class MessageAOImpl implements IMessageAO {
     @Override
     public Message getMessage(String code) {
         Message data = messageBO.getMessage(code);
-        data.setSendName(getName(data.getSender()));
-        data.setHandleName(getName(data.getHandler()));
+        initMessage(data);
         return data;
     }
 
+    private void initMessage(Message message) {
+        message.setSendName(getName(message.getSender()));
+        message.setHandleName(getName(message.getHandler()));
+
+        Project project = projectBO.getProject(message.getProjectCode());
+        if (null != project) {
+            Company company = companyBO.getCompany(project.getCompanyCode());
+            message.setCompanyCode(company.getCode());
+            message.setCompanyName(company.getName());
+            message.setSendCompanyProject(
+                project.getCompanyName().concat(project.getName()));
+            message.setProjectChargeUser(project.getChargeUser());
+            message.setProjectChargeUserMobile(project.getChargeMobile());
+        }
+    }
 }

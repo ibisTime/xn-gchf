@@ -109,14 +109,14 @@ public class ProjectAOImpl implements IProjectAO {
     @Transactional
     public void editProject(XN631352Req req) {
         Project data = projectBO.getProject(req.getCode());
-        data.setName(req.getName());
-
-        data.setChargeUser(req.getChargeUser());
-        data.setChargeMobile(req.getChargeMobile());
-        if (!(EProjectStatus.To_Audit.getCode().equals(data.getStatus())
-                || EProjectStatus.UnPass.getCode().equals(data.getStatus()))) {
+        if (EProjectStatus.End.getStatus().equals(data.getStatus())) {
             throw new BizException("xn000", "该项目的状态无法修改");
         }
+
+        data.setName(req.getName());
+        data.setChargeUser(req.getChargeUser());
+        data.setChargeMobile(req.getChargeMobile());
+
         data.setLongitude(req.getLongitude());
         data.setLatitude(req.getLatitude());
         data.setProvince(req.getProvince());
@@ -129,6 +129,7 @@ public class ProjectAOImpl implements IProjectAO {
         data.setAttendanceStarttime(req.getAttendanceStarttime());
         data.setAttendanceEndtime(req.getAttendanceEndtime());
 
+        data.setStatus(EProjectStatus.To_Audit.getCode());
         data.setUpdater(req.getUpdater());
         data.setUpdateDatetime(new Date());
         data.setRemark(req.getRemark());
@@ -188,7 +189,10 @@ public class ProjectAOImpl implements IProjectAO {
         if (EBoolean.YES.getCode().equals(result)) {
             status = EProjectStatus.Building.getCode();
             // 添加统计信息
-            reportBO.saveReport(data.getCode(), data.getName());
+            Report report = reportBO.getReportByProject(code);
+            if (null == report) {
+                reportBO.saveReport(data.getCode(), data.getName());
+            }
         }
 
         data.setStatus(status);

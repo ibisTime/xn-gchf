@@ -41,6 +41,13 @@ public class XN631395 extends AProcessor {
         condition.setKeyword(req.getKeyword());
         condition.setProjectCodeList(req.getProjectCodeList());
 
+        if (null != req.getCreateDatetime()) {
+            condition.setCreateDatetimeStart(
+                DateUtil.getStartDatetime(req.getCreateDatetime()));
+            condition.setCreateDatetimeEnd(
+                DateUtil.getEndDatetime(req.getCreateDatetime()));
+        }
+
         String column = req.getOrderColumn();
         if (StringUtils.isBlank(column)) {
             column = IAttendanceAO.DEFAULT_ORDER_COLUMN;

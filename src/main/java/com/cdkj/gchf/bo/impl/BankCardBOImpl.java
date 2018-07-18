@@ -131,9 +131,10 @@ public class BankCardBOImpl extends PaginableBOImpl<BankCard>
             BankCard condition = new BankCard();
             condition.setStaffCode(staffCode);
             data = bankCardDAO.select(condition);
-            if (data != null) {
+            if (data != null && null != data.getBankName()
+                    && null != data.getSubbranch()) {
                 data.setBankSubbranchName(
-                    data.getBankName() + data.getSubbranch());
+                    data.getBankName().concat(data.getSubbranch()));
             }
         }
         return data;

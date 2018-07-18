@@ -229,6 +229,7 @@
 		,salary_create_datetime = #{salaryCreateDatetime}
 		,attendance_starttime = #{attendanceStarttime}
 		,attendance_endtime = #{attendanceEndtime}
+		,status = #{status}
 		,updater = #{updater}
 		,update_datetime = #{updateDatetime}
 		,remark = #{remark}

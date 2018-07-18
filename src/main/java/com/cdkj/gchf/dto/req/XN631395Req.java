@@ -30,6 +30,9 @@ public class XN631395Req extends APageReq {
     // 项目编号List
     private List<String> projectCodeList;
 
+    // 考勤生成日期
+    private String createDatetime;
+
     public String getKeyword() {
         return keyword;
     }
@@ -68,6 +71,14 @@ public class XN631395Req extends APageReq {
 
     public void setProjectCodeList(List<String> projectCodeList) {
         this.projectCodeList = projectCodeList;
+    }
+
+    public String getCreateDatetime() {
+        return createDatetime;
+    }
+
+    public void setCreateDatetime(String createDatetime) {
+        this.createDatetime = createDatetime;
     }
 
 }

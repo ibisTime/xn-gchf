@@ -80,7 +80,14 @@ public class BankCardAOImpl implements IBankCardAO {
 
     private void initBankcard(BankCard data) {
         data.setUpdateName(getName(data.getUpdater()));
-        data.setBankSubbranchName(data.getBankName() + data.getSubbranch());
+
+        // 银行全称：银行名称+支行名称
+        if (data != null && null != data.getBankName()
+                && null != data.getSubbranch()) {
+            data.setBankSubbranchName(
+                data.getBankName().concat(data.getSubbranch()));
+        }
+
         Project project = projectBO.getProject(data.getProjectCode());
         if (null != project) {
             data.setProjectName(project.getName());

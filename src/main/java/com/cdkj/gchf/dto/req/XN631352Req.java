@@ -2,6 +2,12 @@ package com.cdkj.gchf.dto.req;
 
 import org.hibernate.validator.constraints.NotBlank;
 
+/**
+ * 修改项目
+ * @author: silver 
+ * @since: 2018年7月17日 上午11:19:45 
+ * @history:
+ */
 public class XN631352Req {
 
     // 编号

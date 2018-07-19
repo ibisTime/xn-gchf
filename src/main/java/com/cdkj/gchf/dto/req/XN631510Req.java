@@ -1,5 +1,7 @@
 package com.cdkj.gchf.dto.req;
 
+import org.hibernate.validator.constraints.NotBlank;
+
 /**
  * 新增事件通知人
  * @author: nyc 
@@ -7,17 +9,20 @@ package com.cdkj.gchf.dto.req;
  * @history:
  */
 public class XN631510Req {
+    // 用户编号
+    @NotBlank
+    private String userId;
 
-    // 名字
+    // 通知人姓名
+    @NotBlank
     private String name;
 
-    // 手机号
+    // 通知人手机号
+    @NotBlank
     private String mobile;
 
-    // 异常类型
-    private String type;
-
     // 更新人
+    @NotBlank
     private String updater;
 
     // 备注
@@ -29,10 +34,6 @@ public class XN631510Req {
 
     public String getMobile() {
         return mobile;
-    }
-
-    public String getType() {
-        return type;
     }
 
     public String getUpdater() {
@@ -47,10 +48,6 @@ public class XN631510Req {
         this.mobile = mobile;
     }
 
-    public void setType(String type) {
-        this.type = type;
-    }
-
     public void setUpdater(String updater) {
         this.updater = updater;
     }
@@ -61,6 +58,14 @@ public class XN631510Req {
 
     public void setRemark(String remark) {
         this.remark = remark;
+    }
+
+    public String getUserId() {
+        return userId;
+    }
+
+    public void setUserId(String userId) {
+        this.userId = userId;
     }
 
 }

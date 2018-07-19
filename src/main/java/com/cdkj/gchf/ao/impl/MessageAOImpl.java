@@ -14,6 +14,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.cdkj.gchf.ao.IMessageAO;
 import com.cdkj.gchf.bo.IBankCardBO;
 import com.cdkj.gchf.bo.ICompanyBO;
+import com.cdkj.gchf.bo.ICompanyCardBO;
 import com.cdkj.gchf.bo.IEmployBO;
 import com.cdkj.gchf.bo.IEventRemindBO;
 import com.cdkj.gchf.bo.IMessageBO;
@@ -32,16 +33,15 @@ import com.cdkj.gchf.core.OrderNoGenerater;
 import com.cdkj.gchf.core.StringValidater;
 import com.cdkj.gchf.domain.BankCard;
 import com.cdkj.gchf.domain.Company;
+import com.cdkj.gchf.domain.CompanyCard;
 import com.cdkj.gchf.domain.Employ;
 import com.cdkj.gchf.domain.EventRemind;
 import com.cdkj.gchf.domain.Message;
 import com.cdkj.gchf.domain.Project;
 import com.cdkj.gchf.domain.Report;
 import com.cdkj.gchf.domain.Salary;
-import com.cdkj.gchf.domain.Staff;
 import com.cdkj.gchf.domain.User;
 import com.cdkj.gchf.dto.req.XN631439Req;
-import com.cdkj.gchf.enums.EAbnormalType;
 import com.cdkj.gchf.enums.EGeneratePrefix;
 import com.cdkj.gchf.enums.EMessageStatus;
 import com.cdkj.gchf.enums.ESalaryStatus;
@@ -81,6 +81,9 @@ public class MessageAOImpl implements IMessageAO {
 
     @Autowired
     ICompanyBO companyBO;
+
+    @Autowired
+    ICompanyCardBO companyCardBO;
 
     @Autowired
     ISmsOutBO smsOutBO;
@@ -124,9 +127,32 @@ public class MessageAOImpl implements IMessageAO {
                 throw new BizException("xn00000",
                     "员工：" + salary.getStaffName() + "，请补全银行卡信息后再发送");
             }
-
         }
+
+        // 向银行端发送通知短信
+        User userCondition = new User();
+        userCondition.setBankName(data.getBankName());
+        userCondition.setSubbranch(data.getSubbranch());
+        List<User> userList = userBO.queryUserList(userCondition);// 代发工资的银行用户
+
+        if (CollectionUtils.isNotEmpty(userList)) {
+            for (User user : userList) {
+                List<EventRemind> eventRemindsList = eventRemindBO
+                    .queryEventRemindList(user.getUserId());// 银行用户的短信通知人
+                if (CollectionUtils.isNotEmpty(eventRemindsList)) {
+                    for (EventRemind eventRemind : eventRemindsList) {
+                        smsOutBO.sendSmsOut(eventRemind.getMobile(), "尊敬的"
+                                + PhoneUtil.hideMobile(eventRemind.getMobile())
+                                + "，" + data.getCompanyName() + "的"
+                                + data.getProjectName() + "已发送工资代发请求，请您及时处理.",
+                            "804080");
+                    }
+                }
+            }
+        }
+
         messageBO.sendMessage(data);
+
     }
 
     @Override
@@ -136,6 +162,7 @@ public class MessageAOImpl implements IMessageAO {
         Message data = messageBO.getMessage(code);
         Long lastMonthSalary = 0L;
         String projectCode = null;
+        Boolean existAbnormal = false;// 是否存在工资条异常记录
         String messageCode = OrderNoGenerater
             .generate(EGeneratePrefix.Message.getCode());
 
@@ -178,10 +205,13 @@ public class MessageAOImpl implements IMessageAO {
 
             if (isLess && isDelay) {
                 status = ESalaryStatus.Pay_Delay_Portion.getCode();
+                existAbnormal = true;
             } else if (isLess && !isDelay) {
                 status = ESalaryStatus.Pay_Portion.getCode();
+                existAbnormal = true;
             } else if (isDelay && !isLess) {
                 status = ESalaryStatus.Pay_Delay.getCode();
+                existAbnormal = true;
             }
 
             Long supplyAmount = salary.getFactAmount()
@@ -200,36 +230,34 @@ public class MessageAOImpl implements IMessageAO {
             employBO.updateSalaryStatus(employ);
             lastMonthSalary = lastMonthSalary
                     + StringValidater.toLong(req.getPayAmount());
+        }
 
-            // 改变员工薪资状态
-            Staff staff = staffBO.getStaff(salary.getStaffCode());
+        // 如果工资异常，向监管端发送提示短信
+        if (existAbnormal) {
+            Project project = projectBO.getProject(data.getProjectCode());
 
-            // 发送提示短信
-            List<EventRemind> erList = eventRemindBO
-                .getEventRemindByType(EAbnormalType.Salary_Abnormal.getCode());
-            if (CollectionUtils.isNotEmpty(erList)) {
-                Project employProject = null;
-                Company company = null;
+            User userCondition = new User();
+            userCondition.setProvince(project.getProvince());
+            userCondition.setCity(project.getCity());
+            userCondition.setArea(project.getArea());
+            List<User> userList = userBO.queryUserList(userCondition);// 项目所在区域的监管用户
 
-                for (EventRemind eventRemind : erList) {
-                    employProject = projectBO
-                        .getProject(employ.getProjectCode());
-                    company = companyBO
-                        .getCompany(employProject.getCompanyCode());
-                    smsOutBO
-                        .sendSmsOut(eventRemind.getMobile(),
-                            "尊敬的" + PhoneUtil
-                                .hideMobile(eventRemind.getMobile()) + "，"
-                                    + company.getName() + "的"
-                                    + employProject.getName() + "出现工资拖欠，员工"
-                                    + staff.getName() + "," + salary.getMonth()
-                                    + "的工资为" + (salary.getFactAmount() / 1000)
-                                    + "发放薪资为"
-                                    + (StringValidater
-                                        .toLong(req.getPayAmount()) / 1000)
-                                    + "，请您及时处理",
-                            "805061");
+            if (CollectionUtils.isNotEmpty(userList)) {
+                for (User user : userList) {
 
+                    List<EventRemind> erList = eventRemindBO
+                        .queryEventRemindList(user.getUserId());
+                    if (CollectionUtils.isNotEmpty(erList)) {
+
+                        for (EventRemind eventRemind : erList) {
+                            smsOutBO.sendSmsOut(eventRemind.getMobile(),
+                                "尊敬的" + PhoneUtil
+                                    .hideMobile(eventRemind.getMobile()) + "，"
+                                        + project.getCompanyName() + "的"
+                                        + project.getName() + "出现工资异常，请您及时处理.",
+                                "804080");
+                        }
+                    }
                 }
             }
         }
@@ -326,6 +354,12 @@ public class MessageAOImpl implements IMessageAO {
                 project.getCompanyName().concat(project.getName()));
             message.setProjectChargeUser(project.getChargeUser());
             message.setProjectChargeUserMobile(project.getChargeMobile());
+
+            CompanyCard companyCard = companyCardBO
+                .getCompanyCardByProject(project.getCode());
+            if (null != companyCard) {
+                message.setAccount(companyCard.getAccountName());
+            }
         }
     }
 }

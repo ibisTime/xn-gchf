@@ -29,6 +29,7 @@ public class XN631515 extends AProcessor {
     @Override
     public Object doBusiness() throws BizException {
         EventRemind condition = new EventRemind();
+        condition.setUserId(req.getUserId());
         condition.setKeyword(req.getKeyword());
         condition.setUpdater(req.getUpdater());
         condition.setType(req.getType());

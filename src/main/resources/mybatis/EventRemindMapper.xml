@@ -5,11 +5,12 @@
 	
 	<resultMap id="eventRemind_DB_Result" type="eventRemind" >
 		<result column="code" property="code" />
+		<result column="user_id" property="userId" />
 		<result column="type" property="type" />
 		<result column="name" property="name" />
 		<result column="mobile" property="mobile" />
-		<result column="updater" property="updater" />
 		
+		<result column="updater" property="updater" />
 		<result column="update_datetime" property="updateDatetime" />
 		<result column="remark" property="remark" />
 	</resultMap>
@@ -19,10 +20,12 @@
 			<if test="code != null and code != '' ">
 				AND t.code = #{code}			
 			</if>
+			<if test="userId != null and userId != '' ">
+				AND t.user_id = #{userId}			
+			</if>
 			<if test="type != null and type != '' ">
 				AND t.type = #{type}
 			</if>
-			
 			<if test="updater != null and updater != '' ">
 				AND t.updater = #{updater}			
 			</if>
@@ -35,11 +38,12 @@
 	<select id="select_eventRemind" parameterType="eventRemind" resultMap="eventRemind_DB_Result">
 		SELECT 
 		t.code
+		,t.user_id
 		,t.type
 		,t.name
 		,t.mobile
-		,t.updater
 		
+		,t.updater
 		,t.update_datetime
 		,t.remark
 		FROM 
@@ -61,21 +65,23 @@
 		INSERT INTO
 		thf_event_remind(
 		code
+		,user_id
 		,type
 		,name
 		,mobile
-		,updater
 		
+		,updater
 		,update_datetime
 		,remark
 		)
 		VALUES(
 		#{code}
+		,#{userId}
 		,#{type}
 		,#{name}
 		,#{mobile}
-		,#{updater}
 		
+		,#{updater}
 		,#{updateDatetime}
 		,#{remark}
 		)

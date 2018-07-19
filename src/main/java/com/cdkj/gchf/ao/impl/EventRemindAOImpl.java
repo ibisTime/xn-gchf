@@ -35,7 +35,7 @@ public class EventRemindAOImpl implements IEventRemindAO {
         String code = OrderNoGenerater
             .generate(EGeneratePrefix.EventRemind.getCode());
         data.setCode(code);
-        data.setType(req.getType());
+        data.setUserId(req.getUserId());
         data.setName(req.getName());
 
         data.setMobile(req.getMobile());
@@ -63,10 +63,8 @@ public class EventRemindAOImpl implements IEventRemindAO {
         data.setName(req.getName());
         data.setMobile(req.getMobile());
         data.setUpdater(req.getUpdater());
-        data.setType(req.getType());
 
-        Date date = new Date();
-        data.setUpdateDatetime(date);
+        data.setUpdateDatetime(new Date());
         data.setRemark(req.getRemark());
         eventRemindBO.refreshEventRemind(data);
     }

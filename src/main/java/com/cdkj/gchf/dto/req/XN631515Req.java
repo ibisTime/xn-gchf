@@ -1,5 +1,7 @@
 package com.cdkj.gchf.dto.req;
 
+import org.hibernate.validator.constraints.NotBlank;
+
 /**
  * 分页查询事件通知人
  * @author: nyc 
@@ -12,6 +14,10 @@ public class XN631515Req extends APageReq {
      * @Fields serialVersionUID : TODO(用一句话描述这个变量表示什么) 
      */
     private static final long serialVersionUID = -7688557109750376437L;
+
+    // 用户编号
+    @NotBlank
+    private String userId;
 
     // 关键字
     private String keyword;
@@ -44,6 +50,14 @@ public class XN631515Req extends APageReq {
 
     public void setType(String type) {
         this.type = type;
+    }
+
+    public String getUserId() {
+        return userId;
+    }
+
+    public void setUserId(String userId) {
+        this.userId = userId;
     }
 
 }

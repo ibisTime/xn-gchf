@@ -28,7 +28,6 @@ import com.cdkj.gchf.bo.base.Paginable;
 import com.cdkj.gchf.common.DateUtil;
 import com.cdkj.gchf.common.PhoneUtil;
 import com.cdkj.gchf.core.OrderNoGenerater;
-import com.cdkj.gchf.dao.base.IBaseDAO;
 import com.cdkj.gchf.domain.BankCard;
 import com.cdkj.gchf.domain.Employ;
 import com.cdkj.gchf.domain.Salary;
@@ -76,8 +75,6 @@ public class StaffAOImpl implements IStaffAO {
 
     @Autowired
     IDepartmentBO departmentBO;
-
-    private IBaseDAO<Staff> paginableDAO;
 
     @Override
     public String addStaff(XN631410Req req) {

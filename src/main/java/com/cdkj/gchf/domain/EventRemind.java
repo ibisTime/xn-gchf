@@ -17,6 +17,9 @@ public class EventRemind extends ABaseDO {
      */
     private static final long serialVersionUID = -4896484611513554279L;
 
+    // 用户编号
+    private String userId;
+
     // 编号
     private String code;
 
@@ -116,6 +119,14 @@ public class EventRemind extends ABaseDO {
 
     public void setUpdateName(String updateName) {
         this.updateName = updateName;
+    }
+
+    public String getUserId() {
+        return userId;
+    }
+
+    public void setUserId(String userId) {
+        this.userId = userId;
     }
 
 }

@@ -299,6 +299,11 @@ public class EmployAOImpl implements IEmployAO {
 
         // 更新人
         employ.setUpdateName(getName(employ.getUpdater()));
+
+        // 银行卡
+        BankCard bankCard = bankCardBO.getBankCard(employ.getStaffCode(),
+            employ.getProjectCode());
+        employ.setBankCard(bankCard);
     }
 
     private String getName(String userId) {

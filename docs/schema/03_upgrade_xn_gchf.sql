@@ -92,3 +92,24 @@ DROP COLUMN `company_code`;
 ALTER TABLE `thf_bank_card` 
 ADD COLUMN `project_code` VARCHAR(32) NULL COMMENT '项目编号' AFTER `company_code`;
 
+##V1.3.0
+ALTER TABLE `thf_query_log` 
+DROP FOREIGN KEY `staff_code`;
+ALTER TABLE `thf_query_log` 
+ADD CONSTRAINT `staff_code`
+  FOREIGN KEY (`staff_code`)
+  REFERENCES `thf_staff` (`code`)
+  ON DELETE CASCADE
+  ON UPDATE CASCADE;
+
+ALTER TABLE `thf_query_log` 
+DROP FOREIGN KEY `user_id`;
+ALTER TABLE `thf_query_log` 
+ADD CONSTRAINT `user_id`
+  FOREIGN KEY (`user_id`)
+  REFERENCES `thf_user` (`user_id`)
+  ON DELETE CASCADE
+  ON UPDATE CASCADE;
+
+ALTER TABLE `thf_event_remind` 
+ADD COLUMN `user_id` VARCHAR(32) NULL COMMENT '用户编号' AFTER `code`;

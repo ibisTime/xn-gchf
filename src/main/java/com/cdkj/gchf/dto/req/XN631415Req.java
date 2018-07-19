@@ -33,6 +33,15 @@ public class XN631415Req extends APageReq {
     // （选填）公司编号
     private List<String> companyCodeList;
 
+    // 雇佣省份（监管端查询时使用）
+    private String province;
+
+    // 雇佣城市（监管端查询时使用）
+    private String city;
+
+    // 雇佣区域（监管端查询时使用）
+    private String area;
+
     public String getIdType() {
         return idType;
     }
@@ -79,6 +88,30 @@ public class XN631415Req extends APageReq {
 
     public void setIdNo(String idNo) {
         this.idNo = idNo;
+    }
+
+    public String getProvince() {
+        return province;
+    }
+
+    public void setProvince(String province) {
+        this.province = province;
+    }
+
+    public String getCity() {
+        return city;
+    }
+
+    public void setCity(String city) {
+        this.city = city;
+    }
+
+    public String getArea() {
+        return area;
+    }
+
+    public void setArea(String area) {
+        this.area = area;
     }
 
 }

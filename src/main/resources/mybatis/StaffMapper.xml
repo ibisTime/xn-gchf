@@ -32,6 +32,13 @@
 		<result column="remark" property="remark" />
 	</resultMap>
 	
+	<sql id="join_condition">
+		<if test="province != null and province != '' and city != null and city != '' and area != null and area != ''">
+			JOIN thf_employ te on t.code = te.staff_code
+			JOIN thf_project tp on te.project_code = tp.code
+		</if>
+	</sql>
+	
 	<sql id="where_condition">
 		<trim prefix="WHERE" prefixOverrides="AND | OR">
 			<if test="code != null and code != '' ">
@@ -55,9 +62,11 @@
 			<if test="keyword != null and keyword != '' ">
 				AND (t.name like "%"#{keyword}"%" OR  t.mobile like "%"#{keyword}"%" OR t.id_no like "%"#{keyword}"%")
 			</if>
-			
-			<if test="feat != null and featfeat != '' ">
+			<if test="feat != null and feat != '' ">
 				AND t.feat = #{feat}
+			</if>
+			<if test="province != null and province != '' and city != null and city != '' and area != null and area != ''">
+				AND tp.province = #{province} and tp.city = #{city} and tp.area = #{area}
 			</if>
 		</trim>
 	</sql>
@@ -93,6 +102,7 @@
 		,t.contacts_mobile
 		FROM
 		thf_staff t
+		<include refid="join_condition" />
 		<include refid="where_condition" />
 		<trim prefix="ORDER BY ">
 			<if test="order != null and order != '' ">
@@ -125,6 +135,7 @@
 		,t.contacts_mobile
 		FROM
 		thf_staff t
+		<include refid="join_condition" />
 		<include refid="where_condition" />
 		<trim prefix="ORDER BY ">
 			<if test="order != null and order != '' ">
@@ -136,6 +147,7 @@
 	<select id="select_staff_count" parameterType="staff"
 		resultType="java.lang.Long">
 		SELECT count(1) FROM thf_staff t
+		<include refid="join_condition" />
 		<include refid="where_condition" />
 	</select>
 

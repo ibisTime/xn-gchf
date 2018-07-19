@@ -85,28 +85,6 @@ public class MessageBOImpl extends PaginableBOImpl<Message>
     }
 
     @Override
-    public Message getMessage(String code) {
-        Message data = null;
-        if (StringUtils.isNotBlank(code)) {
-            Message condition = new Message();
-            condition.setCode(code);
-            data = messageDAO.select(condition);
-            if (data == null) {
-                throw new BizException("xn0000", "代发消息不存在");
-            }
-            CompanyCard card = companyCardBO
-                .getCompanyCardByProject(data.getProjectCode());
-            data.setCompanyCard(card);
-        }
-        return data;
-    }
-
-    @Override
-    public List<Message> queryMessageList(Message condition) {
-        return messageDAO.selectList(condition);
-    }
-
-    @Override
     public void approveMessage(Message data, String handler,
             String handleNote) {
         data.setHandler(handler);
@@ -119,5 +97,28 @@ public class MessageBOImpl extends PaginableBOImpl<Message>
     @Override
     public void downLoad(Message data) {
         messageDAO.downLoad(data);
+    }
+
+    @Override
+    public Message getMessage(String code) {
+        Message data = null;
+        if (StringUtils.isNotBlank(code)) {
+            Message condition = new Message();
+            condition.setCode(code);
+            data = messageDAO.select(condition);
+            if (data == null) {
+                throw new BizException("xn0000", "代发消息不存在");
+            }
+            CompanyCard card = companyCardBO
+                .getCompanyCardByProject(data.getProjectCode());
+            data.setCompanyCard(card);
+            data.setCompanyName(card.getCompanyName());
+        }
+        return data;
+    }
+
+    @Override
+    public List<Message> queryMessageList(Message condition) {
+        return messageDAO.selectList(condition);
     }
 }

@@ -17,6 +17,8 @@ public interface IEventRemindBO extends IPaginableBO<EventRemind> {
 
     List<EventRemind> queryEventRemindList(EventRemind condition);
 
+    List<EventRemind> queryEventRemindList(String userId);
+
     List<EventRemind> getEventRemindByType(String code);
 
 }

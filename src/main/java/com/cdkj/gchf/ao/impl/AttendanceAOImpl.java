@@ -115,7 +115,7 @@ public class AttendanceAOImpl implements IAttendanceAO {
 
         data.setSim(sim);
         data.setTerminalCode(terminalCode);
-        // 将第一次打卡记为上班打卡
+        // 将最早的打卡记为上班打卡
         if (EAttendanceStatus.TO_Start.getCode().equals(data.getStatus())) {
             logger.info("----------------------员工" + staffCode
                     + "上班打卡----------------------");
@@ -134,7 +134,7 @@ public class AttendanceAOImpl implements IAttendanceAO {
             todayDays = todayDays + 1;
             reportBO.refreshTodayDays(report, todayDays);
         } else {
-            // 以后的每次打卡都是下班打卡
+            // 将最晚的打卡记为下班打卡
             logger.info("----------------------员工" + staffCode
                     + "下班打卡----------------------");
             Date endDatetime = DateUtil.strToDate(attendTime,

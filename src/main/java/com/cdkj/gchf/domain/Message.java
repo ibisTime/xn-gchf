@@ -126,6 +126,9 @@ public class Message extends ABaseDO {
     // 消息所属项目负责人手机号
     private String projectChargeUserMobile;
 
+    // 扣款账户名称
+    private String account;
+
     public void setCode(String code) {
         this.code = code;
     }
@@ -412,6 +415,14 @@ public class Message extends ABaseDO {
 
     public void setProjectChargeUserMobile(String projectChargeUserMobile) {
         this.projectChargeUserMobile = projectChargeUserMobile;
+    }
+
+    public String getAccount() {
+        return account;
+    }
+
+    public void setAccount(String account) {
+        this.account = account;
     }
 
 }

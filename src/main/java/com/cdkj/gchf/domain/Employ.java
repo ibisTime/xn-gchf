@@ -105,6 +105,9 @@ public class Employ extends ABaseDO {
     // 部门名称
     private String departmentName;
 
+    // 银行卡
+    private BankCard bankCard;
+
     public void setCode(String code) {
         this.code = code;
     }
@@ -359,6 +362,14 @@ public class Employ extends ABaseDO {
 
     public void setDepartmentName(String departmentName) {
         this.departmentName = departmentName;
+    }
+
+    public BankCard getBankCard() {
+        return bankCard;
+    }
+
+    public void setBankCard(BankCard bankCard) {
+        this.bankCard = bankCard;
     }
 
 }

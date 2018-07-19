@@ -29,7 +29,6 @@ public class AttendanceController {
             HttpServletResponse response) throws Exception {
         logger.info("----------------------请求接收成功----------------------");
         logger.info(request.getParameter("json").toString());
-        System.out.println(request.getParameter("json").toString());
         String jsonReq = request.getParameter("json").toString();
         JSONObject json = JSONObject.parseObject(jsonReq);
 

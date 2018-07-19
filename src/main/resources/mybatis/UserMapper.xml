@@ -64,7 +64,6 @@
 			<if test="subbranch != null and subbranch != '' ">
 				AND t.subbranch = #{subbranch}
 			</if>
-			
 			<if test="companyCode != null and companyCode != '' ">
 				AND t.company_code = #{companyCode}
 			</if>

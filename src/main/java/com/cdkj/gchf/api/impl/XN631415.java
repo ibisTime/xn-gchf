@@ -32,6 +32,10 @@ public class XN631415 extends AProcessor {
         condition.setUpdater(req.getUpdater());
         condition.setIdNo(req.getIdNo());
 
+        condition.setProvince(req.getProvince());
+        condition.setCity(req.getCity());
+        condition.setArea(req.getArea());
+
         String column = req.getOrderColumn();
         if (StringUtils.isBlank(column)) {
             column = IStaffAO.DEFAULT_ORDER_COLUMN;

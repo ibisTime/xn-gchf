@@ -120,6 +120,7 @@ public class BankCardBOImpl extends PaginableBOImpl<BankCard>
             if (data == null) {
                 throw new BizException("xn0000", "工资卡卡不存在");
             }
+            initBankcard(data);
         }
         return data;
     }
@@ -131,11 +132,7 @@ public class BankCardBOImpl extends PaginableBOImpl<BankCard>
             BankCard condition = new BankCard();
             condition.setStaffCode(staffCode);
             data = bankCardDAO.select(condition);
-            if (data != null && null != data.getBankName()
-                    && null != data.getSubbranch()) {
-                data.setBankSubbranchName(
-                    data.getBankName().concat(data.getSubbranch()));
-            }
+            initBankcard(data);
         }
         return data;
     }
@@ -149,7 +146,16 @@ public class BankCardBOImpl extends PaginableBOImpl<BankCard>
             condition.setStaffCode(staffCode);
             condition.setProjectCode(projectCode);
             data = bankCardDAO.select(condition);
+            initBankcard(data);
         }
         return data;
+    }
+
+    private void initBankcard(BankCard data) {
+        if (data != null && null != data.getBankName()
+                && null != data.getSubbranch()) {
+            data.setBankSubbranchName(
+                data.getBankName().concat(data.getSubbranch()));
+        }
     }
 }

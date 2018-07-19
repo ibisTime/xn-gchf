@@ -55,10 +55,20 @@ public class EventRemindBOImpl extends PaginableBOImpl<EventRemind>
     }
 
     @Override
+    public List<EventRemind> queryEventRemindList(String userId) {
+        List<EventRemind> eventRemindsList = null;
+        if (StringUtils.isNotBlank(userId)) {
+            EventRemind condition = new EventRemind();
+            condition.setUserId(userId);
+            eventRemindsList = queryEventRemindList(condition);
+        }
+        return eventRemindsList;
+    }
+
+    @Override
     public List<EventRemind> getEventRemindByType(String type) {
         EventRemind condition = new EventRemind();
         condition.setType(type);
         return eventRemindDAO.selectList(condition);
     }
-
 }

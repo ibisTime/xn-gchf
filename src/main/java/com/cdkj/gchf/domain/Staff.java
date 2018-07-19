@@ -121,6 +121,15 @@ public class Staff extends ABaseDO {
     // 公司名称
     private String companyName;
 
+    // 雇佣省份（监管端查询时使用）
+    private String province;
+
+    // 雇佣城市（监管端查询时使用）
+    private String city;
+
+    // 雇佣区域（监管端查询时使用）
+    private String area;
+
     public void setCode(String code) {
         this.code = code;
     }
@@ -403,6 +412,30 @@ public class Staff extends ABaseDO {
 
     public void setCompanyName(String companyName) {
         this.companyName = companyName;
+    }
+
+    public String getProvince() {
+        return province;
+    }
+
+    public void setProvince(String province) {
+        this.province = province;
+    }
+
+    public String getCity() {
+        return city;
+    }
+
+    public void setCity(String city) {
+        this.city = city;
+    }
+
+    public String getArea() {
+        return area;
+    }
+
+    public void setArea(String area) {
+        this.area = area;
     }
 
 }

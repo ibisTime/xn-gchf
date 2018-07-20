@@ -113,3 +113,7 @@ ADD CONSTRAINT `user_id`
 
 ALTER TABLE `thf_event_remind` 
 ADD COLUMN `user_id` VARCHAR(32) NULL COMMENT '用户编号' AFTER `code`;
+
+##V1.4.0
+ALTER TABLE `tsys_menu` 
+ADD COLUMN `role_type` VARCHAR(4) NULL AFTER `type`;

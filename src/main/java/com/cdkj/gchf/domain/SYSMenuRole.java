@@ -45,6 +45,9 @@ public class SYSMenuRole extends ABaseDO {
     // 菜单类型(菜单/按钮)
     private String type;
 
+    // 菜单角色类型
+    private String roleType;
+
     public Long getId() {
         return id;
     }
@@ -115,5 +118,13 @@ public class SYSMenuRole extends ABaseDO {
 
     public void setType(String type) {
         this.type = type;
+    }
+
+    public String getRoleType() {
+        return roleType;
+    }
+
+    public void setRoleType(String roleType) {
+        this.roleType = roleType;
     }
 }

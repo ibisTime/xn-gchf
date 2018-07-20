@@ -29,8 +29,10 @@ public class XN631065 extends AProcessor {
         SYSMenu condition = new SYSMenu();
         condition.setNameForQuery(req.getName());
         condition.setType(req.getType());
+        condition.setRoleType(req.getRoleType());
         condition.setParentCode(req.getParentCode());
         condition.setUpdater(req.getUpdater());
+
         String column = req.getOrderColumn();
         if (StringUtils.isBlank(column)) {
             column = ISYSMenuAO.DEFAULT_ORDER_COLUMN;

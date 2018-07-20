@@ -6,6 +6,7 @@
 		<result column="code" property="code" />
 		<result column="name" property="name" />
 		<result column="type" property="type" />
+		<result column="role_type" property="roleType" />
 		<result column="url" property="url" />
 		<result column="order_no" property="orderNo" />
 		
@@ -34,6 +35,9 @@
 			<if test="type != null and type != '' ">
 				AND t.type = #{type}
 			</if>
+			<if test="roleType != null and roleType != '' ">
+				AND t.role_type = #{roleType}
+			</if>
 			<if test="updater != null and updater != '' ">
 				AND t.updater = #{updater}
 			</if>
@@ -44,6 +48,7 @@
 		code
 		,name
 		,type
+		,role_type
 		,url
 		,order_no
 		,updater
@@ -59,7 +64,7 @@
 			</if>
 		</trim>	
 	</select>
-
+	
 	<select id="select_sysMenu_count" parameterType="sysMenu" resultType="java.lang.Long">
 		SELECT count(1) FROM tsys_menu t
 		<include refid="where_condition"/>
@@ -70,6 +75,7 @@
 		code
 		,name
 		,type
+		,role_type
 		,url
 		,order_no
 		,updater
@@ -81,6 +87,7 @@
 		#{code}
 		,#{name}
 		,#{type}
+		,#{roleType}
 		,#{url}	
 		,#{orderNo}	
 		
@@ -101,6 +108,7 @@
 	    UPDATE tsys_menu SET
 	    name = #{name}
 	    ,type= #{type}
+	    ,role_type= #{roleType}
 	    ,url = #{url}
 	    ,order_no = #{orderNo}
 	    

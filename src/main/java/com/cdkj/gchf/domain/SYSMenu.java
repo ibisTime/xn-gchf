@@ -22,6 +22,9 @@ public class SYSMenu extends ABaseDO {
     // 类型
     private String type;
 
+    // 角色类型
+    private String roleType;
+
     // 请求url
     private String url;
 
@@ -123,4 +126,13 @@ public class SYSMenu extends ABaseDO {
     public void setNameForQuery(String nameForQuery) {
         this.nameForQuery = nameForQuery;
     }
+
+    public String getRoleType() {
+        return roleType;
+    }
+
+    public void setRoleType(String roleType) {
+        this.roleType = roleType;
+    }
+
 }

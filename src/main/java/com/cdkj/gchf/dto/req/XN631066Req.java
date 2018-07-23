@@ -8,6 +8,9 @@ public class XN631066Req {
     // 类型(选填)
     private String type;
 
+    // 角色类型(选填)
+    private String roleType;
+
     // 父菜单编号(选填)
     private String parentCode;
 
@@ -33,6 +36,14 @@ public class XN631066Req {
 
     public void setType(String type) {
         this.type = type;
+    }
+
+    public String getRoleType() {
+        return roleType;
+    }
+
+    public void setRoleType(String roleType) {
+        this.roleType = roleType;
     }
 
 }

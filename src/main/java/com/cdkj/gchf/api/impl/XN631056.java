@@ -29,8 +29,9 @@ public class XN631056 extends AProcessor {
         condition.setRoleCode(req.getRoleCode());
         condition.setParentCode(req.getParentCode());
         condition.setType(req.getType());
-
+        condition.setRoleType(req.getRoleType());
         String column = req.getOrderColumn();
+
         if (StringUtils.isEmpty(column)) {
             column = ISYSMenuRoleAO.DEFAULT_ORDER_COLUMN;
         }

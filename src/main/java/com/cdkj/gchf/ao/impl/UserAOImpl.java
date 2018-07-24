@@ -10,8 +10,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.cdkj.gchf.ao.IUserAO;
-import com.cdkj.gchf.bo.ICompanyBO;
-import com.cdkj.gchf.bo.IDepartmentBO;
 import com.cdkj.gchf.bo.IProjectBO;
 import com.cdkj.gchf.bo.ISYSMenuRoleBO;
 import com.cdkj.gchf.bo.ISYSRoleBO;
@@ -23,8 +21,6 @@ import com.cdkj.gchf.common.MD5Util;
 import com.cdkj.gchf.common.PhoneUtil;
 import com.cdkj.gchf.common.PwdUtil;
 import com.cdkj.gchf.core.OrderNoGenerater;
-import com.cdkj.gchf.domain.Company;
-import com.cdkj.gchf.domain.Department;
 import com.cdkj.gchf.domain.Project;
 import com.cdkj.gchf.domain.SYSMenuRole;
 import com.cdkj.gchf.domain.SYSRole;
@@ -46,12 +42,6 @@ public class UserAOImpl implements IUserAO {
 
     @Autowired
     private ISYSMenuRoleBO sysMenuRoleBO;
-
-    @Autowired
-    private IDepartmentBO departmentBO;
-
-    @Autowired
-    private ICompanyBO companyBO;
 
     @Autowired
     private ISmsOutBO smsOutBO;
@@ -88,11 +78,6 @@ public class UserAOImpl implements IUserAO {
         data.setCreateDatetime(new Date());
 
         data.setStatus(EUserStatus.NORMAL.getCode());
-        if (EUserKind.Owner.getCode().equals(req.getType())) {
-            Company company = companyBO.getCompany(req.getCompanyCode());
-            data.setCompanyCode(company.getCode());
-            data.setCompanyName(company.getName());
-        }
         if (EUserKind.Bank.getCode().equals(req.getType())) {
             data.setLoginName(req.getLoginName());
             data.setBankName(req.getBankName());
@@ -285,14 +270,6 @@ public class UserAOImpl implements IUserAO {
         }
         Paginable<User> page = userBO.getPaginable(start, limit, condition);
         List<User> list = page.getList();
-        for (User user : list) {
-            if (StringUtils.isNotBlank(user.getDepartmentCode())) {
-                Department department = departmentBO
-                    .getDepartment(user.getDepartmentCode());
-                user.setDepartmentName(department.getName());
-            }
-
-        }
         page.setList(list);
         return page;
     }
@@ -306,15 +283,6 @@ public class UserAOImpl implements IUserAO {
             throw new BizException("xn0000", "开始时间不能大于结束时间");
         }
         List<User> list = userBO.queryUserList(condition);
-        for (User user : list) {
-            if (StringUtils.isNotBlank(user.getDepartmentCode())) {
-                Department department = departmentBO
-                    .getDepartment(user.getDepartmentCode());
-                user.setDepartmentName(department.getName());
-            }
-
-        }
-
         return list;
     }
 
@@ -327,22 +295,11 @@ public class UserAOImpl implements IUserAO {
             condition.setProvince(data.getProvince());
             condition.setCity(data.getCity());
             condition.setArea(data.getArea());
-            condition.setCompanyCode(data.getCompanyCode());
             List<String> projectCodeList = projectBO
                 .queryProjectCodeList(condition);
             data.setProjectCodeList(projectCodeList);
         }
         return data;
-    }
-
-    @Override
-    public void doDepartmentCode(String userId, String departmentCode,
-            String updater, String remark) {
-        User user = userBO.getUser(userId);
-        if (user == null) {
-            throw new BizException("xn0000", "用户不存在");
-        }
-        userBO.refreshDepartment(user, departmentCode, updater, remark);
     }
 
     @Override

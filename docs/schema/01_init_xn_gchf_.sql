@@ -481,3 +481,22 @@ INSERT INTO `tsys_menu_role` (`id`,`role_code`,`menu_code`,`updater`,`update_dat
 INSERT INTO `tsys_menu_role` (`id`,`role_code`,`menu_code`,`updater`,`update_datetime`,`remark`) VALUES (2039,'RO201800000000000001','SM201807201346222811520','USYS201800000000001','2018-07-20 13:47:25',NULL);
 INSERT INTO `tsys_menu_role` (`id`,`role_code`,`menu_code`,`updater`,`update_datetime`,`remark`) VALUES (2040,'RO201800000000000001','SM201807201346521318233','USYS201800000000001','2018-07-20 13:47:25',NULL);
 INSERT INTO `tsys_menu_role` (`id`,`role_code`,`menu_code`,`updater`,`update_datetime`,`remark`) VALUES (2041,'RO201800000000000001','SM201807201347158228349','USYS201800000000001','2018-07-20 13:47:25',NULL);
+
+
+/*
+-- Query: SELECT * FROM dev_xn_gchf.tsys_menu where role_type = 'B'
+LIMIT 0, 1000
+-- Date: 2018-07-20 13:48
+-- B
+*/
+INSERT INTO `tsys_menu` (`code`,`name`,`type`,`role_type`,`url`,`order_no`,`updater`,`update_datetime`,`remark`,`parent_code`) VALUES ('GCHFBSM201800000000000000','根目录','1','B','#','1','admin','2018-08-20 09:09:17','','');
+INSERT INTO `tsys_menu` (`code`,`name`,`type`,`role_type`,`url`,`order_no`,`updater`,`update_datetime`,`remark`,`parent_code`) VALUES ('SM201807231030483125593','系统管理','1','B','#','1','USYS201800000000001','2018-07-20 10:30:48','','GCHFBSM201800000000000000');
+INSERT INTO `tsys_menu` (`code`,`name`,`type`,`role_type`,`url`,`order_no`,`updater`,`update_datetime`,`remark`,`parent_code`) VALUES ('SM201807231031386412313','运维管理','1','B','#','1','USYS201800000000001','2018-07-20 10:31:38','','SM201807231030483125593');
+INSERT INTO `tsys_menu` (`code`,`name`,`type`,`role_type`,`url`,`order_no`,`updater`,`update_datetime`,`remark`,`parent_code`) VALUES ('SM201807231035525556549','菜单管理','1','B','/system/menu.htm','1','USYS201800000000001','2018-07-20 10:35:52','','SM201807231031386412313');
+INSERT INTO `tsys_menu` (`code`,`name`,`type`,`role_type`,`url`,`order_no`,`updater`,`update_datetime`,`remark`,`parent_code`) VALUES ('SM201807231129177262547','新增','2','B','/add','1','USYS201800000000001','2018-07-20 11:29:17','','SM201807231035525556549');
+
+INSERT INTO `tsys_menu_role` (`id`,`role_code`,`menu_code`,`updater`,`update_datetime`,`remark`) VALUES (2042,'RO201800000000000002','GCHFBSM201800000000000000','USYS201800000000001','2018-07-20 13:47:25',NULL);
+INSERT INTO `tsys_menu_role` (`id`,`role_code`,`menu_code`,`updater`,`update_datetime`,`remark`) VALUES (2043,'RO201800000000000002','SM201807231030483125593','USYS201800000000001','2018-07-20 13:47:25',NULL);
+INSERT INTO `tsys_menu_role` (`id`,`role_code`,`menu_code`,`updater`,`update_datetime`,`remark`) VALUES (2044,'RO201800000000000002','SM201807231031386412313','USYS201800000000001','2018-07-20 13:47:25',NULL);
+INSERT INTO `tsys_menu_role` (`id`,`role_code`,`menu_code`,`updater`,`update_datetime`,`remark`) VALUES (2045,'RO201800000000000002','SM201807231035525556549','USYS201800000000001','2018-07-20 13:47:25',NULL);
+INSERT INTO `tsys_menu_role` (`id`,`role_code`,`menu_code`,`updater`,`update_datetime`,`remark`) VALUES (2046,'RO201800000000000002','SM201807231129177262547','USYS201800000000001','2018-07-20 13:47:25',NULL);

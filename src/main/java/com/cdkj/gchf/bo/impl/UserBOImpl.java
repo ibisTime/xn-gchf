@@ -14,7 +14,6 @@ import com.cdkj.gchf.common.PhoneUtil;
 import com.cdkj.gchf.common.PwdUtil;
 import com.cdkj.gchf.dao.IUserDAO;
 import com.cdkj.gchf.domain.User;
-import com.cdkj.gchf.enums.EUserKind;
 import com.cdkj.gchf.enums.EUserStatus;
 import com.cdkj.gchf.exception.BizException;
 
@@ -55,16 +54,6 @@ public class UserBOImpl extends PaginableBOImpl<User> implements IUserBO {
             data.setRemark(remark);
             userDAO.updateRole(data);
         }
-    }
-
-    @Override
-    public void refreshDepartment(User data, String departmentCode,
-            String updater, String remark) {
-        data.setDepartmentCode(departmentCode);
-        data.setUpdater(updater);
-        data.setUpdateDatetime(new Date());
-        data.setRemark(remark);
-        userDAO.updateDepartment(data);
     }
 
     @Override
@@ -184,24 +173,9 @@ public class UserBOImpl extends PaginableBOImpl<User> implements IUserBO {
     }
 
     @Override
-    public List<User> getUserByCompany(String companyCode) {
-        User condition = new User();
-        condition.setCompanyCode(companyCode);
-        return userDAO.selectList(condition);
-    }
-
-    @Override
     public List<User> checkLoginName(String loginName) {
         User condition = new User();
         condition.setLoginName(loginName);
-        return userDAO.selectList(condition);
-    }
-
-    @Override
-    public List<User> getUserByDepatment(String departmentCode) {
-        User condition = new User();
-        condition.setDepartmentCode(departmentCode);
-        condition.setType(EUserKind.Owner.getCode());
         return userDAO.selectList(condition);
     }
 

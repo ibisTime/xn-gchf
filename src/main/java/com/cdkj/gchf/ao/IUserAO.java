@@ -23,10 +23,6 @@ public interface IUserAO {
     public void doRoleUser(String userId, String roleCode, String updater,
             String remark);
 
-    // 设置部门
-    public void doDepartmentCode(String userId, String departmentCode,
-            String updater, String remark);
-
     // 重置登录密码
     public void resetAdminLoginPwd(String userId, String newLoginPwd);
 

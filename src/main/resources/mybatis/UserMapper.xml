@@ -16,9 +16,8 @@
 		<result column="create_datetime" property="createDatetime" />
 		<result column="role_code" property="roleCode" />
 		
-		<result column="company_code" property="companyCode" />
-		<result column="company_name" property="companyName" />
-		<result column="department_code" property="departmentCode" />
+		<result column="project_code" property="projectCode" />
+		<result column="project_name" property="projectName" />
 		<result column="province" property="province" />
 		<result column="city" property="city" />
 		<result column="area" property="area" />
@@ -48,7 +47,6 @@
 			<if test="loginPwd != null and loginPwd != '' ">
 				AND t.login_pwd = #{loginPwd}
 			</if>
-			
 			<if test="province != null and province != '' ">
 				AND t.province = #{province}
 			</if>
@@ -64,17 +62,12 @@
 			<if test="subbranch != null and subbranch != '' ">
 				AND t.subbranch = #{subbranch}
 			</if>
-			<if test="companyCode != null and companyCode != '' ">
-				AND t.company_code = #{companyCode}
+			<if test="projectCode != null and projectCode != '' ">
+				AND t.project_code = #{projectCode}
 			</if>
-			<if test="departmentCode != null and departmentCode != '' ">
-				AND t.department_code = #{departmentCode}
-			</if>
-			
 			<if test="keyword != null and keyword != '' ">
 				AND (t.login_name like "%"#{keyword}"%" OR  t.mobile like "%"#{keyword}"%")
 			</if>
-			
 			<if test="createDatetimeStart != null and createDatetimeStart != '' ">
 				<![CDATA[AND t.create_datetime > #{createDatetimeStart}]]>
 			</if>
@@ -96,9 +89,8 @@
 		,t.user_refree
 		,t.create_datetime
 		,t.role_code
-		,t.company_code
-		,t.company_name
-		,t.department_code
+		,t.project_code
+		,t.project_name
 		
 		,t.province
 		,t.city
@@ -142,14 +134,13 @@
 		,create_datetime
 		,role_code
 		
-		,company_code
-		,company_name
+		,project_code
+		,project_name
 		,province
 		,city
 		,area
 		,bank_name
 		,subbranch
-		
 		
 		,updater
 		,update_datetime
@@ -170,8 +161,8 @@
 		,#{createDatetime}
 		,#{roleCode}
 		
-		,#{companyCode}
-		,#{companyName}
+		,#{projectCode}
+		,#{projectName}
 		,#{province}
 		,#{city}
 		,#{area}
@@ -199,7 +190,6 @@
 		,remark = #{remark}
 		WHERE code = #{code}
 	</update>
-	
 		
 	<update id="update_status" parameterType="user">
 		UPDATE thf_user
@@ -210,7 +200,6 @@
 		,remark = #{remark}
 		WHERE user_id = #{userId}
 	</update>
-
 
 	<update id="update_login_pwd" parameterType="user">
 		UPDATE thf_user
@@ -235,18 +224,6 @@
 		user_id = #{userId}	
 	</update>	
 	
-	<update id="update_department" parameterType="department">
-		UPDATE thf_user
-		SET
-		 department_code = #{departmentCode}
-		 ,updater = #{updater}
-		 ,update_datetime = #{updateDatetime}
-		 ,remark = #{remark}
-		WHERE
-		user_id = #{userId}	
-	</update>	
-	
-		
 	<update id="update_mobile" parameterType="user">
 		UPDATE thf_user
 		SET

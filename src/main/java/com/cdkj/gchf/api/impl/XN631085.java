@@ -29,7 +29,6 @@ public class XN631085 extends AProcessor {
     public Object doBusiness() throws BizException {
         User condition = new User();
         condition.setType(req.getType());
-        condition.setDepartmentCode(req.getDepartmentCode());
         condition.setStatus(req.getStatus());
         condition.setUserRefree(req.getUserRefree());
         condition.setStatus(req.getStatus());
@@ -41,7 +40,6 @@ public class XN631085 extends AProcessor {
         condition.setCreateDatetimeEnd(
             DateUtil.getFrontDate(req.getDateEnd(), true));
 
-        condition.setCompanyCode(req.getCompanyCode());
         condition.setKeyword(req.getKeyword());
         String column = req.getOrderColumn();
         if (StringUtils.isBlank(column)) {

@@ -56,11 +56,6 @@ public class UserDAOImpl extends AMybatisTemplate implements IUserDAO {
     }
 
     @Override
-    public void updateDepartment(User data) {
-        super.update(NAMESPACE.concat("update_department"), data);
-    }
-
-    @Override
     public void updateLoginPwd(User data) {
         super.update(NAMESPACE.concat("update_login_pwd"), data);
     }

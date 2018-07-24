@@ -13,9 +13,6 @@ public interface IUserDAO extends IBaseDAO<User> {
     // 更新角色
     public void updateRole(User data);
 
-    // 更新角色
-    public void updateDepartment(User data);
-
     // 设置登录密码
     public void updateLoginPwd(User data);
 

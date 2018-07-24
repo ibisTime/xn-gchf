@@ -113,15 +113,45 @@ public class AttendanceAOImpl implements IAttendanceAO {
             return new Gson().toJson(json);
         }
 
+        // 取考勤最早时间作为上班时间，考勤最晚时间作为下班时间
+        Date attendDatetime = DateUtil.strToDate(attendTime,
+            DateUtil.DATA_TIME_PATTERN_1);
+        Date startDatetime = null;// 上班打卡时间
+        Date endDatetime = null;// 下班打卡时间
+
+        // 第一条考勤记录不用判断
+        if (null == data.getStartDatetime()) {
+            startDatetime = attendDatetime;
+        }
+        if (null != data.getStartDatetime() && null == data.getEndDatetime()) {
+            endDatetime = attendDatetime;
+        }
+        if (null != data.getStartDatetime()
+                && attendDatetime.before(data.getStartDatetime())) {
+            startDatetime = attendDatetime;
+        }
+        if (null != data.getEndDatetime()
+                && attendDatetime.after(data.getEndDatetime())) {
+            endDatetime = attendDatetime;
+        }
+
         data.setSim(sim);
         data.setTerminalCode(terminalCode);
+
         // 将最早的打卡记为上班打卡
-        if (EAttendanceStatus.TO_Start.getCode().equals(data.getStatus())) {
+        if (null != startDatetime) {
             logger.info("----------------------员工" + staffCode
                     + "上班打卡----------------------");
+
+            // 更新考勤状态
+            String status = EAttendanceStatus.TO_End.getCode();
+            if (null != data.getEndDatetime()) {
+                status = EAttendanceStatus.Unpaied.getCode();
+            }
+
             data.setStartDatetime(DateUtil.strToDate(
                 attendTime.replace("%", " "), DateUtil.DATA_TIME_PATTERN_1));
-            data.setStatus(EAttendanceStatus.TO_End.getCode());
+            data.setStatus(status);
             attendanceBO.startWorkMachineClockIn(data);
 
             // 统计上工人数
@@ -133,16 +163,25 @@ public class AttendanceAOImpl implements IAttendanceAO {
             int todayDays = report.getTodayDays();
             todayDays = todayDays + 1;
             reportBO.refreshTodayDays(report, todayDays);
-        } else {
-            // 将最晚的打卡记为下班打卡
+        }
+
+        // 将最晚的打卡记为下班打卡
+        if (null != endDatetime) {
             logger.info("----------------------员工" + staffCode
                     + "下班打卡----------------------");
-            Date endDatetime = DateUtil.strToDate(attendTime,
-                DateUtil.DATA_TIME_PATTERN_1);
-            data.setEndDatetime(endDatetime);
-            data.setStatus(EAttendanceStatus.Unpaied.getCode());
+
+            // 更新考勤状态
+            String status = EAttendanceStatus.TO_Start.getCode();
+            if (null != data.getStartDatetime()) {
+                status = EAttendanceStatus.Unpaied.getCode();
+            }
+
+            data.setEndDatetime(
+                DateUtil.strToDate(attendTime, DateUtil.DATA_TIME_PATTERN_1));
+            data.setStatus(status);
             attendanceBO.endWorkMachineClockIn(data);
         }
+
         json.put("result", true);
         return new Gson().toJson(json);
     }

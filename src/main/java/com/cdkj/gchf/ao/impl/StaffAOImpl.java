@@ -333,16 +333,19 @@ public class StaffAOImpl implements IStaffAO {
         }
 
         JSONArray array = new JSONArray();
-        List<Staff> list = staffBO.getStaffFeatList(staffCodeList);
-        for (Staff staff : list) {
-            JSONObject obj = new JSONObject(new LinkedHashMap());
-            if (StringUtils.isNotBlank(staff.getFeat())) {
-                obj.put("id", staff.getCode());
-                obj.put("name", staff.getName());
-                obj.put("feat", staff.getFeat());
-                array.add(obj);
+        if (CollectionUtils.isNotEmpty(staffCodeList)) {
+            List<Staff> list = staffBO.getStaffFeatList(staffCodeList);
+            for (Staff staff : list) {
+                JSONObject obj = new JSONObject(new LinkedHashMap());
+                if (StringUtils.isNotBlank(staff.getFeat())) {
+                    obj.put("id", staff.getCode());
+                    obj.put("name", staff.getName());
+                    obj.put("feat", staff.getFeat());
+                    array.add(obj);
+                }
             }
         }
+
         return new Gson().toJson(array);
     }
 

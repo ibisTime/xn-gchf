@@ -48,14 +48,11 @@ public class User extends ABaseDO {
     // 角色编号
     private String roleCode;
 
-    // 公司编号
-    private String companyCode;
+    // 项目编号
+    private String projectCode;
 
-    // 公司名称
-    private String companyName;
-
-    // 部门编号
-    private String departmentCode;
+    // 项目名称
+    private String projectName;
 
     // 所属省份
     private String province;
@@ -91,9 +88,6 @@ public class User extends ABaseDO {
 
     // 登录名等模糊查询
     private String keyword;
-
-    // 部门名称
-    private String departmentName;
 
     private List<String> projectCodeList;
 
@@ -225,14 +219,6 @@ public class User extends ABaseDO {
         this.keyword = keyword;
     }
 
-    public String getDepartmentCode() {
-        return departmentCode;
-    }
-
-    public void setDepartmentCode(String departmentCode) {
-        this.departmentCode = departmentCode;
-    }
-
     public String getType() {
         return type;
     }
@@ -249,28 +235,20 @@ public class User extends ABaseDO {
         this.userRefree = userRefree;
     }
 
-    public String getCompanyCode() {
-        return companyCode;
+    public String getProjectCode() {
+        return projectCode;
     }
 
-    public void setCompanyCode(String companyCode) {
-        this.companyCode = companyCode;
+    public void setProjectCode(String projectCode) {
+        this.projectCode = projectCode;
     }
 
-    public String getCompanyName() {
-        return companyName;
+    public String getProjectName() {
+        return projectName;
     }
 
-    public void setCompanyName(String companyName) {
-        this.companyName = companyName;
-    }
-
-    public String getDepartmentName() {
-        return departmentName;
-    }
-
-    public void setDepartmentName(String departmentName) {
-        this.departmentName = departmentName;
+    public void setProjectName(String projectName) {
+        this.projectName = projectName;
     }
 
     public String getProvince() {

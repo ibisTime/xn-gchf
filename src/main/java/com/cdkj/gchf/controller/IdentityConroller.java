@@ -26,7 +26,8 @@ public class IdentityConroller {
         JSONObject json = JSONObject
             .parseObject(request.getParameter("json").toString());
         if ("cdkjws".equalsIgnoreCase(json.getString("license"))) {
-            String staffFeat = staffAO.getStaffFeatList();
+            String projectCode = json.getString("projectCode");
+            String staffFeat = staffAO.getStaffFeatList(projectCode);
             PrintWriter writer;
             try {
                 writer = response.getWriter();

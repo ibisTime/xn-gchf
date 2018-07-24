@@ -17,9 +17,6 @@ public interface IUserBO extends IPaginableBO<User> {
     public void refreshRole(String userId, String roleCode, String updater,
             String remark);
 
-    public void refreshDepartment(User userId, String departmentCode,
-            String updater, String remark);
-
     public void resetAdminLoginPwd(User user, String loginPwd);
 
     public void isMobileExist(String mobile);
@@ -44,11 +41,7 @@ public interface IUserBO extends IPaginableBO<User> {
 
     public User getUserName(String userId);
 
-    public List<User> getUserByCompany(String code);
-
     public List<User> checkLoginName(String loginName);
-
-    public List<User> getUserByDepatment(String departmentCode);
 
     public void refreshLoginPwd(String userId, String newLoginPwd);
 }

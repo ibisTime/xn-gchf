@@ -22,7 +22,6 @@ import com.cdkj.gchf.common.PhoneUtil;
 import com.cdkj.gchf.common.PwdUtil;
 import com.cdkj.gchf.core.OrderNoGenerater;
 import com.cdkj.gchf.domain.Project;
-import com.cdkj.gchf.domain.SYSMenuRole;
 import com.cdkj.gchf.domain.SYSRole;
 import com.cdkj.gchf.domain.User;
 import com.cdkj.gchf.dto.req.XN631070Req;
@@ -92,24 +91,26 @@ public class UserAOImpl implements IUserAO {
         data.setRemark(req.getRemark());
 
         // 给用户分配角色
-        SYSRole condition = new SYSRole();
-        condition.setType(req.getType());
-        List<SYSRole> list = sysRoleBO.querySYSRoleList(condition);
-        SYSRole role = list.get(0);
-        String sysRoleCode = role.getCode();
-        if (list.size() > 1) {
-            // 获取最大角色
-            long count = 0L;
-            for (SYSRole sysRole : list) {
-                SYSMenuRole sysMenuRole = new SYSMenuRole();
-                sysMenuRole.setRoleCode(sysRole.getCode());
-                if (sysMenuRoleBO.getTotalCount(sysMenuRole) > count) {
-                    count = sysMenuRoleBO.getTotalCount(sysMenuRole);
-                    sysRoleCode = sysRole.getCode();
-                }
-            }
-        }
-        data.setRoleCode(sysRoleCode);
+        // SYSRole condition = new SYSRole();
+        // condition.setType(req.getType());
+        // List<SYSRole> list = sysRoleBO.querySYSRoleList(condition);
+        // SYSRole role = list.get(0);
+        // String sysRoleCode = role.getCode();
+        // if (list.size() > 1) {
+        // // 获取最大角色
+        // long count = 0L;
+        // for (SYSRole sysRole : list) {
+        // SYSMenuRole sysMenuRole = new SYSMenuRole();
+        // sysMenuRole.setRoleCode(sysRole.getCode());
+        // if (sysMenuRoleBO.getTotalCount(sysMenuRole) > count) {
+        // count = sysMenuRoleBO.getTotalCount(sysMenuRole);
+        // sysRoleCode = sysRole.getCode();
+        // }
+        // }
+        // }
+        // data.setRoleCode(sysRoleCode);
+        data.setRoleCode(req.getRoleCode());
+
         userBO.saveUser(data);
         return userId;
     }

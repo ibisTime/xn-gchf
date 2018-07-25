@@ -85,6 +85,15 @@ public class UserAOImpl implements IUserAO {
                 req.getSubbranch());
         }
 
+        if (EUserKind.Owner.getCode().equals(req.getType())) {
+            Project project = projectBO.getProject(req.getProjectCode());
+            if (null == project) {
+                throw new BizException("xn00000", "业主端项目不存在！");
+            }
+            data.setProjectCode(project.getCode());
+            data.setProjectName(project.getName());
+        }
+
         data.setProvince(req.getProvince());
         data.setCity(req.getCity());
         data.setArea(req.getArea());

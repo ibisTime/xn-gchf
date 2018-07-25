@@ -28,7 +28,6 @@ import com.cdkj.gchf.core.OrderNoGenerater;
 import com.cdkj.gchf.core.StringValidater;
 import com.cdkj.gchf.domain.Attendance;
 import com.cdkj.gchf.domain.BankCard;
-import com.cdkj.gchf.domain.Company;
 import com.cdkj.gchf.domain.Department;
 import com.cdkj.gchf.domain.Employ;
 import com.cdkj.gchf.domain.Project;
@@ -283,10 +282,6 @@ public class EmployAOImpl implements IEmployAO {
     }
 
     private void initEmploy(Employ employ) {
-        // 公司名称
-        Company company = companyBO.getCompany(employ.getCompanyCode());
-        employ.setCompanyName(company.getName());
-
         // 部门名称
         Department department = departmentBO
             .getDepartment(employ.getDepartmentCode());

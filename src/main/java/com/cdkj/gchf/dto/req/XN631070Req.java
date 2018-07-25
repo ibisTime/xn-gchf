@@ -32,8 +32,8 @@ public class XN631070Req {
     // 手机号（选填）
     private String mobile;
 
-    // （选填） 公司编号
-    private String companyCode;
+    // （选填）项目编号
+    private String projectCode;
 
     // (选填) 银行名称
     private String bankName;
@@ -139,14 +139,6 @@ public class XN631070Req {
         this.city = city;
     }
 
-    public String getCompanyCode() {
-        return companyCode;
-    }
-
-    public void setCompanyCode(String companyCode) {
-        this.companyCode = companyCode;
-    }
-
     public String getProvince() {
         return province;
     }
@@ -177,6 +169,14 @@ public class XN631070Req {
 
     public void setBankCode(String bankCode) {
         this.bankCode = bankCode;
+    }
+
+    public String getProjectCode() {
+        return projectCode;
+    }
+
+    public void setProjectCode(String projectCode) {
+        this.projectCode = projectCode;
     }
 
 }

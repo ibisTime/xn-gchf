@@ -12,29 +12,41 @@ public class XN631085Req extends APageReq {
      */
     private static final long serialVersionUID = -5086166851379663826L;
 
-    // （选填） 关键字
+    // （选填） 用户类型
     private String type;
 
-    // （选填） 关键字
-    private String departmentCode;
-
-    // （选填） 关键字
+    // （选填） 角色类型
     private String roleCode;
 
-    // （选填） 关键字
+    // （选填） 状态
     private String status;
 
-    // （选填） 关键字
+    // （选填） 推荐人
     private String userRefree;
 
-    // （选填） 关键字
+    // （选填） 更新人
     private String updater;
 
     // （选填） 关键字
     private String keyword;
 
-    // （选填） 公司编号
-    private String companyCode;
+    // 项目编号
+    private String projectCode;
+
+    // 省份
+    private String province;
+
+    // 市
+    private String city;
+
+    // 区
+    private String area;
+
+    // 银行名称
+    private String bankName;
+
+    // 所属支行
+    private String subbranch;
 
     public String getKeyword() {
         return keyword;
@@ -50,14 +62,6 @@ public class XN631085Req extends APageReq {
 
     public void setType(String type) {
         this.type = type;
-    }
-
-    public String getDepartmentCode() {
-        return departmentCode;
-    }
-
-    public void setDepartmentCode(String departmentCode) {
-        this.departmentCode = departmentCode;
     }
 
     public String getRoleCode() {
@@ -92,12 +96,52 @@ public class XN631085Req extends APageReq {
         this.updater = updater;
     }
 
-    public String getCompanyCode() {
-        return companyCode;
+    public String getProjectCode() {
+        return projectCode;
     }
 
-    public void setCompanyCode(String companyCode) {
-        this.companyCode = companyCode;
+    public void setProjectCode(String projectCode) {
+        this.projectCode = projectCode;
+    }
+
+    public String getProvince() {
+        return province;
+    }
+
+    public void setProvince(String province) {
+        this.province = province;
+    }
+
+    public String getCity() {
+        return city;
+    }
+
+    public void setCity(String city) {
+        this.city = city;
+    }
+
+    public String getArea() {
+        return area;
+    }
+
+    public void setArea(String area) {
+        this.area = area;
+    }
+
+    public String getBankName() {
+        return bankName;
+    }
+
+    public void setBankName(String bankName) {
+        this.bankName = bankName;
+    }
+
+    public String getSubbranch() {
+        return subbranch;
+    }
+
+    public void setSubbranch(String subbranch) {
+        this.subbranch = subbranch;
     }
 
 }

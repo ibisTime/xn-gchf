@@ -40,6 +40,13 @@ public class XN631085 extends AProcessor {
         condition.setCreateDatetimeEnd(
             DateUtil.getFrontDate(req.getDateEnd(), true));
 
+        condition.setProjectCode(req.getProjectCode());
+        condition.setProvince(req.getProvince());
+        condition.setCity(req.getCity());
+        condition.setArea(req.getArea());
+        condition.setBankName(req.getBankName());
+        condition.setSubbranch(req.getSubbranch());
+
         condition.setKeyword(req.getKeyword());
         String column = req.getOrderColumn();
         if (StringUtils.isBlank(column)) {

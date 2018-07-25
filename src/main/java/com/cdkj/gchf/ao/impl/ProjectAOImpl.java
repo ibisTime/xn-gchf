@@ -59,9 +59,6 @@ public class ProjectAOImpl implements IProjectAO {
     @Autowired
     IDepartmentBO departmentBO;
 
-    // 项目管理员默认登录名
-    private final String userLoginName = "admin";
-
     // 项目管理员默认密码
     private final String userLoginPwd = "888888";
 
@@ -89,7 +86,7 @@ public class ProjectAOImpl implements IProjectAO {
         user.setUserId(userId);
         user.setType(EUserKind.Owner.getCode());
         user.setRealName(req.getName().concat("管理员"));
-        user.setLoginName(userLoginName);
+        user.setLoginName(req.getName().concat("管理员"));
         user.setProjectCode(code);
         user.setProjectName(req.getName());
 

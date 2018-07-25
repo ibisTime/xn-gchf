@@ -13,7 +13,7 @@ public interface IProjectBO extends IPaginableBO<Project> {
 
     public int editProject(Project data);
 
-    public void approveProject(Project data);
+    public void startProject(Project data);
 
     public List<Project> queryProject(Project condition);
 

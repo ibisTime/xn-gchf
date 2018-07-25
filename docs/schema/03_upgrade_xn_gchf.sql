@@ -117,3 +117,13 @@ ADD COLUMN `user_id` VARCHAR(32) NULL COMMENT '用户编号' AFTER `code`;
 ##V1.4.0
 ALTER TABLE `tsys_menu` 
 ADD COLUMN `role_type` VARCHAR(4) NULL AFTER `type`;
+
+ALTER TABLE `thf_user` 
+ADD COLUMN `project_code` VARCHAR(32) NULL AFTER `company_code`,
+ADD COLUMN `project_name` VARCHAR(255) NULL AFTER `project_code`;
+
+ALTER TABLE `thf_bank_card` 
+DROP COLUMN `company_code`;
+
+ALTER TABLE `thf_employ` 
+DROP COLUMN `company_code`;

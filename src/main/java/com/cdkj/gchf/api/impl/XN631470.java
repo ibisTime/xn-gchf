@@ -24,7 +24,7 @@ public class XN631470 extends AProcessor {
 
     @Override
     public Object doBusiness() throws BizException {
-        projectAO.stopProject(req.getCode(), req.getUpdater(), req.getRemark());
+        projectAO.pauseProject(req.getCode(), req.getUpdater(), req.getRemark());
         return new BooleanRes(true);
     }
 

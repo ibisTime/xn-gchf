@@ -29,9 +29,6 @@ LIMIT 0, 1000
 -- Date: 2018-06-29 14:00
 */
 INSERT INTO `thf_user` (`user_id`,`real_name`,`type`,`photo`,`login_name`,`mobile`,`login_pwd`,`login_pwd_strength`,`user_refree`,`create_datetime`,`role_code`,`company_code`,`company_name`,`province`,`city`,`area`,`bank_name`,`subbranch`,`department_code`,`updater`,`update_datetime`,`status`,`remark`) VALUES ('USYS201800000000001','平台端','P',NULL,'admin',NULL,'21218cca77804d2ba1922c33e0151105','1',NULL,now(),'RO201800000000000001',NULL,NULL,NULL,NULL,NULL,NULL,NULL,'',NULL,NULL,'0',NULL);
-INSERT INTO `thf_user` (`user_id`,`real_name`,`type`,`photo`,`login_name`,`mobile`,`login_pwd`,`login_pwd_strength`,`user_refree`,`create_datetime`,`role_code`,`company_code`,`company_name`,`province`,`city`,`area`,`bank_name`,`subbranch`,`department_code`,`updater`,`update_datetime`,`status`,`remark`) VALUES ('USYS201800000000002','银行端','B',NULL,'admin',NULL,'21218cca77804d2ba1922c33e0151105','1',NULL,now(),'RO201800000000000002',NULL,NULL,NULL,NULL,NULL,NULL,NULL,'',NULL,NULL,'0',NULL);
-INSERT INTO `thf_user` (`user_id`,`real_name`,`type`,`photo`,`login_name`,`mobile`,`login_pwd`,`login_pwd_strength`,`user_refree`,`create_datetime`,`role_code`,`company_code`,`company_name`,`province`,`city`,`area`,`bank_name`,`subbranch`,`department_code`,`updater`,`update_datetime`,`status`,`remark`) VALUES ('USYS201800000000003','业主端','0',NULL,'admin',NULL,'21218cca77804d2ba1922c33e0151105','1',NULL,now(),'RO201800000000000003',NULL,NULL,NULL,NULL,NULL,NULL,NULL,'',NULL,NULL,'0',NULL);
-INSERT INTO `thf_user` (`user_id`,`real_name`,`type`,`photo`,`login_name`,`mobile`,`login_pwd`,`login_pwd_strength`,`user_refree`,`create_datetime`,`role_code`,`company_code`,`company_name`,`province`,`city`,`area`,`bank_name`,`subbranch`,`department_code`,`updater`,`update_datetime`,`status`,`remark`) VALUES ('USYS201800000000004','监管端','S',NULL,'admin',NULL,'21218cca77804d2ba1922c33e0151105','1',NULL,now(),'RO201800000000000004',NULL,NULL,NULL,NULL,NULL,NULL,NULL,'',NULL,NULL,'0',NULL);
 
 /*
 -- Query: SELECT * FROM dev_xn_gchf.tsys_dict
@@ -48,10 +45,11 @@ INSERT INTO `tsys_dict` (`id`,`type`,`parent_key`,`dkey`,`dvalue`,`updater`,`upd
 INSERT INTO `tsys_dict` (`id`,`type`,`parent_key`,`dkey`,`dvalue`,`updater`,`update_datetime`,`remark`) VALUES (8,'1','user_status','1','人工锁定','admin',now(),NULL);
 INSERT INTO `tsys_dict` (`id`,`type`,`parent_key`,`dkey`,`dvalue`,`updater`,`update_datetime`,`remark`) VALUES (9,'1','user_status','2','程序锁定','admin',now(),'');
 INSERT INTO `tsys_dict` (`id`,`type`,`parent_key`,`dkey`,`dvalue`,`updater`,`update_datetime`,`remark`) VALUES (10,'0',NULL,'project_status','项目状态','admin',now(),NULL);
-INSERT INTO `tsys_dict` (`id`,`type`,`parent_key`,`dkey`,`dvalue`,`updater`,`update_datetime`,`remark`) VALUES (11,'1','project_status','0','待提请审核','admin',now(),NULL);
-INSERT INTO `tsys_dict` (`id`,`type`,`parent_key`,`dkey`,`dvalue`,`updater`,`update_datetime`,`remark`) VALUES (12,'1','project_status','1','待审核','admin',now(),NULL);
-INSERT INTO `tsys_dict` (`id`,`type`,`parent_key`,`dkey`,`dvalue`,`updater`,`update_datetime`,`remark`) VALUES (13,'1','project_status','2','审核未通过','admin',now(),NULL);
-INSERT INTO `tsys_dict` (`id`,`type`,`parent_key`,`dkey`,`dvalue`,`updater`,`update_datetime`,`remark`) VALUES (14,'1','project_status','5','项目结束','admin',now(),NULL);
+INSERT INTO `tsys_dict` (`id`,`type`,`parent_key`,`dkey`,`dvalue`,`updater`,`update_datetime`,`remark`) VALUES (11,'1','project_status','0','待编辑','admin',now(),NULL);
+INSERT INTO `tsys_dict` (`id`,`type`,`parent_key`,`dkey`,`dvalue`,`updater`,`update_datetime`,`remark`) VALUES (12,'1','project_status','1','待开工','admin',now(),NULL);
+INSERT INTO `tsys_dict` (`id`,`type`,`parent_key`,`dkey`,`dvalue`,`updater`,`update_datetime`,`remark`) VALUES (13,'1','project_status','2','在建','admin',now(),NULL);
+INSERT INTO `tsys_dict` (`id`,`type`,`parent_key`,`dkey`,`dvalue`,`updater`,`update_datetime`,`remark`) VALUES (49,'1','project_status','3','停工','admin',now(),NULL);
+INSERT INTO `tsys_dict` (`id`,`type`,`parent_key`,`dkey`,`dvalue`,`updater`,`update_datetime`,`remark`) VALUES (50,'1','project_status','4','结束','admin',now(),NULL);
 INSERT INTO `tsys_dict` (`id`,`type`,`parent_key`,`dkey`,`dvalue`,`updater`,`update_datetime`,`remark`) VALUES (15,'0',NULL,'account_status','账户状态','admin',now(),NULL);
 INSERT INTO `tsys_dict` (`id`,`type`,`parent_key`,`dkey`,`dvalue`,`updater`,`update_datetime`,`remark`) VALUES (16,'1','account_status','0','正常','admin',now(),NULL);
 INSERT INTO `tsys_dict` (`id`,`type`,`parent_key`,`dkey`,`dvalue`,`updater`,`update_datetime`,`remark`) VALUES (17,'1','account_status','1','人工锁定','admin',now(),NULL);
@@ -64,6 +62,7 @@ INSERT INTO `tsys_dict` (`id`,`type`,`parent_key`,`dkey`,`dvalue`,`updater`,`upd
 INSERT INTO `tsys_dict` (`id`,`type`,`parent_key`,`dkey`,`dvalue`,`updater`,`update_datetime`,`remark`) VALUES (24,'1','message_status','0','待发送','admin',now(),NULL);
 INSERT INTO `tsys_dict` (`id`,`type`,`parent_key`,`dkey`,`dvalue`,`updater`,`update_datetime`,`remark`) VALUES (25,'1','message_status','1','待处理','admin',now(),NULL);
 INSERT INTO `tsys_dict` (`id`,`type`,`parent_key`,`dkey`,`dvalue`,`updater`,`update_datetime`,`remark`) VALUES (26,'1','message_status','2','待反馈','admin',now(),NULL);
+INSERT INTO `tsys_dict` (`id`,`type`,`parent_key`,`dkey`,`dvalue`,`updater`,`update_datetime`,`remark`) VALUES (51,'1','message_status','3','已处理','admin',now(),NULL);
 INSERT INTO `tsys_dict` (`id`,`type`,`parent_key`,`dkey`,`dvalue`,`updater`,`update_datetime`,`remark`) VALUES (27,'0',NULL,'salary_status','工资条状态','admin',now(),NULL);
 INSERT INTO `tsys_dict` (`id`,`type`,`parent_key`,`dkey`,`dvalue`,`updater`,`update_datetime`,`remark`) VALUES (28,'1','salary_status','0','待人工复核','admin',now(),NULL);
 INSERT INTO `tsys_dict` (`id`,`type`,`parent_key`,`dkey`,`dvalue`,`updater`,`update_datetime`,`remark`) VALUES (29,'1','salary_status','1','已审核待提交','admin',now(),NULL);
@@ -88,9 +87,6 @@ INSERT INTO `tsys_dict` (`id`,`type`,`parent_key`,`dkey`,`dvalue`,`updater`,`upd
 INSERT INTO `tsys_dict` (`id`,`type`,`parent_key`,`dkey`,`dvalue`,`updater`,`update_datetime`,`remark`) VALUES (46,'0',NULL,'salary_log_type','日志类型','admin',now(),NULL);
 INSERT INTO `tsys_dict` (`id`,`type`,`parent_key`,`dkey`,`dvalue`,`updater`,`update_datetime`,`remark`) VALUES (47,'1','salary_log_type','0','正常','admin',now(),NULL);
 INSERT INTO `tsys_dict` (`id`,`type`,`parent_key`,`dkey`,`dvalue`,`updater`,`update_datetime`,`remark`) VALUES (48,'1','salary_log_type','1','异常','admin',now(),NULL);
-INSERT INTO `tsys_dict` (`id`,`type`,`parent_key`,`dkey`,`dvalue`,`updater`,`update_datetime`,`remark`) VALUES (49,'1','project_status','3','在建','admin',now(),NULL);
-INSERT INTO `tsys_dict` (`id`,`type`,`parent_key`,`dkey`,`dvalue`,`updater`,`update_datetime`,`remark`) VALUES (50,'1','project_status','4','停工','admin',now(),NULL);
-INSERT INTO `tsys_dict` (`id`,`type`,`parent_key`,`dkey`,`dvalue`,`updater`,`update_datetime`,`remark`) VALUES (51,'1','message_status','3','已处理','admin',now(),NULL);
 INSERT INTO `tsys_dict` (`id`,`type`,`parent_key`,`dkey`,`dvalue`,`updater`,`update_datetime`,`remark`) VALUES (52,'0',NULL,'abnormal_type','事件类型','admin',now(),NULL);
 INSERT INTO `tsys_dict` (`id`,`type`,`parent_key`,`dkey`,`dvalue`,`updater`,`update_datetime`,`remark`) VALUES (53,'1','abnormal_type','0','工资条异常','admin',now(),NULL);
 
@@ -445,12 +441,6 @@ INSERT INTO `tsys_menu` (`code`,`name`,`type`,`role_type`,`url`,`order_no`,`upda
 INSERT INTO `tsys_menu` (`code`,`name`,`type`,`role_type`,`url`,`order_no`,`updater`,`update_datetime`,`remark`,`parent_code`) VALUES ('SM201807201346521318233','工作履历','2','P','/history','3','USYS201800000000001','2018-07-20 13:46:52','','SM201807201240487754033');
 INSERT INTO `tsys_menu` (`code`,`name`,`type`,`role_type`,`url`,`order_no`,`updater`,`update_datetime`,`remark`,`parent_code`) VALUES ('SM201807201347158228349','详情','2','P','/detail','4','USYS201800000000001','2018-07-20 13:47:15','','SM201807201240487754033');
 
-/*
--- Query: SELECT * FROM dev_xn_gchf.tsys_menu_role where role_code = 'RO201800000000000001'
-LIMIT 0, 1000
--- Date: 2018-07-20 13:49
--- P
-*/
 INSERT INTO `tsys_menu_role` (`id`,`role_code`,`menu_code`,`updater`,`update_datetime`,`remark`) VALUES (2012,'RO201800000000000001','GCHFPSM201800000000000000','USYS201800000000001','2018-07-20 13:47:25',NULL);
 INSERT INTO `tsys_menu_role` (`id`,`role_code`,`menu_code`,`updater`,`update_datetime`,`remark`) VALUES (2013,'RO201800000000000001','SM201807201030483125593','USYS201800000000001','2018-07-20 13:47:25',NULL);
 INSERT INTO `tsys_menu_role` (`id`,`role_code`,`menu_code`,`updater`,`update_datetime`,`remark`) VALUES (2014,'RO201800000000000001','SM201807201031386412313','USYS201800000000001','2018-07-20 13:47:25',NULL);
@@ -487,6 +477,7 @@ INSERT INTO `tsys_menu_role` (`id`,`role_code`,`menu_code`,`updater`,`update_dat
 -- Query: SELECT * FROM dev_xn_gchf.tsys_menu where role_type = 'B'
 LIMIT 0, 1000
 -- Date: 2018-07-24 15:41
+-- B
 */
 INSERT INTO `tsys_menu` (`code`,`name`,`type`,`role_type`,`url`,`order_no`,`updater`,`update_datetime`,`remark`,`parent_code`) VALUES ('GCHFBSM201800000000000000','根目录','1','B','#','1','admin','2018-08-20 09:09:17','','');
 INSERT INTO `tsys_menu` (`code`,`name`,`type`,`role_type`,`url`,`order_no`,`updater`,`update_datetime`,`remark`,`parent_code`) VALUES ('SM201807231030483125593','系统管理','1','B','#','1','USYS201800000000001','2018-07-20 10:30:48','','GCHFBSM201800000000000000');

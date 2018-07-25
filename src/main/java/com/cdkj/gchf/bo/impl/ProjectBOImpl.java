@@ -34,7 +34,7 @@ public class ProjectBOImpl extends PaginableBOImpl<Project>
     }
 
     @Override
-    public void approveProject(Project data) {
+    public void startProject(Project data) {
         projectDAO.approveProject(data);
     }
 

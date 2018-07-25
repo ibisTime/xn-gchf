@@ -34,17 +34,10 @@ public class CompanyCardAOImpl implements ICompanyCardAO {
 
     @Override
     public void editCompanyCard(XN631362Req req) {
-        CompanyCard data = companyCardBO.getCompanyCard(req.getCode());
-        data.setBankCode(req.getBankCode());
-        data.setBankName(req.getBankName());
-        data.setBankcardNumber(req.getBankcardNumber());
-        data.setSubbranch(req.getSubbranch());
-
-        data.setAccountName(req.getAccountName());
-        data.setUpdater(req.getUpdater());
-        data.setUpdateDatetime(new Date());
-        data.setRemark(req.getRemark());
-        companyCardBO.refreshCompanyCard(data);
+        companyCardBO.refreshCompanyCard(req.getCode(), req.getBankCode(),
+            req.getBankName(), req.getAccountName(), req.getBankcardNumber(),
+            req.getSubbranch(), req.getUpdater(), new Date(),
+            req.getRemark());
     }
 
     @Override

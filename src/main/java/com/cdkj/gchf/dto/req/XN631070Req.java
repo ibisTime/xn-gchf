@@ -9,7 +9,7 @@ import org.hibernate.validator.constraints.NotBlank;
  */
 public class XN631070Req {
 
-    // 角色编号
+    // 角色编号（必填）
     @NotBlank(message = "角色编号不能为空")
     private String roleCode;
 

@@ -7,13 +7,11 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import com.cdkj.gchf.bo.ICompanyBO;
 import com.cdkj.gchf.bo.ICompanyCardBO;
 import com.cdkj.gchf.bo.IProjectBO;
 import com.cdkj.gchf.bo.base.PaginableBOImpl;
 import com.cdkj.gchf.core.OrderNoGenerater;
 import com.cdkj.gchf.dao.ICompanyCardDAO;
-import com.cdkj.gchf.domain.Company;
 import com.cdkj.gchf.domain.CompanyCard;
 import com.cdkj.gchf.domain.Project;
 import com.cdkj.gchf.enums.EBankCardStatus;
@@ -27,22 +25,18 @@ public class CompanyCardBOImpl extends PaginableBOImpl<CompanyCard>
     private ICompanyCardDAO companyCardDAO;
 
     @Autowired
-    private ICompanyBO companyBO;
-
-    @Autowired
     private IProjectBO projectBO;
 
-    public void saveCompanyCard(String companyCode, String projectCode,
-            String bankCode, String bankName, String accountName,
-            String bankCardNumber, String subbranch, String updater,
-            Date updateDatetime, String remark) {
+    public void saveCompanyCard(String projectCode, String bankCode,
+            String bankName, String accountName, String bankCardNumber,
+            String subbranch, String updater, Date updateDatetime,
+            String remark) {
         CompanyCard data = new CompanyCard();
 
         String code = OrderNoGenerater
             .generate(EGeneratePrefix.CompanyBank.getCode());
         data.setCode(code);
         data.setProjectCode(projectCode);
-        data.setCompanyCode(companyCode);
 
         data.setBankCode(bankCode);
         data.setBankName(bankName);
@@ -56,10 +50,6 @@ public class CompanyCardBOImpl extends PaginableBOImpl<CompanyCard>
         data.setUpdateDatetime(updateDatetime);
         data.setRemark(remark);
 
-        Company company = companyBO.getCompany(companyCode);
-        if (null != company) {
-            data.setCompanyName(company.getName());
-        }
         Project project = projectBO.getProject(projectCode);
         if (null != project) {
             data.setProjectName(project.getName());
@@ -68,7 +58,22 @@ public class CompanyCardBOImpl extends PaginableBOImpl<CompanyCard>
     }
 
     @Override
-    public void refreshCompanyCard(CompanyCard data) {
+    public void refreshCompanyCard(String code, String bankCode,
+            String bankName, String accountName, String bankCardNumber,
+            String subbranch, String updater, Date updateDatetime,
+            String remark) {
+
+        CompanyCard data = getCompanyCard(code);
+        data.setBankCode(bankCode);
+        data.setBankName(bankName);
+        data.setBankcardNumber(bankCardNumber);
+        data.setSubbranch(subbranch);
+
+        data.setAccountName(accountName);
+        data.setUpdater(updater);
+        data.setUpdateDatetime(new Date());
+        data.setRemark(remark);
+
         companyCardDAO.update(data);
     }
 

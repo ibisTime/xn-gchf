@@ -11,7 +11,7 @@ import com.cdkj.gchf.exception.ParaException;
 import com.cdkj.gchf.spring.SpringContextHolder;
 
 /**
- * 审核
+ * 项目开工
  * @author: CYL 
  * @since: 2018年4月23日 上午9:50:53 
  * @history:
@@ -26,8 +26,8 @@ public class XN631354 extends AProcessor {
 
     @Override
     public Object doBusiness() throws BizException {
-        projectAO.approveProject(req.getCode(), req.getResult(),
-            req.getApprover(), req.getApproveNote());
+        projectAO.startProject(req.getCode(), req.getApprover(),
+            req.getApproveNote());
         return new BooleanRes(true);
     }
 

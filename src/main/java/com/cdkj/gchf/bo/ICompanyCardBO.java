@@ -7,12 +7,15 @@ import com.cdkj.gchf.bo.base.IPaginableBO;
 import com.cdkj.gchf.domain.CompanyCard;
 
 public interface ICompanyCardBO extends IPaginableBO<CompanyCard> {
-    public void saveCompanyCard(String companyCode, String projectCode,
-            String bankCode, String bankName, String accountName,
-            String bankCardNumber, String subbranch, String updater,
-            Date updateDatetime, String remark);
+    public void saveCompanyCard(String projectCode, String bankCode,
+            String bankName, String accountName, String bankCardNumber,
+            String subbranch, String updater, Date updateDatetime,
+            String remark);
 
-    public void refreshCompanyCard(CompanyCard data);
+    public void refreshCompanyCard(String code, String bankCode,
+            String bankName, String accountName, String bankCardNumber,
+            String subbranch, String updater, Date updateDatetime,
+            String remark);
 
     public List<CompanyCard> queryCompanyCardList(CompanyCard condition);
 

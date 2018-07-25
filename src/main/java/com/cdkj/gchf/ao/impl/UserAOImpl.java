@@ -109,6 +109,8 @@ public class UserAOImpl implements IUserAO {
         // }
         // }
         // data.setRoleCode(sysRoleCode);
+
+        // 改为添加用户时手动选择角色
         data.setRoleCode(req.getRoleCode());
 
         userBO.saveUser(data);

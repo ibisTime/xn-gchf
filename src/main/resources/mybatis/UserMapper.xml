@@ -47,6 +47,9 @@
 			<if test="loginPwd != null and loginPwd != '' ">
 				AND t.login_pwd = #{loginPwd}
 			</if>
+			<if test="userRefree != null and userRefree != '' ">
+				AND t.user_refree = #{userRefree}
+			</if>
 			<if test="province != null and province != '' ">
 				AND t.province = #{province}
 			</if>

@@ -32,7 +32,6 @@ import com.cdkj.gchf.common.PhoneUtil;
 import com.cdkj.gchf.core.OrderNoGenerater;
 import com.cdkj.gchf.core.StringValidater;
 import com.cdkj.gchf.domain.BankCard;
-import com.cdkj.gchf.domain.Company;
 import com.cdkj.gchf.domain.CompanyCard;
 import com.cdkj.gchf.domain.Employ;
 import com.cdkj.gchf.domain.EventRemind;
@@ -347,11 +346,7 @@ public class MessageAOImpl implements IMessageAO {
 
         Project project = projectBO.getProject(message.getProjectCode());
         if (null != project) {
-            Company company = companyBO.getCompany(project.getCompanyCode());
-            message.setCompanyCode(company.getCode());
-            message.setCompanyName(company.getName());
-            message.setSendCompanyProject(
-                project.getCompanyName().concat(project.getName()));
+            message.setSendCompanyProject(project.getName());
             message.setProjectChargeUser(project.getChargeUser());
             message.setProjectChargeUserMobile(project.getChargeMobile());
 

@@ -13,10 +13,6 @@ public class XN631460Req {
     @NotBlank(message = "员工编号不能为空")
     private String staffCode;
 
-    // （必填）公司编号
-    @NotBlank
-    private String companyCode;
-
     // （必填）项目编码
     @NotBlank(message = "项目编号不能为空")
     private String projectCode;
@@ -142,14 +138,6 @@ public class XN631460Req {
 
     public void setType(String type) {
         this.type = type;
-    }
-
-    public String getCompanyCode() {
-        return companyCode;
-    }
-
-    public void setCompanyCode(String companyCode) {
-        this.companyCode = companyCode;
     }
 
     public String getBankCode() {

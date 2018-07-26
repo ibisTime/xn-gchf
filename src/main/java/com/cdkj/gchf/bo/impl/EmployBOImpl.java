@@ -13,7 +13,6 @@ import com.cdkj.gchf.bo.IEmployBO;
 import com.cdkj.gchf.bo.base.PaginableBOImpl;
 import com.cdkj.gchf.common.DateUtil;
 import com.cdkj.gchf.dao.IEmployDAO;
-import com.cdkj.gchf.domain.Company;
 import com.cdkj.gchf.domain.Department;
 import com.cdkj.gchf.domain.Employ;
 import com.cdkj.gchf.enums.EEmployStatus;
@@ -129,10 +128,6 @@ public class EmployBOImpl extends PaginableBOImpl<Employ> implements IEmployBO {
     }
 
     private void initEmploy(Employ employ) {
-        // 公司名称
-        Company company = companyBO.getCompany(employ.getCompanyCode());
-        employ.setCompanyName(company.getName());
-
         // 部门名称
         Department department = departmentBO
             .getDepartment(employ.getDepartmentCode());

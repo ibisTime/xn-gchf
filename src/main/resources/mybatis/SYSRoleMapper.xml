@@ -10,6 +10,7 @@
 		<result column="update_datetime" property="updateDatetime" />
 		<result column="remark" property="remark" />
 	</resultMap>
+	
 	<sql id="where_condition">
 		<trim prefix="WHERE" prefixOverrides="AND | OR">
 			<if test="code != null and code != '' ">
@@ -21,9 +22,15 @@
 			<if test="name != null and name != '' ">
 				AND t.name = #{name}
 			</if>
+			<if test="updater != null and updater != '' ">
 				AND t.updater = #{updater}
+			</if>
+			<if test="updater != null and updater == '' ">
+				AND t.updater is null
+			</if>
 		</trim>
 	</sql>
+	
 	<select id="select_sysRole" parameterType="sysRole" resultMap="sysRole_DB_Result">
 		SELECT
 		code

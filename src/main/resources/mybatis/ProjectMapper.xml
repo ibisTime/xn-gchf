@@ -40,6 +40,9 @@
 			<if test="code != null and code != '' ">
 				AND t.code = #{code}
 			</if>
+			<if test="name != null and name != '' ">
+				AND t.name = #{name}
+			</if>
 			<choose>
 				<when test="companyCode != null and companyCode != '' ">
 					AND t.company_code = #{companyCode}
@@ -230,6 +233,7 @@
 		,attendance_starttime = #{attendanceStarttime}
 		,attendance_endtime = #{attendanceEndtime}
 		,status = #{status}
+		
 		,updater = #{updater}
 		,update_datetime = #{updateDatetime}
 		,remark = #{remark}

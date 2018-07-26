@@ -65,9 +65,19 @@ public class ProjectAOImpl implements IProjectAO {
     // 项目管理员默认角色：业主端管理员
     private final String userRole = "RO201800000000000003";
 
+    // 添加角色：平台端管理员
+    private final String userRefree = "USYS201800000000001";
+
     @Override
     @Transactional
     public String addProject(XN631350Req req) {
+        Project condition = new Project();
+        condition.setName(req.getName());
+        if (CollectionUtils
+            .isNotEmpty(projectBO.queryProjectCodeList(condition))) {
+            throw new BizException("xn000", "项目名称已存在，请重新输入！");
+        }
+
         Project data = new Project();
 
         String code = OrderNoGenerater
@@ -94,6 +104,7 @@ public class ProjectAOImpl implements IProjectAO {
         user.setLoginPwdStrength(PwdUtil.calculateSecurityLevel(userLoginPwd));
         user.setCreateDatetime(new Date());
         user.setRoleCode(userRole);
+        user.setUserRefree(userRefree);
         user.setStatus(EUserStatus.NORMAL.getCode());
         userBO.saveUser(user);
 
@@ -104,7 +115,7 @@ public class ProjectAOImpl implements IProjectAO {
     @Transactional
     public void editProject(XN631352Req req) {
         Project data = projectBO.getProject(req.getCode());
-        if (EProjectStatus.End.getStatus().equals(data.getStatus())) {
+        if (EProjectStatus.End.getCode().equals(data.getStatus())) {
             throw new BizException("xn000", "该项目已结束，无法编辑");
         }
 
@@ -119,6 +130,8 @@ public class ProjectAOImpl implements IProjectAO {
         data.setArea(req.getArea());
 
         data.setAddress(req.getAddress());
+        data.setStartDatetime(DateUtil.strToDate(req.getStartDatetime(),
+            DateUtil.FRONT_DATE_FORMAT_STRING));
         data.setSalaryCreateDatetime(req.getSalaryCreateDatetime());
         data.setSalaryDatetime(req.getSalaryDatetime());
         data.setAttendanceStarttime(req.getAttendanceStarttime());
@@ -139,8 +152,8 @@ public class ProjectAOImpl implements IProjectAO {
         CompanyCard companyCard = companyCardBO
             .getCompanyCardByProject(req.getCode());
         if (null != companyCard) {
-            companyCardBO.refreshCompanyCard(req.getCode(), req.getBankCode(),
-                req.getBankName(), req.getAccountName(),
+            companyCardBO.refreshCompanyCard(companyCard.getCode(),
+                req.getBankCode(), req.getBankName(), req.getAccountName(),
                 req.getBankcardNumber(), req.getSubbranch(), req.getUpdater(),
                 data.getUpdateDatetime(), req.getRemark());
         } else {

@@ -106,7 +106,6 @@ public class EmployAOImpl implements IEmployAO {
         Staff staff = staffBO.getStaff(req.getStaffCode());
 
         data.setCode(code);
-        data.setCompanyCode(req.getCompanyCode());
         data.setProjectCode(req.getProjectCode());
         data.setProjectName(project.getName());
         data.setDepartmentCode(req.getDepartmentCode());
@@ -150,9 +149,9 @@ public class EmployAOImpl implements IEmployAO {
         attendanceBO.saveAttendance(attendance);
 
         // 添加银行卡信息
-        bankCardBO.addBankCard(staff, req.getCompanyCode(),
-            req.getProjectCode(), req.getBankCode(), req.getBankName(),
-            req.getSubbranch(), req.getBankcardNumber(), req.getUpdater());
+        bankCardBO.addBankCard(staff, null, req.getProjectCode(),
+            req.getBankCode(), req.getBankName(), req.getSubbranch(),
+            req.getBankcardNumber(), req.getUpdater());
 
         // 记录员工日志
         staffLogBO.saveStaffLog(data, staff.getName(), project.getCompanyCode(),

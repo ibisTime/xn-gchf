@@ -8,9 +8,6 @@ public class XN631354Req {
     private String code;// 编号
 
     @NotBlank
-    private String result;// 结果
-
-    @NotBlank
     private String approver;// 审核人
 
     private String approveNote;// 审核备注
@@ -21,14 +18,6 @@ public class XN631354Req {
 
     public void setCode(String code) {
         this.code = code;
-    }
-
-    public String getResult() {
-        return result;
-    }
-
-    public void setResult(String result) {
-        this.result = result;
     }
 
     public String getApprover() {

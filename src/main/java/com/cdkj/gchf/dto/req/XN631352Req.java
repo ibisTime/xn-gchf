@@ -50,6 +50,10 @@ public class XN631352Req {
     @NotBlank(message = "地址不能为空")
     private String address;
 
+    // 项目开始时间
+    @NotBlank(message = "项目开始时间不能为空")
+    private String startDatetime;
+
     // 工资条行程时间
     @NotBlank(message = "工资条行程时间不能为空")
     private String salaryCreateDatetime;
@@ -259,6 +263,14 @@ public class XN631352Req {
 
     public void setBankcardNumber(String bankcardNumber) {
         this.bankcardNumber = bankcardNumber;
+    }
+
+    public String getStartDatetime() {
+        return startDatetime;
+    }
+
+    public void setStartDatetime(String startDatetime) {
+        this.startDatetime = startDatetime;
     }
 
 }

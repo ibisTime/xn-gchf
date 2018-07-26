@@ -16,7 +16,6 @@ import com.cdkj.gchf.domain.CompanyCard;
 import com.cdkj.gchf.domain.Project;
 import com.cdkj.gchf.enums.EBankCardStatus;
 import com.cdkj.gchf.enums.EGeneratePrefix;
-import com.cdkj.gchf.exception.BizException;
 
 @Component
 public class CompanyCardBOImpl extends PaginableBOImpl<CompanyCard>
@@ -89,12 +88,10 @@ public class CompanyCardBOImpl extends PaginableBOImpl<CompanyCard>
             CompanyCard condition = new CompanyCard();
             condition.setCode(code);
             data = companyCardDAO.select(condition);
-            if (data == null) {
-                throw new BizException("xn0000", "公司账户不存在");
+            if (data != null) {
+                data.setBankSubbranch(
+                    data.getBankName().concat(data.getSubbranch()));
             }
-            data.setBankSubbranch(
-                data.getBankName().concat(data.getSubbranch()));
-
         }
         return data;
     }
@@ -106,11 +103,10 @@ public class CompanyCardBOImpl extends PaginableBOImpl<CompanyCard>
             CompanyCard condition = new CompanyCard();
             condition.setProjectCode(projectCode);
             data = companyCardDAO.select(condition);
-            if (data == null) {
-                throw new BizException("xn0000", "公司账户不存在");
+            if (data != null) {
+                data.setBankSubbranch(
+                    data.getBankName().concat(data.getSubbranch()));
             }
-            data.setBankSubbranch(
-                data.getBankName().concat(data.getSubbranch()));
         }
         return data;
     }

@@ -434,7 +434,6 @@ public class SalaryAOImpl implements ISalaryAO {
         // 公司名称及项目信息
         project = projectBO.getProject(salary.getProjectCode());
         if (null != project) {
-            salary.setCompanyName(project.getCompanyName());
             salary.setProjectChargeUser(project.getChargeUser());
             salary.setProjectChargeUserMobile(project.getChargeMobile());
         }

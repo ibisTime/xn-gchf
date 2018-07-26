@@ -18,12 +18,6 @@ public class Project extends ABaseDO {
     // 项目名称
     private String name;
 
-    // 公司编号
-    private String companyCode;
-
-    // 公司名称
-    private String companyName;
-
     // 负责人
     private String chargeUser;
 
@@ -248,14 +242,6 @@ public class Project extends ABaseDO {
         this.remark = remark;
     }
 
-    public String getCompanyCode() {
-        return companyCode;
-    }
-
-    public void setCompanyCode(String companyCode) {
-        this.companyCode = companyCode;
-    }
-
     public String getApprover() {
         return approver;
     }
@@ -366,14 +352,6 @@ public class Project extends ABaseDO {
 
     public void setProjectCodeList(List<String> projectCodeList) {
         this.projectCodeList = projectCodeList;
-    }
-
-    public String getCompanyName() {
-        return companyName;
-    }
-
-    public void setCompanyName(String companyName) {
-        this.companyName = companyName;
     }
 
 }

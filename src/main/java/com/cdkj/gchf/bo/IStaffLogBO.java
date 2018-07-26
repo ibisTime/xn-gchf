@@ -8,8 +8,8 @@ import com.cdkj.gchf.domain.StaffLog;
 
 public interface IStaffLogBO extends IPaginableBO<StaffLog> {
 
-    public void saveStaffLog(Employ data, String staffName, String companyCode,
-            String projectCode, String projectName);
+    public void saveStaffLog(Employ data, String staffName, String projectCode,
+            String projectName);
 
     public List<StaffLog> queryStaffLogList(StaffLog condition);
 

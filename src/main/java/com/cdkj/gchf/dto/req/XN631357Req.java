@@ -6,9 +6,6 @@ public class XN631357Req extends APageReq {
 
     private static final long serialVersionUID = 5138736221155343722L;
 
-    // 公司编号 （选填）
-    private String companyCode;
-
     // 审核人
     private String approver;
 
@@ -55,14 +52,6 @@ public class XN631357Req extends APageReq {
 
     public void setKeyword(String keyword) {
         this.keyword = keyword;
-    }
-
-    public String getCompanyCode() {
-        return companyCode;
-    }
-
-    public void setCompanyCode(String companyCode) {
-        this.companyCode = companyCode;
     }
 
     public String getApprover() {

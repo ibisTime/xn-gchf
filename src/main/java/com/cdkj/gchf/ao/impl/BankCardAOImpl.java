@@ -91,7 +91,6 @@ public class BankCardAOImpl implements IBankCardAO {
         Project project = projectBO.getProject(data.getProjectCode());
         if (null != project) {
             data.setProjectName(project.getName());
-            data.setCompanyName(project.getCompanyName());
         }
     }
 

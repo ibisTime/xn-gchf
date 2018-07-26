@@ -5,8 +5,6 @@
 	<resultMap id="project_DB_Result" type="project">
 		<result column="code" property="code" />
 		<result column="name" property="name" />
-		<result column="company_code" property="companyCode" />
-		<result column="company_name" property="companyName" />
 		<result column="charge_user" property="chargeUser" />
 		
 		<result column="charge_mobile" property="chargeMobile" />
@@ -44,9 +42,6 @@
 				AND t.name = #{name}
 			</if>
 			<choose>
-				<when test="companyCode != null and companyCode != '' ">
-					AND t.company_code = #{companyCode}
-				</when>
 				<when test="projectCodeList != null and projectCodeList.size() > 0">
 					AND t.code IN 
 					<foreach collection="projectCodeList" item="item" index="index" open="(" separator="," close=")">
@@ -110,8 +105,6 @@
 		SELECT
 		t.code
 		,t.name
-		,t.company_code
-		,t.company_name
 		,t.charge_user
 		
 		,t.charge_mobile
@@ -160,8 +153,6 @@
 		thf_project(
 		code
 		,name
-		,company_code
-		,company_name
 		,charge_user
 		
 		,charge_mobile
@@ -187,8 +178,6 @@
 		VALUES(
 		#{code}
 		,#{name}
-		,#{companyCode}
-		,#{companyName}
 		,#{chargeUser}
 		
 		,#{chargeMobile}

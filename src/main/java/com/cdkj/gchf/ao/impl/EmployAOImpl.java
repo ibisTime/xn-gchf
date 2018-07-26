@@ -150,8 +150,8 @@ public class EmployAOImpl implements IEmployAO {
             req.getBankcardNumber(), req.getUpdater());
 
         // 记录员工日志
-        staffLogBO.saveStaffLog(data, staff.getName(), project.getCompanyCode(),
-            project.getCode(), project.getName());
+        staffLogBO.saveStaffLog(data, staff.getName(), project.getCode(),
+            project.getName());
         return code;
     }
 
@@ -198,7 +198,7 @@ public class EmployAOImpl implements IEmployAO {
 
         // 记录员工日志
         staffLogBO.saveStaffLog(employ, employ.getStaffName(),
-            project.getCompanyCode(), project.getCode(), project.getName());
+            project.getCode(), project.getName());
     }
 
     @Override
@@ -230,8 +230,8 @@ public class EmployAOImpl implements IEmployAO {
         reportBO.refreshNextMonthSalary(report);
 
         Project project = projectBO.getProject(data.getProjectCode());
-        staffLogBO.saveStaffLog(data, data.getStaffCode(),
-            project.getCompanyCode(), project.getCode(), project.getName());
+        staffLogBO.saveStaffLog(data, data.getStaffCode(), project.getCode(),
+            project.getName());
 
     }
 

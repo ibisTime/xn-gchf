@@ -1,9 +1,5 @@
 package com.cdkj.gchf.api.impl;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 
 import com.cdkj.gchf.ao.IProjectAO;
@@ -11,7 +7,6 @@ import com.cdkj.gchf.ao.ISalaryAO;
 import com.cdkj.gchf.api.AProcessor;
 import com.cdkj.gchf.common.JsonUtil;
 import com.cdkj.gchf.core.StringValidater;
-import com.cdkj.gchf.domain.Project;
 import com.cdkj.gchf.domain.Salary;
 import com.cdkj.gchf.dto.req.XN631445Req;
 import com.cdkj.gchf.exception.BizException;
@@ -50,20 +45,6 @@ public class XN631445 extends AProcessor {
 
         condition.setStatus(req.getStatus());
         condition.setProjectCodeList(req.getProjectCodeList());
-
-        // 缓兵之计，前端应该穿projectCodeList
-        if (null != req.getCompanyCode()) {
-            Project project = new Project();
-            project.setCompanyCode(req.getCompanyCode());
-            List<Project> projectList = projectAO.queryProjectList(project);
-            List<String> projectCodeList = new ArrayList<String>();
-            if (CollectionUtils.isNotEmpty(projectList)) {
-                for (Project data : projectList) {
-                    projectCodeList.add(data.getCode());
-                }
-            }
-            condition.setProjectCodeList(projectCodeList);
-        }
 
         String column = req.getOrderColumn();
         if (StringUtils.isBlank(column)) {

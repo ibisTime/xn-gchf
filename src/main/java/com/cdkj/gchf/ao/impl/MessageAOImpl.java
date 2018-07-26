@@ -248,7 +248,6 @@ public class MessageAOImpl implements IMessageAO {
                             smsOutBO.sendSmsOut(eventRemind.getMobile(),
                                 "尊敬的" + PhoneUtil
                                     .hideMobile(eventRemind.getMobile()) + "，"
-                                        + project.getCompanyName() + "的"
                                         + project.getName() + "出现工资异常，请您及时处理.",
                                 "804080");
                         }

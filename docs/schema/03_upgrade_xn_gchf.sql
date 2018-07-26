@@ -133,3 +133,6 @@ DROP COLUMN `company_code`;
 ALTER TABLE `thf_bank_card` 
 DROP COLUMN `company_code`;
 
+ALTER TABLE `thf_bcontract` 
+DROP COLUMN `company_code`;
+

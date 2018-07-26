@@ -4,10 +4,6 @@ import org.hibernate.validator.constraints.NotBlank;
 
 public class XN631370Req {
 
-    // 公司编号
-    @NotBlank(message = "公司编号不能为空")
-    private String companyCode;
-
     // 项目编号
     @NotBlank(message = "项目编号不能为空")
     private String projectCode;
@@ -89,14 +85,6 @@ public class XN631370Req {
 
     public void setRemark(String remark) {
         this.remark = remark;
-    }
-
-    public String getCompanyCode() {
-        return companyCode;
-    }
-
-    public void setCompanyCode(String companyCode) {
-        this.companyCode = companyCode;
     }
 
 }

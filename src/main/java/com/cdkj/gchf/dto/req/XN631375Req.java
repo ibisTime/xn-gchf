@@ -5,9 +5,6 @@ import java.util.List;
 public class XN631375Req extends APageReq {
     private static final long serialVersionUID = 5138736221155343722L;
 
-    // 公司编号
-    private String companyCode;
-
     // 项目编号
     private String projectCode;
 
@@ -22,14 +19,6 @@ public class XN631375Req extends APageReq {
 
     // 用户类型
     private String kind;
-
-    public String getCompanyCode() {
-        return companyCode;
-    }
-
-    public void setCompanyCode(String companyCode) {
-        this.companyCode = companyCode;
-    }
 
     public String getProjectCode() {
         return projectCode;

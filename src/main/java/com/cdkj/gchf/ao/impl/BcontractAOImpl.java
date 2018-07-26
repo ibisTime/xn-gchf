@@ -90,7 +90,7 @@ public class BcontractAOImpl implements IBcontractAO {
             }
         }
         if (EUserKind.Owner.getCode().equals(condition.getKind())) {
-            if (StringUtils.isBlank(condition.getCompanyCode())) {
+            if (StringUtils.isBlank(condition.getProjectCode())) {
                 page.setList(list);
                 return page;
             }
@@ -116,7 +116,7 @@ public class BcontractAOImpl implements IBcontractAO {
             }
         }
         if (EUserKind.Owner.getCode().equals(condition.getKind())) {
-            if (StringUtils.isBlank(condition.getCompanyCode())) {
+            if (StringUtils.isBlank(condition.getProjectCode())) {
                 return list;
             }
         }

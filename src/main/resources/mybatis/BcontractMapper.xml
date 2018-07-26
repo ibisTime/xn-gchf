@@ -4,7 +4,6 @@
 <mapper namespace="com.cdkj.gchf.dao.IBcontractDAO">
 	<resultMap id="bcontract_DB_Result" type="bcontract">
 		<result column="code" property="code" />
-		<result column="company_code" property="companyCode" />
 		<result column="project_code" property="projectCode" />
 		<result column="bname" property="bname" />
 		<result column="bmobile" property="bmobile" />
@@ -34,9 +33,6 @@
 					AND 1 = 1
 				</otherwise>
 			</choose>
-			<if test="companyCode != null and companyCode != '' ">
-				AND t.company_code = #{companyCode}
-			</if>
 			
 			<if test="contractDatetime != null and contractDatetime != '' ">
 				AND t.contract_datetime = #{contractDatetime}
@@ -58,7 +54,6 @@
 	<select id="select_bcontract" parameterType="bcontract" resultMap="bcontract_DB_Result">
 		SELECT
 		t.code
-		,t.company_code
 		,t.project_code
 		,t.bname
 		,t.bmobile
@@ -87,7 +82,6 @@
 		INSERT INTO
 		thf_bcontract(
 		code
-		,company_code
 		,project_code
 		,bname
 		,bmobile
@@ -100,7 +94,6 @@
 		)
 		VALUES(
 		#{code}
-		,#{companyCode}
 		,#{projectCode}
 		,#{bname}
 		,#{bmobile}

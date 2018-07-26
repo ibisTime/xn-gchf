@@ -13,7 +13,6 @@ import com.cdkj.gchf.ao.IEmployAO;
 import com.cdkj.gchf.bo.IAttendanceBO;
 import com.cdkj.gchf.bo.IBankCardBO;
 import com.cdkj.gchf.bo.ICcontractBO;
-import com.cdkj.gchf.bo.ICompanyBO;
 import com.cdkj.gchf.bo.IDepartmentBO;
 import com.cdkj.gchf.bo.IEmployBO;
 import com.cdkj.gchf.bo.IProjectBO;
@@ -76,9 +75,6 @@ public class EmployAOImpl implements IEmployAO {
 
     @Autowired
     private IDepartmentBO departmentBO;
-
-    @Autowired
-    private ICompanyBO companyBO;
 
     @Autowired
     private IBankCardBO bankCardBO;

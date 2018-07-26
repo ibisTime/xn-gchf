@@ -13,7 +13,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.cdkj.gchf.ao.IMessageAO;
 import com.cdkj.gchf.bo.IBankCardBO;
-import com.cdkj.gchf.bo.ICompanyBO;
 import com.cdkj.gchf.bo.ICompanyCardBO;
 import com.cdkj.gchf.bo.IEmployBO;
 import com.cdkj.gchf.bo.IEventRemindBO;
@@ -77,9 +76,6 @@ public class MessageAOImpl implements IMessageAO {
 
     @Autowired
     IEventRemindBO eventRemindBO;
-
-    @Autowired
-    ICompanyBO companyBO;
 
     @Autowired
     ICompanyCardBO companyCardBO;

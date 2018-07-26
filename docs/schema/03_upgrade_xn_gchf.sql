@@ -123,3 +123,5 @@ DROP COLUMN `company_code`,
 DROP COLUMN `company_name`,
 ADD COLUMN `project_code` VARCHAR(32) NULL AFTER `company_code`,
 ADD COLUMN `project_name` VARCHAR(255) NULL AFTER `project_code`;
+
+DROP TABLE `thf_company`;

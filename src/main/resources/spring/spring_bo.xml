@@ -38,9 +38,6 @@
 		<bean id="departmentBO" class="com.cdkj.gchf.bo.impl.DepartmentBOImpl">
 		<property name="paginableDAO" ref="departmentDAOImpl"/>
 	</bean>
-	<bean id="companyBO" class="com.cdkj.gchf.bo.impl.CompanyBOImpl">
-		<property name="paginableDAO" ref="companyDAOImpl"/>
-	</bean>	
 	
 	<bean id="projectBO" class="com.cdkj.gchf.bo.impl.ProjectBOImpl">
 		<property name="paginableDAO" ref="projectDAOImpl"/>

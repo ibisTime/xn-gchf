@@ -7,7 +7,6 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import com.cdkj.gchf.bo.ICompanyBO;
 import com.cdkj.gchf.bo.IDepartmentBO;
 import com.cdkj.gchf.bo.IEmployBO;
 import com.cdkj.gchf.bo.base.PaginableBOImpl;
@@ -26,9 +25,6 @@ public class EmployBOImpl extends PaginableBOImpl<Employ> implements IEmployBO {
 
     @Autowired
     private IDepartmentBO departmentBO;
-
-    @Autowired
-    private ICompanyBO companyBO;
 
     public void joinIn(Employ data) {
         employDAO.insert(data);

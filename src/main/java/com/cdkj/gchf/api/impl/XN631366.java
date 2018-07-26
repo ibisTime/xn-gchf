@@ -29,7 +29,6 @@ public class XN631366 extends AProcessor {
     public Object doBusiness() throws BizException {
         CompanyCard condition = new CompanyCard();
 
-        condition.setCompanyCode(req.getCompanyCode());
         condition.setKeyword(req.getKeyword());
         condition.setProjectCode(req.getProjectCode());
         condition.setStatus(req.getStatus());

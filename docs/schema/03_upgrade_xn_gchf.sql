@@ -136,3 +136,6 @@ DROP COLUMN `company_code`;
 ALTER TABLE `thf_bcontract` 
 DROP COLUMN `company_code`;
 
+ALTER TABLE `thf_company_card` 
+DROP COLUMN `company_name`,
+DROP COLUMN `company_code`;

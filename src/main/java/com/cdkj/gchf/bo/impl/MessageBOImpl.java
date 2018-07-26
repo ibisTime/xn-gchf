@@ -112,7 +112,6 @@ public class MessageBOImpl extends PaginableBOImpl<Message>
             CompanyCard card = companyCardBO
                 .getCompanyCardByProject(data.getProjectCode());
             data.setCompanyCard(card);
-            data.setCompanyName(card.getCompanyName());
         }
         return data;
     }

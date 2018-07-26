@@ -15,9 +15,6 @@ public class XN631366Req extends APageReq {
      */
     private static final long serialVersionUID = -3085238015622686279L;
 
-    // （选填） 公司编号
-    private String companyCode;
-
     // （选填） 关键字,关联工程名称,户名，开户行，
     private String keyword;
 
@@ -32,14 +29,6 @@ public class XN631366Req extends APageReq {
 
     // 编号List
     private List<String> projectCodeList;
-
-    public String getCompanyCode() {
-        return companyCode;
-    }
-
-    public void setCompanyCode(String companyCode) {
-        this.companyCode = companyCode;
-    }
 
     public String getKeyword() {
         return keyword;

@@ -4,7 +4,6 @@
 <mapper namespace="com.cdkj.gchf.dao.IBankCardDAO">
 	<resultMap id="bankCard_DB_Result" type="bankCard">
 		<result column="code" property="code" />
-		<result column="company_code" property="companyCode" />
 		<result column="project_code" property="projectCode" />
 		<result column="staff_code" property="staffCode" />
 		<result column="staff_name" property="staffName" />
@@ -24,9 +23,6 @@
 		<trim prefix="WHERE" prefixOverrides="AND | OR">
 			<if test="code != null and code != '' ">
 				AND t.code = #{code}
-			</if>
-			<if test="companyCode != null and companyCode != '' ">
-				AND t.company_code = #{companyCode}
 			</if>
 			<if test="projectCode != null and projectCode != '' ">
 				AND t.project_code = #{projectCode}
@@ -51,7 +47,6 @@
 	<select id="select_bankCard" parameterType="bankCard" resultMap="bankCard_DB_Result">
 		SELECT
 		t.code
-		,t.company_code
 		,t.project_code
 		,t.staff_code
 		,t.staff_name
@@ -84,7 +79,6 @@
 		INSERT INTO
 		thf_bank_card(
 		code
-		,company_code
 		,project_code
 		,staff_code
 		,staff_name
@@ -100,7 +94,6 @@
 		)
 		VALUES(
 		#{code}
-		,#{companyCode}
 		,#{projectCode}
 		,#{staffCode}
 		,#{staffName}

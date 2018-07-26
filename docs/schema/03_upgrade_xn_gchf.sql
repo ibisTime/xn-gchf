@@ -129,3 +129,7 @@ DROP TABLE `thf_company`;
 ALTER TABLE `thf_project` 
 DROP COLUMN `company_name`,
 DROP COLUMN `company_code`;
+
+ALTER TABLE `thf_bank_card` 
+DROP COLUMN `company_code`;
+

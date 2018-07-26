@@ -18,9 +18,6 @@ public class BankCard extends ABaseDO {
     // 编号
     private String code;
 
-    // 公司编号
-    private String companyCode;
-
     // 项目编号
     private String projectCode;
 
@@ -69,9 +66,6 @@ public class BankCard extends ABaseDO {
     // 银行名称 + 支行名称
     private String bankSubbranchName;
 
-    // 公司名称
-    private String companyName;
-
     // 项目名称
     private String projectName;
 
@@ -81,14 +75,6 @@ public class BankCard extends ABaseDO {
 
     public String getCode() {
         return code;
-    }
-
-    public String getCompanyCode() {
-        return companyCode;
-    }
-
-    public void setCompanyCode(String companyCode) {
-        this.companyCode = companyCode;
     }
 
     public void setStaffCode(String staffCode) {
@@ -233,14 +219,6 @@ public class BankCard extends ABaseDO {
 
     public void setProjectName(String projectName) {
         this.projectName = projectName;
-    }
-
-    public String getCompanyName() {
-        return companyName;
-    }
-
-    public void setCompanyName(String companyName) {
-        this.companyName = companyName;
     }
 
 }

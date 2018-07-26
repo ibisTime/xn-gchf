@@ -28,7 +28,6 @@ public class XN631425 extends AProcessor {
     @Override
     public Object doBusiness() throws BizException {
         BankCard condition = new BankCard();
-        condition.setCompanyCode(req.getCompanyCode());
         condition.setProjectCode(req.getProjectCode());
         condition.setUpdater(req.getUpdater());
         condition.setStaffCode(req.getStaffCode());

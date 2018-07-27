@@ -2,7 +2,6 @@ package com.cdkj.gchf.api.impl;
 
 import org.apache.commons.lang3.StringUtils;
 
-import com.cdkj.gchf.ao.IProjectAO;
 import com.cdkj.gchf.ao.ISalaryAO;
 import com.cdkj.gchf.api.AProcessor;
 import com.cdkj.gchf.common.JsonUtil;
@@ -22,9 +21,6 @@ import com.cdkj.gchf.spring.SpringContextHolder;
 public class XN631445 extends AProcessor {
 
     private ISalaryAO salaryAO = SpringContextHolder.getBean(ISalaryAO.class);
-
-    private IProjectAO projectAO = SpringContextHolder
-        .getBean(IProjectAO.class);
 
     private XN631445Req req = null;
 

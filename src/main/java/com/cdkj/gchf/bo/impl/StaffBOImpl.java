@@ -11,7 +11,6 @@ import com.cdkj.gchf.bo.IStaffBO;
 import com.cdkj.gchf.bo.base.PaginableBOImpl;
 import com.cdkj.gchf.dao.IBankCardDAO;
 import com.cdkj.gchf.dao.IStaffDAO;
-import com.cdkj.gchf.domain.BankCard;
 import com.cdkj.gchf.domain.Staff;
 import com.cdkj.gchf.exception.BizException;
 
@@ -94,9 +93,6 @@ public class StaffBOImpl extends PaginableBOImpl<Staff> implements IStaffBO {
             if (data == null) {
                 throw new BizException("xn0000", "员工不存在");
             }
-            BankCard bankCard = new BankCard();
-            bankCard.setStaffCode(code);
-            data.setBankCard(bankCardDAO.select(bankCard));
         }
         return data;
     }

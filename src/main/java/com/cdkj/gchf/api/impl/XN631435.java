@@ -3,7 +3,6 @@ package com.cdkj.gchf.api.impl;
 import org.apache.commons.lang3.StringUtils;
 
 import com.cdkj.gchf.ao.IMessageAO;
-import com.cdkj.gchf.ao.IProjectAO;
 import com.cdkj.gchf.api.AProcessor;
 import com.cdkj.gchf.common.JsonUtil;
 import com.cdkj.gchf.core.StringValidater;
@@ -23,9 +22,6 @@ public class XN631435 extends AProcessor {
 
     private IMessageAO messageAO = SpringContextHolder
         .getBean(IMessageAO.class);
-
-    private IProjectAO projectAO = SpringContextHolder
-        .getBean(IProjectAO.class);
 
     private XN631435Req req = null;
 

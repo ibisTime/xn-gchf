@@ -137,20 +137,6 @@ public class StaffAOImpl implements IStaffAO {
     public void editStaff(XN631412Req req) {
         PhoneUtil.checkMobile(req.getMobile());
 
-        // 重新识别上传的免冠照
-        // String featResult = BizConnecter.getFeat(req.getPict1());
-        // Pattern pattern = Pattern.compile("(?<=\\{)(.+?)(?=\\})");
-        // Matcher matcher = pattern.matcher(featResult);
-        // String featString = null;
-        // while (matcher.find()) {
-        // featString = matcher.group();
-        // }
-        // JSONObject featJson = JSONObject.parseObject("{" + featString + "}");
-        // if (featJson.getString("data").equals("error")
-        // || featJson.getString("data").equals("NOFACE")) {
-        // throw new BizException("xn000", "请上传对准人脸的免冠照！");
-        // }
-
         Date date = new Date();
         Staff data = staffBO.getStaff(req.getCode());
         data.setMobile(req.getMobile());
@@ -159,7 +145,6 @@ public class StaffAOImpl implements IStaffAO {
         data.setPict2(req.getPict2());
         data.setPict3(req.getPict3());
         data.setPict4(req.getPict4());
-        // data.setFeat(featJson.getString("data"));
         data.setUpdater(req.getUpdater());
 
         data.setUpdateDatetime(date);
@@ -196,9 +181,6 @@ public class StaffAOImpl implements IStaffAO {
 
         data.setEmployList(employList);
         data.setSalaryList(salaryList);
-        // 工资卡
-        BankCard bankCard = bankCardBO.getBankCardByStaff(data.getCode());
-        data.setBankCard(bankCard);
         // 技能
         List<Skill> skillList = skillBO.querySkillByStaff(data.getCode());
         data.setSkillList(skillList);
@@ -240,8 +222,8 @@ public class StaffAOImpl implements IStaffAO {
         if (CollectionUtils.isNotEmpty(salaryList)) {
             for (Salary salary : salaryList) {
                 // 工资卡
-                BankCard bankCard = bankCardBO
-                    .getBankCardByStaff(data.getCode());
+                BankCard bankCard = bankCardBO.getBankCard(data.getCode(),
+                    salary.getProjectCode());
                 salary.setBankCard(bankCard);
                 salary.setBankcardNumber(bankCard.getBankcardNumber());
                 if (ESalaryStatus.Pay_Portion.getCode()
@@ -254,9 +236,6 @@ public class StaffAOImpl implements IStaffAO {
         data.setEmployList(employList);
         data.setSalaryList(salaryList);
         data.setAbnormalSalaryList(abnormalSalaryList);
-
-        // 员工银行卡
-        data.setBankCard(bankCardBO.getBankCardByStaff(data.getCode()));
 
         // 技能列表
         List<Skill> skillList = skillBO.querySkillByStaff(data.getCode());
@@ -292,7 +271,6 @@ public class StaffAOImpl implements IStaffAO {
 
         for (Staff staff : page.getList()) {
             staff.setUpdateName(getName(staff.getUpdater()));
-            staff.setBankCard(bankCardBO.getBankCardByStaff(staff.getCode()));
         }
 
         return page;
@@ -310,8 +288,6 @@ public class StaffAOImpl implements IStaffAO {
     @Override
     public Staff getStaff(String code) {
         Staff data = staffBO.getStaff(code);
-        BankCard bankCard = bankCardBO.getBankCardByStaff(data.getCode());
-        data.setBankCard(bankCard);
         data.setUpdateName(getName(data.getUpdater()));
         List<Skill> skillList = skillBO.querySkillByStaff(data.getCode());
         data.setSkillList(skillList);

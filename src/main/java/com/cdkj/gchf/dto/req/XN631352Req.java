@@ -14,10 +14,6 @@ public class XN631352Req {
     @NotBlank(message = "编号不能为空")
     private String code;
 
-    // 项目名称
-    @NotBlank(message = "项目名称不能为空")
-    private String name;
-
     // 负责人编号
     @NotBlank(message = "负责人编号不能为空")
     private String chargeUser;
@@ -103,14 +99,6 @@ public class XN631352Req {
 
     public void setCode(String code) {
         this.code = code;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
     }
 
     public String getChargeUser() {

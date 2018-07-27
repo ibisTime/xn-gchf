@@ -28,8 +28,6 @@ public interface IBankCardBO extends IPaginableBO<BankCard> {
 
     public BankCard getBankCard(String code);
 
-    public BankCard getBankCardByStaff(String code);
-
     // 查询员工在工程下的工资卡
     public BankCard getBankCard(String staffCode, String projectCode);
 

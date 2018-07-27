@@ -124,18 +124,6 @@ public class BankCardBOImpl extends PaginableBOImpl<BankCard>
     }
 
     @Override
-    public BankCard getBankCardByStaff(String staffCode) {
-        BankCard data = null;
-        if (StringUtils.isNotBlank(staffCode)) {
-            BankCard condition = new BankCard();
-            condition.setStaffCode(staffCode);
-            data = bankCardDAO.select(condition);
-            initBankcard(data);
-        }
-        return data;
-    }
-
-    @Override
     public BankCard getBankCard(String staffCode, String projectCode) {
         BankCard data = null;
         if (StringUtils.isNotBlank(staffCode)

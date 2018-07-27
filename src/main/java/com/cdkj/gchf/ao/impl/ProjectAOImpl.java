@@ -119,7 +119,6 @@ public class ProjectAOImpl implements IProjectAO {
             throw new BizException("xn000", "该项目已结束，无法编辑");
         }
 
-        data.setName(req.getName());
         data.setChargeUser(req.getChargeUser());
         data.setChargeMobile(req.getChargeMobile());
 

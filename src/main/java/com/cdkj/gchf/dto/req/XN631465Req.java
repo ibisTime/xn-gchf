@@ -18,9 +18,6 @@ public class XN631465Req extends APageReq {
     // （选填）关键字
     private String keyword;
 
-    // (选填)公司编号
-    private String companyCode;
-
     // （选填）项目编号
     private String projectCode;
 
@@ -104,14 +101,6 @@ public class XN631465Req extends APageReq {
 
     public void setStaffCode(String staffCode) {
         this.staffCode = staffCode;
-    }
-
-    public String getCompanyCode() {
-        return companyCode;
-    }
-
-    public void setCompanyCode(String companyCode) {
-        this.companyCode = companyCode;
     }
 
 }

@@ -1,7 +1,5 @@
 package com.cdkj.gchf.dto.req;
 
-import java.util.List;
-
 /**
  * 分页查务工人员信息
  * @author: nyc 
@@ -24,14 +22,8 @@ public class XN631415Req extends APageReq {
     // （选填）更新人
     private String updater;
 
-    // （选填）公司编号
-    private String companyCode;
-
     // （选填）身份证号
     private String idNo;
-
-    // （选填）公司编号
-    private List<String> companyCodeList;
 
     // 雇佣省份（监管端查询时使用）
     private String province;
@@ -64,22 +56,6 @@ public class XN631415Req extends APageReq {
 
     public void setUpdater(String updater) {
         this.updater = updater;
-    }
-
-    public String getCompanyCode() {
-        return companyCode;
-    }
-
-    public void setCompanyCode(String companyCode) {
-        this.companyCode = companyCode;
-    }
-
-    public List<String> getCompanyCodeList() {
-        return companyCodeList;
-    }
-
-    public void setCompanyCodeList(List<String> companyCodeList) {
-        this.companyCodeList = companyCodeList;
     }
 
     public String getIdNo() {

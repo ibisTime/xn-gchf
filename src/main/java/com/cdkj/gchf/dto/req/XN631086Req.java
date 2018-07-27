@@ -33,9 +33,6 @@ public class XN631086Req extends APageReq {
     // （选填） 关键字
     private String keyword;
 
-    // （选填） 公司编号
-    private String companyCode;
-
     public String getKeyword() {
         return keyword;
     }
@@ -90,14 +87,6 @@ public class XN631086Req extends APageReq {
 
     public void setUpdater(String updater) {
         this.updater = updater;
-    }
-
-    public String getCompanyCode() {
-        return companyCode;
-    }
-
-    public void setCompanyCode(String companyCode) {
-        this.companyCode = companyCode;
     }
 
 }

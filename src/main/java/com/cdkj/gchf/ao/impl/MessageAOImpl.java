@@ -136,10 +136,11 @@ public class MessageAOImpl implements IMessageAO {
                     .queryEventRemindList(user.getUserId());// 银行用户的短信通知人
                 if (CollectionUtils.isNotEmpty(eventRemindsList)) {
                     for (EventRemind eventRemind : eventRemindsList) {
-                        smsOutBO.sendSmsOut(eventRemind.getMobile(), "尊敬的"
-                                + PhoneUtil.hideMobile(eventRemind.getMobile())
-                                + "，" + data.getCompanyName() + "的"
-                                + data.getProjectName() + "已发送工资代发请求，请您及时处理.",
+                        smsOutBO.sendSmsOut(eventRemind.getMobile(),
+                            "尊敬的" + PhoneUtil
+                                .hideMobile(eventRemind.getMobile()) + "，"
+                                    + data.getProjectName()
+                                    + "已发送工资代发请求，请您及时处理.",
                             "804080");
                     }
                 }
@@ -341,7 +342,6 @@ public class MessageAOImpl implements IMessageAO {
 
         Project project = projectBO.getProject(message.getProjectCode());
         if (null != project) {
-            message.setSendCompanyProject(project.getName());
             message.setProjectChargeUser(project.getChargeUser());
             message.setProjectChargeUserMobile(project.getChargeMobile());
 

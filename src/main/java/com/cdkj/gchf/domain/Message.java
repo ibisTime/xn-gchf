@@ -111,15 +111,6 @@ public class Message extends ABaseDO {
     // 公司账户
     private CompanyCard companyCard;
 
-    // 公司编号
-    private String companyCode;
-
-    // 公司名称
-    private String companyName;
-
-    // 消息所属公司项目
-    private String sendCompanyProject;
-
     // 消息所属项目负责人
     private String projectChargeUser;
 
@@ -375,30 +366,6 @@ public class Message extends ABaseDO {
 
     public void setCompanyCard(CompanyCard companyCard) {
         this.companyCard = companyCard;
-    }
-
-    public String getCompanyCode() {
-        return companyCode;
-    }
-
-    public void setCompanyCode(String companyCode) {
-        this.companyCode = companyCode;
-    }
-
-    public String getCompanyName() {
-        return companyName;
-    }
-
-    public void setCompanyName(String companyName) {
-        this.companyName = companyName;
-    }
-
-    public String getSendCompanyProject() {
-        return sendCompanyProject;
-    }
-
-    public void setSendCompanyProject(String sendCompanyProject) {
-        this.sendCompanyProject = sendCompanyProject;
     }
 
     public String getProjectChargeUser() {

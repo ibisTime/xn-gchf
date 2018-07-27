@@ -12,9 +12,9 @@ public interface IBankCardBO extends IPaginableBO<BankCard> {
     public String addBankCard(XN631420Req req);
 
     // 入职时添加工资卡
-    public String addBankCard(Staff staff, String companyCode,
-            String projectCode, String bankCode, String bankName,
-            String subbranch, String bankcardNumber, String updater);
+    public String addBankCard(Staff staff, String projectCode, String bankCode,
+            String bankName, String subbranch, String bankcardNumber,
+            String updater);
 
     // 更新银行卡信息
     public void refreshBankCard(String code, String bankCode, String bankName,

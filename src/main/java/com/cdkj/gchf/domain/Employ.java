@@ -18,9 +18,6 @@ public class Employ extends ABaseDO {
     // 编号
     private String code;
 
-    // 公司编号
-    private String companyCode;
-
     // 项目编号
     private String projectCode;
 
@@ -99,9 +96,6 @@ public class Employ extends ABaseDO {
 
     private List<String> projectCodeList;
 
-    // 公司名称
-    private String companyName;
-
     // 部门名称
     private String departmentName;
 
@@ -114,14 +108,6 @@ public class Employ extends ABaseDO {
 
     public String getCode() {
         return code;
-    }
-
-    public String getCompanyCode() {
-        return companyCode;
-    }
-
-    public void setCompanyCode(String companyCode) {
-        this.companyCode = companyCode;
     }
 
     public void setProjectCode(String projectCode) {
@@ -346,14 +332,6 @@ public class Employ extends ABaseDO {
 
     public void setDepartmentCode(String departmentCode) {
         this.departmentCode = departmentCode;
-    }
-
-    public String getCompanyName() {
-        return companyName;
-    }
-
-    public void setCompanyName(String companyName) {
-        this.companyName = companyName;
     }
 
     public String getDepartmentName() {

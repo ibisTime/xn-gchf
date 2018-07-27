@@ -8,7 +8,7 @@ import com.cdkj.gchf.api.AProcessor;
 import com.cdkj.gchf.common.JsonUtil;
 import com.cdkj.gchf.core.StringValidater;
 import com.cdkj.gchf.domain.StaffLog;
-import com.cdkj.gchf.dto.req.XN631485Req;
+import com.cdkj.gchf.dto.req.XN631486Req;
 import com.cdkj.gchf.exception.BizException;
 import com.cdkj.gchf.exception.ParaException;
 import com.cdkj.gchf.spring.SpringContextHolder;
@@ -24,7 +24,7 @@ public class XN631486 extends AProcessor {
     private IStaffLogAO staffLogAO = SpringContextHolder
         .getBean(IStaffLogAO.class);
 
-    private XN631485Req req = null;
+    private XN631486Req req = null;
 
     @Override
     public Object doBusiness() throws BizException {
@@ -44,7 +44,7 @@ public class XN631486 extends AProcessor {
     @Override
     public void doCheck(String inputparams, String operator)
             throws ParaException {
-        req = JsonUtil.json2Bean(inputparams, XN631485Req.class);
+        req = JsonUtil.json2Bean(inputparams, XN631486Req.class);
         StringValidater.validateBlank(req.getStaffCode());
     }
 

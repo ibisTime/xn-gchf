@@ -143,3 +143,7 @@ DROP COLUMN `company_code`;
 ALTER TABLE `thf_progress` 
 DROP COLUMN `company_code`,
 CHANGE COLUMN `code` `code` VARCHAR(32) NOT NULL COMMENT '编号' FIRST;
+
+ALTER TABLE `thf_employ` 
+DROP COLUMN `company_code`;
+

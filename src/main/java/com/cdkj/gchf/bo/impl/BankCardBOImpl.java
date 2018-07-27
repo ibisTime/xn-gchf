@@ -49,9 +49,9 @@ public class BankCardBOImpl extends PaginableBOImpl<BankCard>
     }
 
     @Override
-    public String addBankCard(Staff staff, String companyCode,
-            String projectCode, String bankCode, String bankName,
-            String subbranch, String bankcardNumber, String updater) {
+    public String addBankCard(Staff staff, String projectCode, String bankCode,
+            String bankName, String subbranch, String bankcardNumber,
+            String updater) {
         BankCard bankCard = new BankCard();
         String bankCardCode = OrderNoGenerater
             .generate(EGeneratePrefix.BankCard.getCode());

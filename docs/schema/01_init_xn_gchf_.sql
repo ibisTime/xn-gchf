@@ -89,6 +89,9 @@ INSERT INTO `tsys_dict` (`id`,`type`,`parent_key`,`dkey`,`dvalue`,`updater`,`upd
 INSERT INTO `tsys_dict` (`id`,`type`,`parent_key`,`dkey`,`dvalue`,`updater`,`update_datetime`,`remark`) VALUES (48,'1','salary_log_type','1','异常','admin',now(),NULL);
 INSERT INTO `tsys_dict` (`id`,`type`,`parent_key`,`dkey`,`dvalue`,`updater`,`update_datetime`,`remark`) VALUES (52,'0',NULL,'abnormal_type','事件类型','admin',now(),NULL);
 INSERT INTO `tsys_dict` (`id`,`type`,`parent_key`,`dkey`,`dvalue`,`updater`,`update_datetime`,`remark`) VALUES (53,'1','abnormal_type','0','工资条异常','admin',now(),NULL);
+INSERT INTO `tsys_dict` (`id`,`type`,`parent_key`,`dkey`,`dvalue`,`updater`,`update_datetime`,`remark`) VALUES (56,'0',NULL,'position_type','职位类型','admin',now(),NULL);
+INSERT INTO `tsys_dict` (`id`,`type`,`parent_key`,`dkey`,`dvalue`,`updater`,`update_datetime`,`remark`) VALUES (57,'1','position_type','0','普工','admin',now(),NULL);
+INSERT INTO `tsys_dict` (`id`,`type`,`parent_key`,`dkey`,`dvalue`,`updater`,`update_datetime`,`remark`) VALUES (58,'1','position_type','1','主管','admin',now(),NULL);
 
 /*
 -- Query: SELECT * FROM dev_xn_gchf.tsys_config

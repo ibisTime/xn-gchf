@@ -87,7 +87,7 @@ public class ProgressAOImpl implements IProgressAO {
             }
         }
         if (EUserKind.Owner.getCode().equals(condition.getKind())) {
-            if (StringUtils.isEmpty(condition.getCompanyCode())) {
+            if (StringUtils.isEmpty(condition.getProjectCode())) {
                 page.setList(list);
                 return page;
             }

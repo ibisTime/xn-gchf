@@ -12,9 +12,6 @@ public class Progress extends ABaseDO {
     // 编号
     private String code;
 
-    // 公司编号
-    private String companyCode;
-
     // 项目编号
     private String projectCode;
 
@@ -74,14 +71,6 @@ public class Progress extends ABaseDO {
 
     public void setProjectCode(String projectCode) {
         this.projectCode = projectCode;
-    }
-
-    public String getCompanyCode() {
-        return companyCode;
-    }
-
-    public void setCompanyCode(String companyCode) {
-        this.companyCode = companyCode;
     }
 
     public Date getUpdateDatetime() {

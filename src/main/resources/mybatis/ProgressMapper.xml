@@ -4,7 +4,6 @@
 <mapper namespace="com.cdkj.gchf.dao.IProgressDAO">
 	<resultMap id="Progress_DB_Result" type="Progress">
 		<result column="code" property="code" />
-		<result column="company_code" property="companyCode" />
 		<result column="project_code" property="projectCode" />
 		<result column="project_name" property="projectName" />
 		<result column="datetime" property="datetime" />
@@ -31,10 +30,6 @@
 					</foreach>
 				</when>
 			</choose>
-			
-			<if test="companyCode != null and companyCode != ''">
-				AND t.company_code = #{companyCode}
-			</if>
 			<if test="projectName != null and projectName != ''">
 				AND t.project_name like "%"#{projectName}"%"
 			</if>
@@ -49,7 +44,6 @@
 	<select id="select_Progress" parameterType="Progress" resultMap="Progress_DB_Result">
 		SELECT
 		t.code
-		,t.company_code
 		,t.project_code
 		,t.project_name
 		,t.datetime
@@ -78,7 +72,6 @@
 		INSERT INTO
 		thf_progress(
 		code
-		,company_code
 		,project_code
 		,project_name
 		,datetime
@@ -90,7 +83,6 @@
 		)
 		VALUES(
 		#{code}
-		,#{companyCode}
 		,#{projectCode}
 		,#{projectName}
 		,#{datetime}

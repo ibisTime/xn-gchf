@@ -27,13 +27,11 @@ public class XN631385 extends AProcessor {
     @Override
     public Object doBusiness() throws BizException {
         Progress condition = new Progress();
-        condition.setCompanyCode(req.getCompanyCode());
         condition.setProjectCode(req.getProjectCode());
         condition.setUpdater(req.getUpdater());
         condition.setKeyword(req.getKeyword());
 
         condition.setKind(req.getKind());
-        condition.setProjectCodeList(req.getCompanyCodeList());
 
         String column = req.getOrderColumn();
         if (StringUtils.isBlank(column)) {

@@ -139,3 +139,7 @@ DROP COLUMN `company_code`;
 ALTER TABLE `thf_company_card` 
 DROP COLUMN `company_name`,
 DROP COLUMN `company_code`;
+
+ALTER TABLE `thf_progress` 
+DROP COLUMN `company_code`,
+CHANGE COLUMN `code` `code` VARCHAR(32) NOT NULL COMMENT '编号' FIRST;

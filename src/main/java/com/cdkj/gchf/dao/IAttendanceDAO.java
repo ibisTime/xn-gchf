@@ -24,4 +24,6 @@ public interface IAttendanceDAO extends IBaseDAO<Attendance> {
     // 更新员工手机号
     public int updateStaffMobile(Attendance data);
 
+    // 更新状态字段
+    public int updateStatus(Attendance data);
 }

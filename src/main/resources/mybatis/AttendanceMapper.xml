@@ -39,9 +39,17 @@
 					</foreach>
 				</when>
 			</choose>
-			<if test="status != null and status != '' ">
-				AND t.status = #{status}
-			</if>
+			<choose>
+				<when test="status != null and status != '' ">
+					AND t.status = #{status}
+				</when>
+				<when test="statusList != null and statusList.size() > 0 ">
+					AND t.status IN
+					<foreach collection="statusList" item="item" index="index" open="(" separator="," close=")">
+						#{item}
+					</foreach>
+				</when>
+			</choose>
 			<if test="staffCode != null and staffCode != '' ">
 				AND t.staff_code = #{staffCode}
 			</if>
@@ -145,6 +153,13 @@
 		SET
 		status = #{status}
 		,settle_datetime = #{settleDatetime}
+		WHERE code = #{code}
+	</update>
+	
+	<update id="update_status" parameterType="attendance">
+		UPDATE thf_attendance
+		SET
+		status = #{status}
 		WHERE code = #{code}
 	</update>
 	

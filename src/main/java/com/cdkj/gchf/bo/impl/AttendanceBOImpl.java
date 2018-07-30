@@ -55,6 +55,14 @@ public class AttendanceBOImpl extends PaginableBOImpl<Attendance>
     }
 
     @Override
+    public void updateStatus(String code, String status) {
+        Attendance data = new Attendance();
+        data.setCode(code);
+        data.setStatus(status);
+        attendanceDAO.updateStatus(data);
+    }
+
+    @Override
     public void startWorkManualClockIn(String code, String status,
             Date startDatetime) {
         Attendance data = new Attendance();
@@ -108,13 +116,13 @@ public class AttendanceBOImpl extends PaginableBOImpl<Attendance>
     @Override
     public List<Attendance> queryAttendanceListByStaff(String staffCode,
             String projectCode, Date startDatetime, Date endDatetime,
-            String status) {
+            List<String> statusList) {
         Attendance condition = new Attendance();
         condition.setStaffCode(staffCode);
         condition.setProjectCode(projectCode);
         condition.setCreateDatetimeStart(startDatetime);
         condition.setCreateDatetimeEnd(endDatetime);
-        condition.setStatus(status);
+        condition.setStatusList(statusList);
         return queryAttendanceList(condition);
     }
 

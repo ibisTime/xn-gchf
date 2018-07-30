@@ -33,85 +33,85 @@ INSERT INTO `thf_user` (`user_id`,`real_name`,`type`,`photo`,`login_name`,`mobil
 /*
 -- Query: SELECT * FROM dev_xn_gchf.tsys_dict
 LIMIT 0, 1000
--- Date: 2018-06-29 14:01
+-- Date: 2018-07-27 17:22
 */
-INSERT INTO `tsys_dict` (`id`,`type`,`parent_key`,`dkey`,`dvalue`,`updater`,`update_datetime`,`remark`) VALUES (1,'0',NULL,'user_kind','用户类型','admin',now(),NULL);
-INSERT INTO `tsys_dict` (`id`,`type`,`parent_key`,`dkey`,`dvalue`,`updater`,`update_datetime`,`remark`) VALUES (2,'1','user_kind','P','平台用户','admin',now(),NULL);
-INSERT INTO `tsys_dict` (`id`,`type`,`parent_key`,`dkey`,`dvalue`,`updater`,`update_datetime`,`remark`) VALUES (3,'1','user_kind','B','银行用户','admin',now(),NULL);
-INSERT INTO `tsys_dict` (`id`,`type`,`parent_key`,`dkey`,`dvalue`,`updater`,`update_datetime`,`remark`) VALUES (4,'1','user_kind','O','业主单位','admin',now(),NULL);
-INSERT INTO `tsys_dict` (`id`,`type`,`parent_key`,`dkey`,`dvalue`,`updater`,`update_datetime`,`remark`) VALUES (5,'1','user_kind','S','监管单位','admin',now(),NULL);
-INSERT INTO `tsys_dict` (`id`,`type`,`parent_key`,`dkey`,`dvalue`,`updater`,`update_datetime`,`remark`) VALUES (6,'0',NULL,'user_status','用户状态','admin',now(),NULL);
-INSERT INTO `tsys_dict` (`id`,`type`,`parent_key`,`dkey`,`dvalue`,`updater`,`update_datetime`,`remark`) VALUES (7,'1','user_status','0','正常','admin',now(),NULL);
-INSERT INTO `tsys_dict` (`id`,`type`,`parent_key`,`dkey`,`dvalue`,`updater`,`update_datetime`,`remark`) VALUES (8,'1','user_status','1','人工锁定','admin',now(),NULL);
-INSERT INTO `tsys_dict` (`id`,`type`,`parent_key`,`dkey`,`dvalue`,`updater`,`update_datetime`,`remark`) VALUES (9,'1','user_status','2','程序锁定','admin',now(),'');
-INSERT INTO `tsys_dict` (`id`,`type`,`parent_key`,`dkey`,`dvalue`,`updater`,`update_datetime`,`remark`) VALUES (10,'0',NULL,'project_status','项目状态','admin',now(),NULL);
-INSERT INTO `tsys_dict` (`id`,`type`,`parent_key`,`dkey`,`dvalue`,`updater`,`update_datetime`,`remark`) VALUES (11,'1','project_status','0','待编辑','admin',now(),NULL);
-INSERT INTO `tsys_dict` (`id`,`type`,`parent_key`,`dkey`,`dvalue`,`updater`,`update_datetime`,`remark`) VALUES (12,'1','project_status','1','待开工','admin',now(),NULL);
-INSERT INTO `tsys_dict` (`id`,`type`,`parent_key`,`dkey`,`dvalue`,`updater`,`update_datetime`,`remark`) VALUES (13,'1','project_status','2','在建','admin',now(),NULL);
-INSERT INTO `tsys_dict` (`id`,`type`,`parent_key`,`dkey`,`dvalue`,`updater`,`update_datetime`,`remark`) VALUES (49,'1','project_status','3','停工','admin',now(),NULL);
-INSERT INTO `tsys_dict` (`id`,`type`,`parent_key`,`dkey`,`dvalue`,`updater`,`update_datetime`,`remark`) VALUES (50,'1','project_status','4','结束','admin',now(),NULL);
-INSERT INTO `tsys_dict` (`id`,`type`,`parent_key`,`dkey`,`dvalue`,`updater`,`update_datetime`,`remark`) VALUES (15,'0',NULL,'account_status','账户状态','admin',now(),NULL);
-INSERT INTO `tsys_dict` (`id`,`type`,`parent_key`,`dkey`,`dvalue`,`updater`,`update_datetime`,`remark`) VALUES (16,'1','account_status','0','正常','admin',now(),NULL);
-INSERT INTO `tsys_dict` (`id`,`type`,`parent_key`,`dkey`,`dvalue`,`updater`,`update_datetime`,`remark`) VALUES (17,'1','account_status','1','人工锁定','admin',now(),NULL);
-INSERT INTO `tsys_dict` (`id`,`type`,`parent_key`,`dkey`,`dvalue`,`updater`,`update_datetime`,`remark`) VALUES (18,'1','account_status','2','程序锁定','admin',now(),NULL);
-INSERT INTO `tsys_dict` (`id`,`type`,`parent_key`,`dkey`,`dvalue`,`updater`,`update_datetime`,`remark`) VALUES (19,'0',NULL,'staff_status','员工状态','admin',now(),NULL);
-INSERT INTO `tsys_dict` (`id`,`type`,`parent_key`,`dkey`,`dvalue`,`updater`,`update_datetime`,`remark`) VALUES (20,'1','staff_status','0','在职','admin',now(),NULL);
-INSERT INTO `tsys_dict` (`id`,`type`,`parent_key`,`dkey`,`dvalue`,`updater`,`update_datetime`,`remark`) VALUES (21,'1','staff_status','1','请假','admin',now(),NULL);
-INSERT INTO `tsys_dict` (`id`,`type`,`parent_key`,`dkey`,`dvalue`,`updater`,`update_datetime`,`remark`) VALUES (22,'1','staff_status','2','离职','admin',now(),NULL);
-INSERT INTO `tsys_dict` (`id`,`type`,`parent_key`,`dkey`,`dvalue`,`updater`,`update_datetime`,`remark`) VALUES (23,'0',NULL,'message_status','代发消息状态','admin',now(),NULL);
-INSERT INTO `tsys_dict` (`id`,`type`,`parent_key`,`dkey`,`dvalue`,`updater`,`update_datetime`,`remark`) VALUES (24,'1','message_status','0','待发送','admin',now(),NULL);
-INSERT INTO `tsys_dict` (`id`,`type`,`parent_key`,`dkey`,`dvalue`,`updater`,`update_datetime`,`remark`) VALUES (25,'1','message_status','1','待处理','admin',now(),NULL);
-INSERT INTO `tsys_dict` (`id`,`type`,`parent_key`,`dkey`,`dvalue`,`updater`,`update_datetime`,`remark`) VALUES (26,'1','message_status','2','待反馈','admin',now(),NULL);
-INSERT INTO `tsys_dict` (`id`,`type`,`parent_key`,`dkey`,`dvalue`,`updater`,`update_datetime`,`remark`) VALUES (51,'1','message_status','3','已处理','admin',now(),NULL);
-INSERT INTO `tsys_dict` (`id`,`type`,`parent_key`,`dkey`,`dvalue`,`updater`,`update_datetime`,`remark`) VALUES (27,'0',NULL,'salary_status','工资条状态','admin',now(),NULL);
-INSERT INTO `tsys_dict` (`id`,`type`,`parent_key`,`dkey`,`dvalue`,`updater`,`update_datetime`,`remark`) VALUES (28,'1','salary_status','0','待人工复核','admin',now(),NULL);
-INSERT INTO `tsys_dict` (`id`,`type`,`parent_key`,`dkey`,`dvalue`,`updater`,`update_datetime`,`remark`) VALUES (29,'1','salary_status','1','已审核待提交','admin',now(),NULL);
-INSERT INTO `tsys_dict` (`id`,`type`,`parent_key`,`dkey`,`dvalue`,`updater`,`update_datetime`,`remark`) VALUES (30,'1','salary_status','2','已提交待发放','admin',now(),NULL);
-INSERT INTO `tsys_dict` (`id`,`type`,`parent_key`,`dkey`,`dvalue`,`updater`,`update_datetime`,`remark`) VALUES (31,'1','salary_status','3','正常发放','admin',now(),NULL);
-INSERT INTO `tsys_dict` (`id`,`type`,`parent_key`,`dkey`,`dvalue`,`updater`,`update_datetime`,`remark`) VALUES (32,'1','salary_status','4','部分发放','admin',now(),NULL);
-INSERT INTO `tsys_dict` (`id`,`type`,`parent_key`,`dkey`,`dvalue`,`updater`,`update_datetime`,`remark`) VALUES (33,'1','salary_status','5','已转正常','admin',now(),NULL);
-INSERT INTO `tsys_dict` (`id`,`type`,`parent_key`,`dkey`,`dvalue`,`updater`,`update_datetime`,`remark`) VALUES (54,'1','salary_status','6','延迟发放','admin',now(),NULL);
-INSERT INTO `tsys_dict` (`id`,`type`,`parent_key`,`dkey`,`dvalue`,`updater`,`update_datetime`,`remark`) VALUES (55,'1','salary_status','7','部分且延迟发放','admin',now(),NULL);
-INSERT INTO `tsys_dict` (`id`,`type`,`parent_key`,`dkey`,`dvalue`,`updater`,`update_datetime`,`remark`) VALUES (34,'0',NULL,'staff_type','务工人员类型','admin',now(),NULL);
-INSERT INTO `tsys_dict` (`id`,`type`,`parent_key`,`dkey`,`dvalue`,`updater`,`update_datetime`,`remark`) VALUES (35,'1','staff_type','0','直招工人','admin',now(),NULL);
-INSERT INTO `tsys_dict` (`id`,`type`,`parent_key`,`dkey`,`dvalue`,`updater`,`update_datetime`,`remark`) VALUES (36,'1','staff_type','1','劳务工人','admin',now(),NULL);
-INSERT INTO `tsys_dict` (`id`,`type`,`parent_key`,`dkey`,`dvalue`,`updater`,`update_datetime`,`remark`) VALUES (37,'1','staff_type','2','包工工人','admin',now(),NULL);
-INSERT INTO `tsys_dict` (`id`,`type`,`parent_key`,`dkey`,`dvalue`,`updater`,`update_datetime`,`remark`) VALUES (38,'1','staff_type','3','内勤人员','admin',now(),NULL);
-INSERT INTO `tsys_dict` (`id`,`type`,`parent_key`,`dkey`,`dvalue`,`updater`,`update_datetime`,`remark`) VALUES (39,'0',NULL,'id_type','证件类型','admin',now(),NULL);
-INSERT INTO `tsys_dict` (`id`,`type`,`parent_key`,`dkey`,`dvalue`,`updater`,`update_datetime`,`remark`) VALUES (40,'1','id_type','1','身份证','admin',now(),NULL);
-INSERT INTO `tsys_dict` (`id`,`type`,`parent_key`,`dkey`,`dvalue`,`updater`,`update_datetime`,`remark`) VALUES (41,'0',NULL,'attendance_status','考勤状态','admin',now(),NULL);
-INSERT INTO `tsys_dict` (`id`,`type`,`parent_key`,`dkey`,`dvalue`,`updater`,`update_datetime`,`remark`) VALUES (42,'1','attendance_status','0','待上班打卡','admin',now(),NULL);
-INSERT INTO `tsys_dict` (`id`,`type`,`parent_key`,`dkey`,`dvalue`,`updater`,`update_datetime`,`remark`) VALUES (43,'1','attendance_status','1','待下班打卡','admin',now(),NULL);
-INSERT INTO `tsys_dict` (`id`,`type`,`parent_key`,`dkey`,`dvalue`,`updater`,`update_datetime`,`remark`) VALUES (44,'1','attendance_status','2','已打卡待结算','admin',now(),NULL);
-INSERT INTO `tsys_dict` (`id`,`type`,`parent_key`,`dkey`,`dvalue`,`updater`,`update_datetime`,`remark`) VALUES (45,'1','attendance_status','3','已结算','admin',now(),NULL);
-INSERT INTO `tsys_dict` (`id`,`type`,`parent_key`,`dkey`,`dvalue`,`updater`,`update_datetime`,`remark`) VALUES (46,'0',NULL,'salary_log_type','日志类型','admin',now(),NULL);
-INSERT INTO `tsys_dict` (`id`,`type`,`parent_key`,`dkey`,`dvalue`,`updater`,`update_datetime`,`remark`) VALUES (47,'1','salary_log_type','0','正常','admin',now(),NULL);
-INSERT INTO `tsys_dict` (`id`,`type`,`parent_key`,`dkey`,`dvalue`,`updater`,`update_datetime`,`remark`) VALUES (48,'1','salary_log_type','1','异常','admin',now(),NULL);
-INSERT INTO `tsys_dict` (`id`,`type`,`parent_key`,`dkey`,`dvalue`,`updater`,`update_datetime`,`remark`) VALUES (52,'0',NULL,'abnormal_type','事件类型','admin',now(),NULL);
-INSERT INTO `tsys_dict` (`id`,`type`,`parent_key`,`dkey`,`dvalue`,`updater`,`update_datetime`,`remark`) VALUES (53,'1','abnormal_type','0','工资条异常','admin',now(),NULL);
-INSERT INTO `tsys_dict` (`id`,`type`,`parent_key`,`dkey`,`dvalue`,`updater`,`update_datetime`,`remark`) VALUES (56,'0',NULL,'position_type','职位类型','admin',now(),NULL);
-INSERT INTO `tsys_dict` (`id`,`type`,`parent_key`,`dkey`,`dvalue`,`updater`,`update_datetime`,`remark`) VALUES (57,'1','position_type','0','普工','admin',now(),NULL);
-INSERT INTO `tsys_dict` (`id`,`type`,`parent_key`,`dkey`,`dvalue`,`updater`,`update_datetime`,`remark`) VALUES (58,'1','position_type','1','主管','admin',now(),NULL);
+INSERT INTO `tsys_dict` (`id`,`type`,`parent_key`,`dkey`,`dvalue`,`updater`,`update_datetime`,`remark`) VALUES (1,'0',NULL,'user_kind','用户类型','admin','2018-07-27 03:07:37',NULL);
+INSERT INTO `tsys_dict` (`id`,`type`,`parent_key`,`dkey`,`dvalue`,`updater`,`update_datetime`,`remark`) VALUES (2,'1','user_kind','P','平台用户','admin','2018-07-27 03:07:37',NULL);
+INSERT INTO `tsys_dict` (`id`,`type`,`parent_key`,`dkey`,`dvalue`,`updater`,`update_datetime`,`remark`) VALUES (3,'1','user_kind','B','银行用户','admin','2018-07-27 03:07:37',NULL);
+INSERT INTO `tsys_dict` (`id`,`type`,`parent_key`,`dkey`,`dvalue`,`updater`,`update_datetime`,`remark`) VALUES (4,'1','user_kind','O','业主单位','admin','2018-07-27 03:07:38',NULL);
+INSERT INTO `tsys_dict` (`id`,`type`,`parent_key`,`dkey`,`dvalue`,`updater`,`update_datetime`,`remark`) VALUES (5,'1','user_kind','S','监管单位','admin','2018-07-27 03:07:38',NULL);
+INSERT INTO `tsys_dict` (`id`,`type`,`parent_key`,`dkey`,`dvalue`,`updater`,`update_datetime`,`remark`) VALUES (6,'0',NULL,'user_status','用户状态','admin','2018-07-27 03:07:38',NULL);
+INSERT INTO `tsys_dict` (`id`,`type`,`parent_key`,`dkey`,`dvalue`,`updater`,`update_datetime`,`remark`) VALUES (7,'1','user_status','0','正常','admin','2018-07-27 03:07:38',NULL);
+INSERT INTO `tsys_dict` (`id`,`type`,`parent_key`,`dkey`,`dvalue`,`updater`,`update_datetime`,`remark`) VALUES (8,'1','user_status','1','人工锁定','admin','2018-07-27 03:07:38',NULL);
+INSERT INTO `tsys_dict` (`id`,`type`,`parent_key`,`dkey`,`dvalue`,`updater`,`update_datetime`,`remark`) VALUES (9,'1','user_status','2','程序锁定','admin','2018-07-27 03:07:38','');
+INSERT INTO `tsys_dict` (`id`,`type`,`parent_key`,`dkey`,`dvalue`,`updater`,`update_datetime`,`remark`) VALUES (10,'0',NULL,'project_status','项目状态','admin','2018-07-27 03:07:38',NULL);
+INSERT INTO `tsys_dict` (`id`,`type`,`parent_key`,`dkey`,`dvalue`,`updater`,`update_datetime`,`remark`) VALUES (11,'1','project_status','0','待编辑','admin','2018-07-27 03:07:38',NULL);
+INSERT INTO `tsys_dict` (`id`,`type`,`parent_key`,`dkey`,`dvalue`,`updater`,`update_datetime`,`remark`) VALUES (12,'1','project_status','1','待开工','admin','2018-07-27 03:07:38',NULL);
+INSERT INTO `tsys_dict` (`id`,`type`,`parent_key`,`dkey`,`dvalue`,`updater`,`update_datetime`,`remark`) VALUES (13,'1','project_status','2','在建','admin','2018-07-27 03:07:38',NULL);
+INSERT INTO `tsys_dict` (`id`,`type`,`parent_key`,`dkey`,`dvalue`,`updater`,`update_datetime`,`remark`) VALUES (15,'0',NULL,'account_status','账户状态','admin','2018-07-27 03:07:38',NULL);
+INSERT INTO `tsys_dict` (`id`,`type`,`parent_key`,`dkey`,`dvalue`,`updater`,`update_datetime`,`remark`) VALUES (16,'1','account_status','0','正常','admin','2018-07-27 03:07:38',NULL);
+INSERT INTO `tsys_dict` (`id`,`type`,`parent_key`,`dkey`,`dvalue`,`updater`,`update_datetime`,`remark`) VALUES (17,'1','account_status','1','人工锁定','admin','2018-07-27 03:07:38',NULL);
+INSERT INTO `tsys_dict` (`id`,`type`,`parent_key`,`dkey`,`dvalue`,`updater`,`update_datetime`,`remark`) VALUES (18,'1','account_status','2','程序锁定','admin','2018-07-27 03:07:38',NULL);
+INSERT INTO `tsys_dict` (`id`,`type`,`parent_key`,`dkey`,`dvalue`,`updater`,`update_datetime`,`remark`) VALUES (19,'0',NULL,'staff_status','员工状态','admin','2018-07-27 03:07:38',NULL);
+INSERT INTO `tsys_dict` (`id`,`type`,`parent_key`,`dkey`,`dvalue`,`updater`,`update_datetime`,`remark`) VALUES (20,'1','staff_status','0','在职','admin','2018-07-27 03:07:38',NULL);
+INSERT INTO `tsys_dict` (`id`,`type`,`parent_key`,`dkey`,`dvalue`,`updater`,`update_datetime`,`remark`) VALUES (21,'1','staff_status','1','请假','admin','2018-07-27 03:07:38',NULL);
+INSERT INTO `tsys_dict` (`id`,`type`,`parent_key`,`dkey`,`dvalue`,`updater`,`update_datetime`,`remark`) VALUES (22,'1','staff_status','2','离职','admin','2018-07-27 03:07:38',NULL);
+INSERT INTO `tsys_dict` (`id`,`type`,`parent_key`,`dkey`,`dvalue`,`updater`,`update_datetime`,`remark`) VALUES (23,'0',NULL,'message_status','代发消息状态','admin','2018-07-27 03:07:38',NULL);
+INSERT INTO `tsys_dict` (`id`,`type`,`parent_key`,`dkey`,`dvalue`,`updater`,`update_datetime`,`remark`) VALUES (24,'1','message_status','0','待发送','admin','2018-07-27 03:07:38',NULL);
+INSERT INTO `tsys_dict` (`id`,`type`,`parent_key`,`dkey`,`dvalue`,`updater`,`update_datetime`,`remark`) VALUES (25,'1','message_status','1','待处理','admin','2018-07-27 03:07:38',NULL);
+INSERT INTO `tsys_dict` (`id`,`type`,`parent_key`,`dkey`,`dvalue`,`updater`,`update_datetime`,`remark`) VALUES (26,'1','message_status','2','待反馈','admin','2018-07-27 03:07:38',NULL);
+INSERT INTO `tsys_dict` (`id`,`type`,`parent_key`,`dkey`,`dvalue`,`updater`,`update_datetime`,`remark`) VALUES (27,'0',NULL,'salary_status','工资条状态','admin','2018-07-27 03:07:38',NULL);
+INSERT INTO `tsys_dict` (`id`,`type`,`parent_key`,`dkey`,`dvalue`,`updater`,`update_datetime`,`remark`) VALUES (28,'1','salary_status','0','待人工复核','admin','2018-07-27 03:07:38',NULL);
+INSERT INTO `tsys_dict` (`id`,`type`,`parent_key`,`dkey`,`dvalue`,`updater`,`update_datetime`,`remark`) VALUES (29,'1','salary_status','1','已审核待提交','admin','2018-07-27 03:07:38',NULL);
+INSERT INTO `tsys_dict` (`id`,`type`,`parent_key`,`dkey`,`dvalue`,`updater`,`update_datetime`,`remark`) VALUES (30,'1','salary_status','2','已提交待发放','admin','2018-07-27 03:07:38',NULL);
+INSERT INTO `tsys_dict` (`id`,`type`,`parent_key`,`dkey`,`dvalue`,`updater`,`update_datetime`,`remark`) VALUES (31,'1','salary_status','3','正常发放','admin','2018-07-27 03:07:38',NULL);
+INSERT INTO `tsys_dict` (`id`,`type`,`parent_key`,`dkey`,`dvalue`,`updater`,`update_datetime`,`remark`) VALUES (32,'1','salary_status','4','部分发放','admin','2018-07-27 03:07:38',NULL);
+INSERT INTO `tsys_dict` (`id`,`type`,`parent_key`,`dkey`,`dvalue`,`updater`,`update_datetime`,`remark`) VALUES (33,'1','salary_status','5','已转正常','admin','2018-07-27 03:07:38',NULL);
+INSERT INTO `tsys_dict` (`id`,`type`,`parent_key`,`dkey`,`dvalue`,`updater`,`update_datetime`,`remark`) VALUES (34,'0',NULL,'staff_type','务工人员类型','admin','2018-07-27 03:07:38',NULL);
+INSERT INTO `tsys_dict` (`id`,`type`,`parent_key`,`dkey`,`dvalue`,`updater`,`update_datetime`,`remark`) VALUES (35,'1','staff_type','0','直招工人','admin','2018-07-27 03:07:38',NULL);
+INSERT INTO `tsys_dict` (`id`,`type`,`parent_key`,`dkey`,`dvalue`,`updater`,`update_datetime`,`remark`) VALUES (36,'1','staff_type','1','劳务工人','admin','2018-07-27 03:07:38',NULL);
+INSERT INTO `tsys_dict` (`id`,`type`,`parent_key`,`dkey`,`dvalue`,`updater`,`update_datetime`,`remark`) VALUES (37,'1','staff_type','2','包工工人','admin','2018-07-27 03:07:39',NULL);
+INSERT INTO `tsys_dict` (`id`,`type`,`parent_key`,`dkey`,`dvalue`,`updater`,`update_datetime`,`remark`) VALUES (38,'1','staff_type','3','内勤人员','admin','2018-07-27 03:07:39',NULL);
+INSERT INTO `tsys_dict` (`id`,`type`,`parent_key`,`dkey`,`dvalue`,`updater`,`update_datetime`,`remark`) VALUES (39,'0',NULL,'id_type','证件类型','admin','2018-07-27 03:07:39',NULL);
+INSERT INTO `tsys_dict` (`id`,`type`,`parent_key`,`dkey`,`dvalue`,`updater`,`update_datetime`,`remark`) VALUES (40,'1','id_type','1','身份证','admin','2018-07-27 03:07:39',NULL);
+INSERT INTO `tsys_dict` (`id`,`type`,`parent_key`,`dkey`,`dvalue`,`updater`,`update_datetime`,`remark`) VALUES (41,'0',NULL,'attendance_status','考勤状态','admin','2018-07-27 03:07:39',NULL);
+INSERT INTO `tsys_dict` (`id`,`type`,`parent_key`,`dkey`,`dvalue`,`updater`,`update_datetime`,`remark`) VALUES (42,'1','attendance_status','0','待上班打卡','admin','2018-07-27 03:07:39',NULL);
+INSERT INTO `tsys_dict` (`id`,`type`,`parent_key`,`dkey`,`dvalue`,`updater`,`update_datetime`,`remark`) VALUES (43,'1','attendance_status','1','待下班打卡','admin','2018-07-27 03:07:39',NULL);
+INSERT INTO `tsys_dict` (`id`,`type`,`parent_key`,`dkey`,`dvalue`,`updater`,`update_datetime`,`remark`) VALUES (44,'1','attendance_status','2','已打卡待结算','admin','2018-07-27 03:07:39',NULL);
+INSERT INTO `tsys_dict` (`id`,`type`,`parent_key`,`dkey`,`dvalue`,`updater`,`update_datetime`,`remark`) VALUES (45,'1','attendance_status','3','已结算','admin','2018-07-27 03:07:39',NULL);
+INSERT INTO `tsys_dict` (`id`,`type`,`parent_key`,`dkey`,`dvalue`,`updater`,`update_datetime`,`remark`) VALUES (46,'0',NULL,'salary_log_type','日志类型','admin','2018-07-27 03:07:39',NULL);
+INSERT INTO `tsys_dict` (`id`,`type`,`parent_key`,`dkey`,`dvalue`,`updater`,`update_datetime`,`remark`) VALUES (47,'1','salary_log_type','0','正常','admin','2018-07-27 03:07:39',NULL);
+INSERT INTO `tsys_dict` (`id`,`type`,`parent_key`,`dkey`,`dvalue`,`updater`,`update_datetime`,`remark`) VALUES (48,'1','salary_log_type','1','异常','admin','2018-07-27 03:07:39',NULL);
+INSERT INTO `tsys_dict` (`id`,`type`,`parent_key`,`dkey`,`dvalue`,`updater`,`update_datetime`,`remark`) VALUES (49,'1','project_status','3','停工','admin','2018-07-27 03:07:38',NULL);
+INSERT INTO `tsys_dict` (`id`,`type`,`parent_key`,`dkey`,`dvalue`,`updater`,`update_datetime`,`remark`) VALUES (50,'1','project_status','4','结束','admin','2018-07-27 03:07:38',NULL);
+INSERT INTO `tsys_dict` (`id`,`type`,`parent_key`,`dkey`,`dvalue`,`updater`,`update_datetime`,`remark`) VALUES (51,'1','message_status','3','已处理','admin','2018-07-27 03:07:38',NULL);
+INSERT INTO `tsys_dict` (`id`,`type`,`parent_key`,`dkey`,`dvalue`,`updater`,`update_datetime`,`remark`) VALUES (52,'0',NULL,'abnormal_type','事件类型','admin','2018-07-27 03:07:39',NULL);
+INSERT INTO `tsys_dict` (`id`,`type`,`parent_key`,`dkey`,`dvalue`,`updater`,`update_datetime`,`remark`) VALUES (53,'1','abnormal_type','0','工资条异常','admin','2018-07-27 03:07:39',NULL);
+INSERT INTO `tsys_dict` (`id`,`type`,`parent_key`,`dkey`,`dvalue`,`updater`,`update_datetime`,`remark`) VALUES (54,'1','salary_status','6','延迟发放','admin','2018-07-27 03:07:38',NULL);
+INSERT INTO `tsys_dict` (`id`,`type`,`parent_key`,`dkey`,`dvalue`,`updater`,`update_datetime`,`remark`) VALUES (55,'1','salary_status','7','部分且延迟发放','admin','2018-07-27 03:07:38',NULL);
+INSERT INTO `tsys_dict` (`id`,`type`,`parent_key`,`dkey`,`dvalue`,`updater`,`update_datetime`,`remark`) VALUES (56,'0',NULL,'position_type','职位类型','admin','2018-07-27 03:07:39',NULL);
+INSERT INTO `tsys_dict` (`id`,`type`,`parent_key`,`dkey`,`dvalue`,`updater`,`update_datetime`,`remark`) VALUES (57,'1','position_type','0','普工','admin','2018-07-27 03:07:39',NULL);
+INSERT INTO `tsys_dict` (`id`,`type`,`parent_key`,`dkey`,`dvalue`,`updater`,`update_datetime`,`remark`) VALUES (58,'1','position_type','1','主管','admin','2018-07-27 03:07:39',NULL);
 
 /*
 -- Query: SELECT * FROM dev_xn_gchf.tsys_config
 LIMIT 0, 1000
--- Date: 2018-06-29 14:01
+-- Date: 2018-07-27 17:23
 */
-INSERT INTO `tsys_config` (`id`,`type`,`ckey`,`cvalue`,`updater`,`update_datetime`,`remark`) VALUES (1,'sys_txt','telephone','0571-88888888','USYS201800000000001',now(),'联系电话');
-INSERT INTO `tsys_config` (`id`,`type`,`ckey`,`cvalue`,`updater`,`update_datetime`,`remark`) VALUES (2,'sys_txt','about_us','关于我们112','USYS201800000000001',now(),'关于我们');
-INSERT INTO `tsys_config` (`id`,`type`,`ckey`,`cvalue`,`updater`,`update_datetime`,`remark`) VALUES (3,'sys_txt','service_time','9:00-17:40','USYS201800000000001',now(),'服务时间');
-INSERT INTO `tsys_config` (`id`,`type`,`ckey`,`cvalue`,`updater`,`update_datetime`,`remark`) VALUES (4,'qiniu','qiniu_access_key','07KR5rNezHcXebD-GalrPw0npsAODOMVxygvdFFt','USYS201800000000001',now(),'七牛云key1');
-INSERT INTO `tsys_config` (`id`,`type`,`ckey`,`cvalue`,`updater`,`update_datetime`,`remark`) VALUES (5,'qiniu','qiniu_secret_key','nsMbXOfEtk3SvQ3GFHbKMozJua3jbTiGPIIwu4tq','USYS201800000000001',now(),'qiniu_secret_key');
-INSERT INTO `tsys_config` (`id`,`type`,`ckey`,`cvalue`,`updater`,`update_datetime`,`remark`) VALUES (6,'qiniu','qiniu_bucket','zwzj','USYS201800000000001',now(),'qiniu_bucket');
-INSERT INTO `tsys_config` (`id`,`type`,`ckey`,`cvalue`,`updater`,`update_datetime`,`remark`) VALUES (7,'qiniu','qiniu_domain','otoieuivb.bkt.clouddn.com','USYS201800000000001',now(),'访问域名');
-INSERT INTO `tsys_config` (`id`,`type`,`ckey`,`cvalue`,`updater`,`update_datetime`,`remark`) VALUES (8,'sys_txt','telephone','0571-88888888','USYS201800000000001',now(),'联系电话');
-INSERT INTO `tsys_config` (`id`,`type`,`ckey`,`cvalue`,`updater`,`update_datetime`,`remark`) VALUES (9,'sys_txt','about_us','关于我们112','USYS201800000000001',now(),'关于我们');
-INSERT INTO `tsys_config` (`id`,`type`,`ckey`,`cvalue`,`updater`,`update_datetime`,`remark`) VALUES (10,'sys_txt','service_time','9:00-17:40','USYS201800000000001',now(),'服务时间');
-INSERT INTO `tsys_config` (`id`,`type`,`ckey`,`cvalue`,`updater`,`update_datetime`,`remark`) VALUES (11,'qiniu','qiniu_access_key','07KR5rNezHcXebD-GalrPw0npsAODOMVxygvdFFt','USYS201800000000001',now(),'七牛云key1');
-INSERT INTO `tsys_config` (`id`,`type`,`ckey`,`cvalue`,`updater`,`update_datetime`,`remark`) VALUES (12,'qiniu','qiniu_secret_key','nsMbXOfEtk3SvQ3GFHbKMozJua3jbTiGPIIwu4tq','USYS201800000000001',now(),'qiniu_secret_key');
-INSERT INTO `tsys_config` (`id`,`type`,`ckey`,`cvalue`,`updater`,`update_datetime`,`remark`) VALUES (13,'qiniu','qiniu_bucket','zwzj','USYS201800000000001',now(),'qiniu_bucket');
-INSERT INTO `tsys_config` (`id`,`type`,`ckey`,`cvalue`,`updater`,`update_datetime`,`remark`) VALUES (14,'qiniu','qiniu_domain','otoieuivb.bkt.clouddn.com','USYS201800000000001',now(),'访问域名');
+INSERT INTO `tsys_config` (`id`,`type`,`ckey`,`cvalue`,`updater`,`update_datetime`,`remark`) VALUES (1,'sys_txt','telephone','0571-88888888','USYS201800000000001','2018-07-27 03:07:39','联系电话');
+INSERT INTO `tsys_config` (`id`,`type`,`ckey`,`cvalue`,`updater`,`update_datetime`,`remark`) VALUES (2,'sys_txt','about_us','关于我们112','USYS201800000000001','2018-07-27 03:07:39','关于我们');
+INSERT INTO `tsys_config` (`id`,`type`,`ckey`,`cvalue`,`updater`,`update_datetime`,`remark`) VALUES (3,'sys_txt','service_time','9:00-17:40','USYS201800000000001','2018-07-27 03:07:39','服务时间');
+INSERT INTO `tsys_config` (`id`,`type`,`ckey`,`cvalue`,`updater`,`update_datetime`,`remark`) VALUES (4,'qiniu','qiniu_access_key','07KR5rNezHcXebD-GalrPw0npsAODOMVxygvdFFt','USYS201800000000001','2018-07-27 03:07:39','七牛云key1');
+INSERT INTO `tsys_config` (`id`,`type`,`ckey`,`cvalue`,`updater`,`update_datetime`,`remark`) VALUES (5,'qiniu','qiniu_secret_key','nsMbXOfEtk3SvQ3GFHbKMozJua3jbTiGPIIwu4tq','USYS201800000000001','2018-07-27 03:07:39','qiniu_secret_key');
+INSERT INTO `tsys_config` (`id`,`type`,`ckey`,`cvalue`,`updater`,`update_datetime`,`remark`) VALUES (6,'qiniu','qiniu_bucket','zwzj','USYS201800000000001','2018-07-27 03:07:39','qiniu_bucket');
+INSERT INTO `tsys_config` (`id`,`type`,`ckey`,`cvalue`,`updater`,`update_datetime`,`remark`) VALUES (7,'qiniu','qiniu_domain','otoieuivb.bkt.clouddn.com','USYS201800000000001','2018-07-27 03:07:39','访问域名');
+INSERT INTO `tsys_config` (`id`,`type`,`ckey`,`cvalue`,`updater`,`update_datetime`,`remark`) VALUES (8,'sys_txt','telephone','0571-88888888','USYS201800000000001','2018-07-27 03:07:39','联系电话');
+INSERT INTO `tsys_config` (`id`,`type`,`ckey`,`cvalue`,`updater`,`update_datetime`,`remark`) VALUES (9,'sys_txt','about_us','关于我们112','USYS201800000000001','2018-07-27 03:07:39','关于我们');
+INSERT INTO `tsys_config` (`id`,`type`,`ckey`,`cvalue`,`updater`,`update_datetime`,`remark`) VALUES (10,'sys_txt','service_time','9:00-17:40','USYS201800000000001','2018-07-27 03:07:39','服务时间');
+INSERT INTO `tsys_config` (`id`,`type`,`ckey`,`cvalue`,`updater`,`update_datetime`,`remark`) VALUES (11,'qiniu','qiniu_access_key','07KR5rNezHcXebD-GalrPw0npsAODOMVxygvdFFt','USYS201800000000001','2018-07-27 03:07:39','七牛云key1');
+INSERT INTO `tsys_config` (`id`,`type`,`ckey`,`cvalue`,`updater`,`update_datetime`,`remark`) VALUES (12,'qiniu','qiniu_secret_key','nsMbXOfEtk3SvQ3GFHbKMozJua3jbTiGPIIwu4tq','USYS201800000000001','2018-07-27 03:07:39','qiniu_secret_key');
+INSERT INTO `tsys_config` (`id`,`type`,`ckey`,`cvalue`,`updater`,`update_datetime`,`remark`) VALUES (13,'qiniu','qiniu_bucket','zwzj','USYS201800000000001','2018-07-27 03:07:39','qiniu_bucket');
+INSERT INTO `tsys_config` (`id`,`type`,`ckey`,`cvalue`,`updater`,`update_datetime`,`remark`) VALUES (14,'qiniu','qiniu_domain','otoieuivb.bkt.clouddn.com','USYS201800000000001','2018-07-27 03:07:39','访问域名');
 
 /*
 -- Query: select * from tsys_menu where role_type is not null

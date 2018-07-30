@@ -63,6 +63,11 @@ public class AttendanceDAOImpl extends AMybatisTemplate
     }
 
     @Override
+    public int updateStatus(Attendance data) {
+        return super.update(NAMESPACE.concat("update_status"), data);
+    }
+
+    @Override
     public int updateStartManualClockIn(Attendance data) {
         return super.update(NAMESPACE.concat("update_startManualClockIn"),
             data);

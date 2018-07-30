@@ -155,12 +155,21 @@ public class SalaryAOImpl implements ISalaryAO {
             // 统计指定月份的工人正常考勤天数
             Date startDatetime = DateUtil.getFristDay(year, month - 1);
             Date endDatetime = DateUtil.getLastDay(year, month - 1);
-            List<Attendance> attendanceList = attendanceBO
+            List<String> statusList = new ArrayList<String>();
+            statusList.add(EAttendanceStatus.Unpaied.getCode());
+            List<Attendance> normalAttendanceList = attendanceBO
                 .queryAttendanceListByStaff(employ.getStaffCode(),
                     employ.getProjectCode(), startDatetime, endDatetime,
-                    EAttendanceStatus.Unpaied.getCode());
+                    statusList);// 正常考勤数据
 
-            if (CollectionUtils.isEmpty(attendanceList)) {
+            statusList.add(EAttendanceStatus.TO_Start.getCode());
+            statusList.add(EAttendanceStatus.TO_End.getCode());
+            List<Attendance> allAttendanceList = attendanceBO
+                .queryAttendanceListByStaff(employ.getStaffCode(),
+                    employ.getProjectCode(), startDatetime, endDatetime,
+                    statusList);// 所有考勤数据
+
+            if (CollectionUtils.isEmpty(allAttendanceList)) {
                 logger.info("===========雇员【" + employ.getStaffName()
                         + "】不存在考勤记录==============");
                 continue;
@@ -181,12 +190,12 @@ public class SalaryAOImpl implements ISalaryAO {
             // 统计指定年份和月份员工请假天数和正常考勤天数
             data.setLeavingDays(leaveBO.getMonthLeaveDays(employ.getStaffCode(),
                 project.getCode(), startDatetime, endDatetime));
-            data.setAttendanceDays(attendanceList.size());
+            data.setAttendanceDays(normalAttendanceList.size());
 
             // 计算上月迟到和早退小时
             int earlyHours = 0;
             int delayHours = 0;
-            for (Attendance attendance : attendanceList) {
+            for (Attendance attendance : normalAttendanceList) {
                 // 迟到小时数
                 boolean isLess = DateUtil.compare(
                     DateUtil.dateToStr(attendance.getStartDatetime(),
@@ -207,10 +216,14 @@ public class SalaryAOImpl implements ISalaryAO {
                     earlyHours += DateUtil.getHours(attendance.getEndDatetime(),
                         project.getAttendanceEndtime());
                 }
-                // 将考勤状态更新为【已结算】
+            }
+
+            // 将所有考勤状态更新为【已结算】
+            for (Attendance attendance : allAttendanceList) {
                 attendanceBO.updateSettleStatus(attendance.getCode(),
                     EAttendanceStatus.Paied.getCode(), new Date());
             }
+
             data.setEarlyHours(earlyHours);
             data.setDelayHours(delayHours);
 
@@ -218,7 +231,7 @@ public class SalaryAOImpl implements ISalaryAO {
             Long cutAmount = AmountUtil.mul(employ.getCutAmount(),
                 (earlyHours + delayHours));
             Long shouldAmount = AmountUtil.mul(employ.getSalary(),
-                attendanceList.size()) - cutAmount;
+                normalAttendanceList.size()) - cutAmount;
             if (shouldAmount < 0)
                 shouldAmount = 0L;// 应发工资不应该出现负数
 
@@ -269,17 +282,25 @@ public class SalaryAOImpl implements ISalaryAO {
             Date endDatetime = DateUtil.getLastDay(
                 StringValidater.toInteger(salaryDate[0]),
                 StringValidater.toInteger(salaryDate[1]) - 1);
+            List<String> statusList = new ArrayList<String>();
+            statusList.add(EAttendanceStatus.Paied.getCode());
 
             List<Attendance> attendanceList = attendanceBO
                 .queryAttendanceListByStaff(salary.getStaffCode(),
                     salary.getProjectCode(), startDatetime, endDatetime,
-                    EAttendanceStatus.Paied.getCode());
+                    statusList);
 
-            // 将工资所属月份的考勤状态更新为【已打卡待结算】
+            // 将工资所属月份的考勤状态更新为考勤数据的状态
             if (CollectionUtils.isNotEmpty(attendanceList)) {
                 for (Attendance attendance : attendanceList) {
-                    attendanceBO.updateSettleStatus(attendance.getCode(),
-                        EAttendanceStatus.Unpaied.getCode(), null);
+                    String status = EAttendanceStatus.Unpaied.getCode();
+                    if (null == attendance.getEndDatetime()) {
+                        status = EAttendanceStatus.TO_End.getCode();
+                    }
+                    if (null == attendance.getStartDatetime()) {
+                        status = EAttendanceStatus.TO_Start.getCode();
+                    }
+                    attendanceBO.updateStatus(attendance.getCode(), status);
                 }
             }
 

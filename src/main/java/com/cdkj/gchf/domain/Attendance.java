@@ -74,6 +74,9 @@ public class Attendance extends ABaseDO {
     // 用户类型
     private String kind;
 
+    // 状态列表
+    private List<String> statusList;
+
     public void setCode(String code) {
         this.code = code;
     }
@@ -224,6 +227,14 @@ public class Attendance extends ABaseDO {
 
     public void setKind(String kind) {
         this.kind = kind;
+    }
+
+    public List<String> getStatusList() {
+        return statusList;
+    }
+
+    public void setStatusList(List<String> statusList) {
+        this.statusList = statusList;
     }
 
 }

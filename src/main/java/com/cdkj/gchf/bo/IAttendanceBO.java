@@ -31,11 +31,14 @@ public interface IAttendanceBO extends IPaginableBO<Attendance> {
     // 更新员工手机号
     public void updateStaffMobile(String staffCode, String mobile);
 
+    // 更新状态字段
+    public void updateStatus(String code, String status);
+
     public List<Attendance> queryAttendanceList(Attendance condition);
 
     public List<Attendance> queryAttendanceListByStaff(String staffCode,
             String projectCode, Date startDatetime, Date endDatetime,
-            String status);
+            List<String> statusList);
 
     public Attendance getAttendance(String code);
 

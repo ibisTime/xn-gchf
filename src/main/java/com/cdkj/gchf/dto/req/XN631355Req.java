@@ -14,10 +14,6 @@ public class XN631355Req {
     @NotBlank(message = "编号不能为空")
     private String code;
 
-    // 项目结束时间
-    @NotBlank(message = "项目结束时间不能为空")
-    private String endDatetime;
-
     // 更新人
     @NotBlank(message = "更新人不能为空")
     private String updater;
@@ -39,14 +35,6 @@ public class XN631355Req {
 
     public void setUpdater(String updater) {
         this.updater = updater;
-    }
-
-    public String getEndDatetime() {
-        return endDatetime;
-    }
-
-    public void setEndDatetime(String endDatetime) {
-        this.endDatetime = endDatetime;
     }
 
     public String getRemark() {

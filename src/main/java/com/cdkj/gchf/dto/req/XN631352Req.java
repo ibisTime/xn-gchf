@@ -42,10 +42,6 @@ public class XN631352Req {
     @NotBlank(message = "区不能为空")
     private String area;
 
-    // 地址
-    @NotBlank(message = "地址不能为空")
-    private String address;
-
     // 项目开始时间
     @NotBlank(message = "项目开始时间不能为空")
     private String startDatetime;
@@ -155,14 +151,6 @@ public class XN631352Req {
 
     public void setArea(String area) {
         this.area = area;
-    }
-
-    public String getAddress() {
-        return address;
-    }
-
-    public void setAddress(String address) {
-        this.address = address;
     }
 
     public String getSalaryDatetime() {

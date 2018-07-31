@@ -128,7 +128,6 @@ public class ProjectAOImpl implements IProjectAO {
         data.setCity(req.getCity());
         data.setArea(req.getArea());
 
-        data.setAddress(req.getAddress());
         data.setStartDatetime(DateUtil.strToDate(req.getStartDatetime(),
             DateUtil.FRONT_DATE_FORMAT_STRING));
         data.setSalaryCreateDatetime(req.getSalaryCreateDatetime());
@@ -211,13 +210,12 @@ public class ProjectAOImpl implements IProjectAO {
     }
 
     @Override
-    public void endProject(String code, String endDatetime, String updater,
-            String remark) {
+    public void endProject(String code, String updater, String remark) {
         Project data = projectBO.getProject(code);
         if (!EProjectStatus.Building.getCode().equals(data.getStatus())) {
             throw new BizException("xn0000", "该工程项目未处于在建状态");
         }
-        projectBO.projectEnd(data, endDatetime, updater, remark);
+        projectBO.projectEnd(data, updater, remark);
         // 项目结束，员工离职
         Employ condition = new Employ();
         condition.setProjectCode(data.getCode());
@@ -226,8 +224,7 @@ public class ProjectAOImpl implements IProjectAO {
 
         for (Employ employ : list) {
             employ.setStatus(EEmployStatus.Leave.getCode());
-            employ.setLeavingDatetime(DateUtil.strToDate(endDatetime,
-                DateUtil.FRONT_DATE_FORMAT_STRING));
+            employ.setLeavingDatetime(new Date());
             employBO.updateStatus(employ);
         }
     }

@@ -64,6 +64,10 @@ public class AttendanceAOImpl implements IAttendanceAO {
             if (null == data) {
                 throw new BizException("xn00000", "没有该员工今日考勤");
             }
+            if (null != data.getEndDatetime()
+                    && startDatetime.after(data.getEndDatetime())) {
+                throw new BizException("xn00000", "上班时间无法大于下班时间，请重新输入！");
+            }
             if (EAttendanceStatus.Paied.getCode().equals(data.getStatus())) {
                 throw new BizException("xn00000", "考勤已结算，无法打卡！");
             }
@@ -84,6 +88,10 @@ public class AttendanceAOImpl implements IAttendanceAO {
             Attendance data = attendanceBO.getAttendance(code);
             if (null == data) {
                 throw new BizException("xn00000", "没有该员工今日考勤");
+            }
+            if (null != data.getStartDatetime()
+                    && endDatetime.before(data.getStartDatetime())) {
+                throw new BizException("xn00000", "下班时间无法小于上班时间，请重新输入！");
             }
             if (EAttendanceStatus.Paied.getCode().equals(data.getStatus())) {
                 throw new BizException("xn00000", "考勤已结算，无法打卡！");

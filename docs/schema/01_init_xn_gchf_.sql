@@ -79,6 +79,7 @@ INSERT INTO `tsys_dict` (`id`,`type`,`parent_key`,`dkey`,`dvalue`,`updater`,`upd
 INSERT INTO `tsys_dict` (`id`,`type`,`parent_key`,`dkey`,`dvalue`,`updater`,`update_datetime`,`remark`) VALUES (43,'1','attendance_status','1','待下班打卡','admin','2018-07-27 03:07:39',NULL);
 INSERT INTO `tsys_dict` (`id`,`type`,`parent_key`,`dkey`,`dvalue`,`updater`,`update_datetime`,`remark`) VALUES (44,'1','attendance_status','2','已打卡待结算','admin','2018-07-27 03:07:39',NULL);
 INSERT INTO `tsys_dict` (`id`,`type`,`parent_key`,`dkey`,`dvalue`,`updater`,`update_datetime`,`remark`) VALUES (45,'1','attendance_status','3','已结算','admin','2018-07-27 03:07:39',NULL);
+INSERT INTO `tsys_dict` (`id`,`type`,`parent_key`,`dkey`,`dvalue`,`updater`,`update_datetime`,`remark`) VALUES (59,'1','attendance_status','4','旷工','admin','2018-07-27 03:07:39',NULL);
 INSERT INTO `tsys_dict` (`id`,`type`,`parent_key`,`dkey`,`dvalue`,`updater`,`update_datetime`,`remark`) VALUES (46,'0',NULL,'salary_log_type','日志类型','admin','2018-07-27 03:07:39',NULL);
 INSERT INTO `tsys_dict` (`id`,`type`,`parent_key`,`dkey`,`dvalue`,`updater`,`update_datetime`,`remark`) VALUES (47,'1','salary_log_type','0','正常','admin','2018-07-27 03:07:39',NULL);
 INSERT INTO `tsys_dict` (`id`,`type`,`parent_key`,`dkey`,`dvalue`,`updater`,`update_datetime`,`remark`) VALUES (48,'1','salary_log_type','1','异常','admin','2018-07-27 03:07:39',NULL);

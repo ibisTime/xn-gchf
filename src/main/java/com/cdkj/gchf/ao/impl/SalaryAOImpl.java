@@ -155,21 +155,23 @@ public class SalaryAOImpl implements ISalaryAO {
             // 统计指定月份的工人正常考勤天数
             Date startDatetime = DateUtil.getFristDay(year, month - 1);
             Date endDatetime = DateUtil.getLastDay(year, month - 1);
-            List<String> statusList = new ArrayList<String>();
-            statusList.add(EAttendanceStatus.Unpaied.getCode());
+            List<String> normalStatusList = new ArrayList<String>();
+            normalStatusList.add(EAttendanceStatus.Unpaied.getCode());
             List<Attendance> normalAttendanceList = attendanceBO
                 .queryAttendanceListByStaff(employ.getStaffCode(),
                     employ.getProjectCode(), startDatetime, endDatetime,
-                    statusList);// 正常考勤数据
+                    normalStatusList);// 正常考勤数据
 
-            statusList.add(EAttendanceStatus.TO_Start.getCode());
-            statusList.add(EAttendanceStatus.TO_End.getCode());
-            List<Attendance> allAttendanceList = attendanceBO
+            List<String> absentStatusList = new ArrayList<String>();
+            absentStatusList.add(EAttendanceStatus.TO_Start.getCode());
+            absentStatusList.add(EAttendanceStatus.TO_End.getCode());
+            List<Attendance> absentAttendanceList = attendanceBO
                 .queryAttendanceListByStaff(employ.getStaffCode(),
                     employ.getProjectCode(), startDatetime, endDatetime,
-                    statusList);// 所有考勤数据
+                    absentStatusList);// 异常考勤数据
 
-            if (CollectionUtils.isEmpty(allAttendanceList)) {
+            if (CollectionUtils.isEmpty(normalAttendanceList)
+                    && CollectionUtils.isEmpty(absentAttendanceList)) {
                 logger.info("===========雇员【" + employ.getStaffName()
                         + "】不存在考勤记录==============");
                 continue;
@@ -216,12 +218,19 @@ public class SalaryAOImpl implements ISalaryAO {
                     earlyHours += DateUtil.getHours(attendance.getEndDatetime(),
                         project.getAttendanceEndtime());
                 }
-            }
 
-            // 将所有考勤状态更新为【已结算】
-            for (Attendance attendance : allAttendanceList) {
+                // 将考勤状态更新为【已结算】
                 attendanceBO.updateSettleStatus(attendance.getCode(),
                     EAttendanceStatus.Paied.getCode(), new Date());
+            }
+
+            // 将旷工考勤状态更新为【旷工】
+            for (Attendance attendance : absentAttendanceList) {
+                if (null == attendance.getStartDatetime()
+                        && null == attendance.getEndDatetime()) {
+                    attendanceBO.updateStatus(attendance.getCode(),
+                        EAttendanceStatus.Absent.getCode());
+                }
             }
 
             data.setEarlyHours(earlyHours);
@@ -284,6 +293,7 @@ public class SalaryAOImpl implements ISalaryAO {
                 StringValidater.toInteger(salaryDate[1]) - 1);
             List<String> statusList = new ArrayList<String>();
             statusList.add(EAttendanceStatus.Paied.getCode());
+            statusList.add(EAttendanceStatus.Absent.getCode());
 
             List<Attendance> attendanceList = attendanceBO
                 .queryAttendanceListByStaff(salary.getStaffCode(),
@@ -422,7 +432,7 @@ public class SalaryAOImpl implements ISalaryAO {
         CompanyCard companyCard = null;
         Project project = null;
 
-        staff = staffBO.getStaff(salary.getStaffCode());
+        staff = staffBO.getStaffBrief(salary.getStaffCode());
         if (null != staff) {
             salary.setStaffName(staff.getName());
             salary.setStaffMobile(staff.getMobile());
@@ -452,7 +462,7 @@ public class SalaryAOImpl implements ISalaryAO {
             salary.getProjectCode());
         salary.setBankCard(bankCard);
 
-        // 公司名称及项目信息
+        // 项目信息
         project = projectBO.getProject(salary.getProjectCode());
         if (null != project) {
             salary.setProjectChargeUser(project.getChargeUser());

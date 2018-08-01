@@ -5,31 +5,42 @@
 	<resultMap id="user_DB_Result" type="user">
 		<result column="user_id" property="userId" />
 		<result column="type" property="type" />
+		<result column="role_code" property="roleCode" />
 		<result column="organization_code" property="organizationCode" />
 		<result column="real_name" property="realName" />
-		<result column="photo" property="photo" />
+		
 		<result column="login_name" property="loginName" />
 		<result column="mobile" property="mobile" />
-		
 		<result column="login_pwd" property="loginPwd" />
 		<result column="login_pwd_strength" property="loginPwdStrength" />
 		<result column="user_refree" property="userRefree" />
+		
 		<result column="create_datetime" property="createDatetime" />
-		<result column="role_code" property="roleCode" />
+		<result column="updater" property="updater" />
+		<result column="update_datetime" property="updateDatetime" />
+		<result column="status" property="status" />
+		<result column="remark" property="remark" />
 		
 		<result column="project_code" property="projectCode" />
 		<result column="project_name" property="projectName" />
 		<result column="province" property="province" />
 		<result column="city" property="city" />
 		<result column="area" property="area" />
-		
 		<result column="bank_name" property="bankName" />
 		<result column="subbranch" property="subbranch" />
-		<result column="updater" property="updater" />
-		<result column="update_datetime" property="updateDatetime" />
-		<result column="status" property="status" />
-		<result column="remark" property="remark" />
 	</resultMap>
+	
+	<sql id="join_condition">
+		<if test="projectCode != null and projectCode != '' ">
+			JOIN thf_project tp ON t.organization_code = tp.code
+		</if>
+		<if test="bankName != null and bankName != '' and subbranch != null and subbranch != '' ">
+			JOIN thf_subbranch ts ON t.organization_code = ts.code
+		</if>
+		<if test="province != null and province != '' and city != null and city != '' and area != null and area != '' ">
+			JOIN thf_supervise tsu ON t.organization_code = tsu.code
+		</if>
+	</sql>
 	
 	<sql id="where_condition">
 		<trim prefix="WHERE" prefixOverrides="AND | OR">
@@ -54,24 +65,6 @@
 			<if test="userRefree != null and userRefree != '' ">
 				AND t.user_refree = #{userRefree}
 			</if>
-			<if test="province != null and province != '' ">
-				AND t.province = #{province}
-			</if>
-			<if test="city != null and city != '' ">
-				AND t.city = #{city}
-			</if>
-			<if test="area != null and area != '' ">
-				AND t.area = #{area}
-			</if>
-			<if test="bankName != null and bankName != '' ">
-				AND t.bank_name = #{bankName}
-			</if>
-			<if test="subbranch != null and subbranch != '' ">
-				AND t.subbranch = #{subbranch}
-			</if>
-			<if test="projectCode != null and projectCode != '' ">
-				AND t.project_code = #{projectCode}
-			</if>
 			<if test="keyword != null and keyword != '' ">
 				AND (t.login_name like "%"#{keyword}"%" OR  t.mobile like "%"#{keyword}"%")
 			</if>
@@ -81,6 +74,26 @@
 			<if test="createDatetimeEnd != null and createDatetimeEnd != '' ">
 				<![CDATA[AND t.create_datetime < #{createDatetimeEnd}]]>
 			</if>
+			
+			<if test="projectCode != null and projectCode != '' ">
+				AND tp.code = #{projectCode}
+			</if>
+			<if test="bankName != null and bankName != '' ">
+				AND ts.bank_name = #{bankName}
+			</if>
+			<if test="subbranch != null and subbranch != '' ">
+				AND ts.subbranch = #{subbranch}
+			</if>
+			<if test="province != null and province != '' ">
+				AND tsu.province = #{province}
+			</if>
+			<if test="city != null and city != '' ">
+				AND tsu.city = #{city}
+			</if>
+			<if test="area != null and area != '' ">
+				AND tsu.area = #{area}
+			</if>
+			
 		</trim>
 	</sql>
 	
@@ -90,21 +103,12 @@
 		,t.type
 		,t.organization_code
 		,t.real_name
-		,t.photo
 		,t.login_name
 		,t.mobile
 		
 		,t.user_refree
 		,t.create_datetime
 		,t.role_code
-		,t.project_code
-		,t.project_name
-		
-		,t.province
-		,t.city
-		,t.area
-		,t.bank_name
-		,t.subbranch
 		,t.updater
 		
 		,t.update_datetime
@@ -112,6 +116,7 @@
 		,t.remark
 		FROM
 		thf_user t 
+		<include refid="join_condition" />
 		<include refid="where_condition" />
 		<trim prefix="ORDER BY ">
 			<if test="order != null and order != '' ">
@@ -123,6 +128,7 @@
 	<select id="select_user_count" parameterType="user"
 		resultType="java.lang.Long">
 		SELECT count(1) FROM thf_user t
+		<include refid="join_condition" />
 		<include refid="where_condition" />
 	</select>
 
@@ -133,7 +139,6 @@
 		,type
 		,organization_code
 		,real_name
-		,photo
 		,login_name
 		,mobile
 		
@@ -142,14 +147,6 @@
 		,user_refree
 		,create_datetime
 		,role_code
-		
-		,project_code
-		,project_name
-		,province
-		,city
-		,area
-		,bank_name
-		,subbranch
 		
 		,updater
 		,update_datetime
@@ -161,7 +158,6 @@
 		,#{type}
 		,#{organizationCode}
 		,#{realName}
-		,#{photo}
 		,#{loginName}
 		,#{mobile}
 		
@@ -170,15 +166,7 @@
 		,#{userRefree}
 		,#{createDatetime}
 		,#{roleCode}
-		
-		,#{projectCode}
-		,#{projectName}
-		,#{province}
-		,#{city}
-		,#{area}
-		
-		,#{bankName}
-		,#{subbranch}
+
 		,#{updater}
 		,#{updateDatetime}
 		,#{status}
@@ -189,7 +177,6 @@
 	<update id="update_user" parameterType="user">
 		UPDATE thf_user
 		SET
-		photo = #{photo}
 		,loginName = #{loginName}
 		,mobile = #{mobile}
 		,loginPwd = #{loginPwd}
@@ -242,13 +229,6 @@
 		,update_datetime = #{updateDatetime}
 		WHERE
 		user_id = #{userId}	
-	</update>
-
-	<update id="update_user_photo" parameterType="user">
-		UPDATE thf_user
-		SET
-		photo = #{photo}
-		WHERE user_id = #{userId}
 	</update>
 
 </mapper>

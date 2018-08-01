@@ -7,13 +7,20 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import com.cdkj.gchf.bo.IProjectBO;
+import com.cdkj.gchf.bo.ISubbranchBO;
+import com.cdkj.gchf.bo.ISuperviseBO;
 import com.cdkj.gchf.bo.IUserBO;
 import com.cdkj.gchf.bo.base.PaginableBOImpl;
 import com.cdkj.gchf.common.MD5Util;
 import com.cdkj.gchf.common.PhoneUtil;
 import com.cdkj.gchf.common.PwdUtil;
 import com.cdkj.gchf.dao.IUserDAO;
+import com.cdkj.gchf.domain.Project;
+import com.cdkj.gchf.domain.Subbranch;
+import com.cdkj.gchf.domain.Supervise;
 import com.cdkj.gchf.domain.User;
+import com.cdkj.gchf.enums.EUserKind;
 import com.cdkj.gchf.enums.EUserStatus;
 import com.cdkj.gchf.exception.BizException;
 
@@ -22,6 +29,15 @@ public class UserBOImpl extends PaginableBOImpl<User> implements IUserBO {
 
     @Autowired
     private IUserDAO userDAO;
+
+    @Autowired
+    private IProjectBO projectBO;
+
+    @Autowired
+    private ISubbranchBO subbranchBO;
+
+    @Autowired
+    private ISuperviseBO superviseBO;
 
     @Override
     public void resetAdminLoginPwd(User user, String loginPwd) {
@@ -103,16 +119,6 @@ public class UserBOImpl extends PaginableBOImpl<User> implements IUserBO {
     }
 
     @Override
-    public void refreshPhoto(String userId, String photo) {
-        if (StringUtils.isNotBlank(userId)) {
-            User data = new User();
-            data.setUserId(userId);
-            data.setPhoto(photo);
-            userDAO.updatePhoto(data);
-        }
-    }
-
-    @Override
     public boolean isUserExist(String code) {
         User condition = new User();
         if (userDAO.selectTotalCount(condition) > 0) {
@@ -141,6 +147,7 @@ public class UserBOImpl extends PaginableBOImpl<User> implements IUserBO {
             if (data == null) {
                 throw new BizException("xn0000", "用户不存在");
             }
+            initUser(data);
         }
         return data;
     }
@@ -179,8 +186,42 @@ public class UserBOImpl extends PaginableBOImpl<User> implements IUserBO {
         return userDAO.selectList(condition);
     }
 
-    @Override
-    public void refreshLoginPwd(String userId, String newLoginPwd) {
-    }
+    private void initUser(User data) {
+        // 监管用户数据
+        if (EUserKind.Supervise.getCode().equals(data.getType())) {
+            Supervise supervise = superviseBO
+                .getSupervise(data.getOrganizationCode());
+            if (null != supervise) {
+                data.setProvince(supervise.getProvince());
+                data.setCity(supervise.getCity());
+                data.setArea(supervise.getArea());
+            }
 
+            // 监管单位项目列表
+            List<String> projectCodeList = projectBO.queryProjectCodeList(
+                supervise.getProvince(), supervise.getCity(),
+                supervise.getArea());
+            data.setProjectCodeList(projectCodeList);
+        }
+
+        // 业主用户数据
+        if (EUserKind.Owner.getCode().equals(data.getType())) {
+            Project project = projectBO.getProject(data.getOrganizationCode());
+            if (null != project) {
+                data.setProjectCode(project.getCode());
+                data.setProjectName(project.getName());
+                data.setProvince(project.getProvince());
+                data.setCity(project.getCity());
+                data.setArea(project.getArea());
+            }
+        }
+
+        // 银行用户数据
+        if (EUserKind.Bank.getCode().equals(data.getType())) {
+            Subbranch subbranch = subbranchBO
+                .getSubbranch(data.getOrganizationCode());
+            data.setBankName(subbranch.getBankName());
+            data.setSubbranch(subbranch.getSubbranchName());
+        }
+    }
 }

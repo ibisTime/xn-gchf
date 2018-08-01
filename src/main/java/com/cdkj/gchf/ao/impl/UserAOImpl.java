@@ -221,11 +221,6 @@ public class UserAOImpl implements IUserAO {
     }
 
     @Override
-    public void doModifyPhoto(String userId, String photo) {
-        userBO.refreshPhoto(userId, photo);
-    }
-
-    @Override
     public void doCloseOpen(String userId, String updater, String remark) {
         User user = userBO.getUser(userId);
         if (user == null) {
@@ -312,6 +307,11 @@ public class UserAOImpl implements IUserAO {
         }
         Paginable<User> page = userBO.getPaginable(start, limit, condition);
         List<User> list = page.getList();
+        if (CollectionUtils.isNotEmpty(list)) {
+            for (User user : list) {
+                initUser(user);
+            }
+        }
         page.setList(list);
         return page;
     }
@@ -325,20 +325,23 @@ public class UserAOImpl implements IUserAO {
             throw new BizException("xn0000", "开始时间不能大于结束时间");
         }
         List<User> list = userBO.queryUserList(condition);
+        if (CollectionUtils.isNotEmpty(list)) {
+            for (User user : list) {
+                initUser(user);
+            }
+        }
         return list;
     }
 
     @Override
     public User getUser(String userId) {
         User data = userBO.getUser(userId);
-        initUser(data);
         return data;
     }
 
     private void initUser(User data) {
         // 监管用户数据
-        if (EUserKind.Supervise.getCode().equals(data.getType())
-                || EUserKind.Owner.getCode().equals(data.getType())) {
+        if (EUserKind.Supervise.getCode().equals(data.getType())) {
             Supervise supervise = superviseBO
                 .getSupervise(data.getOrganizationCode());
             if (null != supervise) {

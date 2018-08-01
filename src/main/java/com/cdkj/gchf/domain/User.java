@@ -18,17 +18,17 @@ public class User extends ABaseDO {
     // 用户Id
     private String userId;
 
+    // 角色编号
+    private String roleCode;
+
     // 类型
     private String type;
 
-    // 组织编号（业主用户：项目编号/银行用户：银行编号/监管用户：监管编号）
+    // 组织编号（业主用户：项目编号/银行用户：银行编号/监管用户：监管区域编号）
     private String organizationCode;
 
     // 真实姓名
     private String realName;
-
-    // 头像
-    private String photo;
 
     // 登录名
     private String loginName;
@@ -48,9 +48,19 @@ public class User extends ABaseDO {
     // 注册时间
     private Date createDatetime;
 
-    // 角色编号
-    private String roleCode;
+    // 更新人
+    private String updater;
 
+    // 更新时间
+    private Date updateDatetime;
+
+    // 状态
+    private String status;
+
+    // 备注
+    private String remark;
+
+    // **************db**********
     // 项目编号
     private String projectCode;
 
@@ -72,19 +82,6 @@ public class User extends ABaseDO {
     // 所属支行
     private String subbranch;
 
-    // 更新人
-    private String updater;
-
-    // 更新时间
-    private Date updateDatetime;
-
-    // 状态
-    private String status;
-
-    // 备注
-    private String remark;
-
-    // **************db**********
     private Date createDatetimeStart;
 
     private Date createDatetimeEnd;
@@ -92,6 +89,7 @@ public class User extends ABaseDO {
     // 登录名等模糊查询
     private String keyword;
 
+    // 监管用户项目编号列表
     private List<String> projectCodeList;
 
     public void setUserId(String userId) {
@@ -100,14 +98,6 @@ public class User extends ABaseDO {
 
     public String getUserId() {
         return userId;
-    }
-
-    public void setPhoto(String photo) {
-        this.photo = photo;
-    }
-
-    public String getPhoto() {
-        return photo;
     }
 
     public void setLoginName(String loginName) {

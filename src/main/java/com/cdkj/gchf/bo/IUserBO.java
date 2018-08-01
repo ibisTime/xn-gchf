@@ -37,11 +37,8 @@ public interface IUserBO extends IPaginableBO<User> {
     public void refreshLoginPwd(User data, String loginPwd, String updater,
             String remark);
 
-    public void refreshPhoto(String userId, String photo);
-
     public User getUserName(String userId);
 
     public List<User> checkLoginName(String loginName);
 
-    public void refreshLoginPwd(String userId, String newLoginPwd);
 }

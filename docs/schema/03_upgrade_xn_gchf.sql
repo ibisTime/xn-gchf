@@ -161,3 +161,17 @@ CREATE TABLE `thf_supervise` (
   `remark` varchar(255) COMMENT '备注',
   PRIMARY KEY (`code`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+ALTER TABLE `thf_user` 
+DROP COLUMN `department_code`,
+DROP COLUMN `subbranch`,
+DROP COLUMN `bank_name`,
+DROP COLUMN `area`,
+DROP COLUMN `city`,
+DROP COLUMN `province`,
+DROP COLUMN `project_name`,
+DROP COLUMN `project_code`;
+DROP COLUMN `photo`,
+CHANGE COLUMN `role_code` `role_code` VARCHAR(96) NULL DEFAULT NULL AFTER `type`,
+CHANGE COLUMN `real_name` `real_name` VARCHAR(192) NULL DEFAULT NULL AFTER `organization_code`;
+

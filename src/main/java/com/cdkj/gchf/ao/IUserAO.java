@@ -45,9 +45,6 @@ public interface IUserAO {
     public void doResetLoginPwdByOss(String userId, String newLoginPwd,
             String updater, String remark);
 
-    // 修改头像
-    public void doModifyPhoto(String userId, String photo);
-
     public Paginable<User> queryUserPage(int start, int limit, User condition);
 
     public List<User> queryUserList(User condition);

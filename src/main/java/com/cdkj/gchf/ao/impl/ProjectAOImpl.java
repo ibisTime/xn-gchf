@@ -96,8 +96,7 @@ public class ProjectAOImpl implements IProjectAO {
         user.setType(EUserKind.Owner.getCode());
         user.setRealName(req.getName().concat("管理员"));
         user.setLoginName(req.getName().concat("管理员"));
-        user.setProjectCode(code);
-        user.setProjectName(req.getName());
+        user.setOrganizationCode(code);
 
         user.setLoginPwd(MD5Util.md5(userLoginPwd));
         user.setLoginPwdStrength(PwdUtil.calculateSecurityLevel(userLoginPwd));

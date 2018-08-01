@@ -18,7 +18,4 @@ public interface IUserDAO extends IBaseDAO<User> {
 
     // 更新手机号
     public void updateMobile(User data);
-
-    // 更新头像
-    public void updatePhoto(User data);
 }

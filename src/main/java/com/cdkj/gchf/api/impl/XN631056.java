@@ -29,7 +29,7 @@ public class XN631056 extends AProcessor {
         condition.setRoleCode(req.getRoleCode());
         condition.setParentCode(req.getParentCode());
         condition.setType(req.getType());
-        condition.setRoleType(req.getRoleType());
+        condition.setSystemCode(req.getSystemCode());
         String column = req.getOrderColumn();
 
         if (StringUtils.isEmpty(column)) {

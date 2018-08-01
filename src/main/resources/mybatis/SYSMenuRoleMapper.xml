@@ -50,8 +50,8 @@
 			<if test="type != null and type != '' ">
 				AND m.type = #{type}
 			</if>
-			<if test="roleType != null and roleType != '' ">
-				AND m.role_type = #{roleType}
+			<if test="systemCode != null and systemCode != '' ">
+				AND m.system_code = #{systemCode}
 			</if>
 		</trim>
 	</sql>

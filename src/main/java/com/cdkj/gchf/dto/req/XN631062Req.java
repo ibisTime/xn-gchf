@@ -24,9 +24,9 @@ public class XN631062Req {
     @NotBlank(message = "类型不能为空")
     private String type;
 
-    // 角色类型(必填)
-    @NotBlank(message = "角色类型不能为空")
-    private String roleType;
+    // 系统编号(必填)
+    @NotBlank(message = "系统编号不能为空")
+    private String systemCode;
 
     // 菜单顺序号（必填）
     @NotBlank(message = "菜单顺序号不能为空")
@@ -103,12 +103,12 @@ public class XN631062Req {
         this.remark = remark;
     }
 
-    public String getRoleType() {
-        return roleType;
+    public String getSystemCode() {
+        return systemCode;
     }
 
-    public void setRoleType(String roleType) {
-        this.roleType = roleType;
+    public void setSystemCode(String systemCode) {
+        this.systemCode = systemCode;
     }
 
 }

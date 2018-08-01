@@ -10,9 +10,11 @@ import org.hibernate.validator.constraints.NotBlank;
  */
 public class XN631510Req {
     // 系统编号(银行端：B/监管端：S)
+    @NotBlank
     private String systemCode;
 
     // 组织编号（银行端：银行编号/监管端：监管区域编号）
+    @NotBlank
     private String organizationCode;
 
     // 通知人姓名

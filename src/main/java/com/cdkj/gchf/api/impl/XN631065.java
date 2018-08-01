@@ -29,7 +29,7 @@ public class XN631065 extends AProcessor {
         SYSMenu condition = new SYSMenu();
         condition.setNameForQuery(req.getName());
         condition.setType(req.getType());
-        condition.setRoleType(req.getRoleType());
+        condition.setSystemCode(req.getSystemCode());
         condition.setParentCode(req.getParentCode());
         condition.setUpdater(req.getUpdater());
 

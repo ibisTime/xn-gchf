@@ -29,7 +29,7 @@ public class XN631060 extends AProcessor {
         SYSMenu data = new SYSMenu();
         data.setName(req.getName());
         data.setType(req.getType());
-        data.setRoleType(req.getRoleType());
+        data.setSystemCode(req.getSystemCode());
         data.setUrl(req.getUrl());
         data.setParentCode(req.getParentCode());
         data.setOrderNo(req.getOrderNo());

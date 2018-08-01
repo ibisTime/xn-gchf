@@ -7,8 +7,6 @@
 		<result column="code" property="code" />
 		<result column="system_code" property="systemCode" />
 		<result column="organization_code" property="organizationCode" />
-		<result column="user_id" property="userId" />
-		<result column="type" property="type" />
 		<result column="name" property="name" />
 		<result column="mobile" property="mobile" />
 		
@@ -28,12 +26,6 @@
 			<if test="organizationCode != null and organizationCode != '' ">
 				AND t.organization_code = #{organizationCode}			
 			</if>
-			<if test="userId != null and userId != '' ">
-				AND t.user_id = #{userId}			
-			</if>
-			<if test="type != null and type != '' ">
-				AND t.type = #{type}
-			</if>
 			<if test="updater != null and updater != '' ">
 				AND t.updater = #{updater}			
 			</if>
@@ -48,8 +40,6 @@
 		t.code
 		,t.system_code
 		,t.organization_code
-		,t.user_id
-		,t.type
 		,t.name
 		,t.mobile
 		
@@ -77,8 +67,6 @@
 		code
 		,system_code
 		,organization_code
-		,user_id
-		,type
 		,name
 		,mobile
 		
@@ -90,8 +78,6 @@
 		#{code}
 		,#{systemCode}
 		,#{organizationCode}
-		,#{userId}
-		,#{type}
 		,#{name}
 		,#{mobile}
 		
@@ -111,7 +97,6 @@
 		SET
 		name = #{name}
 		,mobile = #{mobile}
-		,type = #{type}
 		,updater = #{updater}
 		,update_datetime = #{updateDatetime}
 		,remark = #{remark}

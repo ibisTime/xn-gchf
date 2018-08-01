@@ -16,8 +16,8 @@ public class XN631065Req extends APageReq {
     // 类型(选填)
     private String type;
 
-    // 角色类型(选填)
-    private String roleType;
+    // 系统编号(选填)
+    private String systemCode;
 
     // 父菜单编号(选填)
     private String parentCode;
@@ -57,11 +57,12 @@ public class XN631065Req extends APageReq {
         this.updater = updater;
     }
 
-    public String getRoleType() {
-        return roleType;
+    public String getSystemCode() {
+        return systemCode;
     }
 
-    public void setRoleType(String roleType) {
-        this.roleType = roleType;
+    public void setSystemCode(String systemCode) {
+        this.systemCode = systemCode;
     }
+
 }

@@ -6,7 +6,7 @@
 		<result column="code" property="code" />
 		<result column="name" property="name" />
 		<result column="type" property="type" />
-		<result column="role_type" property="roleType" />
+		<result column="system_code" property="systemCode" />
 		<result column="url" property="url" />
 		<result column="order_no" property="orderNo" />
 		
@@ -35,8 +35,8 @@
 			<if test="type != null and type != '' ">
 				AND t.type = #{type}
 			</if>
-			<if test="roleType != null and roleType != '' ">
-				AND t.role_type = #{roleType}
+			<if test="systemCode != null and systemCode != '' ">
+				AND t.system_code = #{systemCode}
 			</if>
 			<if test="updater != null and updater != '' ">
 				AND t.updater = #{updater}
@@ -48,7 +48,7 @@
 		code
 		,name
 		,type
-		,role_type
+		,system_code
 		,url
 		,order_no
 		,updater
@@ -75,7 +75,7 @@
 		code
 		,name
 		,type
-		,role_type
+		,system_code
 		,url
 		,order_no
 		,updater
@@ -87,7 +87,7 @@
 		#{code}
 		,#{name}
 		,#{type}
-		,#{roleType}
+		,#{systemCode}
 		,#{url}	
 		,#{orderNo}	
 		
@@ -108,7 +108,7 @@
 	    UPDATE tsys_menu SET
 	    name = #{name}
 	    ,type= #{type}
-	    ,role_type= #{roleType}
+	    ,system_code= #{systemCode}
 	    ,url = #{url}
 	    ,order_no = #{orderNo}
 	    

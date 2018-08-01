@@ -179,3 +179,6 @@ DROP COLUMN `user_id`,
 ADD COLUMN `system_code` VARCHAR(4) NULL COMMENT '系统编号（B/S）' AFTER `code`,
 ADD COLUMN `organization_code` VARCHAR(32) NULL COMMENT '组织编号' AFTER `system_code`;
 
+ALTER TABLE `tsys_menu` 
+CHANGE COLUMN `role_type` `system_code` VARCHAR(4) NULL DEFAULT NULL COMMENT '系统编号' ;
+

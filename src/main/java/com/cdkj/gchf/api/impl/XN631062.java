@@ -29,7 +29,7 @@ public class XN631062 extends AProcessor {
         condition.setCode(req.getCode());
         condition.setName(req.getName());
         condition.setType(req.getType());
-        condition.setRoleType(req.getRoleType());
+        condition.setSystemCode(req.getSystemCode());
         condition.setUrl(req.getUrl());
         condition.setParentCode(req.getParentCode());
         condition.setOrderNo(req.getOrderNo());

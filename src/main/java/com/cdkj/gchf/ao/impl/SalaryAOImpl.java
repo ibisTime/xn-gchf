@@ -431,6 +431,7 @@ public class SalaryAOImpl implements ISalaryAO {
         BankCard bankCard = null;
         CompanyCard companyCard = null;
         Project project = null;
+        Message message = null;
 
         staff = staffBO.getStaffBrief(salary.getStaffCode());
         if (null != staff) {
@@ -467,6 +468,16 @@ public class SalaryAOImpl implements ISalaryAO {
         if (null != project) {
             salary.setProjectChargeUser(project.getChargeUser());
             salary.setProjectChargeUserMobile(project.getChargeMobile());
+        }
+
+        // 工资发放人员
+        message = messageBO.getMessage(salary.getMessageCode());
+        if (null != message) {
+            User sendUser = userBO.getUser(message.getSender());
+            if (null != sendUser) {
+                salary.setSendUserName(sendUser.getLoginName());
+                salary.setSendUserMobile(sendUser.getMobile());
+            }
         }
 
     }

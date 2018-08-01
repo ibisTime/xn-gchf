@@ -124,9 +124,11 @@ public class EmployBOImpl extends PaginableBOImpl<Employ> implements IEmployBO {
     }
 
     private void initEmploy(Employ employ) {
-        // 部门名称
+        // 部门信息
         Department department = departmentBO
             .getDepartment(employ.getDepartmentCode());
         employ.setDepartmentName(department.getName());
+        employ.setDepartmentLeader(department.getLeader());
+        employ.setDepartmentLeaderMobile(department.getLeadeMobile());
     }
 }

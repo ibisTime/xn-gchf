@@ -128,7 +128,6 @@ public class ProjectAOImpl implements IProjectAO {
         data.setCity(req.getCity());
         data.setArea(req.getArea());
 
-        data.setAddress(req.getAddress());
         data.setStartDatetime(DateUtil.strToDate(req.getStartDatetime(),
             DateUtil.FRONT_DATE_FORMAT_STRING));
         data.setSalaryCreateDatetime(req.getSalaryCreateDatetime());

@@ -99,6 +99,12 @@ public class Employ extends ABaseDO {
     // 部门名称
     private String departmentName;
 
+    // 部门负责人
+    private String departmentLeader;
+
+    // 部门负责人手机号
+    private String departmentLeaderMobile;
+
     // 银行卡
     private BankCard bankCard;
 
@@ -348,6 +354,22 @@ public class Employ extends ABaseDO {
 
     public void setBankCard(BankCard bankCard) {
         this.bankCard = bankCard;
+    }
+
+    public String getDepartmentLeader() {
+        return departmentLeader;
+    }
+
+    public void setDepartmentLeader(String departmentLeader) {
+        this.departmentLeader = departmentLeader;
+    }
+
+    public String getDepartmentLeaderMobile() {
+        return departmentLeaderMobile;
+    }
+
+    public void setDepartmentLeaderMobile(String departmentLeaderMobile) {
+        this.departmentLeaderMobile = departmentLeaderMobile;
     }
 
 }

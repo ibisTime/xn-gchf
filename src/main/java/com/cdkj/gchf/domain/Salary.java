@@ -144,6 +144,12 @@ public class Salary extends ABaseDO {
     // 工资所属项目负责人手机号
     private String projectChargeUserMobile;
 
+    // 工资发送人员
+    private String sendUserName;
+
+    // 工资发送人员手机号
+    private String sendUserMobile;
+
     public String getCode() {
         return code;
     }
@@ -478,6 +484,22 @@ public class Salary extends ABaseDO {
 
     public void setProjectChargeUserMobile(String projectChargeUserMobile) {
         this.projectChargeUserMobile = projectChargeUserMobile;
+    }
+
+    public String getSendUserName() {
+        return sendUserName;
+    }
+
+    public void setSendUserName(String sendUserName) {
+        this.sendUserName = sendUserName;
+    }
+
+    public String getSendUserMobile() {
+        return sendUserMobile;
+    }
+
+    public void setSendUserMobile(String sendUserMobile) {
+        this.sendUserMobile = sendUserMobile;
     }
 
 }

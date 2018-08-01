@@ -36,8 +36,7 @@ public class CompanyCardAOImpl implements ICompanyCardAO {
     public void editCompanyCard(XN631362Req req) {
         companyCardBO.refreshCompanyCard(req.getCode(), req.getBankCode(),
             req.getBankName(), req.getAccountName(), req.getBankcardNumber(),
-            req.getSubbranch(), req.getUpdater(), new Date(),
-            req.getRemark());
+            req.getSubbranch(), req.getUpdater(), new Date(), req.getRemark());
     }
 
     @Override
@@ -54,7 +53,7 @@ public class CompanyCardAOImpl implements ICompanyCardAO {
         // 补全信息
         page = companyCardBO.getPaginable(start, limit, condition);
         for (CompanyCard companyCard : page.getList()) {
-            companyCard.setUpdateName(getName(companyCard.getUpdater()));
+            initCompanyCard(companyCard);
         }
         return page;
     }
@@ -71,7 +70,7 @@ public class CompanyCardAOImpl implements ICompanyCardAO {
         // 补全信息
         list = companyCardBO.queryCompanyCardList(condition);
         for (CompanyCard companyCard : list) {
-            companyCard.setUpdateName((getName(companyCard.getUpdater())));
+            initCompanyCard(companyCard);
         }
 
         return list;
@@ -80,8 +79,14 @@ public class CompanyCardAOImpl implements ICompanyCardAO {
     @Override
     public CompanyCard getCompanyCard(String code) {
         CompanyCard data = companyCardBO.getCompanyCard(code);
-        data.setUpdateName(getName(data.getUpdater()));
+        initCompanyCard(data);
         return data;
+    }
+
+    private void initCompanyCard(CompanyCard companyCard) {
+        companyCard.setUpdateName(getName(companyCard.getUpdater()));
+        companyCard.setBankSubbranch(
+            companyCard.getBankName().concat(companyCard.getSubbranch()));
     }
 
     private String getName(String userId) {

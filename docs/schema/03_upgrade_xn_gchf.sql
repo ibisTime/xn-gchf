@@ -148,9 +148,6 @@ ALTER TABLE `thf_employ`
 DROP COLUMN `company_code`;
 
 ##V1.5.0
-ALTER TABLE `dev_xn_gchf`.`thf_user` 
-ADD COLUMN `organization_code` VARCHAR(32) NULL COMMENT '组织编号（项目编号/银行编号/监管编号）' AFTER `type`;
-
 CREATE TABLE `thf_supervise` (
   `code` varchar(32) NOT NULL COMMENT '编号',
   `province` varchar(32) DEFAULT NULL COMMENT '省',
@@ -163,6 +160,7 @@ CREATE TABLE `thf_supervise` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 ALTER TABLE `thf_user` 
+ADD COLUMN `organization_code` VARCHAR(32) NULL COMMENT '组织编号（项目编号/银行编号/监管编号）' AFTER `type`，
 DROP COLUMN `department_code`,
 DROP COLUMN `subbranch`,
 DROP COLUMN `bank_name`,
@@ -174,4 +172,10 @@ DROP COLUMN `project_code`;
 DROP COLUMN `photo`,
 CHANGE COLUMN `role_code` `role_code` VARCHAR(96) NULL DEFAULT NULL AFTER `type`,
 CHANGE COLUMN `real_name` `real_name` VARCHAR(192) NULL DEFAULT NULL AFTER `organization_code`;
+
+ALTER TABLE `thf_event_remind` 
+DROP COLUMN `type`,
+DROP COLUMN `user_id`,
+ADD COLUMN `system_code` VARCHAR(4) NULL COMMENT '系统编号（B/S）' AFTER `code`,
+ADD COLUMN `organization_code` VARCHAR(32) NULL COMMENT '组织编号' AFTER `system_code`;
 

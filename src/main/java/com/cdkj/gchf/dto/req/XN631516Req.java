@@ -15,18 +15,18 @@ public class XN631516Req extends APageReq {
      */
     private static final long serialVersionUID = -7688557109750376437L;
 
-    // 用户编号
+    // 组织编号（银行端：银行编号/监管端：监管区域编号）
     @NotBlank
-    private String userId;
+    private String organizationCode;
+
+    // 系统编号(银行端：B/监管端：S)
+    private String systemCode;
 
     // 关键字
     private String keyword;
 
     // 更新人
     private String updater;
-
-    // 类型
-    private String type;
 
     public String getKeyword() {
         return keyword;
@@ -44,20 +44,20 @@ public class XN631516Req extends APageReq {
         this.updater = updater;
     }
 
-    public String getType() {
-        return type;
+    public String getOrganizationCode() {
+        return organizationCode;
     }
 
-    public void setType(String type) {
-        this.type = type;
+    public void setOrganizationCode(String organizationCode) {
+        this.organizationCode = organizationCode;
     }
 
-    public String getUserId() {
-        return userId;
+    public String getSystemCode() {
+        return systemCode;
     }
 
-    public void setUserId(String userId) {
-        this.userId = userId;
+    public void setSystemCode(String systemCode) {
+        this.systemCode = systemCode;
     }
 
 }

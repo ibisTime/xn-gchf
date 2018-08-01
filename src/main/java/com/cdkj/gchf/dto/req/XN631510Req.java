@@ -9,9 +9,11 @@ import org.hibernate.validator.constraints.NotBlank;
  * @history:
  */
 public class XN631510Req {
-    // 用户编号
-    @NotBlank
-    private String userId;
+    // 系统编号(银行端：B/监管端：S)
+    private String systemCode;
+
+    // 组织编号（银行端：银行编号/监管端：监管区域编号）
+    private String organizationCode;
 
     // 通知人姓名
     @NotBlank
@@ -60,12 +62,20 @@ public class XN631510Req {
         this.remark = remark;
     }
 
-    public String getUserId() {
-        return userId;
+    public String getSystemCode() {
+        return systemCode;
     }
 
-    public void setUserId(String userId) {
-        this.userId = userId;
+    public void setSystemCode(String systemCode) {
+        this.systemCode = systemCode;
+    }
+
+    public String getOrganizationCode() {
+        return organizationCode;
+    }
+
+    public void setOrganizationCode(String organizationCode) {
+        this.organizationCode = organizationCode;
     }
 
 }

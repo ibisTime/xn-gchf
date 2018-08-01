@@ -34,13 +34,13 @@ public class EventRemindBOImpl extends PaginableBOImpl<EventRemind>
             if (data == null) {
                 throw new BizException("xn00000", "该事件通知人不存在");
             }
-
         }
         return data;
     }
 
     @Override
-    public void removeEventRemind(EventRemind data) {
+    public void removeEventRemind(String code) {
+        EventRemind data = getEventRemind(code);
         eventRemindDAO.delete(data);
     }
 
@@ -55,20 +55,14 @@ public class EventRemindBOImpl extends PaginableBOImpl<EventRemind>
     }
 
     @Override
-    public List<EventRemind> queryEventRemindList(String userId) {
+    public List<EventRemind> queryEventRemindList(String organizationCode) {
         List<EventRemind> eventRemindsList = null;
-        if (StringUtils.isNotBlank(userId)) {
+        if (StringUtils.isNotBlank(organizationCode)) {
             EventRemind condition = new EventRemind();
-            condition.setUserId(userId);
+            condition.setOrganizationCode(organizationCode);
             eventRemindsList = queryEventRemindList(condition);
         }
         return eventRemindsList;
     }
 
-    @Override
-    public List<EventRemind> getEventRemindByType(String type) {
-        EventRemind condition = new EventRemind();
-        condition.setType(type);
-        return eventRemindDAO.selectList(condition);
-    }
 }

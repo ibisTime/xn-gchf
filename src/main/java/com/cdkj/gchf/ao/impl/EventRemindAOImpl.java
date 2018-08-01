@@ -10,7 +10,6 @@ import com.cdkj.gchf.ao.IEventRemindAO;
 import com.cdkj.gchf.bo.IEventRemindBO;
 import com.cdkj.gchf.bo.IUserBO;
 import com.cdkj.gchf.bo.base.Paginable;
-import com.cdkj.gchf.common.PhoneUtil;
 import com.cdkj.gchf.core.OrderNoGenerater;
 import com.cdkj.gchf.domain.EventRemind;
 import com.cdkj.gchf.domain.User;
@@ -30,18 +29,17 @@ public class EventRemindAOImpl implements IEventRemindAO {
 
     @Override
     public String addEventRemind(XN631510Req req) {
-        PhoneUtil.checkMobile(req.getMobile());
         EventRemind data = new EventRemind();
         String code = OrderNoGenerater
             .generate(EGeneratePrefix.EventRemind.getCode());
         data.setCode(code);
-        data.setUserId(req.getUserId());
+        data.setSystemCode(req.getSystemCode());
+        data.setOrganizationCode(req.getOrganizationCode());
         data.setName(req.getName());
 
         data.setMobile(req.getMobile());
         data.setUpdater(req.getUpdater());
-        Date date = new Date();
-        data.setUpdateDatetime(date);
+        data.setUpdateDatetime(new Date());
         data.setRemark(req.getRemark());
 
         eventRemindBO.saveEventRemind(data);
@@ -50,15 +48,11 @@ public class EventRemindAOImpl implements IEventRemindAO {
 
     @Override
     public void dropEventRemind(String code) {
-        EventRemind data = eventRemindBO.getEventRemind(code);
-        eventRemindBO.removeEventRemind(data);
+        eventRemindBO.removeEventRemind(code);
     }
 
     @Override
     public void editEventRemind(XN631512Req req) {
-
-        PhoneUtil.checkMobile(req.getMobile());
-
         EventRemind data = eventRemindBO.getEventRemind(req.getCode());
         data.setName(req.getName());
         data.setMobile(req.getMobile());
@@ -104,7 +98,5 @@ public class EventRemindAOImpl implements IEventRemindAO {
             }
         }
         return name;
-
     }
-
 }

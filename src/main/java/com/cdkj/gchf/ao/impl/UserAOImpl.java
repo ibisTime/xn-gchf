@@ -93,7 +93,6 @@ public class UserAOImpl implements IUserAO {
             if (null == project) {
                 throw new BizException("xn00000", "业主端项目不存在！");
             }
-
             organizationCode = project.getCode();
         }
 
@@ -122,9 +121,6 @@ public class UserAOImpl implements IUserAO {
         }
 
         data.setOrganizationCode(organizationCode);
-        data.setProvince(req.getProvince());
-        data.setCity(req.getCity());
-        data.setArea(req.getArea());
         data.setRemark(req.getRemark());
 
         // 给用户分配角色
@@ -161,10 +157,7 @@ public class UserAOImpl implements IUserAO {
         User condition = new User();
         condition.setType(type);
         condition.setLoginName(loginName);
-        System.out.println("type:" + type + ",loginName:" + loginName
-                + ",loginPwd:" + loginPwd);
         condition.setLoginPwd(MD5Util.md5(loginPwd));
-        System.out.println("loginPwd:" + MD5Util.md5(loginPwd));
         List<User> userList2 = userBO.queryUserList(condition);
         if (CollectionUtils.isEmpty(userList2)) {
             throw new BizException("xn00000", "登录密码错误");

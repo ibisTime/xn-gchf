@@ -17,14 +17,14 @@ public class EventRemind extends ABaseDO {
      */
     private static final long serialVersionUID = -4896484611513554279L;
 
-    // 用户编号
-    private String userId;
-
     // 编号
     private String code;
 
-    // 类型
-    private String type;
+    // 系统编号(银行端：B/监管端：S)
+    private String systemCode;
+
+    // 组织编号（银行端：银行编号/监管端：监管区域编号）
+    private String organizationCode;
 
     // 姓名
     private String name;
@@ -55,14 +55,6 @@ public class EventRemind extends ABaseDO {
 
     public void setCode(String code) {
         this.code = code;
-    }
-
-    public String getType() {
-        return type;
-    }
-
-    public void setType(String type) {
-        this.type = type;
     }
 
     public String getName() {
@@ -121,12 +113,20 @@ public class EventRemind extends ABaseDO {
         this.updateName = updateName;
     }
 
-    public String getUserId() {
-        return userId;
+    public String getSystemCode() {
+        return systemCode;
     }
 
-    public void setUserId(String userId) {
-        this.userId = userId;
+    public void setSystemCode(String systemCode) {
+        this.systemCode = systemCode;
+    }
+
+    public String getOrganizationCode() {
+        return organizationCode;
+    }
+
+    public void setOrganizationCode(String organizationCode) {
+        this.organizationCode = organizationCode;
     }
 
 }

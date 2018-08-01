@@ -133,7 +133,7 @@ public class MessageAOImpl implements IMessageAO {
         if (CollectionUtils.isNotEmpty(userList)) {
             for (User user : userList) {
                 List<EventRemind> eventRemindsList = eventRemindBO
-                    .queryEventRemindList(user.getUserId());// 银行用户的短信通知人
+                    .queryEventRemindList(user.getOrganizationCode());// 银行用户的短信通知人
                 if (CollectionUtils.isNotEmpty(eventRemindsList)) {
                     for (EventRemind eventRemind : eventRemindsList) {
                         smsOutBO.sendSmsOut(eventRemind.getMobile(),
@@ -240,11 +240,9 @@ public class MessageAOImpl implements IMessageAO {
 
             if (CollectionUtils.isNotEmpty(userList)) {
                 for (User user : userList) {
-
                     List<EventRemind> erList = eventRemindBO
-                        .queryEventRemindList(user.getUserId());
+                        .queryEventRemindList(user.getOrganizationCode());
                     if (CollectionUtils.isNotEmpty(erList)) {
-
                         for (EventRemind eventRemind : erList) {
                             smsOutBO.sendSmsOut(eventRemind.getMobile(),
                                 "尊敬的" + PhoneUtil

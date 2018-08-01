@@ -29,10 +29,10 @@ public class XN631515 extends AProcessor {
     @Override
     public Object doBusiness() throws BizException {
         EventRemind condition = new EventRemind();
-        condition.setUserId(req.getUserId());
+        condition.setSystemCode(req.getSystemCode());
+        condition.setOrganizationCode(req.getOrganizationCode());
         condition.setKeyword(req.getKeyword());
         condition.setUpdater(req.getUpdater());
-        condition.setType(req.getType());
 
         String column = req.getOrderColumn();
         if (StringUtils.isBlank(column)) {

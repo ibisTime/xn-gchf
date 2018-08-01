@@ -150,6 +150,12 @@ public class Salary extends ABaseDO {
     // 工资发送人员手机号
     private String sendUserMobile;
 
+    // 所在班组负责人
+    private String departmentLeaderName;
+
+    // 所在班组负责人手机号
+    private String departmentLeaderMobile;
+
     public String getCode() {
         return code;
     }
@@ -500,6 +506,22 @@ public class Salary extends ABaseDO {
 
     public void setSendUserMobile(String sendUserMobile) {
         this.sendUserMobile = sendUserMobile;
+    }
+
+    public String getDepartmentLeaderName() {
+        return departmentLeaderName;
+    }
+
+    public void setDepartmentLeaderName(String departmentLeaderName) {
+        this.departmentLeaderName = departmentLeaderName;
+    }
+
+    public String getDepartmentLeaderMobile() {
+        return departmentLeaderMobile;
+    }
+
+    public void setDepartmentLeaderMobile(String departmentLeaderMobile) {
+        this.departmentLeaderMobile = departmentLeaderMobile;
     }
 
 }

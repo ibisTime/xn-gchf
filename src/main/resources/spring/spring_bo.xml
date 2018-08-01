@@ -110,4 +110,9 @@
 	<bean id="leaveBO" class="com.cdkj.gchf.bo.impl.LeaveBOImpl">
 		<property name="paginableDAO" ref="leaveDAOImpl"/>
 	</bean>	
+	
+	<bean id="superviseBO" class="com.cdkj.gchf.bo.impl.SuperviseBOImpl">
+		<property name="paginableDAO" ref="superviseDAOImpl"/>
+	</bean>	
+	
 </beans>

@@ -3,7 +3,6 @@ package com.cdkj.gchf.bo.impl;
 import java.util.Date;
 import java.util.List;
 
-import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -32,23 +31,17 @@ public class SubbranchBOImpl extends PaginableBOImpl<Subbranch>
     public String saveSubbranch(String bankCode, String bankName,
             String subbranchName) {
         String code = null;
-        if (StringUtils.isNotBlank(bankCode)) {
-            Subbranch condition = new Subbranch();
-            condition.setBankName(bankName);
-            condition.setSubbranchName(subbranchName);
-
-            // 不存在银行信息时，添加一条数据
-            if (CollectionUtils.isEmpty(querySubbranchList(condition))) {
-                Subbranch subbranch = new Subbranch();
-                code = OrderNoGenerater
-                    .generate(EGeneratePrefix.SubBranch.getCode());
-                subbranch.setCode(code);
-                subbranch.setBankCode(bankCode);
-                subbranch.setBankName(bankName);
-                subbranch.setSubbranchName(subbranchName);
-                subbranch.setUpdateDatetime(new Date());
-                subbranchDAO.insert(subbranch);
-            }
+        if (StringUtils.isNotBlank(bankCode) && StringUtils.isNotBlank(bankName)
+                && StringUtils.isNotBlank(subbranchName)) {
+            Subbranch subbranch = new Subbranch();
+            code = OrderNoGenerater
+                .generate(EGeneratePrefix.SubBranch.getCode());
+            subbranch.setCode(code);
+            subbranch.setBankCode(bankCode);
+            subbranch.setBankName(bankName);
+            subbranch.setSubbranchName(subbranchName);
+            subbranch.setUpdateDatetime(new Date());
+            subbranchDAO.insert(subbranch);
         }
         return code;
     }
@@ -68,6 +61,19 @@ public class SubbranchBOImpl extends PaginableBOImpl<Subbranch>
             if (data == null) {
                 throw new BizException("xn0000", "支行记录不存在！");
             }
+        }
+        return data;
+    }
+
+    @Override
+    public Subbranch getSubbranch(String bankName, String subbranchName) {
+        Subbranch data = null;
+        if (StringUtils.isNotBlank(bankName)
+                && StringUtils.isNotBlank(subbranchName)) {
+            Subbranch condition = new Subbranch();
+            condition.setBankName(bankName);
+            condition.setSubbranchName(subbranchName);
+            data = subbranchDAO.select(condition);
         }
         return data;
     }

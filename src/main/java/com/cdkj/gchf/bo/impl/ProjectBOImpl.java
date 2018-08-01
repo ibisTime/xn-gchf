@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -87,11 +88,19 @@ public class ProjectBOImpl extends PaginableBOImpl<Project>
     }
 
     @Override
-    public List<String> queryProjectCodeList(Project condition) {
+    public List<String> queryProjectCodeList(String province, String city,
+            String area) {
         List<String> projectCodeList = new ArrayList<String>();
+        Project condition = new Project();
+        condition.setProvince(province);
+        condition.setCity(city);
+        condition.setArea(area);
+
         List<Project> list = projectDAO.selectList(condition);
-        for (Project project : list) {
-            projectCodeList.add(project.getCode());
+        if (CollectionUtils.isNotEmpty(list)) {
+            for (Project project : list) {
+                projectCodeList.add(project.getCode());
+            }
         }
         return projectCodeList;
     }

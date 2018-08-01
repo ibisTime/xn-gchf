@@ -15,6 +15,7 @@ import com.cdkj.gchf.bo.ISYSMenuRoleBO;
 import com.cdkj.gchf.bo.ISYSRoleBO;
 import com.cdkj.gchf.bo.ISmsOutBO;
 import com.cdkj.gchf.bo.ISubbranchBO;
+import com.cdkj.gchf.bo.ISuperviseBO;
 import com.cdkj.gchf.bo.IUserBO;
 import com.cdkj.gchf.bo.base.Paginable;
 import com.cdkj.gchf.common.MD5Util;
@@ -24,6 +25,8 @@ import com.cdkj.gchf.core.OrderNoGenerater;
 import com.cdkj.gchf.domain.Project;
 import com.cdkj.gchf.domain.SYSMenuRole;
 import com.cdkj.gchf.domain.SYSRole;
+import com.cdkj.gchf.domain.Subbranch;
+import com.cdkj.gchf.domain.Supervise;
 import com.cdkj.gchf.domain.User;
 import com.cdkj.gchf.dto.req.XN631070Req;
 import com.cdkj.gchf.enums.EUser;
@@ -52,6 +55,9 @@ public class UserAOImpl implements IUserAO {
     @Autowired
     private ISubbranchBO subbranchBO;
 
+    @Autowired
+    private ISuperviseBO superviseBO;
+
     @Override
     @Transactional
     public String doAddUser(XN631070Req req) {
@@ -62,10 +68,12 @@ public class UserAOImpl implements IUserAO {
         List<User> loginNameList = userBO.checkLoginName(req.getLoginName());
         if (CollectionUtils.isNotEmpty(loginNameList)) {
             throw new BizException("xn00000",
-                "登录名" + req.getLoginName() + "已经存在喽");
+                "登录名" + req.getLoginName() + "已经存在!");
         }
         User data = new User();
         String userId = OrderNoGenerater.generate("U");
+        String organizationCode = null;
+
         data.setUserId(userId);
         data.setType(req.getType());
         data.setRealName(req.getRealName());
@@ -77,25 +85,43 @@ public class UserAOImpl implements IUserAO {
         data.setLoginPwdStrength(
             PwdUtil.calculateSecurityLevel(req.getLoginPwd()));
         data.setCreateDatetime(new Date());
-
         data.setStatus(EUserStatus.NORMAL.getCode());
-        if (EUserKind.Bank.getCode().equals(req.getType())) {
-            data.setLoginName(req.getLoginName());
-            data.setBankName(req.getBankName());
-            data.setSubbranch(req.getSubbranch());
-            subbranchBO.saveSubbranch(req.getBankCode(), req.getBankName(),
-                req.getSubbranch());
-        }
 
+        // 业主用户
         if (EUserKind.Owner.getCode().equals(req.getType())) {
             Project project = projectBO.getProject(req.getProjectCode());
             if (null == project) {
                 throw new BizException("xn00000", "业主端项目不存在！");
             }
-            data.setProjectCode(project.getCode());
-            data.setProjectName(project.getName());
+
+            organizationCode = project.getCode();
         }
 
+        // 银行用户
+        if (EUserKind.Bank.getCode().equals(req.getType())) {
+            Subbranch subbranch = subbranchBO.getSubbranch(req.getBankName(),
+                req.getSubbranch());
+            if (null == subbranch) {
+                organizationCode = subbranchBO.saveSubbranch(req.getBankCode(),
+                    req.getBankName(), req.getSubbranch());
+            } else {
+                organizationCode = subbranch.getCode();
+            }
+        }
+
+        // 监管用户
+        if (EUserKind.Supervise.getCode().equals(req.getType())) {
+            Supervise supervise = superviseBO.getSupervise(req.getProvince(),
+                req.getCity(), req.getArea());
+            if (null == supervise) {
+                organizationCode = superviseBO.saveSupervise(req.getProvince(),
+                    req.getCity(), req.getArea());
+            } else {
+                organizationCode = supervise.getCode();
+            }
+        }
+
+        data.setOrganizationCode(organizationCode);
         data.setProvince(req.getProvince());
         data.setCity(req.getCity());
         data.setArea(req.getArea());
@@ -305,17 +331,48 @@ public class UserAOImpl implements IUserAO {
     @Override
     public User getUser(String userId) {
         User data = userBO.getUser(userId);
+        initUser(data);
+        return data;
+    }
+
+    private void initUser(User data) {
+        // 监管用户数据
         if (EUserKind.Supervise.getCode().equals(data.getType())
                 || EUserKind.Owner.getCode().equals(data.getType())) {
-            Project condition = new Project();
-            condition.setProvince(data.getProvince());
-            condition.setCity(data.getCity());
-            condition.setArea(data.getArea());
-            List<String> projectCodeList = projectBO
-                .queryProjectCodeList(condition);
+            Supervise supervise = superviseBO
+                .getSupervise(data.getOrganizationCode());
+            if (null != supervise) {
+                data.setProvince(supervise.getProvince());
+                data.setCity(supervise.getCity());
+                data.setArea(supervise.getArea());
+            }
+
+            // 监管单位项目列表
+            List<String> projectCodeList = projectBO.queryProjectCodeList(
+                supervise.getProvince(), supervise.getCity(),
+                supervise.getArea());
             data.setProjectCodeList(projectCodeList);
         }
-        return data;
+
+        // 业主用户数据
+        if (EUserKind.Owner.getCode().equals(data.getType())) {
+            Project project = projectBO.getProject(data.getOrganizationCode());
+            if (null != project) {
+                data.setProjectCode(project.getCode());
+                data.setProjectName(project.getName());
+                data.setProvince(project.getProvince());
+                data.setCity(project.getCity());
+                data.setArea(project.getArea());
+            }
+        }
+
+        // 银行用户数据
+        if (EUserKind.Bank.getCode().equals(data.getType())) {
+            Subbranch subbranch = subbranchBO
+                .getSubbranch(data.getOrganizationCode());
+            data.setBankName(subbranch.getBankName());
+            data.setSubbranch(subbranch.getSubbranchName());
+        }
     }
 
     @Override
@@ -326,5 +383,4 @@ public class UserAOImpl implements IUserAO {
         }
         return true;
     }
-
 }

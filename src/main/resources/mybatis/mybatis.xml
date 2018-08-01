@@ -41,7 +41,7 @@
 		<typeAlias alias="subbranch" type="com.cdkj.gchf.domain.Subbranch" />
 		
 		<typeAlias alias="leave" type="com.cdkj.gchf.domain.Leave" />
+		<typeAlias alias="supervise" type="com.cdkj.gchf.domain.Supervise" />
+		
 	</typeAliases>
 </configuration>
-
-

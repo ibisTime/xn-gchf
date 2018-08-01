@@ -17,6 +17,7 @@ import com.cdkj.gchf.ao.ISalaryAO;
 import com.cdkj.gchf.bo.IAttendanceBO;
 import com.cdkj.gchf.bo.IBankCardBO;
 import com.cdkj.gchf.bo.ICompanyCardBO;
+import com.cdkj.gchf.bo.IDepartmentBO;
 import com.cdkj.gchf.bo.IEmployBO;
 import com.cdkj.gchf.bo.ILeaveBO;
 import com.cdkj.gchf.bo.IMessageBO;
@@ -32,6 +33,7 @@ import com.cdkj.gchf.core.StringValidater;
 import com.cdkj.gchf.domain.Attendance;
 import com.cdkj.gchf.domain.BankCard;
 import com.cdkj.gchf.domain.CompanyCard;
+import com.cdkj.gchf.domain.Department;
 import com.cdkj.gchf.domain.Employ;
 import com.cdkj.gchf.domain.Message;
 import com.cdkj.gchf.domain.Project;
@@ -86,6 +88,9 @@ public class SalaryAOImpl implements ISalaryAO {
 
     @Autowired
     ILeaveBO leaveBO;
+
+    @Autowired
+    IDepartmentBO departmentBO;
 
     // 定时器形成工资条
     @Override
@@ -432,6 +437,7 @@ public class SalaryAOImpl implements ISalaryAO {
         CompanyCard companyCard = null;
         Project project = null;
         Message message = null;
+        Department department = null;
 
         staff = staffBO.getStaffBrief(salary.getStaffCode());
         if (null != staff) {
@@ -445,6 +451,11 @@ public class SalaryAOImpl implements ISalaryAO {
             salary.getProjectCode());
         if (null != employ) {
             salary.setUpUserName(getName(employ.getUpUser()));
+            department = departmentBO.getDepartment(employ.getDepartmentCode());
+            if (null != department) {
+                salary.setDepartmentLeaderName(department.getLeader());
+                salary.setDepartmentLeaderMobile(department.getLeadeMobile());
+            }
         }
 
         // 修改人

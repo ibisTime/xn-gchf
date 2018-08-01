@@ -5,6 +5,7 @@
 	<resultMap id="user_DB_Result" type="user">
 		<result column="user_id" property="userId" />
 		<result column="type" property="type" />
+		<result column="organization_code" property="organizationCode" />
 		<result column="real_name" property="realName" />
 		<result column="photo" property="photo" />
 		<result column="login_name" property="loginName" />
@@ -43,6 +44,9 @@
 			</if>
 			<if test="type != null and type != '' ">
 				AND t.type = #{type}
+			</if>
+			<if test="organizationCode != null and organizationCode != '' ">
+				AND t.organization_code = #{organizationCode}
 			</if>
 			<if test="loginPwd != null and loginPwd != '' ">
 				AND t.login_pwd = #{loginPwd}
@@ -84,6 +88,7 @@
 		SELECT
 		t.user_id
 		,t.type
+		,t.organization_code
 		,t.real_name
 		,t.photo
 		,t.login_name
@@ -126,6 +131,7 @@
 		thf_user(
 		user_id
 		,type
+		,organization_code
 		,real_name
 		,photo
 		,login_name
@@ -153,6 +159,7 @@
 		VALUES(
 		#{userId}
 		,#{type}
+		,#{organizationCode}
 		,#{realName}
 		,#{photo}
 		,#{loginName}
@@ -236,7 +243,6 @@
 		WHERE
 		user_id = #{userId}	
 	</update>
-
 
 	<update id="update_user_photo" parameterType="user">
 		UPDATE thf_user

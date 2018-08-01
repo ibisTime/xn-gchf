@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cdkj.gchf.dao.ISuperviseDAO">
+	<resultMap id="supervise_DB_Result" type="supervise">
+		<result column="code" property="code" />
+		<result column="province" property="province" />
+		<result column="city" property="city" />
+		<result column="area" property="area" />
+		<result column="updater" property="updater" />
+		<result column="update_datetime" property="updateDatetime" />
+		<result column="remark" property="remark" />
+	</resultMap>
+	
+	<sql id="where_condition">
+		<trim prefix="WHERE" prefixOverrides="AND | OR">
+			<if test="code != null and code != '' ">
+				AND t.code = #{code}
+			</if>
+		</trim>
+	</sql>
+	
+	<select id="select_supervise" parameterType="supervise" resultMap="supervise_DB_Result">
+		SELECT
+		t.code
+		,t.province
+		,t.city
+		,t.area
+		,t.updater
+		,t.update_datetime
+		,t.remark
+		FROM
+		thf_supervise t
+		<include refid="where_condition" />
+		<trim prefix="ORDER BY ">
+			<if test="order != null and order != '' ">
+				t.${order}
+			</if>
+		</trim>
+	</select>
+
+	<select id="select_supervise_count" parameterType="supervise"
+		resultType="java.lang.Long">
+		SELECT count(1) FROM thf_supervise t
+		<include refid="where_condition" />
+	</select>
+
+	<insert id="insert_supervise" parameterType="supervise">
+		INSERT INTO
+		thf_supervise(
+		code
+		,province
+		,city
+		,area
+		,updater
+		,update_datetime
+		,remark
+		)
+		VALUES(
+		#{code}
+		,#{province}
+		,#{city}
+		,#{area}
+		,#{updater}
+		,#{updateDatetime}
+		,#{remark}
+		)
+	</insert>
+
+</mapper>

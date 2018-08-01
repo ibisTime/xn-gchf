@@ -34,6 +34,7 @@ public interface IProjectBO extends IPaginableBO<Project> {
 
     public void restartProject(Project data, String updater, String remark);
 
-    public List<String> queryProjectCodeList(Project condition);
+    public List<String> queryProjectCodeList(String province, String city,
+            String area);
 
 }

@@ -73,8 +73,7 @@ public class ProjectAOImpl implements IProjectAO {
     public String addProject(XN631350Req req) {
         Project condition = new Project();
         condition.setName(req.getName());
-        if (CollectionUtils
-            .isNotEmpty(projectBO.queryProjectCodeList(condition))) {
+        if (CollectionUtils.isNotEmpty(projectBO.queryProject(condition))) {
             throw new BizException("xn000", "项目名称已存在，请重新输入！");
         }
 

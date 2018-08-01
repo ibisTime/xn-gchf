@@ -147,3 +147,17 @@ CHANGE COLUMN `code` `code` VARCHAR(32) NOT NULL COMMENT '编号' FIRST;
 ALTER TABLE `thf_employ` 
 DROP COLUMN `company_code`;
 
+##V1.5.0
+ALTER TABLE `dev_xn_gchf`.`thf_user` 
+ADD COLUMN `organization_code` VARCHAR(32) NULL COMMENT '组织编号（项目编号/银行编号/监管编号）' AFTER `type`;
+
+CREATE TABLE `thf_supervise` (
+  `code` varchar(32) NOT NULL COMMENT '编号',
+  `province` varchar(32) DEFAULT NULL COMMENT '省',
+  `city` varchar(32) DEFAULT NULL COMMENT '市',
+  `area` varchar(32) DEFAULT NULL COMMENT '区',
+  `updater` varchar(32) DEFAULT NULL COMMENT '更新人',
+  `update_datetime` datetime DEFAULT NULL COMMENT '更新时间',
+  `remark` varchar(255) COMMENT '备注',
+  PRIMARY KEY (`code`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;

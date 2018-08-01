@@ -21,6 +21,9 @@ public class User extends ABaseDO {
     // 类型
     private String type;
 
+    // 组织编号（业主用户：项目编号/银行用户：银行编号/监管用户：监管编号）
+    private String organizationCode;
+
     // 真实姓名
     private String realName;
 
@@ -297,6 +300,14 @@ public class User extends ABaseDO {
 
     public void setProjectCodeList(List<String> projectCodeList) {
         this.projectCodeList = projectCodeList;
+    }
+
+    public String getOrganizationCode() {
+        return organizationCode;
+    }
+
+    public void setOrganizationCode(String organizationCode) {
+        this.organizationCode = organizationCode;
     }
 
 }

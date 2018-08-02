@@ -99,7 +99,7 @@ public class EmployAOImpl implements IEmployAO {
         Date date = new Date();
         String code = OrderNoGenerater
             .generate(EGeneratePrefix.Employ.getCode());
-        Staff staff = staffBO.getStaff(req.getStaffCode());
+        Staff staff = staffBO.getStaffBrief(req.getStaffCode());
 
         data.setCode(code);
         data.setProjectCode(req.getProjectCode());
@@ -111,7 +111,6 @@ public class EmployAOImpl implements IEmployAO {
 
         data.setType(req.getType());
         data.setPosition(req.getPosition());
-        data.setUpUser(req.getDepartmentCode());
         data.setSalary(StringValidater.toLong(req.getSalary()));
         data.setCutAmount(StringValidater.toLong(req.getCutAmount()));
 
@@ -241,10 +240,6 @@ public class EmployAOImpl implements IEmployAO {
         Paginable<Employ> page = employBO.getPaginable(start, limit, condition);
         List<Employ> list = page.getList();
         for (Employ employ : list) {
-            // 员工信息
-            Staff staff = staffBO.getStaffBrief(employ.getStaffCode());
-            employ.setStaff(staff);
-
             initEmploy(employ);
         }
         page.setList(list);
@@ -256,10 +251,6 @@ public class EmployAOImpl implements IEmployAO {
         // 补充信息
         List<Employ> list = employBO.queryEmployList(condition);
         for (Employ employ : list) {
-            // 员工信息
-            Staff staff = staffBO.getStaffBrief(employ.getStaffCode());
-            employ.setStaff(staff);
-
             initEmploy(employ);
         }
         return list;
@@ -268,24 +259,21 @@ public class EmployAOImpl implements IEmployAO {
     @Override
     public Employ getEmploy(String code) {
         Employ data = employBO.getEmploy(code);
-        // 员工信息
-        Staff staff = staffBO.getStaff(data.getStaffCode());
-        data.setStaff(staff);
-
         initEmploy(data);
         return data;
     }
 
     private void initEmploy(Employ employ) {
+        // 员工信息
+        Staff staff = staffBO.getStaffBrief(employ.getStaffCode());
+        employ.setStaff(staff);
+
         // 部门名称
         Department department = departmentBO
             .getDepartment(employ.getDepartmentCode());
         if (null != department) {
             employ.setDepartmentName(department.getName());
         }
-
-        // 上级人员
-        employ.setUpUserName(getName(employ.getUpUser()));
 
         // 更新人
         employ.setUpdateName(getName(employ.getUpdater()));

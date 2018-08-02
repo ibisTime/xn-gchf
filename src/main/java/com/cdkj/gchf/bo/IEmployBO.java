@@ -21,8 +21,7 @@ public interface IEmployBO extends IPaginableBO<Employ> {
     // 修改入职信息
     public void editEmploy(Employ data);
 
-    public long getSalaryCount(Employ eCondition);
-
+    // 更新状态
     public void updateStatus(Employ employ);
 
     // 更新离职状态
@@ -31,13 +30,20 @@ public interface IEmployBO extends IPaginableBO<Employ> {
     // 更新薪资状态
     public void updateSalaryStatus(Employ employ);
 
-    public Employ getEmployByStaff(String staffCode, String projectCode);
-
     public List<Employ> queryEmployList(Employ condition);
 
     // 根据项目查询雇员
     public List<Employ> queryEmployListByProject(String projectCode,
             String status);
 
+    public Employ getEmployByStaff(String staffCode, String projectCode);
+
+    // 获取工资条数量
+    public long getSalaryCount(Employ eCondition);
+
+    // 获取工资条数量
+    public long getTotalCount(Employ eCondition);
+
     public Employ getEmploy(String code);
+
 }

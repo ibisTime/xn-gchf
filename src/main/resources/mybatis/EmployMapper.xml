@@ -14,7 +14,6 @@
 		<result column="type" property="type" />
 		<result column="position" property="position" />
 		
-		<result column="up_user" property="upUser" />
 		<result column="salary" property="salary" />
 		<result column="cut_amount" property="cutAmount" />
 		<result column="status" property="status" />
@@ -58,9 +57,6 @@
 			<if test="type != null and type != '' ">
 				AND t.type = #{type}
 			</if>
-			<if test="upUser != null and upUser != '' ">
-				AND t.up_user = #{upUser}
-			</if>
 			<if test="updater != null and updater != '' ">
 				AND t.updater = #{updater}
 			</if>
@@ -95,7 +91,6 @@
 		
 		,t.type
 		,t.position
-		,t.up_user
 		,t.salary
 		,t.cut_amount
 		,t.status
@@ -144,7 +139,6 @@
 		,staff_mobile
 		,type
 		,position
-		,up_user
 		,salary
 		,cut_amount
 		,status
@@ -164,7 +158,6 @@
 		,#{staffMobile}
 		,#{type}
 		,#{position}
-		,#{upUser}
 		,#{salary}
 		,#{cutAmount}
 		,#{status}
@@ -184,7 +177,6 @@
 		,department_code = #{departmentCode}
 		,type = #{type}
 		,position = #{position}
-		,up_user = #{upUser}
 		,salary = #{salary}
 		,cut_amount = #{cutAmount}
 		,status = #{status}

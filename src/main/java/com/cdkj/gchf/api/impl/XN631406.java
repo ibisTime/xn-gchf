@@ -3,7 +3,6 @@ package com.cdkj.gchf.api.impl;
 import org.apache.commons.lang3.StringUtils;
 
 import com.cdkj.gchf.ao.ICcontractAO;
-import com.cdkj.gchf.ao.IProgressAO;
 import com.cdkj.gchf.api.AProcessor;
 import com.cdkj.gchf.common.JsonUtil;
 import com.cdkj.gchf.core.StringValidater;
@@ -38,7 +37,7 @@ public class XN631406 extends AProcessor {
 
         String column = req.getOrderColumn();
         if (StringUtils.isBlank(column)) {
-            column = IProgressAO.DEFAULT_ORDER_COLUMN;
+            column = ICcontractAO.DEFAULT_ORDER_COLUMN;
         }
         condition.setOrder(column, req.getOrderDir());
 

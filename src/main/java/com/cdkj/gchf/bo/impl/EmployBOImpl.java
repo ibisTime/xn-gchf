@@ -85,7 +85,6 @@ public class EmployBOImpl extends PaginableBOImpl<Employ> implements IEmployBO {
             if (null != data) {
                 initEmploy(data);
             }
-
         }
         return data;
     }
@@ -121,6 +120,11 @@ public class EmployBOImpl extends PaginableBOImpl<Employ> implements IEmployBO {
     @Override
     public void updateLeavingStatus(Employ employ) {
         employDAO.updateLeavingStatus(employ);
+    }
+
+    @Override
+    public long getTotalCount(Employ condition) {
+        return employDAO.selectTotalCount(condition);
     }
 
     private void initEmploy(Employ employ) {

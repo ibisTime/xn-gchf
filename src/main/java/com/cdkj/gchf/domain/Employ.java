@@ -36,14 +36,11 @@ public class Employ extends ABaseDO {
     // 员工手机号
     private String staffMobile;
 
-    // 类别
+    // 类别(0直招工人/1劳务工人/2包工工人/3内勤人员)
     private String type;
 
-    // 所在职位
+    // 所在职位(0普工/1主管)
     private String position;
-
-    // 上级部门
-    private String upUser;
 
     // 薪酬（日薪）
     private Long salary;
@@ -51,7 +48,7 @@ public class Employ extends ABaseDO {
     // 迟到早退扣款时薪
     private Long cutAmount;
 
-    // 状态
+    // 状态(0在职/1请假/2离职)
     private String status;
 
     // 入职时间
@@ -84,11 +81,7 @@ public class Employ extends ABaseDO {
     // ***********db**************
     private String keyword;
 
-    private User user;
-
     private Staff staff;
-
-    private String upUserName;
 
     private String updateName;
 
@@ -162,14 +155,6 @@ public class Employ extends ABaseDO {
 
     public String getPosition() {
         return position;
-    }
-
-    public void setUpUser(String upUser) {
-        this.upUser = upUser;
-    }
-
-    public String getUpUser() {
-        return upUser;
     }
 
     public void setStatus(String status) {
@@ -252,28 +237,12 @@ public class Employ extends ABaseDO {
         this.keyword = keyword;
     }
 
-    public User getUser() {
-        return user;
-    }
-
-    public void setUser(User user) {
-        this.user = user;
-    }
-
     public Staff getStaff() {
         return staff;
     }
 
     public void setStaff(Staff staff) {
         this.staff = staff;
-    }
-
-    public String getUpUserName() {
-        return upUserName;
-    }
-
-    public void setUpUserName(String upUserName) {
-        this.upUserName = upUserName;
     }
 
     public String getUpdateName() {

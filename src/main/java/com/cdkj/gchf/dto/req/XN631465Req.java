@@ -27,9 +27,6 @@ public class XN631465Req extends APageReq {
     // （选填）类型
     private String type;
 
-    // （选填）上级
-    private String upUser;
-
     // （选填）更新人
     private String updater;
 
@@ -69,14 +66,6 @@ public class XN631465Req extends APageReq {
 
     public void setType(String type) {
         this.type = type;
-    }
-
-    public String getUpUser() {
-        return upUser;
-    }
-
-    public void setUpUser(String upUser) {
-        this.upUser = upUser;
     }
 
     public String getUpdater() {

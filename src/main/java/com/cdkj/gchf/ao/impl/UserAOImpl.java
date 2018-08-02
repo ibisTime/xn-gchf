@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.cdkj.gchf.ao.IUserAO;
+import com.cdkj.gchf.bo.IEmployBO;
 import com.cdkj.gchf.bo.IProjectBO;
 import com.cdkj.gchf.bo.ISYSMenuRoleBO;
 import com.cdkj.gchf.bo.ISYSRoleBO;
@@ -22,6 +23,7 @@ import com.cdkj.gchf.common.MD5Util;
 import com.cdkj.gchf.common.PhoneUtil;
 import com.cdkj.gchf.common.PwdUtil;
 import com.cdkj.gchf.core.OrderNoGenerater;
+import com.cdkj.gchf.domain.Employ;
 import com.cdkj.gchf.domain.Project;
 import com.cdkj.gchf.domain.SYSMenuRole;
 import com.cdkj.gchf.domain.SYSRole;
@@ -29,6 +31,7 @@ import com.cdkj.gchf.domain.Subbranch;
 import com.cdkj.gchf.domain.Supervise;
 import com.cdkj.gchf.domain.User;
 import com.cdkj.gchf.dto.req.XN631070Req;
+import com.cdkj.gchf.enums.EEmployStatus;
 import com.cdkj.gchf.enums.EUser;
 import com.cdkj.gchf.enums.EUserKind;
 import com.cdkj.gchf.enums.EUserStatus;
@@ -57,6 +60,9 @@ public class UserAOImpl implements IUserAO {
 
     @Autowired
     private ISuperviseBO superviseBO;
+
+    @Autowired
+    private IEmployBO employBO;
 
     @Override
     @Transactional
@@ -348,6 +354,12 @@ public class UserAOImpl implements IUserAO {
                 supervise.getProvince(), supervise.getCity(),
                 supervise.getArea());
             data.setProjectCodeList(projectCodeList);
+
+            // 监管区域在职人数
+            Employ employCondition = new Employ();
+            employCondition.setProjectCodeList(projectCodeList);
+            employCondition.setStatus(EEmployStatus.Not_Leave.getCode());
+            data.setEmployCount(employBO.getTotalCount(employCondition));
         }
 
         // 业主用户数据

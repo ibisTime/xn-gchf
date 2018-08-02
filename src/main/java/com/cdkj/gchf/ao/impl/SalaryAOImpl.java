@@ -16,12 +16,12 @@ import com.cdkj.gchf.ao.IMessageLogAO;
 import com.cdkj.gchf.ao.ISalaryAO;
 import com.cdkj.gchf.bo.IAttendanceBO;
 import com.cdkj.gchf.bo.IBankCardBO;
-import com.cdkj.gchf.bo.IProjectCardBO;
 import com.cdkj.gchf.bo.IDepartmentBO;
 import com.cdkj.gchf.bo.IEmployBO;
 import com.cdkj.gchf.bo.ILeaveBO;
 import com.cdkj.gchf.bo.IMessageBO;
 import com.cdkj.gchf.bo.IProjectBO;
+import com.cdkj.gchf.bo.IProjectCardBO;
 import com.cdkj.gchf.bo.ISalaryBO;
 import com.cdkj.gchf.bo.IStaffBO;
 import com.cdkj.gchf.bo.IUserBO;
@@ -32,11 +32,11 @@ import com.cdkj.gchf.core.OrderNoGenerater;
 import com.cdkj.gchf.core.StringValidater;
 import com.cdkj.gchf.domain.Attendance;
 import com.cdkj.gchf.domain.BankCard;
-import com.cdkj.gchf.domain.ProjectCard;
 import com.cdkj.gchf.domain.Department;
 import com.cdkj.gchf.domain.Employ;
 import com.cdkj.gchf.domain.Message;
 import com.cdkj.gchf.domain.Project;
+import com.cdkj.gchf.domain.ProjectCard;
 import com.cdkj.gchf.domain.Salary;
 import com.cdkj.gchf.domain.Staff;
 import com.cdkj.gchf.domain.User;
@@ -434,7 +434,7 @@ public class SalaryAOImpl implements ISalaryAO {
         Staff staff = null;
         Employ employ = null;
         BankCard bankCard = null;
-        ProjectCard companyCard = null;
+        ProjectCard projectCard = null;
         Project project = null;
         Message message = null;
         Department department = null;
@@ -450,7 +450,6 @@ public class SalaryAOImpl implements ISalaryAO {
         employ = employBO.getEmployByStaff(salary.getStaffCode(),
             salary.getProjectCode());
         if (null != employ) {
-            salary.setUpUserName(getName(employ.getUpUser()));
             department = departmentBO.getDepartment(employ.getDepartmentCode());
             if (null != department) {
                 salary.setDepartmentLeaderName(department.getLeader());
@@ -465,9 +464,9 @@ public class SalaryAOImpl implements ISalaryAO {
         salary.setApproveUserName(getName(salary.getApproveUser()));
 
         // 公司账户
-        companyCard = projectCardBO
+        projectCard = projectCardBO
             .getProjectCardByProject(salary.getProjectCode());
-        salary.setCompanyCard(companyCard);
+        salary.setProjectCard(projectCard);
 
         // 银行卡
         bankCard = bankCardBO.getBankCard(salary.getStaffCode(),

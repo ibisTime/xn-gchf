@@ -176,6 +176,7 @@ CHANGE COLUMN `real_name` `real_name` VARCHAR(192) NULL DEFAULT NULL AFTER `orga
 ALTER TABLE `thf_event_remind` 
 DROP COLUMN `type`,
 DROP COLUMN `user_id`,
+DROP COLUMN `content`,
 ADD COLUMN `system_code` VARCHAR(4) NULL COMMENT '系统编号（B/S）' AFTER `code`,
 ADD COLUMN `organization_code` VARCHAR(32) NULL COMMENT '组织编号' AFTER `system_code`;
 
@@ -184,3 +185,6 @@ CHANGE COLUMN `role_type` `system_code` VARCHAR(4) NULL DEFAULT NULL COMMENT '�
 
 ALTER TABLE `thf_company_card` 
 RENAME TO  `thf_project_card` ;
+
+ALTER TABLE `thf_employ` 
+DROP COLUMN `up_user`;

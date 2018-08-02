@@ -112,7 +112,7 @@ public class Salary extends ABaseDO {
     private BankCard bankCard;
 
     // 公司账户
-    private ProjectCard companyCard;
+    private ProjectCard projectCard;
 
     // 用户类型
     private String kind;
@@ -128,9 +128,6 @@ public class Salary extends ABaseDO {
 
     // 项目编号List
     private List<String> projectCodeList;
-
-    // 隶属上级
-    private String upUserName;
 
     // 申请调整的人
     private String applyUserName;
@@ -404,12 +401,12 @@ public class Salary extends ABaseDO {
         this.bankCard = bankCard;
     }
 
-    public ProjectCard getCompanyCard() {
-        return companyCard;
+    public ProjectCard getProjectCard() {
+        return projectCard;
     }
 
-    public void setCompanyCard(ProjectCard companyCard) {
-        this.companyCard = companyCard;
+    public void setProjectCard(ProjectCard projectCard) {
+        this.projectCard = projectCard;
     }
 
     public String getKind() {
@@ -442,14 +439,6 @@ public class Salary extends ABaseDO {
 
     public void setProjectCodeList(List<String> projectCodeList) {
         this.projectCodeList = projectCodeList;
-    }
-
-    public String getUpUserName() {
-        return upUserName;
-    }
-
-    public void setUpUserName(String upUserName) {
-        this.upUserName = upUserName;
     }
 
     public String getApplyUserName() {

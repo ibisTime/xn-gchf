@@ -32,7 +32,6 @@ public class XN631465 extends AProcessor {
         condition.setStatus(req.getStatus());
         condition.setType(req.getType());
 
-        condition.setUpUser(req.getUpUser());
         condition.setStatusList(req.getStatusList());
         condition.setUpdater(req.getUpdater());
         condition.setStaffCode(req.getStaffCode());

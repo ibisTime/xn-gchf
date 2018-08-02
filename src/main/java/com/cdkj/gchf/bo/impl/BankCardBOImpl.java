@@ -8,11 +8,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.cdkj.gchf.bo.IBankCardBO;
+import com.cdkj.gchf.bo.IEmployBO;
 import com.cdkj.gchf.bo.base.PaginableBOImpl;
 import com.cdkj.gchf.core.OrderNoGenerater;
 import com.cdkj.gchf.dao.IBankCardDAO;
 import com.cdkj.gchf.domain.BankCard;
-import com.cdkj.gchf.domain.Staff;
+import com.cdkj.gchf.domain.Employ;
 import com.cdkj.gchf.dto.req.XN631420Req;
 import com.cdkj.gchf.enums.EBankCardStatus;
 import com.cdkj.gchf.enums.EGeneratePrefix;
@@ -24,15 +25,21 @@ public class BankCardBOImpl extends PaginableBOImpl<BankCard>
     @Autowired
     private IBankCardDAO bankCardDAO;
 
+    @Autowired
+    private IEmployBO employBO;
+
     @Override
     public String addBankCard(XN631420Req req) {
+        Employ employ = employBO.getEmploy(req.getEmployCode());
+
         BankCard bankCard = new BankCard();
         String bankCardCode = OrderNoGenerater
             .generate(EGeneratePrefix.BankCard.getCode());
         bankCard.setCode(bankCardCode);
-        bankCard.setProjectCode(req.getProjectCode());
-        bankCard.setStaffCode(req.getStaffCode());
-        bankCard.setStaffName(req.getStaffName());
+        bankCard.setProjectCode(employ.getProjectCode());
+        bankCard.setProjectName(employ.getProjectName());
+        bankCard.setStaffCode(employ.getStaffCode());
+        bankCard.setStaffName(employ.getStaffName());
         bankCard.setBankCode(req.getBankCode());
 
         bankCard.setBankName(req.getBankName());
@@ -49,16 +56,19 @@ public class BankCardBOImpl extends PaginableBOImpl<BankCard>
     }
 
     @Override
-    public String addBankCard(Staff staff, String projectCode, String bankCode,
+    public String addBankCard(String employCode, String bankCode,
             String bankName, String subbranch, String bankcardNumber,
             String updater) {
+        Employ employ = employBO.getEmploy(employCode);
+
         BankCard bankCard = new BankCard();
         String bankCardCode = OrderNoGenerater
             .generate(EGeneratePrefix.BankCard.getCode());
         bankCard.setCode(bankCardCode);
-        bankCard.setStaffCode(staff.getCode());
-        bankCard.setStaffName(staff.getName());
-        bankCard.setProjectCode(projectCode);
+        bankCard.setStaffCode(employ.getStaffCode());
+        bankCard.setStaffName(employ.getStaffName());
+        bankCard.setProjectCode(employ.getProjectCode());
+        bankCard.setProjectName(employ.getProjectName());
         bankCard.setBankCode(bankCode);
 
         bankCard.setBankName(bankName);
@@ -91,13 +101,11 @@ public class BankCardBOImpl extends PaginableBOImpl<BankCard>
     }
 
     @Override
-    public BankCard isBankCardExist(String staffCode, String projectCode) {
+    public BankCard isBankCardExist(String employCode) {
         BankCard data = null;
-        if (StringUtils.isNotBlank(staffCode)
-                && StringUtils.isNotBlank(projectCode)) {
+        if (StringUtils.isNotBlank(employCode)) {
             BankCard condition = new BankCard();
-            condition.setStaffCode(staffCode);
-            condition.setProjectCode(projectCode);
+            condition.setEmployCode(employCode);
             data = bankCardDAO.select(condition);
         }
         return data;
@@ -131,6 +139,18 @@ public class BankCardBOImpl extends PaginableBOImpl<BankCard>
             BankCard condition = new BankCard();
             condition.setStaffCode(staffCode);
             condition.setProjectCode(projectCode);
+            data = bankCardDAO.select(condition);
+            initBankcard(data);
+        }
+        return data;
+    }
+
+    @Override
+    public BankCard getEmployBankCard(String employCode) {
+        BankCard data = null;
+        if (StringUtils.isNotBlank(employCode)) {
+            BankCard condition = new BankCard();
+            condition.setEmployCode(employCode);
             data = bankCardDAO.select(condition);
             initBankcard(data);
         }

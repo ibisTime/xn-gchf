@@ -8,12 +8,10 @@ import org.springframework.stereotype.Service;
 
 import com.cdkj.gchf.ao.IBankCardAO;
 import com.cdkj.gchf.bo.IBankCardBO;
-import com.cdkj.gchf.bo.IProjectBO;
 import com.cdkj.gchf.bo.IUserBO;
 import com.cdkj.gchf.bo.base.Page;
 import com.cdkj.gchf.bo.base.Paginable;
 import com.cdkj.gchf.domain.BankCard;
-import com.cdkj.gchf.domain.Project;
 import com.cdkj.gchf.domain.User;
 import com.cdkj.gchf.dto.req.XN631420Req;
 import com.cdkj.gchf.dto.req.XN631422Req;
@@ -29,13 +27,9 @@ public class BankCardAOImpl implements IBankCardAO {
     @Autowired
     private IUserBO userBO;
 
-    @Autowired
-    private IProjectBO projectBO;
-
     @Override
     public String addBankCard(XN631420Req req) {
-        BankCard data = bankCardBO.isBankCardExist(req.getStaffCode(),
-            req.getProjectCode());
+        BankCard data = bankCardBO.isBankCardExist(req.getEmployCode());
         if (null != data) {
             throw new BizException("XN000", "该员工已有工资卡，请勿重复添加！");
         }
@@ -86,11 +80,6 @@ public class BankCardAOImpl implements IBankCardAO {
                 && null != data.getSubbranch()) {
             data.setBankSubbranchName(
                 data.getBankName().concat(data.getSubbranch()));
-        }
-
-        Project project = projectBO.getProject(data.getProjectCode());
-        if (null != project) {
-            data.setProjectName(project.getName());
         }
     }
 

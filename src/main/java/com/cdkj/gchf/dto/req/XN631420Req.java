@@ -10,17 +10,9 @@ import org.hibernate.validator.constraints.NotBlank;
  */
 public class XN631420Req {
 
-    // 项目编号
-    @NotBlank(message = "项目编号不能为空")
-    private String projectCode;
-
-    // 员工编号
-    @NotBlank(message = "员工编号不能为空")
-    private String staffCode;
-
-    // 员工姓名
-    @NotBlank(message = "员工姓名不能为空")
-    private String staffName;
+    // 雇佣编号
+    @NotBlank(message = "雇佣编号不能为空")
+    private String employCode;
 
     // （必填）银行别称
     @NotBlank(message = "银行别称不能为空")
@@ -85,22 +77,6 @@ public class XN631420Req {
         this.remark = remark;
     }
 
-    public String getStaffCode() {
-        return staffCode;
-    }
-
-    public void setStaffCode(String staffCode) {
-        this.staffCode = staffCode;
-    }
-
-    public String getStaffName() {
-        return staffName;
-    }
-
-    public void setStaffName(String staffName) {
-        this.staffName = staffName;
-    }
-
     public String getUpdater() {
         return updater;
     }
@@ -109,12 +85,12 @@ public class XN631420Req {
         this.updater = updater;
     }
 
-    public String getProjectCode() {
-        return projectCode;
+    public String getEmployCode() {
+        return employCode;
     }
 
-    public void setProjectCode(String projectCode) {
-        this.projectCode = projectCode;
+    public void setEmployCode(String employCode) {
+        this.employCode = employCode;
     }
 
 }

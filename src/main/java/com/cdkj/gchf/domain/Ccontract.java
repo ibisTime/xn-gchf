@@ -18,6 +18,9 @@ public class Ccontract extends ABaseDO {
     // 编号
     private String code;
 
+    // 雇佣编号
+    private String employCode;
+
     // 项目编号
     private String projectCode;
 
@@ -179,6 +182,14 @@ public class Ccontract extends ABaseDO {
 
     public void setProjectCodeList(List<String> projectCodeList) {
         this.projectCodeList = projectCodeList;
+    }
+
+    public String getEmployCode() {
+        return employCode;
+    }
+
+    public void setEmployCode(String employCode) {
+        this.employCode = employCode;
     }
 
 }

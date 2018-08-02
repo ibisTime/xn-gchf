@@ -4,7 +4,6 @@ import java.util.List;
 
 import com.cdkj.gchf.bo.base.IPaginableBO;
 import com.cdkj.gchf.domain.BankCard;
-import com.cdkj.gchf.domain.Staff;
 import com.cdkj.gchf.dto.req.XN631420Req;
 
 public interface IBankCardBO extends IPaginableBO<BankCard> {
@@ -12,7 +11,7 @@ public interface IBankCardBO extends IPaginableBO<BankCard> {
     public String addBankCard(XN631420Req req);
 
     // 入职时添加工资卡
-    public String addBankCard(Staff staff, String projectCode, String bankCode,
+    public String addBankCard(String employCode, String bankCode,
             String bankName, String subbranch, String bankcardNumber,
             String updater);
 
@@ -21,14 +20,16 @@ public interface IBankCardBO extends IPaginableBO<BankCard> {
             String subbranch, String bankcardNumber, String updater,
             String remark);
 
-    // 判断员工工资卡是否存在
-    public BankCard isBankCardExist(String staffCode, String projectCode);
-
-    public List<BankCard> queryBankCardList(BankCard condition);
-
     public BankCard getBankCard(String code);
+
+    // 查询雇佣关系的工资卡
+    public BankCard getEmployBankCard(String employCode);
 
     // 查询员工在工程下的工资卡
     public BankCard getBankCard(String staffCode, String projectCode);
 
+    // 判断员工工资卡是否存在
+    public BankCard isBankCardExist(String employCode);
+
+    public List<BankCard> queryBankCardList(BankCard condition);
 }

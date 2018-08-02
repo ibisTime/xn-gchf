@@ -11,7 +11,7 @@ import com.cdkj.gchf.dao.base.ABaseDO;
 * @since: 2018-04-27 18:26:24
 * @history:
 */
-public class CompanyCard extends ABaseDO {
+public class ProjectCard extends ABaseDO {
 
     private static final long serialVersionUID = 1L;
 

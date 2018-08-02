@@ -8,23 +8,23 @@ import org.apache.commons.collections.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.cdkj.gchf.ao.ICompanyCardAO;
-import com.cdkj.gchf.bo.ICompanyCardBO;
+import com.cdkj.gchf.ao.IProjectCardAO;
+import com.cdkj.gchf.bo.IProjectCardBO;
 import com.cdkj.gchf.bo.IProjectBO;
 import com.cdkj.gchf.bo.IUserBO;
 import com.cdkj.gchf.bo.base.Page;
 import com.cdkj.gchf.bo.base.Paginable;
-import com.cdkj.gchf.domain.CompanyCard;
+import com.cdkj.gchf.domain.ProjectCard;
 import com.cdkj.gchf.domain.User;
 import com.cdkj.gchf.dto.req.XN631362Req;
 import com.cdkj.gchf.enums.EUser;
 import com.cdkj.gchf.enums.EUserKind;
 
 @Service
-public class CompanyCardAOImpl implements ICompanyCardAO {
+public class ProjectCardAOImpl implements IProjectCardAO {
 
     @Autowired
-    ICompanyCardBO companyCardBO;
+    IProjectCardBO projectCardBO;
 
     @Autowired
     IProjectBO projectBO;
@@ -33,17 +33,17 @@ public class CompanyCardAOImpl implements ICompanyCardAO {
     IUserBO userBO;
 
     @Override
-    public void editCompanyCard(XN631362Req req) {
-        companyCardBO.refreshCompanyCard(req.getCode(), req.getBankCode(),
+    public void editProjectCard(XN631362Req req) {
+        projectCardBO.refreshProjectCard(req.getCode(), req.getBankCode(),
             req.getBankName(), req.getAccountName(), req.getBankcardNumber(),
             req.getSubbranch(), req.getUpdater(), new Date(), req.getRemark());
     }
 
     @Override
-    public Paginable<CompanyCard> queryCompanyCardPage(int start, int limit,
-            CompanyCard condition) {
-        Paginable<CompanyCard> page = new Page<CompanyCard>();
-        List<CompanyCard> list = new ArrayList<CompanyCard>();
+    public Paginable<ProjectCard> queryProjectCardPage(int start, int limit,
+            ProjectCard condition) {
+        Paginable<ProjectCard> page = new Page<ProjectCard>();
+        List<ProjectCard> list = new ArrayList<ProjectCard>();
         if (EUserKind.Supervise.getCode().equals(condition.getKind())) {
             if (CollectionUtils.isEmpty(condition.getProjectCodeList())) {
                 page.setList(list);
@@ -51,16 +51,16 @@ public class CompanyCardAOImpl implements ICompanyCardAO {
             }
         }
         // 补全信息
-        page = companyCardBO.getPaginable(start, limit, condition);
-        for (CompanyCard companyCard : page.getList()) {
+        page = projectCardBO.getPaginable(start, limit, condition);
+        for (ProjectCard companyCard : page.getList()) {
             initCompanyCard(companyCard);
         }
         return page;
     }
 
     @Override
-    public List<CompanyCard> queryCompanyCardList(CompanyCard condition) {
-        List<CompanyCard> list = new ArrayList<CompanyCard>();
+    public List<ProjectCard> queryProjectCardList(ProjectCard condition) {
+        List<ProjectCard> list = new ArrayList<ProjectCard>();
         if (EUserKind.Supervise.getCode().equals(condition.getKind())) {
             if (CollectionUtils.isEmpty(condition.getProjectCodeList())) {
                 return list;
@@ -68,8 +68,8 @@ public class CompanyCardAOImpl implements ICompanyCardAO {
         }
 
         // 补全信息
-        list = companyCardBO.queryCompanyCardList(condition);
-        for (CompanyCard companyCard : list) {
+        list = projectCardBO.queryProjectCardList(condition);
+        for (ProjectCard companyCard : list) {
             initCompanyCard(companyCard);
         }
 
@@ -77,13 +77,13 @@ public class CompanyCardAOImpl implements ICompanyCardAO {
     }
 
     @Override
-    public CompanyCard getCompanyCard(String code) {
-        CompanyCard data = companyCardBO.getCompanyCard(code);
+    public ProjectCard getProjectCard(String code) {
+        ProjectCard data = projectCardBO.getProjectCard(code);
         initCompanyCard(data);
         return data;
     }
 
-    private void initCompanyCard(CompanyCard companyCard) {
+    private void initCompanyCard(ProjectCard companyCard) {
         companyCard.setUpdateName(getName(companyCard.getUpdater()));
         companyCard.setBankSubbranch(
             companyCard.getBankName().concat(companyCard.getSubbranch()));

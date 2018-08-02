@@ -7,30 +7,30 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import com.cdkj.gchf.bo.ICompanyCardBO;
+import com.cdkj.gchf.bo.IProjectCardBO;
 import com.cdkj.gchf.bo.IProjectBO;
 import com.cdkj.gchf.bo.base.PaginableBOImpl;
 import com.cdkj.gchf.core.OrderNoGenerater;
-import com.cdkj.gchf.dao.ICompanyCardDAO;
-import com.cdkj.gchf.domain.CompanyCard;
+import com.cdkj.gchf.dao.IProjectCardDAO;
+import com.cdkj.gchf.domain.ProjectCard;
 import com.cdkj.gchf.domain.Project;
 import com.cdkj.gchf.enums.EBankCardStatus;
 import com.cdkj.gchf.enums.EGeneratePrefix;
 
 @Component
-public class CompanyCardBOImpl extends PaginableBOImpl<CompanyCard>
-        implements ICompanyCardBO {
+public class ProjectCardBOImpl extends PaginableBOImpl<ProjectCard>
+        implements IProjectCardBO {
     @Autowired
-    private ICompanyCardDAO companyCardDAO;
+    private IProjectCardDAO projectCardDAO;
 
     @Autowired
     private IProjectBO projectBO;
 
-    public void saveCompanyCard(String projectCode, String bankCode,
+    public void saveProjectCard(String projectCode, String bankCode,
             String bankName, String accountName, String bankCardNumber,
             String subbranch, String updater, Date updateDatetime,
             String remark) {
-        CompanyCard data = new CompanyCard();
+        ProjectCard data = new ProjectCard();
 
         String code = OrderNoGenerater
             .generate(EGeneratePrefix.CompanyBank.getCode());
@@ -53,16 +53,16 @@ public class CompanyCardBOImpl extends PaginableBOImpl<CompanyCard>
         if (null != project) {
             data.setProjectName(project.getName());
         }
-        companyCardDAO.insert(data);
+        projectCardDAO.insert(data);
     }
 
     @Override
-    public void refreshCompanyCard(String code, String bankCode,
+    public void refreshProjectCard(String code, String bankCode,
             String bankName, String accountName, String bankCardNumber,
             String subbranch, String updater, Date updateDatetime,
             String remark) {
 
-        CompanyCard data = getCompanyCard(code);
+        ProjectCard data = getProjectCard(code);
         data.setBankCode(bankCode);
         data.setBankName(bankName);
         data.setBankcardNumber(bankCardNumber);
@@ -73,21 +73,21 @@ public class CompanyCardBOImpl extends PaginableBOImpl<CompanyCard>
         data.setUpdateDatetime(new Date());
         data.setRemark(remark);
 
-        companyCardDAO.update(data);
+        projectCardDAO.update(data);
     }
 
     @Override
-    public List<CompanyCard> queryCompanyCardList(CompanyCard condition) {
-        return companyCardDAO.selectList(condition);
+    public List<ProjectCard> queryProjectCardList(ProjectCard condition) {
+        return projectCardDAO.selectList(condition);
     }
 
     @Override
-    public CompanyCard getCompanyCard(String code) {
-        CompanyCard data = null;
+    public ProjectCard getProjectCard(String code) {
+        ProjectCard data = null;
         if (StringUtils.isNotBlank(code)) {
-            CompanyCard condition = new CompanyCard();
+            ProjectCard condition = new ProjectCard();
             condition.setCode(code);
-            data = companyCardDAO.select(condition);
+            data = projectCardDAO.select(condition);
             if (data != null) {
                 data.setBankSubbranch(
                     data.getBankName().concat(data.getSubbranch()));
@@ -97,12 +97,12 @@ public class CompanyCardBOImpl extends PaginableBOImpl<CompanyCard>
     }
 
     @Override
-    public CompanyCard getCompanyCardByProject(String projectCode) {
-        CompanyCard data = null;
+    public ProjectCard getProjectCardByProject(String projectCode) {
+        ProjectCard data = null;
         if (StringUtils.isNotBlank(projectCode)) {
-            CompanyCard condition = new CompanyCard();
+            ProjectCard condition = new ProjectCard();
             condition.setProjectCode(projectCode);
-            data = companyCardDAO.select(condition);
+            data = projectCardDAO.select(condition);
             if (data != null) {
                 data.setBankSubbranch(
                     data.getBankName().concat(data.getSubbranch()));

@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.cdkj.gchf.dao.ICompanyCardDAO">
-	<resultMap id="companyCard_DB_Result" type="companyCard">
+<mapper namespace="com.cdkj.gchf.dao.IProjectCardDAO">
+	<resultMap id="projectCard_DB_Result" type="projectCard">
 		<result column="code" property="code" />
 		<result column="project_code" property="projectCode" />
 		<result column="project_name" property="projectName" />
@@ -47,7 +47,7 @@
 			</if>
 		</trim>
 	</sql>
-	<select id="select_companyCard" parameterType="companyCard" resultMap="companyCard_DB_Result">
+	<select id="select_projectCard" parameterType="projectCard" resultMap="projectCard_DB_Result">
 		SELECT
 		t.code
 		,t.project_code
@@ -65,7 +65,7 @@
 		,t.update_datetime
 		,t.remark
 		FROM
-		thf_company_card t
+		thf_project_card t
 		<include refid="where_condition" />
 		<trim prefix="ORDER BY ">
 			<if test="order != null and order != '' ">
@@ -74,15 +74,15 @@
 		</trim>
 	</select>
 
-	<select id="select_companyCard_count" parameterType="companyCard"
+	<select id="select_projectCard_count" parameterType="projectCard"
 		resultType="java.lang.Long">
-		SELECT count(1) FROM thf_company_card t
+		SELECT count(1) FROM thf_project_card t
 		<include refid="where_condition" />
 	</select>
 
-	<insert id="insert_companyCard" parameterType="companyCard">
+	<insert id="insert_projectCard" parameterType="projectCard">
 		INSERT INTO
-		thf_company_card(
+		thf_project_card(
 		code
 		,project_code
 		,project_name
@@ -118,8 +118,8 @@
 		)
 	</insert>
 
-	<update id="update_companyCard" parameterType="companyCard">
-		UPDATE thf_company_card
+	<update id="update_projectCard" parameterType="projectCard">
+		UPDATE thf_project_card
 		SET
 		bank_code = #{bankCode}
 		,bank_name = #{bankName}

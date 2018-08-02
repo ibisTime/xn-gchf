@@ -112,7 +112,7 @@ public class Salary extends ABaseDO {
     private BankCard bankCard;
 
     // 公司账户
-    private CompanyCard companyCard;
+    private ProjectCard companyCard;
 
     // 用户类型
     private String kind;
@@ -404,11 +404,11 @@ public class Salary extends ABaseDO {
         this.bankCard = bankCard;
     }
 
-    public CompanyCard getCompanyCard() {
+    public ProjectCard getCompanyCard() {
         return companyCard;
     }
 
-    public void setCompanyCard(CompanyCard companyCard) {
+    public void setCompanyCard(ProjectCard companyCard) {
         this.companyCard = companyCard;
     }
 

@@ -51,8 +51,8 @@
 		<property name="paginableDAO" ref="progressDAOImpl"/>
 	</bean>	
 	
-	<bean id="companyCardBO" class="com.cdkj.gchf.bo.impl.CompanyCardBOImpl">
-		<property name="paginableDAO" ref="companyCardDAOImpl"/>
+	<bean id="projectCardBO" class="com.cdkj.gchf.bo.impl.ProjectCardBOImpl">
+		<property name="paginableDAO" ref="projectCardDAOImpl"/>
 	</bean>	
 	
 	<bean id="employBO" class="com.cdkj.gchf.bo.impl.EmployBOImpl">

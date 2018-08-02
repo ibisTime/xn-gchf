@@ -16,7 +16,7 @@ import com.cdkj.gchf.ao.IMessageLogAO;
 import com.cdkj.gchf.ao.ISalaryAO;
 import com.cdkj.gchf.bo.IAttendanceBO;
 import com.cdkj.gchf.bo.IBankCardBO;
-import com.cdkj.gchf.bo.ICompanyCardBO;
+import com.cdkj.gchf.bo.IProjectCardBO;
 import com.cdkj.gchf.bo.IDepartmentBO;
 import com.cdkj.gchf.bo.IEmployBO;
 import com.cdkj.gchf.bo.ILeaveBO;
@@ -32,7 +32,7 @@ import com.cdkj.gchf.core.OrderNoGenerater;
 import com.cdkj.gchf.core.StringValidater;
 import com.cdkj.gchf.domain.Attendance;
 import com.cdkj.gchf.domain.BankCard;
-import com.cdkj.gchf.domain.CompanyCard;
+import com.cdkj.gchf.domain.ProjectCard;
 import com.cdkj.gchf.domain.Department;
 import com.cdkj.gchf.domain.Employ;
 import com.cdkj.gchf.domain.Message;
@@ -66,7 +66,7 @@ public class SalaryAOImpl implements ISalaryAO {
     IProjectBO projectBO;
 
     @Autowired
-    ICompanyCardBO companyCardBO;
+    IProjectCardBO projectCardBO;
 
     @Autowired
     IBankCardBO bankCardBO;
@@ -434,7 +434,7 @@ public class SalaryAOImpl implements ISalaryAO {
         Staff staff = null;
         Employ employ = null;
         BankCard bankCard = null;
-        CompanyCard companyCard = null;
+        ProjectCard companyCard = null;
         Project project = null;
         Message message = null;
         Department department = null;
@@ -465,8 +465,8 @@ public class SalaryAOImpl implements ISalaryAO {
         salary.setApproveUserName(getName(salary.getApproveUser()));
 
         // 公司账户
-        companyCard = companyCardBO
-            .getCompanyCardByProject(salary.getProjectCode());
+        companyCard = projectCardBO
+            .getProjectCardByProject(salary.getProjectCode());
         salary.setCompanyCard(companyCard);
 
         // 银行卡

@@ -10,7 +10,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.cdkj.gchf.ao.IProjectAO;
-import com.cdkj.gchf.bo.ICompanyCardBO;
+import com.cdkj.gchf.bo.IProjectCardBO;
 import com.cdkj.gchf.bo.IDepartmentBO;
 import com.cdkj.gchf.bo.IEmployBO;
 import com.cdkj.gchf.bo.IProjectBO;
@@ -22,7 +22,7 @@ import com.cdkj.gchf.common.DateUtil;
 import com.cdkj.gchf.common.MD5Util;
 import com.cdkj.gchf.common.PwdUtil;
 import com.cdkj.gchf.core.OrderNoGenerater;
-import com.cdkj.gchf.domain.CompanyCard;
+import com.cdkj.gchf.domain.ProjectCard;
 import com.cdkj.gchf.domain.Department;
 import com.cdkj.gchf.domain.Employ;
 import com.cdkj.gchf.domain.Project;
@@ -48,7 +48,7 @@ public class ProjectAOImpl implements IProjectAO {
     private IUserBO userBO;
 
     @Autowired
-    private ICompanyCardBO companyCardBO;
+    private IProjectCardBO projectCardBO;
 
     @Autowired
     private IReportBO reportBO;
@@ -145,15 +145,15 @@ public class ProjectAOImpl implements IProjectAO {
 
         // 更新账户信息
         // 添加公司账户
-        CompanyCard companyCard = companyCardBO
-            .getCompanyCardByProject(req.getCode());
+        ProjectCard companyCard = projectCardBO
+            .getProjectCardByProject(req.getCode());
         if (null != companyCard) {
-            companyCardBO.refreshCompanyCard(companyCard.getCode(),
+            projectCardBO.refreshProjectCard(companyCard.getCode(),
                 req.getBankCode(), req.getBankName(), req.getAccountName(),
                 req.getBankcardNumber(), req.getSubbranch(), req.getUpdater(),
                 data.getUpdateDatetime(), req.getRemark());
         } else {
-            companyCardBO.saveCompanyCard(req.getCode(), req.getBankCode(),
+            projectCardBO.saveProjectCard(req.getCode(), req.getBankCode(),
                 req.getBankName(), req.getAccountName(),
                 req.getBankcardNumber(), req.getSubbranch(), req.getUpdater(),
                 data.getUpdateDatetime(), req.getRemark());
@@ -262,8 +262,8 @@ public class ProjectAOImpl implements IProjectAO {
     @Override
     public Project getProject(String code) {
         Project data = projectBO.getProject(code);
-        CompanyCard companyCard = companyCardBO
-            .getCompanyCardByProject(data.getCode());
+        ProjectCard companyCard = projectCardBO
+            .getProjectCardByProject(data.getCode());
         data.setCompanyCard(companyCard);
         Report report = reportBO.getReportByProject(data.getCode());
         if (report != null) {

@@ -2,11 +2,11 @@ package com.cdkj.gchf.api.impl;
 
 import org.apache.commons.lang3.StringUtils;
 
-import com.cdkj.gchf.ao.ICompanyCardAO;
+import com.cdkj.gchf.ao.IProjectCardAO;
 import com.cdkj.gchf.api.AProcessor;
 import com.cdkj.gchf.common.JsonUtil;
 import com.cdkj.gchf.core.StringValidater;
-import com.cdkj.gchf.domain.CompanyCard;
+import com.cdkj.gchf.domain.ProjectCard;
 import com.cdkj.gchf.dto.req.XN631365Req;
 import com.cdkj.gchf.exception.BizException;
 import com.cdkj.gchf.exception.ParaException;
@@ -20,14 +20,14 @@ import com.cdkj.gchf.spring.SpringContextHolder;
  */
 public class XN631365 extends AProcessor {
 
-    private ICompanyCardAO companyCardAO = SpringContextHolder
-        .getBean(ICompanyCardAO.class);
+    private IProjectCardAO projectCardAO = SpringContextHolder
+        .getBean(IProjectCardAO.class);
 
     private XN631365Req req = null;
 
     @Override
     public Object doBusiness() throws BizException {
-        CompanyCard condition = new CompanyCard();
+        ProjectCard condition = new ProjectCard();
 
         condition.setKeyword(req.getKeyword());
         condition.setProjectCode(req.getProjectCode());
@@ -37,12 +37,12 @@ public class XN631365 extends AProcessor {
 
         String orderColumn = req.getOrderColumn();
         if (StringUtils.isBlank(orderColumn)) {
-            orderColumn = ICompanyCardAO.DEFAULT_ORDER_COLUMN;
+            orderColumn = IProjectCardAO.DEFAULT_ORDER_COLUMN;
         }
         condition.setOrder(orderColumn, req.getOrderDir());
         int start = StringValidater.toInteger(req.getStart());
         int limit = StringValidater.toInteger(req.getLimit());
-        return companyCardAO.queryCompanyCardPage(start, limit, condition);
+        return projectCardAO.queryProjectCardPage(start, limit, condition);
     }
 
     @Override

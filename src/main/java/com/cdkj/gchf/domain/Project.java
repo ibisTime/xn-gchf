@@ -90,7 +90,7 @@ public class Project extends ABaseDO {
     private String keyword;
 
     // 公司账户
-    private CompanyCard companyCard;
+    private ProjectCard companyCard;
 
     // 统计
     private Report report;
@@ -306,11 +306,11 @@ public class Project extends ABaseDO {
         this.salaryDelayDays = salaryDelayDays;
     }
 
-    public CompanyCard getCompanyCard() {
+    public ProjectCard getCompanyCard() {
         return companyCard;
     }
 
-    public void setCompanyCard(CompanyCard companyCard) {
+    public void setCompanyCard(ProjectCard companyCard) {
         this.companyCard = companyCard;
     }
 

@@ -7,14 +7,14 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import com.cdkj.gchf.bo.ICompanyCardBO;
 import com.cdkj.gchf.bo.IMessageBO;
 import com.cdkj.gchf.bo.IProjectBO;
+import com.cdkj.gchf.bo.IProjectCardBO;
 import com.cdkj.gchf.bo.base.PaginableBOImpl;
 import com.cdkj.gchf.dao.IMessageDAO;
-import com.cdkj.gchf.domain.CompanyCard;
 import com.cdkj.gchf.domain.Message;
 import com.cdkj.gchf.domain.Project;
+import com.cdkj.gchf.domain.ProjectCard;
 import com.cdkj.gchf.enums.EMessageStatus;
 import com.cdkj.gchf.exception.BizException;
 
@@ -28,7 +28,7 @@ public class MessageBOImpl extends PaginableBOImpl<Message>
     private IProjectBO projectBO;
 
     @Autowired
-    private ICompanyCardBO companyCardBO;
+    private IProjectCardBO projectCardBO;
 
     @Override
     public void saveMessage(String code, String projectCode, String month,
@@ -39,8 +39,8 @@ public class MessageBOImpl extends PaginableBOImpl<Message>
         message.setProjectCode(project.getCode());
         message.setProjectName(project.getName());
         message.setMonth(month);
-        CompanyCard card = companyCardBO
-            .getCompanyCardByProject(project.getCode());
+        ProjectCard card = projectCardBO
+            .getProjectCardByProject(project.getCode());
 
         message.setBankCode(card.getBankCode());
         message.setBankName(card.getBankName());
@@ -109,8 +109,8 @@ public class MessageBOImpl extends PaginableBOImpl<Message>
             if (data == null) {
                 throw new BizException("xn0000", "代发消息不存在");
             }
-            CompanyCard card = companyCardBO
-                .getCompanyCardByProject(data.getProjectCode());
+            ProjectCard card = projectCardBO
+                .getProjectCardByProject(data.getProjectCode());
             data.setCompanyCard(card);
         }
         return data;

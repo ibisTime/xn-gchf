@@ -109,7 +109,7 @@ public class Message extends ABaseDO {
     private List<String> projectCodeList;
 
     // 公司账户
-    private CompanyCard companyCard;
+    private ProjectCard companyCard;
 
     // 消息所属项目负责人
     private String projectChargeUser;
@@ -360,11 +360,11 @@ public class Message extends ABaseDO {
         this.totalTax = totalTax;
     }
 
-    public CompanyCard getCompanyCard() {
+    public ProjectCard getCompanyCard() {
         return companyCard;
     }
 
-    public void setCompanyCard(CompanyCard companyCard) {
+    public void setCompanyCard(ProjectCard companyCard) {
         this.companyCard = companyCard;
     }
 

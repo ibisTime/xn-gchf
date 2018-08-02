@@ -17,7 +17,7 @@
 		<typeAlias alias="bcontract" type="com.cdkj.gchf.domain.Bcontract" />
 		
 		<typeAlias alias="progress" type="com.cdkj.gchf.domain.Progress" />
-		<typeAlias alias="companyCard" type="com.cdkj.gchf.domain.CompanyCard" />
+		<typeAlias alias="projectCard" type="com.cdkj.gchf.domain.ProjectCard" />
 		<typeAlias alias="channelBank" type="com.cdkj.gchf.domain.ChannelBank" />
 		<typeAlias alias="employ" type="com.cdkj.gchf.domain.Employ" />
 		<typeAlias alias="staff" type="com.cdkj.gchf.domain.Staff" />

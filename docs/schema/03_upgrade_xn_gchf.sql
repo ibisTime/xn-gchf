@@ -168,7 +168,7 @@ DROP COLUMN `area`,
 DROP COLUMN `city`,
 DROP COLUMN `province`,
 DROP COLUMN `project_name`,
-DROP COLUMN `project_code`;
+DROP COLUMN `project_code`,
 DROP COLUMN `photo`,
 CHANGE COLUMN `role_code` `role_code` VARCHAR(96) NULL DEFAULT NULL AFTER `type`,
 CHANGE COLUMN `real_name` `real_name` VARCHAR(192) NULL DEFAULT NULL AFTER `organization_code`;
@@ -182,3 +182,5 @@ ADD COLUMN `organization_code` VARCHAR(32) NULL COMMENT '组织编号' AFTER `sy
 ALTER TABLE `tsys_menu` 
 CHANGE COLUMN `role_type` `system_code` VARCHAR(4) NULL DEFAULT NULL COMMENT '系统编号' ;
 
+ALTER TABLE `thf_company_card` 
+RENAME TO  `thf_project_card` ;

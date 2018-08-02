@@ -13,11 +13,11 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.cdkj.gchf.ao.IMessageAO;
 import com.cdkj.gchf.bo.IBankCardBO;
-import com.cdkj.gchf.bo.ICompanyCardBO;
 import com.cdkj.gchf.bo.IEmployBO;
 import com.cdkj.gchf.bo.IEventRemindBO;
 import com.cdkj.gchf.bo.IMessageBO;
 import com.cdkj.gchf.bo.IProjectBO;
+import com.cdkj.gchf.bo.IProjectCardBO;
 import com.cdkj.gchf.bo.IReportBO;
 import com.cdkj.gchf.bo.ISalaryBO;
 import com.cdkj.gchf.bo.ISalaryLogBO;
@@ -31,11 +31,11 @@ import com.cdkj.gchf.common.PhoneUtil;
 import com.cdkj.gchf.core.OrderNoGenerater;
 import com.cdkj.gchf.core.StringValidater;
 import com.cdkj.gchf.domain.BankCard;
-import com.cdkj.gchf.domain.CompanyCard;
 import com.cdkj.gchf.domain.Employ;
 import com.cdkj.gchf.domain.EventRemind;
 import com.cdkj.gchf.domain.Message;
 import com.cdkj.gchf.domain.Project;
+import com.cdkj.gchf.domain.ProjectCard;
 import com.cdkj.gchf.domain.Report;
 import com.cdkj.gchf.domain.Salary;
 import com.cdkj.gchf.domain.User;
@@ -78,7 +78,7 @@ public class MessageAOImpl implements IMessageAO {
     IEventRemindBO eventRemindBO;
 
     @Autowired
-    ICompanyCardBO companyCardBO;
+    IProjectCardBO projectCardBO;
 
     @Autowired
     ISmsOutBO smsOutBO;
@@ -343,8 +343,8 @@ public class MessageAOImpl implements IMessageAO {
             message.setProjectChargeUser(project.getChargeUser());
             message.setProjectChargeUserMobile(project.getChargeMobile());
 
-            CompanyCard companyCard = companyCardBO
-                .getCompanyCardByProject(project.getCode());
+            ProjectCard companyCard = projectCardBO
+                .getProjectCardByProject(project.getCode());
             if (null != companyCard) {
                 message.setAccount(companyCard.getAccountName());
             }

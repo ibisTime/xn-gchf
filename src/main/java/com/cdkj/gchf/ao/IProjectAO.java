@@ -26,8 +26,7 @@ public interface IProjectAO {
     public void restartProject(String code, String updater, String remark);
 
     // 项目结束
-    public void endProject(String code, String endDatetime, String updater,
-            String remark);
+    public void endProject(String code, String updater, String remark);
 
     // 更新项目发放薪资可延迟天数
     public void editSalaryDelayDays(String code, Integer salaryDelayDays);

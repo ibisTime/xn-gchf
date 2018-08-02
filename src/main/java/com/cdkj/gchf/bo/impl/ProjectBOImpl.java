@@ -11,7 +11,6 @@ import org.springframework.stereotype.Component;
 
 import com.cdkj.gchf.bo.IProjectBO;
 import com.cdkj.gchf.bo.base.PaginableBOImpl;
-import com.cdkj.gchf.common.DateUtil;
 import com.cdkj.gchf.dao.IProjectDAO;
 import com.cdkj.gchf.domain.Project;
 import com.cdkj.gchf.enums.EProjectStatus;
@@ -45,10 +44,8 @@ public class ProjectBOImpl extends PaginableBOImpl<Project>
     }
 
     @Override
-    public void projectEnd(Project data, String endDatetime, String updater,
-            String remark) {
-        data.setEndDatetime(
-            DateUtil.strToDate(endDatetime, DateUtil.FRONT_DATE_FORMAT_STRING));
+    public void projectEnd(Project data, String updater, String remark) {
+        data.setEndDatetime(new Date());
         data.setStatus(EProjectStatus.End.getCode());
         data.setUpdater(updater);
         data.setUpdateDatetime(new Date());

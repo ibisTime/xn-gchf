@@ -27,7 +27,7 @@
 				AND t.code = #{code}
 			</if>
 			<if test="employCode != null and employCode != '' ">
-				AND t.project_code = #{projectCode}
+				AND t.employ_code = #{employCode}
 			</if>
 			<if test="projectCode != null and projectCode != '' ">
 				AND t.project_code = #{projectCode}

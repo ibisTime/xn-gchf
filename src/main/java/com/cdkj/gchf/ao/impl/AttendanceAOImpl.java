@@ -17,7 +17,6 @@ import com.cdkj.gchf.bo.IAttendanceBO;
 import com.cdkj.gchf.bo.IEmployBO;
 import com.cdkj.gchf.bo.IProjectBO;
 import com.cdkj.gchf.bo.IReportBO;
-import com.cdkj.gchf.bo.IStaffBO;
 import com.cdkj.gchf.bo.base.Page;
 import com.cdkj.gchf.bo.base.Paginable;
 import com.cdkj.gchf.common.DateUtil;
@@ -26,7 +25,6 @@ import com.cdkj.gchf.domain.Attendance;
 import com.cdkj.gchf.domain.Employ;
 import com.cdkj.gchf.domain.Project;
 import com.cdkj.gchf.domain.Report;
-import com.cdkj.gchf.domain.Staff;
 import com.cdkj.gchf.enums.EAttendanceStatus;
 import com.cdkj.gchf.enums.EEmployStatus;
 import com.cdkj.gchf.enums.EGeneratePrefix;
@@ -51,9 +49,6 @@ public class AttendanceAOImpl implements IAttendanceAO {
 
     @Autowired
     private IReportBO reportBO;
-
-    @Autowired
-    private IStaffBO staffBO;
 
     @Override
     @Transactional
@@ -213,17 +208,16 @@ public class AttendanceAOImpl implements IAttendanceAO {
             List<Employ> eList = employBO.queryEmployList(eCondition);
 
             for (Employ employ : eList) {
-                Staff staff = staffBO.getStaff(employ.getStaffCode());
                 Attendance data = new Attendance();
                 String attendanceCode = OrderNoGenerater
                     .generate(EGeneratePrefix.Attendance.getCode());
                 data.setCode(attendanceCode);
+                data.setEmployCode(employ.getCode());
                 data.setProjectCode(project.getCode());
                 data.setProjectName(project.getName());
                 data.setStaffCode(employ.getStaffCode());
                 data.setStaffName(employ.getStaffName());
 
-                data.setStaffMobile(staff.getMobile());
                 data.setStatus(EAttendanceStatus.TO_Start.getCode());
                 data.setCreateDatetime(now);
                 attendanceBO.saveAttendance(data);

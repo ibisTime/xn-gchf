@@ -4,6 +4,7 @@
 <mapper namespace="com.cdkj.gchf.dao.ISalaryDAO">
 	<resultMap id="salary_DB_Result" type="salary">
 		<result column="code" property="code" />
+		<result column="employ_code" property="employCode" />
 		<result column="message_code" property="messageCode" />
 		<result column="project_code" property="projectCode" />
 		<result column="project_name" property="projectName" />
@@ -43,14 +44,17 @@
 			<if test="code != null and code != '' ">
 				AND t.code = #{code}
 			</if>
-			<if test="approveUser != null and approveUser != '' ">
-				AND t.approve_user = #{approveUser}
+			<if test="employCode != null and employCode != '' ">
+				AND t.employ_code = #{employCode}
 			</if>
 			<if test="messageCode != null and messageCode != '' ">
 				AND t.message_code = #{messageCode}
 			</if>
 			<if test="staffCode != null and staffCode != '' ">
 				AND t.staff_code = #{staffCode}
+			</if>
+			<if test="approveUser != null and approveUser != '' ">
+				AND t.approve_user = #{approveUser}
 			</if>
 			<choose>
 				<when test="projectCode != null and projectCode != '' ">
@@ -86,6 +90,7 @@
 	<select id="select_salary" parameterType="salary" resultMap="salary_DB_Result">
 		SELECT
 		t.code
+		,t.employ_code
 		,t.project_code
 		,t.project_name
 		,t.message_code
@@ -145,6 +150,7 @@
 		INSERT INTO
 		thf_salary(
 		code
+		,employ_code
 		,project_code
 		,project_name
 		,message_code
@@ -165,6 +171,7 @@
 		)
 		VALUES(
 		#{code}
+		,#{employCode}
 		,#{projectCode}
 		,#{projectName}
 		,#{messageCode}

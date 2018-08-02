@@ -213,9 +213,8 @@ public class StaffAOImpl implements IStaffAO {
                 employ = employBO.getEmployByStaff(data.getCode(), projectCode);
                 if (employ != null) {
                     employList.add(employ);
+                    salaryList = salaryBO.getEmploySalary(employ.getCode());
                 }
-                salaryList = salaryBO.getSalaryByStaff(data.getCode(),
-                    projectCode);
             }
         }
 

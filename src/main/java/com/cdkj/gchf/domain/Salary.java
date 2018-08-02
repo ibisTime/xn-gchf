@@ -22,6 +22,9 @@ public class Salary extends ABaseDO {
     // 消息编号
     private String messageCode;
 
+    // 雇佣编号
+    private String employCode;
+
     // 项目编号
     private String projectCode;
 
@@ -152,6 +155,14 @@ public class Salary extends ABaseDO {
 
     // 所在班组负责人手机号
     private String departmentLeaderMobile;
+
+    public String getEmployCode() {
+        return employCode;
+    }
+
+    public void setEmployCode(String employCode) {
+        this.employCode = employCode;
+    }
 
     public String getCode() {
         return code;

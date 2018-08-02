@@ -133,12 +133,12 @@ public class EmployAOImpl implements IEmployAO {
         String attendanceCode = OrderNoGenerater
             .generate(EGeneratePrefix.Attendance.getCode());
         attendance.setCode(attendanceCode);
+        attendance.setEmployCode(code);
         attendance.setProjectCode(project.getCode());
         attendance.setProjectName(project.getName());
 
         attendance.setStaffCode(staff.getCode());
         attendance.setStaffName(staff.getName());
-        attendance.setStaffMobile(staff.getMobile());
         attendance.setStatus(EAttendanceStatus.TO_Start.getCode());
         attendance.setCreateDatetime(date);
         attendanceBO.saveAttendance(attendance);
@@ -265,11 +265,13 @@ public class EmployAOImpl implements IEmployAO {
         Staff staff = staffBO.getStaffBrief(employ.getStaffCode());
         employ.setStaff(staff);
 
-        // 部门名称
+        // 部门信息
         Department department = departmentBO
             .getDepartment(employ.getDepartmentCode());
         if (null != department) {
             employ.setDepartmentName(department.getName());
+            employ.setDepartmentLeader(department.getLeader());
+            employ.setDepartmentLeaderMobile(department.getLeadeMobile());
         }
 
         // 更新人

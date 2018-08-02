@@ -195,3 +195,11 @@ ADD COLUMN `employ_code` VARCHAR(32) NULL COMMENT '雇佣编号' AFTER `code`;
 ALTER TABLE `thf_bank_card` 
 ADD COLUMN `employ_code` VARCHAR(32) NULL COMMENT '雇佣编号' AFTER `code`,
 ADD COLUMN `project_name` VARCHAR(255) NULL COMMENT '项目名称' AFTER `project_code`;
+
+ALTER TABLE `thf_attendance` 
+DROP COLUMN `staff_mobile`,
+ADD COLUMN `employ_code` VARCHAR(32) NULL COMMENT '雇佣编号' AFTER `code`;
+
+ALTER TABLE `thf_salary` 
+ADD COLUMN `employ_code` VARCHAR(32) NULL COMMENT '雇佣编号' AFTER `code`;
+

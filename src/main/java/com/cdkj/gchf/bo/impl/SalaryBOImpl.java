@@ -63,31 +63,17 @@ public class SalaryBOImpl extends PaginableBOImpl<Salary> implements ISalaryBO {
     @Override
     public void payAmount(Salary salary) {
         salaryDAO.payAmount(salary);
-
     }
 
     @Override
-    public List<Salary> getSalaryByStaff(String staffCode, String projectCode) {
+    public List<Salary> getEmploySalary(String employCode) {
         List<Salary> list = null;
-        if (StringUtils.isNotBlank(staffCode)
-                && StringUtils.isNotBlank(projectCode)) {
+        if (StringUtils.isNotBlank(employCode)) {
             Salary condition = new Salary();
-            condition.setStaffCode(staffCode);
-            condition.setProjectCode(projectCode);
+            condition.setEmployCode(employCode);
             list = salaryDAO.selectList(condition);
         }
         return list;
-    }
-
-    @Override
-    public Salary querySalayByStatus(String projectCode, String staffCode,
-            String month, String status) {
-        Salary condition = new Salary();
-        condition.setStaffCode(staffCode);
-        condition.setProjectCode(projectCode);
-        condition.setMonth(month);
-        condition.setStatus(status);
-        return salaryDAO.select(condition);
     }
 
     @Override

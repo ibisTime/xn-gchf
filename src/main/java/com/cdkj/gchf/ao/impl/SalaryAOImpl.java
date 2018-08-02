@@ -163,17 +163,15 @@ public class SalaryAOImpl implements ISalaryAO {
             List<String> normalStatusList = new ArrayList<String>();
             normalStatusList.add(EAttendanceStatus.Unpaied.getCode());
             List<Attendance> normalAttendanceList = attendanceBO
-                .queryAttendanceListByStaff(employ.getStaffCode(),
-                    employ.getProjectCode(), startDatetime, endDatetime,
-                    normalStatusList);// 正常考勤数据
+                .queryEmployAttendanceList(employ.getCode(), startDatetime,
+                    endDatetime, normalStatusList);// 正常考勤数据
 
             List<String> absentStatusList = new ArrayList<String>();
             absentStatusList.add(EAttendanceStatus.TO_Start.getCode());
             absentStatusList.add(EAttendanceStatus.TO_End.getCode());
             List<Attendance> absentAttendanceList = attendanceBO
-                .queryAttendanceListByStaff(employ.getStaffCode(),
-                    employ.getProjectCode(), startDatetime, endDatetime,
-                    absentStatusList);// 异常考勤数据
+                .queryEmployAttendanceList(employ.getCode(), startDatetime,
+                    endDatetime, absentStatusList);// 异常考勤数据
 
             if (CollectionUtils.isEmpty(normalAttendanceList)
                     && CollectionUtils.isEmpty(absentAttendanceList)) {
@@ -186,6 +184,7 @@ public class SalaryAOImpl implements ISalaryAO {
             String code = OrderNoGenerater
                 .generate(EGeneratePrefix.Salary.getCode());
             data.setCode(code);
+            data.setEmployCode(employ.getCode());
             data.setMessageCode(messageCode);
             data.setProjectCode(project.getCode());
             data.setProjectName(project.getName());
@@ -301,9 +300,8 @@ public class SalaryAOImpl implements ISalaryAO {
             statusList.add(EAttendanceStatus.Absent.getCode());
 
             List<Attendance> attendanceList = attendanceBO
-                .queryAttendanceListByStaff(salary.getStaffCode(),
-                    salary.getProjectCode(), startDatetime, endDatetime,
-                    statusList);
+                .queryEmployAttendanceList(salary.getEmployCode(),
+                    startDatetime, endDatetime, statusList);
 
             // 将工资所属月份的考勤状态更新为考勤数据的状态
             if (CollectionUtils.isNotEmpty(attendanceList)) {

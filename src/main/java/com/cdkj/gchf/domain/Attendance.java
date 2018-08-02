@@ -18,6 +18,9 @@ public class Attendance extends ABaseDO {
     // 编号
     private String code;
 
+    // 雇佣编号
+    private String employCode;
+
     // 项目编号
     private String projectCode;
 
@@ -29,9 +32,6 @@ public class Attendance extends ABaseDO {
 
     // 员工姓名
     private String staffName;
-
-    // 员工手机号
-    private String staffMobile;
 
     // 出工状态
     private String status;
@@ -107,14 +107,6 @@ public class Attendance extends ABaseDO {
 
     public String getStaffCode() {
         return staffCode;
-    }
-
-    public void setStaffMobile(String staffMobile) {
-        this.staffMobile = staffMobile;
-    }
-
-    public String getStaffMobile() {
-        return staffMobile;
     }
 
     public void setStatus(String status) {
@@ -235,6 +227,14 @@ public class Attendance extends ABaseDO {
 
     public void setStatusList(List<String> statusList) {
         this.statusList = statusList;
+    }
+
+    public String getEmployCode() {
+        return employCode;
+    }
+
+    public void setEmployCode(String employCode) {
+        this.employCode = employCode;
     }
 
 }

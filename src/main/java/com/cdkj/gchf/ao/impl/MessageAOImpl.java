@@ -302,7 +302,6 @@ public class MessageAOImpl implements IMessageAO {
                 page.setList(list);
                 return page;
             }
-
         }
         page = messageBO.getPaginable(start, limit, condition);
         for (Message message : page.getList()) {

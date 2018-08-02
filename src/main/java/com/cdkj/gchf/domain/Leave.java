@@ -17,6 +17,9 @@ public class Leave extends ABaseDO {
     // 编号
     private String code;
 
+    // 雇佣编号
+    private String employCode;
+
     // 员工编号
     private String staffCode;
 
@@ -144,6 +147,14 @@ public class Leave extends ABaseDO {
 
     public void setRemark(String remark) {
         this.remark = remark;
+    }
+
+    public String getEmployCode() {
+        return employCode;
+    }
+
+    public void setEmployCode(String employCode) {
+        this.employCode = employCode;
     }
 
 }

@@ -13,7 +13,6 @@ import com.cdkj.gchf.bo.ILeaveBO;
 import com.cdkj.gchf.bo.IReportBO;
 import com.cdkj.gchf.bo.base.Paginable;
 import com.cdkj.gchf.common.DateUtil;
-import com.cdkj.gchf.core.StringValidater;
 import com.cdkj.gchf.domain.Employ;
 import com.cdkj.gchf.domain.Leave;
 import com.cdkj.gchf.domain.Report;
@@ -41,8 +40,7 @@ public class LeaveAOImpl implements ILeaveAO {
     @Override
     @Transactional
     public String addLeave(XN631461Req req) {
-        Employ employ = employBO.getEmployByStaff(req.getStaffCode(),
-            req.getProjectCode());
+        Employ employ = employBO.getEmploy(req.getEmployCode());
         if (EEmployStatus.Leave.getCode().equals(employ.getStatus())) {
             throw new BizException("xn0000", "该员工已离职");
         }
@@ -52,9 +50,15 @@ public class LeaveAOImpl implements ILeaveAO {
 
         Date startDatetime = DateUtil.strToDate(req.getStartDatetime(),
             DateUtil.FRONT_DATE_FORMAT_STRING);
-        if (startDatetime == null) {
+        Date endDatetime = DateUtil.strToDate(req.getEndDatetime(),
+            DateUtil.FRONT_DATE_FORMAT_STRING);
+        if (startDatetime == null || endDatetime == null) {
             throw new BizException("xn0000", "时间格式不正确");
         }
+
+        // 请假天数
+        int leaveDays = DateUtil.daysBetween(req.getStartDatetime(),
+            req.getEndDatetime(), DateUtil.FRONT_DATE_FORMAT_STRING) + 1;
 
         // 更新统计请假人数
         Report report = reportBO.getReportByProject(employ.getProjectCode());
@@ -62,13 +66,13 @@ public class LeaveAOImpl implements ILeaveAO {
         reportBO.refreshLeavingDays(report);
 
         // 更新雇佣状态
-        employBO.toHoliday(req.getStaffCode(), req.getProjectCode(),
-            startDatetime, StringValidater.toInteger(req.getLeaveDays()));
+        employBO.toHoliday(employ.getStaffCode(), employ.getProjectCode(),
+            startDatetime, leaveDays);
 
         // 添加请假记录
-        return leaveBO.saveLeave(req.getStaffCode(), req.getProjectCode(),
-            startDatetime, StringValidater.toInteger(req.getLeaveDays()),
-            req.getUpdater(), req.getRemark());
+        return leaveBO.saveLeave(employ.getStaffCode(), employ.getProjectCode(),
+            startDatetime, endDatetime, leaveDays, req.getUpdater(),
+            req.getRemark());
     }
 
     @Override

@@ -11,7 +11,6 @@ import com.cdkj.gchf.bo.ILeaveBO;
 import com.cdkj.gchf.bo.IProjectBO;
 import com.cdkj.gchf.bo.IStaffBO;
 import com.cdkj.gchf.bo.base.PaginableBOImpl;
-import com.cdkj.gchf.common.DateUtil;
 import com.cdkj.gchf.core.OrderNoGenerater;
 import com.cdkj.gchf.dao.ILeaveDAO;
 import com.cdkj.gchf.domain.Leave;
@@ -39,8 +38,8 @@ public class LeaveBOImpl extends PaginableBOImpl<Leave> implements ILeaveBO {
 
     @Override
     public String saveLeave(String staffCode, String projectCode,
-            Date startDatetime, Integer leaveDays, String updater,
-            String remark) {
+            Date startDatetime, Date endDatetime, Integer leaveDays,
+            String updater, String remark) {
         Leave data = new Leave();
         String code = OrderNoGenerater
             .generate(EGeneratePrefix.Leave.getCode());
@@ -54,8 +53,7 @@ public class LeaveBOImpl extends PaginableBOImpl<Leave> implements ILeaveBO {
         data.setProjectName(project.getName());
 
         data.setStartDatetime(startDatetime);
-        data.setEndDatetime(
-            DateUtil.getRelativeDateOfDays(startDatetime, leaveDays));
+        data.setEndDatetime(endDatetime);
         data.setLeaveDays(leaveDays);
         data.setUpdater(updater);
         data.setUpdateDatetime(new Date());

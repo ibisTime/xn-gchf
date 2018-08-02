@@ -10,21 +10,17 @@ import org.hibernate.validator.constraints.NotBlank;
  */
 public class XN631461Req {
 
-    // （必填） 员工编号
-    @NotBlank(message = "编码不能为空")
-    private String staffCode;
-
-    // （必填） 项目编号
-    @NotBlank(message = "编码不能为空")
-    private String projectCode;
+    // （必填） 雇佣编号
+    @NotBlank(message = "雇佣编号不能为空")
+    private String employCode;
 
     // （必填）开始时间
     @NotBlank(message = "开始时间不能为空")
     private String startDatetime;
 
-    // （必填）请假天数
-    @NotBlank(message = "请假天数不能为空")
-    private String leaveDays;
+    // （必填）结束时间
+    @NotBlank(message = "结束时间不能为空")
+    private String endDatetime;
 
     // （必填）更新人
     @NotBlank(message = "更新人不能为空")
@@ -33,12 +29,12 @@ public class XN631461Req {
     // 备注
     private String remark;
 
-    public String getStaffCode() {
-        return staffCode;
+    public String getEmployCode() {
+        return employCode;
     }
 
-    public void setStaffCode(String staffCode) {
-        this.staffCode = staffCode;
+    public void setEmployCode(String employCode) {
+        this.employCode = employCode;
     }
 
     public String getStartDatetime() {
@@ -49,12 +45,12 @@ public class XN631461Req {
         this.startDatetime = startDatetime;
     }
 
-    public String getLeaveDays() {
-        return leaveDays;
+    public String getEndDatetime() {
+        return endDatetime;
     }
 
-    public void setLeaveDays(String leaveDays) {
-        this.leaveDays = leaveDays;
+    public void setEndDatetime(String endDatetime) {
+        this.endDatetime = endDatetime;
     }
 
     public String getUpdater() {
@@ -71,14 +67,6 @@ public class XN631461Req {
 
     public void setRemark(String remark) {
         this.remark = remark;
-    }
-
-    public String getProjectCode() {
-        return projectCode;
-    }
-
-    public void setProjectCode(String projectCode) {
-        this.projectCode = projectCode;
     }
 
 }

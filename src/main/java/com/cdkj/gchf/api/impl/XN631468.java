@@ -27,6 +27,7 @@ public class XN631468 extends AProcessor {
     @Override
     public Object doBusiness() throws BizException {
         Leave condition = new Leave();
+        condition.setEmployCode(req.getEmployCode());
         condition.setStaffCode(req.getStaffCode());
         condition.setProjectCode(req.getProjectCode());
 

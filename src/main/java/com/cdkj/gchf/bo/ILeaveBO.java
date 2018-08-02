@@ -15,8 +15,8 @@ import com.cdkj.gchf.domain.Leave;
 public interface ILeaveBO extends IPaginableBO<Leave> {
     // 请假申请
     public String saveLeave(String staffCode, String projectCode,
-            Date startDatetime, Integer leaveDays, String updater,
-            String remark);
+            Date startDatetime, Date endDatetime, Integer leaveDays,
+            String updater, String remark);
 
     // 获取指定月份请假天数
     public Integer getMonthLeaveDays(String staffCode, String projectCode,

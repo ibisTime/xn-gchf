@@ -221,8 +221,8 @@ public class StaffAOImpl implements IStaffAO {
         if (CollectionUtils.isNotEmpty(salaryList)) {
             for (Salary salary : salaryList) {
                 // 工资卡
-                BankCard bankCard = bankCardBO.getBankCard(data.getCode(),
-                    salary.getProjectCode());
+                BankCard bankCard = bankCardBO
+                    .getEmployBankCard(salary.getEmployCode());
                 salary.setBankCard(bankCard);
                 salary.setBankcardNumber(bankCard.getBankcardNumber());
                 if (ESalaryStatus.Pay_Portion.getCode()

@@ -25,9 +25,6 @@ public interface IBankCardBO extends IPaginableBO<BankCard> {
     // 查询雇佣关系的工资卡
     public BankCard getEmployBankCard(String employCode);
 
-    // 查询员工在工程下的工资卡
-    public BankCard getBankCard(String staffCode, String projectCode);
-
     // 判断员工工资卡是否存在
     public BankCard isBankCardExist(String employCode);
 

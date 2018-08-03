@@ -467,8 +467,7 @@ public class SalaryAOImpl implements ISalaryAO {
         salary.setProjectCard(projectCard);
 
         // 银行卡
-        bankCard = bankCardBO.getBankCard(salary.getStaffCode(),
-            salary.getProjectCode());
+        bankCard = bankCardBO.getEmployBankCard(salary.getEmployCode());
         salary.setBankCard(bankCard);
 
         // 项目信息

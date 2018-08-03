@@ -112,8 +112,7 @@ public class MessageAOImpl implements IMessageAO {
             salaryBO.refreshStatus(salary);
 
             // 判断该员工在该工程下是否有银行卡
-            bankCard = bankCardBO.getBankCard(salary.getStaffCode(),
-                data.getProjectCode());
+            bankCard = bankCardBO.getEmployBankCard(salary.getEmployCode());
             if (bankCard == null) {
                 throw new BizException("xn00000",
                     "员工：" + salary.getStaffName() + "，未录入银行卡信息，请补全信息后再发送");

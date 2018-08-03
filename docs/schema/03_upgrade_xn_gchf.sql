@@ -160,7 +160,7 @@ CREATE TABLE `thf_supervise` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 ALTER TABLE `thf_user` 
-ADD COLUMN `organization_code` VARCHAR(32) NULL COMMENT '组织编号（项目编号/银行编号/监管编号）' AFTER `type`，
+ADD COLUMN `organization_code` VARCHAR(32) NULL COMMENT '组织编号（项目编号/银行编号/监管编号）' AFTER `type`,
 DROP COLUMN `department_code`,
 DROP COLUMN `subbranch`,
 DROP COLUMN `bank_name`,
@@ -206,3 +206,6 @@ ADD COLUMN `employ_code` VARCHAR(32) NULL COMMENT '雇佣编号' AFTER `code`;
 ALTER TABLE `thf_ccontract` 
 DROP COLUMN `contract_datetime`,
 ADD COLUMN `employ_code` VARCHAR(32) NULL COMMENT '雇佣编号' AFTER `code`;
+
+##雇佣合同数据
+update thf_bcontract set project_name = (select name from thf_project where thf_bcontract.project_code = thf_project.code);

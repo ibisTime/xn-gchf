@@ -48,6 +48,7 @@ public class BcontractAOImpl implements IBcontractAO {
         }
 
         data.setProjectCode(project.getCode());
+        data.setProjectName(project.getName());
         data.setBname(req.getBname());
         data.setBmobile(req.getBmobile());
         data.setContentPic(req.getContentPic());
@@ -96,13 +97,7 @@ public class BcontractAOImpl implements IBcontractAO {
             }
         }
 
-        // 补全信息
         page = bcontractBO.getPaginable(start, limit, condition);
-        Project project = null;
-        for (Bcontract bcontract : page.getList()) {
-            project = projectBO.getProject(bcontract.getProjectCode());
-            bcontract.setProjectName(project.getName());
-        }
         return page;
     }
 
@@ -121,21 +116,13 @@ public class BcontractAOImpl implements IBcontractAO {
             }
         }
 
-        // 补全信息
         list = bcontractBO.queryBcontractList(condition);
-        Project project = null;
-        for (Bcontract bcontract : list) {
-            project = projectBO.getProject(bcontract.getProjectCode());
-            bcontract.setProjectName(project.getName());
-        }
         return list;
     }
 
     @Override
     public Bcontract getBcontract(String code) {
         Bcontract data = bcontractBO.getBcontract(code);
-        Project project = projectBO.getProject(data.getProjectCode());
-        data.setProjectName(project.getName());
         return data;
     }
 }

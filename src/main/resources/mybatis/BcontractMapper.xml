@@ -5,6 +5,7 @@
 	<resultMap id="bcontract_DB_Result" type="bcontract">
 		<result column="code" property="code" />
 		<result column="project_code" property="projectCode" />
+		<result column="project_name" property="projectName" />
 		<result column="bname" property="bname" />
 		<result column="bmobile" property="bmobile" />
 		
@@ -55,6 +56,7 @@
 		SELECT
 		t.code
 		,t.project_code
+		,t.project_name
 		,t.bname
 		,t.bmobile
 		,t.content_pic
@@ -83,6 +85,7 @@
 		thf_bcontract(
 		code
 		,project_code
+		,project_name
 		,bname
 		,bmobile
 		
@@ -95,6 +98,7 @@
 		VALUES(
 		#{code}
 		,#{projectCode}
+		,#{projectName}
 		,#{bname}
 		,#{bmobile}
 		,#{contentPic}
@@ -117,6 +121,4 @@
 		,remark = #{remark}
 		WHERE code = #{code}
 	</update>
-
-
 </mapper>

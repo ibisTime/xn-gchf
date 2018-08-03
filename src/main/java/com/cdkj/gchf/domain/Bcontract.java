@@ -23,6 +23,9 @@ public class Bcontract extends ABaseDO {
     // 项目编号
     private String projectCode;
 
+    // 项目名
+    private String projectName;
+
     // 承包商名称
     private String bname;
 
@@ -53,9 +56,6 @@ public class Bcontract extends ABaseDO {
     private String kind;
 
     private List<String> projectCodeList;
-
-    // 项目名
-    private String projectName;
 
     public String getKeyword() {
         return keyword;

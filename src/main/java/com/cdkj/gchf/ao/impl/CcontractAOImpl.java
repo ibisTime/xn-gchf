@@ -1,7 +1,6 @@
 package com.cdkj.gchf.ao.impl;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 import org.apache.commons.collections.CollectionUtils;
@@ -10,15 +9,14 @@ import org.springframework.stereotype.Service;
 
 import com.cdkj.gchf.ao.ICcontractAO;
 import com.cdkj.gchf.bo.ICcontractBO;
+import com.cdkj.gchf.bo.IEmployBO;
 import com.cdkj.gchf.bo.IProjectBO;
-import com.cdkj.gchf.bo.IStaffBO;
 import com.cdkj.gchf.bo.IUserBO;
 import com.cdkj.gchf.bo.base.Page;
 import com.cdkj.gchf.bo.base.Paginable;
-import com.cdkj.gchf.common.DateUtil;
 import com.cdkj.gchf.domain.Ccontract;
+import com.cdkj.gchf.domain.Employ;
 import com.cdkj.gchf.domain.Project;
-import com.cdkj.gchf.domain.Staff;
 import com.cdkj.gchf.domain.User;
 import com.cdkj.gchf.dto.req.XN631400Req;
 import com.cdkj.gchf.dto.req.XN631402Req;
@@ -37,41 +35,39 @@ public class CcontractAOImpl implements ICcontractAO {
     private IProjectBO projectBO;
 
     @Autowired
-    private IStaffBO staffBO;
+    private IEmployBO employBO;
 
     @Autowired
     private IUserBO userBO;
 
     @Override
     public String addCcontract(XN631400Req req) {
-        Project project = projectBO.getProject(req.getProjectCode());
+        Employ employ = employBO.getEmploy(req.getEmployCode());
+
+        Project project = projectBO.getProject(employ.getProjectCode());
         if (EProjectStatus.End.getCode().equals(project.getStatus())) {
             throw new BizException("xn00000", "项目已经结束");
         }
         if (!EProjectStatus.Building.getCode().equals(project.getStatus())) {
             throw new BizException("xn00000", "该项目还未通过审核");
         }
-        if (null != ccontractBO.getCcontractByStaff(req.getStaffCode())) {
-            throw new BizException("XN000", "员工已存在合同，请勿重复添加!");
-        }
 
-        Date contractDatetime = DateUtil.strToDate(req.getContractDatetime(),
-            DateUtil.FRONT_DATE_FORMAT_STRING);
-        return ccontractBO.saveCcontract(req.getStaffCode(),
-            req.getProjectCode(), req.getContentPic(), contractDatetime,
-            req.getUpdater(), req.getRemark());
+        return ccontractBO.saveCcontract(employ.getCode(),
+            employ.getStaffCode(), employ.getStaffName(),
+            employ.getStaffMobile(), employ.getProjectCode(),
+            employ.getProjectName(), req.getContentPic(), req.getUpdater(),
+            req.getRemark());
     }
 
     @Override
     public void editCcontract(XN631402Req req) {
-        Date contractDatetime = DateUtil.strToDate(req.getContractDatetime(),
-            DateUtil.FRONT_DATE_FORMAT_STRING);
         ccontractBO.refreshCcontract(req.getCode(), req.getContentPic(),
-            contractDatetime, req.getUpdater(), req.getRemark());
+            req.getUpdater(), req.getRemark());
     }
 
     @Override
     public void dropCcontract(String code) {
+        ccontractBO.dropCcontract(code);
     }
 
     @Override
@@ -119,8 +115,6 @@ public class CcontractAOImpl implements ICcontractAO {
     }
 
     private void initCcontract(Ccontract data) {
-        Staff staff = staffBO.getStaffBrief(data.getStaffCode());
-        data.setStaffMobile(staff.getMobile());
         data.setUpdateName(getName(data.getUpdater()));
     }
 
@@ -134,6 +128,5 @@ public class CcontractAOImpl implements ICcontractAO {
             }
         }
         return name;
-
     }
 }

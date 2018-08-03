@@ -8,14 +8,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.cdkj.gchf.bo.ICcontractBO;
-import com.cdkj.gchf.bo.IProjectBO;
-import com.cdkj.gchf.bo.IStaffBO;
 import com.cdkj.gchf.bo.base.PaginableBOImpl;
 import com.cdkj.gchf.core.OrderNoGenerater;
 import com.cdkj.gchf.dao.ICcontractDAO;
 import com.cdkj.gchf.domain.Ccontract;
-import com.cdkj.gchf.domain.Project;
-import com.cdkj.gchf.domain.Staff;
 import com.cdkj.gchf.enums.EGeneratePrefix;
 import com.cdkj.gchf.exception.BizException;
 
@@ -25,30 +21,23 @@ public class CcontractBOImpl extends PaginableBOImpl<Ccontract>
     @Autowired
     private ICcontractDAO ccontractDAO;
 
-    @Autowired
-    private IStaffBO staffBO;
-
-    @Autowired
-    private IProjectBO projectBO;
-
     @Override
-    public String saveCcontract(String staffCode, String projectCode,
-            String contentPic, Date contractDatetime, String updater,
+    public String saveCcontract(String employCode, String staffCode,
+            String staffName, String staffMobile, String projectCode,
+            String projectName, String contentPic, String updater,
             String remark) {
-        Staff staff = staffBO.getStaff(staffCode);
-        Project project = projectBO.getProject(projectCode);
         Ccontract ccontract = new Ccontract();
         String ccontractCode = OrderNoGenerater
             .generate(EGeneratePrefix.Ccontract.getCode());
         ccontract.setCode(ccontractCode);
+        ccontract.setEmployCode(employCode);
         ccontract.setProjectCode(projectCode);
-        ccontract.setProjectName(project.getName());
+        ccontract.setProjectName(projectName);
         ccontract.setStaffCode(staffCode);
-        ccontract.setStaffName(staff.getName());
+        ccontract.setStaffName(staffName);
 
-        ccontract.setStaffMobile(staff.getMobile());
+        ccontract.setStaffMobile(staffMobile);
         ccontract.setContentPic(contentPic);
-        ccontract.setContractDatetime(contractDatetime);
         ccontract.setUpdater(updater);
         ccontract.setUpdateDatetime(new Date());
         ccontract.setRemark(remark);
@@ -58,16 +47,22 @@ public class CcontractBOImpl extends PaginableBOImpl<Ccontract>
     }
 
     @Override
-    public void refreshCcontract(String code, String contentPic,
-            Date contractDatetime, String updater, String remark) {
+    public void refreshCcontract(String code, String contentPic, String updater,
+            String remark) {
         Ccontract ccontract = new Ccontract();
         ccontract.setCode(code);
         ccontract.setContentPic(contentPic);
-        ccontract.setContractDatetime(contractDatetime);
         ccontract.setUpdater(updater);
         ccontract.setUpdateDatetime(new Date());
         ccontract.setRemark(remark);
         ccontractDAO.update(ccontract);
+    }
+
+    @Override
+    public void dropCcontract(String code) {
+        Ccontract data = new Ccontract();
+        data.setCode(code);
+        ccontractDAO.delete(data);
     }
 
     @Override

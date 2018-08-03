@@ -203,3 +203,6 @@ ADD COLUMN `employ_code` VARCHAR(32) NULL COMMENT '雇佣编号' AFTER `code`;
 ALTER TABLE `thf_salary` 
 ADD COLUMN `employ_code` VARCHAR(32) NULL COMMENT '雇佣编号' AFTER `code`;
 
+ALTER TABLE `thf_ccontract` 
+DROP COLUMN `contract_datetime`,
+ADD COLUMN `employ_code` VARCHAR(32) NULL COMMENT '雇佣编号' AFTER `code`;

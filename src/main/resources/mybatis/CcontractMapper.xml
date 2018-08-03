@@ -4,13 +4,13 @@
 <mapper namespace="com.cdkj.gchf.dao.ICcontractDAO">
 	<resultMap id="ccontract_DB_Result" type="ccontract">
 		<result column="code" property="code" />
+		<result column="employ_code" property="employCode" />
 		<result column="project_code" property="projectCode" />
 		<result column="staff_code" property="staffCode" />
 		<result column="staff_name" property="staffName" />
 		<result column="staff_mobile" property="staffMobile" />
 		
 		<result column="content_pic" property="contentPic" />
-		<result column="contract_datetime" property="contractDatetime" />
 		<result column="updater" property="updater" />
 		<result column="update_datetime" property="updateDatetime" />
 		<result column="remark" property="remark" />
@@ -20,6 +20,9 @@
 		<trim prefix="WHERE" prefixOverrides="AND | OR">
 			<if test="code != null and code != '' ">
 				AND t.code = #{code}
+			</if>
+			<if test="employCode != null and employCode != '' ">
+				AND t.employ_code = #{employCode}
 			</if>
 			<if test="staffCode != null and staffCode != '' ">
 				AND t.staff_code = #{staffCode}
@@ -48,13 +51,13 @@
 	<select id="select_ccontract" parameterType="ccontract" resultMap="ccontract_DB_Result">
 		SELECT
 		t.code
+		,t.employ_code
 		,t.project_code
 		,t.project_name
 		,t.staff_code
 		,t.staff_name
 		,t.staff_mobile
 		,t.content_pic
-		,t.contract_datetime
 		,t.updater
 		,t.update_datetime
 		,t.remark
@@ -78,26 +81,26 @@
 		INSERT INTO
 		thf_ccontract(
 		code
+		,employ_code
 		,project_code
 		,project_name
 		,staff_code
 		,staff_name
 		,staff_mobile
 		,content_pic
-		,contract_datetime
 		,updater
 		,update_datetime
 		,remark
 		)
 		VALUES(
 		#{code}
+		,#{employCode}
 		,#{projectCode}
 		,#{projectName}
 		,#{staffCode}
 		,#{staffName}
 		,#{staffMobile}
 		,#{contentPic}
-		,#{contractDatetime}
 		,#{updater}
 		,#{updateDatetime}
 		,#{remark}
@@ -108,10 +111,14 @@
 		UPDATE thf_ccontract
 		SET
 		content_pic = #{contentPic}
-		,contract_datetime = #{contractDatetime}
 		,updater = #{updater}
 		,update_datetime = #{updateDatetime}
 		,remark = #{remark}
 		WHERE code = #{code}
 	</update>
+	
+	<delete id="delete_ccontract" parameterType="ccontract">
+		DELETE FROM thf_ccontract WHERE code = #{code}
+	</delete>
+	
 </mapper>

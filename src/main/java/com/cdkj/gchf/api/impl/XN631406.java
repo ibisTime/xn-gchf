@@ -28,6 +28,7 @@ public class XN631406 extends AProcessor {
     @Override
     public Object doBusiness() throws BizException {
         Ccontract condition = new Ccontract();
+        condition.setEmployCode(req.getEmployCode());
         condition.setKeyword(req.getKeyword());
         condition.setUpdater(req.getUpdater());
         condition.setProjectCode(req.getProjectCode());

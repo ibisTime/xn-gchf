@@ -15,6 +15,9 @@ public class XN631405Req extends APageReq {
      */
     private static final long serialVersionUID = -8111095288579071200L;
 
+    // （选填）雇佣编号
+    private String employCode;
+
     // （选填）关键字
     private String keyword;
 
@@ -29,6 +32,14 @@ public class XN631405Req extends APageReq {
 
     // 公司编号
     private List<String> projectCodeList;
+
+    public String getEmployCode() {
+        return employCode;
+    }
+
+    public void setEmployCode(String employCode) {
+        this.employCode = employCode;
+    }
 
     public String getKeyword() {
         return keyword;

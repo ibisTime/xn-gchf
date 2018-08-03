@@ -30,14 +30,14 @@ public class Ccontract extends ABaseDO {
     // 员工编号
     private String staffCode;
 
-    // 员工手机号
+    // 员工姓名
     private String staffName;
+
+    // 员工手机号
+    private String staffMobile;
 
     // 合同照片
     private String contentPic;
-
-    // 签约时间
-    private Date contractDatetime;
 
     // 更新人
     private String updater;
@@ -54,9 +54,6 @@ public class Ccontract extends ABaseDO {
 
     // 更新人名称
     private String updateName;
-
-    // 员工名称 staffMobile
-    private String staffMobile;
 
     // 用户类型
     private String kind;
@@ -110,14 +107,6 @@ public class Ccontract extends ABaseDO {
 
     public String getContentPic() {
         return contentPic;
-    }
-
-    public Date getContractDatetime() {
-        return contractDatetime;
-    }
-
-    public void setContractDatetime(Date contractDatetime) {
-        this.contractDatetime = contractDatetime;
     }
 
     public String getUpdater() {

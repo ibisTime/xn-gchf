@@ -209,3 +209,7 @@ ADD COLUMN `employ_code` VARCHAR(32) NULL COMMENT '雇佣编号' AFTER `code`;
 
 ##雇佣合同数据
 update thf_bcontract set project_name = (select name from thf_project where thf_bcontract.project_code = thf_project.code);
+
+##项目进度数据
+update thf_progress set project_name = (select name from thf_project where thf_progress.project_code = thf_project.code);
+

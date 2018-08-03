@@ -51,12 +51,14 @@ public class ProgressAOImpl implements IProgressAO {
         }
 
         data.setProjectCode(req.getProjectCode());
+        data.setProjectName(project.getName());
         data.setDatetime(DateUtil.strToDate(req.getDatetime(),
             DateUtil.FRONT_DATE_FORMAT_STRING));
         data.setDescription(req.getDescription());
         data.setPicture(req.getPicture());
-        data.setUpdater(req.getUpdater());
 
+        data.setUpdater(req.getUpdater());
+        data.setUpdateDatetime(new Date());
         data.setRemark(req.getRemark());
         return progressBO.saveProgress(data);
     }
@@ -95,12 +97,9 @@ public class ProgressAOImpl implements IProgressAO {
         // 补全信息
         page = progressBO.getPaginable(start, limit, condition);
         String updateName = null;
-        Project project = null;
         for (Progress progress : page.getList()) {
-            project = projectBO.getProject(progress.getProjectCode());
             updateName = getName(progress.getUpdater());
             progress.setUpdateName(updateName);
-            progress.setProjectName(project.getName());
         }
         return page;
     }
@@ -116,12 +115,9 @@ public class ProgressAOImpl implements IProgressAO {
         // 补全信息
         list = progressBO.queryProgressList(condition);
         String updateName = null;
-        Project project = null;
         for (Progress progress : list) {
-            project = projectBO.getProject(progress.getProjectCode());
             updateName = getName(progress.getUpdater());
             progress.setUpdateName(updateName);
-            progress.setProjectName(project.getName());
         }
         return list;
     }
@@ -131,8 +127,6 @@ public class ProgressAOImpl implements IProgressAO {
         Progress data = progressBO.getProgress(code);
         String updateName = getName(data.getUpdater());
         data.setUpdateName(updateName);
-        Project project = projectBO.getProject(data.getProjectCode());
-        data.setProjectName(project.getName());
         return progressBO.getProgress(code);
     }
 

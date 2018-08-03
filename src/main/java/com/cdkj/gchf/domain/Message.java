@@ -55,9 +55,6 @@ public class Message extends ABaseDO {
     // 标题
     private String title;
 
-    // 消息内容
-    private String content;
-
     // 创建时间
     private Date createDatetime;
 
@@ -182,14 +179,6 @@ public class Message extends ABaseDO {
 
     public String getTitle() {
         return title;
-    }
-
-    public void setContent(String content) {
-        this.content = content;
-    }
-
-    public String getContent() {
-        return content;
     }
 
     public Date getCreateDatetime() {

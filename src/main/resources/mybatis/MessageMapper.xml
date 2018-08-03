@@ -18,7 +18,6 @@
 		<result column="total_cut_amount" property="totalCutAmount" />
 		<result column="total_tax" property="totalTax" />
 		<result column="title" property="title" />
-		<result column="content" property="content" />
 		<result column="create_datetime" property="createDatetime" />
 		
 		<result column="download" property="download" />
@@ -98,7 +97,6 @@
 		,t.total_cut_amount
 		,t.total_tax
 		,t.title
-		,t.content
 		,t.create_datetime
 		
 		,t.download
@@ -144,7 +142,6 @@
 		
 		,total_cut_amount
 		,title
-		,content
 		,create_datetime
 		
 		,status
@@ -171,7 +168,6 @@
 		
 		,#{totalCutAmount}
 		,#{title}
-		,#{content}
 		,#{createDatetime}
 		
 		,#{status}
@@ -208,7 +204,6 @@
 		UPDATE thf_message
 		SET
 		title = #{title}
-		,content = #{content}
 		,status = #{status}
 		,sender = #{sender}
 		,send_datetime = #{sendDatetime}

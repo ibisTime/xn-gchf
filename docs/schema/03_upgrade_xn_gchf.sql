@@ -158,18 +158,10 @@ CREATE TABLE `thf_supervise` (
   `remark` varchar(255) COMMENT '备注',
   PRIMARY KEY (`code`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+##SU201808011128113874417
 
 ALTER TABLE `thf_user` 
 ADD COLUMN `organization_code` VARCHAR(32) NULL COMMENT '组织编号（项目编号/银行编号/监管编号）' AFTER `type`,
-DROP COLUMN `department_code`,
-DROP COLUMN `subbranch`,
-DROP COLUMN `bank_name`,
-DROP COLUMN `area`,
-DROP COLUMN `city`,
-DROP COLUMN `province`,
-DROP COLUMN `project_name`,
-DROP COLUMN `project_code`,
-DROP COLUMN `photo`,
 CHANGE COLUMN `role_code` `role_code` VARCHAR(96) NULL DEFAULT NULL AFTER `type`,
 CHANGE COLUMN `real_name` `real_name` VARCHAR(192) NULL DEFAULT NULL AFTER `organization_code`;
 
@@ -207,9 +199,23 @@ ALTER TABLE `thf_ccontract`
 DROP COLUMN `contract_datetime`,
 ADD COLUMN `employ_code` VARCHAR(32) NULL COMMENT '雇佣编号' AFTER `code`;
 
+##用户表数据
+update thf_user set organization_code = (select code from thf_project where thf_user.project_code = thf_project.code) where type = 'O';#业主端
+
 ##雇佣合同数据
 update thf_bcontract set project_name = (select name from thf_project where thf_bcontract.project_code = thf_project.code);
 
 ##项目进度数据
 update thf_progress set project_name = (select name from thf_project where thf_progress.project_code = thf_project.code);
+
+ALTER TABLE `thf_user` 
+DROP COLUMN `department_code`,
+DROP COLUMN `subbranch`,
+DROP COLUMN `bank_name`,
+DROP COLUMN `area`,
+DROP COLUMN `city`,
+DROP COLUMN `province`,
+DROP COLUMN `project_name`,
+DROP COLUMN `project_code`,
+DROP COLUMN `photo`;
 

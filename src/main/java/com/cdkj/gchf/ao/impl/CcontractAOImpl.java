@@ -1,9 +1,7 @@
 package com.cdkj.gchf.ao.impl;
 
-import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.commons.collections.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -22,7 +20,6 @@ import com.cdkj.gchf.dto.req.XN631400Req;
 import com.cdkj.gchf.dto.req.XN631402Req;
 import com.cdkj.gchf.enums.EProjectStatus;
 import com.cdkj.gchf.enums.EUser;
-import com.cdkj.gchf.enums.EUserKind;
 import com.cdkj.gchf.exception.BizException;
 
 @Service
@@ -73,15 +70,7 @@ public class CcontractAOImpl implements ICcontractAO {
     @Override
     public Paginable<Ccontract> queryCcontractPage(int start, int limit,
             Ccontract condition) {
-        List<Ccontract> list = new ArrayList<Ccontract>();
         Paginable<Ccontract> page = new Page<Ccontract>();
-        if (EUserKind.Supervise.getCode().equals(condition.getKind())
-                || EUserKind.Owner.getCode().equals(condition.getKind())) {
-            if (CollectionUtils.isEmpty(condition.getProjectCodeList())) {
-                page.setList(list);
-                return page;
-            }
-        }
 
         page = ccontractBO.getPaginable(start, limit, condition);
         for (Ccontract ccontract : page.getList()) {
@@ -93,14 +82,7 @@ public class CcontractAOImpl implements ICcontractAO {
 
     @Override
     public List<Ccontract> queryCcontractList(Ccontract condition) {
-        List<Ccontract> list = null;
-        if (EUserKind.Supervise.getCode().equals(condition.getKind())
-                || EUserKind.Owner.getCode().equals(condition.getKind())) {
-            if (CollectionUtils.isEmpty(condition.getProjectCodeList())) {
-                return list;
-            }
-        }
-        list = ccontractBO.queryCcontractList(condition);
+        List<Ccontract> list = ccontractBO.queryCcontractList(condition);
         for (Ccontract ccontract : list) {
             initCcontract(ccontract);
         }

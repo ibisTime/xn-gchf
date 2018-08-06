@@ -97,7 +97,7 @@ INSERT INTO `tsys_dict` (`id`,`type`,`parent_key`,`dkey`,`dvalue`,`updater`,`upd
 /*
 -- Query: SELECT * FROM dev_xn_gchf.tsys_config
 LIMIT 0, 1000
--- Date: 2018-07-27 17:23
+-- Date: 2018-08-06 14:39
 */
 INSERT INTO `tsys_config` (`id`,`type`,`ckey`,`cvalue`,`updater`,`update_datetime`,`remark`) VALUES (1,'sys_txt','telephone','0571-88888888','USYS201800000000001','2018-07-27 03:07:39','联系电话');
 INSERT INTO `tsys_config` (`id`,`type`,`ckey`,`cvalue`,`updater`,`update_datetime`,`remark`) VALUES (2,'sys_txt','about_us','关于我们112','USYS201800000000001','2018-07-27 03:07:39','关于我们');
@@ -106,13 +106,6 @@ INSERT INTO `tsys_config` (`id`,`type`,`ckey`,`cvalue`,`updater`,`update_datetim
 INSERT INTO `tsys_config` (`id`,`type`,`ckey`,`cvalue`,`updater`,`update_datetime`,`remark`) VALUES (5,'qiniu','qiniu_secret_key','nsMbXOfEtk3SvQ3GFHbKMozJua3jbTiGPIIwu4tq','USYS201800000000001','2018-07-27 03:07:39','qiniu_secret_key');
 INSERT INTO `tsys_config` (`id`,`type`,`ckey`,`cvalue`,`updater`,`update_datetime`,`remark`) VALUES (6,'qiniu','qiniu_bucket','zwzj','USYS201800000000001','2018-07-27 03:07:39','qiniu_bucket');
 INSERT INTO `tsys_config` (`id`,`type`,`ckey`,`cvalue`,`updater`,`update_datetime`,`remark`) VALUES (7,'qiniu','qiniu_domain','otoieuivb.bkt.clouddn.com','USYS201800000000001','2018-07-27 03:07:39','访问域名');
-INSERT INTO `tsys_config` (`id`,`type`,`ckey`,`cvalue`,`updater`,`update_datetime`,`remark`) VALUES (8,'sys_txt','telephone','0571-88888888','USYS201800000000001','2018-07-27 03:07:39','联系电话');
-INSERT INTO `tsys_config` (`id`,`type`,`ckey`,`cvalue`,`updater`,`update_datetime`,`remark`) VALUES (9,'sys_txt','about_us','关于我们112','USYS201800000000001','2018-07-27 03:07:39','关于我们');
-INSERT INTO `tsys_config` (`id`,`type`,`ckey`,`cvalue`,`updater`,`update_datetime`,`remark`) VALUES (10,'sys_txt','service_time','9:00-17:40','USYS201800000000001','2018-07-27 03:07:39','服务时间');
-INSERT INTO `tsys_config` (`id`,`type`,`ckey`,`cvalue`,`updater`,`update_datetime`,`remark`) VALUES (11,'qiniu','qiniu_access_key','07KR5rNezHcXebD-GalrPw0npsAODOMVxygvdFFt','USYS201800000000001','2018-07-27 03:07:39','七牛云key1');
-INSERT INTO `tsys_config` (`id`,`type`,`ckey`,`cvalue`,`updater`,`update_datetime`,`remark`) VALUES (12,'qiniu','qiniu_secret_key','nsMbXOfEtk3SvQ3GFHbKMozJua3jbTiGPIIwu4tq','USYS201800000000001','2018-07-27 03:07:39','qiniu_secret_key');
-INSERT INTO `tsys_config` (`id`,`type`,`ckey`,`cvalue`,`updater`,`update_datetime`,`remark`) VALUES (13,'qiniu','qiniu_bucket','zwzj','USYS201800000000001','2018-07-27 03:07:39','qiniu_bucket');
-INSERT INTO `tsys_config` (`id`,`type`,`ckey`,`cvalue`,`updater`,`update_datetime`,`remark`) VALUES (14,'qiniu','qiniu_domain','otoieuivb.bkt.clouddn.com','USYS201800000000001','2018-07-27 03:07:39','访问域名');
 
 /*
 -- Query: select * from tsys_menu where role_type is not null

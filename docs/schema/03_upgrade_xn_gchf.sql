@@ -160,6 +160,17 @@ CREATE TABLE `thf_supervise` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 ##SU201808011128113874417
 
+CREATE TABLE `thf_operator_guide` (
+  `code` varchar(32) NOT NULL COMMENT '编号',
+  `title` varchar(255) DEFAULT NULL COMMENT '标题',
+  `content` TEXT DEFAULT NULL COMMENT '操作内容',
+  `system_code` varchar(32) DEFAULT NULL COMMENT '系统编号',
+  `updater` varchar(32) DEFAULT NULL COMMENT '更新人',
+  `update_datetime` datetime DEFAULT NULL COMMENT '更新时间',
+  `remark` varchar(255) COMMENT '备注',
+  PRIMARY KEY (`code`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
 ALTER TABLE `thf_user` 
 ADD COLUMN `organization_code` VARCHAR(32) NULL COMMENT '组织编号（项目编号/银行编号/监管编号）' AFTER `type`,
 CHANGE COLUMN `role_code` `role_code` VARCHAR(96) NULL DEFAULT NULL AFTER `type`,

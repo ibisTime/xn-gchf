@@ -9,7 +9,6 @@ import org.springframework.stereotype.Component;
 
 import com.cdkj.gchf.bo.IStaffBO;
 import com.cdkj.gchf.bo.base.PaginableBOImpl;
-import com.cdkj.gchf.dao.IBankCardDAO;
 import com.cdkj.gchf.dao.IStaffDAO;
 import com.cdkj.gchf.domain.Staff;
 import com.cdkj.gchf.exception.BizException;
@@ -18,9 +17,6 @@ import com.cdkj.gchf.exception.BizException;
 public class StaffBOImpl extends PaginableBOImpl<Staff> implements IStaffBO {
     @Autowired
     private IStaffDAO staffDAO;
-
-    @Autowired
-    private IBankCardDAO bankCardDAO;
 
     public void saveStaff(Staff data) {
         staffDAO.insert(data);

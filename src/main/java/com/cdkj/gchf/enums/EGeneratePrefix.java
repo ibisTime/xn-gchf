@@ -28,7 +28,7 @@ public enum EGeneratePrefix {
             "R", "统计报表"), StaffLog("SL", "员工记录"), QueryLog("QL", "查询记录"),
 
     Skill("SK", "技能证书"), EventRemind("AR", "异常通知"), SubBranch("SB",
-            "支行"), Leave("L", "请假明细"), Supervise("SU", "监管单位");
+            "支行"), Leave("L", "请假明细"), Supervise("SU", "监管单位"), OperatorGuide("OG", "操作指南");
 
     public static Map<String, EGeneratePrefix> getMap() {
         Map<String, EGeneratePrefix> map = new HashMap<String, EGeneratePrefix>();

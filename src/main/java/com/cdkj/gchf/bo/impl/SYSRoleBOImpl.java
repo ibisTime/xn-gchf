@@ -10,7 +10,6 @@ import org.springframework.stereotype.Component;
 import com.cdkj.gchf.bo.ISYSRoleBO;
 import com.cdkj.gchf.bo.base.PaginableBOImpl;
 import com.cdkj.gchf.core.OrderNoGenerater;
-import com.cdkj.gchf.dao.ISYSMenuRoleDAO;
 import com.cdkj.gchf.dao.ISYSRoleDAO;
 import com.cdkj.gchf.domain.SYSRole;
 
@@ -20,8 +19,6 @@ public class SYSRoleBOImpl extends PaginableBOImpl<SYSRole>
 
     @Autowired
     private ISYSRoleDAO sysRoleDAO;
-
-    private ISYSMenuRoleDAO sysMenuRoleDAO;
 
     @Override
     public boolean isSYSRoleExist(String code) {

@@ -29,6 +29,7 @@ public class XN631465 extends AProcessor {
         Employ condition = new Employ();
         condition.setKeyword(req.getKeyword());
         condition.setProjectCode(req.getProjectCode());
+        condition.setProjectCodeList(req.getProjectCodeList());
         condition.setStatus(req.getStatus());
         condition.setType(req.getType());
 

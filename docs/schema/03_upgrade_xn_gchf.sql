@@ -166,9 +166,6 @@ CHANGE COLUMN `role_code` `role_code` VARCHAR(96) NULL DEFAULT NULL AFTER `type`
 CHANGE COLUMN `real_name` `real_name` VARCHAR(192) NULL DEFAULT NULL AFTER `organization_code`;
 
 ALTER TABLE `thf_event_remind` 
-DROP COLUMN `type`,
-DROP COLUMN `user_id`,
-DROP COLUMN `content`,
 ADD COLUMN `system_code` VARCHAR(4) NULL COMMENT '系统编号（B/S）' AFTER `code`,
 ADD COLUMN `organization_code` VARCHAR(32) NULL COMMENT '组织编号' AFTER `system_code`;
 
@@ -199,8 +196,13 @@ ALTER TABLE `thf_ccontract`
 DROP COLUMN `contract_datetime`,
 ADD COLUMN `employ_code` VARCHAR(32) NULL COMMENT '雇佣编号' AFTER `code`;
 
+ALTER TABLE `thf_message` 
+DROP COLUMN `content`;
+
 ##用户表数据
 update thf_user set organization_code = (select code from thf_project where thf_user.project_code = thf_project.code) where type = 'O';#业主端
+update thf_user set organization_code = (select code from thf_project where thf_user.project_code = thf_project.code) where type = 'O';#银行端
+update thf_user set organization_code = (select code from thf_project where thf_user.project_code = thf_project.code) where type = 'O';#监管端
 
 ##雇佣合同数据
 update thf_bcontract set project_name = (select name from thf_project where thf_bcontract.project_code = thf_project.code);
@@ -218,4 +220,10 @@ DROP COLUMN `province`,
 DROP COLUMN `project_name`,
 DROP COLUMN `project_code`,
 DROP COLUMN `photo`;
+
+ALTER TABLE `thf_event_remind` 
+DROP COLUMN `type`,
+DROP COLUMN `user_id`,
+DROP COLUMN `content`;
+
 

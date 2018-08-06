@@ -17,6 +17,15 @@
 			<if test="code != null and code != '' ">
 				AND t.code = #{code}
 			</if>
+			<if test="province != null and province != '' ">
+				AND t.province = #{province}
+			</if>
+			<if test="city != null and city != '' ">
+				AND t.city = #{city}
+			</if>
+			<if test="area != null and area != '' ">
+				AND t.area = #{area}
+			</if>
 		</trim>
 	</sql>
 	

@@ -36,6 +36,9 @@ public class XN631465Req extends APageReq {
     // 状态列表
     private List<String> statusList;
 
+    // 项目列表（监管端查询通讯录）
+    private List<String> projectCodeList;
+
     public String getKeyword() {
         return keyword;
     }
@@ -90,6 +93,14 @@ public class XN631465Req extends APageReq {
 
     public void setStaffCode(String staffCode) {
         this.staffCode = staffCode;
+    }
+
+    public List<String> getProjectCodeList() {
+        return projectCodeList;
+    }
+
+    public void setProjectCodeList(List<String> projectCodeList) {
+        this.projectCodeList = projectCodeList;
     }
 
 }

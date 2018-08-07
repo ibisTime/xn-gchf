@@ -21,6 +21,10 @@ public class XN631122Req {
     // 内容
     private String content;
 
+    // 排序编号
+    @NotBlank(message = "排序编号不能为空")
+    private String orderNo;
+
     // 备注
     private String remark;
 
@@ -66,6 +70,14 @@ public class XN631122Req {
 
     public void setCode(String code) {
         this.code = code;
+    }
+
+    public String getOrderNo() {
+        return orderNo;
+    }
+
+    public void setOrderNo(String orderNo) {
+        this.orderNo = orderNo;
     }
 
 }

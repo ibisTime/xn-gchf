@@ -11,6 +11,7 @@ import com.cdkj.gchf.ao.IOperatorGuideAO;
 import com.cdkj.gchf.bo.IOperatorGuideBO;
 import com.cdkj.gchf.bo.IUserBO;
 import com.cdkj.gchf.bo.base.Paginable;
+import com.cdkj.gchf.core.StringValidater;
 import com.cdkj.gchf.domain.OperatorGuide;
 import com.cdkj.gchf.domain.User;
 import com.cdkj.gchf.dto.req.XN631120Req;
@@ -37,10 +38,11 @@ public class OperatorGuideAOImpl implements IOperatorGuideAO {
         OperatorGuide data = new OperatorGuide();
         data.setTitle(req.getTitle());
         data.setContent(req.getContent());
+        data.setOrderNo(StringValidater.toInteger(req.getOrderNo()));
         data.setSystemCode(req.getSystemCode());
         data.setRemark(req.getRemark());
-        data.setUpdater(req.getUpdater());
 
+        data.setUpdater(req.getUpdater());
         data.setUpdateDatetime(new Date());
         return operatorGuideBO.saveOperatorGuide(data);
     }
@@ -51,9 +53,10 @@ public class OperatorGuideAOImpl implements IOperatorGuideAO {
         data.setCode(req.getCode());
         data.setTitle(req.getTitle());
         data.setContent(req.getContent());
+        data.setOrderNo(StringValidater.toInteger(req.getOrderNo()));
         data.setRemark(req.getRemark());
-        data.setUpdater(req.getUpdater());
 
+        data.setUpdater(req.getUpdater());
         data.setUpdateDatetime(new Date());
         operatorGuideBO.refreshOperatorGuide(data);
     }

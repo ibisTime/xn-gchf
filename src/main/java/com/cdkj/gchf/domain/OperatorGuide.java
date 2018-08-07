@@ -23,6 +23,9 @@ public class OperatorGuide extends ABaseDO {
     // 操作内容
     private String content;
 
+    // 排序编号
+    private Integer orderNo;
+
     // 系统编号
     private String systemCode;
 
@@ -100,6 +103,14 @@ public class OperatorGuide extends ABaseDO {
 
     public void setUpdaterUserName(String updaterUserName) {
         this.updaterUserName = updaterUserName;
+    }
+
+    public Integer getOrderNo() {
+        return orderNo;
+    }
+
+    public void setOrderNo(Integer orderNo) {
+        this.orderNo = orderNo;
     }
 
 }

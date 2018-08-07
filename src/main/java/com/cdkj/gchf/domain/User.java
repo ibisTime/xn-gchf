@@ -77,7 +77,7 @@ public class User extends ABaseDO {
     private String area;
 
     // 监管区域在职人数(APP端使用)
-    private long employCount;
+    private Integer employCount;
 
     // 银行名称
     private String bankName;
@@ -303,11 +303,11 @@ public class User extends ABaseDO {
         this.organizationCode = organizationCode;
     }
 
-    public long getEmployCount() {
+    public Integer getEmployCount() {
         return employCount;
     }
 
-    public void setEmployCount(long employCount) {
+    public void setEmployCount(Integer employCount) {
         this.employCount = employCount;
     }
 

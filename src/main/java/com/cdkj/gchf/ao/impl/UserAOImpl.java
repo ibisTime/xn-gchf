@@ -359,7 +359,7 @@ public class UserAOImpl implements IUserAO {
             Employ employCondition = new Employ();
             employCondition.setProjectCodeList(projectCodeList);
             employCondition.setStatus(EEmployStatus.Not_Leave.getCode());
-            data.setEmployCount(employBO.getTotalCount(employCondition));
+            data.setEmployCount((int) employBO.getTotalCount(employCondition));
         }
 
         // 业主用户数据

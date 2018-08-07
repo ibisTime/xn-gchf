@@ -17,6 +17,10 @@ public class XN631120Req {
     // 内容
     private String content;
 
+    // 排序编号
+    @NotBlank(message = "排序编号不能为空")
+    private String orderNo;
+
     // 系统编号
     @NotBlank(message = "系统编号不能为空")
     private String systemCode;
@@ -66,6 +70,14 @@ public class XN631120Req {
 
     public void setUpdater(String updater) {
         this.updater = updater;
+    }
+
+    public String getOrderNo() {
+        return orderNo;
+    }
+
+    public void setOrderNo(String orderNo) {
+        this.orderNo = orderNo;
     }
 
 }

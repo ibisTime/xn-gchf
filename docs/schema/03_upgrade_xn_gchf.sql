@@ -164,6 +164,7 @@ CREATE TABLE `thf_operator_guide` (
   `code` varchar(32) NOT NULL COMMENT '编号',
   `title` varchar(255) DEFAULT NULL COMMENT '标题',
   `content` TEXT DEFAULT NULL COMMENT '操作内容',
+  `order_no` INT(11) DEFAULT NULL COMMENT '排序编号',
   `system_code` varchar(32) DEFAULT NULL COMMENT '系统编号',
   `updater` varchar(32) DEFAULT NULL COMMENT '更新人',
   `update_datetime` datetime DEFAULT NULL COMMENT '更新时间',

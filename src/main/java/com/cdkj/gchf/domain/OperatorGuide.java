@@ -35,6 +35,9 @@ public class OperatorGuide extends ABaseDO {
     // 备注
     private String remark;
 
+    /*************DB Properties*****************/
+    private String updaterUserName;
+
     public void setCode(String code) {
         this.code = code;
     }
@@ -89,6 +92,14 @@ public class OperatorGuide extends ABaseDO {
 
     public String getRemark() {
         return remark;
+    }
+
+    public String getUpdaterUserName() {
+        return updaterUserName;
+    }
+
+    public void setUpdaterUserName(String updaterUserName) {
+        this.updaterUserName = updaterUserName;
     }
 
 }

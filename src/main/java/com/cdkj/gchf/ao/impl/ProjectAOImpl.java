@@ -10,10 +10,10 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.cdkj.gchf.ao.IProjectAO;
-import com.cdkj.gchf.bo.IProjectCardBO;
 import com.cdkj.gchf.bo.IDepartmentBO;
 import com.cdkj.gchf.bo.IEmployBO;
 import com.cdkj.gchf.bo.IProjectBO;
+import com.cdkj.gchf.bo.IProjectCardBO;
 import com.cdkj.gchf.bo.IReportBO;
 import com.cdkj.gchf.bo.IUserBO;
 import com.cdkj.gchf.bo.base.Page;
@@ -22,10 +22,10 @@ import com.cdkj.gchf.common.DateUtil;
 import com.cdkj.gchf.common.MD5Util;
 import com.cdkj.gchf.common.PwdUtil;
 import com.cdkj.gchf.core.OrderNoGenerater;
-import com.cdkj.gchf.domain.ProjectCard;
 import com.cdkj.gchf.domain.Department;
 import com.cdkj.gchf.domain.Employ;
 import com.cdkj.gchf.domain.Project;
+import com.cdkj.gchf.domain.ProjectCard;
 import com.cdkj.gchf.domain.Report;
 import com.cdkj.gchf.domain.User;
 import com.cdkj.gchf.dto.req.XN631350Req;
@@ -117,6 +117,7 @@ public class ProjectAOImpl implements IProjectAO {
             throw new BizException("xn000", "该项目已结束，无法编辑");
         }
 
+        data.setCompanyName(req.getCompanyName());
         data.setChargeUser(req.getChargeUser());
         data.setChargeMobile(req.getChargeMobile());
 
@@ -260,9 +261,9 @@ public class ProjectAOImpl implements IProjectAO {
     @Override
     public Project getProject(String code) {
         Project data = projectBO.getProject(code);
-        ProjectCard companyCard = projectCardBO
+        ProjectCard projectCard = projectCardBO
             .getProjectCardByProject(data.getCode());
-        data.setCompanyCard(companyCard);
+        data.setProjectCard(projectCard);
         Report report = reportBO.getReportByProject(data.getCode());
         if (report != null) {
             data.setReport(report);

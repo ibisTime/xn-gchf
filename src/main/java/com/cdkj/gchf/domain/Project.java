@@ -18,6 +18,9 @@ public class Project extends ABaseDO {
     // 项目名称
     private String name;
 
+    // 承建单位
+    private String companyName;
+
     // 负责人
     private String chargeUser;
 
@@ -90,7 +93,7 @@ public class Project extends ABaseDO {
     private String keyword;
 
     // 公司账户
-    private ProjectCard companyCard;
+    private ProjectCard projectCard;
 
     // 统计
     private Report report;
@@ -307,11 +310,11 @@ public class Project extends ABaseDO {
     }
 
     public ProjectCard getCompanyCard() {
-        return companyCard;
+        return projectCard;
     }
 
-    public void setCompanyCard(ProjectCard companyCard) {
-        this.companyCard = companyCard;
+    public void setProjectCard(ProjectCard companyCard) {
+        this.projectCard = companyCard;
     }
 
     public Report getReport() {
@@ -352,6 +355,14 @@ public class Project extends ABaseDO {
 
     public void setProjectCodeList(List<String> projectCodeList) {
         this.projectCodeList = projectCodeList;
+    }
+
+    public String getCompanyName() {
+        return companyName;
+    }
+
+    public void setCompanyName(String companyName) {
+        this.companyName = companyName;
     }
 
 }

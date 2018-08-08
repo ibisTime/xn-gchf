@@ -14,6 +14,10 @@ public class XN631352Req {
     @NotBlank(message = "编号不能为空")
     private String code;
 
+    // 承建单位
+    @NotBlank(message = "承建单位不能为空")
+    private String companyName;
+
     // 负责人编号
     @NotBlank(message = "负责人编号不能为空")
     private String chargeUser;
@@ -247,6 +251,14 @@ public class XN631352Req {
 
     public void setStartDatetime(String startDatetime) {
         this.startDatetime = startDatetime;
+    }
+
+    public String getCompanyName() {
+        return companyName;
+    }
+
+    public void setCompanyName(String companyName) {
+        this.companyName = companyName;
     }
 
 }

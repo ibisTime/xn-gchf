@@ -70,9 +70,8 @@ public class LeaveAOImpl implements ILeaveAO {
             startDatetime, leaveDays);
 
         // 添加请假记录
-        return leaveBO.saveLeave(employ.getStaffCode(), employ.getProjectCode(),
-            startDatetime, endDatetime, leaveDays, req.getUpdater(),
-            req.getRemark());
+        return leaveBO.saveLeave(employ, startDatetime, endDatetime, leaveDays,
+            req.getUpdater(), req.getRemark());
     }
 
     @Override

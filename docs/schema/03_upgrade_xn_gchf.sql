@@ -114,40 +114,11 @@ ADD CONSTRAINT `user_id`
 ALTER TABLE `thf_event_remind` 
 ADD COLUMN `user_id` VARCHAR(32) NULL COMMENT '用户编号' AFTER `code`;
 
-##V1.4.0
+
+##V1.4.0 - V1.5.0
 ALTER TABLE `tsys_menu` 
-ADD COLUMN `role_type` VARCHAR(4) NULL AFTER `type`;
+ADD COLUMN `system_code` VARCHAR(4) NULL AFTER `type`;
 
-ALTER TABLE `thf_user` 
-DROP COLUMN `company_code`,
-DROP COLUMN `company_name`,
-ADD COLUMN `project_code` VARCHAR(32) NULL AFTER `company_code`,
-ADD COLUMN `project_name` VARCHAR(255) NULL AFTER `project_code`;
-
-DROP TABLE `thf_company`;
-
-ALTER TABLE `thf_project` 
-DROP COLUMN `company_name`,
-DROP COLUMN `company_code`;
-
-ALTER TABLE `thf_bank_card` 
-DROP COLUMN `company_code`;
-
-ALTER TABLE `thf_bcontract` 
-DROP COLUMN `company_code`;
-
-ALTER TABLE `thf_company_card` 
-DROP COLUMN `company_name`,
-DROP COLUMN `company_code`;
-
-ALTER TABLE `thf_progress` 
-DROP COLUMN `company_code`,
-CHANGE COLUMN `code` `code` VARCHAR(32) NOT NULL COMMENT '编号' FIRST;
-
-ALTER TABLE `thf_employ` 
-DROP COLUMN `company_code`;
-
-##V1.5.0
 CREATE TABLE `thf_supervise` (
   `code` varchar(32) NOT NULL COMMENT '编号',
   `province` varchar(32) DEFAULT NULL COMMENT '省',
@@ -173,69 +144,83 @@ CREATE TABLE `thf_operator_guide` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 ALTER TABLE `thf_user` 
-ADD COLUMN `organization_code` VARCHAR(32) NULL COMMENT '组织编号（项目编号/银行编号/监管编号）' AFTER `type`,
-CHANGE COLUMN `role_code` `role_code` VARCHAR(96) NULL DEFAULT NULL AFTER `type`,
-CHANGE COLUMN `real_name` `real_name` VARCHAR(192) NULL DEFAULT NULL AFTER `organization_code`;
+ADD COLUMN `organization_code` VARCHAR(32) NULL COMMENT '组织编号（项目编号/银行编号/监管编号）' AFTER `type`;
+update thf_user set organization_code = (select code from thf_project where thf_user.project_code = thf_project.code) where type = 'O';#业主端
+update thf_user set organization_code = (select code from thf_subbranch where thf_user.subbranch = thf_subbranch.subbranch_name and thf_user.bank_name = thf_subbranch.bank_name) where type = 'B';#银行端
+update thf_user set organization_code = (select code from thf_supervise where thf_user.province = thf_supervise.province and thf_user.city = thf_supervise.city and thf_user.area = thf_supervise.area) where type = 'S';#监管端
 
 ALTER TABLE `thf_event_remind` 
 ADD COLUMN `system_code` VARCHAR(4) NULL COMMENT '系统编号（B/S）' AFTER `code`,
 ADD COLUMN `organization_code` VARCHAR(32) NULL COMMENT '组织编号' AFTER `system_code`;
-
-ALTER TABLE `tsys_menu` 
-CHANGE COLUMN `role_type` `system_code` VARCHAR(4) NULL DEFAULT NULL COMMENT '系统编号' ;
+##手动整理数据
 
 ALTER TABLE `thf_company_card` 
 RENAME TO  `thf_project_card` ;
 
-ALTER TABLE `thf_employ` 
-DROP COLUMN `up_user`;
-
 ALTER TABLE `thf_leave` 
 ADD COLUMN `employ_code` VARCHAR(32) NULL COMMENT '雇佣编号' AFTER `code`;
+update thf_leave set employ_code = (select code from thf_employ where thf_leave.project_code = thf_employ.project_code and thf_leave.staff_code = thf_employ.staff_code);
 
 ALTER TABLE `thf_bank_card` 
 ADD COLUMN `employ_code` VARCHAR(32) NULL COMMENT '雇佣编号' AFTER `code`,
 ADD COLUMN `project_name` VARCHAR(255) NULL COMMENT '项目名称' AFTER `project_code`;
+update thf_bank_card set employ_code = (select code from thf_employ where thf_bank_card.project_code = thf_employ.project_code and thf_bank_card.staff_code = thf_employ.staff_code);
+update thf_bank_card set project_name = (select name from thf_project where thf_bank_card.project_code = thf_project.code);
 
 ALTER TABLE `thf_attendance` 
 DROP COLUMN `staff_mobile`,
 ADD COLUMN `employ_code` VARCHAR(32) NULL COMMENT '雇佣编号' AFTER `code`;
+update thf_attendance set employ_code = (select code from thf_employ where thf_attendance.project_code = thf_employ.project_code and thf_attendance.staff_code = thf_employ.staff_code);
 
 ALTER TABLE `thf_salary` 
 ADD COLUMN `employ_code` VARCHAR(32) NULL COMMENT '雇佣编号' AFTER `code`;
+update thf_salary set employ_code = (select code from thf_employ where thf_salary.project_code = thf_employ.project_code and thf_salary.staff_code = thf_employ.staff_code);
 
 ALTER TABLE `thf_ccontract` 
 DROP COLUMN `contract_datetime`,
 ADD COLUMN `employ_code` VARCHAR(32) NULL COMMENT '雇佣编号' AFTER `code`;
+update thf_ccontract set employ_code = (select code from thf_employ where thf_ccontract.project_code = thf_employ.project_code and thf_ccontract.staff_code = thf_employ.staff_code);
+update thf_bcontract set project_name = (select name from thf_project where thf_bcontract.project_code = thf_project.code);
 
 ALTER TABLE `thf_message` 
 DROP COLUMN `content`;
-
-##用户表数据
-update thf_user set organization_code = (select code from thf_project where thf_user.project_code = thf_project.code) where type = 'O';#业主端
-update thf_user set organization_code = (select code from thf_project where thf_user.project_code = thf_project.code) where type = 'O';#银行端
-update thf_user set organization_code = (select code from thf_project where thf_user.project_code = thf_project.code) where type = 'O';#监管端
-
-##雇佣合同数据
-update thf_bcontract set project_name = (select name from thf_project where thf_bcontract.project_code = thf_project.code);
-
-##项目进度数据
-update thf_progress set project_name = (select name from thf_project where thf_progress.project_code = thf_project.code);
-
-ALTER TABLE `thf_user` 
-DROP COLUMN `department_code`,
-DROP COLUMN `subbranch`,
-DROP COLUMN `bank_name`,
-DROP COLUMN `area`,
-DROP COLUMN `city`,
-DROP COLUMN `province`,
-DROP COLUMN `project_name`,
-DROP COLUMN `project_code`,
-DROP COLUMN `photo`;
 
 ALTER TABLE `thf_event_remind` 
 DROP COLUMN `type`,
 DROP COLUMN `user_id`,
 DROP COLUMN `content`;
 
+ALTER TABLE `thf_user` 
+DROP COLUMN `company_code`,
+DROP COLUMN `company_name`,
+DROP COLUMN `department_code`,
+DROP COLUMN `subbranch`,
+DROP COLUMN `bank_name`,
+DROP COLUMN `area`,
+DROP COLUMN `city`,
+DROP COLUMN `province`,
+DROP COLUMN `photo`;
 
+DROP TABLE `thf_company`;
+
+ALTER TABLE `thf_project` 
+DROP COLUMN `company_code`;
+
+ALTER TABLE `thf_bank_card` 
+DROP COLUMN `company_code`;
+
+ALTER TABLE `thf_bcontract` 
+DROP COLUMN `company_code`;
+
+ALTER TABLE `thf_company_card` 
+DROP COLUMN `company_name`,
+DROP COLUMN `company_code`;
+
+ALTER TABLE `thf_progress` 
+DROP COLUMN `company_code`,
+CHANGE COLUMN `code` `code` VARCHAR(32) NOT NULL COMMENT '编号' FIRST;
+update thf_progress set project_name = (select name from thf_project where thf_progress.project_code = thf_project.code);
+
+ALTER TABLE `thf_employ` 
+DROP COLUMN `company_code`,
+DROP COLUMN `up_user`;

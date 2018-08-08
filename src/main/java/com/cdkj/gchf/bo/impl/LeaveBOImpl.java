@@ -8,14 +8,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.cdkj.gchf.bo.ILeaveBO;
-import com.cdkj.gchf.bo.IProjectBO;
-import com.cdkj.gchf.bo.IStaffBO;
 import com.cdkj.gchf.bo.base.PaginableBOImpl;
 import com.cdkj.gchf.core.OrderNoGenerater;
 import com.cdkj.gchf.dao.ILeaveDAO;
+import com.cdkj.gchf.domain.Employ;
 import com.cdkj.gchf.domain.Leave;
-import com.cdkj.gchf.domain.Project;
-import com.cdkj.gchf.domain.Staff;
 import com.cdkj.gchf.enums.EGeneratePrefix;
 import com.cdkj.gchf.exception.BizException;
 
@@ -30,27 +27,19 @@ public class LeaveBOImpl extends PaginableBOImpl<Leave> implements ILeaveBO {
     @Autowired
     private ILeaveDAO leaveDAO;
 
-    @Autowired
-    private IStaffBO staffBO;
-
-    @Autowired
-    private IProjectBO projectBO;
-
     @Override
-    public String saveLeave(String staffCode, String projectCode,
-            Date startDatetime, Date endDatetime, Integer leaveDays,
-            String updater, String remark) {
+    public String saveLeave(Employ employ, Date startDatetime, Date endDatetime,
+            Integer leaveDays, String updater, String remark) {
         Leave data = new Leave();
         String code = OrderNoGenerater
             .generate(EGeneratePrefix.Leave.getCode());
-        Staff staff = staffBO.getStaff(staffCode);
-        Project project = projectBO.getProject(projectCode);
 
         data.setCode(code);
-        data.setStaffCode(staffCode);
-        data.setProjectCode(projectCode);
-        data.setStaffName(staff.getName());
-        data.setProjectName(project.getName());
+        data.setEmployCode(employ.getCode());
+        data.setStaffCode(employ.getStaffCode());
+        data.setProjectCode(employ.getProjectCode());
+        data.setStaffName(employ.getStaffName());
+        data.setProjectName(employ.getProjectName());
 
         data.setStartDatetime(startDatetime);
         data.setEndDatetime(endDatetime);

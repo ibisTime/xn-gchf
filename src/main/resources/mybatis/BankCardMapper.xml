@@ -52,7 +52,7 @@
 	<select id="select_bankCard" parameterType="bankCard" resultMap="bankCard_DB_Result">
 		SELECT
 		t.code
-		,employ_code
+		,t.employ_code
 		,t.project_code
 		,t.project_name
 		,t.staff_code

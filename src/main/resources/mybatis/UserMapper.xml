@@ -82,7 +82,7 @@
 				AND ts.bank_name = #{bankName}
 			</if>
 			<if test="subbranch != null and subbranch != '' ">
-				AND ts.subbranch = #{subbranch}
+				AND ts.subbranch_name = #{subbranch}
 			</if>
 			<if test="province != null and province != '' ">
 				AND tsu.province = #{province}

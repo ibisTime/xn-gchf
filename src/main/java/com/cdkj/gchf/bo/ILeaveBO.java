@@ -4,6 +4,7 @@ import java.util.Date;
 import java.util.List;
 
 import com.cdkj.gchf.bo.base.IPaginableBO;
+import com.cdkj.gchf.domain.Employ;
 import com.cdkj.gchf.domain.Leave;
 
 /**
@@ -14,9 +15,8 @@ import com.cdkj.gchf.domain.Leave;
  */
 public interface ILeaveBO extends IPaginableBO<Leave> {
     // 请假申请
-    public String saveLeave(String staffCode, String projectCode,
-            Date startDatetime, Date endDatetime, Integer leaveDays,
-            String updater, String remark);
+    public String saveLeave(Employ employ, Date startDatetime, Date endDatetime,
+            Integer leaveDays, String updater, String remark);
 
     // 获取指定月份请假天数
     public Integer getMonthLeaveDays(String staffCode, String projectCode,

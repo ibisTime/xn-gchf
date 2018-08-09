@@ -30,9 +30,9 @@
 						#{item}
 					</foreach>
 				</when>
-				<otherwise>
-					AND 1 = 1
-				</otherwise>
+				<when test="projectCodeList != null and projectCodeList.size() == 0">
+					AND t.code IN ('')
+				</when>
 			</choose>
 			
 			<if test="contractDatetime != null and contractDatetime != '' ">

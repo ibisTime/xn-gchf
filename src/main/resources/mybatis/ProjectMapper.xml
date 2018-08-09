@@ -49,6 +49,9 @@
 						#{item}
 					</foreach>
 				</when>
+				<when test="projectCodeList != null and projectCodeList.size() == 0">
+					AND t.code IN ('')
+				</when>
 			</choose>
 			
 			<if test="province != null and province != '' ">

@@ -1,6 +1,7 @@
 package com.cdkj.gchf.domain;
 
 import java.util.Date;
+import java.util.List;
 
 import com.cdkj.gchf.dao.base.ABaseDO;
 
@@ -52,6 +53,10 @@ public class Leave extends ABaseDO {
 
     // 备注
     private String remark;
+
+    /***********DB Properties*****************/
+    // 项目编号List
+    private List<String> projectCodeList;
 
     public String getCode() {
         return code;
@@ -155,6 +160,14 @@ public class Leave extends ABaseDO {
 
     public void setEmployCode(String employCode) {
         this.employCode = employCode;
+    }
+
+    public List<String> getProjectCodeList() {
+        return projectCodeList;
+    }
+
+    public void setProjectCodeList(List<String> projectCodeList) {
+        this.projectCodeList = projectCodeList;
     }
 
 }

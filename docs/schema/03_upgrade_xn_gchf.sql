@@ -178,6 +178,7 @@ update thf_salary set employ_code = (select code from thf_employ where thf_salar
 
 ALTER TABLE `thf_ccontract` 
 DROP COLUMN `contract_datetime`,
+CHANGE COLUMN `content_pic` `content_pic` TEXT NULL DEFAULT NULL COMMENT '合同照片' ,
 ADD COLUMN `employ_code` VARCHAR(32) NULL COMMENT '雇佣编号' AFTER `code`;
 update thf_ccontract set employ_code = (select code from thf_employ where thf_ccontract.project_code = thf_employ.project_code and thf_ccontract.staff_code = thf_employ.staff_code);
 update thf_bcontract set project_name = (select name from thf_project where thf_bcontract.project_code = thf_project.code);

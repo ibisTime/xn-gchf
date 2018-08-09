@@ -106,7 +106,7 @@ public class Message extends ABaseDO {
     private List<String> projectCodeList;
 
     // 公司账户
-    private ProjectCard companyCard;
+    private ProjectCard projectCard;
 
     // 消息所属项目负责人
     private String projectChargeUser;
@@ -119,6 +119,17 @@ public class Message extends ABaseDO {
 
     // 承建单位
     private String companyName;
+
+    // 承建单位项目
+    private String sendCompanyProject;
+
+    public String getSendCompanyProject() {
+        return sendCompanyProject;
+    }
+
+    public void setSendCompanyProject(String sendCompanyProject) {
+        this.sendCompanyProject = sendCompanyProject;
+    }
 
     public void setCode(String code) {
         this.code = code;
@@ -352,12 +363,12 @@ public class Message extends ABaseDO {
         this.totalTax = totalTax;
     }
 
-    public ProjectCard getCompanyCard() {
-        return companyCard;
+    public ProjectCard getProjectCard() {
+        return projectCard;
     }
 
-    public void setCompanyCard(ProjectCard companyCard) {
-        this.companyCard = companyCard;
+    public void setProjectCard(ProjectCard projectCard) {
+        this.projectCard = projectCard;
     }
 
     public String getProjectChargeUser() {

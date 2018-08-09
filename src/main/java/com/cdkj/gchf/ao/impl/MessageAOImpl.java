@@ -341,6 +341,8 @@ public class MessageAOImpl implements IMessageAO {
             message.setCompanyName(project.getCompanyName());
             message.setProjectChargeUser(project.getChargeUser());
             message.setProjectChargeUserMobile(project.getChargeMobile());
+            message.setSendCompanyProject(
+                project.getCompanyName().concat(project.getName()));
 
             ProjectCard projectCard = projectCardBO
                 .getProjectCardByProject(project.getCode());

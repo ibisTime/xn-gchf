@@ -1,5 +1,7 @@
 package com.cdkj.gchf.dto.req;
 
+import java.util.List;
+
 /**
  * 分页查询请假明细
  * @author: silver 
@@ -21,6 +23,17 @@ public class XN631468Req extends APageReq {
 
     // 雇佣编号
     private String employCode;
+
+    // 项目编号列表
+    private List<String> projectCodeList;
+
+    public List<String> getProjectCodeList() {
+        return projectCodeList;
+    }
+
+    public void setProjectCodeList(List<String> projectCodeList) {
+        this.projectCodeList = projectCodeList;
+    }
 
     public String getStaffCode() {
         return staffCode;

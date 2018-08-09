@@ -37,7 +37,14 @@ public class EmployBOImpl extends PaginableBOImpl<Employ> implements IEmployBO {
         data.setStartDatetime(startDatetime);
         data.setLastLeavingDays(leaveDays);
         data.setTotalLeavingDays(data.getTotalLeavingDays() + leaveDays);
-        data.setStatus(EEmployStatus.Hoilday.getCode());
+
+        String status = EEmployStatus.Work.getCode();
+        if (DateUtil.isIn(startDatetime,
+            DateUtil.getRelativeDateOfDays(startDatetime, leaveDays))) {
+            status = EEmployStatus.Hoilday.getCode();
+        }
+
+        data.setStatus(status);
         employDAO.toHoliday(data);
     }
 
@@ -115,11 +122,6 @@ public class EmployBOImpl extends PaginableBOImpl<Employ> implements IEmployBO {
             }
         }
         return data;
-    }
-
-    @Override
-    public void updateLeavingStatus(Employ employ) {
-        employDAO.updateLeavingStatus(employ);
     }
 
     @Override

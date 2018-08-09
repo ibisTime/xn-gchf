@@ -1,6 +1,9 @@
 package com.cdkj.gchf.dto.req;
 
+import java.util.List;
+
 import org.hibernate.validator.constraints.NotBlank;
+import org.hibernate.validator.constraints.NotEmpty;
 
 /**
  * 合同录入
@@ -14,8 +17,8 @@ public class XN631400Req {
     private String employCode;
 
     // （必填）合同照片
-    @NotBlank(message = "合同照片不能为空")
-    private String contentPic;
+    @NotEmpty(message = "合同照片不能为空")
+    private List<String> contentPicList;
 
     // （必填）更新人
     @NotBlank(message = "更新人不能为空")
@@ -24,12 +27,12 @@ public class XN631400Req {
     // （选填）备注
     private String remark;
 
-    public String getContentPic() {
-        return contentPic;
+    public List<String> getContentPicList() {
+        return contentPicList;
     }
 
-    public void setContentPic(String contentPic) {
-        this.contentPic = contentPic;
+    public void setContentPicList(List<String> contentPicList) {
+        this.contentPicList = contentPicList;
     }
 
     public String getRemark() {

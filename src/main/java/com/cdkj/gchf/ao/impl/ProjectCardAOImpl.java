@@ -9,8 +9,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.cdkj.gchf.ao.IProjectCardAO;
-import com.cdkj.gchf.bo.IProjectCardBO;
 import com.cdkj.gchf.bo.IProjectBO;
+import com.cdkj.gchf.bo.IProjectCardBO;
 import com.cdkj.gchf.bo.IUserBO;
 import com.cdkj.gchf.bo.base.Page;
 import com.cdkj.gchf.bo.base.Paginable;
@@ -53,7 +53,7 @@ public class ProjectCardAOImpl implements IProjectCardAO {
         // 补全信息
         page = projectCardBO.getPaginable(start, limit, condition);
         for (ProjectCard companyCard : page.getList()) {
-            initCompanyCard(companyCard);
+            initProjectCard(companyCard);
         }
         return page;
     }
@@ -70,7 +70,7 @@ public class ProjectCardAOImpl implements IProjectCardAO {
         // 补全信息
         list = projectCardBO.queryProjectCardList(condition);
         for (ProjectCard companyCard : list) {
-            initCompanyCard(companyCard);
+            initProjectCard(companyCard);
         }
 
         return list;
@@ -79,14 +79,16 @@ public class ProjectCardAOImpl implements IProjectCardAO {
     @Override
     public ProjectCard getProjectCard(String code) {
         ProjectCard data = projectCardBO.getProjectCard(code);
-        initCompanyCard(data);
+        initProjectCard(data);
         return data;
     }
 
-    private void initCompanyCard(ProjectCard companyCard) {
-        companyCard.setUpdateName(getName(companyCard.getUpdater()));
-        companyCard.setBankSubbranch(
-            companyCard.getBankName().concat(companyCard.getSubbranch()));
+    private void initProjectCard(ProjectCard projectCard) {
+        projectCard.setUpdateName(getName(projectCard.getUpdater()));
+        if (null != projectCard.getBankName()) {
+            projectCard.setBankSubbranch(
+                projectCard.getBankName().concat(projectCard.getSubbranch()));
+        }
     }
 
     private String getName(String userId) {

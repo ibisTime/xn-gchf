@@ -45,10 +45,7 @@
 				</when>
 			</choose>
 			<if test="startDatetime != null and startDatetime != '' ">
-				<![CDATA[AND t.start_datetime >= #{startDatetime}]]>
-			</if>
-			<if test="endDatetime != null and endDatetime != '' ">
-				<![CDATA[AND t.end_datetime <= #{endDatetime}]]>
+				<![CDATA[AND t.start_datetime = #{startDatetime}]]>
 			</if>
 		</trim>
 	</sql>

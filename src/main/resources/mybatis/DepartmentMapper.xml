@@ -12,7 +12,7 @@
 	</resultMap>
 	<sql id="where_condition">
 		<trim prefix="WHERE" prefixOverrides="AND | OR">
-			<if test="code != null and code != '' ">
+			<if test="code != null and code != '' and direction == null">
 				AND t.code = #{code}
 			</if>
 			<if test="projectCode != null and projectCode != '' ">
@@ -23,6 +23,9 @@
 			</if>
 			<if test="keyword != null and keyword != '' ">
 				AND (t.name LIKE "%"#{keyword}"%" OR t.leade_mobile LIKE "%"#{keyword}"%" OR t.leader LIKE "%"#{keyword}"%" )
+			</if>
+			<if test="code != null and code != '' and direction != null and direction != '' ">
+				AND FIND_IN_SET(code, getDepartmentByDirection(#{code}, #{direction}))
 			</if>
 		</trim>
 	</sql>

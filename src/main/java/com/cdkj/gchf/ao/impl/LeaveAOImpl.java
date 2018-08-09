@@ -50,8 +50,8 @@ public class LeaveAOImpl implements ILeaveAO {
 
         Date startDatetime = DateUtil.strToDate(req.getStartDatetime(),
             DateUtil.FRONT_DATE_FORMAT_STRING);
-        Date endDatetime = DateUtil.strToDate(req.getEndDatetime(),
-            DateUtil.FRONT_DATE_FORMAT_STRING);
+        Date endDatetime = DateUtil.getEndDatetime(req.getEndDatetime());
+
         if (startDatetime.after(endDatetime)) {
             throw new BizException("xn0000", "请假开始时间不能晚于结束时间！");
         }

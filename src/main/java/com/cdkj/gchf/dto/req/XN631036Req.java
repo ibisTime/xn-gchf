@@ -21,6 +21,9 @@ public class XN631036Req extends APageReq {
      */
     private static final long serialVersionUID = -2933873153129154020L;
 
+    // 编号
+    private String code;
+
     // （选填）上级部门编号
     private String parentCode;
 
@@ -29,6 +32,9 @@ public class XN631036Req extends APageReq {
 
     // 项目编号
     private String projectCode;
+
+    // 查询方向（1上级/2下级）
+    private String direction;
 
     public String getProjectCode() {
         return projectCode;
@@ -52,6 +58,22 @@ public class XN631036Req extends APageReq {
 
     public void setParentCode(String parentCode) {
         this.parentCode = parentCode;
+    }
+
+    public String getDirection() {
+        return direction;
+    }
+
+    public void setDirection(String direction) {
+        this.direction = direction;
+    }
+
+    public String getCode() {
+        return code;
+    }
+
+    public void setCode(String code) {
+        this.code = code;
     }
 
 }

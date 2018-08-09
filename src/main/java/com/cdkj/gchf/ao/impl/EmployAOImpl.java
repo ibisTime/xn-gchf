@@ -3,6 +3,7 @@ package com.cdkj.gchf.ao.impl;
 import java.util.Date;
 import java.util.List;
 
+import org.apache.commons.collections.CollectionUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,6 +16,7 @@ import com.cdkj.gchf.bo.IBankCardBO;
 import com.cdkj.gchf.bo.ICcontractBO;
 import com.cdkj.gchf.bo.IDepartmentBO;
 import com.cdkj.gchf.bo.IEmployBO;
+import com.cdkj.gchf.bo.ILeaveBO;
 import com.cdkj.gchf.bo.IProjectBO;
 import com.cdkj.gchf.bo.IReportBO;
 import com.cdkj.gchf.bo.IStaffBO;
@@ -29,6 +31,7 @@ import com.cdkj.gchf.domain.Attendance;
 import com.cdkj.gchf.domain.BankCard;
 import com.cdkj.gchf.domain.Department;
 import com.cdkj.gchf.domain.Employ;
+import com.cdkj.gchf.domain.Leave;
 import com.cdkj.gchf.domain.Project;
 import com.cdkj.gchf.domain.Report;
 import com.cdkj.gchf.domain.Staff;
@@ -78,6 +81,9 @@ public class EmployAOImpl implements IEmployAO {
 
     @Autowired
     private IBankCardBO bankCardBO;
+
+    @Autowired
+    private ILeaveBO leaveBO;
 
     @Override
     @Transactional
@@ -292,16 +298,18 @@ public class EmployAOImpl implements IEmployAO {
         return name;
     }
 
-    // 每天凌晨将请假到期的员工更新为在职
+    // 每天凌晨更新员工的请假和在职状态
     @Override
     public void updateEmployStatusDaily() {
-        Employ eCondition = new Employ();
-        eCondition.setStatus(EEmployStatus.Not_Leave.getCode());
-        List<Employ> eList = employBO.queryEmployList(eCondition);
         logger.info("===========开始更新员工状态==============");
 
+        // 将员工的请假状态更新为在职状态
+        Employ eCondition = new Employ();
+        eCondition.setStatus(EEmployStatus.Hoilday.getCode());
+        List<Employ> eList = employBO.queryEmployList(eCondition);
+
+        String workStatus = EEmployStatus.Work.getCode();
         for (Employ employ : eList) {
-            String status = EEmployStatus.Work.getCode();
             if (employ.getStartDatetime() != null
                     && employ.getLastLeavingDays() != null) {
                 // 如果今天请假则跳出循环，请假开始时间也算为1天
@@ -311,8 +319,25 @@ public class EmployAOImpl implements IEmployAO {
                     break;
                 }
             }
-            employ.setStatus(status);
+            employ.setStatus(workStatus);
             employBO.updateStatus(employ);
+        }
+
+        // 将员工的在职状态更新为请假状态
+        String todayDate = DateUtil.dateToStr(new Date(),
+            DateUtil.FRONT_DATE_FORMAT_STRING);
+        String leaveStatus = EEmployStatus.Hoilday.getCode();
+
+        Leave leaveCondition = new Leave();
+        leaveCondition.setStartDatetime(DateUtil.getStartDatetime(todayDate));
+        List<Leave> leaveList = leaveBO.queryLeaveList(leaveCondition);
+
+        if (CollectionUtils.isNotEmpty(leaveList)) {
+            for (Leave leave : leaveList) {
+                Employ employ = employBO.getEmploy(leave.getEmployCode());
+                employ.setStatus(leaveStatus);
+                employBO.updateStatus(employ);
+            }
         }
         logger.info("===========结束更新员工状态==============");
     }

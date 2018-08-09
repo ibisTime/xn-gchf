@@ -30,6 +30,8 @@ public class XN631036 extends AProcessor {
         condition.setParentCode(req.getParentCode());
         condition.setKeyword(req.getKeyword());
         condition.setProjectCode(req.getProjectCode());
+        condition.setDirection(req.getDirection());
+        condition.setCode(req.getCode());
 
         String orderColumn = req.getOrderColumn();
         if (StringUtils.isBlank(orderColumn)) {

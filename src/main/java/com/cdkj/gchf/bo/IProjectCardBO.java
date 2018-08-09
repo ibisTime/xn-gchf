@@ -7,10 +7,7 @@ import com.cdkj.gchf.bo.base.IPaginableBO;
 import com.cdkj.gchf.domain.ProjectCard;
 
 public interface IProjectCardBO extends IPaginableBO<ProjectCard> {
-    public void saveProjectCard(String projectCode, String bankCode,
-            String bankName, String accountName, String bankCardNumber,
-            String subbranch, String updater, Date updateDatetime,
-            String remark);
+    public void saveProjectCard(String projectCode);
 
     public void refreshProjectCard(String code, String bankCode,
             String bankName, String accountName, String bankCardNumber,

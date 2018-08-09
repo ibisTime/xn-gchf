@@ -7,13 +7,13 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import com.cdkj.gchf.bo.IProjectCardBO;
 import com.cdkj.gchf.bo.IProjectBO;
+import com.cdkj.gchf.bo.IProjectCardBO;
 import com.cdkj.gchf.bo.base.PaginableBOImpl;
 import com.cdkj.gchf.core.OrderNoGenerater;
 import com.cdkj.gchf.dao.IProjectCardDAO;
-import com.cdkj.gchf.domain.ProjectCard;
 import com.cdkj.gchf.domain.Project;
+import com.cdkj.gchf.domain.ProjectCard;
 import com.cdkj.gchf.enums.EBankCardStatus;
 import com.cdkj.gchf.enums.EGeneratePrefix;
 
@@ -26,28 +26,16 @@ public class ProjectCardBOImpl extends PaginableBOImpl<ProjectCard>
     @Autowired
     private IProjectBO projectBO;
 
-    public void saveProjectCard(String projectCode, String bankCode,
-            String bankName, String accountName, String bankCardNumber,
-            String subbranch, String updater, Date updateDatetime,
-            String remark) {
+    public void saveProjectCard(String projectCode) {
         ProjectCard data = new ProjectCard();
 
         String code = OrderNoGenerater
             .generate(EGeneratePrefix.CompanyBank.getCode());
         data.setCode(code);
         data.setProjectCode(projectCode);
-
-        data.setBankCode(bankCode);
-        data.setBankName(bankName);
-        data.setAccountName(accountName);
-        data.setBankcardNumber(bankCardNumber);
-        data.setSubbranch(subbranch);
-
         data.setCreateDatetime(new Date());
         data.setStatus(EBankCardStatus.Normal.getCode());
-        data.setUpdater(updater);
-        data.setUpdateDatetime(updateDatetime);
-        data.setRemark(remark);
+        data.setUpdateDatetime(new Date());
 
         Project project = projectBO.getProject(projectCode);
         if (null != project) {
@@ -89,8 +77,10 @@ public class ProjectCardBOImpl extends PaginableBOImpl<ProjectCard>
             condition.setCode(code);
             data = projectCardDAO.select(condition);
             if (data != null) {
-                data.setBankSubbranch(
-                    data.getBankName().concat(data.getSubbranch()));
+                if (null != data.getBankName()) {
+                    data.setBankSubbranch(
+                        data.getBankName().concat(data.getSubbranch()));
+                }
             }
         }
         return data;
@@ -104,8 +94,10 @@ public class ProjectCardBOImpl extends PaginableBOImpl<ProjectCard>
             condition.setProjectCode(projectCode);
             data = projectCardDAO.select(condition);
             if (data != null) {
-                data.setBankSubbranch(
-                    data.getBankName().concat(data.getSubbranch()));
+                if (null != data.getBankName()) {
+                    data.setBankSubbranch(
+                        data.getBankName().concat(data.getSubbranch()));
+                }
             }
         }
         return data;

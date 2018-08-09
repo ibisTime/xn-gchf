@@ -1,7 +1,10 @@
 package com.cdkj.gchf.ao.impl;
 
+import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -49,11 +52,27 @@ public class CcontractAOImpl implements ICcontractAO {
             throw new BizException("xn00000", "该项目还未通过审核");
         }
 
-        return ccontractBO.saveCcontract(employ.getCode(),
-            employ.getStaffCode(), employ.getStaffName(),
-            employ.getStaffMobile(), employ.getProjectCode(),
-            employ.getProjectName(), req.getContentPic(), req.getUpdater(),
-            req.getRemark());
+        StringBuffer stringBuffer = new StringBuffer();
+        if (CollectionUtils.isNotEmpty(req.getContentPicList())) {
+            for (String contentPic : req.getContentPicList()) {
+                stringBuffer.append(",").append(contentPic);
+            }
+        }
+
+        // 存在合同时修改，不存在时添加
+        Ccontract ccontract = ccontractBO
+            .getEmployCcontract(req.getEmployCode());
+        if (null == ccontract) {
+            return ccontractBO.saveCcontract(employ.getCode(),
+                employ.getStaffCode(), employ.getStaffName(),
+                employ.getStaffMobile(), employ.getProjectCode(),
+                employ.getProjectName(), stringBuffer.toString(),
+                req.getUpdater(), req.getRemark());
+        } else {
+            ccontractBO.refreshCcontract(ccontract.getCode(),
+                stringBuffer.toString(), req.getUpdater(), req.getRemark());
+            return ccontract.getCode();
+        }
     }
 
     @Override
@@ -98,6 +117,17 @@ public class CcontractAOImpl implements ICcontractAO {
 
     private void initCcontract(Ccontract data) {
         data.setUpdateName(getName(data.getUpdater()));
+
+        List<String> contentPicList = new ArrayList<String>();
+        if (StringUtils.isNotBlank(data.getContentPic())) {
+            String[] contentPicArray = data.getContentPic().split(",");
+            for (String contentPic : contentPicArray) {
+                if (StringUtils.isNotBlank(contentPic)) {
+                    contentPicList.add(contentPic);
+                }
+            }
+        }
+        data.setContentPicList(contentPicList);
     }
 
     private String getName(String userId) {

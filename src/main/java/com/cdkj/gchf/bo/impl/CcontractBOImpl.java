@@ -96,6 +96,17 @@ public class CcontractBOImpl extends PaginableBOImpl<Ccontract>
     }
 
     @Override
+    public Ccontract getEmployCcontract(String employCode) {
+        Ccontract data = null;
+        if (StringUtils.isNotBlank(employCode)) {
+            Ccontract condition = new Ccontract();
+            condition.setEmployCode(employCode);
+            data = ccontractDAO.select(condition);
+        }
+        return data;
+    }
+
+    @Override
     public Ccontract isExist(String projectCode, String staffCode) {
         Ccontract condition = new Ccontract();
         condition.setProjectCode(projectCode);
@@ -103,4 +114,5 @@ public class CcontractBOImpl extends PaginableBOImpl<Ccontract>
         return ccontractDAO.select(condition);
 
     }
+
 }

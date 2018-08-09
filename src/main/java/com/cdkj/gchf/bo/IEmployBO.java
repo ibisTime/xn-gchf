@@ -24,9 +24,6 @@ public interface IEmployBO extends IPaginableBO<Employ> {
     // 更新状态
     public void updateStatus(Employ employ);
 
-    // 更新离职状态
-    public void updateLeavingStatus(Employ employ);
-
     // 更新薪资状态
     public void updateSalaryStatus(Employ employ);
 

@@ -106,6 +106,9 @@ public class ProjectAOImpl implements IProjectAO {
         user.setStatus(EUserStatus.NORMAL.getCode());
         userBO.saveUser(user);
 
+        // 添加项目账户
+        projectCardBO.saveProjectCard(code);
+
         return code;
     }
 
@@ -145,17 +148,11 @@ public class ProjectAOImpl implements IProjectAO {
         projectBO.editProject(data);
 
         // 更新账户信息
-        // 添加公司账户
-        ProjectCard companyCard = projectCardBO
+        ProjectCard projectCard = projectCardBO
             .getProjectCardByProject(req.getCode());
-        if (null != companyCard) {
-            projectCardBO.refreshProjectCard(companyCard.getCode(),
+        if (null != projectCard) {
+            projectCardBO.refreshProjectCard(projectCard.getCode(),
                 req.getBankCode(), req.getBankName(), req.getAccountName(),
-                req.getBankcardNumber(), req.getSubbranch(), req.getUpdater(),
-                data.getUpdateDatetime(), req.getRemark());
-        } else {
-            projectCardBO.saveProjectCard(req.getCode(), req.getBankCode(),
-                req.getBankName(), req.getAccountName(),
                 req.getBankcardNumber(), req.getSubbranch(), req.getUpdater(),
                 data.getUpdateDatetime(), req.getRemark());
         }

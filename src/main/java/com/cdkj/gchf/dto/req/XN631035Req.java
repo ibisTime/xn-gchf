@@ -30,6 +30,9 @@ public class XN631035Req extends APageReq {
     // 项目编号
     private String projectCode;
 
+    // 查询方向（1上级/2下级）
+    private String direction;
+
     public String getKeyword() {
         return keyword;
     }
@@ -52,6 +55,14 @@ public class XN631035Req extends APageReq {
 
     public void setProjectCode(String projectCode) {
         this.projectCode = projectCode;
+    }
+
+    public String getDirection() {
+        return direction;
+    }
+
+    public void setDirection(String direction) {
+        this.direction = direction;
     }
 
 }

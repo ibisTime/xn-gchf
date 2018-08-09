@@ -38,6 +38,9 @@ public class Department extends ABaseDO {
     // 上级部门名称
     private String parentName;
 
+    // 查询方向（1上级/2下级）
+    private String direction;
+
     public void setCode(String code) {
         this.code = code;
     }
@@ -100,6 +103,14 @@ public class Department extends ABaseDO {
 
     public void setParentName(String parentName) {
         this.parentName = parentName;
+    }
+
+    public String getDirection() {
+        return direction;
+    }
+
+    public void setDirection(String direction) {
+        this.direction = direction;
     }
 
 }

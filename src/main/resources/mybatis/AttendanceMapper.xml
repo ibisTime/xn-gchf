@@ -70,6 +70,7 @@
 	<select id="select_attendance" parameterType="attendance" resultMap="attendance_DB_Result">
 		SELECT
 		t.code
+		,employ_code
 		,t.project_code
 		,t.project_name
 		,t.staff_code
@@ -102,6 +103,7 @@
 		INSERT INTO
 		thf_attendance(
 		code
+		,employ_code
 		,project_code
 		,project_name
 		,staff_code
@@ -115,6 +117,7 @@
 		)
 		VALUES(
 		#{code}
+		,#{employCode}
 		,#{projectCode}
 		,#{projectName}
 		,#{staffCode}

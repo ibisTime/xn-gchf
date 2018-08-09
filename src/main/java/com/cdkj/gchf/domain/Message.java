@@ -117,6 +117,9 @@ public class Message extends ABaseDO {
     // 扣款账户名称
     private String account;
 
+    // 承建单位
+    private String companyName;
+
     public void setCode(String code) {
         this.code = code;
     }
@@ -379,6 +382,14 @@ public class Message extends ABaseDO {
 
     public void setAccount(String account) {
         this.account = account;
+    }
+
+    public String getCompanyName() {
+        return companyName;
+    }
+
+    public void setCompanyName(String companyName) {
+        this.companyName = companyName;
     }
 
 }

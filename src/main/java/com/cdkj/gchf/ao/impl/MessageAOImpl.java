@@ -338,13 +338,14 @@ public class MessageAOImpl implements IMessageAO {
 
         Project project = projectBO.getProject(message.getProjectCode());
         if (null != project) {
+            message.setCompanyName(project.getCompanyName());
             message.setProjectChargeUser(project.getChargeUser());
             message.setProjectChargeUserMobile(project.getChargeMobile());
 
-            ProjectCard companyCard = projectCardBO
+            ProjectCard projectCard = projectCardBO
                 .getProjectCardByProject(project.getCode());
-            if (null != companyCard) {
-                message.setAccount(companyCard.getAccountName());
+            if (null != projectCard) {
+                message.setAccount(projectCard.getAccountName());
             }
         }
     }

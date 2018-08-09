@@ -52,8 +52,8 @@ public class LeaveAOImpl implements ILeaveAO {
             DateUtil.FRONT_DATE_FORMAT_STRING);
         Date endDatetime = DateUtil.strToDate(req.getEndDatetime(),
             DateUtil.FRONT_DATE_FORMAT_STRING);
-        if (startDatetime == null || endDatetime == null) {
-            throw new BizException("xn0000", "时间格式不正确");
+        if (startDatetime.after(endDatetime)) {
+            throw new BizException("xn0000", "请假开始时间不能晚于结束时间！");
         }
 
         // 请假天数

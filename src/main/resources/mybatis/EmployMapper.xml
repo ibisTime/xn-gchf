@@ -38,6 +38,9 @@
 			<if test="staffCode != null and staffCode != '' ">
 				AND t.staff_code = #{staffCode}
 			</if>
+			<if test="projectName != null and projectName != '' ">
+				AND t.project_name like "%"#{projectName}"%"
+			</if>
 			<if test="departmentCode != null and departmentCode != '' ">
 				AND t.department_code = #{departmentCode}
 			</if>

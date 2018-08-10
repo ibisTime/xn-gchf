@@ -129,7 +129,6 @@ CREATE TABLE `thf_supervise` (
   `remark` varchar(255) COMMENT '备注',
   PRIMARY KEY (`code`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-##SU201808011128113874417
 INSERT INTO `thf_supervise` (`code`, `province`, `city`, `area`) VALUES ('SU201808011128113874417', '浙江省', '丽水市', '缙云县');
 
 CREATE TABLE `thf_operator_guide` (

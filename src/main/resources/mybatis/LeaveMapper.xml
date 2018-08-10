@@ -44,8 +44,11 @@
 					</foreach>
 				</when>
 			</choose>
-			<if test="startDatetime != null and startDatetime != '' ">
+			<if test="startDatetime != null and startDatetime != '' and endDatetime == null ">
 				<![CDATA[AND t.start_datetime = #{startDatetime}]]>
+			</if>
+			<if test="startDatetime != null and startDatetime != '' and endDatetime != null and endDatetime != '' ">
+				<![CDATA[AND t.start_datetime >= #{startDatetime} AND t.end_datetime <= #{endDatetime}]]>
 			</if>
 		</trim>
 	</sql>

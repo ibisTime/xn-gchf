@@ -286,6 +286,12 @@ public class EmployAOImpl implements IEmployAO {
         // 银行卡
         BankCard bankCard = bankCardBO.getEmployBankCard(employ.getCode());
         employ.setBankCard(bankCard);
+
+        // 项目信息
+        Project project = projectBO.getProject(employ.getProjectCode());
+        if (null != project) {
+            employ.setCompanyName(project.getCompanyName());
+        }
     }
 
     private String getName(String userId) {

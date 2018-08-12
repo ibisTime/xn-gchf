@@ -9,11 +9,13 @@ import org.springframework.stereotype.Component;
 
 import com.cdkj.gchf.bo.IDepartmentBO;
 import com.cdkj.gchf.bo.IEmployBO;
+import com.cdkj.gchf.bo.IProjectBO;
 import com.cdkj.gchf.bo.base.PaginableBOImpl;
 import com.cdkj.gchf.common.DateUtil;
 import com.cdkj.gchf.dao.IEmployDAO;
 import com.cdkj.gchf.domain.Department;
 import com.cdkj.gchf.domain.Employ;
+import com.cdkj.gchf.domain.Project;
 import com.cdkj.gchf.enums.EEmployStatus;
 import com.cdkj.gchf.exception.BizException;
 
@@ -25,6 +27,9 @@ public class EmployBOImpl extends PaginableBOImpl<Employ> implements IEmployBO {
 
     @Autowired
     private IDepartmentBO departmentBO;
+
+    @Autowired
+    IProjectBO projectBO;
 
     public void joinIn(Employ data) {
         employDAO.insert(data);
@@ -136,5 +141,11 @@ public class EmployBOImpl extends PaginableBOImpl<Employ> implements IEmployBO {
         employ.setDepartmentName(department.getName());
         employ.setDepartmentLeader(department.getLeader());
         employ.setDepartmentLeaderMobile(department.getLeadeMobile());
+
+        // 项目信息
+        Project project = projectBO.getProject(employ.getProjectCode());
+        if (null != project) {
+            employ.setCompanyName(project.getCompanyName());
+        }
     }
 }

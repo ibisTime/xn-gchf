@@ -101,6 +101,17 @@ public class Employ extends ABaseDO {
     // 银行卡
     private BankCard bankCard;
 
+    // 承建单位
+    private String companyName;
+
+    public String getCompanyName() {
+        return companyName;
+    }
+
+    public void setCompanyName(String companyName) {
+        this.companyName = companyName;
+    }
+
     public void setCode(String code) {
         this.code = code;
     }

@@ -71,6 +71,16 @@ public class SalaryBOImpl extends PaginableBOImpl<Salary> implements ISalaryBO {
         if (StringUtils.isNotBlank(employCode)) {
             Salary condition = new Salary();
             condition.setEmployCode(employCode);
+
+            // 只统计已发工资的记录
+            List<String> statusList = new ArrayList<String>();
+            statusList.add(ESalaryStatus.Payed.getCode());
+            statusList.add(ESalaryStatus.Pay_Portion.getCode());
+            statusList.add(ESalaryStatus.Pay_Delay.getCode());
+            statusList.add(ESalaryStatus.Pay_Delay_Portion.getCode());
+            statusList.add(ESalaryStatus.Pay_Again.getCode());
+            condition.setStatusList(statusList);
+
             list = salaryDAO.selectList(condition);
         }
         return list;

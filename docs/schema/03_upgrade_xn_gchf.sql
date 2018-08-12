@@ -240,3 +240,4 @@ DROP COLUMN `company_code`,
 DROP COLUMN `up_user`;
 
 update thf_project set status = 2 where status = 3;
+update thf_employ set position = 0;

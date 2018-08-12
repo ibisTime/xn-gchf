@@ -10,6 +10,7 @@ import com.cdkj.gchf.ao.IEventRemindAO;
 import com.cdkj.gchf.bo.IEventRemindBO;
 import com.cdkj.gchf.bo.IUserBO;
 import com.cdkj.gchf.bo.base.Paginable;
+import com.cdkj.gchf.common.PhoneUtil;
 import com.cdkj.gchf.core.OrderNoGenerater;
 import com.cdkj.gchf.domain.EventRemind;
 import com.cdkj.gchf.domain.User;
@@ -29,6 +30,8 @@ public class EventRemindAOImpl implements IEventRemindAO {
 
     @Override
     public String addEventRemind(XN631510Req req) {
+        PhoneUtil.checkMobile(req.getMobile());
+
         EventRemind data = new EventRemind();
         String code = OrderNoGenerater
             .generate(EGeneratePrefix.EventRemind.getCode());

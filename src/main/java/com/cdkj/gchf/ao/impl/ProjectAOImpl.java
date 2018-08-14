@@ -119,6 +119,13 @@ public class ProjectAOImpl implements IProjectAO {
         if (EProjectStatus.End.getCode().equals(data.getStatus())) {
             throw new BizException("xn000", "该项目已结束，无法编辑");
         }
+        if (DateUtil
+            .strToDate(req.getAttendanceStarttime(),
+                DateUtil.DATA_TIME_PATTERN_7)
+            .after(DateUtil.strToDate(req.getAttendanceEndtime(),
+                DateUtil.DATA_TIME_PATTERN_7))) {
+            throw new BizException("xn000", "上班时间不能晚于下班时间！");
+        }
 
         data.setCompanyName(req.getCompanyName());
         data.setChargeUser(req.getChargeUser());

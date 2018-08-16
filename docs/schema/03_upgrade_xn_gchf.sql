@@ -144,13 +144,16 @@ CREATE TABLE `thf_operator_guide` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 ALTER TABLE `thf_attendance` 
+DROP COLUMN `staff_mobile`,
+ADD COLUMN `employ_code` VARCHAR(32) NULL COMMENT '雇佣编号' AFTER `code`;
+
+ALTER TABLE `thf_attendance` 
 CHANGE COLUMN `code` `code` VARCHAR(32) CHARACTER SET 'utf8' COLLATE 'utf8_general_ci' NOT NULL COMMENT '编号' ,
 CHANGE COLUMN `employ_code` `employ_code` VARCHAR(32) CHARACTER SET 'utf8' COLLATE 'utf8_general_ci' NULL DEFAULT NULL COMMENT '雇佣编号' ,
 CHANGE COLUMN `project_code` `project_code` VARCHAR(32) CHARACTER SET 'utf8' COLLATE 'utf8_general_ci' NULL DEFAULT NULL COMMENT '项目编号' ,
 CHANGE COLUMN `project_name` `project_name` VARCHAR(255) CHARACTER SET 'utf8' COLLATE 'utf8_general_ci' NULL DEFAULT NULL COMMENT '项目名称' ,
 CHANGE COLUMN `staff_code` `staff_code` VARCHAR(32) CHARACTER SET 'utf8' COLLATE 'utf8_general_ci' NULL DEFAULT NULL COMMENT '员工编号' ,
 CHANGE COLUMN `staff_name` `staff_name` VARCHAR(32) CHARACTER SET 'utf8' COLLATE 'utf8_general_ci' NULL DEFAULT NULL COMMENT '员工姓名' ,
-CHANGE COLUMN `staff_mobile` `staff_mobile` VARCHAR(16) CHARACTER SET 'utf8' COLLATE 'utf8_general_ci' NULL DEFAULT NULL COMMENT '员工手机号' ,
 CHANGE COLUMN `status` `status` VARCHAR(4) CHARACTER SET 'utf8' COLLATE 'utf8_general_ci' NULL DEFAULT NULL COMMENT '出工状态' ,
 CHANGE COLUMN `start_datetime` `start_datetime` VARCHAR(64) CHARACTER SET 'utf8' COLLATE 'utf8_general_ci' NULL DEFAULT NULL COMMENT '上班时间' ,
 CHANGE COLUMN `end_datetime` `end_datetime` VARCHAR(64) CHARACTER SET 'utf8' COLLATE 'utf8_general_ci' NULL DEFAULT NULL COMMENT '下班时间' ,
@@ -163,9 +166,9 @@ update thf_user set organization_code = (select code from thf_project where thf_
 update thf_user set organization_code = (select code from thf_subbranch where thf_user.subbranch = thf_subbranch.subbranch_name and thf_user.bank_name = thf_subbranch.bank_name) where type = 'B';#银行端
 update thf_user set organization_code = (select code from thf_supervise where thf_user.province = thf_supervise.province and thf_user.city = thf_supervise.city and thf_user.area = thf_supervise.area) where type = 'S';#监管端
 update thf_user set user_refree = 'USYS201800000000001' where user_id <> 'USYS201800000000001';
-INSERT INTO `dev_xn_gchf`.`thf_user` (`user_id`, `real_name`, `type`, `organization_code`, `login_name`, `mobile`, `login_pwd`, `login_pwd_strength`, `user_refree`, `create_datetime`, `role_code`, `status`, `remark`) VALUES ('U201806271554037471384', '朱小庭', 'O', 'P201806271603255348119', '九州新时代商住楼', '13757840919', 'c8837b23ff8aaa8a2dde915473ce0991', '1', 'USYS201800000000001', '2018-06-27 15:54:03', 'RO201800000000000003', '0', '6月27日');
-INSERT INTO `dev_xn_gchf`.`thf_user` (`user_id`, `real_name`, `type`, `organization_code`, `login_name`, `mobile`, `login_pwd`, `login_pwd_strength`, `user_refree`, `create_datetime`, `role_code`, `status`, `remark`) VALUES ('U201806271554037471385', '朱小庭', 'O', 'P201807141540459457634', '缙云县工艺美术学校迁建工程2标段', '13757840919', 'c8837b23ff8aaa8a2dde915473ce0991', '1', 'USYS201800000000001', '2018-06-27 15:54:03', 'RO201800000000000003', '0', '6月27日');
-DELETE FROM `dev_xn_gchf`.`thf_user` WHERE `user_id`='U201806271554037471383';
+INSERT INTO `thf_user` (`user_id`, `real_name`, `type`, `organization_code`, `login_name`, `mobile`, `login_pwd`, `login_pwd_strength`, `user_refree`, `create_datetime`, `role_code`, `status`, `remark`) VALUES ('U201806271554037471384', '朱小庭', 'O', 'P201806271603255348119', '九州新时代商住楼', '13757840919', 'c8837b23ff8aaa8a2dde915473ce0991', '1', 'USYS201800000000001', '2018-06-27 15:54:03', 'RO201800000000000003', '0', '6月27日');
+INSERT INTO `thf_user` (`user_id`, `real_name`, `type`, `organization_code`, `login_name`, `mobile`, `login_pwd`, `login_pwd_strength`, `user_refree`, `create_datetime`, `role_code`, `status`, `remark`) VALUES ('U201806271554037471385', '朱小庭', 'O', 'P201807141540459457634', '缙云县工艺美术学校迁建工程2标段', '13757840919', 'c8837b23ff8aaa8a2dde915473ce0991', '1', 'USYS201800000000001', '2018-06-27 15:54:03', 'RO201800000000000003', '0', '6月27日');
+DELETE FROM `thf_user` WHERE `user_id`='U201806271554037471383';
 
 ALTER TABLE `thf_event_remind` 
 ADD COLUMN `system_code` VARCHAR(4) NULL COMMENT '系统编号（B/S）' AFTER `code`,
@@ -185,9 +188,6 @@ ADD COLUMN `project_name` VARCHAR(255) NULL COMMENT '项目名称' AFTER `projec
 update thf_bank_card set employ_code = (select code from thf_employ where thf_bank_card.project_code = thf_employ.project_code and thf_bank_card.staff_code = thf_employ.staff_code);
 update thf_bank_card set project_name = (select name from thf_project where thf_bank_card.project_code = thf_project.code);
 
-ALTER TABLE `thf_attendance` 
-DROP COLUMN `staff_mobile`,
-ADD COLUMN `employ_code` VARCHAR(32) NULL COMMENT '雇佣编号' AFTER `code`;
 update thf_attendance set employ_code = (select code from thf_employ where thf_attendance.project_code = thf_employ.project_code and thf_attendance.staff_code = thf_employ.staff_code);
 
 ALTER TABLE `thf_salary` 

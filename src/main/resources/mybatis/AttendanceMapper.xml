@@ -57,7 +57,7 @@
 				AND t.staff_code = #{staffCode}
 			</if>
 			<if test="keyword != null and keyword != '' ">
-				AND (t.staff_mobile like "%"#{keyword}"%" OR t.staff_name like "%"#{keyword}"%") 
+				AND "%"#{keyword}"%" OR t.staff_name like "%"#{keyword}"%"
 			</if>
 			<if test="createDatetimeStart != null and createDatetimeStart != '' ">
 				<![CDATA[AND t.create_datetime >= #{createDatetimeStart}]]>

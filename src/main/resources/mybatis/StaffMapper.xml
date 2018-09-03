@@ -53,7 +53,10 @@
 				AND t.updater = #{updater}
 			</if>
 			<if test="keyword != null and keyword != '' ">
-				AND (t.name like "%"#{keyword}"%" OR  t.mobile like "%"#{keyword}"%" OR t.id_no like "%"#{keyword}"%")
+				AND (t.name like "%"#{keyword}"%" OR t.mobile like "%"#{keyword}"%" OR t.id_no like "%"#{keyword}"%")
+			</if>
+			<if test="keyword1 != null and keyword1 != '' ">
+				AND (t.name = #{keyword} OR t.id_no = #{keyword})
 			</if>
 			<if test="feat != null and feat != '' ">
 				AND t.feat = #{feat}
@@ -63,7 +66,6 @@
 					(SELECT 1 FROM thf_employ 
 								WHERE thf_employ.staff_code = t.code 
 									AND project_code IN (SELECT code FROM thf_project WHERE province = #{province} AND city = #{city} AND area = #{area}))
-				
 			</if>
 		</trim>
 	</sql>

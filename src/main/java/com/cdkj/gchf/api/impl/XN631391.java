@@ -26,8 +26,11 @@ public class XN631391 extends AProcessor {
 
     @Override
     public Object doBusiness() throws BizException {
-        attendanceAO.endWorkManualClockIn(req.getCodeList(), DateUtil
-            .strToDate(req.getEndDatetime(), DateUtil.DATA_TIME_PATTERN_1));
+        attendanceAO.endWorkManualClockIn(req.getCodeList(),
+            DateUtil.strToDate(req.getAttendanceStartDatetime(),
+                DateUtil.DATA_TIME_PATTERN_1),
+            DateUtil.strToDate(req.getAttendanceEndDatetime(),
+                DateUtil.DATA_TIME_PATTERN_1));
         return new BooleanRes(true);
     }
 

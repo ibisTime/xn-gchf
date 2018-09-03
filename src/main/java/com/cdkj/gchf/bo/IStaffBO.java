@@ -34,6 +34,9 @@ public interface IStaffBO extends IPaginableBO<Staff> {
     // 根据身份证查询员工
     public Staff getStaffByIdNo(String idNo);
 
+    // 根据关键字1查询员工
+    public Staff getStaffByKeyword1(String keyword1);
+
     // 查询员工简介信息
     public Staff getStaffBrief(String code);
 }

@@ -77,6 +77,12 @@ public class Attendance extends ABaseDO {
     // 状态列表
     private List<String> statusList;
 
+    // 考勤开始时间
+    private Date attendanceStartDatetime;
+
+    // 考勤结束时间
+    private Date attendanceEndDatetime;
+
     public void setCode(String code) {
         this.code = code;
     }
@@ -235,6 +241,22 @@ public class Attendance extends ABaseDO {
 
     public void setEmployCode(String employCode) {
         this.employCode = employCode;
+    }
+
+    public Date getAttendanceStartDatetime() {
+        return attendanceStartDatetime;
+    }
+
+    public void setAttendanceStartDatetime(Date attendanceStartDatetime) {
+        this.attendanceStartDatetime = attendanceStartDatetime;
+    }
+
+    public Date getAttendanceEndDatetime() {
+        return attendanceEndDatetime;
+    }
+
+    public void setAttendanceEndDatetime(Date attendanceEndDatetime) {
+        this.attendanceEndDatetime = attendanceEndDatetime;
     }
 
 }

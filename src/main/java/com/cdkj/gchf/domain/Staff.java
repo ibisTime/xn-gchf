@@ -85,8 +85,11 @@ public class Staff extends ABaseDO {
     private String contactsMobile;
 
     // ***************db***********
-    // 关键字模糊查询
+    // 关键字模糊查询（Web端：手机号、姓名、身份证）
     private String keyword;
+
+    // 关键字查询（手持端：姓名、身份证）
+    private String keyword1;
 
     // 工资卡
     private BankCard bankCard;
@@ -126,6 +129,12 @@ public class Staff extends ABaseDO {
 
     // 雇佣区域（监管端查询时使用）
     private String area;
+
+    // 免冠照信息(1、已拍摄/0、未拍摄)
+    private String pictStatus;
+
+    // 特征值状态(1、有效/0、无效)
+    private String featStatus;
 
     public void setCode(String code) {
         this.code = code;
@@ -425,6 +434,30 @@ public class Staff extends ABaseDO {
 
     public void setArea(String area) {
         this.area = area;
+    }
+
+    public String getKeyword1() {
+        return keyword1;
+    }
+
+    public void setKeyword1(String keyword1) {
+        this.keyword1 = keyword1;
+    }
+
+    public String getPictStatus() {
+        return pictStatus;
+    }
+
+    public void setPictStatus(String pictStatus) {
+        this.pictStatus = pictStatus;
+    }
+
+    public String getFeatStatus() {
+        return featStatus;
+    }
+
+    public void setFeatStatus(String featStatus) {
+        this.featStatus = featStatus;
     }
 
 }

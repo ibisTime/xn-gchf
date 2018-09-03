@@ -190,8 +190,9 @@ public class StaffAOImpl implements IStaffAO {
     }
 
     @Override
-    public Staff getStaffByIdNo(String idNo, List<String> projectCodeList) {
-        Staff data = staffBO.getStaffByIdNo(idNo);
+    public Staff getStaffByKeyword1(String keyword1,
+            List<String> projectCodeList) {
+        Staff data = staffBO.getStaffByKeyword1(keyword1);
         if (null == data) {
             if (CollectionUtils.isNotEmpty(projectCodeList)) {
                 // 手持端查询直接提示异常

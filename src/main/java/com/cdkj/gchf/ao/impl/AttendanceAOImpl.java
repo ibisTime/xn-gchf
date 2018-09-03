@@ -53,15 +53,16 @@ public class AttendanceAOImpl implements IAttendanceAO {
     @Override
     @Transactional
     public void startWorkManualClockIn(List<String> codeList,
-            Date startDatetime) {
+            Date attendanceStartDatetime, Date attendanceEndDatetime) {
         for (String code : codeList) {
             Attendance data = attendanceBO.getAttendance(code);
-            if (null == data) {
-                throw new BizException("xn00000", "没有该员工今日考勤");
+
+            if (attendanceStartDatetime.after(attendanceEndDatetime)) {
+                throw new BizException("xn00000", "开始时间无法晚于结束时间，请重新输入！");
             }
             if (null != data.getEndDatetime()
-                    && startDatetime.after(data.getEndDatetime())) {
-                throw new BizException("xn00000", "上班时间无法大于下班时间，请重新输入！");
+                    && attendanceEndDatetime.after(data.getEndDatetime())) {
+                throw new BizException("xn00000", "上班时间无法晚于下班时间，请重新输入！");
             }
             if (EAttendanceStatus.Paied.getCode().equals(data.getStatus())
                     || EAttendanceStatus.Absent.getCode()
@@ -74,21 +75,27 @@ public class AttendanceAOImpl implements IAttendanceAO {
                 status = EAttendanceStatus.Unpaied.getCode();
             }
 
+            Date startDatetime = new Date(
+                random(attendanceStartDatetime.getTime(),
+                    attendanceEndDatetime.getTime()));
+
             attendanceBO.startWorkManualClockIn(code, status, startDatetime);
         }
     }
 
     @Override
     @Transactional
-    public void endWorkManualClockIn(List<String> codeList, Date endDatetime) {
+    public void endWorkManualClockIn(List<String> codeList,
+            Date attendanceStartDatetime, Date attendanceEndDatetime) {
         for (String code : codeList) {
             Attendance data = attendanceBO.getAttendance(code);
-            if (null == data) {
-                throw new BizException("xn00000", "没有该员工今日考勤");
+
+            if (attendanceEndDatetime.before(attendanceStartDatetime)) {
+                throw new BizException("xn00000", "结束时间无法早于开始时间，请重新输入！");
             }
             if (null != data.getStartDatetime()
-                    && endDatetime.before(data.getStartDatetime())) {
-                throw new BizException("xn00000", "下班时间无法小于上班时间，请重新输入！");
+                    && attendanceEndDatetime.before(data.getStartDatetime())) {
+                throw new BizException("xn00000", "下班时间无法早于上班时间，请重新输入！");
             }
             if (EAttendanceStatus.Paied.getCode().equals(data.getStatus())
                     || EAttendanceStatus.Absent.getCode()
@@ -100,6 +107,10 @@ public class AttendanceAOImpl implements IAttendanceAO {
             if (null != data.getStartDatetime()) {
                 status = EAttendanceStatus.Unpaied.getCode();
             }
+
+            Date endDatetime = new Date(
+                random(attendanceStartDatetime.getTime(),
+                    attendanceEndDatetime.getTime()));
 
             attendanceBO.endWorkManualClockIn(code, status, endDatetime);
         }
@@ -231,6 +242,15 @@ public class AttendanceAOImpl implements IAttendanceAO {
             reportBO.resetTodayDays(project.getCode());
         }
         logger.info("===========生成考勤结束==============");
+    }
+
+    private static long random(long begin, long end) {
+        long rtn = begin + (long) (Math.random() * (end - begin));
+        // 如果返回的是开始时间和结束时间，则递归调用本函数查找随机值
+        if (rtn == begin || rtn == end) {
+            return random(begin, end);
+        }
+        return rtn;
     }
 
     @Override

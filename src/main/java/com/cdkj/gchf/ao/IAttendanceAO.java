@@ -14,10 +14,11 @@ public interface IAttendanceAO {
 
     // 上班考勤手动打卡
     public void startWorkManualClockIn(List<String> codeList,
-            Date startDatetime);
+            Date attendanceStartDatetime, Date attendanceEndDatetime);
 
     // 下班考勤手动打卡
-    public void endWorkManualClockIn(List<String> codeList, Date endDatetime);
+    public void endWorkManualClockIn(List<String> codeList,
+            Date attendanceStartDatetime, Date attendanceEndDatetime);
 
     // 闸机考勤系统调用
     public String manchineClockIn(String sim, String projectCode,

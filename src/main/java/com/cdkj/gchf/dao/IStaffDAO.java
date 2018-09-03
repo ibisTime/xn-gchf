@@ -23,6 +23,9 @@ public interface IStaffDAO extends IBaseDAO<Staff> {
     // 查询员工简介信息
     public Staff selectBrief(Staff data);
 
+    // 查询员工免冠照
+    public List<Staff> selectStaffPic(Staff condition, int start, int count);
+
     // 列表查询员工简介
     public List<Staff> selectListBrief(Staff condition, int start, int count);
 }

@@ -91,8 +91,11 @@ public class Staff extends ABaseDO {
     // 工资卡
     private BankCard bankCard;
 
-    // 公司编号List
+    // 项目编号List
     private List<String> projectCodeList;
+
+    // 项目编号
+    private String projectCode;
 
     // 雇佣List
     private List<Employ> employList;
@@ -126,6 +129,12 @@ public class Staff extends ABaseDO {
 
     // 雇佣区域（监管端查询时使用）
     private String area;
+
+    // 更新开始时间
+    private Date updateDatetimeStart;
+
+    // 更新结束时间
+    private Date updateDatetimeEnd;
 
     public void setCode(String code) {
         this.code = code;
@@ -425,6 +434,30 @@ public class Staff extends ABaseDO {
 
     public void setArea(String area) {
         this.area = area;
+    }
+
+    public Date getUpdateDatetimeStart() {
+        return updateDatetimeStart;
+    }
+
+    public void setUpdateDatetimeStart(Date updateDatetimeStart) {
+        this.updateDatetimeStart = updateDatetimeStart;
+    }
+
+    public Date getUpdateDatetimeEnd() {
+        return updateDatetimeEnd;
+    }
+
+    public void setUpdateDatetimeEnd(Date updateDatetimeEnd) {
+        this.updateDatetimeEnd = updateDatetimeEnd;
+    }
+
+    public String getProjectCode() {
+        return projectCode;
+    }
+
+    public void setProjectCode(String projectCode) {
+        this.projectCode = projectCode;
     }
 
 }

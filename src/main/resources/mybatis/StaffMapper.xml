@@ -58,12 +58,23 @@
 			<if test="feat != null and feat != '' ">
 				AND t.feat = #{feat}
 			</if>
+			<if test="updateDatetimeStart != null and updateDatetimeStart != '' ">
+				<![CDATA[AND t.update_datetime >= #{updateDatetimeStart}]]>
+			</if>
+			<if test="updateDatetimeEnd != null and updateDatetimeEnd != '' ">
+				<![CDATA[AND t.update_datetime <= #{updateDatetimeEnd}]]>
+			</if>
 			<if test="province != null and province != '' and city != null and city != '' and area != null and area != ''">
 				AND EXISTS 
 					(SELECT 1 FROM thf_employ 
 								WHERE thf_employ.staff_code = t.code 
 									AND project_code IN (SELECT code FROM thf_project WHERE province = #{province} AND city = #{city} AND area = #{area}))
-				
+			</if>
+			<if test="projectCode != null and projectCode != ''">
+				AND EXISTS
+					(SELECT 1 FROM thf_employ
+								WHERE thf_employ.staff_code = t.code
+									AND thf_employ.project_code = #{projectCode})
 			</if>
 		</trim>
 	</sql>
@@ -129,6 +140,22 @@
 		
 		,t.contacts
 		,t.contacts_mobile
+		FROM
+		thf_staff t
+		<include refid="where_condition" />
+		<trim prefix="ORDER BY ">
+			<if test="order != null and order != '' ">
+				t.${order}
+			</if>
+		</trim>
+	</select>
+	
+	<select id="select_staffPic" parameterType="staff" resultMap="staff_DB_Result">
+		SELECT
+		t.code
+		,t.name
+		,t.pict1
+		,t.feat
 		FROM
 		thf_staff t
 		<include refid="where_condition" />

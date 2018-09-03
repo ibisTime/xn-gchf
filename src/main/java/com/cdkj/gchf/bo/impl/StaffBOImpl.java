@@ -102,6 +102,12 @@ public class StaffBOImpl extends PaginableBOImpl<Staff> implements IStaffBO {
     }
 
     @Override
+    public List<Staff> queryStaffPicList(Staff condition, int start,
+            int count) {
+        return staffDAO.selectStaffPic(condition, start, count);
+    }
+
+    @Override
     public Staff getStaffByIdNo(String idNo) {
         Staff data = null;
         if (StringUtils.isNotBlank(idNo)) {
@@ -111,4 +117,5 @@ public class StaffBOImpl extends PaginableBOImpl<Staff> implements IStaffBO {
         }
         return data;
     }
+
 }

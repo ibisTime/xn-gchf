@@ -10,6 +10,7 @@ import com.cdkj.gchf.dto.req.XN631410Req;
 import com.cdkj.gchf.dto.req.XN631412Req;
 import com.cdkj.gchf.dto.req.XN631413Req;
 import com.cdkj.gchf.dto.req.XN631414Req;
+import com.cdkj.gchf.dto.res.XN631094Res;
 
 @Component
 public interface IStaffAO {
@@ -25,6 +26,12 @@ public interface IStaffAO {
     public void editIdPict(XN631414Req req);
 
     public void editStaff(XN631412Req req);
+
+    // 定时器每天更新员工特征值
+    public void doUpdateFeatDaily();
+
+    // 更新员工特征值
+    public XN631094Res refreshFeat(String projectCode);
 
     public Paginable<Staff> queryStaffPage(int start, int limit,
             Staff condition);

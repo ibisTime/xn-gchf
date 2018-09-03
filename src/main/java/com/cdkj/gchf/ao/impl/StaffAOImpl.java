@@ -4,9 +4,13 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -38,12 +42,14 @@ import com.cdkj.gchf.dto.req.XN631410Req;
 import com.cdkj.gchf.dto.req.XN631412Req;
 import com.cdkj.gchf.dto.req.XN631413Req;
 import com.cdkj.gchf.dto.req.XN631414Req;
+import com.cdkj.gchf.dto.res.XN631094Res;
 import com.cdkj.gchf.enums.EEmployStatus;
 import com.cdkj.gchf.enums.EGeneratePrefix;
 import com.cdkj.gchf.enums.EIDKind;
 import com.cdkj.gchf.enums.ESalaryStatus;
 import com.cdkj.gchf.enums.EUser;
 import com.cdkj.gchf.exception.BizException;
+import com.cdkj.gchf.http.BizConnecter;
 import com.google.gson.Gson;
 
 @Service
@@ -75,6 +81,8 @@ public class StaffAOImpl implements IStaffAO {
 
     @Autowired
     IDepartmentBO departmentBO;
+
+    private static final Log logger = LogFactory.getLog(StaffAOImpl.class);
 
     @Override
     public String addStaff(XN631410Req req) {
@@ -164,6 +172,98 @@ public class StaffAOImpl implements IStaffAO {
         data.setUpdateDatetime(new Date());
         data.setRemark(req.getRemark());
         staffBO.refreshStaffInfo(data);
+    }
+
+    @Override
+    public XN631094Res refreshFeat(String projectCode) {
+        Staff condition = new Staff();
+        condition.setUpdateDatetimeStart(DateUtil.getTodayStart());
+        condition.setUpdateDatetimeEnd(DateUtil.getTodayEnd());
+
+        // 如果projectCode不为null，则更新所有员工
+        if (null != projectCode) {
+            condition.setProjectCode(projectCode);
+        }
+
+        int start = 0;
+        int count = 0;
+        StringBuffer staffNames = new StringBuffer();
+
+        while (true) {
+
+            List<Staff> staffList = staffBO.queryStaffPicList(condition, start,
+                start + 10);
+            start += 10;
+
+            if (CollectionUtils.isNotEmpty(staffList)) {
+                for (Staff staff : staffList) {
+                    if (refreshStaffFeat(staff)) {
+                        count++;
+                        staffNames.append(staff.getName().trim() + ",");
+                    }
+                }
+            } else {
+                break;
+            }
+
+        }
+
+        return new XN631094Res(count, staffNames.toString());
+    }
+
+    @Override
+    public void doUpdateFeatDaily() {
+        Staff condition = new Staff();
+        condition.setFeat("NOFACE");
+
+        int start = 0;
+
+        while (true) {
+
+            List<Staff> staffList = staffBO.queryStaffPicList(condition, start,
+                start + 10);
+            start += 10;
+
+            if (CollectionUtils.isNotEmpty(staffList)) {
+                for (Staff staff : staffList) {
+                    refreshStaffFeat(staff);
+                }
+            } else {
+                break;
+            }
+
+        }
+
+        logger.info(DateUtil.getTodayStart() + "更新员工特征值成功。");
+    }
+
+    // 识别员工免冠照
+    private boolean refreshStaffFeat(Staff staff) {
+
+        String featResult = BizConnecter.getFeat(staff.getPict1());
+        Pattern pattern = Pattern.compile("(?<=\\{)(.+?)(?=\\})");
+        Matcher matcher = pattern.matcher(featResult);
+        String featString = null;
+        while (matcher.find()) {
+            featString = matcher.group();
+        }
+
+        JSONObject featJson = JSONObject.parseObject("{" + featString + "}");
+        String feat = featJson.getString("data");
+
+        if (!feat.equals("error") && !feat.equals("NOFACE")
+                && !feat.equals(staff.getFeat())) {
+
+            staff.setFeat(feat);
+            staffBO.refreshFeat(staff, staff.getPict1(),
+                featJson.getString("data"), "USYS201800000000001");
+
+            return true;
+
+        }
+
+        return false;
+
     }
 
     @Override

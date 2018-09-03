@@ -36,4 +36,7 @@ public interface IStaffBO extends IPaginableBO<Staff> {
 
     // 查询员工简介信息
     public Staff getStaffBrief(String code);
+
+    // 列表查询员工免冠照
+    public List<Staff> queryStaffPicList(Staff condition, int start, int count);
 }

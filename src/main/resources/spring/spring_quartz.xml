@@ -21,6 +21,7 @@
            	  <ref bean="attendanceDailyTrigger"/> 
            	  <ref bean="salaryDailyTrigger"/> 
            	  <ref bean="nextMonthSalaryTrigger"/> 
+           	  <ref bean="staffFeatTrigger"/> 
  		   </list>  
        </property>  
        <property name="autoStartup" value="true"/>  
@@ -69,6 +70,17 @@
 	<bean id="nextMonthSalaryReport" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">   
         <property name="targetObject" ref="reportAOImpl"/>  
         <property name="targetMethod" value="nextMonthSalary"/>  
+        <property name="concurrent" value="true"/> <!--   是否允许任务并发执行。当值为false时，表示必须等到前一个线程处理完毕后才再启一个新的线程 -->
+	</bean>
+	
+	<!-- 更新人脸特征值 -->
+	<bean id="staffFeatTrigger" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">  
+       <property name="jobDetail" ref="staffFeat"/>  
+       <property name="cronExpression" value="0 0 0 * * ?"/><!--每天凌晨-->
+	</bean>
+	<bean id="staffFeat" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">   
+        <property name="targetObject" ref="staffAOImpl"/>  
+        <property name="targetMethod" value="doUpdateFeatDaily"/>  
         <property name="concurrent" value="true"/> <!--   是否允许任务并发执行。当值为false时，表示必须等到前一个线程处理完毕后才再启一个新的线程 -->
 	</bean>
 	

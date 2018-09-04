@@ -24,7 +24,7 @@ public class XN631411 extends AProcessor {
 
     @Override
     public Object doBusiness() throws BizException {
-        staffAO.editFeat(req.getCode(), req.getPict1(), req.getFeat(),
+        staffAO.editPict1(req.getCode(), req.getPict1(), req.getFeat(),
             req.getUpdater());
         return new BooleanRes(true);
     }

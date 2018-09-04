@@ -11,7 +11,7 @@ public interface IStaffBO extends IPaginableBO<Staff> {
 
     public void refreshStaff(Staff data);
 
-    public void refreshFeat(Staff data, String pict1, String feat,
+    public void refreshFeat(String code, String pict1, String feat,
             String updater);
 
     public void refreshIdPict(Staff data);
@@ -33,6 +33,9 @@ public interface IStaffBO extends IPaginableBO<Staff> {
 
     // 根据身份证查询员工
     public Staff getStaffByIdNo(String idNo);
+
+    // 根据关键字1查询员工
+    public Staff getStaffByKeyword1(String keyword1);
 
     // 查询员工简介信息
     public Staff getStaffBrief(String code);

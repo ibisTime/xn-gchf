@@ -23,7 +23,8 @@ public class XN631418 extends AProcessor {
 
     @Override
     public Object doBusiness() throws BizException {
-        return staffAO.getStaffByIdNo(req.getIdNo(), req.getProjectCodeList());
+        return staffAO.getStaffByKeyword1(req.getKeyword1(),
+            req.getProjectCodeList());
     }
 
     @Override

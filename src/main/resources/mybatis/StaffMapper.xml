@@ -29,6 +29,8 @@
 		<result column="feat" property="feat" />
 		<result column="contacts" property="contacts" />
 		<result column="contacts_mobile" property="contactsMobile" />
+		<result column="pict1_status" property="pict1Status" />
+		<result column="feat_status" property="featStatus" />
 		<result column="remark" property="remark" />
 	</resultMap>
 	
@@ -53,11 +55,21 @@
 				AND t.updater = #{updater}
 			</if>
 			<if test="keyword != null and keyword != '' ">
-				AND (t.name like "%"#{keyword}"%" OR  t.mobile like "%"#{keyword}"%" OR t.id_no like "%"#{keyword}"%")
+				AND (t.name like "%"#{keyword}"%" OR t.mobile like "%"#{keyword}"%" OR t.id_no like "%"#{keyword}"%")
+			</if>
+			<if test="keyword1 != null and keyword1 != '' ">
+				AND (t.name = #{keyword} OR t.id_no = #{keyword})
 			</if>
 			<if test="feat != null and feat != '' ">
 				AND t.feat = #{feat}
 			</if>
+			<if test="pict1Status != null and pict1Status != '' ">
+				AND t.pict1_status = #{pict1Status}
+			</if>
+			<if test="featStatus != null and featStatus != '' ">
+				AND t.feat_status = #{featStatus}
+			</if>
+			
 			<if test="updateDatetimeStart != null and updateDatetimeStart != '' ">
 				<![CDATA[AND t.update_datetime >= #{updateDatetimeStart}]]>
 			</if>
@@ -108,6 +120,10 @@
 		,t.feat
 		,t.contacts
 		,t.contacts_mobile
+		
+		,t.pict1_status
+		,t.feat_status
+		,t.remark
 		FROM
 		thf_staff t
 		<include refid="where_condition" />
@@ -134,12 +150,14 @@
 		
 		,t.id_endDate
 		,t.birthday
+		,t.contacts
+		,t.contacts_mobile
+		,t.pict1_status
+		
+		,t.feat_status
 		,t.updater
 		,t.update_datetime
 		,t.remark
-		
-		,t.contacts
-		,t.contacts_mobile
 		FROM
 		thf_staff t
 		<include refid="where_condition" />
@@ -177,56 +195,38 @@
 		thf_staff(
 		code
 		,name
-		,mobile
 		,id_type
-		
 		,id_no
 		,sex
+		
 		,birthday
 		,id_nation
 		,id_address
-		
 		,id_pic
 		,id_police
+		
 		,id_startDate
 		,id_endDate
-		,pict1
-		
-		,pict2
-		,pict3
-		,pict4
 		,updater
 		,update_datetime
-		
-		,remark
-		,feat
 		)
 		VALUES(
 		#{code}
 		,#{name}
-		,#{mobile}
 		,#{idType}
-		
 		,#{idNo}
 		,#{sex}
+		
 		,#{birthday}
 		,#{idNation}
 		,#{idAddress}
-		
 		,#{idPic}
 		,#{idPolice}
+		
 		,#{idStartDate}
 		,#{idEndDate}
-		,#{pict1}
-		
-		,#{pict2}
-		,#{pict3}
-		,#{pict4}
 		,#{updater}
 		,#{updateDatetime}
-		
-		,#{remark}
-		,#{feat}
 		)
 	</insert>
 
@@ -248,7 +248,6 @@
 		WHERE code = #{code}
 	</update>
 
-
 	<update id="update_StaffInfo" parameterType="staff">
 		UPDATE thf_staff
 		SET
@@ -261,12 +260,13 @@
 		WHERE code = #{code}
 	</update>
 	
-	
 	<update id="update_feat" parameterType="staff">
 		UPDATE thf_staff
 		SET
 		pict1 = #{pict1}
 		,feat = #{feat}
+		,pict1_status = #{pict1Status}
+		,feat_status = #{featStatus}
 		,updater = #{updater}
 		,update_datetime = #{updateDatetime}
 		WHERE code = #{code}

@@ -241,3 +241,13 @@ DROP COLUMN `up_user`;
 
 update thf_project set status = 2 where status = 3;
 update thf_employ set position = 0;
+
+
+##V160
+ALTER TABLE `dev_xn_gchf`.`thf_staff` 
+ADD COLUMN `pict1_status` VARCHAR(4) default 0 COMMENT '免冠照状态(0未拍摄/1已拍摄)' AFTER `contacts_mobile`,
+ADD COLUMN `feat_status` VARCHAR(4) default 0 COMMENT '特征值状态(0无效/1有效)' AFTER `pict1_status`;
+
+update thf_staff set pict1_status = 1 where pict1 is not null;
+update thf_staff set feat_status = 1 where feat <> 'error' and feat <> 'NOFACE';
+

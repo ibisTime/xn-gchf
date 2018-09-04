@@ -2,7 +2,6 @@ package com.cdkj.gchf.dto.req;
 
 import java.util.List;
 
-import org.hibernate.validator.constraints.NotBlank;
 import org.hibernate.validator.constraints.NotEmpty;
 
 /**
@@ -16,9 +15,13 @@ public class XN631391Req {
     @NotEmpty
     private List<String> codeList;
 
-    // 上班考勤时间
-    @NotBlank
-    private String endDatetime;
+    // 考勤开始时间
+    @NotEmpty
+    private String attendanceStartDatetime;
+
+    // 考勤结束时间
+    @NotEmpty
+    private String attendanceEndDatetime;
 
     public List<String> getCodeList() {
         return codeList;
@@ -28,12 +31,19 @@ public class XN631391Req {
         this.codeList = codeList;
     }
 
-    public String getEndDatetime() {
-        return endDatetime;
+    public String getAttendanceStartDatetime() {
+        return attendanceStartDatetime;
     }
 
-    public void setEndDatetime(String endDatetime) {
-        this.endDatetime = endDatetime;
+    public void setAttendanceStartDatetime(String attendanceStartDatetime) {
+        this.attendanceStartDatetime = attendanceStartDatetime;
     }
 
+    public String getAttendanceEndDatetime() {
+        return attendanceEndDatetime;
+    }
+
+    public void setAttendanceEndDatetime(String attendanceEndDatetime) {
+        this.attendanceEndDatetime = attendanceEndDatetime;
+    }
 }

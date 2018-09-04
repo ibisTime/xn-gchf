@@ -120,15 +120,15 @@ public class StaffAOImpl implements IStaffAO {
     }
 
     @Override
-    public void editFeat(String code, String pict1, String feat,
+    public void editPict1(String code, String pict1, String feat,
             String updater) {
-        Staff data = staffBO.getStaff(code);
-        staffBO.refreshFeat(data, pict1, feat, updater);
+
+        staffBO.refreshFeat(code, pict1, feat, updater);
 
     }
 
     @Override
-    public void editIdPict(XN631414Req req) {
+    public void editPicts(XN631414Req req) {
         Staff data = staffBO.getStaff(req.getCode());
         data.setPict2(req.getPict2());
         data.setPict3(req.getPict3());
@@ -255,7 +255,7 @@ public class StaffAOImpl implements IStaffAO {
                 && !feat.equals(staff.getFeat())) {
 
             staff.setFeat(feat);
-            staffBO.refreshFeat(staff, staff.getPict1(),
+            staffBO.refreshFeat(staff.getCode(), staff.getPict1(),
                 featJson.getString("data"), "USYS201800000000001");
 
             return true;
@@ -281,17 +281,18 @@ public class StaffAOImpl implements IStaffAO {
 
         data.setEmployList(employList);
         data.setSalaryList(salaryList);
+
         // 技能
         List<Skill> skillList = skillBO.querySkillByStaff(data.getCode());
         data.setSkillList(skillList);
-        // 合同
-        data.setCcontract(ccontractBO.getCcontractByStaff(code));
+
         return data;
     }
 
     @Override
-    public Staff getStaffByIdNo(String idNo, List<String> projectCodeList) {
-        Staff data = staffBO.getStaffByIdNo(idNo);
+    public Staff getStaffByKeyword1(String keyword1,
+            List<String> projectCodeList) {
+        Staff data = staffBO.getStaffByKeyword1(keyword1);
         if (null == data) {
             if (CollectionUtils.isNotEmpty(projectCodeList)) {
                 // 手持端查询直接提示异常

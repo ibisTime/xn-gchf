@@ -13,18 +13,18 @@ import org.hibernate.validator.constraints.NotBlank;
 public class XN631418Req {
 
     // (必填)
-    @NotBlank(message = "身份证号不能为空")
-    private String idNo;
+    @NotBlank(message = "关键字不能为空")
+    private String keyword1;
 
     // （选填）项目编号列表，手持端使用
     private List<String> projectCodeList;
 
-    public String getIdNo() {
-        return idNo;
+    public String getKeyword1() {
+        return keyword1;
     }
 
-    public void setIdNo(String idNo) {
-        this.idNo = idNo;
+    public void setKeyword1(String keyword1) {
+        this.keyword1 = keyword1;
     }
 
     public List<String> getProjectCodeList() {

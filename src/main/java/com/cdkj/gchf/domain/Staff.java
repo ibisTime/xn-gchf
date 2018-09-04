@@ -13,7 +13,7 @@ import com.cdkj.gchf.dao.base.ABaseDO;
  */
 public class Staff extends ABaseDO {
 
-    private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = -3982328880874583763L;
 
     // 编号
     private String code;
@@ -78,6 +78,12 @@ public class Staff extends ABaseDO {
     // 特征值
     private String feat;
 
+    // 免冠照信息(1、已拍摄/0、未拍摄)
+    private String pict1Status;
+
+    // 特征值状态(1、有效/0、无效)
+    private String featStatus;
+
     // 紧急联系人
     private String contacts;
 
@@ -85,8 +91,11 @@ public class Staff extends ABaseDO {
     private String contactsMobile;
 
     // ***************db***********
-    // 关键字模糊查询
+    // 关键字模糊查询（Web端：手机号、姓名、身份证）
     private String keyword;
+
+    // 关键字查询（手持端：姓名、身份证）
+    private String keyword1;
 
     // 工资卡
     private BankCard bankCard;
@@ -114,9 +123,6 @@ public class Staff extends ABaseDO {
 
     // 薪资发放状态
     private String salaryStatus;
-
-    // 合同
-    private Ccontract ccontract;
 
     // 编号列表
     private List<String> codeList;
@@ -396,14 +402,6 @@ public class Staff extends ABaseDO {
         this.abnormalSalaryList = abnormalSalaryList;
     }
 
-    public Ccontract getCcontract() {
-        return ccontract;
-    }
-
-    public void setCcontract(Ccontract ccontract) {
-        this.ccontract = ccontract;
-    }
-
     public List<String> getCodeList() {
         return codeList;
     }
@@ -458,6 +456,30 @@ public class Staff extends ABaseDO {
 
     public void setProjectCode(String projectCode) {
         this.projectCode = projectCode;
+    }
+
+    public String getKeyword1() {
+        return keyword1;
+    }
+
+    public void setKeyword1(String keyword1) {
+        this.keyword1 = keyword1;
+    }
+
+    public String getPict1Status() {
+        return pict1Status;
+    }
+
+    public void setPict1Status(String pict1Status) {
+        this.pict1Status = pict1Status;
+    }
+
+    public String getFeatStatus() {
+        return featStatus;
+    }
+
+    public void setFeatStatus(String featStatus) {
+        this.featStatus = featStatus;
     }
 
 }

@@ -7,8 +7,8 @@
 		<result column="name" property="name" />
 		<result column="company_name" property="companyName" />
 		<result column="charge_user" property="chargeUser" />
-		
 		<result column="charge_mobile" property="chargeMobile" />
+		
 		<result column="start_datetime" property="startDatetime" />
 		<result column="end_datetime" property="endDatetime" />
 		<result column="attendance_starttime" property="attendanceStarttime" />
@@ -19,8 +19,8 @@
 		<result column="province" property="province" />
 		<result column="city" property="city" />
 		<result column="area" property="area" />
-		
 		<result column="address" property="address" />
+		
 		<result column="salary_create_datetime" property="salaryCreateDatetime" />
 		<result column="salary_datetime" property="salaryDatetime" />
 		<result column="salary_delay_days" property="salaryDelayDays" />
@@ -148,66 +148,30 @@
 		<include refid="where_condition" />
 	</select>
 	
-	
 	<insert id="insert_project" parameterType="project">
 		INSERT INTO
 		thf_project(
 		code
 		,name
-		,charge_user
-		
-		,charge_mobile
-		,start_datetime
-		,attendance_starttime
-		,attendance_endtime
-		,longitude
-		
-		,latitude
-		,province
-		,city
-		,area
-		,address
-		
-		,salary_create_datetime
-		,salary_datetime
 		,status
 		,updater
 		,update_datetime
-		
 		,remark
 		)
 		VALUES(
 		#{code}
 		,#{name}
-		,#{chargeUser}
-		
-		,#{chargeMobile}
-		,#{startDatetime}
-		,#{attendanceStarttime}
-		,#{attendanceEndtime}
-		,#{longitude}
-		
-		,#{latitude}
-		,#{province}
-		,#{city}
-		,#{area}
-		,#{address}
-		
-		,#{salaryCreateDatetime}
-		,#{salaryDatetime}
 		,#{status}
 		,#{updater}
 		,#{updateDatetime}
-		
 		,#{remark}
 		)
 	</insert>
 	
-	<update id="update_project" parameterType="project">
+	<update id="update_editProject" parameterType="project">
 		UPDATE thf_project
 		SET
-		name = #{name}
-		,company_name = #{companyName}
+		company_name = #{companyName}
 		,charge_user = #{chargeUser}  
 		,charge_mobile = #{chargeMobile}
 		,start_datetime = #{startDatetime}
@@ -231,7 +195,7 @@
 		WHERE code = #{code}
 	</update>
 	
-	<update id="approve_project" parameterType="project">
+	<update id="update_startProject" parameterType="project">
 		UPDATE thf_project
 		SET
 		status = #{status}
@@ -241,65 +205,31 @@
 		WHERE code = #{code}
 	</update>
 	
-	<update id="to_aprrove" parameterType="project">
+	<update id="update_pauseProject" parameterType="project">
 		UPDATE thf_project
 		SET
-		name = #{name}
-		,company_name = #{companyName}
-		,charge_user = #{chargeUser}  
-		,charge_mobile = #{chargeMobile}
-		,start_datetime = #{startDatetime}
-		,longitude = #{longitude}
-		
-		,latitude = #{latitude}
-		,province = #{province}
-		,city = #{city}
-		,area = #{area}
-		,address = #{address}
-		
-		,salary_datetime = #{salaryDatetime}
-		,salary_create_datetime = #{salaryCreateDatetime}
-		,attendance_starttime = #{attendanceStarttime}
-		,attendance_endtime = #{attendanceEndtime}
-		,status = #{status}
+		status = #{status}
 		,updater = #{updater}
 		,update_datetime = #{updateDatetime}
 		,remark = #{remark}
 		WHERE code = #{code}
 	</update>
 	
-	<update id="project_end" parameterType="project">
+	<update id="update_restartProject" parameterType="project">
+		UPDATE thf_project
+		SET
+		status = #{status}
+		,updater = #{updater}
+		,update_datetime = #{updateDatetime}
+		,remark = #{remark}
+		WHERE code = #{code}
+	</update>
+	
+	<update id="update_endProject" parameterType="project">
 		UPDATE thf_project
 		SET
 		status = #{status}
 		,end_datetime = #{endDatetime}
-		,updater = #{updater}
-		,update_datetime = #{updateDatetime}
-		,remark = #{remark}
-		WHERE code = #{code}
-	</update>
-	
-	<update id="to_building" parameterType="project">
-		UPDATE thf_project
-		SET
-		status = #{status}
-		WHERE code = #{code}
-	</update>
-	
-	<update id="stop_project" parameterType="project">
-		UPDATE thf_project
-		SET
-		status = #{status}
-		,updater = #{updater}
-		,update_datetime = #{updateDatetime}
-		,remark = #{remark}
-		WHERE code = #{code}
-	</update>
-	
-	<update id="restart_project" parameterType="project">
-		UPDATE thf_project
-		SET
-		status = #{status}
 		,updater = #{updater}
 		,update_datetime = #{updateDatetime}
 		,remark = #{remark}
@@ -312,4 +242,5 @@
 		salary_delay_days = #{salaryDelayDays}
 		WHERE code = #{code}
 	</update>
+	
 </mapper>

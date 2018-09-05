@@ -16,6 +16,7 @@ import com.cdkj.gchf.bo.base.PaginableBOImpl;
 import com.cdkj.gchf.common.MD5Util;
 import com.cdkj.gchf.common.PhoneUtil;
 import com.cdkj.gchf.common.PwdUtil;
+import com.cdkj.gchf.core.OrderNoGenerater;
 import com.cdkj.gchf.dao.IUserDAO;
 import com.cdkj.gchf.domain.Employ;
 import com.cdkj.gchf.domain.Project;
@@ -139,6 +140,26 @@ public class UserBOImpl extends PaginableBOImpl<User> implements IUserBO {
     }
 
     @Override
+    public void saveProjectAdmin(String projectCode, String projectName) {
+        User user = new User();
+        String userId = OrderNoGenerater.generate("U");
+        user.setUserId(userId);
+        user.setOrganizationCode(projectCode);
+        user.setType(EUserKind.Owner.getCode());
+        user.setRealName(projectName.concat("管理员"));
+        user.setLoginName(projectName.concat("管理员"));
+
+        user.setLoginPwd(MD5Util.md5("888888"));
+        user.setLoginPwdStrength(PwdUtil.calculateSecurityLevel("888888"));
+        user.setCreateDatetime(new Date());
+        user.setRoleCode("RO201800000000000003");// 业主端管理员角色
+        user.setUserRefree("USYS201800000000001");// 系统管理员用户
+        user.setStatus(EUserStatus.NORMAL.getCode());
+
+        userDAO.insert(user);
+    }
+
+    @Override
     public List<User> queryUserList(User condition) {
         return userDAO.selectList(condition);
     }
@@ -236,4 +257,5 @@ public class UserBOImpl extends PaginableBOImpl<User> implements IUserBO {
             data.setSubbranch(subbranch.getSubbranchName());
         }
     }
+
 }

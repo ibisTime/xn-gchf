@@ -53,7 +53,7 @@ public class ChannelBankDAOImpl extends AMybatisTemplate
     }
 
     /** 
-     * @see com.std.account.dao.IChannelBankDAO#update(com.std.account.domain.ChannelBank)
+     * @see com.std.account.dao.IChannelBankDAO#updateEditProject(com.std.account.domain.ChannelBank)
      */
     @Override
     public int update(ChannelBank data) {

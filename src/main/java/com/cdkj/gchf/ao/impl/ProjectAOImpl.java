@@ -1,6 +1,5 @@
 package com.cdkj.gchf.ao.impl;
 
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -16,12 +15,8 @@ import com.cdkj.gchf.bo.IProjectBO;
 import com.cdkj.gchf.bo.IProjectCardBO;
 import com.cdkj.gchf.bo.IReportBO;
 import com.cdkj.gchf.bo.IUserBO;
-import com.cdkj.gchf.bo.base.Page;
 import com.cdkj.gchf.bo.base.Paginable;
 import com.cdkj.gchf.common.DateUtil;
-import com.cdkj.gchf.common.MD5Util;
-import com.cdkj.gchf.common.PwdUtil;
-import com.cdkj.gchf.core.OrderNoGenerater;
 import com.cdkj.gchf.domain.Department;
 import com.cdkj.gchf.domain.Employ;
 import com.cdkj.gchf.domain.Project;
@@ -31,11 +26,8 @@ import com.cdkj.gchf.domain.User;
 import com.cdkj.gchf.dto.req.XN631350Req;
 import com.cdkj.gchf.dto.req.XN631352Req;
 import com.cdkj.gchf.enums.EEmployStatus;
-import com.cdkj.gchf.enums.EGeneratePrefix;
 import com.cdkj.gchf.enums.EProjectStatus;
 import com.cdkj.gchf.enums.EUser;
-import com.cdkj.gchf.enums.EUserKind;
-import com.cdkj.gchf.enums.EUserStatus;
 import com.cdkj.gchf.exception.BizException;
 
 @Service
@@ -59,15 +51,6 @@ public class ProjectAOImpl implements IProjectAO {
     @Autowired
     IDepartmentBO departmentBO;
 
-    // 项目管理员默认密码
-    private final String userLoginPwd = "888888";
-
-    // 项目管理员默认角色：业主端管理员
-    private final String userRole = "RO201800000000000003";
-
-    // 添加角色：平台端管理员
-    private final String userRefree = "USYS201800000000001";
-
     @Override
     @Transactional
     public String addProject(XN631350Req req) {
@@ -77,34 +60,12 @@ public class ProjectAOImpl implements IProjectAO {
             throw new BizException("xn000", "项目名称已存在，请重新输入！");
         }
 
-        Project data = new Project();
-
-        String code = OrderNoGenerater
-            .generate(EGeneratePrefix.Project.getCode());
-        data.setCode(code);
-        data.setName(req.getName());
-        data.setUpdater(req.getUpdater());
-        data.setRemark(req.getRemark());
-        data.setStatus(EProjectStatus.To_Edit.getCode());
-        data.setUpdateDatetime(new Date());
-        projectBO.saveProject(data);
+        // 添加项目
+        String code = projectBO.saveProject(req.getName(), req.getUpdater(),
+            req.getRemark());
 
         // 添加项目管理员
-        User user = new User();
-        String userId = OrderNoGenerater.generate("U");
-        user.setUserId(userId);
-        user.setType(EUserKind.Owner.getCode());
-        user.setRealName(req.getName().concat("管理员"));
-        user.setLoginName(req.getName().concat("管理员"));
-        user.setOrganizationCode(code);
-
-        user.setLoginPwd(MD5Util.md5(userLoginPwd));
-        user.setLoginPwdStrength(PwdUtil.calculateSecurityLevel(userLoginPwd));
-        user.setCreateDatetime(new Date());
-        user.setRoleCode(userRole);
-        user.setUserRefree(userRefree);
-        user.setStatus(EUserStatus.NORMAL.getCode());
-        userBO.saveUser(user);
+        userBO.saveProjectAdmin(code, req.getName());
 
         // 添加项目账户
         projectCardBO.saveProjectCard(code);
@@ -117,8 +78,9 @@ public class ProjectAOImpl implements IProjectAO {
     public void editProject(XN631352Req req) {
         Project data = projectBO.getProject(req.getCode());
         if (EProjectStatus.End.getCode().equals(data.getStatus())) {
-            throw new BizException("xn000", "该项目已结束，无法编辑");
+            throw new BizException("xn000", "该项目已结束，无法编辑！");
         }
+
         if (DateUtil
             .strToDate(req.getAttendanceStarttime(),
                 DateUtil.DATA_TIME_PATTERN_7)
@@ -166,11 +128,12 @@ public class ProjectAOImpl implements IProjectAO {
     }
 
     @Override
+    @Transactional
     public void startProject(String code, String approver, String approveNote) {
         Project data = projectBO.getProject(code);
 
         if (!EProjectStatus.To_Building.getCode().equals(data.getStatus())) {
-            throw new BizException("xn000", "该项目不处于待开工状态！");
+            throw new BizException("xn000", "该项目未处于待开工状态！");
         }
 
         Department departmentCondition = new Department();
@@ -187,47 +150,51 @@ public class ProjectAOImpl implements IProjectAO {
             reportBO.saveReport(data.getCode(), data.getName());
         }
 
-        data.setStatus(EProjectStatus.Building.getCode());
-        data.setApprover(approver);
-        data.setApproveDatetime(new Date());
-        data.setApproveNote(approveNote);
-        projectBO.startProject(data);
+        // 项目开工
+        projectBO.startProject(code, approver, approveNote);
     }
 
     @Override
     public void pauseProject(String code, String updater, String remark) {
         Project data = projectBO.getProject(code);
         if (!EProjectStatus.Building.getCode().equals(data.getStatus())) {
-            throw new BizException("xn000", "项目未处于在建状态,无法停工");
+            throw new BizException("xn000", "该项目未处于可停工状态！");
         }
-        projectBO.stopProject(data, updater, remark);
+
+        projectBO.pauseProject(code, updater, remark);
     }
 
     @Override
     public void restartProject(String code, String updater, String remark) {
         Project data = projectBO.getProject(code);
-        if (!EProjectStatus.Stop.getCode().equals(data.getStatus())) {
-            throw new BizException("xn000", "项目未处于停工状态,无需重新开工");
+        if (!EProjectStatus.Pause.getCode().equals(data.getStatus())) {
+            throw new BizException("xn000", "该项目未处于可重新开工状态！");
         }
-        projectBO.restartProject(data, updater, remark);
+
+        projectBO.restartProject(code, updater, remark);
     }
 
     @Override
+    @Transactional
     public void endProject(String code, String updater, String remark) {
         Project data = projectBO.getProject(code);
         if (!EProjectStatus.Building.getCode().equals(data.getStatus())) {
-            throw new BizException("xn0000", "该工程项目未处于在建状态");
+            throw new BizException("xn0000", "该工程项目未处于在建状态！");
         }
-        projectBO.projectEnd(data, updater, remark);
-        // 项目结束，员工离职
+
+        // 项目结束
+        projectBO.endProject(code, updater, remark);
+
+        // 员工离职
         Employ condition = new Employ();
         condition.setProjectCode(data.getCode());
         condition.setStatus(EEmployStatus.Not_Leave.getCode());
         List<Employ> list = employBO.queryEmployList(condition);
 
+        Date leavingDatetime = new Date();
         for (Employ employ : list) {
             employ.setStatus(EEmployStatus.Leave.getCode());
-            employ.setLeavingDatetime(new Date());
+            employ.setLeavingDatetime(leavingDatetime);
             employBO.updateStatus(employ);
         }
     }
@@ -236,28 +203,19 @@ public class ProjectAOImpl implements IProjectAO {
     public void editSalaryDelayDays(String code, Integer salaryDelayDays) {
         Project data = projectBO.getProject(code);
         if (!EProjectStatus.Building.getCode().equals(data.getStatus())) {
-            throw new BizException("xn000", "项目未处于在建状态,无法设置薪资发放可延迟天数");
+            throw new BizException("xn000", "该项目未处于在建状态，无法设置薪资发放可延迟天数！");
         }
-        data.setSalaryDelayDays(salaryDelayDays);
-        projectBO.editSalaryDelayDays(data);
+
+        projectBO.editSalaryDelayDays(code, salaryDelayDays);
     }
 
     @Override
     public Paginable<Project> queryProjectPage(int start, int limit,
             Project condition) {
-        Paginable<Project> page = new Page<Project>();
-        List<Project> list = new ArrayList<Project>();
-        if (EUserKind.Supervise.getCode().equals(condition.getKind())) {
-            if (CollectionUtils.isEmpty(condition.getProjectCodeList())) {
-                page.setList(list);
-                return page;
-            }
-        }
-
-        page = projectBO.getPaginable(start, limit, condition);
+        Paginable<Project> page = projectBO.getPaginable(start, limit,
+            condition);
         for (Project project : page.getList()) {
-            project.setApproveName(getName(project.getApprover()));
-            project.setUpdateName(getName(project.getUpdater()));
+            initProject(project);
         }
         return page;
     }
@@ -265,37 +223,23 @@ public class ProjectAOImpl implements IProjectAO {
     @Override
     public Project getProject(String code) {
         Project data = projectBO.getProject(code);
+
+        // 项目账户
         ProjectCard projectCard = projectCardBO
             .getProjectCardByProject(data.getCode());
         data.setProjectCard(projectCard);
-        Report report = reportBO.getReportByProject(data.getCode());
-        if (report != null) {
-            data.setReport(report);
-        }
 
-        // 补全名字信息
-        String approveName = getName(data.getApprover());
-        String updateName = getName(data.getUpdater());
-        data.setApproveName(approveName);
-        data.setUpdateName(updateName);
+        // 报表信息
+        Report report = reportBO.getReportByProject(data.getCode());
+        data.setReport(report);
+
+        initProject(data);
         return data;
     }
 
     @Override
     public List<Project> queryProjectList(Project condition) {
-        List<Project> list = new ArrayList<Project>();
-        if (EUserKind.Supervise.getCode().equals(condition.getKind())) {
-            if (CollectionUtils.isEmpty(condition.getProjectCodeList())) {
-                return list;
-            }
-        }
-        list = projectBO.queryProject(condition);
-
-        for (Project project : list) {
-            project.setApproveName(getName(project.getApprover()));
-            project.setUpdateName(getName(project.getUpdater()));
-        }
-        return list;
+        return projectBO.queryProject(condition);
     }
 
     private String getName(String userId) {
@@ -308,5 +252,13 @@ public class ProjectAOImpl implements IProjectAO {
             }
         }
         return name;
+    }
+
+    private void initProject(Project project) {
+        // 审核人
+        project.setApproveName(getName(project.getApprover()));
+
+        // 更新人
+        project.setUpdateName(getName(project.getUpdater()));
     }
 }

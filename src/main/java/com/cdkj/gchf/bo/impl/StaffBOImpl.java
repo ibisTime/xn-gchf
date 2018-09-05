@@ -37,6 +37,12 @@ public class StaffBOImpl extends PaginableBOImpl<Staff> implements IStaffBO {
         staff.setUpdateDatetime(new Date());
         staff.setPict1Status(EBoolean.YES.getCode());
 
+        if ("NOFACE".equals(feat) || null == feat) {
+            staff.setFeatStatus(EBoolean.NO.getCode());
+        } else {
+            staff.setFeatStatus(EBoolean.YES.getCode());
+        }
+
         staffDAO.updatePict1(staff);
     }
 

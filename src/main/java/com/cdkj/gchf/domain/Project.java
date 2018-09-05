@@ -5,11 +5,14 @@ import java.util.List;
 
 import com.cdkj.gchf.dao.base.ABaseDO;
 
+/**
+ * 项目
+ * @author: silver 
+ * @since: 2018年8月5日 下午2:49:02 
+ * @history:
+ */
 public class Project extends ABaseDO {
 
-    /** 
-     * @Fields serialVersionUID : TODO(用一句话描述这个变量表示什么) 
-     */
     private static final long serialVersionUID = 205424217452030142L;
 
     // 编号
@@ -66,7 +69,7 @@ public class Project extends ABaseDO {
     // 薪资发放可延迟天数（监管端填写）
     private Integer salaryDelayDays;
 
-    // 状态
+    // 状态(0待编辑/1待开工/2在建/3停工/4结束)
     private String status;
 
     // 审核人
@@ -87,26 +90,27 @@ public class Project extends ABaseDO {
     // 备注
     private String remark;
 
-    // ************************db*****************
+    // ************************DB Properties*****************
 
-    // 关键字
+    // 关键字(项目名称/负责人手机号)
     private String keyword;
 
-    // 公司账户
+    // 项目账户
     private ProjectCard projectCard;
 
-    // 统计
+    // 统计报表
     private Report report;
 
-    // 审核人名字
+    // 审核人姓名
     private String approveName;
 
-    // 修改人名字
+    // 更新人姓名
     private String updateName;
 
-    // 用户类型
+    // 查询用户的类型
     private String kind;
 
+    // 项目编号列表
     private List<String> projectCodeList;
 
     public String getKeyword() {

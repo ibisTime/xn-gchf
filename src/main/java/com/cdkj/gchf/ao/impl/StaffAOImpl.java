@@ -94,16 +94,16 @@ public class StaffAOImpl implements IStaffAO {
         data.setSex(req.getSex());
 
         data.setBirthday(DateUtil.strToDate(req.getBirthday(),
-            DateUtil.DB_DATE_FORMAT_STRING));
+            DateUtil.FRONT_DATE_FORMAT_STRING));
         data.setIdNation(req.getIdNation());
         data.setIdAddress(req.getIdAddress());
         data.setIdPic(req.getIdPic());
         data.setIdPolice(req.getIdPolice());
 
         data.setIdStartDate(DateUtil.strToDate(req.getIdStartDate(),
-            DateUtil.DB_DATE_FORMAT_STRING));
+            DateUtil.FRONT_DATE_FORMAT_STRING));
         data.setIdEndDate(DateUtil.strToDate(req.getIdEndDate(),
-            DateUtil.DB_DATE_FORMAT_STRING));
+            DateUtil.FRONT_DATE_FORMAT_STRING));
         data.setUpdater(req.getUpdater());
         data.setUpdateDatetime(new Date());
 
@@ -178,10 +178,6 @@ public class StaffAOImpl implements IStaffAO {
 
         // 获取昨天更新的免冠照
         Staff condition = new Staff();
-        condition.setUpdateDatetimeStart(DateUtil
-            .getRelativeDateOfSecond(DateUtil.getTodayStart(), -24 * 3600));
-        condition.setUpdateDatetimeEnd(DateUtil
-            .getRelativeDateOfSecond(DateUtil.getTodayEnd(), -24 * 3600));
         condition.setFeat("NOFACE");
 
         int start = 0;

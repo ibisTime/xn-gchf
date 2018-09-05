@@ -7,21 +7,20 @@ public interface IProjectDAO extends IBaseDAO<Project> {
 
     String NAMESPACE = IProjectDAO.class.getName().concat(".");
 
-    // 修改项目
-    public int update(Project data);
+    // 编辑项目
+    public int updateEditProject(Project data);
 
-    // 审核项目
-    public int approveProject(Project data);
+    // 项目开工
+    public int updateStartProject(Project data);
 
-    public void toApprove(Project data);
+    // 项目停工
+    public void updatePauseProject(Project data);
 
-    public void projectEnd(Project data);
+    // 重新开工
+    public void updateRestartProject(Project data);
 
-    public void toBuilding(Project project);
-
-    public void stopProject(Project data);
-
-    public void restartProject(Project data);
+    // 项目结束
+    public void updateEndProject(Project data);
 
     // 更新项目发放薪资可延迟天数
     public int updateSalaryDelayDays(Project data);

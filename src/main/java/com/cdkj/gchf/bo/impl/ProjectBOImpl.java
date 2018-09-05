@@ -11,8 +11,10 @@ import org.springframework.stereotype.Component;
 
 import com.cdkj.gchf.bo.IProjectBO;
 import com.cdkj.gchf.bo.base.PaginableBOImpl;
+import com.cdkj.gchf.core.OrderNoGenerater;
 import com.cdkj.gchf.dao.IProjectDAO;
 import com.cdkj.gchf.domain.Project;
+import com.cdkj.gchf.enums.EGeneratePrefix;
 import com.cdkj.gchf.enums.EProjectStatus;
 import com.cdkj.gchf.exception.BizException;
 
@@ -24,64 +26,82 @@ public class ProjectBOImpl extends PaginableBOImpl<Project>
     private IProjectDAO projectDAO;
 
     @Override
-    public void saveProject(Project data) {
+    public String saveProject(String name, String updater, String remark) {
+
+        Project data = new Project();
+        String code = OrderNoGenerater
+            .generate(EGeneratePrefix.Project.getCode());
+        data.setCode(code);
+
+        data.setName(name);
+        data.setUpdater(updater);
+        data.setRemark(remark);
+        data.setStatus(EProjectStatus.To_Edit.getCode());
+        data.setUpdateDatetime(new Date());
+
         projectDAO.insert(data);
+
+        return code;
     }
 
     @Override
     public int editProject(Project data) {
-        return projectDAO.update(data);
+        return projectDAO.updateEditProject(data);
     }
 
     @Override
-    public void startProject(Project data) {
-        projectDAO.approveProject(data);
+    public void startProject(String code, String approver, String approveNote) {
+        Project data = new Project();
+
+        data.setCode(code);
+        data.setStatus(EProjectStatus.Building.getCode());
+        data.setApprover(approver);
+        data.setApproveDatetime(new Date());
+        data.setApproveNote(approveNote);
+
+        projectDAO.updateStartProject(data);
     }
 
     @Override
-    public void toApprove(Project data) {
-        projectDAO.toApprove(data);
+    public void pauseProject(String code, String updater, String remark) {
+        Project data = new Project();
+        data.setCode(code);
+        data.setUpdater(updater);
+        data.setUpdateDatetime(new Date());
+        data.setStatus(EProjectStatus.Pause.getCode());
+        data.setRemark(remark);
+        projectDAO.updatePauseProject(data);
     }
 
     @Override
-    public void projectEnd(Project data, String updater, String remark) {
+    public void restartProject(String code, String updater, String remark) {
+        Project data = new Project();
+        data.setCode(code);
+        data.setUpdater(updater);
+        data.setUpdateDatetime(new Date());
+        data.setStatus(EProjectStatus.Building.getCode());
+        data.setRemark(remark);
+        projectDAO.updateRestartProject(data);
+    }
+
+    @Override
+    public void endProject(String code, String updater, String remark) {
+        Project data = new Project();
+        data.setCode(code);
         data.setEndDatetime(new Date());
         data.setStatus(EProjectStatus.End.getCode());
         data.setUpdater(updater);
         data.setUpdateDatetime(new Date());
         data.setRemark(remark);
-        projectDAO.projectEnd(data);
+        projectDAO.updateEndProject(data);
     }
 
     @Override
-    public void toBuilding(Project project) {
-        projectDAO.toBuilding(project);
-    }
-
-    @Override
-    public void stopProject(Project data, String updater, String remark) {
-        data.setUpdater(updater);
-        data.setUpdateDatetime(new Date());
-        data.setStatus(EProjectStatus.Stop.getCode());
-        data.setRemark(remark);
-        projectDAO.stopProject(data);
-
-    }
-
-    @Override
-    public void restartProject(Project data, String updater, String remark) {
-        data.setUpdater(updater);
-        data.setUpdateDatetime(new Date());
-        data.setStatus(EProjectStatus.Building.getCode());
-        data.setRemark(remark);
-        projectDAO.restartProject(data);
-    }
-
-    @Override
-    public void editSalaryDelayDays(Project project) {
-        if (null != project) {
-            projectDAO.updateSalaryDelayDays(project);
-        }
+    public void editSalaryDelayDays(String code, Integer salaryDelayDays) {
+        Project data = new Project();
+        data.setCode(code);
+        data.setSalaryDelayDays(salaryDelayDays);
+        projectDAO.updateSalaryDelayDays(data);
     }
 
     @Override
@@ -100,12 +120,6 @@ public class ProjectBOImpl extends PaginableBOImpl<Project>
             }
         }
         return projectCodeList;
-    }
-
-    @Override
-    public List<Project> queryProjectpig(int start, int pageSize,
-            Project condition) {
-        return projectDAO.selectList(condition, start, pageSize);
     }
 
     @Override

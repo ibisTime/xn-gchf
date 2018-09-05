@@ -236,6 +236,7 @@
 		pict1 = #{pict1}
 		,pict1_status = #{pict1Status}
 		,feat = #{feat}
+		,feat_status = #{featStatus}
 		,updater = #{updater}
 		,update_datetime = #{updateDatetime}
 		WHERE code = #{code}

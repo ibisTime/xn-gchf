@@ -341,13 +341,12 @@ public class UserAOImpl implements IUserAO {
     private void initUser(User data) {
         // 监管用户数据
         if (EUserKind.Supervise.getCode().equals(data.getType())) {
+            // 监管区域
             Supervise supervise = superviseBO
                 .getSupervise(data.getOrganizationCode());
-            if (null != supervise) {
-                data.setProvince(supervise.getProvince());
-                data.setCity(supervise.getCity());
-                data.setArea(supervise.getArea());
-            }
+            data.setProvince(supervise.getProvince());
+            data.setCity(supervise.getCity());
+            data.setArea(supervise.getArea());
 
             // 监管单位项目列表
             List<String> projectCodeList = projectBO.queryProjectCodeList(
@@ -364,18 +363,18 @@ public class UserAOImpl implements IUserAO {
 
         // 业主用户数据
         if (EUserKind.Owner.getCode().equals(data.getType())) {
+            // 项目信息
             Project project = projectBO.getProject(data.getOrganizationCode());
-            if (null != project) {
-                data.setProjectCode(project.getCode());
-                data.setProjectName(project.getName());
-                data.setProvince(project.getProvince());
-                data.setCity(project.getCity());
-                data.setArea(project.getArea());
-            }
+            data.setProjectCode(project.getCode());
+            data.setProjectName(project.getName());
+            data.setProvince(project.getProvince());
+            data.setCity(project.getCity());
+            data.setArea(project.getArea());
         }
 
         // 银行用户数据
         if (EUserKind.Bank.getCode().equals(data.getType())) {
+            // 支行信息
             Subbranch subbranch = subbranchBO
                 .getSubbranch(data.getOrganizationCode());
             data.setBankName(subbranch.getBankName());

@@ -7,33 +7,33 @@ import com.cdkj.gchf.domain.Project;
 
 public interface IProjectBO extends IPaginableBO<Project> {
 
-    public void saveProject(Project data);
+    // 添加项目
+    public String saveProject(String name, String updater, String remark);
+
+    // 编辑项目
+    public int editProject(Project data);
+
+    // 项目开工
+    public void startProject(String code, String approver, String approveNote);
+
+    // 项目停工
+    public void pauseProject(String code, String updater, String remark);
+
+    // 重新开工
+    public void restartProject(String code, String updater, String remark);
+
+    // 项目结束
+    public void endProject(String code, String updater, String remark);
+
+    // 更新项目发放薪资可延迟天数
+    public void editSalaryDelayDays(String code, Integer salaryDelayDays);
+
+    // 查询所在区域的项目
+    public List<String> queryProjectCodeList(String province, String city,
+            String area);
 
     public Project getProject(String code);
 
-    public int editProject(Project data);
-
-    public void startProject(Project data);
-
     public List<Project> queryProject(Project condition);
-
-    public List<Project> queryProjectpig(int start, int pageSize,
-            Project condition);
-
-    public void toApprove(Project data);
-
-    public void projectEnd(Project data, String updater, String remark);
-
-    public void toBuilding(Project project);
-
-    public void stopProject(Project data, String updater, String remark);
-
-    // 更新项目发放薪资可延迟天数
-    public void editSalaryDelayDays(Project project);
-
-    public void restartProject(Project data, String updater, String remark);
-
-    public List<String> queryProjectCodeList(String province, String city,
-            String area);
 
 }

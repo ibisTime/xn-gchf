@@ -22,6 +22,36 @@ public class ProjectDAOImpl extends AMybatisTemplate implements IProjectDAO {
     }
 
     @Override
+    public int updateEditProject(Project data) {
+        return super.update(NAMESPACE.concat("update_editProject"), data);
+    }
+
+    @Override
+    public int updateStartProject(Project data) {
+        return super.update(NAMESPACE.concat("update_startProject"), data);
+    }
+
+    @Override
+    public void updatePauseProject(Project data) {
+        super.update(NAMESPACE.concat("update_pauseProject"), data);
+    }
+
+    @Override
+    public void updateRestartProject(Project data) {
+        super.update(NAMESPACE.concat("update_restartProject"), data);
+    }
+
+    @Override
+    public void updateEndProject(Project data) {
+        super.update(NAMESPACE.concat("update_endProject"), data);
+    }
+
+    @Override
+    public int updateSalaryDelayDays(Project data) {
+        return super.update(NAMESPACE.concat("update_salaryDelayDays"), data);
+    }
+
+    @Override
     public Project select(Project condition) {
         return super.select(NAMESPACE.concat("select_project"), condition,
             Project.class);
@@ -45,43 +75,4 @@ public class ProjectDAOImpl extends AMybatisTemplate implements IProjectDAO {
             count, condition, Project.class);
     }
 
-    @Override
-    public int update(Project data) {
-        return super.update(NAMESPACE.concat("update_project"), data);
-    }
-
-    @Override
-    public int approveProject(Project data) {
-        return super.update(NAMESPACE.concat("approve_project"), data);
-    }
-
-    @Override
-    public void toApprove(Project data) {
-        super.update(NAMESPACE.concat("to_aprrove"), data);
-    }
-
-    @Override
-    public void projectEnd(Project data) {
-        super.update(NAMESPACE.concat("project_end"), data);
-    }
-
-    @Override
-    public void toBuilding(Project data) {
-        super.update(NAMESPACE.concat("to_building"), data);
-    }
-
-    @Override
-    public void stopProject(Project data) {
-        super.update(NAMESPACE.concat("stop_project"), data);
-    }
-
-    @Override
-    public void restartProject(Project data) {
-        super.update(NAMESPACE.concat("restart_project"), data);
-    }
-
-    @Override
-    public int updateSalaryDelayDays(Project data) {
-        return super.update(NAMESPACE.concat("update_salaryDelayDays"), data);
-    }
 }

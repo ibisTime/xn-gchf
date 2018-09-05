@@ -17,7 +17,7 @@ public interface IProjectAO {
     public void editProject(XN631352Req req);
 
     // 项目开工
-    public void startProject(String code, String approve, String approveNote);
+    public void startProject(String code, String approver, String approveNote);
 
     // 项目停工
     public void pauseProject(String code, String updater, String remark);

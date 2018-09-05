@@ -42,7 +42,7 @@ public class Staff extends ABaseDO {
     // 身份证上籍贯
     private String idAddress;
 
-    // 身份证上头像
+    // 身份证证件照
     private String idPic;
 
     // 签发机关
@@ -90,42 +90,18 @@ public class Staff extends ABaseDO {
     // 紧急联系人电话
     private String contactsMobile;
 
-    // ***************db***********
+    // ***************DB Properties***********
     // 关键字模糊查询（Web端：手机号、姓名、身份证）
     private String keyword;
 
     // 关键字查询（手持端：姓名、身份证）
     private String keyword1;
 
-    // 工资卡
-    private BankCard bankCard;
-
-    // 项目编号List
-    private List<String> projectCodeList;
-
-    // 项目编号
+    // 项目编号（判断员工是否在该项目入职）
     private String projectCode;
 
-    // 雇佣List
-    private List<Employ> employList;
-
-    // 工资条List
-    private List<Salary> salaryList;
-
-    // 异常工资条List
-    private List<Salary> abnormalSalaryList;
-
-    // 更新人名字
+    // 更新人姓名
     private String updateName;
-
-    // 技能
-    private List<Skill> skillList;
-
-    // 薪资发放状态
-    private String salaryStatus;
-
-    // 编号列表
-    private List<String> codeList;
 
     // 雇佣省份（监管端查询时使用）
     private String province;
@@ -141,6 +117,21 @@ public class Staff extends ABaseDO {
 
     // 更新结束时间
     private Date updateDatetimeEnd;
+
+    // 雇佣List
+    private List<Employ> employList;
+
+    // 工资条List
+    private List<Salary> salaryList;
+
+    // 异常工资条List
+    private List<Salary> abnormalSalaryList;
+
+    // 技能列表
+    private List<Skill> skillList;
+
+    // 编号列表（批量查询员工信息时使用）
+    private List<String> codeList;
 
     public void setCode(String code) {
         this.code = code;
@@ -306,22 +297,6 @@ public class Staff extends ABaseDO {
         this.keyword = keyword;
     }
 
-    public BankCard getBankCard() {
-        return bankCard;
-    }
-
-    public void setBankCard(BankCard bankCard) {
-        this.bankCard = bankCard;
-    }
-
-    public List<String> getProjectCodeList() {
-        return projectCodeList;
-    }
-
-    public void setProjectCodeList(List<String> projectCodeList) {
-        this.projectCodeList = projectCodeList;
-    }
-
     public String getUpdateName() {
         return updateName;
     }
@@ -384,14 +359,6 @@ public class Staff extends ABaseDO {
 
     public void setSkillList(List<Skill> skillList) {
         this.skillList = skillList;
-    }
-
-    public String getSalaryStatus() {
-        return salaryStatus;
-    }
-
-    public void setSalaryStatus(String salaryStatus) {
-        this.salaryStatus = salaryStatus;
     }
 
     public List<Salary> getAbnormalSalaryList() {

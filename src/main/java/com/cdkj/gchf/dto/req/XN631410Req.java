@@ -26,8 +26,7 @@ public class XN631410Req {
     @NotBlank(message = "身份证号不能为空")
     private String idNo;
 
-    // （必填）身份证上头像
-    @NotBlank(message = "身份证上头像不能为空")
+    // （选填）身份证证件照
     private String idPic;
 
     // （必填）出生年月日

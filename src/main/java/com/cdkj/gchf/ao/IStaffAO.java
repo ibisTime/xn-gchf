@@ -7,7 +7,6 @@ import org.springframework.stereotype.Component;
 import com.cdkj.gchf.bo.base.Paginable;
 import com.cdkj.gchf.domain.Staff;
 import com.cdkj.gchf.dto.req.XN631410Req;
-import com.cdkj.gchf.dto.req.XN631412Req;
 import com.cdkj.gchf.dto.req.XN631413Req;
 import com.cdkj.gchf.dto.req.XN631414Req;
 import com.cdkj.gchf.dto.res.XN631094Res;
@@ -20,17 +19,15 @@ public interface IStaffAO {
     // 人员建档
     public String addStaff(XN631410Req req);
 
-    // 录入免冠照
+    // 拍摄免冠照
     public void editPict1(String code, String pic1, String feat,
             String updater);
 
-    // 添加身份证正反面、手持身份证照片
+    // 拍摄身份证正反面、手持身份证照片
     public void editPicts(XN631414Req req);
 
-    // 补全信息
-    public void editStaffInfo(XN631413Req req);
-
-    public void editStaff(XN631412Req req);
+    // 录入联系方式信息
+    public void editContactInfo(XN631413Req req);
 
     // 定时器每天更新员工特征值
     public void doUpdateFeatDaily();
@@ -41,7 +38,7 @@ public interface IStaffAO {
     // 根据项目获取特征值（匝机人脸识别设备使用）
     public String getStaffFeatList(String projectCode);
 
-    // 获取员工所有信息
+    // 获取员工所有信息（工资条/工作履历）
     public Staff getStaffInfo(String code, List<String> projetCodeList);
 
     // 根据关键字（姓名、身份证）获取员工信息

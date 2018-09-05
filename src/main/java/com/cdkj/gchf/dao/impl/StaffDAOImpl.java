@@ -22,6 +22,26 @@ public class StaffDAOImpl extends AMybatisTemplate implements IStaffDAO {
     }
 
     @Override
+    public void updatePict1(Staff data) {
+        super.update(NAMESPACE.concat("update_pict1"), data);
+    }
+
+    @Override
+    public void updatePicts(Staff data) {
+        super.update(NAMESPACE.concat("update_picts"), data);
+    }
+
+    @Override
+    public void updateContactInfo(Staff data) {
+        super.update(NAMESPACE.concat("update_contactInfo"), data);
+    }
+
+    @Override
+    public void updateFeat(Staff data) {
+        super.update(NAMESPACE.concat("update_feat"), data);
+    }
+
+    @Override
     public Staff select(Staff condition) {
         return super.select(NAMESPACE.concat("select_staff"), condition,
             Staff.class);
@@ -61,27 +81,6 @@ public class StaffDAOImpl extends AMybatisTemplate implements IStaffDAO {
     public List<Staff> selectStaffPic(Staff condition, int start, int count) {
         return super.selectList(NAMESPACE.concat("select_staffPic"), start,
             count, condition, Staff.class);
-    }
-
-    @Override
-    public void update(Staff data) {
-        super.update(NAMESPACE.concat("update_staff"), data);
-    }
-
-    @Override
-    public void updateFeat(Staff data) {
-        super.update(NAMESPACE.concat("update_feat"), data);
-    }
-
-    @Override
-    public void updateIdPict(Staff data) {
-        super.update(NAMESPACE.concat("update_idPict"), data);
-    }
-
-    @Override
-    public void updateStaffInfo(Staff data) {
-        super.update(NAMESPACE.concat("update_StaffInfo"), data);
-
     }
 
 }

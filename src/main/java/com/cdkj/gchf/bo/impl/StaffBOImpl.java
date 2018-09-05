@@ -16,6 +16,7 @@ import com.cdkj.gchf.exception.BizException;
 
 @Component
 public class StaffBOImpl extends PaginableBOImpl<Staff> implements IStaffBO {
+
     @Autowired
     private IStaffDAO staffDAO;
 
@@ -24,17 +25,7 @@ public class StaffBOImpl extends PaginableBOImpl<Staff> implements IStaffBO {
     }
 
     @Override
-    public void refreshStaff(Staff data) {
-        staffDAO.update(data);
-    }
-
-    @Override
-    public void refreshStaffInfo(Staff data) {
-        staffDAO.updateStaffInfo(data);
-    }
-
-    @Override
-    public void refreshFeat(String code, String pict1, String feat,
+    public void refreshPict1(String code, String pict1, String feat,
             String updater) {
 
         Staff staff = new Staff();
@@ -45,14 +36,52 @@ public class StaffBOImpl extends PaginableBOImpl<Staff> implements IStaffBO {
 
         staff.setUpdateDatetime(new Date());
         staff.setPict1Status(EBoolean.YES.getCode());
-        staff.setFeatStatus(EBoolean.YES.getCode());
 
-        staffDAO.updateFeat(staff);
+        staffDAO.updatePict1(staff);
     }
 
     @Override
-    public void refreshIdPict(Staff data) {
-        staffDAO.updateIdPict(data);
+    public void refreshPicts(String code, String pict2, String pict3,
+            String pict4, String updater) {
+
+        Staff data = new Staff();
+        data.setCode(code);
+        data.setPict2(pict2);
+        data.setPict3(pict3);
+        data.setPict4(pict4);
+
+        data.setUpdater(updater);
+        data.setUpdateDatetime(new Date());
+
+        staffDAO.updatePicts(data);
+    }
+
+    @Override
+    public void refreshContactInfo(String code, String mobile, String contact,
+            String contactMobile, String updater, String remark) {
+
+        Staff data = new Staff();
+        data.setCode(code);
+        data.setMobile(mobile);
+        data.setContacts(contact);
+        data.setContactsMobile(contactMobile);
+        data.setUpdater(updater);
+
+        data.setUpdateDatetime(new Date());
+        data.setRemark(remark);
+
+        staffDAO.updateContactInfo(data);
+    }
+
+    @Override
+    public void refreshFeat(String code, String feat) {
+
+        Staff data = new Staff();
+        data.setCode(code);
+        data.setFeat(feat);
+        data.setFeatStatus(EBoolean.YES.getCode());
+        staffDAO.updateFeat(data);
+
     }
 
     @Override

@@ -230,25 +230,29 @@
 		)
 	</insert>
 
-	<update id="update_staff" parameterType="staff">
+	<update id="update_pict1" parameterType="staff">
 		UPDATE thf_staff
 		SET
-		name = #{name}
-		,mobile = #{mobile}
-		,id_type = #{idType}
-		,id_no = #{idNo}
-		,pict1 = #{pict1}
-		,pict2 = #{pict2}
-		,pict3 = #{pict3}
-		,pict4 = #{pict4}
+		pict1 = #{pict1}
+		,pict1_status = #{pict1Status}
 		,feat = #{feat}
 		,updater = #{updater}
 		,update_datetime = #{updateDatetime}
-		,remark = #{remark}
 		WHERE code = #{code}
 	</update>
-
-	<update id="update_StaffInfo" parameterType="staff">
+	
+	<update id="update_picts" parameterType="staff">
+		UPDATE thf_staff
+		SET
+		pict2 = #{pict2}
+		,pict3 = #{pict3}
+		,pict4 = #{pict4}
+		,updater = #{updater}
+		,update_datetime = #{updateDatetime}
+		WHERE code = #{code}
+	</update>
+	
+	<update id="update_contactInfo" parameterType="staff">
 		UPDATE thf_staff
 		SET
 		mobile = #{mobile}
@@ -263,23 +267,8 @@
 	<update id="update_feat" parameterType="staff">
 		UPDATE thf_staff
 		SET
-		pict1 = #{pict1}
-		,feat = #{feat}
-		,pict1_status = #{pict1Status}
+		feat = #{feat}
 		,feat_status = #{featStatus}
-		,updater = #{updater}
-		,update_datetime = #{updateDatetime}
-		WHERE code = #{code}
-	</update>
-	
-	<update id="update_idPict" parameterType="staff">
-		UPDATE thf_staff
-		SET
-		pict2 = #{pict2}
-		,pict3 = #{pict3}
-		,pict4 = #{pict4}
-		,updater = #{updater}
-		,update_datetime = #{updateDatetime}
 		WHERE code = #{code}
 	</update>
 

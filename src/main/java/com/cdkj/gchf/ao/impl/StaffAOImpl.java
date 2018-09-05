@@ -13,13 +13,11 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.cdkj.gchf.ao.IStaffAO;
 import com.cdkj.gchf.bo.IBankCardBO;
-import com.cdkj.gchf.bo.ICcontractBO;
 import com.cdkj.gchf.bo.IDepartmentBO;
 import com.cdkj.gchf.bo.IEmployBO;
 import com.cdkj.gchf.bo.IProjectBO;
@@ -30,16 +28,13 @@ import com.cdkj.gchf.bo.IUserBO;
 import com.cdkj.gchf.bo.base.Page;
 import com.cdkj.gchf.bo.base.Paginable;
 import com.cdkj.gchf.common.DateUtil;
-import com.cdkj.gchf.common.PhoneUtil;
 import com.cdkj.gchf.core.OrderNoGenerater;
-import com.cdkj.gchf.domain.BankCard;
 import com.cdkj.gchf.domain.Employ;
 import com.cdkj.gchf.domain.Salary;
 import com.cdkj.gchf.domain.Skill;
 import com.cdkj.gchf.domain.Staff;
 import com.cdkj.gchf.domain.User;
 import com.cdkj.gchf.dto.req.XN631410Req;
-import com.cdkj.gchf.dto.req.XN631412Req;
 import com.cdkj.gchf.dto.req.XN631413Req;
 import com.cdkj.gchf.dto.req.XN631414Req;
 import com.cdkj.gchf.dto.res.XN631094Res;
@@ -65,9 +60,6 @@ public class StaffAOImpl implements IStaffAO {
     IUserBO userBO;
 
     @Autowired
-    ICcontractBO ccontractBO;
-
-    @Autowired
     IProjectBO projectBO;
 
     @Autowired
@@ -91,30 +83,30 @@ public class StaffAOImpl implements IStaffAO {
             return data.getCode();
         }
 
-        Date date = new Date();
         String code = OrderNoGenerater
             .generate(EGeneratePrefix.Staff.getCode());
 
         data = new Staff();
         data.setCode(code);
         data.setName(req.getRealName());
+        data.setIdType(EIDKind.IDCard.getCode());
+        data.setIdNo(req.getIdNo());
         data.setSex(req.getSex());
-        data.setIdNation(req.getIdNation());
 
         data.setBirthday(DateUtil.strToDate(req.getBirthday(),
             DateUtil.DB_DATE_FORMAT_STRING));
-        data.setIdType(EIDKind.IDCard.getCode());
-        data.setIdNo(req.getIdNo());
+        data.setIdNation(req.getIdNation());
         data.setIdAddress(req.getIdAddress());
         data.setIdPic(req.getIdPic());
-
         data.setIdPolice(req.getIdPolice());
+
         data.setIdStartDate(DateUtil.strToDate(req.getIdStartDate(),
             DateUtil.DB_DATE_FORMAT_STRING));
         data.setIdEndDate(DateUtil.strToDate(req.getIdEndDate(),
             DateUtil.DB_DATE_FORMAT_STRING));
         data.setUpdater(req.getUpdater());
-        data.setUpdateDatetime(date);
+        data.setUpdateDatetime(new Date());
+
         staffBO.saveStaff(data);
         return code;
     }
@@ -123,55 +115,25 @@ public class StaffAOImpl implements IStaffAO {
     public void editPict1(String code, String pict1, String feat,
             String updater) {
 
-        staffBO.refreshFeat(code, pict1, feat, updater);
+        staffBO.refreshPict1(code, pict1, feat, updater);
 
     }
 
     @Override
     public void editPicts(XN631414Req req) {
-        Staff data = staffBO.getStaff(req.getCode());
-        data.setPict2(req.getPict2());
-        data.setPict3(req.getPict3());
-        data.setPict4(req.getPict4());
-        data.setUpdater(req.getUpdater());
 
-        Date date = new Date();
-        data.setUpdateDatetime(date);
-        staffBO.refreshIdPict(data);
+        staffBO.refreshPicts(req.getCode(), req.getPict2(), req.getPict3(),
+            req.getPict4(), req.getUpdater());
+
     }
 
     @Override
-    @Transactional
-    public void editStaff(XN631412Req req) {
-        PhoneUtil.checkMobile(req.getMobile());
+    public void editContactInfo(XN631413Req req) {
 
-        Date date = new Date();
-        Staff data = staffBO.getStaff(req.getCode());
-        data.setMobile(req.getMobile());
+        staffBO.refreshContactInfo(req.getCode(), req.getMobile(),
+            req.getContacts(), req.getContactsMobile(), req.getUpdater(),
+            req.getRemark());
 
-        data.setPict1(req.getPict1());
-        data.setPict2(req.getPict2());
-        data.setPict3(req.getPict3());
-        data.setPict4(req.getPict4());
-        data.setUpdater(req.getUpdater());
-
-        data.setUpdateDatetime(date);
-        data.setRemark(req.getRemark());
-        staffBO.refreshStaff(data);
-    }
-
-    @Override
-    @Transactional
-    public void editStaffInfo(XN631413Req req) {
-        Staff data = staffBO.getStaff(req.getCode());
-        data.setMobile(req.getMobile());
-        data.setContacts(req.getContacts());
-        data.setContactsMobile(req.getContactsMobile());
-
-        data.setUpdater(req.getUpdater());
-        data.setUpdateDatetime(new Date());
-        data.setRemark(req.getRemark());
-        staffBO.refreshStaffInfo(data);
     }
 
     @Override
@@ -213,7 +175,13 @@ public class StaffAOImpl implements IStaffAO {
 
     @Override
     public void doUpdateFeatDaily() {
+
+        // 获取昨天更新的免冠照
         Staff condition = new Staff();
+        condition.setUpdateDatetimeStart(DateUtil
+            .getRelativeDateOfSecond(DateUtil.getTodayStart(), -24 * 3600));
+        condition.setUpdateDatetimeEnd(DateUtil
+            .getRelativeDateOfSecond(DateUtil.getTodayEnd(), -24 * 3600));
         condition.setFeat("NOFACE");
 
         int start = 0;
@@ -254,9 +222,7 @@ public class StaffAOImpl implements IStaffAO {
         if (!feat.equals("error") && !feat.equals("NOFACE")
                 && !feat.equals(staff.getFeat())) {
 
-            staff.setFeat(feat);
-            staffBO.refreshFeat(staff.getCode(), staff.getPict1(),
-                featJson.getString("data"), "USYS201800000000001");
+            staffBO.refreshFeat(staff.getCode(), featJson.getString("data"));
 
             return true;
 
@@ -267,20 +233,65 @@ public class StaffAOImpl implements IStaffAO {
     }
 
     @Override
-    public Staff getStaffInfo(String code, List<String> projectCodeList) {
-        Staff data = staffBO.getStaff(code);
-        // 所在项目及工资条
-        List<Employ> employList = new ArrayList<Employ>();
-        List<Salary> salaryList = new ArrayList<Salary>();
-        if (CollectionUtils.isNotEmpty(projectCodeList)) {
-            for (String projectCode : projectCodeList) {
-                employList.add(
-                    employBO.getEmployByStaff(data.getCode(), projectCode));
-            }
+    public Paginable<Staff> queryStaffPage(int start, int limit,
+            Staff condition) {
+        // 重写分页查，加快查询时间
+        long totalCount = staffBO.getTotalCount(condition);
+
+        Paginable<Staff> page = new Page<Staff>(start, limit, totalCount);
+
+        List<Staff> dataList = staffBO.queryStaffListBrief(condition,
+            page.getStart(), page.getPageSize());
+
+        page.setList(dataList);
+
+        for (Staff staff : page.getList()) {
+            initStaff(staff);
         }
 
+        return page;
+    }
+
+    @Override
+    public List<Staff> queryStaffList(Staff condition) {
+        return staffBO.queryStaffList(condition);
+    }
+
+    @Override
+    public Staff getStaff(String code) {
+        Staff data = staffBO.getStaff(code);
+
+        initStaff(data);
+
+        // 技能列表
+        List<Skill> skillList = skillBO.querySkillByStaff(data.getCode());
+        data.setSkillList(skillList);
+
+        return data;
+    }
+
+    private void initStaff(Staff staff) {
+        // 更新人
+        staff.setUpdateName(getName(staff.getUpdater()));
+    }
+
+    @Override
+    public Staff getStaffInfo(String code, List<String> projectCodeList) {
+
+        Staff data = staffBO.getStaff(code);
+
+        // 工作履历
+        List<Employ> employList = new ArrayList<Employ>();
+        if (CollectionUtils.isNotEmpty(projectCodeList)) {
+            for (String projectCode : projectCodeList) {
+                Employ employ = employBO.getEmployByStaff(data.getCode(),
+                    projectCode);
+                if (null != employ) {
+                    employList.add(employ);
+                }
+            }
+        }
         data.setEmployList(employList);
-        data.setSalaryList(salaryList);
 
         // 技能
         List<Skill> skillList = skillBO.querySkillByStaff(data.getCode());
@@ -303,32 +314,37 @@ public class StaffAOImpl implements IStaffAO {
             }
         }
 
-        // 所在项目及工资条
+        // 工作履历
         List<Employ> employList = new ArrayList<Employ>();
+
+        // 正常工资条
         List<Salary> salaryList = new ArrayList<Salary>();
+
+        // 异常工资条
         List<Salary> abnormalSalaryList = new ArrayList<Salary>();
-        Employ employ = null;
 
         if (CollectionUtils.isNotEmpty(projectCodeList)) {
             for (String projectCode : projectCodeList) {
-                employ = employBO.getEmployByStaff(data.getCode(), projectCode);
+                Employ employ = employBO.getEmployByStaff(data.getCode(),
+                    projectCode);
                 if (employ != null) {
+
+                    // 填充工作履历及正常工资条记录
                     employList.add(employ);
                     salaryList = salaryBO.getEmploySalary(employ.getCode());
+
                 }
             }
         }
 
         if (CollectionUtils.isNotEmpty(salaryList)) {
             for (Salary salary : salaryList) {
-                // 工资卡
-                BankCard bankCard = bankCardBO
-                    .getEmployBankCard(salary.getEmployCode());
-                salary.setBankCard(bankCard);
-                salary.setBankcardNumber(bankCard.getBankcardNumber());
                 if (ESalaryStatus.Pay_Portion.getCode()
                     .equals(salary.getStatus())) {
+
+                    // 填充异常工资条记录
                     abnormalSalaryList.add(salary);
+
                 }
             }
         }
@@ -340,9 +356,11 @@ public class StaffAOImpl implements IStaffAO {
         // 技能列表
         List<Skill> skillList = skillBO.querySkillByStaff(data.getCode());
         data.setSkillList(skillList);
+
         return data;
     }
 
+    // 获取用户名称
     private String getName(String userId) {
         User user = userBO.getUserName(userId);
         String name = null;
@@ -357,50 +375,15 @@ public class StaffAOImpl implements IStaffAO {
     }
 
     @Override
-    public Paginable<Staff> queryStaffPage(int start, int limit,
-            Staff condition) {
-        // 重写分页查，加快查询时间
-        long totalCount = staffBO.getTotalCount(condition);
-
-        Paginable<Staff> page = new Page<Staff>(start, limit, totalCount);
-
-        List<Staff> dataList = staffBO.queryStaffListBrief(condition,
-            page.getStart(), page.getPageSize());
-
-        page.setList(dataList);
-
-        for (Staff staff : page.getList()) {
-            staff.setUpdateName(getName(staff.getUpdater()));
-        }
-
-        return page;
-    }
-
-    @Override
-    public List<Staff> queryStaffList(Staff condition) {
-        List<Staff> list = staffBO.queryStaffList(condition);
-        for (Staff staff : list) {
-            staff.setUpdateName(getName(staff.getUpdater()));
-        }
-        return list;
-    }
-
-    @Override
-    public Staff getStaff(String code) {
-        Staff data = staffBO.getStaff(code);
-        data.setUpdateName(getName(data.getUpdater()));
-        List<Skill> skillList = skillBO.querySkillByStaff(data.getCode());
-        data.setSkillList(skillList);
-        return data;
-    }
-
-    @Override
+    @SuppressWarnings({ "rawtypes", "unchecked" })
     public String getStaffFeatList(String projectCode) {
-        Employ employCondition = new Employ();
-        employCondition.setProjectCode(projectCode);
+        // 项目的雇佣人员列表
+        Employ condition = new Employ();
+        condition.setProjectCode(projectCode);
         List<Employ> employList = employBO.queryEmployListByProject(projectCode,
             EEmployStatus.Not_Leave.getCode());
 
+        // 项目的务工人员列表
         List<String> staffCodeList = new ArrayList<String>();
         if (CollectionUtils.isNotEmpty(employList)) {
             for (Employ employ : employList) {
@@ -424,5 +407,4 @@ public class StaffAOImpl implements IStaffAO {
 
         return new Gson().toJson(array);
     }
-
 }

@@ -3,13 +3,16 @@ package com.cdkj.gchf.bo.impl;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import com.cdkj.gchf.bo.IBankCardBO;
 import com.cdkj.gchf.bo.ISalaryBO;
 import com.cdkj.gchf.bo.base.PaginableBOImpl;
 import com.cdkj.gchf.dao.ISalaryDAO;
+import com.cdkj.gchf.domain.BankCard;
 import com.cdkj.gchf.domain.Salary;
 import com.cdkj.gchf.enums.ESalaryStatus;
 import com.cdkj.gchf.exception.BizException;
@@ -19,6 +22,9 @@ public class SalaryBOImpl extends PaginableBOImpl<Salary> implements ISalaryBO {
 
     @Autowired
     private ISalaryDAO salaryDAO;
+
+    @Autowired
+    IBankCardBO bankCardBO;
 
     public void saveSalary(Salary data) {
         salaryDAO.insert(data);
@@ -82,6 +88,20 @@ public class SalaryBOImpl extends PaginableBOImpl<Salary> implements ISalaryBO {
             condition.setStatusList(statusList);
 
             list = salaryDAO.selectList(condition);
+
+            if (CollectionUtils.isNotEmpty(list)) {
+                for (Salary salary : list) {
+                    // 工资卡
+                    BankCard bankCard = bankCardBO
+                        .getEmployBankCard(salary.getEmployCode());
+
+                    if (null != bankCard) {
+                        salary.setBankCard(bankCard);
+                        salary.setBankcardNumber(bankCard.getBankcardNumber());
+                    }
+
+                }
+            }
         }
         return list;
     }

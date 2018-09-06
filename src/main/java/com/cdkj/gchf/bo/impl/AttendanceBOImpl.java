@@ -11,8 +11,11 @@ import org.springframework.stereotype.Component;
 import com.cdkj.gchf.bo.IAttendanceBO;
 import com.cdkj.gchf.bo.base.PaginableBOImpl;
 import com.cdkj.gchf.common.DateUtil;
+import com.cdkj.gchf.core.OrderNoGenerater;
 import com.cdkj.gchf.dao.IAttendanceDAO;
 import com.cdkj.gchf.domain.Attendance;
+import com.cdkj.gchf.enums.EAttendanceStatus;
+import com.cdkj.gchf.enums.EGeneratePrefix;
 import com.cdkj.gchf.exception.BizException;
 
 @Component
@@ -22,7 +25,22 @@ public class AttendanceBOImpl extends PaginableBOImpl<Attendance>
     @Autowired
     private IAttendanceDAO attendanceDAO;
 
-    public void saveAttendance(Attendance data) {
+    public void saveAttendance(String employCode, String projectCode,
+            String projectName, String staffCode, String staffName) {
+
+        Attendance data = new Attendance();
+        String code = OrderNoGenerater
+            .generate(EGeneratePrefix.Attendance.getCode());
+        data.setCode(code);
+        data.setEmployCode(employCode);
+        data.setProjectCode(projectCode);
+        data.setProjectName(projectName);
+        data.setStaffCode(staffCode);
+
+        data.setStaffName(staffName);
+        data.setStatus(EAttendanceStatus.TO_Start.getCode());
+        data.setCreateDatetime(new Date());
+
         attendanceDAO.insert(data);
     }
 

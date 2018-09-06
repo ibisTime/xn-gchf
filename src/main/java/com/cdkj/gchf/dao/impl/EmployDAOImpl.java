@@ -51,12 +51,12 @@ public class EmployDAOImpl extends AMybatisTemplate implements IEmployDAO {
     }
 
     @Override
-    public void toHoliday(Employ data) {
+    public void updateHoliday(Employ data) {
         super.update(NAMESPACE.concat("to_holiday"), data);
     }
 
     @Override
-    public void leaveOffice(Employ data) {
+    public void updateLeaveOffice(Employ data) {
         super.update(NAMESPACE.concat("leave_office"), data);
     }
 

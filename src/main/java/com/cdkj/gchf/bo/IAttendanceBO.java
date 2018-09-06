@@ -8,7 +8,9 @@ import com.cdkj.gchf.domain.Attendance;
 
 public interface IAttendanceBO extends IPaginableBO<Attendance> {
 
-    public void saveAttendance(Attendance data);
+    // 添加考勤
+    public void saveAttendance(String employCode, String projectCode,
+            String projectName, String staffCode, String staffName);
 
     // 考勤系统上班打卡
     public void startWorkMachineClockIn(Attendance data);

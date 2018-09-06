@@ -20,8 +20,8 @@ public interface IEmployAO {
     // 离职
     public void leaveOffice(XN631462Req req);
 
-    // 修改入职信息
-    public void editEmploy(XN631463Req req);
+    // 重新入职
+    public void reEmploy(XN631463Req req);
 
     // 每天凌晨更新请假状态
     public void updateEmployStatusDaily();

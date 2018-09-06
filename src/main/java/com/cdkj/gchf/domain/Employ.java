@@ -13,7 +13,7 @@ import com.cdkj.gchf.dao.base.ABaseDO;
 */
 public class Employ extends ABaseDO {
 
-    private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 3841077137020713708L;
 
     // 编号
     private String code;
@@ -78,15 +78,17 @@ public class Employ extends ABaseDO {
     // 工资发放状态
     private String salaryStatus;
 
-    // ***********db**************
+    // ***********DB Properties**************
+    // 关键字模糊查（手机号/职位/姓名）
     private String keyword;
 
+    // 员工信息
     private Staff staff;
 
-    private String updateName;
-
+    // 状态列表
     private List<String> statusList;
 
+    // 项目列表
     private List<String> projectCodeList;
 
     // 部门名称
@@ -103,6 +105,9 @@ public class Employ extends ABaseDO {
 
     // 承建单位
     private String companyName;
+
+    // 更新人姓名
+    private String updateName;
 
     public String getCompanyName() {
         return companyName;

@@ -9,12 +9,16 @@ public interface IEmployDAO extends IBaseDAO<Employ> {
 
     int update(Employ data);
 
-    void toHoliday(Employ data);
+    // 请假
+    void updateHoliday(Employ data);
 
-    void leaveOffice(Employ data);
+    // 离职
+    void updateLeaveOffice(Employ data);
 
+    // 获取工资条数量
     long getSalaryCount(Employ condition);
 
+    // 更新状态
     void updateStatus(Employ data);
 
     // 修改工资发放状态

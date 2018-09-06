@@ -27,7 +27,6 @@ import com.cdkj.gchf.common.AmountUtil;
 import com.cdkj.gchf.common.DateUtil;
 import com.cdkj.gchf.core.OrderNoGenerater;
 import com.cdkj.gchf.core.StringValidater;
-import com.cdkj.gchf.domain.Attendance;
 import com.cdkj.gchf.domain.BankCard;
 import com.cdkj.gchf.domain.Department;
 import com.cdkj.gchf.domain.Employ;
@@ -39,9 +38,9 @@ import com.cdkj.gchf.domain.User;
 import com.cdkj.gchf.dto.req.XN631460Req;
 import com.cdkj.gchf.dto.req.XN631462Req;
 import com.cdkj.gchf.dto.req.XN631463Req;
-import com.cdkj.gchf.enums.EAttendanceStatus;
 import com.cdkj.gchf.enums.EEmployStatus;
 import com.cdkj.gchf.enums.EGeneratePrefix;
+import com.cdkj.gchf.enums.EPositionType;
 import com.cdkj.gchf.enums.EProjectStatus;
 import com.cdkj.gchf.enums.EStaffSalaryStatus;
 import com.cdkj.gchf.enums.EUser;
@@ -90,15 +89,23 @@ public class EmployAOImpl implements IEmployAO {
     public String joinIn(XN631460Req req) {
         Project project = projectBO.getProject(req.getProjectCode());
         if (!EProjectStatus.Building.getCode().equals(project.getStatus())) {
-            throw new BizException("xn0000", "该项目未通过审核或已停工");
+            throw new BizException("xn0000", "该项目未通过审核或已停工！");
         }
 
         Employ checkData = employBO.getEmployByStaff(req.getStaffCode(),
             req.getProjectCode());
+
         // 防止重复办理入职
         if (checkData != null && !EEmployStatus.Leave.getCode()
             .equals(checkData.getStatus())) {
-            throw new BizException("xn0000", "该员工已入职该项目，请勿重复办理入职");
+            throw new BizException("xn0000", "该员工已入职该项目，请勿重复办理入职！");
+        }
+
+        // 一个项目只有一个主管
+        if (EPositionType.Manager.getCode().equals(req.getPosition())
+                && CollectionUtils.isNotEmpty(
+                    employBO.queryEmployManagerList(req.getProjectCode()))) {
+            throw new BizException("xn0000", "该项目已存在主管，请重新选择职位！");
         }
 
         Employ data = new Employ();
@@ -112,19 +119,19 @@ public class EmployAOImpl implements IEmployAO {
         data.setProjectName(project.getName());
         data.setDepartmentCode(req.getDepartmentCode());
         data.setStaffCode(staff.getCode());
+
         data.setStaffName(staff.getName());
         data.setStaffMobile(staff.getMobile());
-
         data.setType(req.getType());
         data.setPosition(req.getPosition());
         data.setSalary(StringValidater.toLong(req.getSalary()));
-        data.setCutAmount(StringValidater.toLong(req.getCutAmount()));
 
+        data.setCutAmount(StringValidater.toLong(req.getCutAmount()));
         data.setStatus(EEmployStatus.Work.getCode());
-        data.setJoinDatetime(DateUtil.strToDate(req.getJoinDatetime(),
-            DateUtil.FRONT_DATE_FORMAT_STRING));
+        data.setJoinDatetime(new Date());
         data.setSalaryStatus(EStaffSalaryStatus.Normal.getCode());
         data.setUpdater(req.getUpdater());
+
         data.setUpdateDatetime(date);
         data.setRemark(req.getRemark());
         employBO.joinIn(data);
@@ -135,19 +142,8 @@ public class EmployAOImpl implements IEmployAO {
         reportBO.refreshStaffIn(project.getCode(), nextMonthSalary);
 
         // 生成考勤
-        Attendance attendance = new Attendance();
-        String attendanceCode = OrderNoGenerater
-            .generate(EGeneratePrefix.Attendance.getCode());
-        attendance.setCode(attendanceCode);
-        attendance.setEmployCode(code);
-        attendance.setProjectCode(project.getCode());
-        attendance.setProjectName(project.getName());
-
-        attendance.setStaffCode(staff.getCode());
-        attendance.setStaffName(staff.getName());
-        attendance.setStatus(EAttendanceStatus.TO_Start.getCode());
-        attendance.setCreateDatetime(date);
-        attendanceBO.saveAttendance(attendance);
+        attendanceBO.saveAttendance(code, project.getCode(), project.getName(),
+            staff.getCode(), staff.getName());
 
         // 添加银行卡信息
         bankCardBO.addBankCard(code, req.getBankCode(), req.getBankName(),
@@ -161,7 +157,7 @@ public class EmployAOImpl implements IEmployAO {
 
     @Override
     @Transactional
-    public void editEmploy(XN631463Req req) {
+    public void reEmploy(XN631463Req req) {
         Project project = projectBO.getProject(req.getProjectCode());
         if (!EProjectStatus.Building.getCode().equals(project.getStatus())) {
             throw new BizException("xn0000", "该项目未通过审核或已停工");
@@ -169,7 +165,7 @@ public class EmployAOImpl implements IEmployAO {
 
         Employ employ = employBO.getEmploy(req.getCode());
 
-        // 修改入职
+        // 重新入职
         employ.setProjectCode(req.getProjectCode());
         employ.setProjectName(project.getName());
         employ.setDepartmentCode(req.getDepartmentCode());
@@ -177,13 +173,15 @@ public class EmployAOImpl implements IEmployAO {
         employ.setPosition(req.getPosition());
 
         employ.setSalary(StringValidater.toLong(req.getSalary()));
-        employ.setJoinDatetime(DateUtil.strToDate(req.getJoinDatetime(),
-            DateUtil.FRONT_DATE_FORMAT_STRING));
+        employ.setJoinDatetime(new Date());
         employ.setCutAmount(StringValidater.toLong(req.getCutAmount()));
         employ.setUpdater(req.getUpdater());
         employ.setUpdateDatetime(new Date());
 
         employ.setRemark(req.getRemark());
+        if (EEmployStatus.Leave.getCode().equals(employ.getStatus())) {
+            employ.setStatus(EEmployStatus.Work.getCode());
+        }
         employBO.editEmploy(employ);
 
         // 如果没有工资卡则新增，否则修改
@@ -208,12 +206,15 @@ public class EmployAOImpl implements IEmployAO {
     public void leaveOffice(XN631462Req req) {
         Employ data = employBO.getEmployByStaff(req.getStaffCode(),
             req.getProjectCode());
+
         if (data == null) {
             throw new BizException("xn0000", "该员工未在该项目任职");
         }
+
         if (EEmployStatus.Leave.getCode().equals(data.getStatus())) {
             throw new BizException("xn0000", "该员工已经离职");
         }
+
         employBO.leaveOffice(data, req.getLeavingDatetime(), req.getUpdater(),
             req.getRemark());
 
@@ -251,7 +252,6 @@ public class EmployAOImpl implements IEmployAO {
 
     @Override
     public List<Employ> queryEmployList(Employ condition) {
-        // 补充信息
         List<Employ> list = employBO.queryEmployList(condition);
         for (Employ employ : list) {
             initEmploy(employ);
@@ -315,18 +315,22 @@ public class EmployAOImpl implements IEmployAO {
         List<Employ> eList = employBO.queryEmployList(eCondition);
 
         String workStatus = EEmployStatus.Work.getCode();
-        for (Employ employ : eList) {
-            if (employ.getStartDatetime() != null
-                    && employ.getLastLeavingDays() != null) {
-                // 如果今天请假则跳出循环，请假开始时间也算为1天
-                if (DateUtil.isIn(employ.getStartDatetime(),
-                    DateUtil.getRelativeDateOfDays(employ.getStartDatetime(),
-                        employ.getLastLeavingDays()))) {
-                    break;
+
+        if (CollectionUtils.isNotEmpty(eList)) {
+            for (Employ employ : eList) {
+                if (employ.getStartDatetime() != null
+                        && employ.getLastLeavingDays() != null) {
+                    // 如果今天请假则跳出循环，请假开始时间也算为1天
+                    if (DateUtil.isIn(employ.getStartDatetime(),
+                        DateUtil.getRelativeDateOfDays(
+                            employ.getStartDatetime(),
+                            employ.getLastLeavingDays()))) {
+                        break;
+                    }
                 }
+                employ.setStatus(workStatus);
+                employBO.updateStatus(employ);
             }
-            employ.setStatus(workStatus);
-            employBO.updateStatus(employ);
         }
 
         // 将员工的在职状态更新为请假状态

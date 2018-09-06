@@ -10,7 +10,6 @@ import com.cdkj.gchf.bo.IDepartmentBO;
 import com.cdkj.gchf.bo.base.PaginableBOImpl;
 import com.cdkj.gchf.dao.IDepartmentDAO;
 import com.cdkj.gchf.domain.Department;
-import com.cdkj.gchf.exception.BizException;
 
 @Component
 public class DepartmentBOImpl extends PaginableBOImpl<Department>
@@ -46,9 +45,6 @@ public class DepartmentBOImpl extends PaginableBOImpl<Department>
             Department condition = new Department();
             condition.setCode(code);
             data = departmentDAO.select(condition);
-            if (data == null) {
-                throw new BizException("xn0000", "该部门不存在");
-            }
         }
         return data;
     }
@@ -56,13 +52,14 @@ public class DepartmentBOImpl extends PaginableBOImpl<Department>
     @Override
     public String getParentName(String parentCode) {
         Department data = null;
+        String parentName = null;
         Department condition = new Department();
         condition.setCode(parentCode);
         data = departmentDAO.select(condition);
-        if (data == null) {
-            throw new BizException("xn0000", "该部门不存在");
+        if (data != null) {
+            parentName = data.getName();
         }
-        return data.getName();
+        return parentName;
     }
 
     @Override

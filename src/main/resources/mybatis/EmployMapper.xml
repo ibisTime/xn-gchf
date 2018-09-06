@@ -7,26 +7,26 @@
 		<result column="project_code" property="projectCode" />
 		<result column="project_name" property="projectName" />
 		<result column="department_code" property="departmentCode" />
-		
 		<result column="staff_code" property="staffCode" />
+		
 		<result column="staff_name" property="staffName" />
 		<result column="staff_mobile" property="staffMobile" />
 		<result column="type" property="type" />
 		<result column="position" property="position" />
-		
 		<result column="salary" property="salary" />
+		
 		<result column="cut_amount" property="cutAmount" />
 		<result column="status" property="status" />
 		<result column="join_datetime" property="joinDatetime" />
-		
 		<result column="leaving_datetime" property="leavingDatetime" />
 		<result column="start_datetime" property="startDatetime" />
+		
 		<result column="last_leaving_days" property="lastLeavingDays" />
 		<result column="total_leaving_days" property="totalLeavingDays" />
 		<result column="updater" property="updater" />
-		
 		<result column="update_datetime" property="updateDatetime" />
 		<result column="remark" property="remark" />
+		
 		<result column="salary_status"  property="salaryStatus" />
 	</resultMap>
 	
@@ -44,6 +44,18 @@
 			<if test="departmentCode != null and departmentCode != '' ">
 				AND t.department_code = #{departmentCode}
 			</if>
+			<if test="type != null and type != '' ">
+				AND t.type = #{type}
+			</if>
+			<if test="updater != null and updater != '' ">
+				AND t.updater = #{updater}
+			</if>
+			<if test="salaryStatus != null and salaryStatus != '' ">
+				AND t.salary_status = #{salaryStatus}
+			</if>
+			<if test="keyword != null and keyword != '' ">
+				AND (t.staff_mobile like "%"#{keyword}"%" OR t.position like "%"#{keyword}"%" OR t.staff_name like "%"#{keyword}"%")
+			</if>
 			
 			<choose>
 				<when test="projectCode != null and projectCode != ''">
@@ -59,13 +71,7 @@
 					AND t.code IN ('')
 				</when>
 			</choose>
-		
-			<if test="type != null and type != '' ">
-				AND t.type = #{type}
-			</if>
-			<if test="updater != null and updater != '' ">
-				AND t.updater = #{updater}
-			</if>
+			
 			<choose>
 				<when test="status == '0,1' ">
 					AND t.status IN ('0','1')
@@ -73,14 +79,13 @@
 				<when test="status != null and status != '' ">
 					AND t.status = #{status}
 				</when>
+				<when test="statusList != null and statusList.size() > 0 ">
+					AND t.status IN
+					<foreach collection="statusList" item="item" index="index" open="(" separator="," close=")">
+						#{item}
+					</foreach>
+				</when>
 			</choose>
-			
-			<if test="salaryStatus != null and salaryStatus != '' ">
-				AND t.salary_status = #{salaryStatus}
-			</if>
-			<if test="keyword != null and keyword != '' ">
-				AND (t.staff_mobile like "%"#{keyword}"%" OR t.position  like "%"#{keyword}"%" OR t.staff_name  like "%"#{keyword}"%")
-			</if>
 			
 		</trim>
 	</sql>
@@ -92,21 +97,21 @@
 		,t.project_name
 		,t.department_code
 		,t.staff_code
+		
 		,t.staff_name
 		,t.staff_mobile
-		
 		,t.type
 		,t.position
 		,t.salary
+		
 		,t.cut_amount
 		,t.status
 		,t.salary_status
-		
 		,t.join_datetime
 		,t.leaving_datetime
+		
 		,t.start_datetime
 		,t.last_leaving_days
-		
 		,t.total_leaving_days
 		,t.updater
 		,t.update_datetime
@@ -175,6 +180,27 @@
 		)
 	</insert>
 
+	<update id="to_holiday" parameterType="employ">
+		UPDATE thf_employ
+		SET
+		status = #{status}
+		,start_datetime = #{startDatetime}
+		,last_leaving_days = #{lastLeavingDays}
+		,total_leaving_days = #{totalLeavingDays}
+		WHERE code = #{code}
+	</update>
+	
+	<update id="leave_office" parameterType="employ">
+		UPDATE thf_employ
+		SET
+		status = #{status}
+		,leaving_datetime = #{leavingDatetime}
+		,updater = #{updater}
+		,update_datetime = #{updateDatetime}
+		,remark = #{remark}
+		WHERE code = #{code}
+	</update>
+	
 	<update id="update_employ" parameterType="employ">
 		UPDATE thf_employ
 		SET
@@ -187,27 +213,6 @@
 		,cut_amount = #{cutAmount}
 		,status = #{status}
 		,join_datetime = #{joinDatetime}
-		,updater = #{updater}
-		,update_datetime = #{updateDatetime}
-		,remark = #{remark}
-		WHERE code = #{code}
-	</update>
-
-	<update id="to_holiday" parameterType="employ">
-		UPDATE thf_employ
-		SET
-		status = #{status}
-		,start_datetime = #{startDatetime}
-		,last_leaving_days = #{lastLeavingDays}
-		,total_leaving_days = #{totalLeavingDays}
-		WHERE code = #{code}
-	</update>
-
-	<update id="leave_office" parameterType="employ">
-		UPDATE thf_employ
-		SET
-		status = #{status}
-		,leaving_datetime = #{leavingDatetime}
 		,updater = #{updater}
 		,update_datetime = #{updateDatetime}
 		,remark = #{remark}

@@ -24,7 +24,7 @@ public class XN631463 extends AProcessor {
 
     @Override
     public Object doBusiness() throws BizException {
-        employAO.editEmploy(req);
+        employAO.reEmploy(req);
         return new BooleanRes(true);
     }
 

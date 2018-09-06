@@ -36,6 +36,18 @@ public class EmployBOImpl extends PaginableBOImpl<Employ> implements IEmployBO {
     }
 
     @Override
+    public void leaveOffice(Employ data, String leavingDatetime, String updater,
+            String remark) {
+        data.setLeavingDatetime(DateUtil.strToDate(leavingDatetime,
+            DateUtil.FRONT_DATE_FORMAT_STRING));
+        data.setStatus(EEmployStatus.Leave.getCode());
+        data.setUpdater(updater);
+        data.setUpdateDatetime(new Date());
+        data.setRemark(remark);
+        employDAO.updateLeaveOffice(data);
+    }
+
+    @Override
     public void toHoliday(String staffCode, String projectCode,
             Date startDatetime, Integer leaveDays) {
         Employ data = getEmployByStaff(staffCode, projectCode);
@@ -50,19 +62,7 @@ public class EmployBOImpl extends PaginableBOImpl<Employ> implements IEmployBO {
         }
 
         data.setStatus(status);
-        employDAO.toHoliday(data);
-    }
-
-    @Override
-    public void leaveOffice(Employ data, String leavingDatetime, String updater,
-            String remark) {
-        data.setLeavingDatetime(DateUtil.strToDate(leavingDatetime,
-            DateUtil.FRONT_DATE_FORMAT_STRING));
-        data.setStatus(EEmployStatus.Leave.getCode());
-        data.setUpdater(updater);
-        data.setUpdateDatetime(new Date());
-        data.setRemark(remark);
-        employDAO.leaveOffice(data);
+        employDAO.updateHoliday(data);
     }
 
     @Override
@@ -93,6 +93,7 @@ public class EmployBOImpl extends PaginableBOImpl<Employ> implements IEmployBO {
             Employ condition = new Employ();
             condition.setProjectCode(projectCode);
             condition.setStaffCode(staffCode);
+            condition.setStatus(EEmployStatus.Work.getCode());
             data = employDAO.select(condition);
             if (null != data) {
                 initEmploy(data);
@@ -107,6 +108,13 @@ public class EmployBOImpl extends PaginableBOImpl<Employ> implements IEmployBO {
         Employ condition = new Employ();
         condition.setProjectCode(projectCode);
         condition.setStatus(status);
+        return queryEmployList(condition);
+    }
+
+    @Override
+    public List<Employ> queryEmployManagerList(String projectCode) {
+        Employ condition = new Employ();
+        condition.setProjectCode(projectCode);
         return queryEmployList(condition);
     }
 
@@ -150,4 +158,5 @@ public class EmployBOImpl extends PaginableBOImpl<Employ> implements IEmployBO {
             employ.setCompanyName(project.getCompanyName());
         }
     }
+
 }

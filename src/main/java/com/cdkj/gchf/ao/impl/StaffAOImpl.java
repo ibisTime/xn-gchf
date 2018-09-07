@@ -280,11 +280,12 @@ public class StaffAOImpl implements IStaffAO {
         List<Employ> employList = new ArrayList<Employ>();
         if (CollectionUtils.isNotEmpty(projectCodeList)) {
             for (String projectCode : projectCodeList) {
-                Employ employ = employBO.getEmployByStaff(data.getCode(),
-                    projectCode);
-                if (null != employ) {
-                    employList.add(employ);
-                }
+                Employ condition = new Employ();
+                condition.setStaffCode(data.getCode());
+                condition.setProjectCode(projectCode);
+                List<Employ> list = employBO.queryEmployList(condition);
+
+                employList.addAll(list);
             }
         }
         data.setEmployList(employList);
@@ -321,15 +322,24 @@ public class StaffAOImpl implements IStaffAO {
 
         if (CollectionUtils.isNotEmpty(projectCodeList)) {
             for (String projectCode : projectCodeList) {
-                Employ employ = employBO.getEmployByStaff(data.getCode(),
-                    projectCode);
-                if (employ != null) {
+                Employ condition = new Employ();
+                condition.setStaffCode(data.getCode());
+                condition.setProjectCode(projectCode);
+                List<Employ> list = employBO.queryEmployList(condition);
 
-                    // 填充工作履历及正常工资条记录
-                    employList.add(employ);
-                    salaryList = salaryBO.getEmploySalary(employ.getCode());
+                if (CollectionUtils.isNotEmpty(list)) {
+                    for (Employ employ : list) {
+                        if (employ != null) {
 
+                            // 填充工作履历及正常工资条记录
+                            employList.add(employ);
+                            salaryList = salaryBO
+                                .getEmploySalary(employ.getCode());
+
+                        }
+                    }
                 }
+
             }
         }
 

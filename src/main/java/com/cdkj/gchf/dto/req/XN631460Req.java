@@ -33,10 +33,6 @@ public class XN631460Req {
     @NotBlank(message = "薪酬不能为空")
     private String salary;
 
-    // （必填）入职时间
-    @NotBlank(message = "入职时间不能为空")
-    private String joinDatetime;
-
     // （必填）迟到早退扣款金额
     @NotBlank(message = "迟到早退扣款金额不能为空")
     private String cutAmount;
@@ -102,14 +98,6 @@ public class XN631460Req {
 
     public void setSalary(String salary) {
         this.salary = salary;
-    }
-
-    public String getJoinDatetime() {
-        return joinDatetime;
-    }
-
-    public void setJoinDatetime(String joinDatetime) {
-        this.joinDatetime = joinDatetime;
     }
 
     public String getCutAmount() {

@@ -66,8 +66,7 @@ public class LeaveAOImpl implements ILeaveAO {
         reportBO.refreshLeavingDays(report);
 
         // 更新雇佣状态
-        employBO.toHoliday(employ.getStaffCode(), employ.getProjectCode(),
-            startDatetime, leaveDays);
+        employBO.toHoliday(req.getEmployCode(), startDatetime, leaveDays);
 
         // 添加请假记录
         return leaveBO.saveLeave(employ, startDatetime, endDatetime, leaveDays,

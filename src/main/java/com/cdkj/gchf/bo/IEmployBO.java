@@ -18,8 +18,7 @@ public interface IEmployBO extends IPaginableBO<Employ> {
     public void editEmploy(Employ data);
 
     // 请假
-    public void toHoliday(String staffCode, String projectCode,
-            Date startDatetime, Integer leaveDays);
+    public void toHoliday(String code, Date startDatetime, Integer leaveDays);
 
     // 更新状态
     public void updateStatus(Employ employ);
@@ -31,7 +30,7 @@ public interface IEmployBO extends IPaginableBO<Employ> {
     public List<Employ> queryEmployListByProject(String projectCode,
             String status);
 
-    // 根据员工和项目获取雇佣关系
+    // 获取员工未离职雇佣关系
     public Employ getEmployByStaff(String staffCode, String projectCode);
 
     // 获取项目主管

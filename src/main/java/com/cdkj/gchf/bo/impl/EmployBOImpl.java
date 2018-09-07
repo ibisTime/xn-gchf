@@ -48,9 +48,9 @@ public class EmployBOImpl extends PaginableBOImpl<Employ> implements IEmployBO {
     }
 
     @Override
-    public void toHoliday(String staffCode, String projectCode,
-            Date startDatetime, Integer leaveDays) {
-        Employ data = getEmployByStaff(staffCode, projectCode);
+    public void toHoliday(String code, Date startDatetime, Integer leaveDays) {
+        Employ data = new Employ();
+        data.setCode(code);
         data.setStartDatetime(startDatetime);
         data.setLastLeavingDays(leaveDays);
         data.setTotalLeavingDays(data.getTotalLeavingDays() + leaveDays);
@@ -93,7 +93,7 @@ public class EmployBOImpl extends PaginableBOImpl<Employ> implements IEmployBO {
             Employ condition = new Employ();
             condition.setProjectCode(projectCode);
             condition.setStaffCode(staffCode);
-            condition.setStatus(EEmployStatus.Work.getCode());
+            condition.setStatus(EEmployStatus.Not_Leave.getCode());
             data = employDAO.select(condition);
             if (null != data) {
                 initEmploy(data);

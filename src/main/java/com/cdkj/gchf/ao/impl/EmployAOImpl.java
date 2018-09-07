@@ -96,8 +96,7 @@ public class EmployAOImpl implements IEmployAO {
             req.getProjectCode());
 
         // 防止重复办理入职
-        if (checkData != null && !EEmployStatus.Leave.getCode()
-            .equals(checkData.getStatus())) {
+        if (checkData != null) {
             throw new BizException("xn0000", "该员工已入职该项目，请勿重复办理入职！");
         }
 

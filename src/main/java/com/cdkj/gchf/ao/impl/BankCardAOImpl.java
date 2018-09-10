@@ -8,10 +8,14 @@ import org.springframework.stereotype.Service;
 
 import com.cdkj.gchf.ao.IBankCardAO;
 import com.cdkj.gchf.bo.IBankCardBO;
+import com.cdkj.gchf.bo.IEmployBO;
+import com.cdkj.gchf.bo.IStaffBO;
 import com.cdkj.gchf.bo.IUserBO;
 import com.cdkj.gchf.bo.base.Page;
 import com.cdkj.gchf.bo.base.Paginable;
 import com.cdkj.gchf.domain.BankCard;
+import com.cdkj.gchf.domain.Employ;
+import com.cdkj.gchf.domain.Staff;
 import com.cdkj.gchf.domain.User;
 import com.cdkj.gchf.dto.req.XN631420Req;
 import com.cdkj.gchf.dto.req.XN631422Req;
@@ -26,6 +30,12 @@ public class BankCardAOImpl implements IBankCardAO {
 
     @Autowired
     private IUserBO userBO;
+
+    @Autowired
+    private IStaffBO staffBO;
+
+    @Autowired
+    private IEmployBO employBO;
 
     @Override
     public String addBankCard(XN631420Req req) {
@@ -80,6 +90,20 @@ public class BankCardAOImpl implements IBankCardAO {
                 && null != data.getSubbranch()) {
             data.setBankSubbranchName(
                 data.getBankName().concat(data.getSubbranch()));
+        }
+
+        // 员工信息
+        Staff staff = staffBO.getStaff(data.getStaffCode());
+        if (null != staff) {
+            data.setIdNo(staff.getIdNo());
+            data.setStaffMobile(staff.getMobile());
+        }
+
+        // 部门职位
+        Employ employ = employBO.getEmploy(data.getEmployCode());
+        if (null != employ) {
+            data.setPosition(employ.getPosition());
+            data.setDepartmentName(employ.getDepartmentName());
         }
     }
 

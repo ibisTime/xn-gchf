@@ -71,9 +71,6 @@ public class Attendance extends ABaseDO {
     // 项目编号List
     private List<String> projectCodeList;
 
-    // 用户类型
-    private String kind;
-
     // 状态列表
     private List<String> statusList;
 
@@ -82,6 +79,9 @@ public class Attendance extends ABaseDO {
 
     // 考勤结束时间
     private Date attendanceEndDatetime;
+
+    // 考勤生成月份
+    private String createMonth;
 
     public void setCode(String code) {
         this.code = code;
@@ -219,14 +219,6 @@ public class Attendance extends ABaseDO {
         this.projectCodeList = projectCodeList;
     }
 
-    public String getKind() {
-        return kind;
-    }
-
-    public void setKind(String kind) {
-        this.kind = kind;
-    }
-
     public List<String> getStatusList() {
         return statusList;
     }
@@ -257,6 +249,14 @@ public class Attendance extends ABaseDO {
 
     public void setAttendanceEndDatetime(Date attendanceEndDatetime) {
         this.attendanceEndDatetime = attendanceEndDatetime;
+    }
+
+    public String getCreateMonth() {
+        return createMonth;
+    }
+
+    public void setCreateMonth(String createMonth) {
+        this.createMonth = createMonth;
     }
 
 }

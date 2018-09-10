@@ -16,6 +16,7 @@ public interface IBankCardAO {
     // 添加工资卡
     public String addBankCard(XN631420Req req);
 
+    // 修改工资卡
     public void editBankCard(XN631422Req req);
 
     public Paginable<BankCard> queryBankCardPage(int start, int limit,

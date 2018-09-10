@@ -17,6 +17,7 @@
 		<result column="create_datetime" property="createDatetime" />
 		
 		<result column="status" property="status" />
+		<result column="number_status" property="numberStatus" />
 		<result column="updater" property="updater" />
 		<result column="update_datetime" property="updateDatetime" />
 		<result column="remark" property="remark" />
@@ -41,6 +42,9 @@
 			<if test="status != null and status != '' ">
 				AND t.status = #{status}
 			</if>
+			<if test="numberStatus != null and numberStatus != '' ">
+				AND t.number_status = #{numberStatus}
+			</if>
 			<if test="updater != null and updater != '' ">
 				AND t.updater = #{updater}
 			</if>
@@ -56,15 +60,19 @@
 		,t.project_code
 		,t.project_name
 		,t.staff_code
+		
 		,t.staff_name
 		,t.bank_code
 		,t.bank_name
 		,t.subbranch
 		,t.bankcard_number
+		
 		,t.create_datetime
 		,t.status
+		,t.number_status
 		,t.updater
 		,t.update_datetime
+		
 		,t.remark
 		FROM
 		thf_bank_card t
@@ -90,15 +98,19 @@
 		,project_code
 		,project_name
 		,staff_code
+		
 		,staff_name
 		,bank_code
 		,bank_name
 		,subbranch
 		,bankcard_number
+		
 		,create_datetime
 		,status
+		,number_status
 		,updater
 		,update_datetime
+		
 		,remark
 		)
 		VALUES(
@@ -107,15 +119,19 @@
 		,#{projectCode}
 		,#{projectName}
 		,#{staffCode}
+		
 		,#{staffName}
 		,#{bankCode}
 		,#{bankName}
 		,#{subbranch}
 		,#{bankcardNumber}
+		
 		,#{createDatetime}
 		,#{status}
+		,#{numberStatus}
 		,#{updater}
 		,#{updateDatetime}
+		
 		,#{remark}
 		)
 	</insert>
@@ -127,6 +143,8 @@
 		,bank_name = #{bankName}
 		,subbranch = #{subbranch}
 		,bankcard_number = #{bankcardNumber}
+		,number_status = #{numberStatus}
+		
 		,updater = #{updater}
 		,update_datetime = #{updateDatetime}
 		,remark = #{remark}

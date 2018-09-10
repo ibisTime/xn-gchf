@@ -49,8 +49,7 @@ public class EmployBOImpl extends PaginableBOImpl<Employ> implements IEmployBO {
 
     @Override
     public void toHoliday(String code, Date startDatetime, Integer leaveDays) {
-        Employ data = new Employ();
-        data.setCode(code);
+        Employ data = getEmploy(code);
         data.setStartDatetime(startDatetime);
         data.setLastLeavingDays(leaveDays);
         data.setTotalLeavingDays(data.getTotalLeavingDays() + leaveDays);
@@ -133,6 +132,8 @@ public class EmployBOImpl extends PaginableBOImpl<Employ> implements IEmployBO {
             if (data == null) {
                 throw new BizException("xn0000", "该雇佣信息不存在");
             }
+
+            initEmploy(data);
         }
         return data;
     }

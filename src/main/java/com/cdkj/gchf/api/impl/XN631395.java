@@ -32,14 +32,9 @@ public class XN631395 extends AProcessor {
         Attendance condition = new Attendance();
         condition.setProjectCode(req.getProjectCode());
         condition.setStatus(req.getStatus());
-        condition.setCreateDatetimeStart(DateUtil.strToDate(req.getDateStart(),
-            DateUtil.DATA_TIME_PATTERN_1));
-        condition.setCreateDatetimeEnd(
-            DateUtil.strToDate(req.getDateEnd(), DateUtil.DATA_TIME_PATTERN_1));
-        condition.setKind(req.getKind());
-
         condition.setKeyword(req.getKeyword());
         condition.setProjectCodeList(req.getProjectCodeList());
+        condition.setCreateMonth(req.getCreateMonth());
 
         if (null != req.getCreateDatetime()) {
             condition.setCreateDatetimeStart(

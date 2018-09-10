@@ -444,10 +444,13 @@ public class SalaryAOImpl implements ISalaryAO {
             salary.setStaffIdNo(staff.getIdNo());
         }
 
-        // 隶属上级名称
         employ = employBO.getEmployByStaff(salary.getStaffCode(),
             salary.getProjectCode());
         if (null != employ) {
+            // 日薪
+            salary.setDailySalary(employ.getSalary());
+
+            // 隶属上级名称
             department = departmentBO.getDepartment(employ.getDepartmentCode());
             if (null != department) {
                 salary.setDepartmentLeaderName(department.getLeader());

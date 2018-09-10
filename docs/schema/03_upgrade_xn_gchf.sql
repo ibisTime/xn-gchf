@@ -251,3 +251,5 @@ ADD COLUMN `feat_status` VARCHAR(4) default 0 COMMENT '特征值状态(0无效/1
 update thf_staff set pict1_status = 1 where pict1 is not null;
 update thf_staff set feat_status = 1 where feat <> 'error' and feat <> 'NOFACE';
 
+ALTER TABLE `dev_xn_gchf`.`thf_bank_card` 
+ADD COLUMN `number_status` VARCHAR(4) NULL DEFAULT 0 COMMENT '银行卡号状态(0未录入/1已录入)' AFTER `status`;

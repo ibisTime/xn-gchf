@@ -16,6 +16,7 @@ import com.cdkj.gchf.domain.BankCard;
 import com.cdkj.gchf.domain.Employ;
 import com.cdkj.gchf.dto.req.XN631420Req;
 import com.cdkj.gchf.enums.EBankCardStatus;
+import com.cdkj.gchf.enums.ECardNumberStatus;
 import com.cdkj.gchf.enums.EGeneratePrefix;
 import com.cdkj.gchf.exception.BizException;
 
@@ -40,13 +41,15 @@ public class BankCardBOImpl extends PaginableBOImpl<BankCard>
         bankCard.setProjectCode(employ.getProjectCode());
         bankCard.setProjectName(employ.getProjectName());
         bankCard.setStaffCode(employ.getStaffCode());
+
         bankCard.setStaffName(employ.getStaffName());
         bankCard.setBankCode(req.getBankCode());
-
         bankCard.setBankName(req.getBankName());
         bankCard.setSubbranch(req.getSubbranch());
         bankCard.setBankcardNumber(req.getBankcardNumber());
+
         bankCard.setStatus(EBankCardStatus.Normal.getCode());
+        bankCard.setNumberStatus(getNumberStatus(req.getBankcardNumber()));
         bankCard.setUpdater(req.getUpdater());
 
         bankCard.setUpdateDatetime(new Date());
@@ -70,17 +73,19 @@ public class BankCardBOImpl extends PaginableBOImpl<BankCard>
         bankCard.setStaffCode(employ.getStaffCode());
         bankCard.setStaffName(employ.getStaffName());
         bankCard.setProjectCode(employ.getProjectCode());
+
         bankCard.setProjectName(employ.getProjectName());
         bankCard.setBankCode(bankCode);
-
         bankCard.setBankName(bankName);
         bankCard.setSubbranch(subbranch);
         bankCard.setBankcardNumber(bankcardNumber);
-        bankCard.setStatus(EBankCardStatus.Normal.getCode());
-        bankCard.setUpdater(updater);
 
+        bankCard.setStatus(EBankCardStatus.Normal.getCode());
+        bankCard.setNumberStatus(getNumberStatus(bankcardNumber));
+        bankCard.setUpdater(updater);
         bankCard.setUpdateDatetime(new Date());
         bankCard.setCreateDatetime(new Date());
+
         bankCardDAO.insert(bankCard);
         return bankCardCode;
     }
@@ -96,6 +101,7 @@ public class BankCardBOImpl extends PaginableBOImpl<BankCard>
         data.setSubbranch(subbranch);
         data.setBankcardNumber(bankcardNumber);
 
+        data.setNumberStatus(getNumberStatus(bankcardNumber));
         data.setUpdater(updater);
         data.setUpdateDatetime(new Date());
         data.setRemark(remark);
@@ -151,5 +157,15 @@ public class BankCardBOImpl extends PaginableBOImpl<BankCard>
             data.setBankSubbranchName(
                 data.getBankName().concat(data.getSubbranch()));
         }
+    }
+
+    private String getNumberStatus(String bankCardNumber) {
+        String bankCardNumberStatus = ECardNumberStatus.Non_Input.getCode();
+
+        if (StringUtils.isNotBlank(bankCardNumber)) {
+            bankCardNumberStatus = ECardNumberStatus.Inputed.getCode();
+        }
+
+        return bankCardNumberStatus;
     }
 }

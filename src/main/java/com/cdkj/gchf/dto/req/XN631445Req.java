@@ -39,14 +39,14 @@ public class XN631445Req extends APageReq {
     // （选填）状态
     private String status;
 
-    // （选填）用户类型
-    private String kind;
-
     // （选填）状态List
     private List<String> statusList;
 
     // （选填）项目编号List
     private List<String> projectCodeList;
+
+    // （选填）员工姓名
+    private String staffName;
 
     public String getApprover() {
         return approver;
@@ -112,14 +112,6 @@ public class XN631445Req extends APageReq {
         this.projectName = projectName;
     }
 
-    public String getKind() {
-        return kind;
-    }
-
-    public void setKind(String kind) {
-        this.kind = kind;
-    }
-
     public List<String> getStatusList() {
         return statusList;
     }
@@ -134,6 +126,14 @@ public class XN631445Req extends APageReq {
 
     public void setProjectCodeList(List<String> projectCodeList) {
         this.projectCodeList = projectCodeList;
+    }
+
+    public String getStaffName() {
+        return staffName;
+    }
+
+    public void setStaffName(String staffName) {
+        this.staffName = staffName;
     }
 
 }

@@ -31,9 +31,6 @@ public class XN631425Req extends APageReq {
     // （选填）更新人
     private String updater;
 
-    // （选填）用户类型
-    private String kind;
-
     public String getBankCode() {
         return bankCode;
     }
@@ -72,14 +69,6 @@ public class XN631425Req extends APageReq {
 
     public void setUpdater(String updater) {
         this.updater = updater;
-    }
-
-    public String getKind() {
-        return kind;
-    }
-
-    public void setKind(String kind) {
-        this.kind = kind;
     }
 
     public String getProjectCode() {

@@ -30,7 +30,6 @@ public class XN631446 extends AProcessor {
         condition.setProjectCode(req.getProjectCode());
         condition.setProjectName(req.getProjectName());
         condition.setApproveUser(req.getApprover());
-        condition.setKind(req.getKind());
 
         condition.setKeyword(req.getKeyword());
         condition.setMessageCode(req.getMessageCode());

@@ -1,7 +1,6 @@
 package com.cdkj.gchf.domain;
 
 import java.util.Date;
-import java.util.List;
 
 import com.cdkj.gchf.dao.base.ABaseDO;
 
@@ -13,7 +12,7 @@ import com.cdkj.gchf.dao.base.ABaseDO;
 */
 public class BankCard extends ABaseDO {
 
-    private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = -729740011320835496L;
 
     // 编号
     private String code;
@@ -51,6 +50,9 @@ public class BankCard extends ABaseDO {
     // 状态
     private String status;
 
+    // 银行卡号状态（0未录入/1已录入）
+    private String numberStatus;
+
     // 更新人
     private String updater;
 
@@ -61,16 +63,26 @@ public class BankCard extends ABaseDO {
     private String remark;
 
     // *******************db***************
+    // 关键字模糊查（员工姓名/银行名称/银行卡号/支行名称）
     private String keyword;
 
+    // 更新人姓名
     private String updateName;
-
-    private String kind;
-
-    private List<Employ> list;
 
     // 银行名称 + 支行名称
     private String bankSubbranchName;
+
+    // 员工身份证号
+    private String idNo;
+
+    // 员工手机号
+    private String staffMobile;
+
+    // 员工部门
+    private String departmentName;
+
+    // 员工职位
+    private String position;
 
     public void setCode(String code) {
         this.code = code;
@@ -184,22 +196,6 @@ public class BankCard extends ABaseDO {
         this.updateName = updateName;
     }
 
-    public String getKind() {
-        return kind;
-    }
-
-    public void setKind(String kind) {
-        this.kind = kind;
-    }
-
-    public List<Employ> getList() {
-        return list;
-    }
-
-    public void setList(List<Employ> list) {
-        this.list = list;
-    }
-
     public String getBankSubbranchName() {
         return bankSubbranchName;
     }
@@ -230,6 +226,46 @@ public class BankCard extends ABaseDO {
 
     public void setEmployCode(String employCode) {
         this.employCode = employCode;
+    }
+
+    public String getNumberStatus() {
+        return numberStatus;
+    }
+
+    public void setNumberStatus(String numberStatus) {
+        this.numberStatus = numberStatus;
+    }
+
+    public String getIdNo() {
+        return idNo;
+    }
+
+    public void setIdNo(String idNo) {
+        this.idNo = idNo;
+    }
+
+    public String getStaffMobile() {
+        return staffMobile;
+    }
+
+    public void setStaffMobile(String staffMobile) {
+        this.staffMobile = staffMobile;
+    }
+
+    public String getDepartmentName() {
+        return departmentName;
+    }
+
+    public void setDepartmentName(String departmentName) {
+        this.departmentName = departmentName;
+    }
+
+    public String getPosition() {
+        return position;
+    }
+
+    public void setPosition(String position) {
+        this.position = position;
     }
 
 }

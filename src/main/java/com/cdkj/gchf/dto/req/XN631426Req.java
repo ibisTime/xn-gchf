@@ -8,9 +8,6 @@ package com.cdkj.gchf.dto.req;
  */
 public class XN631426Req extends APageReq {
 
-    /** 
-     * @Fields serialVersionUID : TODO(用一句话描述这个变量表示什么) 
-     */
     private static final long serialVersionUID = -2799896855768659683L;
 
     // 项目编号
@@ -30,9 +27,6 @@ public class XN631426Req extends APageReq {
 
     // （选填）更新人
     private String updater;
-
-    // （选填）用户类型
-    private String kind;
 
     public String getBankCode() {
         return bankCode;
@@ -72,14 +66,6 @@ public class XN631426Req extends APageReq {
 
     public void setUpdater(String updater) {
         this.updater = updater;
-    }
-
-    public String getKind() {
-        return kind;
-    }
-
-    public void setKind(String kind) {
-        this.kind = kind;
     }
 
     public String getProjectCode() {

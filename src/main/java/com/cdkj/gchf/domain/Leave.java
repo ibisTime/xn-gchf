@@ -58,6 +58,15 @@ public class Leave extends ABaseDO {
     // 项目编号List
     private List<String> projectCodeList;
 
+    // 部门
+    private String departmentCode;
+
+    // 职位
+    private String position;
+
+    // 雇佣状态
+    private String employStatus;
+
     public String getCode() {
         return code;
     }
@@ -168,6 +177,30 @@ public class Leave extends ABaseDO {
 
     public void setProjectCodeList(List<String> projectCodeList) {
         this.projectCodeList = projectCodeList;
+    }
+
+    public String getDepartmentCode() {
+        return departmentCode;
+    }
+
+    public void setDepartmentCode(String departmentCode) {
+        this.departmentCode = departmentCode;
+    }
+
+    public String getPosition() {
+        return position;
+    }
+
+    public void setPosition(String position) {
+        this.position = position;
+    }
+
+    public String getEmployStatus() {
+        return employStatus;
+    }
+
+    public void setEmployStatus(String employStatus) {
+        this.employStatus = employStatus;
     }
 
 }

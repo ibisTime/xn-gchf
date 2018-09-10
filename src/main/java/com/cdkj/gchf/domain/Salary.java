@@ -103,7 +103,7 @@ public class Salary extends ABaseDO {
     // 最近一次发放时间
     private Date latePayDatetime;
 
-    // **********db***************
+    // **********DB Properties***************
 
     // 工资卡号
     private String bankcardNumber;
@@ -116,9 +116,6 @@ public class Salary extends ABaseDO {
 
     // 公司账户
     private ProjectCard projectCard;
-
-    // 用户类型
-    private String kind;
 
     // 员工手机号
     private String staffMobile;
@@ -155,6 +152,9 @@ public class Salary extends ABaseDO {
 
     // 所在班组负责人手机号
     private String departmentLeaderMobile;
+
+    // 日薪
+    private Long dailySalary;
 
     public String getEmployCode() {
         return employCode;
@@ -420,14 +420,6 @@ public class Salary extends ABaseDO {
         this.projectCard = projectCard;
     }
 
-    public String getKind() {
-        return kind;
-    }
-
-    public void setKind(String kind) {
-        this.kind = kind;
-    }
-
     public String getStaffMobile() {
         return staffMobile;
     }
@@ -522,6 +514,14 @@ public class Salary extends ABaseDO {
 
     public void setDepartmentLeaderMobile(String departmentLeaderMobile) {
         this.departmentLeaderMobile = departmentLeaderMobile;
+    }
+
+    public Long getDailySalary() {
+        return dailySalary;
+    }
+
+    public void setDailySalary(Long dailySalary) {
+        this.dailySalary = dailySalary;
     }
 
 }

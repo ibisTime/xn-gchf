@@ -31,7 +31,6 @@ public class XN631445 extends AProcessor {
         condition.setProjectCode(req.getProjectCode());
         condition.setProjectName(req.getProjectName());
         condition.setApproveUser(req.getApprover());
-        condition.setKind(req.getKind());
 
         condition.setStatusList(req.getStatusList());
         condition.setKeyword(req.getKeyword());
@@ -41,6 +40,7 @@ public class XN631445 extends AProcessor {
 
         condition.setStatus(req.getStatus());
         condition.setProjectCodeList(req.getProjectCodeList());
+        condition.setStaffName(req.getStaffName());
 
         String column = req.getOrderColumn();
         if (StringUtils.isBlank(column)) {

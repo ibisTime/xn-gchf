@@ -39,9 +39,6 @@ public class XN631446Req extends APageReq {
     // （选填）状态
     private String status;
 
-    // （选填）用户类型
-    private String kind;
-
     // （选填）状态
     private List<String> statusList;
 
@@ -109,14 +106,6 @@ public class XN631446Req extends APageReq {
 
     public void setProjectName(String projectName) {
         this.projectName = projectName;
-    }
-
-    public String getKind() {
-        return kind;
-    }
-
-    public void setKind(String kind) {
-        this.kind = kind;
     }
 
     public List<String> getStatusList() {

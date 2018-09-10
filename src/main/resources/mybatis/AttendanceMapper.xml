@@ -20,6 +20,7 @@
 		<result column="terminal_code" property="terminalCode" />
 		<result column="remark" property="remark" />
 	</resultMap>
+	
 	<sql id="where_condition">
 		<trim prefix="WHERE" prefixOverrides="AND | OR">
 			<if test="code != null and code != '' ">
@@ -57,7 +58,7 @@
 				AND t.staff_code = #{staffCode}
 			</if>
 			<if test="keyword != null and keyword != '' ">
-				AND "%"#{keyword}"%" OR t.staff_name like "%"#{keyword}"%"
+				AND t.staff_name like "%"#{keyword}"%"
 			</if>
 			<if test="createDatetimeStart != null and createDatetimeStart != '' ">
 				<![CDATA[AND t.create_datetime >= #{createDatetimeStart}]]>
@@ -65,8 +66,12 @@
 			<if test="createDatetimeEnd != null and createDatetimeEnd != ''">
 				<![CDATA[AND t.create_datetime <= #{createDatetimeEnd}]]>
 			</if>
+			<if test="createMonth != null and createMonth != '' ">
+				AND month(t.create_datetime) = #{createMonth}
+			</if>
 		</trim>
 	</sql>
+	
 	<select id="select_attendance" parameterType="attendance" resultMap="attendance_DB_Result">
 		SELECT
 		t.code
@@ -74,11 +79,13 @@
 		,t.project_code
 		,t.project_name
 		,t.staff_code
+		
 		,t.staff_name
 		,t.status
 		,t.create_datetime
 		,t.start_datetime
 		,t.end_datetime
+		
 		,t.settle_datetime
 		,t.sim
 		,t.terminal_code
@@ -107,11 +114,13 @@
 		,project_code
 		,project_name
 		,staff_code
+		
 		,staff_name
 		,status
 		,create_datetime
 		,start_datetime
 		,end_datetime
+		
 		,settle_datetime
 		,remark
 		)
@@ -121,11 +130,13 @@
 		,#{projectCode}
 		,#{projectName}
 		,#{staffCode}
+		
 		,#{staffName}
 		,#{status}
 		,#{createDatetime}
 		,#{startDatetime}
 		,#{endDatetime}
+		
 		,#{settleDatetime}
 		,#{remark}
 		)

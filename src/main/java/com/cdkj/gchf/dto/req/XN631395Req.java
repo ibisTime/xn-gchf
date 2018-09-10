@@ -10,9 +10,6 @@ import java.util.List;
  */
 public class XN631395Req extends APageReq {
 
-    /** 
-     * @Fields serialVersionUID : TODO(用一句话描述这个变量表示什么) 
-     */
     private static final long serialVersionUID = -8582556386723542049L;
 
     // （选填）关键字
@@ -24,14 +21,14 @@ public class XN631395Req extends APageReq {
     // （选填）状态
     private String status;
 
-    // 用户类型
-    private String kind;
-
     // 项目编号List
     private List<String> projectCodeList;
 
     // 考勤生成日期
     private String createDatetime;
+
+    // 考勤生成月份
+    private String createMonth;
 
     public String getKeyword() {
         return keyword;
@@ -57,14 +54,6 @@ public class XN631395Req extends APageReq {
         this.status = status;
     }
 
-    public String getKind() {
-        return kind;
-    }
-
-    public void setKind(String kind) {
-        this.kind = kind;
-    }
-
     public List<String> getProjectCodeList() {
         return projectCodeList;
     }
@@ -79,6 +68,14 @@ public class XN631395Req extends APageReq {
 
     public void setCreateDatetime(String createDatetime) {
         this.createDatetime = createDatetime;
+    }
+
+    public String getCreateMonth() {
+        return createMonth;
+    }
+
+    public void setCreateMonth(String createMonth) {
+        this.createMonth = createMonth;
     }
 
 }

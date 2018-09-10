@@ -93,6 +93,10 @@ INSERT INTO `tsys_dict` (`id`,`type`,`parent_key`,`dkey`,`dvalue`,`updater`,`upd
 INSERT INTO `tsys_dict` (`id`,`type`,`parent_key`,`dkey`,`dvalue`,`updater`,`update_datetime`,`remark`) VALUES (56,'0',NULL,'position_type','职位类型','admin','2018-07-27 03:07:39',NULL);
 INSERT INTO `tsys_dict` (`id`,`type`,`parent_key`,`dkey`,`dvalue`,`updater`,`update_datetime`,`remark`) VALUES (57,'1','position_type','0','普工','admin','2018-07-27 03:07:39',NULL);
 INSERT INTO `tsys_dict` (`id`,`type`,`parent_key`,`dkey`,`dvalue`,`updater`,`update_datetime`,`remark`) VALUES (58,'1','position_type','1','主管','admin','2018-07-27 03:07:39',NULL);
+INSERT INTO `tsys_dict` (`id`,`type`,`parent_key`,`dkey`,`dvalue`,`updater`,`update_datetime`,`remark`) VALUES (59,'1','attendance_status','4','旷工','admin','2018-07-27 03:07:39',NULL);
+INSERT INTO `tsys_dict` (`id`,`type`,`parent_key`,`dkey`,`dvalue`,`updater`,`update_datetime`,`remark`) VALUES (60,'0','NULL','bankcard_number_status','银行卡号状态','admin','2018-07-27 03:07:39',NULL);
+INSERT INTO `tsys_dict` (`id`,`type`,`parent_key`,`dkey`,`dvalue`,`updater`,`update_datetime`,`remark`) VALUES (61,'1','bankcard_number_status','0','未录入','admin','2018-07-27 03:07:39',NULL);
+INSERT INTO `tsys_dict` (`id`,`type`,`parent_key`,`dkey`,`dvalue`,`updater`,`update_datetime`,`remark`) VALUES (62,'1','bankcard_number_status','1','已录入','admin','2018-07-27 03:07:39',NULL);
 
 /*
 -- Query: SELECT * FROM dev_xn_gchf.tsys_config

@@ -19,6 +19,15 @@
 		<result column="update_datetime" property="updateDatetime" />
 		<result column="remark" property="remark" />
 	</resultMap>
+	
+	<sql id="join_condition">
+		<if test="(departmentCode != null and departmentCode != '') 
+					or (position != null and position != '')
+					or (employStatus != null and employStatus != '')">
+			join thf_employ te on t.employ_code = te.code
+		</if>
+	</sql>
+	
 	<sql id="where_condition">
 		<trim prefix="WHERE" prefixOverrides="AND | OR">
 			<if test="code != null and code != '' ">
@@ -30,6 +39,20 @@
 			<if test="staffCode != null and staffCode != '' ">
 				AND t.staff_code = #{staffCode}
 			</if>
+			<if test="staffName != null and staffName != '' ">
+				AND t.staff_name = #{staffName}
+			</if>
+			
+			<if test="departmentCode != null and departmentCode != '' ">
+				AND te.department_code = #{(departmentCode}
+			</if>
+			<if test="position != null and position != '' ">
+				AND te.position = #{(position}
+			</if>
+			<if test="employStatus != null and employStatus != '' ">
+				AND te.status = #{(employStatus}
+			</if>
+			
 			<choose>
 				<when test="projectCode != null and projectCode != '' ">
 					AND t.project_code = #{projectCode}
@@ -44,6 +67,8 @@
 					</foreach>
 				</when>
 			</choose>
+			
+			
 			<if test="startDatetime != null and startDatetime != '' and endDatetime == null ">
 				<![CDATA[AND t.start_datetime = #{startDatetime}]]>
 			</if>
@@ -53,7 +78,7 @@
 		</trim>
 	</sql>
 	<select id="select_leave" parameterType="leave" resultMap="leave_DB_Result">
-		SELECT
+		SELECT DISTINCT
 		t.code
 		,t.employ_code
 		,t.staff_code
@@ -71,6 +96,7 @@
 		,t.remark
 		FROM
 		thf_leave t
+		<include refid="join_condition" />
 		<include refid="where_condition" />
 		<trim prefix="ORDER BY ">
 			<if test="order != null and order != '' ">
@@ -82,6 +108,7 @@
 	<select id="select_leave_count" parameterType="leave"
 		resultType="java.lang.Long">
 		SELECT count(1) FROM thf_leave t
+		<include refid="join_condition" />
 		<include refid="where_condition" />
 	</select>
 	

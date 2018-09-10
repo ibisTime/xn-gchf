@@ -53,6 +53,9 @@
 			<if test="staffCode != null and staffCode != '' ">
 				AND t.staff_code = #{staffCode}
 			</if>
+			<if test="staffName != null and staffName != '' ">
+				AND t.staff_name = #{staffName}
+			</if>
 			<if test="approveUser != null and approveUser != '' ">
 				AND t.approve_user = #{approveUser}
 			</if>

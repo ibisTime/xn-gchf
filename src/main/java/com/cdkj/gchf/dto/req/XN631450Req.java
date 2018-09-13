@@ -1,5 +1,7 @@
 package com.cdkj.gchf.dto.req;
 
+import java.util.List;
+
 import org.hibernate.validator.constraints.NotBlank;
 
 /**
@@ -21,6 +23,9 @@ public class XN631450Req {
     // （必填）处理备注
     @NotBlank(message = "处理备注不能为空")
     private String handleNote;
+
+    // 处理图片
+    private List<String> handlePicList;
 
     public String getSalaryCode() {
         return salaryCode;
@@ -44,6 +49,14 @@ public class XN631450Req {
 
     public void setHandleNote(String handleNote) {
         this.handleNote = handleNote;
+    }
+
+    public List<String> getHandlePicList() {
+        return handlePicList;
+    }
+
+    public void setHandlePicList(List<String> handlePicList) {
+        this.handlePicList = handlePicList;
     }
 
 }

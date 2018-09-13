@@ -10,9 +10,6 @@ import java.util.List;
  */
 public class XN631468Req extends APageReq {
 
-    /** 
-     * @Fields serialVersionUID : TODO(用一句话描述这个变量表示什么) 
-     */
     private static final long serialVersionUID = -9190494112316250359L;
 
     // 员工编号
@@ -26,6 +23,18 @@ public class XN631468Req extends APageReq {
 
     // 项目编号列表
     private List<String> projectCodeList;
+
+    // 部门
+    private String departmentCode;
+
+    // 职位
+    private String position;
+
+    // 雇佣状态
+    private String employStatus;
+
+    // 员工姓名
+    private String staffName;
 
     public List<String> getProjectCodeList() {
         return projectCodeList;
@@ -57,6 +66,38 @@ public class XN631468Req extends APageReq {
 
     public void setEmployCode(String employCode) {
         this.employCode = employCode;
+    }
+
+    public String getDepartmentCode() {
+        return departmentCode;
+    }
+
+    public void setDepartmentCode(String departmentCode) {
+        this.departmentCode = departmentCode;
+    }
+
+    public String getPosition() {
+        return position;
+    }
+
+    public void setPosition(String position) {
+        this.position = position;
+    }
+
+    public String getEmployStatus() {
+        return employStatus;
+    }
+
+    public void setEmployStatus(String employStatus) {
+        this.employStatus = employStatus;
+    }
+
+    public String getStaffName() {
+        return staffName;
+    }
+
+    public void setStaffName(String staffName) {
+        this.staffName = staffName;
     }
 
 }

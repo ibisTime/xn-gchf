@@ -69,6 +69,9 @@ public class Project extends ABaseDO {
     // 薪资发放可延迟天数（监管端填写）
     private Integer salaryDelayDays;
 
+    // 监管单位编号
+    private String superviseCode;
+
     // 状态(0待编辑/1待开工/2在建/3停工/4结束)
     private String status;
 
@@ -313,7 +316,7 @@ public class Project extends ABaseDO {
         this.salaryDelayDays = salaryDelayDays;
     }
 
-    public ProjectCard getCompanyCard() {
+    public ProjectCard getProjectCard() {
         return projectCard;
     }
 
@@ -367,6 +370,14 @@ public class Project extends ABaseDO {
 
     public void setCompanyName(String companyName) {
         this.companyName = companyName;
+    }
+
+    public String getSuperviseCode() {
+        return superviseCode;
+    }
+
+    public void setSuperviseCode(String superviseCode) {
+        this.superviseCode = superviseCode;
     }
 
 }

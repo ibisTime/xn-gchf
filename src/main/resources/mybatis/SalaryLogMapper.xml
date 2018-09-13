@@ -5,19 +5,20 @@
 	<resultMap id="salaryLog_DB_Result" type="salaryLog">
 		<result column="code" property="code" />
 		<result column="staff_code" property="staffCode" />
-
 		<result column="salary_code" property="salaryCode" />
 		<result column="type" property="type" />
 		<result column="handler" property="handler" />
+		
 		<result column="handle_datetime" property="handleDatetime" />
 		<result column="handle_note" property="handleNote" />
+		<result column="handle_pic" property="handlePic" />
+		
 	</resultMap>
 	<sql id="where_condition">
 		<trim prefix="WHERE" prefixOverrides="AND | OR">
 			<if test="code != null and code != '' ">
 				AND t.code = #{code}
 			</if>
-
 			<if test="salaryCode != null and salaryCode != '' ">
 				AND t.salary_code = #{salaryCode}
 			</if>
@@ -40,6 +41,7 @@
 		,t.handler
 		,t.handle_datetime
 		,t.handle_note
+		,t.handle_pic
 		FROM
 		thf_salary_log t
 		<include refid="where_condition" />
@@ -48,6 +50,23 @@
 				t.${order}
 			</if>
 		</trim>
+	</select>
+	
+	<select id="select_lastSalaryLog" parameterType="salaryLog"
+		resultMap="salaryLog_DB_Result">
+		SELECT
+		t.code
+		,t.staff_code
+		,t.salary_code
+		,t.type
+		,t.handler
+		,t.handle_datetime
+		,t.handle_note
+		,t.handle_pic
+		FROM
+		thf_salary_log t
+		WHERE t.salary_code = #{salaryCode} AND t.handler != #{handler}
+		ORDER by t.handle_datetime DESC limit 1
 	</select>
 
 	<select id="select_salaryLog_count" parameterType="salaryLog"
@@ -67,6 +86,7 @@
 		,handler
 		,handle_datetime
 		,handle_note
+		,handle_pic
 		)
 		VALUES(
 		#{code}
@@ -77,32 +97,8 @@
 		,#{handler}
 		,#{handleDatetime}
 		,#{handleNote}
+		,#{handlePic}
 		)
 	</insert>
-
-	<update id="update_salaryLog" parameterType="salaryLog">
-		UPDATE
-		thf_salary_log
-		SET
-		staff_code = #{staffCode}
-		,salary_code = #{salaryCode}
-		,type = #{type}
-		,handler =
-		#{handler}
-		,handle_datetime = #{handleDatetime}
-		,handle_note =
-		#{handleNote}
-		WHERE code = #{code}
-	</update>
-
-	<update id="deal_with" parameterType="salaryLog">
-		UPDATE
-		thf_salary_log
-		SET
-		handler = #{handler}
-		,handle_datetime = #{handleDatetime}
-		,handle_note = #{handleNote}
-		WHERE code = #{code}
-	</update>
 
 </mapper>

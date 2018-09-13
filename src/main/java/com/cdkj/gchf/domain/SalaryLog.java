@@ -1,6 +1,7 @@
 package com.cdkj.gchf.domain;
 
 import java.util.Date;
+import java.util.List;
 
 import com.cdkj.gchf.dao.base.ABaseDO;
 
@@ -32,8 +33,11 @@ public class SalaryLog extends ABaseDO {
     // 操作时间
     private Date handleDatetime;
 
-    // 操作描述
+    // 处理说明
     private String handleNote;
+
+    // 处理图片
+    private String handlePic;
 
     // *****************db**************
     // 用户类型
@@ -47,6 +51,9 @@ public class SalaryLog extends ABaseDO {
 
     // 工资条
     private Salary salary;
+
+    // 处理图片列表
+    private List<String> handlePicList;
 
     public void setCode(String code) {
         this.code = code;
@@ -134,6 +141,22 @@ public class SalaryLog extends ABaseDO {
 
     public void setSalary(Salary salary) {
         this.salary = salary;
+    }
+
+    public String getHandlePic() {
+        return handlePic;
+    }
+
+    public void setHandlePic(String handlePic) {
+        this.handlePic = handlePic;
+    }
+
+    public List<String> getHandlePicList() {
+        return handlePicList;
+    }
+
+    public void setHandlePicList(List<String> handlePicList) {
+        this.handlePicList = handlePicList;
     }
 
 }

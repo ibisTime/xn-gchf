@@ -24,7 +24,7 @@ public class SkillAOImpl implements ISkillAO {
 
     @Override
     public String saveSkill(XN631500Req req) {
-        Staff staff = staffBO.getStaff(req.getStaffCode());
+        Staff staff = staffBO.getStaffBrief(req.getStaffCode());
         return skillBO.saveSkill(staff.getCode(), staff.getName(), req);
     }
 

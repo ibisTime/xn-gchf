@@ -30,6 +30,9 @@ public class XN631395Req extends APageReq {
     // 考勤生成月份
     private String createMonth;
 
+    // 考勤生成日期
+    private String createDay;
+
     public String getKeyword() {
         return keyword;
     }
@@ -76,6 +79,14 @@ public class XN631395Req extends APageReq {
 
     public void setCreateMonth(String createMonth) {
         this.createMonth = createMonth;
+    }
+
+    public String getCreateDay() {
+        return createDay;
+    }
+
+    public void setCreateDay(String createDay) {
+        this.createDay = createDay;
     }
 
 }

@@ -10,9 +10,6 @@ import java.util.List;
  */
 public class XN631445Req extends APageReq {
 
-    /** 
-     * @Fields serialVersionUID : TODO(用一句话描述这个变量表示什么) 
-     */
     private static final long serialVersionUID = -3735724866853750864L;
 
     // （选填）审核人

@@ -32,6 +32,9 @@ public class BankCard extends ABaseDO {
     // 员工姓名
     private String staffName;
 
+    // 员工手机号
+    private String staffMobile;
+
     // 银行行别
     private String bankCode;
 
@@ -63,7 +66,7 @@ public class BankCard extends ABaseDO {
     private String remark;
 
     // *******************db***************
-    // 关键字模糊查（员工姓名/银行名称/银行卡号/支行名称）
+    // 关键字模糊查（员工姓名/手机号码）
     private String keyword;
 
     // 更新人姓名
@@ -74,9 +77,6 @@ public class BankCard extends ABaseDO {
 
     // 员工身份证号
     private String idNo;
-
-    // 员工手机号
-    private String staffMobile;
 
     // 员工部门
     private String departmentName;

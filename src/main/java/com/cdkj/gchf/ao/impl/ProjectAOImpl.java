@@ -14,6 +14,7 @@ import com.cdkj.gchf.bo.IEmployBO;
 import com.cdkj.gchf.bo.IProjectBO;
 import com.cdkj.gchf.bo.IProjectCardBO;
 import com.cdkj.gchf.bo.IReportBO;
+import com.cdkj.gchf.bo.ISuperviseBO;
 import com.cdkj.gchf.bo.IUserBO;
 import com.cdkj.gchf.bo.base.Paginable;
 import com.cdkj.gchf.common.DateUtil;
@@ -22,6 +23,7 @@ import com.cdkj.gchf.domain.Employ;
 import com.cdkj.gchf.domain.Project;
 import com.cdkj.gchf.domain.ProjectCard;
 import com.cdkj.gchf.domain.Report;
+import com.cdkj.gchf.domain.Supervise;
 import com.cdkj.gchf.domain.User;
 import com.cdkj.gchf.dto.req.XN631350Req;
 import com.cdkj.gchf.dto.req.XN631352Req;
@@ -50,6 +52,9 @@ public class ProjectAOImpl implements IProjectAO {
 
     @Autowired
     IDepartmentBO departmentBO;
+
+    @Autowired
+    private ISuperviseBO superviseBO;
 
     @Override
     @Transactional
@@ -114,6 +119,13 @@ public class ProjectAOImpl implements IProjectAO {
         data.setUpdater(req.getUpdater());
         data.setUpdateDatetime(new Date());
         data.setRemark(req.getRemark());
+
+        Supervise supervise = superviseBO.getSupervise(req.getProvince(),
+            req.getCity(), req.getArea());
+        if (null != supervise) {
+            data.setSuperviseCode(supervise.getCode());
+        }
+
         projectBO.editProject(data);
 
         // 更新账户信息

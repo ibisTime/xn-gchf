@@ -42,8 +42,11 @@ public interface IStaffAO {
     public Staff getStaffInfo(String code, List<String> projetCodeList);
 
     // 根据关键字（姓名、身份证）获取员工信息
-    public Staff getStaffByKeyword1(String keyword1,
+    public List<Staff> getStaffByKeyword1(String keyword1,
             List<String> projetCodeList);
+
+    // 根据关键字（姓名、身份证）获取员工信息
+    public Staff getStaffByIdNO(String idNO, List<String> projetCodeList);
 
     public Paginable<Staff> queryStaffPage(int start, int limit,
             Staff condition);

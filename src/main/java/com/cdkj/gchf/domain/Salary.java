@@ -156,6 +156,24 @@ public class Salary extends ABaseDO {
     // 日薪
     private Long dailySalary;
 
+    // 欠薪金额
+    private Long delayAmount;
+
+    // 监管单位
+    private String superviseUser;
+
+    // 监管单位手机号
+    private String superviseUserMobile;
+
+    // 最新处理说明
+    private String handleNote;
+
+    // 最新处理人
+    private String handler;
+
+    // 最新处理时间
+    private Date handleDatetime;
+
     public String getEmployCode() {
         return employCode;
     }
@@ -522,6 +540,54 @@ public class Salary extends ABaseDO {
 
     public void setDailySalary(Long dailySalary) {
         this.dailySalary = dailySalary;
+    }
+
+    public Long getDelayAmount() {
+        return delayAmount;
+    }
+
+    public void setDelayAmount(Long delayAmount) {
+        this.delayAmount = delayAmount;
+    }
+
+    public String getSuperviseUser() {
+        return superviseUser;
+    }
+
+    public void setSuperviseUser(String superviseUser) {
+        this.superviseUser = superviseUser;
+    }
+
+    public String getSuperviseUserMobile() {
+        return superviseUserMobile;
+    }
+
+    public void setSuperviseUserMobile(String superviseUserMobile) {
+        this.superviseUserMobile = superviseUserMobile;
+    }
+
+    public String getHandleNode() {
+        return handleNote;
+    }
+
+    public void setHandleNote(String handleNote) {
+        this.handleNote = handleNote;
+    }
+
+    public String getHandler() {
+        return handler;
+    }
+
+    public void setHandler(String handler) {
+        this.handler = handler;
+    }
+
+    public Date getHandleDatetime() {
+        return handleDatetime;
+    }
+
+    public void setHandleDatetime(Date handleDatetime) {
+        this.handleDatetime = handleDatetime;
     }
 
 }

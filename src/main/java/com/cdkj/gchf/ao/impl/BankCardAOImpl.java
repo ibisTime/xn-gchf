@@ -93,7 +93,7 @@ public class BankCardAOImpl implements IBankCardAO {
         }
 
         // 员工信息
-        Staff staff = staffBO.getStaff(data.getStaffCode());
+        Staff staff = staffBO.getStaffBrief(data.getStaffCode());
         if (null != staff) {
             data.setIdNo(staff.getIdNo());
             data.setStaffMobile(staff.getMobile());

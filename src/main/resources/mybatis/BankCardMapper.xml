@@ -22,6 +22,13 @@
 		<result column="update_datetime" property="updateDatetime" />
 		<result column="remark" property="remark" />
 	</resultMap>
+	
+	<sql id="join_condition">
+		<if test="(keyword != null and keyword != '') ">
+			join thf_staff ts on t.staff_code = ts.code
+		</if>
+	</sql>
+	
 	<sql id="where_condition">
 		<trim prefix="WHERE" prefixOverrides="AND | OR">
 			<if test="code != null and code != '' ">
@@ -49,10 +56,11 @@
 				AND t.updater = #{updater}
 			</if>
 			<if test="keyword != null and updater != '' ">
-				AND (t.staff_name like "%"#{keyword}"%" OR t.bank_name like "%"#{keyword}"%" OR t.bankcard_number  like "%"#{keyword}"%" OR t.subbranch  like "%"#{keyword}"%")
+				AND (t.staff_name like "%"#{keyword}"%" OR ts.mobile like "%"#{keyword}"%")
 			</if>
 		</trim>
 	</sql>
+	
 	<select id="select_bankCard" parameterType="bankCard" resultMap="bankCard_DB_Result">
 		SELECT
 		t.code
@@ -76,6 +84,7 @@
 		,t.remark
 		FROM
 		thf_bank_card t
+		<include refid="join_condition" />
 		<include refid="where_condition" />
 		<trim prefix="ORDER BY ">
 			<if test="order != null and order != '' ">
@@ -87,6 +96,7 @@
 	<select id="select_bankCard_count" parameterType="bankCard"
 		resultType="java.lang.Long">
 		SELECT count(1) FROM thf_bank_card t
+		<include refid="join_condition" />
 		<include refid="where_condition" />
 	</select>
 

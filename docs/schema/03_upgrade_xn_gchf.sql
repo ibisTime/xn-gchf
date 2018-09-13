@@ -244,12 +244,23 @@ update thf_employ set position = 0;
 
 
 ##V160
-ALTER TABLE `dev_xn_gchf`.`thf_staff` 
+ALTER TABLE `thf_staff` 
 ADD COLUMN `pict1_status` VARCHAR(4) default 0 COMMENT '免冠照状态(0未拍摄/1已拍摄)' AFTER `contacts_mobile`,
 ADD COLUMN `feat_status` VARCHAR(4) default 0 COMMENT '特征值状态(0无效/1有效)' AFTER `pict1_status`;
-
 update thf_staff set pict1_status = 1 where pict1 is not null;
 update thf_staff set feat_status = 1 where feat <> 'error' and feat <> 'NOFACE';
 
-ALTER TABLE `dev_xn_gchf`.`thf_bank_card` 
+ALTER TABLE `thf_bank_card` 
 ADD COLUMN `number_status` VARCHAR(4) NULL DEFAULT 0 COMMENT '银行卡号状态(0未录入/1已录入)' AFTER `status`;
+update thf_bank_card set number_status = 1 where (subbranch is not null and bankcard_number is not null);
+update thf_bank_card set number_status = 0 where subbranch is null or bankcard_number is null or subbranch = '' or bankcard_number = '';
+
+ALTER TABLE `thf_project` 
+ADD COLUMN `supervise_code` VARCHAR(32) NULL COMMENT '监管单位编号' AFTER `code`;
+update thf_project set supervise_code = (select code from thf_supervise where thf_project.province = thf_supervise.province 
+																and thf_project.city = thf_supervise.city
+                                                                and thf_project.area = thf_supervise.area);
+
+ALTER TABLE `thf_salary_log` 
+CHANGE COLUMN `staff_code` `staff_code` VARCHAR(32) NULL DEFAULT NULL COMMENT '员工编号' AFTER `salary_code`,
+ADD COLUMN `handle_pic` TEXT NULL COMMENT '处理照片' AFTER `handle_note`;

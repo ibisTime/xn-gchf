@@ -77,7 +77,7 @@
 				AND t.project_name like "%"#{projectName}"%"
 			</if>
 			<if test="month != null and month != '' ">
-				AND t.month = #{month}
+				AND substring(t.month, 6) = #{month}
 			</if>
 			<choose>
 				<when test="status != null and status != '' ">

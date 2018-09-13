@@ -23,22 +23,23 @@ DROP TABLE IF EXISTS `thf_attendance`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `thf_attendance` (
-  `code` varchar(32) NOT NULL COMMENT '编号',
-  `employ_code` varchar(32) DEFAULT NULL COMMENT '雇佣编号',
-  `project_code` varchar(32) DEFAULT NULL COMMENT '项目编号',
-  `project_name` varchar(255) DEFAULT NULL COMMENT '项目名称',
-  `staff_code` varchar(32) DEFAULT NULL COMMENT '员工编号',
-  `staff_name` varchar(32) DEFAULT NULL COMMENT '员工姓名',
-  `status` varchar(4) DEFAULT NULL COMMENT '出工状态',
+  `code` varchar(32) CHARACTER SET utf8 NOT NULL COMMENT '编号',
+  `employ_code` varchar(32) CHARACTER SET utf8 DEFAULT NULL COMMENT '雇佣编号',
+  `project_code` varchar(32) CHARACTER SET utf8 DEFAULT NULL COMMENT '项目编号',
+  `project_name` varchar(255) CHARACTER SET utf8 DEFAULT NULL COMMENT '项目名称',
+  `staff_code` varchar(32) CHARACTER SET utf8 DEFAULT NULL COMMENT '员工编号',
+  `staff_name` varchar(32) CHARACTER SET utf8 DEFAULT NULL COMMENT '员工姓名',
+  `staff_mobile` varchar(16) CHARACTER SET utf8 DEFAULT NULL COMMENT '员工手机号',
+  `status` varchar(4) CHARACTER SET utf8 DEFAULT NULL COMMENT '出工状态',
   `create_datetime` datetime DEFAULT NULL COMMENT '生成时间',
-  `start_datetime` varchar(64) DEFAULT NULL COMMENT '上班时间',
-  `end_datetime` varchar(64) DEFAULT NULL COMMENT '下班时间',
+  `start_datetime` varchar(64) CHARACTER SET utf8 DEFAULT NULL COMMENT '上班时间',
+  `end_datetime` varchar(64) CHARACTER SET utf8 DEFAULT NULL COMMENT '下班时间',
   `settle_datetime` datetime DEFAULT NULL COMMENT '结算时间',
   `sim` decimal(4,2) DEFAULT NULL COMMENT '相似度',
-  `terminal_code` varchar(32) DEFAULT NULL COMMENT '终端编号',
-  `remark` text COMMENT '备注',
+  `terminal_code` varchar(32) CHARACTER SET utf8 DEFAULT NULL COMMENT '终端编号',
+  `remark` text CHARACTER SET utf8 COMMENT '备注',
   PRIMARY KEY (`code`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_estonian_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -61,6 +62,7 @@ CREATE TABLE `thf_bank_card` (
   `bankcard_number` varchar(64) DEFAULT NULL COMMENT '银行卡号',
   `create_datetime` datetime DEFAULT NULL COMMENT '创建时间',
   `status` varchar(4) DEFAULT NULL COMMENT '状态',
+  `number_status` varchar(4) DEFAULT '0' COMMENT '银行卡号状态(0未录入/1已录入)',
   `updater` varchar(32) DEFAULT NULL COMMENT '更新人',
   `update_datetime` datetime DEFAULT NULL COMMENT '更新时间',
   `remark` text COMMENT '备注',
@@ -133,7 +135,7 @@ CREATE TABLE `thf_channel_bank` (
   `month_amount` bigint(32) DEFAULT NULL,
   `remark` varchar(765) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -178,7 +180,8 @@ CREATE TABLE `thf_employ` (
   `leaving_datetime` datetime DEFAULT NULL COMMENT '离职时间',
   `start_datetime` datetime DEFAULT NULL COMMENT '最近一次请假开始时间',
   `last_leaving_days` int(11) DEFAULT NULL COMMENT '最近一次请假天数',
-  `total_leaving_days` int(11) DEFAULT '0' COMMENT '累积请假天数',
+  `end_datetime` datetime DEFAULT NULL COMMENT '最近一次请假结束时间',
+  `total_leaving_days` decimal(10,1) DEFAULT '0.0' COMMENT '累积请假天数',
   `updater` varchar(32) DEFAULT NULL COMMENT '更新人',
   `update_datetime` datetime DEFAULT NULL COMMENT '更新时间',
   `remark` text COMMENT '备注',
@@ -332,8 +335,9 @@ DROP TABLE IF EXISTS `thf_project`;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `thf_project` (
   `code` varchar(32) NOT NULL COMMENT '编号',
+  `supervise_code` varchar(32) DEFAULT NULL COMMENT '监管单位编号',
+  `company_name` varchar(255) DEFAULT NULL COMMENT '公司名称',
   `name` varchar(255) DEFAULT NULL COMMENT '项目名称',
-  `company_name` varchar(255) DEFAULT NULL COMMENT '承建单位',
   `charge_user` varchar(32) DEFAULT NULL COMMENT '负责人编号',
   `charge_mobile` varchar(16) DEFAULT NULL COMMENT '负责人手机号',
   `attendance_starttime` varchar(64) DEFAULT NULL COMMENT '上班时间',
@@ -483,11 +487,12 @@ DROP TABLE IF EXISTS `thf_salary_log`;
 CREATE TABLE `thf_salary_log` (
   `code` varchar(32) NOT NULL COMMENT '编号',
   `salary_code` varchar(32) DEFAULT NULL COMMENT '工资条编号',
+  `staff_code` varchar(32) DEFAULT NULL COMMENT '员工编号',
   `type` varchar(4) DEFAULT NULL COMMENT '类型',
   `handler` varchar(32) DEFAULT NULL COMMENT '操作人',
   `handle_datetime` datetime DEFAULT NULL COMMENT '操作时间',
   `handle_note` text COMMENT '操作描述',
-  `staff_code` varchar(32) DEFAULT NULL COMMENT '员工编号',
+  `handle_pic` text COMMENT '处理照片',
   PRIMARY KEY (`code`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -540,6 +545,8 @@ CREATE TABLE `thf_staff` (
   `feat` text COMMENT '特征值',
   `contacts` varchar(64) DEFAULT NULL COMMENT '紧急联系人',
   `contacts_mobile` varchar(16) DEFAULT NULL COMMENT '紧急联系人手机号',
+  `pict1_status` varchar(4) DEFAULT '0' COMMENT '免冠照状态(0未拍摄/1已拍摄)',
+  `feat_status` varchar(4) DEFAULT '0' COMMENT '特征值状态(0无效/1有效)',
   `remark` text COMMENT '备注',
   PRIMARY KEY (`code`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
@@ -612,16 +619,16 @@ DROP TABLE IF EXISTS `thf_user`;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `thf_user` (
   `user_id` varchar(96) NOT NULL,
-  `type` varchar(12) DEFAULT NULL,
-  `role_code` varchar(96) DEFAULT NULL,
-  `organization_code` varchar(32) DEFAULT NULL COMMENT '组织编号',
   `real_name` varchar(192) DEFAULT NULL,
+  `type` varchar(12) DEFAULT NULL,
+  `organization_code` varchar(32) DEFAULT NULL COMMENT '组织编号（项目编号/银行编号/监管编号）',
   `login_name` varchar(192) DEFAULT NULL,
   `mobile` varchar(48) DEFAULT NULL,
   `login_pwd` varchar(32) DEFAULT NULL,
   `login_pwd_strength` char(3) DEFAULT NULL,
   `user_refree` varchar(96) DEFAULT NULL,
   `create_datetime` datetime DEFAULT NULL,
+  `role_code` varchar(96) DEFAULT NULL,
   `updater` varchar(96) DEFAULT NULL,
   `update_datetime` datetime DEFAULT NULL,
   `status` varchar(12) DEFAULT NULL,
@@ -666,7 +673,7 @@ CREATE TABLE `tsys_dict` (
   `update_datetime` datetime DEFAULT NULL COMMENT '更新时间',
   `remark` varchar(2295) DEFAULT NULL COMMENT '备注',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=60 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=63 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -680,7 +687,7 @@ CREATE TABLE `tsys_menu` (
   `code` varchar(32) NOT NULL,
   `name` varchar(288) DEFAULT NULL,
   `type` varchar(18) DEFAULT NULL,
-  `system_code` varchar(4) DEFAULT NULL COMMENT '系统编号',
+  `system_code` varchar(4) DEFAULT NULL,
   `url` varchar(576) DEFAULT NULL,
   `order_no` varchar(72) DEFAULT NULL,
   `updater` varchar(288) DEFAULT NULL,
@@ -706,7 +713,7 @@ CREATE TABLE `tsys_menu_role` (
   `update_datetime` datetime DEFAULT NULL,
   `remark` varchar(765) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=4412 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=4800 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -726,47 +733,6 @@ CREATE TABLE `tsys_role` (
   PRIMARY KEY (`code`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping routines for database 'dev_xn_gchf'
---
-/*!50003 DROP FUNCTION IF EXISTS `getDepartmentByDirection` */;
-/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
-/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
-/*!50003 SET @saved_col_connection = @@collation_connection */ ;
-/*!50003 SET character_set_client  = utf8 */ ;
-/*!50003 SET character_set_results = utf8 */ ;
-/*!50003 SET collation_connection  = utf8_general_ci */ ;
-/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
-/*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_ENGINE_SUBSTITUTION' */ ;
-DELIMITER ;;
-CREATE DEFINER=`root`@`%` FUNCTION `getDepartmentByDirection`(departmentCode VARCHAR(32), direction int) RETURNS varchar(1000) CHARSET utf8
-BEGIN
-	DECLARE sTemp VARCHAR(1000);
-	DECLARE sTempChd VARCHAR(1000);
-    
-	SET sTemp = '$';
-	SET sTempChd = departmentCode;
-    
-	IF direction=1 THEN
-		WHILE sTempChd is not null DO
-            SELECT group_concat(code) INTO sTempChd FROM thf_department where FIND_IN_SET(parent_code,sTempChd)>0;
-            SET sTemp = concat_ws(',',sTemp,sTempChd);
-		END WHILE;
-	ELSEIF direction=2 THEN
-		WHILE sTempChd is not null DO
-			SELECT group_concat(parent_code) INTO sTempChd FROM thf_department where  FIND_IN_SET(code,sTempChd)>0;
-            SET sTemp = concat_ws(',',sTemp,sTempChd);
-		END WHILE;
-	END IF;
- 
-	RETURN sTemp;
-END ;;
-DELIMITER ;
-/*!50003 SET sql_mode              = @saved_sql_mode */ ;
-/*!50003 SET character_set_client  = @saved_cs_client */ ;
-/*!50003 SET character_set_results = @saved_cs_results */ ;
-/*!50003 SET collation_connection  = @saved_col_connection */ ;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
@@ -777,4 +743,4 @@ DELIMITER ;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2018-08-09 22:33:23
+-- Dump completed on 2018-09-14  1:24:12

@@ -180,6 +180,20 @@ public class UserBOImpl extends PaginableBOImpl<User> implements IUserBO {
     }
 
     @Override
+    public User getUserByOrganization(String organizationCode) {
+        User data = null;
+        if (StringUtils.isNotBlank(organizationCode)) {
+            User condition = new User();
+            condition.setOrganizationCode(organizationCode);
+            data = userDAO.select(condition);
+            if (data == null) {
+                throw new BizException("xn0000", "用户不存在");
+            }
+        }
+        return data;
+    }
+
+    @Override
     public void checkLoginPwd(String userId, String loginPwd) {
         if (StringUtils.isNotBlank(userId)
                 && StringUtils.isNotBlank(loginPwd)) {

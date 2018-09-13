@@ -58,7 +58,7 @@
 				AND (t.name like "%"#{keyword}"%" OR t.mobile like "%"#{keyword}"%" OR t.id_no like "%"#{keyword}"%")
 			</if>
 			<if test="keyword1 != null and keyword1 != '' ">
-				AND (t.name = #{keyword} OR t.id_no = #{keyword})
+				AND (t.name = #{keyword1} OR t.id_no = #{keyword1})
 			</if>
 			<if test="feat != null and feat != '' ">
 				AND t.feat = #{feat}

@@ -23,6 +23,7 @@ import com.cdkj.gchf.bo.IMessageBO;
 import com.cdkj.gchf.bo.IProjectBO;
 import com.cdkj.gchf.bo.IProjectCardBO;
 import com.cdkj.gchf.bo.ISalaryBO;
+import com.cdkj.gchf.bo.ISalaryLogBO;
 import com.cdkj.gchf.bo.IStaffBO;
 import com.cdkj.gchf.bo.IUserBO;
 import com.cdkj.gchf.bo.base.Paginable;
@@ -38,6 +39,7 @@ import com.cdkj.gchf.domain.Message;
 import com.cdkj.gchf.domain.Project;
 import com.cdkj.gchf.domain.ProjectCard;
 import com.cdkj.gchf.domain.Salary;
+import com.cdkj.gchf.domain.SalaryLog;
 import com.cdkj.gchf.domain.Staff;
 import com.cdkj.gchf.domain.User;
 import com.cdkj.gchf.dto.req.XN631442Req;
@@ -91,6 +93,9 @@ public class SalaryAOImpl implements ISalaryAO {
 
     @Autowired
     IDepartmentBO departmentBO;
+
+    @Autowired
+    private ISalaryLogBO salaryLogBO;
 
     // 定时器形成工资条
     @Override
@@ -436,6 +441,7 @@ public class SalaryAOImpl implements ISalaryAO {
         Project project = null;
         Message message = null;
         Department department = null;
+        SalaryLog salaryLog = null;
 
         staff = staffBO.getStaffBrief(salary.getStaffCode());
         if (null != staff) {
@@ -478,6 +484,15 @@ public class SalaryAOImpl implements ISalaryAO {
         if (null != project) {
             salary.setProjectChargeUser(project.getChargeUser());
             salary.setProjectChargeUserMobile(project.getChargeMobile());
+
+            // 监管单位信息
+            if (null != project.getSuperviseCode()) {
+                User user = userBO
+                    .getUserByOrganization(project.getSuperviseCode());
+                salary.setSuperviseUser(user.getRealName());
+                salary.setSuperviseUserMobile(user.getMobile());
+            }
+
         }
 
         // 工资发放人员
@@ -488,6 +503,20 @@ public class SalaryAOImpl implements ISalaryAO {
                 salary.setSendUserName(sendUser.getLoginName());
                 salary.setSendUserMobile(sendUser.getMobile());
             }
+        }
+
+        // 欠薪金额
+        Long delayAmount = salary.getFactAmount() - salary.getPayAmount();
+        if (delayAmount < 0)
+            delayAmount = 0L;
+        salary.setDelayAmount(delayAmount);
+
+        // 最新异常信息
+        salaryLog = salaryLogBO.getLastSalaryLog(salary.getCode());
+        if (null != salaryLog) {
+            salary.setHandler(salaryLog.getHandleName());
+            salary.setHandleNote(salaryLog.getHandleNote());
+            salary.setHandleDatetime(salaryLog.getHandleDatetime());
         }
 
     }

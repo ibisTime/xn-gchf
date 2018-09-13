@@ -18,6 +18,9 @@ public class XN631465Req extends APageReq {
     // （选填）关键字
     private String keyword;
 
+    // 部门编号
+    private String departmentCode;
+
     // （选填）项目编号
     private String projectCode;
 
@@ -38,6 +41,12 @@ public class XN631465Req extends APageReq {
 
     // 项目列表（监管端查询通讯录）
     private List<String> projectCodeList;
+
+    // 免冠照状态
+    private String pict1Status;
+
+    // 特征值状态
+    private String featStatus;
 
     public String getKeyword() {
         return keyword;
@@ -101,6 +110,30 @@ public class XN631465Req extends APageReq {
 
     public void setProjectCodeList(List<String> projectCodeList) {
         this.projectCodeList = projectCodeList;
+    }
+
+    public String getDepartmentCode() {
+        return departmentCode;
+    }
+
+    public void setDepartmentCode(String departmentCode) {
+        this.departmentCode = departmentCode;
+    }
+
+    public String getPict1Status() {
+        return pict1Status;
+    }
+
+    public void setPict1Status(String pict1Status) {
+        this.pict1Status = pict1Status;
+    }
+
+    public String getFeatStatus() {
+        return featStatus;
+    }
+
+    public void setFeatStatus(String featStatus) {
+        this.featStatus = featStatus;
     }
 
 }

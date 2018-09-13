@@ -159,14 +159,4 @@ public class StaffBOImpl extends PaginableBOImpl<Staff> implements IStaffBO {
         return data;
     }
 
-    @Override
-    public Staff getStaffByKeyword1(String keyword1) {
-        Staff data = null;
-        if (StringUtils.isNotBlank(keyword1)) {
-            Staff condition = new Staff();
-            condition.setKeyword1(keyword1);
-            data = staffDAO.select(condition);
-        }
-        return data;
-    }
 }

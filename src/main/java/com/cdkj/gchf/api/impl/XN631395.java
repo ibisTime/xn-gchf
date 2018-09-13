@@ -34,7 +34,9 @@ public class XN631395 extends AProcessor {
         condition.setStatus(req.getStatus());
         condition.setKeyword(req.getKeyword());
         condition.setProjectCodeList(req.getProjectCodeList());
+
         condition.setCreateMonth(req.getCreateMonth());
+        condition.setCreateDay(req.getCreateDay());
 
         if (null != req.getCreateDatetime()) {
             condition.setCreateDatetimeStart(

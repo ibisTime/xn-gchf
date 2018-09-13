@@ -8,6 +8,9 @@
  */
 package com.cdkj.gchf.enums;
 
+import java.util.HashMap;
+import java.util.Map;
+
 /** 
  * @author: miyb 
  * @since: 2015-2-26 下午3:08:34 
@@ -20,6 +23,19 @@ public enum EUser {
     EUser(String code, String value) {
         this.code = code;
         this.value = value;
+    }
+
+    public static Map<String, EUser> getMap() {
+        Map<String, EUser> map = new HashMap<String, EUser>();
+        for (EUser eUser : EUser.values()) {
+            map.put(eUser.getCode(), eUser);
+        }
+        return map;
+    }
+
+    public static String getValue(String code) {
+        Map<String, EUser> map = getMap();
+        return map.get(code).getValue();
     }
 
     private String code;

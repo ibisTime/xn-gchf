@@ -48,13 +48,9 @@ public class SalaryLogDAOImpl extends AMybatisTemplate
     }
 
     @Override
-    public void update(SalaryLog data) {
-        super.update(NAMESPACE.concat("update_salaryLog"), data);
-    }
-
-    @Override
-    public void dealWithSalary(SalaryLog data) {
-        super.update(NAMESPACE.concat("deal_with"), data);
+    public SalaryLog selectLastSalaryLog(SalaryLog data) {
+        return super.select(NAMESPACE.concat("select_lastSalaryLog"), data,
+            SalaryLog.class);
     }
 
 }

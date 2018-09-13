@@ -42,6 +42,7 @@ import com.cdkj.gchf.domain.User;
 import com.cdkj.gchf.dto.req.XN631439Req;
 import com.cdkj.gchf.enums.EGeneratePrefix;
 import com.cdkj.gchf.enums.EMessageStatus;
+import com.cdkj.gchf.enums.ESalaryLogType;
 import com.cdkj.gchf.enums.ESalaryStatus;
 import com.cdkj.gchf.enums.EUser;
 import com.cdkj.gchf.enums.EUserKind;
@@ -217,6 +218,17 @@ public class MessageAOImpl implements IMessageAO {
             salary.setLatePayDatetime(latePayDatetime);
             salary.setMessageCode(messageCode);
             salaryBO.payAmount(salary);
+
+            // 添加系统处理日志
+            if (!ESalaryStatus.Payed.getCode().equals(status)) {
+                String yearMonth[] = data.getMonth().split("/");
+                String note = "员工" + salary.getStaffName().trim() + yearMonth[0]
+                        + "年" + yearMonth[1] + "月工资"
+                        + ESalaryStatus.getValue(status) + "，列为异常事件。";
+                salaryLogBO.saveSalaryLog(salary.getCode(),
+                    salary.getStaffCode(), ESalaryLogType.Abnormal.getCode(),
+                    "admin", note, null);
+            }
 
             // 修改员工工资发放状态
             Employ employ = employBO.getEmployByStaff(salary.getStaffCode(),

@@ -32,6 +32,11 @@ public class XN631468 extends AProcessor {
         condition.setProjectCode(req.getProjectCode());
         condition.setProjectCodeList(req.getProjectCodeList());
 
+        condition.setStaffName(req.getStaffName());
+        condition.setPosition(req.getPosition());
+        condition.setDepartmentCode(req.getDepartmentCode());
+        condition.setEmployStatus(req.getEmployStatus());
+
         String column = req.getOrderColumn();
         if (StringUtils.isBlank(column)) {
             column = ILeaveAO.DEFAULT_ORDER_COLUMN;

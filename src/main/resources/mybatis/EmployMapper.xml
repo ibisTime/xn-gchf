@@ -30,6 +30,13 @@
 		<result column="salary_status"  property="salaryStatus" />
 	</resultMap>
 	
+	<sql id="join_condition">
+		<if test="(pict1Status != null and pict1Status != '') 
+					or (featStatus != null and featStatus != '')">
+			join thf_staff ts on t.staff_code = ts.code
+		</if>
+	</sql>
+	
 	<sql id="where_condition">
 		<trim prefix="WHERE" prefixOverrides="AND | OR">
 			<if test="code != null and code != '' ">
@@ -55,6 +62,13 @@
 			</if>
 			<if test="keyword != null and keyword != '' ">
 				AND (t.staff_mobile like "%"#{keyword}"%" OR t.position like "%"#{keyword}"%" OR t.staff_name like "%"#{keyword}"%")
+			</if>
+			
+			<if test="pict1Status != null and pict1Status != '' ">
+				AND ts.pict1_status = #{pict1Status}
+			</if>
+			<if test="featStatus != null and featStatus != '' ">
+				AND ts.feat_status = #{featStatus}
 			</if>
 			
 			<choose>
@@ -118,6 +132,7 @@
 		,t.remark
 		FROM
 		thf_employ t
+		<include refid="join_condition" />
 		<include refid="where_condition" />
 		<trim prefix="ORDER BY ">
 			<if test="order != null and order != '' ">
@@ -129,6 +144,7 @@
 	<select id="select_employ_count" parameterType="employ"
 		resultType="java.lang.Long">
 		SELECT count(1) FROM thf_employ t
+		<include refid="join_condition" />
 		<include refid="where_condition" />
 	</select>
 

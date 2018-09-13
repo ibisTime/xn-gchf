@@ -49,7 +49,8 @@ public class BankCardBOImpl extends PaginableBOImpl<BankCard>
         bankCard.setBankcardNumber(req.getBankcardNumber());
 
         bankCard.setStatus(EBankCardStatus.Normal.getCode());
-        bankCard.setNumberStatus(getNumberStatus(req.getBankcardNumber()));
+        bankCard.setNumberStatus(
+            getNumberStatus(req.getSubbranch(), req.getBankcardNumber()));
         bankCard.setUpdater(req.getUpdater());
 
         bankCard.setUpdateDatetime(new Date());
@@ -81,7 +82,7 @@ public class BankCardBOImpl extends PaginableBOImpl<BankCard>
         bankCard.setBankcardNumber(bankcardNumber);
 
         bankCard.setStatus(EBankCardStatus.Normal.getCode());
-        bankCard.setNumberStatus(getNumberStatus(bankcardNumber));
+        bankCard.setNumberStatus(getNumberStatus(subbranch, bankcardNumber));
         bankCard.setUpdater(updater);
         bankCard.setUpdateDatetime(new Date());
         bankCard.setCreateDatetime(new Date());
@@ -101,7 +102,7 @@ public class BankCardBOImpl extends PaginableBOImpl<BankCard>
         data.setSubbranch(subbranch);
         data.setBankcardNumber(bankcardNumber);
 
-        data.setNumberStatus(getNumberStatus(bankcardNumber));
+        data.setNumberStatus(getNumberStatus(subbranch, bankcardNumber));
         data.setUpdater(updater);
         data.setUpdateDatetime(new Date());
         data.setRemark(remark);
@@ -159,10 +160,11 @@ public class BankCardBOImpl extends PaginableBOImpl<BankCard>
         }
     }
 
-    private String getNumberStatus(String bankCardNumber) {
+    private String getNumberStatus(String subbranch, String bankCardNumber) {
         String bankCardNumberStatus = ECardNumberStatus.Non_Input.getCode();
 
-        if (StringUtils.isNotBlank(bankCardNumber)) {
+        if (StringUtils.isNotBlank(bankCardNumber)
+                && StringUtils.isNotBlank(subbranch)) {
             bankCardNumberStatus = ECardNumberStatus.Inputed.getCode();
         }
 

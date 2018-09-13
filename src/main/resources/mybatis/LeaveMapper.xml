@@ -50,7 +50,7 @@
 				AND te.position = #{(position}
 			</if>
 			<if test="employStatus != null and employStatus != '' ">
-				AND te.status = #{(employStatus}
+				AND te.status = #{employStatus}
 			</if>
 			
 			<choose>

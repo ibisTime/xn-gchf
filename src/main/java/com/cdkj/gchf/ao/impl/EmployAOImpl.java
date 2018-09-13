@@ -127,12 +127,18 @@ public class EmployAOImpl implements IEmployAO {
 
         data.setCutAmount(StringValidater.toLong(req.getCutAmount()));
         data.setStatus(EEmployStatus.Work.getCode());
-        data.setJoinDatetime(new Date());
         data.setSalaryStatus(EStaffSalaryStatus.Normal.getCode());
         data.setUpdater(req.getUpdater());
 
         data.setUpdateDatetime(date);
         data.setRemark(req.getRemark());
+
+        if (null != req.getJoinDatetime()) {
+            data.setJoinDatetime(DateUtil.strToDate(req.getJoinDatetime(),
+                DateUtil.FRONT_DATE_FORMAT_STRING));
+        } else {
+            data.setJoinDatetime(DateUtil.getTodayStart());
+        }
         employBO.joinIn(data);
 
         // 计入累积入职

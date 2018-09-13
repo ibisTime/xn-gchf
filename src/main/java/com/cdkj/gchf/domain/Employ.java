@@ -109,6 +109,12 @@ public class Employ extends ABaseDO {
     // 更新人姓名
     private String updateName;
 
+    // 免冠照状态
+    private String pict1Status;
+
+    // 特征值状态
+    private String featStatus;
+
     public String getCompanyName() {
         return companyName;
     }
@@ -355,6 +361,22 @@ public class Employ extends ABaseDO {
 
     public void setDepartmentLeaderMobile(String departmentLeaderMobile) {
         this.departmentLeaderMobile = departmentLeaderMobile;
+    }
+
+    public String getPict1Status() {
+        return pict1Status;
+    }
+
+    public void setPict1Status(String pict1Status) {
+        this.pict1Status = pict1Status;
+    }
+
+    public String getFeatStatus() {
+        return featStatus;
+    }
+
+    public void setFeatStatus(String featStatus) {
+        this.featStatus = featStatus;
     }
 
 }

@@ -25,6 +25,7 @@
 		<result column="salary_datetime" property="salaryDatetime" />
 		<result column="salary_delay_days" property="salaryDelayDays" />
 		<result column="status" property="status" />
+		<result column="supervise_code" property="superviseCode" />
 		<result column="approver" property="approver" />
 	
 		<result column="approve_datetime" property="approveDatetime" />
@@ -88,6 +89,9 @@
 			<if test="status != null and status != '' ">
 				AND t.status = #{status}
 			</if>
+			<if test="superviseCode != null and superviseCode != '' ">
+				AND t.supervise_code = #{superviseCode}
+			</if>
 			<if test="approver != null and approver != '' ">
 				AND t.approver = #{approver}
 			</if>
@@ -125,6 +129,7 @@
 		,t.salary_datetime
 		,t.salary_delay_days
 		,t.status
+		,t.supervise_code
 		,t.approver
 		
 		,t.approve_datetime
@@ -189,6 +194,7 @@
 		,attendance_endtime = #{attendanceEndtime}
 		,status = #{status}
 		
+		,supervise_code = #{superviseCode}
 		,updater = #{updater}
 		,update_datetime = #{updateDatetime}
 		,remark = #{remark}

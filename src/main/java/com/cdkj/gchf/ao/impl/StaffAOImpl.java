@@ -88,22 +88,19 @@ public class StaffAOImpl implements IStaffAO {
 
         data = new Staff();
         data.setCode(code);
-        data.setName(req.getRealName());
+        data.setName(req.getRealName().trim());
         data.setIdType(EIDKind.IDCard.getCode());
-        data.setIdNo(req.getIdNo());
-        data.setSex(req.getSex());
+        data.setIdNo(req.getIdNo().trim());
+        data.setSex(req.getSex().trim());
 
-        data.setBirthday(DateUtil.strToDate(req.getBirthday(),
-            DateUtil.FRONT_DATE_FORMAT_STRING));
-        data.setIdNation(req.getIdNation());
-        data.setIdAddress(req.getIdAddress());
+        data.setBirthday(normalizeDate(req.getBirthday()));
+        data.setIdNation(req.getIdNation().trim());
+        data.setIdAddress(req.getIdAddress().trim());
         data.setIdPic(req.getIdPic());
-        data.setIdPolice(req.getIdPolice());
+        data.setIdPolice(req.getIdPolice().trim());
 
-        data.setIdStartDate(DateUtil.strToDate(req.getIdStartDate(),
-            DateUtil.FRONT_DATE_FORMAT_STRING));
-        data.setIdEndDate(DateUtil.strToDate(req.getIdEndDate(),
-            DateUtil.FRONT_DATE_FORMAT_STRING));
+        data.setIdStartDate(normalizeDate(req.getIdStartDate()));
+        data.setIdEndDate(normalizeDate(req.getIdEndDate()));
         data.setUpdater(req.getUpdater());
         data.setUpdateDatetime(new Date());
 
@@ -161,7 +158,7 @@ public class StaffAOImpl implements IStaffAO {
                 for (Staff staff : staffList) {
                     if (refreshStaffFeat(staff)) {
                         count++;
-                        staffNames.append(staff.getName().trim() + ",");
+                        staffNames.append("【" + staff.getName().trim() + "】");
                     }
                 }
             } else {
@@ -204,6 +201,9 @@ public class StaffAOImpl implements IStaffAO {
     // 识别员工免冠照
     private boolean refreshStaffFeat(Staff staff) {
 
+        if (null == staff.getPict1())
+            return false;
+
         String featResult = BizConnecter.getFeat(staff.getPict1());
         Pattern pattern = Pattern.compile("(?<=\\{)(.+?)(?=\\})");
         Matcher matcher = pattern.matcher(featResult);
@@ -242,7 +242,7 @@ public class StaffAOImpl implements IStaffAO {
         page.setList(dataList);
 
         for (Staff staff : page.getList()) {
-            initStaff(staff);
+            staff.setUpdateName(getName(staff.getUpdater()));
         }
 
         return page;
@@ -257,18 +257,13 @@ public class StaffAOImpl implements IStaffAO {
     public Staff getStaff(String code) {
         Staff data = staffBO.getStaff(code);
 
-        initStaff(data);
+        data.setUpdateName(getName(data.getUpdater()));
 
         // 技能列表
         List<Skill> skillList = skillBO.querySkillByStaff(data.getCode());
         data.setSkillList(skillList);
 
         return data;
-    }
-
-    private void initStaff(Staff staff) {
-        // 更新人
-        staff.setUpdateName(getName(staff.getUpdater()));
     }
 
     @Override
@@ -298,72 +293,46 @@ public class StaffAOImpl implements IStaffAO {
     }
 
     @Override
-    public Staff getStaffByKeyword1(String keyword1,
+    public List<Staff> getStaffByKeyword1(String keyword1,
             List<String> projectCodeList) {
-        Staff data = staffBO.getStaffByKeyword1(keyword1);
-        if (null == data) {
+        Staff staffCondition = new Staff();
+        staffCondition.setKeyword1(keyword1);
+        List<Staff> staffList = staffBO.queryStaffList(staffCondition);
+
+        if (CollectionUtils.isEmpty(staffList)) {
             if (CollectionUtils.isNotEmpty(projectCodeList)) {
                 // 手持端查询直接提示异常
-                throw new BizException("xn0000", "该身份证对应的员工不存在！");
+                throw new BizException("xn0000", "对应的员工不存在！");
             } else {
                 // 业主端返回null
                 return null;
             }
         }
 
-        // 工作履历
-        List<Employ> employList = new ArrayList<Employ>();
+        for (Staff data : staffList) {
+            initStaff(data, projectCodeList);
+        }
 
-        // 正常工资条
-        List<Salary> salaryList = new ArrayList<Salary>();
+        return staffList;
+    }
 
-        // 异常工资条
-        List<Salary> abnormalSalaryList = new ArrayList<Salary>();
+    @Override
+    public Staff getStaffByIdNO(String idNo, List<String> projectCodeList) {
+        Staff staff = staffBO.getStaffByIdNo(idNo);
 
-        if (CollectionUtils.isNotEmpty(projectCodeList)) {
-            for (String projectCode : projectCodeList) {
-                Employ condition = new Employ();
-                condition.setStaffCode(data.getCode());
-                condition.setProjectCode(projectCode);
-                List<Employ> list = employBO.queryEmployList(condition);
-
-                if (CollectionUtils.isNotEmpty(list)) {
-                    for (Employ employ : list) {
-                        if (employ != null) {
-
-                            // 填充工作履历及正常工资条记录
-                            employList.add(employ);
-                            salaryList = salaryBO
-                                .getEmploySalary(employ.getCode());
-
-                        }
-                    }
-                }
-
+        if (null == staff) {
+            if (CollectionUtils.isNotEmpty(projectCodeList)) {
+                // 手持端查询直接提示异常
+                throw new BizException("xn0000", "对应的员工不存在！");
+            } else {
+                // 业主端返回null
+                return null;
             }
         }
 
-        if (CollectionUtils.isNotEmpty(salaryList)) {
-            for (Salary salary : salaryList) {
-                if (ESalaryStatus.Pay_Portion.getCode()
-                    .equals(salary.getStatus())) {
+        initStaff(staff, projectCodeList);
 
-                    // 填充异常工资条记录
-                    abnormalSalaryList.add(salary);
-
-                }
-            }
-        }
-
-        data.setEmployList(employList);
-        data.setSalaryList(salaryList);
-        data.setAbnormalSalaryList(abnormalSalaryList);
-
-        // 技能列表
-        List<Skill> skillList = skillBO.querySkillByStaff(data.getCode());
-        data.setSkillList(skillList);
-
-        return data;
+        return staff;
     }
 
     // 获取用户名称
@@ -412,5 +381,69 @@ public class StaffAOImpl implements IStaffAO {
         }
 
         return new Gson().toJson(array);
+    }
+
+    private void initStaff(Staff staff, List<String> projectCodeList) {
+
+        // 工作履历
+        List<Employ> employList = new ArrayList<Employ>();
+
+        // 正常工资条
+        List<Salary> salaryList = new ArrayList<Salary>();
+
+        // 异常工资条
+        List<Salary> abnormalSalaryList = new ArrayList<Salary>();
+
+        if (CollectionUtils.isNotEmpty(projectCodeList)) {
+            for (String projectCode : projectCodeList) {
+                Employ condition = new Employ();
+                condition.setStaffCode(staff.getCode());
+                condition.setProjectCode(projectCode);
+                List<Employ> list = employBO.queryEmployList(condition);
+
+                if (CollectionUtils.isNotEmpty(list)) {
+                    for (Employ employ : list) {
+                        if (employ != null) {
+
+                            // 填充工作履历及正常工资条记录
+                            employList.add(employ);
+                            salaryList = salaryBO
+                                .getEmploySalary(employ.getCode());
+
+                        }
+                    }
+                }
+
+            }
+        }
+
+        if (CollectionUtils.isNotEmpty(salaryList)) {
+            for (Salary salary : salaryList) {
+                if (ESalaryStatus.Pay_Portion.getCode()
+                    .equals(salary.getStatus())) {
+
+                    // 填充异常工资条记录
+                    abnormalSalaryList.add(salary);
+
+                }
+            }
+        }
+
+        staff.setEmployList(employList);
+        staff.setSalaryList(salaryList);
+        staff.setAbnormalSalaryList(abnormalSalaryList);
+
+        // 技能列表
+        List<Skill> skillList = skillBO.querySkillByStaff(staff.getCode());
+        staff.setSkillList(skillList);
+
+    }
+
+    public Date normalizeDate(String date) {
+        Pattern pattern = Pattern.compile("[^0-9]");
+        Matcher matcher = pattern.matcher(date);
+
+        return DateUtil.strToDate(matcher.replaceAll(""),
+            DateUtil.DB_DATE_FORMAT_STRING);
     }
 }

@@ -55,6 +55,9 @@ public class Leave extends ABaseDO {
     private String remark;
 
     /***********DB Properties*****************/
+    // 关键字模糊查询（姓名）
+    private String keyword;
+
     // 项目编号List
     private List<String> projectCodeList;
 
@@ -201,6 +204,14 @@ public class Leave extends ABaseDO {
 
     public void setEmployStatus(String employStatus) {
         this.employStatus = employStatus;
+    }
+
+    public String getKeyword() {
+        return keyword;
+    }
+
+    public void setKeyword(String keyword) {
+        this.keyword = keyword;
     }
 
 }

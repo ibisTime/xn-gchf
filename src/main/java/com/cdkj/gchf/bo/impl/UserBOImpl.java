@@ -1,5 +1,6 @@
 package com.cdkj.gchf.bo.impl;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -180,17 +181,14 @@ public class UserBOImpl extends PaginableBOImpl<User> implements IUserBO {
     }
 
     @Override
-    public User getUserByOrganization(String organizationCode) {
-        User data = null;
+    public List<User> getUserByOrganization(String organizationCode) {
+        List<User> list = new ArrayList<User>();
         if (StringUtils.isNotBlank(organizationCode)) {
             User condition = new User();
             condition.setOrganizationCode(organizationCode);
-            data = userDAO.select(condition);
-            if (data == null) {
-                throw new BizException("xn0000", "用户不存在");
-            }
+            list = userDAO.selectList(condition);
         }
-        return data;
+        return list;
     }
 
     @Override

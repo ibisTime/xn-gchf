@@ -279,9 +279,10 @@ public class MessageAOImpl implements IMessageAO {
     public Message downLoad(String userId, String code, String download,
             String backDownload) {
         Message data = messageBO.getMessage(code);
-        User user = userBO.getUser(userId);
         data.setDownload(StringValidater.toInteger(download));
         data.setBackDownload(StringValidater.toInteger(backDownload));
+
+        User user = userBO.getUser(userId);
         if (EMessageStatus.TO_Deal.getCode().equals(data.getStatus())
                 && EUserKind.Bank.getCode().equals(user.getType())) {
             data.setStatus(EMessageStatus.TO_Feedback.getCode());

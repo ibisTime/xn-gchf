@@ -31,6 +31,9 @@ public class XN631425Req extends APageReq {
     // （选填）更新人
     private String updater;
 
+    // 银行卡号状态（0未录入/1已录入）
+    private String numberStatus;
+
     public String getBankCode() {
         return bankCode;
     }
@@ -77,6 +80,14 @@ public class XN631425Req extends APageReq {
 
     public void setProjectCode(String projectCode) {
         this.projectCode = projectCode;
+    }
+
+    public String getNumberStatus() {
+        return numberStatus;
+    }
+
+    public void setNumberStatus(String numberStatus) {
+        this.numberStatus = numberStatus;
     }
 
 }

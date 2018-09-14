@@ -36,6 +36,7 @@ public class XN631468 extends AProcessor {
         condition.setPosition(req.getPosition());
         condition.setDepartmentCode(req.getDepartmentCode());
         condition.setEmployStatus(req.getEmployStatus());
+        condition.setKeyword(req.getKeyword());
 
         String column = req.getOrderColumn();
         if (StringUtils.isBlank(column)) {

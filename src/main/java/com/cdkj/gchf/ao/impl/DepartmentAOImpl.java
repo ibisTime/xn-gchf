@@ -49,11 +49,17 @@ public class DepartmentAOImpl implements IDepartmentAO {
 
     @Override
     public void editDepartment(XN631032Req req) {
+
+        if (req.getCode().equals(req.getParentCode())) {
+            throw new BizException("xn0000", "无法选择自身部门作为上级部门！");
+        }
+
         Department data = departmentBO.getDepartment(req.getCode());
         data.setName(req.getName());
         data.setLeader(req.getLeader());
         data.setLeadeMobile(req.getLeadeMobile());
         data.setParentCode(req.getParentCode());
+
         departmentBO.refreshDepartment(data);
     }
 

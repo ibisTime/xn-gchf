@@ -3,6 +3,7 @@ package com.cdkj.gchf.ao.impl;
 import java.util.Date;
 import java.util.List;
 
+import org.apache.commons.collections.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -76,16 +77,44 @@ public class LeaveAOImpl implements ILeaveAO {
     @Override
     public Paginable<Leave> queryLeavePage(int start, int limit,
             Leave condition) {
-        return leaveBO.getPaginable(start, limit, condition);
+        Paginable<Leave> page = leaveBO.getPaginable(start, limit, condition);
+        List<Leave> list = page.getList();
+
+        if (CollectionUtils.isNotEmpty(list)) {
+            for (Leave leave : list) {
+                initLeave(leave);
+            }
+        }
+
+        return page;
     }
 
     @Override
     public List<Leave> queryLeaveList(Leave condition) {
-        return leaveBO.queryLeaveList(condition);
+        List<Leave> list = leaveBO.queryLeaveList(condition);
+
+        if (CollectionUtils.isNotEmpty(list)) {
+            for (Leave leave : list) {
+                initLeave(leave);
+            }
+        }
+
+        return list;
     }
 
     @Override
     public Leave getLeave(String code) {
-        return leaveBO.getLeave(code);
+        Leave leave = leaveBO.getLeave(code);
+
+        initLeave(leave);
+
+        return leave;
+    }
+
+    private void initLeave(Leave leave) {
+        Employ employ = employBO.getEmploy(leave.getEmployCode());
+
+        leave.setPosition(employ.getPosition());
+        leave.setEmployStatus(employ.getStatus());
     }
 }

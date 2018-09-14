@@ -32,7 +32,7 @@ public interface IUserBO extends IPaginableBO<User> {
 
     public User getUser(String userId);
 
-    public User getUserByOrganization(String organizationCode);
+    public List<User> getUserByOrganization(String organizationCode);
 
     public void refreshLoginPwd(User user, String newLoginPwd);
 

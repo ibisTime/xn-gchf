@@ -42,12 +42,15 @@
 			<if test="staffName != null and staffName != '' ">
 				AND t.staff_name = #{staffName}
 			</if>
+			<if test="keyword != null and keyword != '' ">
+				AND t.staff_name like "%"#{keyword}"%"
+			</if>
 			
 			<if test="departmentCode != null and departmentCode != '' ">
-				AND te.department_code = #{(departmentCode}
+				AND te.department_code = #{departmentCode}
 			</if>
 			<if test="position != null and position != '' ">
-				AND te.position = #{(position}
+				AND te.position = #{position}
 			</if>
 			<if test="employStatus != null and employStatus != '' ">
 				AND te.status = #{employStatus}

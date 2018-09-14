@@ -36,6 +36,9 @@ public class XN631468Req extends APageReq {
     // 员工姓名
     private String staffName;
 
+    // 关键字
+    private String keyword;
+
     public List<String> getProjectCodeList() {
         return projectCodeList;
     }
@@ -98,6 +101,14 @@ public class XN631468Req extends APageReq {
 
     public void setStaffName(String staffName) {
         this.staffName = staffName;
+    }
+
+    public String getKeyword() {
+        return keyword;
+    }
+
+    public void setKeyword(String keyword) {
+        this.keyword = keyword;
     }
 
 }

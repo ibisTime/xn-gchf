@@ -487,10 +487,19 @@ public class SalaryAOImpl implements ISalaryAO {
 
             // 监管单位信息
             if (null != project.getSuperviseCode()) {
-                User user = userBO
+                List<User> userList = userBO
                     .getUserByOrganization(project.getSuperviseCode());
-                salary.setSuperviseUser(user.getRealName());
-                salary.setSuperviseUserMobile(user.getMobile());
+
+                if (CollectionUtils.isNotEmpty(userList)) {
+                    String superviseUser = "";
+
+                    for (User user : userList) {
+                        superviseUser = superviseUser + user.getRealName() + "("
+                                + user.getMobile() + ")/";
+                    }
+
+                    salary.setSuperviseUser(superviseUser);
+                }
             }
 
         }

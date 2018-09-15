@@ -28,7 +28,10 @@ public class StaffBOImpl extends PaginableBOImpl<Staff> implements IStaffBO {
     public void refreshPict1(String code, String pict1, String feat,
             String updater) {
 
-        Staff staff = new Staff();
+        Staff condition = new Staff();
+        condition.setCode(code);
+
+        Staff staff = staffDAO.selectStaffPict(condition);
         staff.setCode(code);
         staff.setPict1(pict1);
         staff.setFeat(feat);
@@ -41,6 +44,10 @@ public class StaffBOImpl extends PaginableBOImpl<Staff> implements IStaffBO {
             staff.setFeatStatus(EBoolean.NO.getCode());
         } else {
             staff.setFeatStatus(EBoolean.YES.getCode());
+        }
+
+        if (StringUtils.isBlank(staff.getIdPic())) {
+            staff.setIdPic(staff.getPict1());
         }
 
         staffDAO.updatePict1(staff);

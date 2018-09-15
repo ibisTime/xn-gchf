@@ -53,7 +53,7 @@ public class ReportBOImpl extends PaginableBOImpl<Report> implements IReportBO {
     }
 
     @Override
-    public void refreshStaffIn(String projectCode, Long nextMonthSalary) {
+    public void refreshEmploy(String projectCode, Long nextMonthSalary) {
         Report data = getReportByProject(projectCode);
         if (null != data) {
             data.setNextMonthSalary(
@@ -124,4 +124,5 @@ public class ReportBOImpl extends PaginableBOImpl<Report> implements IReportBO {
         }
         return data;
     }
+
 }

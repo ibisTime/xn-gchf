@@ -172,6 +172,7 @@
 		SELECT
 		t.code
 		,t.name
+		,t.id_pic
 		,t.pict1
 		,t.feat
 		FROM
@@ -233,7 +234,8 @@
 	<update id="update_pict1" parameterType="staff">
 		UPDATE thf_staff
 		SET
-		pict1 = #{pict1}
+		id_pic = #{idPic}
+		,pict1 = #{pict1}
 		,pict1_status = #{pict1Status}
 		,feat = #{feat}
 		,feat_status = #{featStatus}

@@ -144,7 +144,7 @@ public class EmployAOImpl implements IEmployAO {
         // 计入累积入职
         Long nextMonthSalary = AmountUtil.mul(data.getSalary(),
             DateUtil.getRemainDays());
-        reportBO.refreshStaffIn(project.getCode(), nextMonthSalary);
+        reportBO.refreshEmploy(project.getCode(), nextMonthSalary);
 
         // 生成考勤
         attendanceBO.saveAttendance(code, project.getCode(), project.getName(),
@@ -170,6 +170,31 @@ public class EmployAOImpl implements IEmployAO {
 
         Employ employ = employBO.getEmploy(req.getCode());
 
+        if (EEmployStatus.Leave.getCode().equals(employ.getStatus())) {
+            employ.setStatus(EEmployStatus.Work.getCode());
+
+            // 计入累积入职
+            Long nextMonthSalary = AmountUtil.mul(employ.getSalary(),
+                DateUtil.getRemainDays());
+            reportBO.refreshEmploy(project.getCode(), nextMonthSalary);
+        } else {
+
+            if (employ.getSalary() != StringValidater.toLong(req.getSalary())) {
+
+                Report report = reportBO
+                    .getReportByProject(req.getProjectCode());
+                Long nextMonthSalary = report.getNextMonthSalary()
+                        - AmountUtil.mul(
+                            employ.getSalary()
+                                    - StringValidater.toLong(req.getSalary()),
+                            DateUtil.getRemainDays());
+                report.setNextMonthSalary(nextMonthSalary);
+                reportBO.refreshNextMonthSalary(report);
+
+            }
+
+        }
+
         // 重新入职
         employ.setProjectCode(req.getProjectCode());
         employ.setProjectName(project.getName());
@@ -182,11 +207,8 @@ public class EmployAOImpl implements IEmployAO {
         employ.setCutAmount(StringValidater.toLong(req.getCutAmount()));
         employ.setUpdater(req.getUpdater());
         employ.setUpdateDatetime(new Date());
-
         employ.setRemark(req.getRemark());
-        if (EEmployStatus.Leave.getCode().equals(employ.getStatus())) {
-            employ.setStatus(EEmployStatus.Work.getCode());
-        }
+
         employBO.editEmploy(employ);
 
         // 如果没有工资卡则新增，否则修改

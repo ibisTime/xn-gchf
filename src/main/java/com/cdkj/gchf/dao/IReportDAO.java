@@ -30,4 +30,5 @@ public interface IReportDAO extends IBaseDAO<Report> {
 
     // 清空今日上工人数
     public int updateResetTodayDays(Report data);
+
 }

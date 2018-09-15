@@ -8,7 +8,7 @@ import com.cdkj.gchf.domain.Report;
 public interface IReportBO extends IPaginableBO<Report> {
     public void saveReport(String projectCode, String name);
 
-    public void refreshStaffIn(String projectCode, Long nextMonthSalary);
+    public void refreshEmploy(String projectCode, Long nextMonthSalary);
 
     public void refreshStaffOut(Report data);
 

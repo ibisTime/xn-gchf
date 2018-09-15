@@ -83,4 +83,10 @@ public class StaffDAOImpl extends AMybatisTemplate implements IStaffDAO {
             count, condition, Staff.class);
     }
 
+    @Override
+    public Staff selectStaffPict(Staff condition) {
+        return super.select(NAMESPACE.concat("select_staffPic"), condition,
+            Staff.class);
+    }
+
 }

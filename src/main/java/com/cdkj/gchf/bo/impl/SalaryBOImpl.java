@@ -107,7 +107,10 @@ public class SalaryBOImpl extends PaginableBOImpl<Salary> implements ISalaryBO {
     }
 
     @Override
-    public void refreshStatus(Salary salary) {
+    public void refreshStatus(String code, String status) {
+        Salary salary = new Salary();
+        salary.setCode(code);
+        salary.setStatus(status);
         salaryDAO.updateStatus(salary);
     }
 

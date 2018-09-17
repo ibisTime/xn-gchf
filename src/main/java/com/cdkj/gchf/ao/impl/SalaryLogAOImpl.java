@@ -72,8 +72,7 @@ public class SalaryLogAOImpl implements ISalaryLogAO {
             null);
 
         // 改变工资条状态
-        salary.setStatus(ESalaryStatus.Pay_Again.getCode());
-        salaryBO.refreshStatus(salary);
+        salaryBO.refreshStatus(salaryCode, ESalaryStatus.Pay_Again.getCode());
 
         return code;
     }

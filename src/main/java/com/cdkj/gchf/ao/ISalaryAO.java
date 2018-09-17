@@ -28,6 +28,9 @@ public interface ISalaryAO {
     // 批量删除工资条
     public void dropSalaryList(List<String> salaryCodeList);
 
+    // 定时器更新薪资是否延迟发放
+    public void doDelaySalaryDaily();
+
     public Paginable<Salary> querySalaryPage(int start, int limit,
             Salary condition);
 

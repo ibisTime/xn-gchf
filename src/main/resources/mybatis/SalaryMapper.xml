@@ -76,6 +76,9 @@
 			<if test="projectName != null and projectName != '' ">
 				AND t.project_name like "%"#{projectName}"%"
 			</if>
+			<if test="year != null and year != '' ">
+				AND left(month, 4) = #{year}
+			</if>
 			<if test="month != null and month != '' ">
 				AND substring(t.month, 6) = #{month}
 			</if>

@@ -109,8 +109,9 @@ public class MessageAOImpl implements IMessageAO {
             if (ESalaryStatus.To_Approve.getCode().equals(salary.getStatus())) {
                 throw new BizException("xn00000", "存在未审核的工资条，请核对后再发送");
             }
-            salary.setStatus(ESalaryStatus.TO_Pay.getCode());
-            salaryBO.refreshStatus(salary);
+
+            salaryBO.refreshStatus(salary.getCode(),
+                ESalaryStatus.TO_Pay.getCode());
 
             // 判断该员工在该工程下是否有银行卡
             bankCard = bankCardBO.getEmployBankCard(salary.getEmployCode());

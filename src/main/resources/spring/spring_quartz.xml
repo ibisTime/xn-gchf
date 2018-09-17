@@ -22,6 +22,7 @@
            	  <ref bean="salaryDailyTrigger"/> 
            	  <ref bean="nextMonthSalaryTrigger"/> 
            	  <ref bean="staffFeatTrigger"/> 
+           	  <ref bean="delaySalaryTrigger"/> 
  		   </list>  
        </property>  
        <property name="autoStartup" value="true"/>  
@@ -81,6 +82,17 @@
 	<bean id="staffFeat" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">   
         <property name="targetObject" ref="staffAOImpl"/>  
         <property name="targetMethod" value="doUpdateFeatDaily"/>  
+        <property name="concurrent" value="true"/> <!--   是否允许任务并发执行。当值为false时，表示必须等到前一个线程处理完毕后才再启一个新的线程 -->
+	</bean>
+	
+	<!-- 更新延迟工资条 -->
+	<bean id="delaySalaryTrigger" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">  
+       <property name="jobDetail" ref="delaySalary"/>  
+       <property name="cronExpression" value="0 0 0 * * ?"/><!--每天凌晨-->
+	</bean>
+	<bean id="delaySalary" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">   
+        <property name="targetObject" ref="salaryAOImpl"/>  
+        <property name="targetMethod" value="doDelaySalaryDaily"/>  
         <property name="concurrent" value="true"/> <!--   是否允许任务并发执行。当值为false时，表示必须等到前一个线程处理完毕后才再启一个新的线程 -->
 	</bean>
 	

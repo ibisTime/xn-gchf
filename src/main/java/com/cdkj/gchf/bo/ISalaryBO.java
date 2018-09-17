@@ -22,8 +22,7 @@ public interface ISalaryBO extends IPaginableBO<Salary> {
     // 发工资
     public void payAmount(Salary salary);
 
-    // 更新状态
-    public void refreshStatus(Salary salary);
+    public void refreshStatus(String code, String status);
 
     // 查询项目每月薪资总额
     public List<Salary> selectMonthlySalarySumByProject(String projectCode);

@@ -111,6 +111,9 @@ public class Salary extends ABaseDO {
     // 关键字
     private String keyword;
 
+    // 工资发放年份
+    private String year;
+
     // 工资卡
     private BankCard bankCard;
 
@@ -588,6 +591,18 @@ public class Salary extends ABaseDO {
 
     public void setHandleDatetime(Date handleDatetime) {
         this.handleDatetime = handleDatetime;
+    }
+
+    public String getYear() {
+        return year;
+    }
+
+    public void setYear(String year) {
+        this.year = year;
+    }
+
+    public String getHandleNote() {
+        return handleNote;
     }
 
 }

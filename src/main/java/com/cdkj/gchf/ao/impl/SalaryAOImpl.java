@@ -49,6 +49,7 @@ import com.cdkj.gchf.enums.EBoolean;
 import com.cdkj.gchf.enums.EEmployStatus;
 import com.cdkj.gchf.enums.EGeneratePrefix;
 import com.cdkj.gchf.enums.EProjectStatus;
+import com.cdkj.gchf.enums.ESalaryLogType;
 import com.cdkj.gchf.enums.ESalaryStatus;
 import com.cdkj.gchf.enums.EUser;
 import com.cdkj.gchf.exception.BizException;
@@ -407,6 +408,54 @@ public class SalaryAOImpl implements ISalaryAO {
     }
 
     @Override
+    @Transactional
+    public void doDelaySalaryDaily() {
+        // 获取所有项目列表
+        Project projectCondition = new Project();
+        projectCondition.setStatus(EProjectStatus.Building.getCode());
+        List<Project> projectList = projectBO.queryProject(projectCondition);
+
+        String status = ESalaryStatus.Pay_Delay.getCode();
+        if (CollectionUtils.isNotEmpty(projectList)) {
+            for (Project project : projectList) {
+
+                // 如果不是预警日期，则退出
+                if ((StringValidater.toInteger(project.getSalaryDatetime())
+                        + project.getSalaryDelayDays() + 1) != DateUtil
+                            .getDayOfMonth())
+                    break;
+
+                // 获取项目上个月的待发工资
+                Salary condition = new Salary();
+                condition.setProjectCode(project.getCode());
+                condition.setStatus(ESalaryStatus.TO_Pay.getCode());
+                condition.setMonth(String.valueOf(DateUtil.getMonth() - 1));
+                condition.setYear(String.valueOf(DateUtil.getYear()));
+                List<Salary> salaryList = salaryBO.querySalaryList(condition);
+
+                // 更新薪资为延迟发放状态
+                if (CollectionUtils.isNotEmpty(salaryList)) {
+                    for (Salary salary : salaryList) {
+                        salaryBO.refreshStatus(salary.getCode(), status);
+
+                        // 添加系统处理日志
+                        String yearMonth[] = salary.getMonth().split("/");
+                        String note = "员工" + salary.getStaffName().trim()
+                                + yearMonth[0] + "年" + yearMonth[1] + "月工资"
+                                + ESalaryStatus.getValue(status) + "，列为异常事件。";
+
+                        salaryLogBO.saveSalaryLog(salary.getCode(),
+                            salary.getStaffCode(),
+                            ESalaryLogType.Abnormal.getCode(), "admin", note,
+                            null);
+                    }
+                }
+
+            }
+        }
+    }
+
+    @Override
     public Paginable<Salary> querySalaryPage(int start, int limit,
             Salary condition) {
         Paginable<Salary> page = salaryBO.getPaginable(start, limit, condition);
@@ -559,4 +608,5 @@ public class SalaryAOImpl implements ISalaryAO {
         }
         return name;
     }
+
 }

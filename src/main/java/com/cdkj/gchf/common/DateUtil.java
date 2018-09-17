@@ -403,6 +403,12 @@ public class DateUtil {
         return calendar.get(Calendar.MONTH) + 1;
     }
 
+    // 获取当前年份
+    public static int getYear() {
+        Calendar calendar = Calendar.getInstance();
+        return calendar.get(Calendar.YEAR);
+    }
+
     /**
      * 比较两个时间是否相等
      *  -1  开始小于结束
@@ -535,36 +541,19 @@ public class DateUtil {
     }
 
     /**
-      * 获取当月当前剩余天数
-      * @param month
-      * @return 
-      * @create: 2018年6月5日 上午10:04:44 nyc
-      * @history:
-      */
-    public static int getMonthDays() {
-        int allDays = DateUtil.getMonthDays(Calendar.MONTH);
-        int passDays = Calendar.DAY_OF_MONTH;
-        return allDays - passDays;
-    }
-
-    /**
-     * 获取指定月份天数
-     * @param month
+     * 获取当前时间的日
      * @return 
-     * @create: 2018年6月5日 上午10:04:44 nyc
+     * @create: 2018年9月17日 上午10:29:00 silver
      * @history:
      */
-    public static int getMonthDays(int month) {
+    public static int getDayOfMonth() {
         Calendar calendar = Calendar.getInstance();
-        calendar.set(Calendar.MONTH, month);
-        calendar.set(Calendar.DAY_OF_MONTH, 1);
-        calendar.roll(Calendar.DAY_OF_MONTH, -1);
-        return calendar.get(Calendar.DATE);
+        return calendar.get(Calendar.DAY_OF_MONTH);
     }
 
     public static void main(String[] args) throws ParseException {
-        String[] salaryDate = "2018/6".split("/");
-        System.out.println(getLastDay(2018, 5));
+        System.out.println(getMonth());
+
     }
 
 }

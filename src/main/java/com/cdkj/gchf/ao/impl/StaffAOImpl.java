@@ -271,23 +271,7 @@ public class StaffAOImpl implements IStaffAO {
 
         Staff data = staffBO.getStaff(code);
 
-        // 工作履历
-        List<Employ> employList = new ArrayList<Employ>();
-        if (CollectionUtils.isNotEmpty(projectCodeList)) {
-            for (String projectCode : projectCodeList) {
-                Employ condition = new Employ();
-                condition.setStaffCode(data.getCode());
-                condition.setProjectCode(projectCode);
-                List<Employ> list = employBO.queryEmployList(condition);
-
-                employList.addAll(list);
-            }
-        }
-        data.setEmployList(employList);
-
-        // 技能
-        List<Skill> skillList = skillBO.querySkillByStaff(data.getCode());
-        data.setSkillList(skillList);
+        initStaff(data, projectCodeList);
 
         return data;
     }

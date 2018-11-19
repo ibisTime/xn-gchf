@@ -13,6 +13,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
@@ -125,11 +126,14 @@ public class StaffAOImpl implements IStaffAO {
     }
 
     @Override
+    @Transactional
     public void editContactInfo(XN631413Req req) {
 
         staffBO.refreshContactInfo(req.getCode(), req.getMobile(),
             req.getContacts(), req.getContactsMobile(), req.getUpdater(),
             req.getRemark());
+
+        employBO.updateStaffMobile(req.getCode(), req.getMobile());
 
     }
 

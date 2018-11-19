@@ -163,6 +163,7 @@ public class EmployAOImpl implements IEmployAO {
     @Override
     @Transactional
     public void reEmploy(XN631463Req req) {
+
         Project project = projectBO.getProject(req.getProjectCode());
         if (!EProjectStatus.Building.getCode().equals(project.getStatus())) {
             throw new BizException("xn0000", "该项目未通过审核或已停工");
@@ -201,14 +202,14 @@ public class EmployAOImpl implements IEmployAO {
         employ.setDepartmentCode(req.getDepartmentCode());
         employ.setType(req.getType());
         employ.setPosition(req.getPosition());
+        employ.setJoinDatetime(DateUtil.strToDate(req.getJoinDatetime(),
+            DateUtil.FRONT_DATE_FORMAT_STRING));
 
         employ.setSalary(StringValidater.toLong(req.getSalary()));
-        employ.setJoinDatetime(new Date());
         employ.setCutAmount(StringValidater.toLong(req.getCutAmount()));
         employ.setUpdater(req.getUpdater());
         employ.setUpdateDatetime(new Date());
         employ.setRemark(req.getRemark());
-
         employBO.editEmploy(employ);
 
         // 如果没有工资卡则新增，否则修改

@@ -86,6 +86,14 @@ public class EmployBOImpl extends PaginableBOImpl<Employ> implements IEmployBO {
     }
 
     @Override
+    public void updateStaffMobile(String staffCode, String mobile) {
+        Employ data = new Employ();
+        data.setStaffCode(staffCode);
+        data.setStaffMobile(mobile);
+        employDAO.updateStaffMobile(data);
+    }
+
+    @Override
     public Employ getEmployByStaff(String staffCode, String projectCode) {
         Employ data = null;
         if (StringUtils.isNotBlank(staffCode)

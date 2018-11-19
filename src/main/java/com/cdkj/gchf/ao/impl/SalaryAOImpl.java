@@ -408,7 +408,6 @@ public class SalaryAOImpl implements ISalaryAO {
     }
 
     @Override
-    @Transactional
     public void doDelaySalaryDaily() {
         // 获取所有项目列表
         Project projectCondition = new Project();
@@ -423,7 +422,7 @@ public class SalaryAOImpl implements ISalaryAO {
                 if ((StringValidater.toInteger(project.getSalaryDatetime())
                         + project.getSalaryDelayDays() + 1) != DateUtil
                             .getDayOfMonth())
-                    break;
+                    continue;
 
                 // 获取项目上个月的待发工资
                 Salary condition = new Salary();

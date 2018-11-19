@@ -241,6 +241,13 @@
 		status = #{status}
 		WHERE code = #{code}
 	</update>
+	
+	<update id="update_staffMobile" parameterType="employ">
+		UPDATE thf_employ
+		SET
+		staff_mobile = #{staffMobile}
+		WHERE staff_code = #{staffCode}
+	</update>
 
 	<update id="update_salaryStatus" parameterType="employ">
 		UPDATE thf_employ

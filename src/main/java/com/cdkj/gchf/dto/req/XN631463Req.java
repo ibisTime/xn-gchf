@@ -37,6 +37,9 @@ public class XN631463Req {
     @NotBlank(message = "迟到早退扣款金额不能为空")
     private String cutAmount;
 
+    // 入职时间
+    private String joinDatetime;
+
     // 银行行别
     private String bankCode;
 
@@ -158,6 +161,14 @@ public class XN631463Req {
 
     public void setBankcardNumber(String bankcardNumber) {
         this.bankcardNumber = bankcardNumber;
+    }
+
+    public String getJoinDatetime() {
+        return joinDatetime;
+    }
+
+    public void setJoinDatetime(String joinDatetime) {
+        this.joinDatetime = joinDatetime;
     }
 
 }

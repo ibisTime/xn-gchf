@@ -427,9 +427,15 @@ public class SalaryAOImpl implements ISalaryAO {
                 // 获取项目上个月的待发工资
                 Salary condition = new Salary();
                 condition.setProjectCode(project.getCode());
-                condition.setStatus(ESalaryStatus.TO_Pay.getCode());
                 condition.setMonth(String.valueOf(DateUtil.getMonth() - 1));
                 condition.setYear(String.valueOf(DateUtil.getYear()));
+
+                List<String> statusList = new ArrayList<String>();
+                statusList.add(ESalaryStatus.To_Approve.getCode());
+                statusList.add(ESalaryStatus.TO_Send.getCode());
+                statusList.add(ESalaryStatus.TO_Pay.getCode());
+                condition.setStatusList(statusList);
+
                 List<Salary> salaryList = salaryBO.querySalaryList(condition);
 
                 // 更新薪资为延迟发放状态

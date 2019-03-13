@@ -119,4 +119,8 @@
 		<property name="paginableDAO" ref="operatorGuideDAOImpl"/>
 	</bean>	
 	
+	<bean id="corpBasicinfoBO" class="com.cdkj.gchf.bo.impl.CorpBasicinfoBOImpl">
+		<property name="paginableDAO" ref="corpBasicinfoDAOImpl"/>
+	</bean>	
+	
 </beans>

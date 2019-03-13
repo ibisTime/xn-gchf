@@ -43,6 +43,7 @@
 		<typeAlias alias="leave" type="com.cdkj.gchf.domain.Leave" />
 		<typeAlias alias="supervise" type="com.cdkj.gchf.domain.Supervise" />
 		<typeAlias alias="operatorGuide" type="com.cdkj.gchf.domain.OperatorGuide" />
+		<typeAlias alias="corpBasicinfo" type="com.cdkj.gchf.domain.CorpBasicinfo" />
 		
 	</typeAliases>
 </configuration>

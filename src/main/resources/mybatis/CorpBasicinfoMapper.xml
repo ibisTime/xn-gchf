@@ -1,0 +1,196 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cdkj.gchf.dao.ICorpBasicinfoDAO">
+	<resultMap id="corpBasicinfo_DB_Result" type="corpBasicinfo">
+		<result column="code" property="code" />
+		<result column="corp_code" property="corpCode" />
+		<result column="corp_name" property="corpName" />
+		<result column="corp_type" property="corpType" />
+		<result column="license_num" property="licenseNum" />
+		
+		<result column="area_code" property="areaCode" />
+		<result column="address" property="address" />
+		<result column="zip_code" property="zipCode" />
+		<result column="legal_man" property="legalMan" />
+		<result column="legal_man_duty" property="legalManDuty" />
+		
+		<result column="legal_man_pro_title" property="legalManProTitle" />
+		<result column="legal_man_idcard_type" property="legalManIdcardType" />
+		<result column="legal_man_idcard_number" property="legalManIdcardNumber" />
+		<result column="reg_capital" property="regCapital" />
+		<result column="fact_reg_capital" property="factRegCapital" />
+		
+		<result column="capital_currency_type" property="capitalCurrencyType" />
+		<result column="register_date" property="registerDate" />
+		<result column="establish_date" property="establishDate" />
+		<result column="office_phone" property="officePhone" />
+		<result column="fax_number" property="faxNumber" />
+		
+		<result column="link_man" property="linkMan" />
+		<result column="link_phone" property="linkPhone" />
+		<result column="email" property="email" />
+		<result column="web_site" property="webSite" />
+	</resultMap>
+	
+	<sql id="where_condition">
+		<trim prefix="WHERE" prefixOverrides="AND | OR">
+			<if test="code != null and code != '' ">
+				AND t.code = #{code}
+			</if>
+			<if test="corpCode != null and corpCode != '' ">
+				AND t.corp_code = #{corpCode}
+			</if>
+			<if test="corpName != null and corpName != '' ">
+				AND t.corp_name = #{corpName}
+			</if>
+			<if test="corpType != null and corpType != '' ">
+				AND t.corp_type = #{corpType}
+			</if>
+		</trim>
+	</sql>
+	
+	<select id="select_corpBasicinfo" parameterType="corpBasicinfo" resultMap="corpBasicinfo_DB_Result">
+		SELECT
+		t.code
+		,t.corp_code
+		,t.corp_name
+		,t.corp_type
+		,t.license_num
+		
+		,t.area_code
+		,t.address
+		,t.zip_code
+		,t.legal_man
+		,t.legal_man_duty
+		
+		,t.legal_man_pro_title
+		,t.legal_man_idcard_type
+		,t.legal_man_idcard_number
+		,t.reg_capital
+		,t.fact_reg_capital
+		
+		,t.capital_currency_type
+		,t.register_date
+		,t.establish_date
+		,t.office_phone
+		,t.fax_number
+		
+		,t.link_man
+		,t.link_phone
+		,t.email
+		,t.web_site
+		FROM
+		tqy_corp_basicinfo t
+		<include refid="where_condition" />
+		<trim prefix="ORDER BY ">
+			<if test="order != null and order != '' ">
+				t.${order}
+			</if>
+		</trim>
+	</select>
+
+	<select id="select_corpBasicinfo_count" parameterType="corpBasicinfo"
+		resultType="java.lang.Long">
+		SELECT count(1) FROM tqy_corp_basicinfo t
+		<include refid="where_condition" />
+	</select>
+
+	<insert id="insert_corpBasicinfo" parameterType="corpBasicinfo">
+		INSERT INTO
+		tqy_corp_basicinfo(
+		code
+		,corp_code
+		,corp_name
+		,corp_type
+		,license_num
+		
+		,area_code
+		,address
+		,zip_code
+		,legal_man
+		,legal_man_duty
+		
+		,legal_man_pro_title
+		,legal_man_idcard_type
+		,legal_man_idcard_number
+		,reg_capital
+		,fact_reg_capital
+		
+		,capital_currency_type
+		,register_date
+		,establish_date
+		,office_phone
+		,fax_number
+		
+		,link_man
+		,link_phone
+		,email
+		,web_site
+		)
+		VALUES(
+		#{code}
+		,#{corpCode}
+		,#{corpName}
+		,#{corpType}
+		,#{licenseNum}
+		
+		,#{areaCode}
+		,#{address}
+		,#{zipCode}
+		,#{legalMan}
+		,#{legalManDuty}
+		
+		,#{legalManProTitle}
+		,#{legalManIdcardType}
+		,#{legalManIdcardNumber}
+		,#{regCapital}
+		,#{factRegCapital}
+		
+		,#{capitalCurrencyType}
+		,#{registerDate}
+		,#{establishDate}
+		,#{officePhone}
+		,#{faxNumber}
+		
+		,#{linkMan}
+		,#{linkPhone}
+		,#{email}
+		,#{webSite}
+		)
+	</insert>
+
+	<update id="update_corpBasicinfo" parameterType="corpBasicinfo">
+		UPDATE tqy_corp_basicinfo
+		SET
+		corp_code = #{corpCode}
+		,corp_name = #{corpName}
+		,corp_type = #{corpType}
+		,license_num = #{licenseNum}
+		,area_code = #{areaCode}
+		
+		,address = #{address}
+		,zip_code = #{zipCode}
+		,legal_man = #{legalMan}
+		,legal_man_duty = #{legalManDuty}
+		,legal_man_pro_title = #{legalManProTitle}
+		
+		,legal_man_idcard_type = #{legalManIdcardType}
+		,legal_man_idcard_number = #{legalManIdcardNumber}
+		,reg_capital = #{regCapital}
+		,fact_reg_capital = #{factRegCapital}
+		,capital_currency_type = #{capitalCurrencyType}
+		
+		,register_date = #{registerDate}
+		,establish_date = #{establishDate}
+		,office_phone = #{officePhone}
+		,fax_number = #{faxNumber}
+		,link_man = #{linkMan}
+		
+		,link_phone = #{linkPhone}
+		,email = #{email}
+		,web_site = #{webSite}
+		WHERE code = #{code}
+	</update>
+	
+</mapper>

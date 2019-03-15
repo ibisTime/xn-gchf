@@ -44,3 +44,11 @@ CREATE TABLE `thf_project_corp_info` (
   PRIMARY KEY (`code`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
+DROP TABLE IF EXISTS  `thf_project_config`;
+CREATE TABLE `thf_project_config` (
+  `code` varchar(32) NOT NULL COMMENT '编号',
+  `local_project_code` varchar(32) NULL COMMENT '本地项目编号',
+  `project_code` varchar(32) DEFAULT NULL COMMENT '项目编码',
+  `secret` varchar(255) DEFAULT NULL COMMENT '项目秘钥',
+  PRIMARY KEY (`code`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;

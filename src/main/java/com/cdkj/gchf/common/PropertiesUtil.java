@@ -39,10 +39,7 @@ public class PropertiesUtil {
 
         public static String FEAT_URL = props.getProperty("FEAT_URL");
 
-        public static String GOV_TEST_URL = props.getProperty("GOV_TEST_URL");
-
-        public static String GOV_ONLINE_URL = props
-            .getProperty("GOV_ONLINE_URL");
+        public static String GOV_URL = props.getProperty("GOV_URL");
 
         public static String KEY_STORE_PATH = props
             .getProperty("KEY_STORE_PATH");

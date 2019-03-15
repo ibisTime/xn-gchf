@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cdkj.gchf.dao.IProjectConfigDAO">
+	<resultMap id="projectConfig_DB_Result" type="projectConfig">
+		<result column="code" property="code" />
+		<result column="local_project_code" property="localProjectCode" />
+		<result column="project_code" property="projectCode" />
+		<result column="secret" property="secret" />
+	</resultMap>
+	
+	<sql id="where_condition">
+		<trim prefix="WHERE" prefixOverrides="AND | OR">
+			<if test="code != null and code != '' ">
+				AND t.code = #{code}
+			</if>
+			<if test="localProjectCode != null and localProjectCode != '' ">
+				AND t.local_project_code = #{localProjectCode}
+			</if>
+			<if test="projectCode != null and projectCode != '' ">
+				AND t.project_code = #{projectCode}
+			</if>
+		</trim>
+	</sql>
+	
+	<select id="select_projectConfig" parameterType="projectConfig" resultMap="projectConfig_DB_Result">
+		SELECT
+		t.code
+		,t.local_project_code
+		,t.project_code
+		,t.secret
+		FROM
+		thf_project_config t
+		<include refid="where_condition" />
+		<trim prefix="ORDER BY ">
+			<if test="order != null and order != '' ">
+				t.${order}
+			</if>
+		</trim>
+	</select>
+
+	<select id="select_projectConfig_count" parameterType="projectConfig"
+		resultType="java.lang.Long">
+		SELECT count(1) FROM thf_project_config t
+		<include refid="where_condition" />
+	</select>
+
+	<insert id="insert_projectConfig" parameterType="projectConfig">
+		INSERT INTO
+		thf_project_config(
+		code
+		,local_project_code
+		,project_code
+		,secret
+		)
+		VALUES(
+		#{code}
+		,#{localProjectCode}
+		,#{projectCode}
+		,#{secret}
+		)
+	</insert>
+
+	<update id="update_projectConfig" parameterType="projectConfig">
+		UPDATE thf_project_config
+		SET
+		project_code = #{projectCode}
+		,secret = #{secret}
+		WHERE code = #{code}
+	</update>
+
+
+</mapper>

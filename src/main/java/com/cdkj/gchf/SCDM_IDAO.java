@@ -9,24 +9,29 @@ import com.cdkj.gchf.common.DateUtil;
 
 public class SCDM_IDAO {
     // 实体
-    private static String key = "leave";
+    private static String key = "teamMaster";
 
     // 实体名称
-    private static String keyName = "请假表";
+    private static String keyName = "班组";
 
     // 包路径
     private static String packge = "com.cdkj.gchf.";
 
     // 表名
-    private static String dbname = "thf_leave";
+    private static String dbname = "thf_team_master";
 
-    private static String[] DBwords = { "code", "staff_code", "project_code",
-            "staff_name", "project_name", "start_datetime", "end_datetime",
-            "leave_days", "status", "updater", "update_datetime", "remark" };
+    private static String[] DBwords = { "code", "team_sys_no",
+            "local_project_code", "project_code", "corp_code", "corp_name",
+            "team_name", "team_leader_name", "team_leader_phone",
+            "team_leader_idcard_type", "team_leader_id_number",
+            "responsible_person_name", "responsible_person_phone",
+            "responsible_person_idcard_type", "responsible_person_id_number",
+            "remark", "entry_time", "exit_time", "parent_code" };
 
-    private static String[] DBwordsName = { "编号", "员工编号", "项目编号", "员工姓名",
-            "项目名称", "请假开始日期（包括当天）", "请假结束日期", "请假天数", "状态", "更新人", "更新时间",
-            "备注" };
+    private static String[] DBwordsName = { "编号", "班组编号", "本地项目编号", "项目编码",
+            "班组所在企业统一社会信用代码", "班组所在企业名称", "班组名称", "班组长姓名", "班组长联系电话", "班组长证件类型",
+            "班组长证件号码", "责任人姓名", "责任人联系电话", "责任人证件类型", "责任人证件号码", "备注", "进场日期",
+            "退场日期", "上级部门编号" };
 
     public void testname() throws Exception {
     }
@@ -39,7 +44,7 @@ public class SCDM_IDAO {
     public static void main(String[] args) {
 
         System.out.println("*********开始打印*********");
-        String path = "/Users/silver/Desktop/temp/thf_leave";
+        String path = "/Users/silver/Desktop/tmp/thf_team_master";
 
         File DOMAINfile = new File(path, Key + ".java");
 

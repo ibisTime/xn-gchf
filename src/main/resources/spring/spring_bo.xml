@@ -123,4 +123,16 @@
 		<property name="paginableDAO" ref="corpBasicinfoDAOImpl"/>
 	</bean>	
 	
+	<bean id="projectConfigBO" class="com.cdkj.gchf.bo.impl.ProjectConfigBOImpl">
+		<property name="paginableDAO" ref="projectConfigDAOImpl"/>
+	</bean>	
+	
+	<bean id="projectCorpInfoBO" class="com.cdkj.gchf.bo.impl.ProjectCorpInfoBOImpl">
+		<property name="paginableDAO" ref="projectCorpInfoDAOImpl"/>
+	</bean>	
+	
+	<bean id="teamMasterBO" class="com.cdkj.gchf.bo.impl.TeamMasterBOImpl">
+		<property name="paginableDAO" ref="teamMasterDAOImpl"/>
+	</bean>	
+	
 </beans>

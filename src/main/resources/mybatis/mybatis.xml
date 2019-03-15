@@ -44,6 +44,10 @@
 		<typeAlias alias="supervise" type="com.cdkj.gchf.domain.Supervise" />
 		<typeAlias alias="operatorGuide" type="com.cdkj.gchf.domain.OperatorGuide" />
 		<typeAlias alias="corpBasicinfo" type="com.cdkj.gchf.domain.CorpBasicinfo" />
+		<typeAlias alias="projectConfig" type="com.cdkj.gchf.domain.ProjectConfig" />
+		
+		<typeAlias alias="projectCorpInfo" type="com.cdkj.gchf.domain.ProjectCorpInfo" />
+		<typeAlias alias="teamMaster" type="com.cdkj.gchf.domain.TeamMaster" />
 		
 	</typeAliases>
 </configuration>

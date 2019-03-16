@@ -114,7 +114,7 @@ CREATE TABLE `thf_project_worker` (
   `team_name` varchar(100) DEFAULT NULL COMMENT '班组名称',
   `worker_code` varchar(32) DEFAULT NULL COMMENT '员工编号',
   `worker_name` varchar(50) DEFAULT NULL COMMENT '工人姓名',
-  `staff_mobile` varchar(32) DEFAULT NULL COMMENT '员工手机号',
+  `worker_mobile` varchar(32) DEFAULT NULL COMMENT '员工手机号',
   `is_team_leader` TINYINT(1) DEFAULT NULL COMMENT '是否班组长',
   `idcard_type` varchar(2) DEFAULT NULL COMMENT '证件类型',
   `idcard_number` varchar(30) DEFAULT NULL COMMENT '证件号码',
@@ -163,34 +163,13 @@ CREATE TABLE `thf_project_worker_entry_exit_history` (
   `worker_code` varchar(50) DEFAULT NULL COMMENT '员工编号',
   `worker_name` varchar(50) DEFAULT NULL COMMENT '员工姓名',
   `position` varchar(2) DEFAULT NULL COMMENT '职位',
-  `join_datetime` varchar(30) DEFAULT NULL COMMENT '入职时间',
-  `leaving_datetime` varchar(50) DEFAULT NULL COMMENT '离职时间',
-  `idcard_type` varchar(50) DEFAULT NULL COMMENT '证件类型',
-  `idcard_number` varchar(2) DEFAULT NULL COMMENT '证件号码',
-  `date` varchar(30) DEFAULT NULL COMMENT '时间',
-  `type` varchar(200) DEFAULT NULL COMMENT '类型',
-  `voucher_url` datetime DEFAULT NULL COMMENT '凭证扫描件',
-  PRIMARY KEY (`code`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT = '人员进退场';
-
-DROP TABLE IF EXISTS  `thf_project_worker_entry_exit_history`;
-CREATE TABLE `thf_project_worker_entry_exit_history` (
-  `code` varchar(32) NOT NULL COMMENT '编号',
-  `local_project_code` varchar(32) DEFAULT NULL COMMENT '本地项目编号',
-  `project_code` varchar(20) DEFAULT NULL COMMENT '项目编码',
-  `corp_code` varchar(18) DEFAULT NULL COMMENT '班组所在企业统一社会信用代码',
-  `corp_name` varchar(200) DEFAULT NULL COMMENT '班组所在企业名称',
-  `team_sys_no` INT NULL COMMENT '班组编号',
-  `worker_code` varchar(50) DEFAULT NULL COMMENT '员工编号',
-  `worker_name` varchar(50) DEFAULT NULL COMMENT '员工姓名',
-  `position` varchar(2) DEFAULT NULL COMMENT '职位',
-  `join_datetime` varchar(30) DEFAULT NULL COMMENT '入职时间',
-  `leaving_datetime` varchar(50) DEFAULT NULL COMMENT '离职时间',
-  `idcard_type` varchar(50) DEFAULT NULL COMMENT '证件类型',
-  `idcard_number` varchar(2) DEFAULT NULL COMMENT '证件号码',
-  `date` varchar(30) DEFAULT NULL COMMENT '时间',
-  `type` varchar(200) DEFAULT NULL COMMENT '类型',
-  `voucher_url` datetime DEFAULT NULL COMMENT '凭证扫描件',
+  `join_datetime` datetime DEFAULT NULL COMMENT '入职时间',
+  `leaving_datetime` datetime DEFAULT NULL COMMENT '离职时间',
+  `idcard_type` varchar(2) DEFAULT NULL COMMENT '证件类型',
+  `idcard_number` varchar(50) DEFAULT NULL COMMENT '证件号码',
+  `date` datetime DEFAULT NULL COMMENT '时间',
+  `type` INT DEFAULT NULL COMMENT '类型',
+  `voucher_url` varchar(200) DEFAULT NULL COMMENT '凭证扫描件',
   PRIMARY KEY (`code`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT = '人员进退场';
 

@@ -8,6 +8,8 @@ import com.cdkj.gchf.bo.base.Paginable;
 import com.cdkj.gchf.domain.CorpBasicinfo;
 import com.cdkj.gchf.dto.req.XN631250Req;
 import com.cdkj.gchf.dto.req.XN631251Req;
+import com.cdkj.gchf.dto.req.XN631900Req;
+import com.cdkj.gchf.dto.req.XN631901Req;
 
 @Component
 public interface ICorpBasicinfoAO {
@@ -30,4 +32,8 @@ public interface ICorpBasicinfoAO {
 
     public CorpBasicinfo getCorpBasicinfo(String code);
 
+    /****国家平台接口****/
+    public void uploadCorpBasicinfo(XN631900Req data);
+
+    public Paginable<CorpBasicinfo> queryCorpBasicinfo(XN631901Req req);
 }

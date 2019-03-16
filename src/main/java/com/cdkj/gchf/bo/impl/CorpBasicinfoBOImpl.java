@@ -7,15 +7,20 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import com.alibaba.fastjson.JSONObject;
 import com.cdkj.gchf.bo.ICorpBasicinfoBO;
 import com.cdkj.gchf.bo.base.PaginableBOImpl;
 import com.cdkj.gchf.core.OrderNoGenerater;
 import com.cdkj.gchf.dao.ICorpBasicinfoDAO;
 import com.cdkj.gchf.domain.CorpBasicinfo;
+import com.cdkj.gchf.domain.ProjectConfig;
 import com.cdkj.gchf.dto.req.XN631250Req;
 import com.cdkj.gchf.dto.req.XN631251Req;
+import com.cdkj.gchf.dto.req.XN631900Req;
+import com.cdkj.gchf.dto.req.XN631901Req;
 import com.cdkj.gchf.enums.EGeneratePrefix;
 import com.cdkj.gchf.exception.BizException;
+import com.cdkj.gchf.gov.GovConnecter;
 
 @Component
 public class CorpBasicinfoBOImpl extends PaginableBOImpl<CorpBasicinfo>
@@ -60,6 +65,28 @@ public class CorpBasicinfoBOImpl extends PaginableBOImpl<CorpBasicinfo>
     }
 
     @Override
+    public void doUpload(XN631900Req req, ProjectConfig projectConfig) {
+        CorpBasicinfo corpBasicinfo = new CorpBasicinfo();
+        BeanUtils.copyProperties(req, corpBasicinfo);
+
+        String data = JSONObject.toJSON(corpBasicinfo).toString();
+
+        GovConnecter.getGovData("Corp.Upload", data,
+            projectConfig.getProjectCode(), projectConfig.getSecret());
+    }
+
+    @Override
+    public void doQuery(XN631901Req req, ProjectConfig projectConfig) {
+        CorpBasicinfo corpBasicinfo = new CorpBasicinfo();
+        BeanUtils.copyProperties(req, corpBasicinfo);
+
+        String data = JSONObject.toJSON(corpBasicinfo).toString();
+
+        GovConnecter.getGovData("Corp.Query", data,
+            projectConfig.getProjectCode(), projectConfig.getSecret());
+    }
+
+    @Override
     public List<CorpBasicinfo> queryCorpBasicinfoList(CorpBasicinfo condition) {
         return corpBasicinfoDAO.selectList(condition);
     }
@@ -84,4 +111,5 @@ public class CorpBasicinfoBOImpl extends PaginableBOImpl<CorpBasicinfo>
         condition.setCorpCode(corpCode);
         return corpBasicinfoDAO.select(condition);
     }
+
 }

@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cdkj.gchf.dao.IPayRollDAO">
+	<resultMap id="payRoll_DB_Result" type="payRoll">
+		<result column="code" property="code" />
+		<result column="pay_roll_code" property="payRollCode" />
+		<result column="local_project_code" property="localProjectCode" />
+		<result column="project_code" property="projectCode" />
+		<result column="corp_code" property="corpCode" />
+		<result column="corp_name" property="corpName" />
+		<result column="team_sys_no" property="teamSysNo" />
+		<result column="pay_month" property="payMonth" />
+	</resultMap>
+	<sql id="where_condition">
+		<trim prefix="WHERE" prefixOverrides="AND | OR">
+			<if test="code != null and code != '' ">
+				AND t.code = #{code}
+			</if>
+		</trim>
+	</sql>
+	<select id="select_payRoll" parameterType="payRoll" resultMap="payRoll_DB_Result">
+		SELECT
+		t.code
+		,t.pay_roll_code
+		,t.local_project_code
+		,t.project_code
+		,t.corp_code
+		,t.corp_name
+		,t.team_sys_no
+		,t.pay_month
+		FROM
+		thf_pay_roll t
+		<include refid="where_condition" />
+		<trim prefix="ORDER BY ">
+			<if test="order != null and order != '' ">
+				t.${order}
+			</if>
+		</trim>
+	</select>
+
+	<select id="select_payRoll_count" parameterType="payRoll"
+		resultType="java.lang.Long">
+		SELECT count(1) FROM thf_pay_roll t
+		<include refid="where_condition" />
+	</select>
+
+	<insert id="insert_payRoll" parameterType="payRoll">
+		INSERT INTO
+		thf_pay_roll(
+		code
+		,pay_roll_code
+		,local_project_code
+		,project_code
+		,corp_code
+		,corp_name
+		,team_sys_no
+		,pay_month
+		)
+		VALUES(
+		#{code}
+		,#{payRollCode}
+		,#{localProjectCode}
+		,#{projectCode}
+		,#{corpCode}
+		,#{corpName}
+		,#{teamSysNo}
+		,#{payMonth}
+		)
+	</insert>
+
+	<update id="update_payRoll" parameterType="payRoll">
+		UPDATE thf_pay_roll
+		SET
+		pay_roll_code = #{payRollCode}
+		,local_project_code = #{localProjectCode}
+		,project_code = #{projectCode}
+		,corp_code = #{corpCode}
+		,corp_name = #{corpName}
+		,team_sys_no = #{teamSysNo}
+		,pay_month = #{payMonth}
+		WHERE code = #{code}
+	</update>
+
+
+</mapper>

@@ -33,7 +33,13 @@ public enum EGeneratePrefix {
 
     CorpBasicinfo("CB", "企业基本信息"), ProjectConfig("PC", "项目配置"),
 
-    ProjectCorpInfo("PCI", "项目参建单位"), TeamMaster("TM", "TeamMaster");
+    ProjectCorpInfo("PCI", "项目参建单位"), TeamMaster("TM", "TeamMaster"),
+
+    ProjectWorker("PW", "项目员工"), ProjectWorkerEntryExitHistory("PWEE", "人员进退场"),
+
+    WorkerContract("WC", "人员合同"), WorkerAttendance("WA", "员工考勤"),
+
+    PayRoll("PR", "工资单");
 
     public static Map<String, EGeneratePrefix> getMap() {
         Map<String, EGeneratePrefix> map = new HashMap<String, EGeneratePrefix>();

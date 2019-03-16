@@ -48,6 +48,13 @@
 		
 		<typeAlias alias="projectCorpInfo" type="com.cdkj.gchf.domain.ProjectCorpInfo" />
 		<typeAlias alias="teamMaster" type="com.cdkj.gchf.domain.TeamMaster" />
+		<typeAlias alias="projectWorker" type="com.cdkj.gchf.domain.ProjectWorker" />
+		<typeAlias alias="projectWorkerEntryExitHistory" type="com.cdkj.gchf.domain.ProjectWorkerEntryExitHistory" />
+		<typeAlias alias="workerContract" type="com.cdkj.gchf.domain.WorkerContract" />
+		
+		<typeAlias alias="workerAttendance" type="com.cdkj.gchf.domain.WorkerAttendance" />
+		<typeAlias alias="payRoll" type="com.cdkj.gchf.domain.PayRoll" />
+		
 		
 	</typeAliases>
 </configuration>

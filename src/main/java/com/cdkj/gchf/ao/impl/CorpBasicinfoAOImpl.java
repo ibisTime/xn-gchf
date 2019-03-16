@@ -8,10 +8,14 @@ import org.springframework.stereotype.Service;
 import com.alibaba.fastjson.JSONObject;
 import com.cdkj.gchf.ao.ICorpBasicinfoAO;
 import com.cdkj.gchf.bo.ICorpBasicinfoBO;
+import com.cdkj.gchf.bo.IProjectConfigBO;
 import com.cdkj.gchf.bo.base.Paginable;
 import com.cdkj.gchf.domain.CorpBasicinfo;
+import com.cdkj.gchf.domain.ProjectConfig;
 import com.cdkj.gchf.dto.req.XN631250Req;
 import com.cdkj.gchf.dto.req.XN631251Req;
+import com.cdkj.gchf.dto.req.XN631900Req;
+import com.cdkj.gchf.dto.req.XN631901Req;
 import com.cdkj.gchf.exception.BizException;
 import com.cdkj.gchf.gov.GovConnecter;
 
@@ -20,6 +24,9 @@ public class CorpBasicinfoAOImpl implements ICorpBasicinfoAO {
 
     @Autowired
     private ICorpBasicinfoBO corpBasicinfoBO;
+
+    @Autowired
+    private IProjectConfigBO projectConfigBO;
 
     @Override
     public String addCorpBasicinfo(XN631250Req req) {
@@ -63,6 +70,31 @@ public class CorpBasicinfoAOImpl implements ICorpBasicinfoAO {
     @Override
     public void syncCorpBasicinfo(String code) {
 
+    }
+
+    @Override
+    public void uploadCorpBasicinfo(XN631900Req req) {
+        ProjectConfig projectConfig = projectConfigBO
+            .getProjectConfigByProject(req.getProjectCode());
+
+        if (null == projectConfig) {
+            throw new BizException("XN631900", "该项目未配置，无法上传");
+        }
+
+        corpBasicinfoBO.doUpload(req, projectConfig);
+    }
+
+    @Override
+    public Paginable<CorpBasicinfo> queryCorpBasicinfo(XN631901Req req) {
+        ProjectConfig projectConfig = projectConfigBO
+            .getProjectConfigByProject(req.getProjectCode());
+
+        if (null == projectConfig) {
+            throw new BizException("XN631900", "该项目未配置，无法查询");
+        }
+
+        corpBasicinfoBO.doQuery(req, projectConfig);
+        return null;
     }
 
     @Override

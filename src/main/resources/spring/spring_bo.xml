@@ -135,4 +135,24 @@
 		<property name="paginableDAO" ref="teamMasterDAOImpl"/>
 	</bean>	
 	
+	<bean id="projectWorkerBO" class="com.cdkj.gchf.bo.impl.ProjectWorkerBOImpl">
+		<property name="paginableDAO" ref="projectWorkerDAOImpl"/>
+	</bean>
+	
+	<bean id="projectWorkerEntryExitHistoryBO" class="com.cdkj.gchf.bo.impl.ProjectWorkerEntryExitHistoryBOImpl">
+		<property name="paginableDAO" ref="projectWorkerEntryExitHistoryDAOImpl"/>
+	</bean>
+	
+	<bean id="workerContractBO" class="com.cdkj.gchf.bo.impl.WorkerContractBOImpl">
+		<property name="paginableDAO" ref="workerContractDAOImpl"/>
+	</bean>
+	
+	<bean id="workerAttendanceBO" class="com.cdkj.gchf.bo.impl.WorkerAttendanceBOImpl">
+		<property name="paginableDAO" ref="workerAttendanceDAOImpl"/>
+	</bean>
+	
+	<bean id="payRollBO" class="com.cdkj.gchf.bo.impl.payRollBOImpl">
+		<property name="paginableDAO" ref="payRollDAOImpl"/>
+	</bean>
+	
 </beans>

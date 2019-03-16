@@ -3,6 +3,7 @@ package com.cdkj.gchf.bo;
 import java.util.List;
 
 import com.cdkj.gchf.bo.base.IPaginableBO;
+import com.cdkj.gchf.bo.base.Paginable;
 import com.cdkj.gchf.domain.ProjectConfig;
 import com.cdkj.gchf.domain.ProjectCorpInfo;
 import com.cdkj.gchf.dto.req.XN631905Req;
@@ -27,5 +28,6 @@ public interface IProjectCorpInfoBO extends IPaginableBO<ProjectCorpInfo> {
 
     public void doUpdate(XN631906Req req, ProjectConfig projectConfig);
 
-    public void doQuery(XN631907Req req, ProjectConfig projectConfig);
+    public Paginable<ProjectCorpInfo> doQuery(XN631907Req req,
+            ProjectConfig projectConfig);
 }

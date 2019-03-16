@@ -83,9 +83,10 @@ public class GovConnecter {
     public static String getGovData(String method, String data, String appId,
             String appSecert) {
 
+        String res = null;
         SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMddHHmmss");
 
-        String sortString = "appid=" + APPID;
+        String sortString = "appid=" + appId;
         String guid = UUID.randomUUID().toString().replace("-", "");
         String timestamp = sdf.format(new Date());
 
@@ -95,7 +96,7 @@ public class GovConnecter {
         sortString += "&nonce=" + guid;
         sortString += "&timestamp=" + timestamp;
         sortString += "&version=" + DEFAULT_VERSION;
-        sortString += "&appsecret=" + APPSECRET;
+        sortString += "&appsecret=" + appSecert;
 
         String sign = EncriptionHelper
             .getSHA256StrJava(sortString.toLowerCase());
@@ -113,7 +114,7 @@ public class GovConnecter {
         dataMap.put("version", DEFAULT_VERSION);
         dataMap.put("sign", sign);
         try {
-            String res = request.postData(GOV_URL, null, dataMap);
+            res = request.postData(GOV_URL, null, dataMap);
             dataMap.put("appsecret", appSecert);
 
             System.out.println("****res****" + res);
@@ -136,7 +137,7 @@ public class GovConnecter {
             }
             System.out.println(errorMsg);
         }
-        return null;
+        return res;
     }
 
     private static String acceptmultiLineChars2(Scanner sc) {

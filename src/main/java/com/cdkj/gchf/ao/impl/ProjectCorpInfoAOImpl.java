@@ -64,9 +64,7 @@ public class ProjectCorpInfoAOImpl implements IProjectCorpInfoAO {
             throw new BizException("XN631907", "该项目未配置，无法查询");
         }
 
-        projectCorpInfoBO.doQuery(req, projectConfig);
-
-        return null;
+        return projectCorpInfoBO.doQuery(req, projectConfig);
 
     }
 

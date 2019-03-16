@@ -1,6 +1,8 @@
 package com.cdkj.gchf.bo.impl;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;
@@ -9,6 +11,7 @@ import org.springframework.stereotype.Component;
 
 import com.alibaba.fastjson.JSONObject;
 import com.cdkj.gchf.bo.ICorpBasicinfoBO;
+import com.cdkj.gchf.bo.base.Paginable;
 import com.cdkj.gchf.bo.base.PaginableBOImpl;
 import com.cdkj.gchf.core.OrderNoGenerater;
 import com.cdkj.gchf.dao.ICorpBasicinfoDAO;
@@ -21,6 +24,7 @@ import com.cdkj.gchf.dto.req.XN631901Req;
 import com.cdkj.gchf.enums.EGeneratePrefix;
 import com.cdkj.gchf.exception.BizException;
 import com.cdkj.gchf.gov.GovConnecter;
+import com.cdkj.gchf.gov.GovUtil;
 
 @Component
 public class CorpBasicinfoBOImpl extends PaginableBOImpl<CorpBasicinfo>
@@ -76,14 +80,24 @@ public class CorpBasicinfoBOImpl extends PaginableBOImpl<CorpBasicinfo>
     }
 
     @Override
-    public void doQuery(XN631901Req req, ProjectConfig projectConfig) {
+    public Paginable<CorpBasicinfo> doQuery(XN631901Req req,
+            ProjectConfig projectConfig) {
         CorpBasicinfo corpBasicinfo = new CorpBasicinfo();
         BeanUtils.copyProperties(req, corpBasicinfo);
 
         String data = JSONObject.toJSON(corpBasicinfo).toString();
 
-        GovConnecter.getGovData("Corp.Query", data,
+        String queryString = GovConnecter.getGovData("Corp.Query", data,
             projectConfig.getProjectCode(), projectConfig.getSecret());
+
+        Map<String, String> replaceMap = new HashMap<>();
+        replaceMap.put("capitalCurrencyType", "capitalCurrencyTypeName");
+
+        Paginable<CorpBasicinfo> page = GovUtil.parseGovPage(req.getPageIndex(),
+            req.getPageSize(), queryString, replaceMap, CorpBasicinfo.class);
+
+        return page;
+
     }
 
     @Override

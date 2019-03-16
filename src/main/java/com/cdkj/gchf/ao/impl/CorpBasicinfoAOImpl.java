@@ -93,8 +93,7 @@ public class CorpBasicinfoAOImpl implements ICorpBasicinfoAO {
             throw new BizException("XN631900", "该项目未配置，无法查询");
         }
 
-        corpBasicinfoBO.doQuery(req, projectConfig);
-        return null;
+        return corpBasicinfoBO.doQuery(req, projectConfig);
     }
 
     @Override

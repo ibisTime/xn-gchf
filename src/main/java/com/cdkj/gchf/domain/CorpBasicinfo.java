@@ -86,6 +86,11 @@ public class CorpBasicinfo extends ABaseDO {
     // 企业网址
     private String webSite;
 
+    /****DB Properties****/
+
+    // 资本币种
+    private String capitalCurrencyTypeName;
+
     public String getCode() {
         return code;
     }
@@ -276,6 +281,14 @@ public class CorpBasicinfo extends ABaseDO {
 
     public void setWebSite(String webSite) {
         this.webSite = webSite;
+    }
+
+    public String getCapitalCurrencyTypeName() {
+        return capitalCurrencyTypeName;
+    }
+
+    public void setCapitalCurrencyTypeName(String capitalCurrencyTypeName) {
+        this.capitalCurrencyTypeName = capitalCurrencyTypeName;
     }
 
 }

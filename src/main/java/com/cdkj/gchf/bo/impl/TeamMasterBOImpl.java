@@ -1,6 +1,8 @@
 package com.cdkj.gchf.bo.impl;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;
@@ -9,6 +11,7 @@ import org.springframework.stereotype.Component;
 
 import com.alibaba.fastjson.JSONObject;
 import com.cdkj.gchf.bo.ITeamMasterBO;
+import com.cdkj.gchf.bo.base.Paginable;
 import com.cdkj.gchf.bo.base.PaginableBOImpl;
 import com.cdkj.gchf.core.OrderNoGenerater;
 import com.cdkj.gchf.dao.ITeamMasterDAO;
@@ -20,6 +23,7 @@ import com.cdkj.gchf.dto.req.XN631910Req;
 import com.cdkj.gchf.enums.EGeneratePrefix;
 import com.cdkj.gchf.exception.BizException;
 import com.cdkj.gchf.gov.GovConnecter;
+import com.cdkj.gchf.gov.GovUtil;
 
 @Component
 public class TeamMasterBOImpl extends PaginableBOImpl<TeamMaster>
@@ -84,15 +88,22 @@ public class TeamMasterBOImpl extends PaginableBOImpl<TeamMaster>
     }
 
     @Override
-    public void doQuery(XN631910Req req, ProjectConfig projectConfig) {
+    public Paginable<TeamMaster> doQuery(XN631910Req req,
+            ProjectConfig projectConfig) {
         TeamMaster teamMaster = new TeamMaster();
         BeanUtils.copyProperties(req, teamMaster);
 
         String data = JSONObject.toJSON(teamMaster).toString();
 
-        // TODO
-        GovConnecter.getGovData("Team.Query", data,
+        String queryString = GovConnecter.getGovData("Team.Query", data,
             projectConfig.getProjectCode(), projectConfig.getSecret());
+
+        Map<String, String> replaceMap = new HashMap<>();
+
+        Paginable<TeamMaster> page = GovUtil.parseGovPage(req.getPageIndex(),
+            req.getPageSize(), queryString, replaceMap, TeamMaster.class);
+
+        return page;
     }
 
     @Override

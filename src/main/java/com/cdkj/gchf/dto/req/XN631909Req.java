@@ -2,6 +2,8 @@ package com.cdkj.gchf.dto.req;
 
 import java.util.Date;
 
+import javax.validation.constraints.Min;
+
 import org.hibernate.validator.constraints.NotBlank;
 
 /**
@@ -17,7 +19,7 @@ public class XN631909Req {
     private String projectCode;
 
     // 班组编号
-    @NotBlank
+    @Min(0)
     private Integer teamSysNo;
 
     // 班组名称

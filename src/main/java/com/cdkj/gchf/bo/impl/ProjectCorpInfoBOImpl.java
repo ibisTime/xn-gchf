@@ -1,6 +1,8 @@
 package com.cdkj.gchf.bo.impl;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;
@@ -9,6 +11,7 @@ import org.springframework.stereotype.Component;
 
 import com.alibaba.fastjson.JSONObject;
 import com.cdkj.gchf.bo.IProjectCorpInfoBO;
+import com.cdkj.gchf.bo.base.Paginable;
 import com.cdkj.gchf.bo.base.PaginableBOImpl;
 import com.cdkj.gchf.core.OrderNoGenerater;
 import com.cdkj.gchf.dao.IProjectCorpInfoDAO;
@@ -20,6 +23,7 @@ import com.cdkj.gchf.dto.req.XN631907Req;
 import com.cdkj.gchf.enums.EGeneratePrefix;
 import com.cdkj.gchf.exception.BizException;
 import com.cdkj.gchf.gov.GovConnecter;
+import com.cdkj.gchf.gov.GovUtil;
 
 @Component
 public class ProjectCorpInfoBOImpl extends PaginableBOImpl<ProjectCorpInfo>
@@ -66,7 +70,9 @@ public class ProjectCorpInfoBOImpl extends PaginableBOImpl<ProjectCorpInfo>
         ProjectCorpInfo projectCorpInfo = new ProjectCorpInfo();
         BeanUtils.copyProperties(req, projectCorpInfo);
 
-        String data = JSONObject.toJSON(projectCorpInfo).toString();
+        String data = JSONObject
+            .toJSONStringWithDateFormat(projectCorpInfo, "yyyy-MM-dd HH:mm:ss")
+            .toString();
 
         GovConnecter.getGovData("ProjectSubContractor.Add", data,
             projectConfig.getProjectCode(), projectConfig.getSecret());
@@ -77,22 +83,33 @@ public class ProjectCorpInfoBOImpl extends PaginableBOImpl<ProjectCorpInfo>
         ProjectCorpInfo projectCorpInfo = new ProjectCorpInfo();
         BeanUtils.copyProperties(req, projectCorpInfo);
 
-        String data = JSONObject.toJSON(projectCorpInfo).toString();
+        String data = JSONObject
+            .toJSONStringWithDateFormat(projectCorpInfo, "yyyy-MM-dd HH:mm:ss")
+            .toString();
 
-        // TODO
         GovConnecter.getGovData("ProjectSubContractor.Update", data,
             projectConfig.getProjectCode(), projectConfig.getSecret());
     }
 
     @Override
-    public void doQuery(XN631907Req req, ProjectConfig projectConfig) {
+    public Paginable<ProjectCorpInfo> doQuery(XN631907Req req,
+            ProjectConfig projectConfig) {
         ProjectCorpInfo projectCorpInfo = new ProjectCorpInfo();
         BeanUtils.copyProperties(req, projectCorpInfo);
 
         String data = JSONObject.toJSON(projectCorpInfo).toString();
 
-        GovConnecter.getGovData("ProjectSubContractor.Query", data,
-            projectConfig.getProjectCode(), projectConfig.getSecret());
+        String queryString = GovConnecter.getGovData(
+            "ProjectSubContractor.Query", data, projectConfig.getProjectCode(),
+            projectConfig.getSecret());
+
+        Map<String, String> replaceMap = new HashMap<>();
+
+        Paginable<ProjectCorpInfo> page = GovUtil.parseGovPage(
+            req.getPageIndex(), req.getPageSize(), queryString, replaceMap,
+            ProjectCorpInfo.class);
+
+        return page;
     }
 
     @Override

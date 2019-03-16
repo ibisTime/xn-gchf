@@ -73,9 +73,8 @@ public class TeamMasterAOImpl implements ITeamMasterAO {
             throw new BizException("XN631910", "该项目未配置，无法查询");
         }
 
-        teamMasterBO.doQuery(req, projectConfig);
+        return teamMasterBO.doQuery(req, projectConfig);
 
-        return null;
     }
 
     @Override

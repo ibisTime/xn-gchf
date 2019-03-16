@@ -151,7 +151,7 @@
 		<property name="paginableDAO" ref="workerAttendanceDAOImpl"/>
 	</bean>
 	
-	<bean id="payRollBO" class="com.cdkj.gchf.bo.impl.payRollBOImpl">
+	<bean id="payRollBO" class="com.cdkj.gchf.bo.impl.PayRollBOImpl">
 		<property name="paginableDAO" ref="payRollDAOImpl"/>
 	</bean>
 	

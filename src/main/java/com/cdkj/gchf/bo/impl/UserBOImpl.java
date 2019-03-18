@@ -8,7 +8,6 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import com.cdkj.gchf.bo.IEmployBO;
 import com.cdkj.gchf.bo.IProjectBO;
 import com.cdkj.gchf.bo.ISubbranchBO;
 import com.cdkj.gchf.bo.ISuperviseBO;
@@ -19,12 +18,10 @@ import com.cdkj.gchf.common.PhoneUtil;
 import com.cdkj.gchf.common.PwdUtil;
 import com.cdkj.gchf.core.OrderNoGenerater;
 import com.cdkj.gchf.dao.IUserDAO;
-import com.cdkj.gchf.domain.Employ;
 import com.cdkj.gchf.domain.Project;
 import com.cdkj.gchf.domain.Subbranch;
 import com.cdkj.gchf.domain.Supervise;
 import com.cdkj.gchf.domain.User;
-import com.cdkj.gchf.enums.EEmployStatus;
 import com.cdkj.gchf.enums.EUserKind;
 import com.cdkj.gchf.enums.EUserStatus;
 import com.cdkj.gchf.exception.BizException;
@@ -43,9 +40,6 @@ public class UserBOImpl extends PaginableBOImpl<User> implements IUserBO {
 
     @Autowired
     private ISuperviseBO superviseBO;
-
-    @Autowired
-    private IEmployBO employBO;
 
     @Override
     public void resetAdminLoginPwd(User user, String loginPwd) {
@@ -241,12 +235,6 @@ public class UserBOImpl extends PaginableBOImpl<User> implements IUserBO {
                 supervise.getProvince(), supervise.getCity(),
                 supervise.getArea());
             data.setProjectCodeList(projectCodeList);
-
-            // 监管区域在职人数
-            Employ employCondition = new Employ();
-            employCondition.setProjectCodeList(projectCodeList);
-            employCondition.setStatus(EEmployStatus.Not_Leave.getCode());
-            data.setEmployCount((int) employBO.getTotalCount(employCondition));
         }
 
         // 业主用户数据

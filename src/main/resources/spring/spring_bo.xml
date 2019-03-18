@@ -35,80 +35,13 @@
 	<bean id="sysConfigBO" class="com.cdkj.gchf.bo.impl.SYSConfigBOImpl">
 		<property name="paginableDAO" ref="sysConfigDAOImpl"/>
 	</bean>
-		<bean id="departmentBO" class="com.cdkj.gchf.bo.impl.DepartmentBOImpl">
-		<property name="paginableDAO" ref="departmentDAOImpl"/>
-	</bean>
 	
 	<bean id="projectBO" class="com.cdkj.gchf.bo.impl.ProjectBOImpl">
 		<property name="paginableDAO" ref="projectDAOImpl"/>
 	</bean>	
 	
-	<bean id="bcontractBO" class="com.cdkj.gchf.bo.impl.BcontractBOImpl">
-		<property name="paginableDAO" ref="bcontractDAOImpl"/>
-	</bean>	
-	
-	<bean id="progressBO" class="com.cdkj.gchf.bo.impl.ProgressBOImpl">
-		<property name="paginableDAO" ref="progressDAOImpl"/>
-	</bean>	
-	
-	<bean id="projectCardBO" class="com.cdkj.gchf.bo.impl.ProjectCardBOImpl">
-		<property name="paginableDAO" ref="projectCardDAOImpl"/>
-	</bean>	
-	
-	<bean id="employBO" class="com.cdkj.gchf.bo.impl.EmployBOImpl">
-		<property name="paginableDAO" ref="employDAOImpl"/>
-	</bean>	
-	
-	<bean id="ccontractBO" class="com.cdkj.gchf.bo.impl.CcontractBOImpl">
-		<property name="paginableDAO" ref="ccontractDAOImpl"/>
-	</bean>	
-	
-	<bean id="attendanceBO" class="com.cdkj.gchf.bo.impl.AttendanceBOImpl">
-		<property name="paginableDAO" ref="attendanceDAOImpl"/>
-	</bean>	
-	
-	<bean id="staffBO" class="com.cdkj.gchf.bo.impl.StaffBOImpl">
-		<property name="paginableDAO" ref="staffDAOImpl"/>
-	</bean>	
-	
-	<bean id="messageBO" class="com.cdkj.gchf.bo.impl.MessageBOImpl">
-		<property name="paginableDAO" ref="messageDAOImpl"/>
-	</bean>	
-	
-	<bean id="salaryBO" class="com.cdkj.gchf.bo.impl.SalaryBOImpl">
-		<property name="paginableDAO" ref="salaryDAOImpl"/>
-	</bean>	
-	
-	<bean id="salaryLogBO" class="com.cdkj.gchf.bo.impl.SalaryLogBOImpl">
-		<property name="paginableDAO" ref="salaryLogDAOImpl"/>
-	</bean>	
-	
-	<bean id="bankCardBO" class="com.cdkj.gchf.bo.impl.BankCardBOImpl">
-		<property name="paginableDAO" ref="bankCardDAOImpl"/>
-	</bean>	
-	
-	<bean id="staffLogBO" class="com.cdkj.gchf.bo.impl.StaffLogBOImpl">
-		<property name="paginableDAO" ref="staffLogDAOImpl"/>
-	</bean>	
-	
 	<bean id="channelBankBO" class="com.cdkj.gchf.bo.impl.ChannelBankBOImpl">
 		<property name="paginableDAO" ref="channelBankDAOImpl"/>
-	</bean>	
-	
-	<bean id="queryLogBO" class="com.cdkj.gchf.bo.impl.QueryLogBOImpl">
-		<property name="paginableDAO" ref="queryLogDAOImpl"/>
-	</bean>	
-	
-	<bean id="skillBO" class="com.cdkj.gchf.bo.impl.SkillBOImpl">
-		<property name="paginableDAO" ref="skillDAOImpl"/>
-	</bean>	
-	
-	<bean id="eventRemindBO" class="com.cdkj.gchf.bo.impl.EventRemindBOImpl">
-		<property name="paginableDAO" ref="eventRemindDAOImpl"/>
-	</bean>	
-	
-	<bean id="leaveBO" class="com.cdkj.gchf.bo.impl.LeaveBOImpl">
-		<property name="paginableDAO" ref="leaveDAOImpl"/>
 	</bean>	
 	
 	<bean id="superviseBO" class="com.cdkj.gchf.bo.impl.SuperviseBOImpl">
@@ -154,5 +87,6 @@
 	<bean id="payRollBO" class="com.cdkj.gchf.bo.impl.PayRollBOImpl">
 		<property name="paginableDAO" ref="payRollDAOImpl"/>
 	</bean>
+	
 	
 </beans>

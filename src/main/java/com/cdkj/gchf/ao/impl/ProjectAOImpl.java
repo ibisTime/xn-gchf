@@ -9,25 +9,16 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.cdkj.gchf.ao.IProjectAO;
-import com.cdkj.gchf.bo.IDepartmentBO;
-import com.cdkj.gchf.bo.IEmployBO;
 import com.cdkj.gchf.bo.IProjectBO;
-import com.cdkj.gchf.bo.IProjectCardBO;
-import com.cdkj.gchf.bo.IReportBO;
 import com.cdkj.gchf.bo.ISuperviseBO;
 import com.cdkj.gchf.bo.IUserBO;
 import com.cdkj.gchf.bo.base.Paginable;
 import com.cdkj.gchf.common.DateUtil;
-import com.cdkj.gchf.domain.Department;
-import com.cdkj.gchf.domain.Employ;
 import com.cdkj.gchf.domain.Project;
-import com.cdkj.gchf.domain.ProjectCard;
-import com.cdkj.gchf.domain.Report;
 import com.cdkj.gchf.domain.Supervise;
 import com.cdkj.gchf.domain.User;
 import com.cdkj.gchf.dto.req.XN631350Req;
 import com.cdkj.gchf.dto.req.XN631352Req;
-import com.cdkj.gchf.enums.EEmployStatus;
 import com.cdkj.gchf.enums.EProjectStatus;
 import com.cdkj.gchf.enums.EUser;
 import com.cdkj.gchf.exception.BizException;
@@ -40,18 +31,6 @@ public class ProjectAOImpl implements IProjectAO {
 
     @Autowired
     private IUserBO userBO;
-
-    @Autowired
-    private IProjectCardBO projectCardBO;
-
-    @Autowired
-    private IReportBO reportBO;
-
-    @Autowired
-    IEmployBO employBO;
-
-    @Autowired
-    IDepartmentBO departmentBO;
 
     @Autowired
     private ISuperviseBO superviseBO;
@@ -71,9 +50,6 @@ public class ProjectAOImpl implements IProjectAO {
 
         // 添加项目管理员
         userBO.saveProjectAdmin(code, req.getName());
-
-        // 添加项目账户
-        projectCardBO.saveProjectCard(code);
 
         return code;
     }
@@ -128,15 +104,6 @@ public class ProjectAOImpl implements IProjectAO {
 
         projectBO.editProject(data);
 
-        // 更新账户信息
-        ProjectCard projectCard = projectCardBO
-            .getProjectCardByProject(req.getCode());
-        if (null != projectCard) {
-            projectCardBO.refreshProjectCard(projectCard.getCode(),
-                req.getBankCode(), req.getBankName(), req.getAccountName(),
-                req.getBankcardNumber(), req.getSubbranch(), req.getUpdater(),
-                data.getUpdateDatetime(), req.getRemark());
-        }
     }
 
     @Override
@@ -146,20 +113,6 @@ public class ProjectAOImpl implements IProjectAO {
 
         if (!EProjectStatus.To_Building.getCode().equals(data.getStatus())) {
             throw new BizException("xn000", "该项目未处于待开工状态！");
-        }
-
-        Department departmentCondition = new Department();
-        departmentCondition.setProjectCode(code);
-        List<Department> departmentsList = departmentBO
-            .queryDepartmentList(departmentCondition);
-        if (CollectionUtils.isEmpty(departmentsList)) {
-            throw new BizException("xn000", "请编辑施工单位后再开工！");
-        }
-
-        // 添加统计信息
-        Report report = reportBO.getReportByProject(code);
-        if (null == report) {
-            reportBO.saveReport(data.getCode(), data.getName());
         }
 
         // 项目开工
@@ -196,19 +149,6 @@ public class ProjectAOImpl implements IProjectAO {
 
         // 项目结束
         projectBO.endProject(code, updater, remark);
-
-        // 员工离职
-        Employ condition = new Employ();
-        condition.setProjectCode(data.getCode());
-        condition.setStatus(EEmployStatus.Not_Leave.getCode());
-        List<Employ> list = employBO.queryEmployList(condition);
-
-        Date leavingDatetime = new Date();
-        for (Employ employ : list) {
-            employ.setStatus(EEmployStatus.Leave.getCode());
-            employ.setLeavingDatetime(leavingDatetime);
-            employBO.updateStatus(employ);
-        }
     }
 
     @Override
@@ -235,15 +175,6 @@ public class ProjectAOImpl implements IProjectAO {
     @Override
     public Project getProject(String code) {
         Project data = projectBO.getProject(code);
-
-        // 项目账户
-        ProjectCard projectCard = projectCardBO
-            .getProjectCardByProject(data.getCode());
-        data.setProjectCard(projectCard);
-
-        // 报表信息
-        Report report = reportBO.getReportByProject(data.getCode());
-        data.setReport(report);
 
         initProject(data);
         return data;

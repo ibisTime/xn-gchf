@@ -17,83 +17,10 @@
 	 <bean class="org.springframework.scheduling.quartz.SchedulerFactoryBean">  
        <property name="triggers">  
            <list>
-           	  <ref bean="updateEmployStatusTrigger"/> 
-           	  <ref bean="attendanceDailyTrigger"/> 
-           	  <ref bean="salaryDailyTrigger"/> 
-           	  <ref bean="nextMonthSalaryTrigger"/> 
-           	  <ref bean="staffFeatTrigger"/> 
-           	  <ref bean="delaySalaryTrigger"/> 
  		   </list>  
        </property>  
        <property name="autoStartup" value="true"/>  
     </bean> 
     
-    
-    <!-- 生成工资条 -->
-	<bean id="salaryDailyTrigger" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">  
-       <property name="jobDetail" ref="createSalaryDaily"/>  
-       <property name="cronExpression" value="0 0 0  * *  ?"/><!-- 0 0 0 * * ?  每天凌晨 -->
-	</bean>
-	
-	<bean id="createSalaryDaily" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">   
-        <property name="targetObject" ref="salaryAOImpl"/>  
-        <property name="targetMethod" value="createSalary"/>  
-        <property name="concurrent" value="true"/> <!--   是否允许任务并发执行。当值为false时，表示必须等到前一个线程处理完毕后才再启一个新的线程 -->
-	</bean>
-	
-	<!-- 生成考勤 -->
-	<bean id="attendanceDailyTrigger" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">  
-       <property name="jobDetail" ref="createAttendanceDaily"/>  
-       <property name="cronExpression" value="0 0 0  * * ?"/><!-- 0 0 0 1 * ?  每天凌晨-->
-	</bean> 
-	<bean id="createAttendanceDaily" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">   
-        <property name="targetObject" ref="attendanceAOImpl"/>  
-        <property name="targetMethod" value="createAttendanceDaily"/>  
-        <property name="concurrent" value="true"/> <!--   是否允许任务并发执行。当值为false时，表示必须等到前一个线程处理完毕后才再启一个新的线程 -->
-	</bean>
-	
-	<!-- 员工是否请假 -->
-	<bean id="updateEmployStatusTrigger" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">  
-       <property name="jobDetail" ref="updateEmployStatus"/>  
-       <property name="cronExpression" value="0 0 0 * * ?"/><!--每天凌晨-->
-	</bean>
-	<bean id="updateEmployStatus" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">   
-        <property name="targetObject" ref="employAOImpl"/>  
-        <property name="targetMethod" value="updateEmployStatusDaily"/>  
-        <property name="concurrent" value="true"/> <!--   是否允许任务并发执行。当值为false时，表示必须等到前一个线程处理完毕后才再启一个新的线程 -->
-	</bean>
-		
-	<!-- 下个月预计发薪 -->
-	<bean id="nextMonthSalaryTrigger" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">  
-       <property name="jobDetail" ref="nextMonthSalaryReport"/>  
-       <property name="cronExpression" value="0 0 0 1 * ?"/><!-- 0 0 0 1 * ? 每月第一天 -->
-	</bean>
-	<bean id="nextMonthSalaryReport" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">   
-        <property name="targetObject" ref="reportAOImpl"/>  
-        <property name="targetMethod" value="nextMonthSalary"/>  
-        <property name="concurrent" value="true"/> <!--   是否允许任务并发执行。当值为false时，表示必须等到前一个线程处理完毕后才再启一个新的线程 -->
-	</bean>
-	
-	<!-- 更新人脸特征值 -->
-	<bean id="staffFeatTrigger" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">  
-       <property name="jobDetail" ref="staffFeat"/>  
-       <property name="cronExpression" value="0 0 0 * * ?"/><!--每天凌晨-->
-	</bean>
-	<bean id="staffFeat" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">   
-        <property name="targetObject" ref="staffAOImpl"/>  
-        <property name="targetMethod" value="doUpdateFeatDaily"/>  
-        <property name="concurrent" value="true"/> <!--   是否允许任务并发执行。当值为false时，表示必须等到前一个线程处理完毕后才再启一个新的线程 -->
-	</bean>
-	
-	<!-- 更新延迟工资条 -->
-	<bean id="delaySalaryTrigger" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">  
-       <property name="jobDetail" ref="delaySalary"/>  
-       <property name="cronExpression" value="0 0 0 * * ?"/><!--每天凌晨-->
-	</bean>
-	<bean id="delaySalary" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">   
-        <property name="targetObject" ref="salaryAOImpl"/>  
-        <property name="targetMethod" value="doDelaySalaryDaily"/>  
-        <property name="concurrent" value="true"/> <!--   是否允许任务并发执行。当值为false时，表示必须等到前一个线程处理完毕后才再启一个新的线程 -->
-	</bean>
 	
 </beans>

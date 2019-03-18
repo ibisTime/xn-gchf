@@ -98,12 +98,6 @@ public class Project extends ABaseDO {
     // 关键字(项目名称/负责人手机号)
     private String keyword;
 
-    // 项目账户
-    private ProjectCard projectCard;
-
-    // 统计报表
-    private Report report;
-
     // 审核人姓名
     private String approveName;
 
@@ -314,22 +308,6 @@ public class Project extends ABaseDO {
 
     public void setSalaryDelayDays(Integer salaryDelayDays) {
         this.salaryDelayDays = salaryDelayDays;
-    }
-
-    public ProjectCard getProjectCard() {
-        return projectCard;
-    }
-
-    public void setProjectCard(ProjectCard companyCard) {
-        this.projectCard = companyCard;
-    }
-
-    public Report getReport() {
-        return report;
-    }
-
-    public void setReport(Report report) {
-        this.report = report;
     }
 
     public String getApproveName() {

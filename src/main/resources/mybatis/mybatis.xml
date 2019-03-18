@@ -12,49 +12,22 @@
 		<typeAlias alias="sysDict" type="com.cdkj.gchf.domain.SYSDict" />
 		
 		<typeAlias alias="sysConfig" type="com.cdkj.gchf.domain.SYSConfig" />
-		<typeAlias alias="department" type="com.cdkj.gchf.domain.Department" />
 		<typeAlias alias="project" type="com.cdkj.gchf.domain.Project" />
-		<typeAlias alias="bcontract" type="com.cdkj.gchf.domain.Bcontract" />
-		
-		<typeAlias alias="progress" type="com.cdkj.gchf.domain.Progress" />
-		<typeAlias alias="projectCard" type="com.cdkj.gchf.domain.ProjectCard" />
 		<typeAlias alias="channelBank" type="com.cdkj.gchf.domain.ChannelBank" />
-		<typeAlias alias="employ" type="com.cdkj.gchf.domain.Employ" />
-		<typeAlias alias="staff" type="com.cdkj.gchf.domain.Staff" />
-		
-		<typeAlias alias="bankCard" type="com.cdkj.gchf.domain.BankCard" />
-		<typeAlias alias="attendance" type="com.cdkj.gchf.domain.Attendance" />
-		<typeAlias alias="staff" type="com.cdkj.gchf.domain.Staff" />
-		<typeAlias alias="bankCard" type="com.cdkj.gchf.domain.BankCard" />
-		<typeAlias alias="message" type="com.cdkj.gchf.domain.Message" />
-		
-		<typeAlias alias="salary" type="com.cdkj.gchf.domain.Salary" />
-		<typeAlias alias="salaryLog" type="com.cdkj.gchf.domain.SalaryLog" />
-		<typeAlias alias="ccontract" type="com.cdkj.gchf.domain.Ccontract" />
-		<typeAlias alias="report" type="com.cdkj.gchf.domain.Report" />
-		<typeAlias alias="staffLog" type="com.cdkj.gchf.domain.StaffLog" />
-		
-		<typeAlias alias="queryLog" type="com.cdkj.gchf.domain.QueryLog" />
-		<typeAlias alias="messageLog" type="com.cdkj.gchf.domain.MessageLog" />
-		<typeAlias alias="skill" type="com.cdkj.gchf.domain.Skill" />
-		<typeAlias alias="eventRemind" type="com.cdkj.gchf.domain.EventRemind" />
 		<typeAlias alias="subbranch" type="com.cdkj.gchf.domain.Subbranch" />
-		
-		<typeAlias alias="leave" type="com.cdkj.gchf.domain.Leave" />
 		<typeAlias alias="supervise" type="com.cdkj.gchf.domain.Supervise" />
+		
 		<typeAlias alias="operatorGuide" type="com.cdkj.gchf.domain.OperatorGuide" />
 		<typeAlias alias="corpBasicinfo" type="com.cdkj.gchf.domain.CorpBasicinfo" />
 		<typeAlias alias="projectConfig" type="com.cdkj.gchf.domain.ProjectConfig" />
-		
 		<typeAlias alias="projectCorpInfo" type="com.cdkj.gchf.domain.ProjectCorpInfo" />
 		<typeAlias alias="teamMaster" type="com.cdkj.gchf.domain.TeamMaster" />
+		
 		<typeAlias alias="projectWorker" type="com.cdkj.gchf.domain.ProjectWorker" />
 		<typeAlias alias="projectWorkerEntryExitHistory" type="com.cdkj.gchf.domain.ProjectWorkerEntryExitHistory" />
 		<typeAlias alias="workerContract" type="com.cdkj.gchf.domain.WorkerContract" />
-		
 		<typeAlias alias="workerAttendance" type="com.cdkj.gchf.domain.WorkerAttendance" />
 		<typeAlias alias="payRoll" type="com.cdkj.gchf.domain.PayRoll" />
-		
 		
 	</typeAliases>
 </configuration>

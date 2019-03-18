@@ -13,6 +13,7 @@ public class JsonUtil {
         }
         T t = null;
         try {
+            // Gson gson = new Gson();
             Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd HH:mm:ss")
                 .create();
             t = (T) gson.fromJson(json, clazz);

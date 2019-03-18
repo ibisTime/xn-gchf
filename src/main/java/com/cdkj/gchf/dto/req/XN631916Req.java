@@ -18,7 +18,7 @@ public class XN631916Req {
     private String projectCode;
 
     @NotEmpty
-    List<XN631916ReqContract> contractList;
+    private List<XN631916ReqContract> contractList;
 
     public String getProjectCode() {
         return projectCode;

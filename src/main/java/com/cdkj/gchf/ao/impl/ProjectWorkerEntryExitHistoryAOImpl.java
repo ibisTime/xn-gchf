@@ -67,8 +67,7 @@ public class ProjectWorkerEntryExitHistoryAOImpl
             throw new BizException("XN631915", "该项目未配置，无法查询");
         }
 
-        projectWorkerEntryExitHistoryBO.doQuery(req, projectConfig);
-        return null;
+        return projectWorkerEntryExitHistoryBO.doQuery(req, projectConfig);
     }
 
     @Override

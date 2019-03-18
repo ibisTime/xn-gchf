@@ -1,8 +1,10 @@
 package com.cdkj.gchf.domain;
 
 import java.util.Date;
+import java.util.List;
 
 import com.cdkj.gchf.dao.base.ABaseDO;
+import com.cdkj.gchf.dto.req.XN631914ReqWorker;
 
 /**
 * 人员进退场
@@ -61,6 +63,9 @@ public class ProjectWorkerEntryExitHistory extends ABaseDO {
 
     // 凭证扫描件
     private String voucherUrl;
+
+    /****DB Properties****/
+    private List<XN631914ReqWorker> workerList;
 
     public String getCode() {
         return code;
@@ -188,6 +193,14 @@ public class ProjectWorkerEntryExitHistory extends ABaseDO {
 
     public void setVoucherUrl(String voucherUrl) {
         this.voucherUrl = voucherUrl;
+    }
+
+    public List<XN631914ReqWorker> getWorkerList() {
+        return workerList;
+    }
+
+    public void setWorkerList(List<XN631914ReqWorker> workerList) {
+        this.workerList = workerList;
     }
 
 }

@@ -27,7 +27,6 @@ public class XN631919Req extends APIRequestBase {
     private String idCardNumber;
 
     // 考勤时间
-    @NotBlank
     private Date date;
 
     // 班组编号

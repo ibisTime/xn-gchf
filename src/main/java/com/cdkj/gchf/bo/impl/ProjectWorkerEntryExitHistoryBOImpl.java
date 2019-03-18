@@ -1,6 +1,8 @@
 package com.cdkj.gchf.bo.impl;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;
@@ -9,6 +11,7 @@ import org.springframework.stereotype.Component;
 
 import com.alibaba.fastjson.JSONObject;
 import com.cdkj.gchf.bo.IProjectWorkerEntryExitHistoryBO;
+import com.cdkj.gchf.bo.base.Paginable;
 import com.cdkj.gchf.bo.base.PaginableBOImpl;
 import com.cdkj.gchf.core.OrderNoGenerater;
 import com.cdkj.gchf.dao.IProjectWorkerEntryExitHistoryDAO;
@@ -19,6 +22,7 @@ import com.cdkj.gchf.dto.req.XN631915Req;
 import com.cdkj.gchf.enums.EGeneratePrefix;
 import com.cdkj.gchf.exception.BizException;
 import com.cdkj.gchf.gov.GovConnecter;
+import com.cdkj.gchf.gov.GovUtil;
 
 @Component
 public class ProjectWorkerEntryExitHistoryBOImpl
@@ -67,23 +71,32 @@ public class ProjectWorkerEntryExitHistoryBOImpl
         ProjectWorkerEntryExitHistory projectWorkerEntryExitHistory = new ProjectWorkerEntryExitHistory();
         BeanUtils.copyProperties(req, projectWorkerEntryExitHistory);
 
-        String data = JSONObject.toJSON(projectWorkerEntryExitHistory)
-            .toString();
+        String data = JSONObject.toJSONStringWithDateFormat(
+            projectWorkerEntryExitHistory, "yyyy-MM-dd").toString();
 
         GovConnecter.getGovData("WorkerEntryExit.Add", data,
             projectConfig.getProjectCode(), projectConfig.getSecret());
     }
 
     @Override
-    public void doQuery(XN631915Req req, ProjectConfig projectConfig) {
+    public Paginable<ProjectWorkerEntryExitHistory> doQuery(XN631915Req req,
+            ProjectConfig projectConfig) {
         ProjectWorkerEntryExitHistory projectWorkerEntryExitHistory = new ProjectWorkerEntryExitHistory();
         BeanUtils.copyProperties(req, projectWorkerEntryExitHistory);
 
         String data = JSONObject.toJSON(projectWorkerEntryExitHistory)
             .toString();
 
-        GovConnecter.getGovData("WorkerEntryExit.Query", data,
-            projectConfig.getProjectCode(), projectConfig.getSecret());
+        String queryString = GovConnecter.getGovData("WorkerEntryExit.Query",
+            data, projectConfig.getProjectCode(), projectConfig.getSecret());
+
+        Map<String, String> replaceMap = new HashMap<>();
+
+        Paginable<ProjectWorkerEntryExitHistory> page = GovUtil.parseGovPage(
+            req.getPageIndex(), req.getPageSize(), queryString, replaceMap,
+            ProjectWorkerEntryExitHistory.class);
+
+        return page;
     }
 
     @Override

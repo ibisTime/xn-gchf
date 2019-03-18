@@ -60,8 +60,7 @@ public class PayRollAOImpl implements IPayRollAO {
             throw new BizException("XN631921", "该项目未配置，无法查询");
         }
 
-        payRollBO.doQuery(req, projectConfig);
-        return null;
+        return payRollBO.doQuery(req, projectConfig);
     }
 
     @Override

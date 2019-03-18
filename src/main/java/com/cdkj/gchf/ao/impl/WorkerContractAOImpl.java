@@ -60,9 +60,7 @@ public class WorkerContractAOImpl implements IWorkerContractAO {
             throw new BizException("XN631917", "该项目未配置，无法查询");
         }
 
-        workerContractBO.doQuery(req, projectConfig);
-
-        return null;
+        return workerContractBO.doQuery(req, projectConfig);
 
     }
 

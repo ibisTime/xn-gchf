@@ -1,6 +1,8 @@
 package com.cdkj.gchf.bo.impl;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;
@@ -9,17 +11,20 @@ import org.springframework.stereotype.Component;
 
 import com.alibaba.fastjson.JSONObject;
 import com.cdkj.gchf.bo.IProjectWorkerBO;
+import com.cdkj.gchf.bo.base.Paginable;
 import com.cdkj.gchf.bo.base.PaginableBOImpl;
 import com.cdkj.gchf.core.OrderNoGenerater;
 import com.cdkj.gchf.dao.IProjectWorkerDAO;
 import com.cdkj.gchf.domain.ProjectConfig;
 import com.cdkj.gchf.domain.ProjectWorker;
+import com.cdkj.gchf.domain.TeamMaster;
 import com.cdkj.gchf.dto.req.XN631911Req;
 import com.cdkj.gchf.dto.req.XN631912Req;
 import com.cdkj.gchf.dto.req.XN631913Req;
 import com.cdkj.gchf.enums.EGeneratePrefix;
 import com.cdkj.gchf.exception.BizException;
 import com.cdkj.gchf.gov.GovConnecter;
+import com.cdkj.gchf.gov.GovUtil;
 
 @Component
 public class ProjectWorkerBOImpl extends PaginableBOImpl<ProjectWorker>
@@ -62,10 +67,10 @@ public class ProjectWorkerBOImpl extends PaginableBOImpl<ProjectWorker>
 
     @Override
     public void doUpload(XN631911Req req, ProjectConfig projectConfig) {
-        ProjectWorker projectWorker = new ProjectWorker();
-        BeanUtils.copyProperties(req, projectWorker);
+        TeamMaster teamMaster = new TeamMaster();
+        BeanUtils.copyProperties(req, teamMaster);
 
-        String data = JSONObject.toJSON(projectWorker).toString();
+        String data = JSONObject.toJSON(teamMaster).toString();
 
         GovConnecter.getGovData("ProjectWorker.Add", data,
             projectConfig.getProjectCode(), projectConfig.getSecret());
@@ -83,14 +88,22 @@ public class ProjectWorkerBOImpl extends PaginableBOImpl<ProjectWorker>
     }
 
     @Override
-    public void doQuery(XN631913Req req, ProjectConfig projectConfig) {
+    public Paginable<ProjectWorker> doQuery(XN631913Req req,
+            ProjectConfig projectConfig) {
         ProjectWorker projectWorker = new ProjectWorker();
         BeanUtils.copyProperties(req, projectWorker);
 
         String data = JSONObject.toJSON(projectWorker).toString();
 
-        GovConnecter.getGovData("ProjectWorker.Query", data,
-            projectConfig.getProjectCode(), projectConfig.getSecret());
+        String queryString = GovConnecter.getGovData("ProjectWorker.Query",
+            data, projectConfig.getProjectCode(), projectConfig.getSecret());
+
+        Map<String, String> replaceMap = new HashMap<>();
+
+        Paginable<ProjectWorker> page = GovUtil.parseGovPage(req.getPageIndex(),
+            req.getPageSize(), queryString, replaceMap, ProjectWorker.class);
+
+        return page;
     }
 
     @Override

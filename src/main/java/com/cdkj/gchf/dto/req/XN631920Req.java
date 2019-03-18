@@ -1,7 +1,8 @@
 package com.cdkj.gchf.dto.req;
 
-import java.util.Date;
 import java.util.List;
+
+import javax.validation.constraints.Min;
 
 import org.hibernate.validator.constraints.NotBlank;
 import org.hibernate.validator.constraints.NotEmpty;
@@ -31,12 +32,12 @@ public class XN631920Req extends APIRequestBase {
     private String corpName;
 
     // 班组编号
-    @NotBlank
+    @Min(0)
     private Integer teamSysNo;
 
     // 发放工资的年月
     @NotBlank
-    private Date payMonth;
+    private String payMonth;
 
     @NotEmpty
     private List<XN631920ReqDateil> detailList;
@@ -73,11 +74,11 @@ public class XN631920Req extends APIRequestBase {
         this.teamSysNo = teamSysNo;
     }
 
-    public Date getPayMonth() {
+    public String getPayMonth() {
         return payMonth;
     }
 
-    public void setPayMonth(Date payMonth) {
+    public void setPayMonth(String payMonth) {
         this.payMonth = payMonth;
     }
 

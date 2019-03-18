@@ -1,14 +1,16 @@
 package com.cdkj.gchf.bo.impl;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.commons.lang3.StringUtils;
-import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.alibaba.fastjson.JSONObject;
 import com.cdkj.gchf.bo.IPayRollBO;
+import com.cdkj.gchf.bo.base.Paginable;
 import com.cdkj.gchf.bo.base.PaginableBOImpl;
 import com.cdkj.gchf.core.OrderNoGenerater;
 import com.cdkj.gchf.dao.IPayRollDAO;
@@ -19,6 +21,7 @@ import com.cdkj.gchf.dto.req.XN631921Req;
 import com.cdkj.gchf.enums.EGeneratePrefix;
 import com.cdkj.gchf.exception.BizException;
 import com.cdkj.gchf.gov.GovConnecter;
+import com.cdkj.gchf.gov.GovUtil;
 
 @Component
 public class PayRollBOImpl extends PaginableBOImpl<PayRoll>
@@ -60,24 +63,28 @@ public class PayRollBOImpl extends PaginableBOImpl<PayRoll>
 
     @Override
     public void doUpload(XN631920Req req, ProjectConfig projectConfig) {
-        PayRoll payRoll = new PayRoll();
-        BeanUtils.copyProperties(req, payRoll);
 
-        String data = JSONObject.toJSON(payRoll).toString();
+        String data = JSONObject.toJSON(req).toString();
 
         GovConnecter.getGovData("Payroll.Add", data,
             projectConfig.getProjectCode(), projectConfig.getSecret());
     }
 
     @Override
-    public void doQuery(XN631921Req req, ProjectConfig projectConfig) {
-        PayRoll payRoll = new PayRoll();
-        BeanUtils.copyProperties(req, payRoll);
+    public Paginable<PayRoll> doQuery(XN631921Req req,
+            ProjectConfig projectConfig) {
 
-        String data = JSONObject.toJSON(payRoll).toString();
+        String data = JSONObject.toJSON(req).toString();
 
-        GovConnecter.getGovData("Payroll.Query", data,
+        String queryString = GovConnecter.getGovData("Payroll.Query", data,
             projectConfig.getProjectCode(), projectConfig.getSecret());
+
+        Map<String, String> replaceMap = new HashMap<>();
+
+        Paginable<PayRoll> page = GovUtil.parseGovPage(req.getPageIndex(),
+            req.getPageSize(), queryString, replaceMap, PayRoll.class);
+
+        return page;
     }
 
     @Override

@@ -3,6 +3,7 @@ package com.cdkj.gchf.bo;
 import java.util.List;
 
 import com.cdkj.gchf.bo.base.IPaginableBO;
+import com.cdkj.gchf.bo.base.Paginable;
 import com.cdkj.gchf.domain.ProjectConfig;
 import com.cdkj.gchf.domain.WorkerAttendance;
 import com.cdkj.gchf.dto.req.XN631918Req;
@@ -24,5 +25,6 @@ public interface IWorkerAttendanceBO extends IPaginableBO<WorkerAttendance> {
     /****国家平台接口****/
     public void doUpload(XN631918Req req, ProjectConfig projectConfig);
 
-    public void doQuery(XN631919Req req, ProjectConfig projectConfig);
+    public Paginable<WorkerAttendance> doQuery(XN631919Req req,
+            ProjectConfig projectConfig);
 }

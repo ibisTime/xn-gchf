@@ -60,8 +60,7 @@ public class WorkerAttendanceAOImpl implements IWorkerAttendanceAO {
             throw new BizException("XN631919", "该项目未配置，无法查询");
         }
 
-        workerAttendanceBO.doQuery(req, projectConfig);
-        return null;
+        return workerAttendanceBO.doQuery(req, projectConfig);
     }
 
     @Override

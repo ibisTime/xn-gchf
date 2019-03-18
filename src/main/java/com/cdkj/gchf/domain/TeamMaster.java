@@ -1,8 +1,12 @@
 package com.cdkj.gchf.domain;
 
 import java.util.Date;
+import java.util.List;
 
 import com.cdkj.gchf.dao.base.ABaseDO;
+import com.cdkj.gchf.dto.req.XN631911ReqWorker;
+import com.cdkj.gchf.dto.req.XN631916ReqContract;
+import com.cdkj.gchf.dto.req.XN631918ReqData;
 
 /**
 * 班组
@@ -70,6 +74,16 @@ public class TeamMaster extends ABaseDO {
 
     // 上级部门编号
     private String parentCode;
+
+    /****DB Properties****/
+    // 工人列表
+    private List<XN631911ReqWorker> workerList;
+
+    // 合同列表
+    private List<XN631916ReqContract> contractList;
+
+    // 考勤列表
+    private List<XN631918ReqData> dataList;
 
     public String getCode() {
         return code;
@@ -222,6 +236,30 @@ public class TeamMaster extends ABaseDO {
 
     public void setParentCode(String parentCode) {
         this.parentCode = parentCode;
+    }
+
+    public List<XN631911ReqWorker> getWorkerList() {
+        return workerList;
+    }
+
+    public void setWorkerList(List<XN631911ReqWorker> workerList) {
+        this.workerList = workerList;
+    }
+
+    public List<XN631916ReqContract> getContractList() {
+        return contractList;
+    }
+
+    public void setContractList(List<XN631916ReqContract> contractList) {
+        this.contractList = contractList;
+    }
+
+    public List<XN631918ReqData> getDataList() {
+        return dataList;
+    }
+
+    public void setDataList(List<XN631918ReqData> dataList) {
+        this.dataList = dataList;
     }
 
 }

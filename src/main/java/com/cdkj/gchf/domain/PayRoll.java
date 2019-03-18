@@ -1,8 +1,10 @@
 package com.cdkj.gchf.domain;
 
 import java.util.Date;
+import java.util.List;
 
 import com.cdkj.gchf.dao.base.ABaseDO;
+import com.cdkj.gchf.dto.req.XN631920ReqDateil;
 
 /**
 * 人员工资单
@@ -37,6 +39,10 @@ public class PayRoll extends ABaseDO {
 
     // 发放工资的年月
     private Date payMonth;
+
+    /****DB Properties****/
+    // 明细列表
+    private List<XN631920ReqDateil> detailList;
 
     public String getCode() {
         return code;
@@ -100,6 +106,14 @@ public class PayRoll extends ABaseDO {
 
     public void setPayMonth(Date payMonth) {
         this.payMonth = payMonth;
+    }
+
+    public List<XN631920ReqDateil> getDetailList() {
+        return detailList;
+    }
+
+    public void setDetailList(List<XN631920ReqDateil> detailList) {
+        this.detailList = detailList;
     }
 
 }

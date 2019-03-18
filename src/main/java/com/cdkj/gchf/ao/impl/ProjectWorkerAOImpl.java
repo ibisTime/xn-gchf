@@ -73,9 +73,8 @@ public class ProjectWorkerAOImpl implements IProjectWorkerAO {
             throw new BizException("XN631913", "该项目未配置，无法查询");
         }
 
-        projectWorkerBO.doQuery(req, projectConfig);
+        return projectWorkerBO.doQuery(req, projectConfig);
 
-        return null;
     }
 
     @Override

@@ -5,7 +5,6 @@ import com.cdkj.gchf.api.AProcessor;
 import com.cdkj.gchf.common.JsonUtil;
 import com.cdkj.gchf.core.ObjValidater;
 import com.cdkj.gchf.dto.req.XN631919Req;
-import com.cdkj.gchf.dto.res.BooleanRes;
 import com.cdkj.gchf.exception.BizException;
 import com.cdkj.gchf.exception.ParaException;
 import com.cdkj.gchf.spring.SpringContextHolder;
@@ -24,8 +23,7 @@ public class XN631919 extends AProcessor {
 
     @Override
     public Object doBusiness() throws BizException {
-        workerAttendanceAO.queryWorkerAttendance(req);
-        return new BooleanRes(true);
+        return workerAttendanceAO.queryWorkerAttendance(req);
     }
 
     @Override

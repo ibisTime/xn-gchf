@@ -3,6 +3,7 @@ package com.cdkj.gchf.bo;
 import java.util.List;
 
 import com.cdkj.gchf.bo.base.IPaginableBO;
+import com.cdkj.gchf.bo.base.Paginable;
 import com.cdkj.gchf.domain.ProjectConfig;
 import com.cdkj.gchf.domain.ProjectWorkerEntryExitHistory;
 import com.cdkj.gchf.dto.req.XN631914Req;
@@ -28,5 +29,6 @@ public interface IProjectWorkerEntryExitHistoryBO
     /****国家平台接口****/
     public void doUpload(XN631914Req req, ProjectConfig projectConfig);
 
-    public void doQuery(XN631915Req req, ProjectConfig projectConfig);
+    public Paginable<ProjectWorkerEntryExitHistory> doQuery(XN631915Req req,
+            ProjectConfig projectConfig);
 }

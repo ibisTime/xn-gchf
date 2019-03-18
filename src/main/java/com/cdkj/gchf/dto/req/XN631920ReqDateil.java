@@ -1,7 +1,6 @@
 package com.cdkj.gchf.dto.req;
 
 import java.math.BigDecimal;
-import java.util.Date;
 
 import javax.validation.constraints.DecimalMin;
 
@@ -67,7 +66,7 @@ public class XN631920ReqDateil {
 
     // 发放日期
     @NotBlank
-    private Date balanceDate;
+    private String balanceDate;
 
     // 第三方工资单编号
     @NotBlank
@@ -177,11 +176,11 @@ public class XN631920ReqDateil {
         this.isBackPay = isBackPay;
     }
 
-    public Date getBalanceDate() {
+    public String getBalanceDate() {
         return balanceDate;
     }
 
-    public void setBalanceDate(Date balanceDate) {
+    public void setBalanceDate(String balanceDate) {
         this.balanceDate = balanceDate;
     }
 

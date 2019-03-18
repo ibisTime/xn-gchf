@@ -2,6 +2,8 @@ package com.cdkj.gchf.dto.req;
 
 import java.util.Date;
 
+import javax.validation.constraints.Min;
+
 import org.hibernate.validator.constraints.NotBlank;
 
 /**
@@ -12,42 +14,39 @@ import org.hibernate.validator.constraints.NotBlank;
  */
 public class XN631914ReqWorker {
 
-    private static final long serialVersionUID = 8006164993445757938L;
-
     // 证件类型
     @NotBlank
-    private String idcardType;
+    private String idCardType;
 
     // 证件号码
     @NotBlank
-    private String idcardNumber;
+    private String idCardNumber;
 
     // 时间
-    @NotBlank
     private Date date;
 
     // 类型
-    @NotBlank
+    @Min(0)
     private Integer type;
 
     // 凭证扫描件
     @NotBlank
     private String voucherUrl;
 
-    public String getIdcardType() {
-        return idcardType;
+    public String getIdCardType() {
+        return idCardType;
     }
 
-    public void setIdcardType(String idcardType) {
-        this.idcardType = idcardType;
+    public void setIdCardType(String idCardType) {
+        this.idCardType = idCardType;
     }
 
-    public String getIdcardNumber() {
-        return idcardNumber;
+    public String getIdCardNumber() {
+        return idCardNumber;
     }
 
-    public void setIdcardNumber(String idcardNumber) {
-        this.idcardNumber = idcardNumber;
+    public void setIdCardNumber(String idCardNumber) {
+        this.idCardNumber = idCardNumber;
     }
 
     public Date getDate() {

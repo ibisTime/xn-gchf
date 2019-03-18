@@ -70,26 +70,27 @@ public class AESUtil {
         return result;
 
     }
-
-    public static String govAESEncryption(String src, String sKey) {
-
-        String result = null;
-        try {
-            byte[] raw = sKey.getBytes("utf-8");
-            SecretKeySpec skeySpec = new SecretKeySpec(raw, "AES");
-            Cipher cipher;
-            cipher = Cipher.getInstance("AES/CBC/PKCS7Padding");// "算法/模式/补码方式"
-            cipher.init(Cipher.ENCRYPT_MODE, skeySpec);
-            byte[] encrypted = cipher.doFinal(src.getBytes("utf-8"));
-
-            result = new Base64().encodeToString(encrypted);// 此处使用BASE64做转码功能，同时能起到2次加密的作用。
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-        return result;
-
-    }
+    //
+    // public static String govAESEncryption(String src, String sKey) {
+    //
+    // String result = null;
+    // try {
+    // byte[] raw = sKey.getBytes("utf-8");
+    // SecretKeySpec skeySpec = new SecretKeySpec(raw, "AES");
+    // Cipher cipher;
+    // cipher = Cipher.getInstance("AES/CBC/PKCS7Padding");// "算法/模式/补码方式"
+    // cipher.init(Cipher.ENCRYPT_MODE, skeySpec);
+    // byte[] encrypted = cipher.doFinal(src.getBytes("utf-8"));
+    //
+    // result = new Base64().encodeToString(encrypted);//
+    // 此处使用BASE64做转码功能，同时能起到2次加密的作用。
+    // } catch (Exception e) {
+    // e.printStackTrace();
+    // }
+    //
+    // return result;
+    //
+    // }
 
     public static String encrypt(String content, String key) {
         byte[] result = null;

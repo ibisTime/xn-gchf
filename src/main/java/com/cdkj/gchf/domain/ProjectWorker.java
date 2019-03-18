@@ -51,10 +51,10 @@ public class ProjectWorker extends ABaseDO {
     private Integer isTeamLeader;
 
     // 证件类型
-    private String idcardType;
+    private String idCardType;
 
     // 证件号码
-    private String idcardNumber;
+    private String idCardNumber;
 
     // 工种
     private String workType;
@@ -148,6 +148,62 @@ public class ProjectWorker extends ABaseDO {
 
     // 备注
     private String remark;
+
+    /****DB Properties****/
+
+    // 民族
+    private String nation;
+
+    // 地址
+    private String address;
+
+    // 头像
+    private String headImage;
+
+    // 政治面貌
+    private String politicsType;
+
+    // 加入公会时间
+    private Date joinedTime;
+
+    // 手机号码
+    private String cellPhone;
+
+    // 文化程度
+    private String cultureLevelType;
+
+    // 特长
+    private String Specialty;
+
+    // 是否有重大病史
+    private String hasBadMedicalHistory;
+
+    // 紧急联系人姓名
+    private String urgentLinkMan;
+
+    // 紧急联系方式
+    private String urgentLinkManPhone;
+
+    // 开始工作日期
+    private String workDate;
+
+    // 婚姻状况
+    private String maritalStatus;
+
+    // 发证机关
+    private String grantOrg;
+
+    // 正面照。
+    private String positiveIDCardImage;
+
+    // 反面照。
+    private String negativeIDCardImage;
+
+    // 证件有效期开始日期
+    private String startDate;
+
+    // 证件有效期结束日期
+    private String expiryDate;
 
     public String getCode() {
         return code;
@@ -245,20 +301,20 @@ public class ProjectWorker extends ABaseDO {
         this.isTeamLeader = isTeamLeader;
     }
 
-    public String getIdcardType() {
-        return idcardType;
+    public String getIdCardType() {
+        return idCardType;
     }
 
-    public void setIdcardType(String idcardType) {
-        this.idcardType = idcardType;
+    public void setIdCardType(String idCardType) {
+        this.idCardType = idCardType;
     }
 
-    public String getIdcardNumber() {
-        return idcardNumber;
+    public String getIdCardNumber() {
+        return idCardNumber;
     }
 
-    public void setIdcardNumber(String idcardNumber) {
-        this.idcardNumber = idcardNumber;
+    public void setIdCardNumber(String idCardNumber) {
+        this.idCardNumber = idCardNumber;
     }
 
     public String getWorkType() {
@@ -507,6 +563,150 @@ public class ProjectWorker extends ABaseDO {
 
     public void setRemark(String remark) {
         this.remark = remark;
+    }
+
+    public String getNation() {
+        return nation;
+    }
+
+    public void setNation(String nation) {
+        this.nation = nation;
+    }
+
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
+    }
+
+    public String getHeadImage() {
+        return headImage;
+    }
+
+    public void setHeadImage(String headImage) {
+        this.headImage = headImage;
+    }
+
+    public String getPoliticsType() {
+        return politicsType;
+    }
+
+    public void setPoliticsType(String politicsType) {
+        this.politicsType = politicsType;
+    }
+
+    public Date getJoinedTime() {
+        return joinedTime;
+    }
+
+    public void setJoinedTime(Date joinedTime) {
+        this.joinedTime = joinedTime;
+    }
+
+    public String getCellPhone() {
+        return cellPhone;
+    }
+
+    public void setCellPhone(String cellPhone) {
+        this.cellPhone = cellPhone;
+    }
+
+    public String getCultureLevelType() {
+        return cultureLevelType;
+    }
+
+    public void setCultureLevelType(String cultureLevelType) {
+        this.cultureLevelType = cultureLevelType;
+    }
+
+    public String getSpecialty() {
+        return Specialty;
+    }
+
+    public void setSpecialty(String specialty) {
+        Specialty = specialty;
+    }
+
+    public String getHasBadMedicalHistory() {
+        return hasBadMedicalHistory;
+    }
+
+    public void setHasBadMedicalHistory(String hasBadMedicalHistory) {
+        this.hasBadMedicalHistory = hasBadMedicalHistory;
+    }
+
+    public String getUrgentLinkMan() {
+        return urgentLinkMan;
+    }
+
+    public void setUrgentLinkMan(String urgentLinkMan) {
+        this.urgentLinkMan = urgentLinkMan;
+    }
+
+    public String getUrgentLinkManPhone() {
+        return urgentLinkManPhone;
+    }
+
+    public void setUrgentLinkManPhone(String urgentLinkManPhone) {
+        this.urgentLinkManPhone = urgentLinkManPhone;
+    }
+
+    public String getWorkDate() {
+        return workDate;
+    }
+
+    public void setWorkDate(String workDate) {
+        this.workDate = workDate;
+    }
+
+    public String getMaritalStatus() {
+        return maritalStatus;
+    }
+
+    public void setMaritalStatus(String maritalStatus) {
+        this.maritalStatus = maritalStatus;
+    }
+
+    public String getGrantOrg() {
+        return grantOrg;
+    }
+
+    public void setGrantOrg(String grantOrg) {
+        this.grantOrg = grantOrg;
+    }
+
+    public String getPositiveIDCardImage() {
+        return positiveIDCardImage;
+    }
+
+    public void setPositiveIDCardImage(String positiveIDCardImage) {
+        this.positiveIDCardImage = positiveIDCardImage;
+    }
+
+    public String getNegativeIDCardImage() {
+        return negativeIDCardImage;
+    }
+
+    public void setNegativeIDCardImage(String negativeIDCardImage) {
+        this.negativeIDCardImage = negativeIDCardImage;
+    }
+
+    public String getStartDate() {
+        return startDate;
+    }
+
+    public void setStartDate(String startDate) {
+        this.startDate = startDate;
+    }
+
+    public String getExpiryDate() {
+        return expiryDate;
+    }
+
+    public void setExpiryDate(String expiryDate) {
+        this.expiryDate = expiryDate;
     }
 
 }

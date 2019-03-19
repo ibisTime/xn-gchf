@@ -51,33 +51,45 @@ CREATE TABLE `thf_pay_roll_detail` (
 DROP TABLE IF EXISTS `thf_project`;
 CREATE TABLE `thf_project` (
   `code` varchar(32) NOT NULL COMMENT '编号',
-  `supervise_code` varchar(32) DEFAULT NULL COMMENT '监管单位编号',
-  `company_name` varchar(255) DEFAULT NULL COMMENT '公司名称',
-  `name` varchar(255) DEFAULT NULL COMMENT '项目名称',
-  `charge_user` varchar(32) DEFAULT NULL COMMENT '负责人编号',
-  `charge_mobile` varchar(16) DEFAULT NULL COMMENT '负责人手机号',
-  `attendance_starttime` varchar(64) DEFAULT NULL COMMENT '上班时间',
-  `attendance_endtime` varchar(64) DEFAULT NULL COMMENT '下班时间',
-  `start_datetime` datetime DEFAULT NULL COMMENT '项目开始时间',
-  `end_datetime` datetime DEFAULT NULL COMMENT '项目结束时间',
-  `salary_create_datetime` varchar(64) DEFAULT NULL COMMENT '工资条形成时间',
-  `longitude` varchar(255) DEFAULT NULL COMMENT '经度',
-  `latitude` varchar(255) DEFAULT NULL COMMENT '纬度',
-  `province` varchar(255) DEFAULT NULL COMMENT '省',
-  `city` varchar(255) DEFAULT NULL COMMENT '市',
-  `area` varchar(255) DEFAULT NULL COMMENT '区',
-  `address` text COMMENT '地址',
-  `salary_datetime` varchar(64) DEFAULT NULL COMMENT '薪资发放时间',
-  `salary_delay_days` int(11) DEFAULT '0' COMMENT '薪资发放可延迟天数（监管端填写）',
-  `status` varchar(4) DEFAULT NULL COMMENT '状态',
-  `approver` varchar(32) DEFAULT NULL COMMENT '审核人',
-  `approve_datetime` datetime DEFAULT NULL COMMENT '审核时间',
-  `approve_note` varchar(255) DEFAULT NULL COMMENT '审核备注',
-  `updater` varchar(32) DEFAULT NULL COMMENT '修改人',
-  `update_datetime` datetime DEFAULT NULL COMMENT '修改时间',
-  `remark` varchar(255) DEFAULT NULL COMMENT '备注',
+  `contractor_corp_code` varchar(18) DEFAULT NULL COMMENT '总承包单位统一社会信用代码',
+  `contractor_corp_name` varchar(200) DEFAULT NULL COMMENT '总承包单位名称',
+  `name` varchar(200) DEFAULT NULL COMMENT '项目名称',
+  `description` varchar(1000) DEFAULT NULL COMMENT '项目简介',
+  `category` varchar(2) DEFAULT NULL COMMENT '项目分类',
+  `build_corp_name` varchar(200) DEFAULT NULL COMMENT '建设单位名称',
+  `build_corp_code` varchar(18) DEFAULT NULL COMMENT '建设单位统一社会信用代码',
+  `build_plan_num` varchar(50) DEFAULT NULL COMMENT '建设用地规划许可证编号',
+  `prj_plan_num` varchar(50) DEFAULT NULL COMMENT '建设工程规划许可证编号',
+  `area_code` varchar(6) DEFAULT NULL COMMENT '项目所在地',
+  `invest` decimal(18,6) DEFAULT NULL COMMENT '总投资',
+  `building_area` decimal(18,2) DEFAULT NULL COMMENT '总面积',
+  `building_length` decimal(18,2) DEFAULT NULL COMMENT '总长度',
+  `start_date` datetime DEFAULT NULL COMMENT '开工日期',
+  `complete_date` datetime DEFAULT NULL COMMENT '竣工日期',
+  `link_man` varchar(50)  DEFAULT NULL COMMENT '联系人姓名',
+  `link_phone` varchar(50) DEFAULT NULL COMMENT '联系人电话',
+  `prj_status` int(3) DEFAULT '0' COMMENT '项目状态',
+  `lng` decimal(18,15) DEFAULT NULL COMMENT '经度',
+  `lat` decimal(18,15) DEFAULT NULL COMMENT '纬度',
+  `address` varchar(200) DEFAULT NULL COMMENT '项目地址',
+  `approval_num` varchar(50) DEFAULT NULL COMMENT '立项文号',
+  `approval_level_num` varchar(3) DEFAULT NULL COMMENT '立项级别',
+  `prj_size` varchar(3) DEFAULT NULL COMMENT '建设规模',
+  `property_num` varchar(3) DEFAULT NULL COMMENT '建设性质',
+  `prj_num` varchar(3) DEFAULT NULL COMMENT '工程用途',
+  `nation_num` varchar(3) DEFAULT NULL COMMENT '国籍或地区',
+  `third_party_project_code` varchar(50) DEFAULT NULL COMMENT '第三方项目编码',
   PRIMARY KEY (`code`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='项目基本信息';
+
+DROP TABLE IF EXISTS `thf_project_builder_license`;
+CREATE TABLE `thf_project_builder_license` (
+  `code` varchar(32) NOT NULL COMMENT '编号',
+  `project_code` varchar(32) DEFAULT NULL COMMENT '项目编号',
+  `prj_name` varchar(255) DEFAULT NULL COMMENT '项目名称',
+  `builder_license_num` varchar(50) DEFAULT NULL COMMENT '施工许可证号',
+  PRIMARY KEY (`code`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='项目施工许可证';
 
 DROP TABLE IF EXISTS `thf_project_config`;
 CREATE TABLE `thf_project_config` (
@@ -94,7 +106,6 @@ CREATE TABLE `thf_project_config` (
 DROP TABLE IF EXISTS `thf_project_corp_info`;
 CREATE TABLE `thf_project_corp_info` (
   `code` varchar(32) NOT NULL COMMENT '编号',
-  `local_project_code` varchar(32) DEFAULT NULL COMMENT '本地项目编号',
   `project_code` varchar(20) DEFAULT NULL COMMENT '项目编码',
   `project_name` varchar(18) DEFAULT NULL COMMENT '项目名称',
   `corp_code` varchar(18) DEFAULT NULL COMMENT '统一社会信用代码',

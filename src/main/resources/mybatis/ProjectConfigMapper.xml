@@ -6,7 +6,11 @@
 		<result column="code" property="code" />
 		<result column="local_project_code" property="localProjectCode" />
 		<result column="project_code" property="projectCode" />
+		<result column="project_name" property="projectName" />
+		<result column="password" property="password" />
+		
 		<result column="secret" property="secret" />
+		<result column="status" property="status" />
 	</resultMap>
 	
 	<sql id="where_condition">
@@ -20,6 +24,12 @@
 			<if test="projectCode != null and projectCode != '' ">
 				AND t.project_code = #{projectCode}
 			</if>
+			<if test="status != null and status != '' ">
+				AND t.status = #{status}
+			</if>
+			<if test="projectName != null and projectName != '' ">
+				AND t.project_name like '%'#{projectName}'%'
+			</if>
 		</trim>
 	</sql>
 	
@@ -28,7 +38,11 @@
 		t.code
 		,t.local_project_code
 		,t.project_code
+		,t.project_name
+		,t.password
+		
 		,t.secret
+		,t.status
 		FROM
 		thf_project_config t
 		<include refid="where_condition" />
@@ -51,13 +65,21 @@
 		code
 		,local_project_code
 		,project_code
+		,project_name
+		,password
+		
 		,secret
+		,status
 		)
 		VALUES(
 		#{code}
 		,#{localProjectCode}
 		,#{projectCode}
+		,#{projectName}
+		,#{password}
+		
 		,#{secret}
+		,#{status}
 		)
 	</insert>
 
@@ -65,6 +87,8 @@
 		UPDATE thf_project_config
 		SET
 		project_code = #{projectCode}
+		,project_name = #{projectName}
+		,password = #{password}
 		,secret = #{secret}
 		WHERE code = #{code}
 	</update>

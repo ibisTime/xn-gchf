@@ -1,6 +1,7 @@
 package com.cdkj.gchf.api.impl;
 
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.BeanUtils;
 
 import com.cdkj.gchf.ao.IProjectConfigAO;
 import com.cdkj.gchf.api.AProcessor;
@@ -26,8 +27,9 @@ public class XN631625 extends AProcessor {
 
     @Override
     public Object doBusiness() throws BizException {
+
         ProjectConfig condition = new ProjectConfig();
-        condition.setProjectCode(req.getProjectCode());
+        BeanUtils.copyProperties(req, condition);
 
         String column = req.getOrderColumn();
         if (StringUtils.isBlank(column)) {

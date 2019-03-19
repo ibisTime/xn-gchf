@@ -20,11 +20,11 @@ public class ProjectWorker {
     public void projectWorkerAdd() {
 
         Map<String, Object> dataMap = new HashMap<String, Object>();
-        dataMap.put("projectCode", "3311222019030002");
-        dataMap.put("corpCode", "91331122MA2A0M9B7N");
-        dataMap.put("corpName", "浙江兰芽科技有限公司");
-        dataMap.put("teamSysNo", "100156750");
-        dataMap.put("teamName", "泥工");
+        dataMap.put("projectCode", "33112220190310002");
+        dataMap.put("corpCode", "913311001484116584");
+        dataMap.put("corpName", "正达建设有限公司");
+        dataMap.put("teamSysNo", "1500151464");
+        dataMap.put("teamName", "钢筋组");
 
         List<Map<String, String>> workerList = new ArrayList<>();
 
@@ -33,7 +33,7 @@ public class ProjectWorker {
         workerMap.put("isTeamLeader", "0");
         workerMap.put("idCardType", "01");
         workerMap.put("idCardNumber",
-            "YUWesLNXSNln9U5qm/CabbuFulAkEcMPWkt7tIAhSKM=");// 413024196804304833
+            "yv6OjH5mvG7nOyHvkfx32b13ywNNpfeGr5ZrOYV7RAc=");// 413024196804304833
         workerMap.put("workType", "040");
         workerMap.put("nation", "汉");
         workerMap.put("address", "河南省潢川县张集乡杨集村西赵营组");

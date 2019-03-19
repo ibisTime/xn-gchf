@@ -21,8 +21,17 @@ public class ProjectConfig extends ABaseDO {
     // 国家平台项目编码
     private String projectCode;
 
+    // 国家平台项目名称
+    private String projectName;
+
+    // 国家平台项目密码
+    private String password;
+
     // 项目秘钥
     private String secret;
+
+    // 状态
+    private String status;
 
     public void setCode(String code) {
         this.code = code;
@@ -54,6 +63,30 @@ public class ProjectConfig extends ABaseDO {
 
     public String getSecret() {
         return secret;
+    }
+
+    public String getProjectName() {
+        return projectName;
+    }
+
+    public void setProjectName(String projectName) {
+        this.projectName = projectName;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
     }
 
 }

@@ -18,9 +18,9 @@ public class GovConnecter {
 
     public static String DEFAULT_VERSION = "1.0";
 
-    public static String APPID = "3311222019030002";
+    public static String APPID = "33112220190310002";
 
-    public static String APPSECRET = "8ec1924ad80f349e71fadf50e75db627";
+    public static String APPSECRET = "24484b262dd63dd584902a266bdbdca0";
 
     public static String getGovData(String method, String data) {
 

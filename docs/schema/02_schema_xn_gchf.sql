@@ -1,27 +1,5 @@
--- MySQL dump 10.13  Distrib 5.7.17, for macos10.12 (x86_64)
---
--- Host: 47.99.163.139    Database: dev_xn_gchf_gov
--- ------------------------------------------------------
--- Server version	5.6.33
-
-/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
-/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
-/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
-/*!40101 SET NAMES utf8 */;
-/*!40103 SET @OLD_TIME_ZONE=@@TIME_ZONE */;
-/*!40103 SET TIME_ZONE='+00:00' */;
-/*!40014 SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0 */;
-/*!40014 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0 */;
-/*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
-/*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
-
---
--- Table structure for table `thf_operator_guide`
---
 
 DROP TABLE IF EXISTS `thf_operator_guide`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `thf_operator_guide` (
   `code` varchar(32) NOT NULL COMMENT '编号',
   `title` varchar(255) DEFAULT NULL COMMENT '标题',
@@ -33,15 +11,8 @@ CREATE TABLE `thf_operator_guide` (
   `remark` varchar(255) DEFAULT NULL COMMENT '备注',
   PRIMARY KEY (`code`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `thf_pay_roll`
---
 
 DROP TABLE IF EXISTS `thf_pay_roll`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `thf_pay_roll` (
   `code` varchar(32) NOT NULL COMMENT '编号',
   `pay_roll_code` varchar(22) DEFAULT NULL COMMENT '工资单编码',
@@ -53,15 +24,8 @@ CREATE TABLE `thf_pay_roll` (
   `pay_month` datetime DEFAULT NULL COMMENT '发放工资的年月',
   PRIMARY KEY (`code`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='人员工资单';
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `thf_pay_roll_detail`
---
 
 DROP TABLE IF EXISTS `thf_pay_roll_detail`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `thf_pay_roll_detail` (
   `code` varchar(32) NOT NULL COMMENT '编号',
   `pay_roll_code` varchar(22) DEFAULT NULL COMMENT '工资单编码',
@@ -83,15 +47,8 @@ CREATE TABLE `thf_pay_roll_detail` (
   `third_pay_roll_code` varchar(50) DEFAULT NULL COMMENT '第三方工资单编号',
   PRIMARY KEY (`code`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='人员工资单明细';
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `thf_project`
---
 
 DROP TABLE IF EXISTS `thf_project`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `thf_project` (
   `code` varchar(32) NOT NULL COMMENT '编号',
   `supervise_code` varchar(32) DEFAULT NULL COMMENT '监管单位编号',
@@ -121,31 +78,20 @@ CREATE TABLE `thf_project` (
   `remark` varchar(255) DEFAULT NULL COMMENT '备注',
   PRIMARY KEY (`code`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `thf_project_config`
---
 
 DROP TABLE IF EXISTS `thf_project_config`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `thf_project_config` (
   `code` varchar(32) NOT NULL COMMENT '编号',
   `local_project_code` varchar(32) DEFAULT NULL COMMENT '本地项目编号',
   `project_code` varchar(32) DEFAULT NULL COMMENT '项目编码',
+  `project_name` varchar(255) DEFAULT NULL COMMENT '项目名称',
+  `password` varchar(32) DEFAULT NULL COMMENT '项目密码',
   `secret` varchar(255) DEFAULT NULL COMMENT '项目秘钥',
+  `status` varchar(4) DEFAULT NULL COMMENT '本地项目编号',
   PRIMARY KEY (`code`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='项目配置';
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `thf_project_corp_info`
---
 
 DROP TABLE IF EXISTS `thf_project_corp_info`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `thf_project_corp_info` (
   `code` varchar(32) NOT NULL COMMENT '编号',
   `local_project_code` varchar(32) DEFAULT NULL COMMENT '本地项目编号',
@@ -162,15 +108,8 @@ CREATE TABLE `thf_project_corp_info` (
   `pm_phone` varchar(50) DEFAULT NULL COMMENT '项目经理电话',
   PRIMARY KEY (`code`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='项目参建单位';
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `thf_project_worker`
---
 
 DROP TABLE IF EXISTS `thf_project_worker`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `thf_project_worker` (
   `code` varchar(32) NOT NULL COMMENT '编号',
   `local_project_code` varchar(32) DEFAULT NULL COMMENT '本地项目编号',
@@ -219,15 +158,8 @@ CREATE TABLE `thf_project_worker` (
   `remark` text COMMENT '备注',
   PRIMARY KEY (`code`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='班组人员';
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `thf_project_worker_entry_exit_history`
---
 
 DROP TABLE IF EXISTS `thf_project_worker_entry_exit_history`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `thf_project_worker_entry_exit_history` (
   `code` varchar(32) NOT NULL COMMENT '编号',
   `local_project_code` varchar(32) DEFAULT NULL COMMENT '本地项目编号',
@@ -247,15 +179,8 @@ CREATE TABLE `thf_project_worker_entry_exit_history` (
   `voucher_url` varchar(200) DEFAULT NULL COMMENT '凭证扫描件',
   PRIMARY KEY (`code`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='人员进退场';
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `thf_subbranch`
---
 
 DROP TABLE IF EXISTS `thf_subbranch`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `thf_subbranch` (
   `code` varchar(32) NOT NULL COMMENT '编号',
   `bank_code` varchar(32) DEFAULT NULL COMMENT '银行编号',
@@ -266,15 +191,8 @@ CREATE TABLE `thf_subbranch` (
   `remark` text COMMENT '备注',
   PRIMARY KEY (`code`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `thf_supervise`
---
 
 DROP TABLE IF EXISTS `thf_supervise`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `thf_supervise` (
   `code` varchar(32) NOT NULL COMMENT '编号',
   `province` varchar(32) DEFAULT NULL COMMENT '省',
@@ -285,15 +203,8 @@ CREATE TABLE `thf_supervise` (
   `remark` varchar(255) DEFAULT NULL COMMENT '备注',
   PRIMARY KEY (`code`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `thf_team_master`
---
 
 DROP TABLE IF EXISTS `thf_team_master`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `thf_team_master` (
   `code` varchar(32) NOT NULL COMMENT '编号',
   `team_sys_no` int(11) DEFAULT NULL COMMENT '班组编号',
@@ -316,15 +227,8 @@ CREATE TABLE `thf_team_master` (
   `parent_code` varchar(30) DEFAULT NULL COMMENT '上级部门编号',
   PRIMARY KEY (`code`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='班组';
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `thf_user`
---
 
 DROP TABLE IF EXISTS `thf_user`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `thf_user` (
   `user_id` varchar(96) NOT NULL,
   `real_name` varchar(192) DEFAULT NULL,
@@ -343,15 +247,8 @@ CREATE TABLE `thf_user` (
   `remark` text,
   PRIMARY KEY (`user_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `thf_worker_attendance`
---
 
 DROP TABLE IF EXISTS `thf_worker_attendance`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `thf_worker_attendance` (
   `code` varchar(32) NOT NULL COMMENT '编号',
   `local_project_code` varchar(32) DEFAULT NULL COMMENT '本地项目编号',
@@ -380,15 +277,8 @@ CREATE TABLE `thf_worker_attendance` (
   `remark` text COMMENT '备注',
   PRIMARY KEY (`code`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='人员考勤';
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `thf_worker_contract`
---
 
 DROP TABLE IF EXISTS `thf_worker_contract`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `thf_worker_contract` (
   `code` varchar(32) NOT NULL COMMENT '编号',
   `local_project_code` varchar(32) DEFAULT NULL COMMENT '本地项目编号',
@@ -413,15 +303,8 @@ CREATE TABLE `thf_worker_contract` (
   `remark` text COMMENT '备注',
   PRIMARY KEY (`code`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='劳动合同';
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `tqy_corp_basicinfo`
---
 
 DROP TABLE IF EXISTS `tqy_corp_basicinfo`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `tqy_corp_basicinfo` (
   `code` varchar(32) NOT NULL COMMENT '编号',
   `corp_code` varchar(18) DEFAULT NULL COMMENT '统一社会信用代码',
@@ -449,15 +332,8 @@ CREATE TABLE `tqy_corp_basicinfo` (
   `web_site` varchar(200) DEFAULT NULL COMMENT '企业网址',
   PRIMARY KEY (`code`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='企业基本信息';
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `tsys_config`
---
 
 DROP TABLE IF EXISTS `tsys_config`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `tsys_config` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `type` varchar(96) DEFAULT NULL,
@@ -468,15 +344,8 @@ CREATE TABLE `tsys_config` (
   `remark` varchar(765) DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `tsys_dict`
---
 
 DROP TABLE IF EXISTS `tsys_dict`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `tsys_dict` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `type` char(9) DEFAULT NULL COMMENT '类型',
@@ -488,15 +357,8 @@ CREATE TABLE `tsys_dict` (
   `remark` varchar(2295) DEFAULT NULL COMMENT '备注',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=63 DEFAULT CHARSET=utf8;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `tsys_menu`
---
 
 DROP TABLE IF EXISTS `tsys_menu`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `tsys_menu` (
   `code` varchar(32) NOT NULL,
   `name` varchar(288) DEFAULT NULL,
@@ -510,15 +372,8 @@ CREATE TABLE `tsys_menu` (
   `parent_code` varchar(288) DEFAULT NULL,
   PRIMARY KEY (`code`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `tsys_menu_role`
---
 
 DROP TABLE IF EXISTS `tsys_menu_role`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `tsys_menu_role` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `role_code` varchar(96) DEFAULT NULL,
@@ -528,15 +383,8 @@ CREATE TABLE `tsys_menu_role` (
   `remark` varchar(765) DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=4800 DEFAULT CHARSET=utf8;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Table structure for table `tsys_role`
---
 
 DROP TABLE IF EXISTS `tsys_role`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `tsys_role` (
   `code` varchar(96) NOT NULL,
   `type` varchar(4) DEFAULT NULL,
@@ -546,15 +394,18 @@ CREATE TABLE `tsys_role` (
   `remark` varchar(765) DEFAULT NULL,
   PRIMARY KEY (`code`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-/*!40101 SET character_set_client = @saved_cs_client */;
-/*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
-/*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
-/*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;
-/*!40014 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS */;
-/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
-/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
-/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
-/*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
-
--- Dump completed on 2019-03-18 15:24:18
+CREATE TABLE `thf_channel_bank` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `bank_code` varchar(96) DEFAULT NULL,
+  `bank_name` varchar(96) DEFAULT NULL,
+  `channel_type` varchar(12) DEFAULT NULL,
+  `status` varchar(12) DEFAULT NULL,
+  `channel_bank` varchar(96) DEFAULT NULL,
+  `max_order` bigint(32) DEFAULT NULL,
+  `order_amount` bigint(32) DEFAULT NULL,
+  `day_amount` bigint(32) DEFAULT NULL,
+  `month_amount` bigint(32) DEFAULT NULL,
+  `remark` varchar(765) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8

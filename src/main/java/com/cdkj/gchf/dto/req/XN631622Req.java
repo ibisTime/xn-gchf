@@ -18,6 +18,14 @@ public class XN631622Req {
     @NotBlank
     private String projectCode;
 
+    // 国家平台项目名称
+    @NotBlank
+    private String projectName;
+
+    // 国家平台项目密码
+    @NotBlank
+    private String password;
+
     // 项目秘钥
     @NotBlank
     private String secret;
@@ -44,6 +52,22 @@ public class XN631622Req {
 
     public void setCode(String code) {
         this.code = code;
+    }
+
+    public String getProjectName() {
+        return projectName;
+    }
+
+    public void setProjectName(String projectName) {
+        this.projectName = projectName;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
     }
 
 }

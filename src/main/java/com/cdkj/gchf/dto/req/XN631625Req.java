@@ -12,12 +12,23 @@ public class XN631625Req extends APageReq {
     // 国家平台项目编码
     private String projectCode;
 
+    // 国家平台项目名称
+    private String projectName;
+
     public String getProjectCode() {
         return projectCode;
     }
 
     public void setProjectCode(String projectCode) {
         this.projectCode = projectCode;
+    }
+
+    public String getProjectName() {
+        return projectName;
+    }
+
+    public void setProjectName(String projectName) {
+        this.projectName = projectName;
     }
 
 }

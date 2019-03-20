@@ -88,5 +88,8 @@
 		<property name="paginableDAO" ref="payRollDAOImpl"/>
 	</bean>
 	
+	<bean id="projectBuilderLicenseBO" class="com.cdkj.gchf.bo.impl.ProjectBuilderLicenseBOImpl">
+		<property name="paginableDAO" ref="projectBuilderLicenseDAOImpl"/>
+	</bean>
 	
 </beans>

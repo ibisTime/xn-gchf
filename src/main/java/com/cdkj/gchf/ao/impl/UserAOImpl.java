@@ -10,7 +10,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.cdkj.gchf.ao.IUserAO;
-import com.cdkj.gchf.bo.IProjectBO;
 import com.cdkj.gchf.bo.ISYSMenuRoleBO;
 import com.cdkj.gchf.bo.ISYSRoleBO;
 import com.cdkj.gchf.bo.ISmsOutBO;
@@ -22,7 +21,6 @@ import com.cdkj.gchf.common.MD5Util;
 import com.cdkj.gchf.common.PhoneUtil;
 import com.cdkj.gchf.common.PwdUtil;
 import com.cdkj.gchf.core.OrderNoGenerater;
-import com.cdkj.gchf.domain.Project;
 import com.cdkj.gchf.domain.SYSMenuRole;
 import com.cdkj.gchf.domain.SYSRole;
 import com.cdkj.gchf.domain.Subbranch;
@@ -48,9 +46,6 @@ public class UserAOImpl implements IUserAO {
 
     @Autowired
     private ISmsOutBO smsOutBO;
-
-    @Autowired
-    private IProjectBO projectBO;
 
     @Autowired
     private ISubbranchBO subbranchBO;
@@ -88,13 +83,13 @@ public class UserAOImpl implements IUserAO {
         data.setStatus(EUserStatus.NORMAL.getCode());
 
         // 业主用户
-        if (EUserKind.Owner.getCode().equals(req.getType())) {
-            Project project = projectBO.getProject(req.getProjectCode());
-            if (null == project) {
-                throw new BizException("xn00000", "业主端项目不存在！");
-            }
-            organizationCode = project.getCode();
-        }
+        // if (EUserKind.Owner.getCode().equals(req.getType())) {
+        // Project project = projectBO.getProject(req.getProjectCode());
+        // if (null == project) {
+        // throw new BizException("xn00000", "业主端项目不存在！");
+        // }
+        // organizationCode = project.getCode();
+        // }
 
         // 银行用户
         if (EUserKind.Bank.getCode().equals(req.getType())) {
@@ -343,23 +338,23 @@ public class UserAOImpl implements IUserAO {
             data.setArea(supervise.getArea());
 
             // 监管单位项目列表
-            List<String> projectCodeList = projectBO.queryProjectCodeList(
-                supervise.getProvince(), supervise.getCity(),
-                supervise.getArea());
-            data.setProjectCodeList(projectCodeList);
+            // List<String> projectCodeList = projectBO.queryProjectCodeList(
+            // supervise.getProvince(), supervise.getCity(),
+            // supervise.getArea());
+            // data.setProjectCodeList(projectCodeList);
 
         }
 
         // 业主用户数据
-        if (EUserKind.Owner.getCode().equals(data.getType())) {
-            // 项目信息
-            Project project = projectBO.getProject(data.getOrganizationCode());
-            data.setProjectCode(project.getCode());
-            data.setProjectName(project.getName());
-            data.setProvince(project.getProvince());
-            data.setCity(project.getCity());
-            data.setArea(project.getArea());
-        }
+        // if (EUserKind.Owner.getCode().equals(data.getType())) {
+        // // 项目信息
+        // Project project = projectBO.getProject(data.getOrganizationCode());
+        // data.setProjectCode(project.getCode());
+        // data.setProjectName(project.getName());
+        // data.setProvince(project.getProvince());
+        // data.setCity(project.getCity());
+        // data.setArea(project.getArea());
+        // }
 
         // 银行用户数据
         if (EUserKind.Bank.getCode().equals(data.getType())) {

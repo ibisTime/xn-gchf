@@ -1,36 +1,37 @@
-package com.cdkj.gchf.domain;
+package com.cdkj.gchf.dto.req;
 
 import java.math.BigDecimal;
 import java.util.Date;
+import java.util.List;
 
-import com.cdkj.gchf.dao.base.ABaseDO;
+import org.hibernate.validator.constraints.NotBlank;
+import org.hibernate.validator.constraints.NotEmpty;
 
 /**
-* 项目基本信息
-* @author: xionk 
-* @since: 2019-03-19 16:52:13
-* @history:
-*/
-public class Project extends ABaseDO {
-
-    private static final long serialVersionUID = -1083113402316735859L;
-
-    // 编号
-    private String code;
+ * 新增项目基本信息
+ * @author: silver 
+ * @since: Mar 13, 2019 1:34:10 PM 
+ * @history:
+ */
+public class XN631600Req {
 
     // 总承包单位统一社会信用代码
+    @NotBlank
     private String contractorCorpCode;
 
     // 总承包单位名称
+    @NotBlank
     private String contractorCorpName;
 
     // 项目名称
+    @NotBlank
     private String name;
 
     // 项目简介
     private String description;
 
     // 项目分类
+    @NotBlank
     private String category;
 
     // 建设单位名称
@@ -46,6 +47,7 @@ public class Project extends ABaseDO {
     private String prjPlanNum;
 
     // 项目所在地
+    @NotBlank
     private String areaCode;
 
     // 总投资
@@ -70,6 +72,7 @@ public class Project extends ABaseDO {
     private String linkPhone;
 
     // 项目状态
+    @NotBlank
     private String prjStatus;
 
     // 经度
@@ -102,17 +105,13 @@ public class Project extends ABaseDO {
     // 第三方项目编码
     private String thirdPartyProjectCode;
 
-    /****DB Properties****/
-    // 操作人
+    // 操作用户
+    @NotBlank
     private String userId;
 
-    public String getCode() {
-        return code;
-    }
-
-    public void setCode(String code) {
-        this.code = code;
-    }
+    // 施工许可证
+    @NotEmpty
+    private List<XN631600ReqLicenses> builderLicenses;
 
     public String getContractorCorpCode() {
         return contractorCorpCode;
@@ -344,6 +343,14 @@ public class Project extends ABaseDO {
 
     public void setUserId(String userId) {
         this.userId = userId;
+    }
+
+    public List<XN631600ReqLicenses> getBuilderLicenses() {
+        return builderLicenses;
+    }
+
+    public void setBuilderLicenses(List<XN631600ReqLicenses> builderLicenses) {
+        this.builderLicenses = builderLicenses;
     }
 
 }

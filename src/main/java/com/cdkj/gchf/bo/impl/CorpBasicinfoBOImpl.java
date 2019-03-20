@@ -13,6 +13,7 @@ import com.alibaba.fastjson.JSONObject;
 import com.cdkj.gchf.bo.ICorpBasicinfoBO;
 import com.cdkj.gchf.bo.base.Paginable;
 import com.cdkj.gchf.bo.base.PaginableBOImpl;
+import com.cdkj.gchf.common.AesUtils;
 import com.cdkj.gchf.core.OrderNoGenerater;
 import com.cdkj.gchf.dao.ICorpBasicinfoDAO;
 import com.cdkj.gchf.domain.CorpBasicinfo;
@@ -70,6 +71,10 @@ public class CorpBasicinfoBOImpl extends PaginableBOImpl<CorpBasicinfo>
 
     @Override
     public void doUpload(XN631900Req req, ProjectConfig projectConfig) {
+
+        req.setLegalManIdcardNumber(AesUtils
+            .encrypt(req.getLegalManIdcardNumber(), projectConfig.getSecret()));
+
         CorpBasicinfo corpBasicinfo = new CorpBasicinfo();
         BeanUtils.copyProperties(req, corpBasicinfo);
 

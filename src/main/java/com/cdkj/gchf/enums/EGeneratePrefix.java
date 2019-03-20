@@ -10,36 +10,35 @@ import java.util.Map;
  */
 public enum EGeneratePrefix {
 
-    ADVERTISE("AD", "广告"), DH("DH", "导航"), TRADE_ORDER("JY",
-            "交易订单"), ARBITRATE("ZC", "仲裁工单"),
+    CollProject("P", "项目编号"),
 
-    Account("A", "账户"), AJour("AJ", "账户流水"), EXCHANGE_CURRENCY("EC",
-            "币种兑换"), HLORDER("HL",
-                    "红蓝订单"), Charge("CZ", "充值订单"), Withdraw("QX", "取现订单"),
+    SubBranch("SB", "支行"),
 
-    Collection("CO", "归集订单"), Department("D", "部门编号"), Company("C",
-            "公司编号"), Project("P",
-                    "项目编号"), Bcontract("B", "承包合同"), CompanyBank("CB", "公司账户表"),
+    Supervise("SU", "监管单位"),
 
-    Progress("PR", "工程进度"), Employ("E", "雇佣接口"), Staff("S", "员工编号"), BankCard(
-            "BK", "工资卡编号"), Ccontract("CC", "用工合同"), Attendance("AT", "考勤表"),
+    OperatorGuide("OG", "操作指南"),
 
-    Salary("SA", "工资条"), Message("M", "代发消息"), SalaryLog("SA", "工资日志"), Report(
-            "R", "统计报表"), StaffLog("SL", "员工记录"), QueryLog("QL", "查询记录"),
+    CorpBasicinfo("CB", "企业基本信息"),
 
-    Skill("SK", "技能证书"), EventRemind("AR", "异常通知"), SubBranch("SB",
-            "支行"), Leave("L", "请假明细"), Supervise("SU",
-                    "监管单位"), OperatorGuide("OG", "操作指南"),
+    Project("P", "项目基本信息"),
 
-    CorpBasicinfo("CB", "企业基本信息"), ProjectConfig("PC", "项目配置"),
+    ProjectConfig("PC", "项目配置"),
 
-    ProjectCorpInfo("PCI", "项目参建单位"), TeamMaster("TM", "TeamMaster"),
+    ProjectCorpInfo("PCI", "项目参建单位"),
 
-    ProjectWorker("PW", "项目员工"), ProjectWorkerEntryExitHistory("PWEE", "人员进退场"),
+    TeamMaster("TM", "TeamMaster"),
 
-    WorkerContract("WC", "人员合同"), WorkerAttendance("WA", "员工考勤"),
+    ProjectWorker("PW", "项目员工"),
 
-    PayRoll("PR", "工资单");
+    ProjectWorkerEntryExitHistory("PWEE", "人员进退场"),
+
+    WorkerContract("WC", "人员合同"),
+
+    WorkerAttendance("WA", "员工考勤"),
+
+    PayRoll("PR", "工资单"),
+
+    ProjectBuilderLicense("PBL", "项目许可证");
 
     public static Map<String, EGeneratePrefix> getMap() {
         Map<String, EGeneratePrefix> map = new HashMap<String, EGeneratePrefix>();

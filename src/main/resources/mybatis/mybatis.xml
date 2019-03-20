@@ -29,5 +29,7 @@
 		<typeAlias alias="workerAttendance" type="com.cdkj.gchf.domain.WorkerAttendance" />
 		<typeAlias alias="payRoll" type="com.cdkj.gchf.domain.PayRoll" />
 		
+		<typeAlias alias="projectBuilderLicense" type="com.cdkj.gchf.domain.ProjectBuilderLicense" />
+		
 	</typeAliases>
 </configuration>

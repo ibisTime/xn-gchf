@@ -18,37 +18,7 @@ public class ProjectDAOImpl extends AMybatisTemplate implements IProjectDAO {
 
     @Override
     public int delete(Project data) {
-        return 0;
-    }
-
-    @Override
-    public int updateEditProject(Project data) {
-        return super.update(NAMESPACE.concat("update_editProject"), data);
-    }
-
-    @Override
-    public int updateStartProject(Project data) {
-        return super.update(NAMESPACE.concat("update_startProject"), data);
-    }
-
-    @Override
-    public void updatePauseProject(Project data) {
-        super.update(NAMESPACE.concat("update_pauseProject"), data);
-    }
-
-    @Override
-    public void updateRestartProject(Project data) {
-        super.update(NAMESPACE.concat("update_restartProject"), data);
-    }
-
-    @Override
-    public void updateEndProject(Project data) {
-        super.update(NAMESPACE.concat("update_endProject"), data);
-    }
-
-    @Override
-    public int updateSalaryDelayDays(Project data) {
-        return super.update(NAMESPACE.concat("update_salaryDelayDays"), data);
+        return super.delete(NAMESPACE.concat("delete_project"), data);
     }
 
     @Override
@@ -73,6 +43,11 @@ public class ProjectDAOImpl extends AMybatisTemplate implements IProjectDAO {
     public List<Project> selectList(Project condition, int start, int count) {
         return super.selectList(NAMESPACE.concat("select_project"), start,
             count, condition, Project.class);
+    }
+
+    @Override
+    public void update(Project project) {
+        super.update(NAMESPACE.concat("update_project"), project);
     }
 
 }

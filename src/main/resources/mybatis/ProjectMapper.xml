@@ -4,35 +4,39 @@
 <mapper namespace="com.cdkj.gchf.dao.IProjectDAO">
 	<resultMap id="project_DB_Result" type="project">
 		<result column="code" property="code" />
+		<result column="contractor_corp_code" property="contractorCorpCode" />
+		<result column="contractor_corp_name" property="contractorCorpName" />
 		<result column="name" property="name" />
-		<result column="company_name" property="companyName" />
-		<result column="charge_user" property="chargeUser" />
-		<result column="charge_mobile" property="chargeMobile" />
+		<result column="description" property="description" />
 		
-		<result column="start_datetime" property="startDatetime" />
-		<result column="end_datetime" property="endDatetime" />
-		<result column="attendance_starttime" property="attendanceStarttime" />
-		<result column="attendance_endtime" property="attendanceEndtime" />
+		<result column="category" property="category" />
+		<result column="build_corp_name" property="buildCorpName" />
+		<result column="build_corp_code" property="buildCorpCode" />
+		<result column="build_plan_num" property="buildPlanNum" />
+		<result column="prj_plan_num" property="prjPlanNum" />
 		
-		<result column="longitude" property="longitude" />
-		<result column="latitude" property="latitude" />
-		<result column="province" property="province" />
-		<result column="city" property="city" />
-		<result column="area" property="area" />
+		<result column="area_code" property="areaCode" />
+		<result column="invest" property="invest" />
+		<result column="building_area" property="buildingArea" />
+		<result column="building_length" property="buildingLength" />
+		<result column="start_date" property="startDate" />
+		
+		<result column="complete_date" property="completeDate" />
+		<result column="link_man" property="linkMan" />
+		<result column="link_phone" property="linkPhone" />
+		<result column="prj_status" property="prjStatus" />
+		<result column="lng" property="lng" />
+		
+		<result column="lat" property="lat" />
 		<result column="address" property="address" />
+		<result column="approval_num" property="approvalNum" />
+		<result column="approval_level_num" property="approvalLevelNum" />
+		<result column="prj_size" property="prjSize" />
 		
-		<result column="salary_create_datetime" property="salaryCreateDatetime" />
-		<result column="salary_datetime" property="salaryDatetime" />
-		<result column="salary_delay_days" property="salaryDelayDays" />
-		<result column="status" property="status" />
-		<result column="supervise_code" property="superviseCode" />
-		<result column="approver" property="approver" />
-	
-		<result column="approve_datetime" property="approveDatetime" />
-		<result column="approve_note" property="approveNote" />
-		<result column="updater" property="updater" />
-		<result column="update_datetime" property="updateDatetime" />
-		<result column="remark" property="remark" />
+		<result column="property_num" property="propertyNum" />
+		<result column="prj_num" property="prjNum" />
+		<result column="nation_num" property="nationNum" />
+		<result column="third_party_project_code" property="thirdPartyProjectCode" />
 	</resultMap>
 	
 	<sql id="where_condition">
@@ -40,103 +44,54 @@
 			<if test="code != null and code != '' ">
 				AND t.code = #{code}
 			</if>
+			<if test="contractorCorpCode != null and contractorCorpCode != '' ">
+				AND t.contractor_corp_code = #{contractorCorpCode}
+			</if>
 			<if test="name != null and name != '' ">
-				AND t.name like "%"#{name}"%"
+				AND t.name like '%'#{name}'%'
 			</if>
-			<choose>
-				<when test="projectCodeList != null and projectCodeList.size() > 0">
-					AND t.code IN 
-					<foreach collection="projectCodeList" item="item" index="index" open="(" separator="," close=")">
-						#{item}
-					</foreach>
-				</when>
-				<when test="projectCodeList != null and projectCodeList.size() == 0">
-					AND t.code IN ('')
-				</when>
-			</choose>
-			
-			<if test="province != null and province != '' ">
-				AND t.province = #{province}
+			<if test="category != null and category != '' ">
+				AND t.category = #{category}
 			</if>
-			<if test="city != null and city != '' ">
-				AND t.city = #{city}
-			</if>
-			<if test="area != null and area != '' ">
-				AND t.area = #{area}
-			</if>
-			<if test="chargeUser != null and chargeUser != '' ">
-				AND t.charge_user = #{chargeUser}
-			</if>
-			<if test="chargeMobile != null and chargeMobile != '' ">
-				AND t.charge_mobile = #{chargeMobile}
-			</if>
-			<if test="startDatetime != null and startDatetime != '' ">
-				AND t.start_datetime = #{startDatetime}
-			</if>
-			<if test="endDatetime != null and endDatetime != '' ">
-				AND t.end_datetime = #{endDatetime}
-			</if>
-			<if test="longitude != null and longitude != '' ">
-				AND t.longitude = #{longitude}
-			</if>
-			<if test="latitude != null and latitude != '' ">
-				AND t.latitude = #{latitude}
-			</if>
-			
-			<if test="salaryDatetime != null and salaryDatetime != '' ">
-				AND t.salary_datetime = #{salaryDatetime}
-			</if>
-			<if test="status != null and status != '' ">
-				AND t.status = #{status}
-			</if>
-			<if test="superviseCode != null and superviseCode != '' ">
-				AND t.supervise_code = #{superviseCode}
-			</if>
-			<if test="approver != null and approver != '' ">
-				AND t.approver = #{approver}
-			</if>
-			<if test="updater != null and updater != '' ">
-				AND t.updater = #{updater}
-			</if>
-			<if test="keyword != null and keyword != '' ">
-				AND (t.name like "%"#{keyword}"%" OR  t.charge_mobile like "%"#{keyword}"%")
-			</if>
-			
 		</trim>
 	</sql>
 	
 	<select id="select_project" parameterType="project" resultMap="project_DB_Result">
 		SELECT
 		t.code
+		,t.contractor_corp_code
+		,t.contractor_corp_name
 		,t.name
-		,t.company_name
-		,t.charge_user
+		,t.description
 		
-		,t.charge_mobile
-		,t.start_datetime
-		,t.end_datetime
-		,t.attendance_starttime
-		,t.attendance_endtime
+		,t.category
+		,t.build_corp_name
+		,t.build_corp_code
+		,t.build_plan_num
+		,t.prj_plan_num
 		
-		,t.longitude
-		,t.latitude
-		,t.province
-		,t.city
-		,t.area
+		,t.area_code
+		,t.invest
+		,t.building_area
+		,t.building_length
+		,t.start_date
 		
+		,t.complete_date
+		,t.link_man
+		,t.link_phone
+		,t.prj_status
+		,t.lng
+		
+		,t.lat
 		,t.address
-		,t.salary_create_datetime
-		,t.salary_datetime
-		,t.salary_delay_days
-		,t.status
-		,t.supervise_code
-		,t.approver
+		,t.approval_num
+		,t.approval_level_num
+		,t.prj_size
 		
-		,t.approve_datetime
-		,t.approve_note
-		,t.updater
-		,t.update_datetime
-		,t.remark
+		,t.property_num
+		,t.prj_num
+		,t.nation_num
+		,t.third_party_project_code
 		FROM
 		thf_project t
 		<include refid="where_condition" />
@@ -146,107 +101,127 @@
 			</if>
 		</trim>
 	</select>
-	
+
 	<select id="select_project_count" parameterType="project"
 		resultType="java.lang.Long">
 		SELECT count(1) FROM thf_project t
 		<include refid="where_condition" />
 	</select>
-	
+
 	<insert id="insert_project" parameterType="project">
 		INSERT INTO
 		thf_project(
 		code
+		,contractor_corp_code
+		,contractor_corp_name
 		,name
-		,status
-		,updater
-		,update_datetime
-		,remark
+		,description
+		
+		,category
+		,build_corp_name
+		,build_corp_code
+		,build_plan_num
+		,prj_plan_num
+		
+		,area_code
+		,invest
+		,building_area
+		,building_length
+		,start_date
+		
+		,complete_date
+		,link_man
+		,link_phone
+		,prj_status
+		,lng
+		
+		,lat
+		,address
+		,approval_num
+		,approval_level_num
+		,prj_size
+		
+		,property_num
+		,prj_num
+		,nation_num
+		,third_party_project_code
 		)
 		VALUES(
 		#{code}
+		,#{contractorCorpCode}
+		,#{contractorCorpName}
 		,#{name}
-		,#{status}
-		,#{updater}
-		,#{updateDatetime}
-		,#{remark}
+		,#{description}
+		
+		,#{category}
+		,#{buildCorpName}
+		,#{buildCorpCode}
+		,#{buildPlanNum}
+		,#{prjPlanNum}
+		
+		,#{areaCode}
+		,#{invest}
+		,#{buildingArea}
+		,#{buildingLength}
+		,#{startDate}
+		
+		,#{completeDate}
+		,#{linkMan}
+		,#{linkPhone}
+		,#{prjStatus}
+		,#{lng}
+		
+		,#{lat}
+		,#{address}
+		,#{approvalNum}
+		,#{approvalLevelNum}
+		,#{prjSize}
+		
+		,#{propertyNum}
+		,#{prjNum}
+		,#{nationNum}
+		,#{thirdPartyProjectCode}
 		)
 	</insert>
-	
-	<update id="update_editProject" parameterType="project">
+
+	<update id="update_project" parameterType="project">
 		UPDATE thf_project
 		SET
-		company_name = #{companyName}
-		,charge_user = #{chargeUser}  
-		,charge_mobile = #{chargeMobile}
-		,start_datetime = #{startDatetime}
-		,longitude = #{longitude}
+		contractor_corp_code = #{contractorCorpCode}
+		,contractor_corp_name = #{contractorCorpName}
+		,name = #{name}
+		,description = #{description}
+		,category = #{category}
 		
-		,latitude = #{latitude}
-		,province = #{province}
-		,city = #{city}
-		,area = #{area}
+		,build_corp_name = #{buildCorpName}
+		,build_corp_code = #{buildCorpCode}
+		,build_plan_num = #{buildPlanNum}
+		,prj_plan_num = #{prjPlanNum}
+		,area_code = #{areaCode}
+		
+		,invest = #{invest}
+		,building_area = #{buildingArea}
+		,building_length = #{buildingLength}
+		,start_date = #{startDate}
+		,complete_date = #{completeDate}
+		
+		,link_man = #{linkMan}
+		,link_phone = #{linkPhone}
+		,prj_status = #{prjStatus}
+		,lng = #{lng}
+		,lat = #{lat}
+		
 		,address = #{address}
+		,approval_num = #{approvalNum}
+		,approval_level_num = #{approvalLevelNum}
+		,prj_size = #{prjSize}
+		,property_num = #{propertyNum}
 		
-		,salary_datetime = #{salaryDatetime}
-		,salary_create_datetime = #{salaryCreateDatetime}
-		,attendance_starttime = #{attendanceStarttime}
-		,attendance_endtime = #{attendanceEndtime}
-		,status = #{status}
-		
-		,supervise_code = #{superviseCode}
-		,updater = #{updater}
-		,update_datetime = #{updateDatetime}
-		,remark = #{remark}
+		,prj_num = #{prjNum}
+		,nation_num = #{nationNum}
+		,third_party_project_code = #{thirdPartyProjectCode}
 		WHERE code = #{code}
 	</update>
-	
-	<update id="update_startProject" parameterType="project">
-		UPDATE thf_project
-		SET
-		status = #{status}
-		,approver = #{approver}
-		,approve_datetime = #{approveDatetime}
-		,approve_note = #{approveNote}
-		WHERE code = #{code}
-	</update>
-	
-	<update id="update_pauseProject" parameterType="project">
-		UPDATE thf_project
-		SET
-		status = #{status}
-		,updater = #{updater}
-		,update_datetime = #{updateDatetime}
-		,remark = #{remark}
-		WHERE code = #{code}
-	</update>
-	
-	<update id="update_restartProject" parameterType="project">
-		UPDATE thf_project
-		SET
-		status = #{status}
-		,updater = #{updater}
-		,update_datetime = #{updateDatetime}
-		,remark = #{remark}
-		WHERE code = #{code}
-	</update>
-	
-	<update id="update_endProject" parameterType="project">
-		UPDATE thf_project
-		SET
-		status = #{status}
-		,end_datetime = #{endDatetime}
-		,updater = #{updater}
-		,update_datetime = #{updateDatetime}
-		,remark = #{remark}
-		WHERE code = #{code}
-	</update>
-	
-	<update id="update_salaryDelayDays" parameterType="project">
-		UPDATE thf_project
-		SET
-		salary_delay_days = #{salaryDelayDays}
-		WHERE code = #{code}
-	</update>
-	
+
+
 </mapper>

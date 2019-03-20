@@ -8,7 +8,6 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import com.cdkj.gchf.bo.IProjectBO;
 import com.cdkj.gchf.bo.ISubbranchBO;
 import com.cdkj.gchf.bo.ISuperviseBO;
 import com.cdkj.gchf.bo.IUserBO;
@@ -18,7 +17,6 @@ import com.cdkj.gchf.common.PhoneUtil;
 import com.cdkj.gchf.common.PwdUtil;
 import com.cdkj.gchf.core.OrderNoGenerater;
 import com.cdkj.gchf.dao.IUserDAO;
-import com.cdkj.gchf.domain.Project;
 import com.cdkj.gchf.domain.Subbranch;
 import com.cdkj.gchf.domain.Supervise;
 import com.cdkj.gchf.domain.User;
@@ -31,9 +29,6 @@ public class UserBOImpl extends PaginableBOImpl<User> implements IUserBO {
 
     @Autowired
     private IUserDAO userDAO;
-
-    @Autowired
-    private IProjectBO projectBO;
 
     @Autowired
     private ISubbranchBO subbranchBO;
@@ -231,23 +226,23 @@ public class UserBOImpl extends PaginableBOImpl<User> implements IUserBO {
             }
 
             // 监管单位项目列表
-            List<String> projectCodeList = projectBO.queryProjectCodeList(
-                supervise.getProvince(), supervise.getCity(),
-                supervise.getArea());
-            data.setProjectCodeList(projectCodeList);
+            // List<String> projectCodeList = projectBO.queryProjectCodeList(
+            // supervise.getProvince(), supervise.getCity(),
+            // supervise.getArea());
+            // data.setProjectCodeList(projectCodeList);
         }
 
         // 业主用户数据
-        if (EUserKind.Owner.getCode().equals(data.getType())) {
-            Project project = projectBO.getProject(data.getOrganizationCode());
-            if (null != project) {
-                data.setProjectCode(project.getCode());
-                data.setProjectName(project.getName());
-                data.setProvince(project.getProvince());
-                data.setCity(project.getCity());
-                data.setArea(project.getArea());
-            }
-        }
+        // if (EUserKind.Owner.getCode().equals(data.getType())) {
+        // Project project = projectBO.getProject(data.getOrganizationCode());
+        // if (null != project) {
+        // data.setProjectCode(project.getCode());
+        // data.setProjectName(project.getName());
+        // data.setProvince(project.getProvince());
+        // data.setCity(project.getCity());
+        // data.setArea(project.getArea());
+        // }
+        // }
 
         // 银行用户数据
         if (EUserKind.Bank.getCode().equals(data.getType())) {

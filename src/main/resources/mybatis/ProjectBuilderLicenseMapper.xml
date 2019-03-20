@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cdkj.gchf.dao.IProjectBuilderLicenseDAO">
+	<resultMap id="projectBuilderLicense_DB_Result" type="projectBuilderLicense">
+		<result column="code" property="code" />
+		<result column="project_code" property="projectCode" />
+		<result column="prj_name" property="prjName" />
+		<result column="builder_license_num" property="builderLicenseNum" />
+	</resultMap>
+	
+	<sql id="where_condition">
+		<trim prefix="WHERE" prefixOverrides="AND | OR">
+			<if test="code != null and code != '' ">
+				AND t.code = #{code}
+			</if>
+		</trim>
+	</sql>
+	
+	<select id="select_projectBuilderLicense" parameterType="projectBuilderLicense" resultMap="projectBuilderLicense_DB_Result">
+		SELECT
+		t.code
+		,t.project_code
+		,t.prj_name
+		,t.builder_license_num
+		FROM
+		thf_project_builder_license t
+		<include refid="where_condition" />
+		<trim prefix="ORDER BY ">
+			<if test="order != null and order != '' ">
+				t.${order}
+			</if>
+		</trim>
+	</select>
+
+	<select id="select_projectBuilderLicense_count" parameterType="projectBuilderLicense"
+		resultType="java.lang.Long">
+		SELECT count(1) FROM thf_project_builder_license t
+		<include refid="where_condition" />
+	</select>
+
+	<insert id="insert_projectBuilderLicense" parameterType="projectBuilderLicense">
+		INSERT INTO
+		thf_project_builder_license(
+		code
+		,project_code
+		,prj_name
+		,builder_license_num
+		)
+		VALUES(
+		#{code}
+		,#{projectCode}
+		,#{prjName}
+		,#{builderLicenseNum}
+		)
+	</insert>
+
+	<delete id="delete_byProject">
+		DELETE FROM thf_project_builder_license WHERE project_code = #{projectCode}
+	</delete>
+	
+</mapper>

@@ -68,7 +68,7 @@ CREATE TABLE `thf_project` (
   `complete_date` datetime DEFAULT NULL COMMENT '竣工日期',
   `link_man` varchar(50)  DEFAULT NULL COMMENT '联系人姓名',
   `link_phone` varchar(50) DEFAULT NULL COMMENT '联系人电话',
-  `prj_status` int(3) DEFAULT '0' COMMENT '项目状态',
+  `prj_status` varchar(3) DEFAULT '0' COMMENT '项目状态',
   `lng` decimal(18,15) DEFAULT NULL COMMENT '经度',
   `lat` decimal(18,15) DEFAULT NULL COMMENT '纬度',
   `address` varchar(200) DEFAULT NULL COMMENT '项目地址',

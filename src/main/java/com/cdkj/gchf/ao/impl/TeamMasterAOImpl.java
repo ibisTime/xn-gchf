@@ -11,6 +11,8 @@ import com.cdkj.gchf.bo.ITeamMasterBO;
 import com.cdkj.gchf.bo.base.Paginable;
 import com.cdkj.gchf.domain.ProjectConfig;
 import com.cdkj.gchf.domain.TeamMaster;
+import com.cdkj.gchf.dto.req.XN631650Req;
+import com.cdkj.gchf.dto.req.XN631652Req;
 import com.cdkj.gchf.dto.req.XN631908Req;
 import com.cdkj.gchf.dto.req.XN631909Req;
 import com.cdkj.gchf.dto.req.XN631910Req;
@@ -26,18 +28,18 @@ public class TeamMasterAOImpl implements ITeamMasterAO {
     private IProjectConfigBO projectConfigBO;
 
     @Override
-    public String addTeamMaster(TeamMaster data) {
+    public String addTeamMaster(XN631650Req data) {
         return teamMasterBO.saveTeamMaster(data);
     }
 
     @Override
-    public int editTeamMaster(TeamMaster data) {
-        return teamMasterBO.refreshTeamMaster(data);
+    public void editTeamMaster(XN631652Req data) {
+        teamMasterBO.refreshTeamMaster(data);
     }
 
     @Override
-    public int dropTeamMaster(String code) {
-        return teamMasterBO.removeTeamMaster(code);
+    public void dropTeamMaster(String code) {
+        teamMasterBO.removeTeamMaster(code);
     }
 
     @Override

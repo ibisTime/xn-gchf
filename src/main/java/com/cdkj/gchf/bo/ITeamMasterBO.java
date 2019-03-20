@@ -6,17 +6,19 @@ import com.cdkj.gchf.bo.base.IPaginableBO;
 import com.cdkj.gchf.bo.base.Paginable;
 import com.cdkj.gchf.domain.ProjectConfig;
 import com.cdkj.gchf.domain.TeamMaster;
+import com.cdkj.gchf.dto.req.XN631650Req;
+import com.cdkj.gchf.dto.req.XN631652Req;
 import com.cdkj.gchf.dto.req.XN631908Req;
 import com.cdkj.gchf.dto.req.XN631909Req;
 import com.cdkj.gchf.dto.req.XN631910Req;
 
 public interface ITeamMasterBO extends IPaginableBO<TeamMaster> {
 
-    public String saveTeamMaster(TeamMaster data);
+    public String saveTeamMaster(XN631650Req data);
 
-    public int removeTeamMaster(String code);
+    public void removeTeamMaster(String code);
 
-    public int refreshTeamMaster(TeamMaster data);
+    public void refreshTeamMaster(XN631652Req data);
 
     public List<TeamMaster> queryTeamMasterList(TeamMaster condition);
 

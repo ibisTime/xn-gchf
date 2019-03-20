@@ -17,6 +17,8 @@ import com.cdkj.gchf.core.OrderNoGenerater;
 import com.cdkj.gchf.dao.ITeamMasterDAO;
 import com.cdkj.gchf.domain.ProjectConfig;
 import com.cdkj.gchf.domain.TeamMaster;
+import com.cdkj.gchf.dto.req.XN631650Req;
+import com.cdkj.gchf.dto.req.XN631652Req;
 import com.cdkj.gchf.dto.req.XN631908Req;
 import com.cdkj.gchf.dto.req.XN631909Req;
 import com.cdkj.gchf.dto.req.XN631910Req;
@@ -33,35 +35,31 @@ public class TeamMasterBOImpl extends PaginableBOImpl<TeamMaster>
     private ITeamMasterDAO teamMasterDAO;
 
     @Override
-    public String saveTeamMaster(TeamMaster data) {
+    public String saveTeamMaster(XN631650Req data) {
         String code = null;
+        TeamMaster teamMasterInfo = new TeamMaster();
+        BeanUtils.copyProperties(data, teamMasterInfo);
         if (data != null) {
             code = OrderNoGenerater
                 .generate(EGeneratePrefix.TeamMaster.getCode());
-            data.setCode(code);
-            teamMasterDAO.insert(data);
+            teamMasterInfo.setCode(code);
+            teamMasterDAO.insert(teamMasterInfo);
         }
         return code;
     }
 
     @Override
-    public int removeTeamMaster(String code) {
-        int count = 0;
-        if (StringUtils.isNotBlank(code)) {
-            TeamMaster data = new TeamMaster();
-            data.setCode(code);
-            count = teamMasterDAO.delete(data);
-        }
-        return count;
+    public void removeTeamMaster(String code) {
+        TeamMaster data = new TeamMaster();
+        data.setCode(code);
+        teamMasterDAO.delete(data);
     }
 
     @Override
-    public int refreshTeamMaster(TeamMaster data) {
-        int count = 0;
-        if (StringUtils.isNotBlank(data.getCode())) {
-            count = teamMasterDAO.update(data);
-        }
-        return count;
+    public void refreshTeamMaster(XN631652Req data) {
+        TeamMaster teamMaster = new TeamMaster();
+        BeanUtils.copyProperties(data, teamMaster);
+        teamMasterDAO.update(teamMaster);
     }
 
     @Override

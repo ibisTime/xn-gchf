@@ -1,5 +1,6 @@
 package com.cdkj.gchf.bo.impl;
 
+import java.text.SimpleDateFormat;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -13,10 +14,13 @@ import com.alibaba.fastjson.JSONObject;
 import com.cdkj.gchf.bo.IProjectCorpInfoBO;
 import com.cdkj.gchf.bo.base.Paginable;
 import com.cdkj.gchf.bo.base.PaginableBOImpl;
+import com.cdkj.gchf.common.DateUtil;
 import com.cdkj.gchf.core.OrderNoGenerater;
 import com.cdkj.gchf.dao.IProjectCorpInfoDAO;
 import com.cdkj.gchf.domain.ProjectConfig;
 import com.cdkj.gchf.domain.ProjectCorpInfo;
+import com.cdkj.gchf.dto.req.XN631630Req;
+import com.cdkj.gchf.dto.req.XN631632Req;
 import com.cdkj.gchf.dto.req.XN631905Req;
 import com.cdkj.gchf.dto.req.XN631906Req;
 import com.cdkj.gchf.dto.req.XN631907Req;
@@ -24,6 +28,7 @@ import com.cdkj.gchf.enums.EGeneratePrefix;
 import com.cdkj.gchf.exception.BizException;
 import com.cdkj.gchf.gov.GovConnecter;
 import com.cdkj.gchf.gov.GovUtil;
+import com.fasterxml.jackson.databind.BeanProperty;
 
 @Component
 public class ProjectCorpInfoBOImpl extends PaginableBOImpl<ProjectCorpInfo>
@@ -33,35 +38,33 @@ public class ProjectCorpInfoBOImpl extends PaginableBOImpl<ProjectCorpInfo>
     private IProjectCorpInfoDAO projectCorpInfoDAO;
 
     @Override
-    public String saveProjectCorpInfo(ProjectCorpInfo data) {
-        String code = null;
-        if (data != null) {
-            code = OrderNoGenerater
+    public String saveProjectCorpInfo(XN631630Req req) {
+    	ProjectCorpInfo projectCorpInfo = new ProjectCorpInfo();
+    	BeanUtils.copyProperties(req, projectCorpInfo);
+    	
+        String code = OrderNoGenerater
                 .generate(EGeneratePrefix.ProjectCorpInfo.getCode());
-            data.setCode(code);
-            projectCorpInfoDAO.insert(data);
-        }
+        projectCorpInfo.setCode(code);
+        projectCorpInfoDAO.insert(projectCorpInfo);
+            
         return code;
     }
 
     @Override
-    public int removeProjectCorpInfo(String code) {
-        int count = 0;
+    public void removeProjectCorpInfo(String code) {
         if (StringUtils.isNotBlank(code)) {
             ProjectCorpInfo data = new ProjectCorpInfo();
             data.setCode(code);
-            count = projectCorpInfoDAO.delete(data);
+           projectCorpInfoDAO.delete(data);
         }
-        return count;
     }
 
     @Override
-    public int refreshProjectCorpInfo(ProjectCorpInfo data) {
-        int count = 0;
-        if (StringUtils.isNotBlank(data.getCode())) {
-            count = projectCorpInfoDAO.update(data);
-        }
-        return count;
+    public void refreshProjectCorpInfo(XN631632Req req) {
+    	ProjectCorpInfo projectCorpInfo = new ProjectCorpInfo();
+    	BeanUtils.copyProperties(req, projectCorpInfo);
+    	
+        projectCorpInfoDAO.update(projectCorpInfo);
     }
 
     @Override

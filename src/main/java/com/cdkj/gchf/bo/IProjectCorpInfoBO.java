@@ -6,17 +6,19 @@ import com.cdkj.gchf.bo.base.IPaginableBO;
 import com.cdkj.gchf.bo.base.Paginable;
 import com.cdkj.gchf.domain.ProjectConfig;
 import com.cdkj.gchf.domain.ProjectCorpInfo;
+import com.cdkj.gchf.dto.req.XN631630Req;
+import com.cdkj.gchf.dto.req.XN631632Req;
 import com.cdkj.gchf.dto.req.XN631905Req;
 import com.cdkj.gchf.dto.req.XN631906Req;
 import com.cdkj.gchf.dto.req.XN631907Req;
 
 public interface IProjectCorpInfoBO extends IPaginableBO<ProjectCorpInfo> {
 
-    public String saveProjectCorpInfo(ProjectCorpInfo data);
+    public String saveProjectCorpInfo(XN631630Req req);
 
-    public int removeProjectCorpInfo(String code);
+    public void removeProjectCorpInfo(String code);
 
-    public int refreshProjectCorpInfo(ProjectCorpInfo data);
+    public void refreshProjectCorpInfo(XN631632Req req);
 
     public List<ProjectCorpInfo> queryProjectCorpInfoList(
             ProjectCorpInfo condition);
@@ -27,7 +29,8 @@ public interface IProjectCorpInfoBO extends IPaginableBO<ProjectCorpInfo> {
     public void doUpload(XN631905Req req, ProjectConfig projectConfig);
 
     public void doUpdate(XN631906Req req, ProjectConfig projectConfig);
-
+    
     public Paginable<ProjectCorpInfo> doQuery(XN631907Req req,
             ProjectConfig projectConfig);
+    
 }

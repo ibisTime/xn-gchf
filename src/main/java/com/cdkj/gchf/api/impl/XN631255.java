@@ -35,7 +35,6 @@ public class XN631255 extends AProcessor {
             column = ICorpBasicinfoAO.DEFAULT_ORDER_COLUMN;
         }
         condition.setOrder(column, req.getOrderDir());
-
         int start = StringValidater.toInteger(req.getStart());
         int limit = StringValidater.toInteger(req.getLimit());
 

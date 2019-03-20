@@ -4,39 +4,52 @@
 <mapper namespace="com.cdkj.gchf.dao.IProjectCorpInfoDAO">
 	<resultMap id="projectCorpInfo_DB_Result" type="projectCorpInfo">
 		<result column="code" property="code" />
-		<result column="local_project_code" property="localProjectCode" />
 		<result column="project_code" property="projectCode" />
 		<result column="project_name" property="projectName" />
 		<result column="corp_code" property="corpCode" />
 		<result column="corp_name" property="corpName" />
+		
 		<result column="corp_type" property="corpType" />
 		<result column="entry_time" property="entryTime" />
 		<result column="exit_time" property="exitTime" />
 		<result column="pm_name" property="pmName" />
-		<result column="pm_idcard_type" property="pmIdcardType" />
-		<result column="pm_idcard_number" property="pmIdcardNumber" />
+		<result column="pm_idcard_type" property="pmIDCardType" />
+		
+		<result column="pm_idcard_number" property="pmIDCardNumber" />
 		<result column="pm_phone" property="pmPhone" />
 	</resultMap>
+	
 	<sql id="where_condition">
 		<trim prefix="WHERE" prefixOverrides="AND | OR">
 			<if test="code != null and code != '' ">
 				AND t.code = #{code}
 			</if>
+			<if test="projectCode != null and projectCode != '' ">
+				AND t.project_code = #{projectCode}
+			</if>
+			<if test="corpCode != null and corpCode != '' ">
+				AND t.corp_code = #{corpCode}
+			</if>
+			<if test="corpType != null and corpType != '' ">
+				AND t.corp_type = #{corpType}
+			</if>
 		</trim>
 	</sql>
+	
 	<select id="select_projectCorpInfo" parameterType="projectCorpInfo" resultMap="projectCorpInfo_DB_Result">
 		SELECT
 		t.code
-		,t.local_project_code
 		,t.project_code
 		,t.project_name
 		,t.corp_code
 		,t.corp_name
+		
 		,t.corp_type
 		,t.entry_time
 		,t.exit_time
 		,t.pm_name
 		,t.pm_idcard_type
+		
 		,t.pm_idcard_number
 		,t.pm_phone
 		FROM
@@ -59,32 +72,34 @@
 		INSERT INTO
 		thf_project_corp_info(
 		code
-		,local_project_code
 		,project_code
 		,project_name
 		,corp_code
 		,corp_name
+		
 		,corp_type
 		,entry_time
 		,exit_time
 		,pm_name
 		,pm_idcard_type
+		
 		,pm_idcard_number
 		,pm_phone
 		)
 		VALUES(
 		#{code}
-		,#{localProjectCode}
 		,#{projectCode}
 		,#{projectName}
 		,#{corpCode}
 		,#{corpName}
+		
 		,#{corpType}
 		,#{entryTime}
 		,#{exitTime}
 		,#{pmName}
-		,#{pmIdcardType}
-		,#{pmIdcardNumber}
+		,#{pmIDCardType}
+		
+		,#{pmIDCardNumber}
 		,#{pmPhone}
 		)
 	</insert>
@@ -92,20 +107,24 @@
 	<update id="update_projectCorpInfo" parameterType="projectCorpInfo">
 		UPDATE thf_project_corp_info
 		SET
-		local_project_code = #{localProjectCode}
-		,project_code = #{projectCode}
+		project_code = #{projectCode}
 		,project_name = #{projectName}
 		,corp_code = #{corpCode}
 		,corp_name = #{corpName}
 		,corp_type = #{corpType}
+		
 		,entry_time = #{entryTime}
 		,exit_time = #{exitTime}
 		,pm_name = #{pmName}
-		,pm_idcard_type = #{pmIdcardType}
-		,pm_idcard_number = #{pmIdcardNumber}
+		,pm_idcard_type = #{pmIDCardType}
+		,pm_idcard_number = #{pmIDCardNumber}
+		
 		,pm_phone = #{pmPhone}
 		WHERE code = #{code}
 	</update>
-
-
+	
+	<delete id="delete_projectCorpInfo" parameterType="string" >
+	    DELETE from thf_project_corp_info where code = #{code}
+	</delete>
+	
 </mapper>

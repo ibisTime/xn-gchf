@@ -6,6 +6,9 @@ import org.springframework.stereotype.Component;
 
 import com.cdkj.gchf.bo.base.Paginable;
 import com.cdkj.gchf.domain.ProjectCorpInfo;
+import com.cdkj.gchf.dto.req.XN631630Req;
+import com.cdkj.gchf.dto.req.XN631632Req;
+import com.cdkj.gchf.dto.req.XN631646Req;
 import com.cdkj.gchf.dto.req.XN631905Req;
 import com.cdkj.gchf.dto.req.XN631906Req;
 import com.cdkj.gchf.dto.req.XN631907Req;
@@ -14,18 +17,18 @@ import com.cdkj.gchf.dto.req.XN631907Req;
 public interface IProjectCorpInfoAO {
     static final String DEFAULT_ORDER_COLUMN = "code";
 
-    public String addProjectCorpInfo(ProjectCorpInfo data);
+    public String addProjectCorpInfo(XN631630Req data);
 
-    public int dropProjectCorpInfo(String code);
+    public void dropProjectCorpInfo(String code);
 
-    public int editProjectCorpInfo(ProjectCorpInfo data);
+    public void editProjectCorpInfo(XN631632Req req);
 
     public Paginable<ProjectCorpInfo> queryProjectCorpInfoPage(int start,
             int limit, ProjectCorpInfo condition);
 
     public List<ProjectCorpInfo> queryProjectCorpInfoList(
             ProjectCorpInfo condition);
-
+    
     public ProjectCorpInfo getProjectCorpInfo(String code);
 
     /****国家平台接口****/
@@ -33,5 +36,6 @@ public interface IProjectCorpInfoAO {
 
     public void updateProjectCorpInfo(XN631906Req req);
 
-    public Paginable<ProjectCorpInfo> queryProjectCorpInfo(XN631907Req req);
+    public Paginable<ProjectCorpInfo>  queryProjectCorpInfo(XN631907Req req);
+
 }

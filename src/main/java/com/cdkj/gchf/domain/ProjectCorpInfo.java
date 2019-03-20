@@ -14,12 +14,8 @@ public class ProjectCorpInfo extends ABaseDO {
 
     private static final long serialVersionUID = -7557784826164456147L;
 
-    // 编号
-    private String code;
-
-    // 本地项目编号
-    private String localProjectCode;
-
+    String code;
+    
     // 项目编码
     private String projectCode;
 
@@ -45,29 +41,13 @@ public class ProjectCorpInfo extends ABaseDO {
     private String pmName;
 
     // 项目经理证件类型
-    private String pmIdcardType;
+    private String pmIDCardType;
 
     // 项目经理证件号码
-    private String pmIdcardNumber;
+    private String pmIDCardNumber;
 
     // 项目经理电话
     private String pmPhone;
-
-    public void setCode(String code) {
-        this.code = code;
-    }
-
-    public String getCode() {
-        return code;
-    }
-
-    public void setLocalProjectCode(String localProjectCode) {
-        this.localProjectCode = localProjectCode;
-    }
-
-    public String getLocalProjectCode() {
-        return localProjectCode;
-    }
 
     public void setProjectCode(String projectCode) {
         this.projectCode = projectCode;
@@ -133,28 +113,42 @@ public class ProjectCorpInfo extends ABaseDO {
         return pmName;
     }
 
-    public void setPmIdcardType(String pmIdcardType) {
-        this.pmIdcardType = pmIdcardType;
-    }
+    public String getPmIDCardType() {
+		return pmIDCardType;
+	}
 
-    public String getPmIdcardType() {
-        return pmIdcardType;
-    }
+	public void setPmIDCardType(String pmIDCardType) {
+		this.pmIDCardType = pmIDCardType;
+	}
 
-    public void setPmIdcardNumber(String pmIdcardNumber) {
-        this.pmIdcardNumber = pmIdcardNumber;
-    }
+	public String getPmIDCardNumber() {
+		return pmIDCardNumber;
+	}
 
-    public String getPmIdcardNumber() {
-        return pmIdcardNumber;
-    }
+	public void setPmIDCardNumber(String pmIDCardNumber) {
+		this.pmIDCardNumber = pmIDCardNumber;
+	}
 
-    public void setPmPhone(String pmPhone) {
+	public void setPmPhone(String pmPhone) {
         this.pmPhone = pmPhone;
     }
 
     public String getPmPhone() {
         return pmPhone;
     }
+
+	public String getCode() {
+		return code;
+	}
+
+	public void setCode(String code) {
+		this.code = code;
+	}
+
+	public static long getSerialversionuid() {
+		return serialVersionUID;
+	}
+    
+    
 
 }

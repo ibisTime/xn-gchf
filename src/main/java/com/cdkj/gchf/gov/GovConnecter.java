@@ -1,11 +1,9 @@
 package com.cdkj.gchf.gov;
 
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Scanner;
 import java.util.UUID;
 
 import com.alibaba.fastjson.JSONObject;
@@ -140,21 +138,4 @@ public class GovConnecter {
         return res;
     }
 
-    private static String acceptmultiLineChars2(Scanner sc) {
-        ArrayList<String> ns = new ArrayList<>();
-        do {
-            String str = sc.nextLine();
-            if (str.equals("")) {
-                break;
-            }
-            ns.add(str);
-        } while (true);
-        StringBuilder sb = new StringBuilder();
-        if (ns.size() > 0) {
-            for (String nString : ns) {
-                sb.append(nString + "\r\n");
-            }
-        }
-        return sb.toString();
-    }
 }

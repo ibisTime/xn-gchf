@@ -7,4 +7,6 @@ public interface IProjectConfigDAO extends IBaseDAO<ProjectConfig> {
     String NAMESPACE = IProjectConfigDAO.class.getName().concat(".");
 
     int update(ProjectConfig projectConfig);
+
+    ProjectConfig selectDefaultProjectConfig(ProjectConfig projectConfig);
 }

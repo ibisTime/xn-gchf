@@ -23,7 +23,7 @@ public class XN631253 extends AProcessor {
 
     @Override
     public Object doBusiness() throws BizException {
-        corpBasicinfoAO.uploadCorpBasicinfo(req.getCode());
+        corpBasicinfoAO.uploadCorpBasicinfo(req.getCodeList(), req.getUserId());
         return new BooleanRes(true);
     }
 

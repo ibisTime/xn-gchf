@@ -77,6 +77,11 @@ public class ProjectConfigBOImpl extends PaginableBOImpl<ProjectConfig>
     }
 
     @Override
+    public ProjectConfig getDefaultProjectConfig() {
+        return projectConfigDAO.selectDefaultProjectConfig(new ProjectConfig());
+    }
+
+    @Override
     public ProjectConfig getProjectConfigByLocal(String localProjectCode) {
         ProjectConfig data = new ProjectConfig();
 
@@ -93,4 +98,5 @@ public class ProjectConfigBOImpl extends PaginableBOImpl<ProjectConfig>
 
         return projectConfigDAO.select(data);
     }
+
 }

@@ -41,4 +41,17 @@ public class GovUtil {
 
         return page;
     }
+
+    public static String parseRequestSerialCode(String resString) {
+        String requestSerialCode = null;
+
+        JSONObject resJson = JSONObject.parseObject(resString);
+        JSONObject dataJson = resJson.getJSONObject("data");
+
+        if (null != dataJson) {
+            requestSerialCode = dataJson.getString("requestSerialCode");
+        }
+
+        return requestSerialCode;
+    }
 }

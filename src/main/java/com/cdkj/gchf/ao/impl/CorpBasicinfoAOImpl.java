@@ -16,8 +16,13 @@ import com.cdkj.gchf.dto.req.XN631250Req;
 import com.cdkj.gchf.dto.req.XN631251Req;
 import com.cdkj.gchf.dto.req.XN631900Req;
 import com.cdkj.gchf.dto.req.XN631901Req;
+import com.cdkj.gchf.enums.EGovAsyncStatus;
+import com.cdkj.gchf.enums.EUploadStatus;
 import com.cdkj.gchf.exception.BizException;
+import com.cdkj.gchf.gov.AsyncRes;
+import com.cdkj.gchf.gov.GovAsync;
 import com.cdkj.gchf.gov.GovConnecter;
+import com.cdkj.gchf.gov.GovUtil;
 
 @Service
 public class CorpBasicinfoAOImpl implements ICorpBasicinfoAO {
@@ -60,16 +65,39 @@ public class CorpBasicinfoAOImpl implements ICorpBasicinfoAO {
     }
 
     @Override
-    public void uploadCorpBasicinfo(String code) {
-        CorpBasicinfo corpBasicinfo = corpBasicinfoBO.getCorpBasicinfo(code);
+    public void uploadCorpBasicinfo(List<String> codeList, String userId) {
 
-        GovConnecter.getGovData("Corp.Upload",
-            JSONObject.toJSONString(corpBasicinfo));
-    }
+        ProjectConfig defaultProjectConfig = projectConfigBO
+            .getDefaultProjectConfig();
+        if (null == defaultProjectConfig) {
+            throw new BizException("XN631253", "不存在已配置的项目，无法上传");
+        }
 
-    @Override
-    public void syncCorpBasicinfo(String code) {
+        for (String code : codeList) {
+            CorpBasicinfo corpBasicinfo = corpBasicinfoBO
+                .getCorpBasicinfo(code);
 
+            // 上传企业信息
+            String resString = GovConnecter.getGovData("Corp.Upload",
+                JSONObject.toJSONString(corpBasicinfo),
+                defaultProjectConfig.getProjectCode(),
+                defaultProjectConfig.getSecret());
+
+            // 查询上传结果
+            String requestSerialCode = GovUtil
+                .parseRequestSerialCode(resString);
+            AsyncRes asyncRes = GovAsync.queryAsyncHandleResult(
+                requestSerialCode, defaultProjectConfig.getProjectCode(),
+                defaultProjectConfig.getSecret());
+
+            // 更新上传状态
+            if (EGovAsyncStatus.SUCCESS.getCode()
+                .equals(asyncRes.getStatus())) {
+                corpBasicinfoBO.refreshUploadStatus(code,
+                    EUploadStatus.UPLOAD_UNEDITABLE.getCode());
+            }
+
+        }
     }
 
     @Override

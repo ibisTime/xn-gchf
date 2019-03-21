@@ -52,6 +52,14 @@
 			</if>
 		</trim>
 	</select>
+	
+	<select id="select_defaultProjectConfig" parameterType="projectConfig" resultMap="projectConfig_DB_Result">
+		SELECT
+		t.project_code
+		,t.secret
+		FROM
+		thf_project_config t limit 0,1
+	</select>
 
 	<select id="select_projectConfig_count" parameterType="projectConfig"
 		resultType="java.lang.Long">

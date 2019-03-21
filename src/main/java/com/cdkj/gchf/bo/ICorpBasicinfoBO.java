@@ -19,6 +19,8 @@ public interface ICorpBasicinfoBO extends IPaginableBO<CorpBasicinfo> {
 
     public void refreshCorpBasicinfo(XN631251Req data);
 
+    void refreshUploadStatus(String code, String uploadStatus);
+
     public List<CorpBasicinfo> queryCorpBasicinfoList(CorpBasicinfo condition);
 
     public CorpBasicinfo getCorpBasicinfo(String code);

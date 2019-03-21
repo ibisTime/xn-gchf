@@ -1,6 +1,9 @@
 package com.cdkj.gchf.dto.req;
 
+import java.util.List;
+
 import org.hibernate.validator.constraints.NotBlank;
+import org.hibernate.validator.constraints.NotEmpty;
 
 /**
  * 上传企业信息
@@ -11,15 +14,27 @@ import org.hibernate.validator.constraints.NotBlank;
 public class XN631253Req {
 
     // 编号
-    @NotBlank
-    private String code;
+    @NotEmpty
+    private List<String> codeList;
 
-    public String getCode() {
-        return code;
+    // 用户编号
+    @NotBlank
+    private String userId;
+
+    public List<String> getCodeList() {
+        return codeList;
     }
 
-    public void setCode(String code) {
-        this.code = code;
+    public void setCodeList(List<String> codeList) {
+        this.codeList = codeList;
+    }
+
+    public String getUserId() {
+        return userId;
+    }
+
+    public void setUserId(String userId) {
+        this.userId = userId;
     }
 
 }

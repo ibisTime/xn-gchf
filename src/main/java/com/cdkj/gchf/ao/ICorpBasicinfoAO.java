@@ -21,9 +21,7 @@ public interface ICorpBasicinfoAO {
 
     public void editCorpBasicinfo(XN631251Req data);
 
-    void uploadCorpBasicinfo(String code);
-
-    void syncCorpBasicinfo(String code);
+    void uploadCorpBasicinfo(List<String> codeList, String userId);
 
     public Paginable<CorpBasicinfo> queryCorpBasicinfoPage(int start, int limit,
             CorpBasicinfo condition);

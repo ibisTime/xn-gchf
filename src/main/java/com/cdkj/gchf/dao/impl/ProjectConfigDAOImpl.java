@@ -41,6 +41,13 @@ public class ProjectConfigDAOImpl extends AMybatisTemplate
     }
 
     @Override
+    public ProjectConfig selectDefaultProjectConfig(
+            ProjectConfig projectConfig) {
+        return super.select(NAMESPACE.concat("select_defaultProjectConfig"),
+            projectConfig, ProjectConfig.class);
+    }
+
+    @Override
     public List<ProjectConfig> selectList(ProjectConfig condition, int start,
             int count) {
         return super.selectList(NAMESPACE.concat("select_projectConfig"), start,

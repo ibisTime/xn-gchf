@@ -1,52 +1,32 @@
-
-DROP TABLE IF EXISTS `thf_operator_guide`;
-CREATE TABLE `thf_operator_guide` (
+DROP TABLE IF EXISTS `tqy_corp_basicinfo`;
+CREATE TABLE `tqy_corp_basicinfo` (
   `code` varchar(32) NOT NULL COMMENT '编号',
-  `title` varchar(255) DEFAULT NULL COMMENT '标题',
-  `content` text COMMENT '操作内容',
-  `order_no` int(11) DEFAULT NULL COMMENT '排序编号',
-  `system_code` varchar(32) DEFAULT NULL COMMENT '系统编号',
-  `updater` varchar(32) DEFAULT NULL COMMENT '更新人',
-  `update_datetime` datetime DEFAULT NULL COMMENT '更新时间',
-  `remark` varchar(255) DEFAULT NULL COMMENT '备注',
+  `corp_code` varchar(18) DEFAULT NULL COMMENT '统一社会信用代码',
+  `corp_name` varchar(200) DEFAULT NULL COMMENT '企业名称',
+  `corp_type` varchar(3) DEFAULT NULL COMMENT '企业登记注册类型',
+  `license_num` varchar(50) DEFAULT NULL COMMENT '工商营业执照注册号',
+  `area_code` varchar(6) DEFAULT NULL COMMENT '注册地区编码',
+  `address` varchar(200) DEFAULT NULL COMMENT '企业营业地址',
+  `zip_code` varchar(6) DEFAULT NULL COMMENT '邮政编码',
+  `legal_man` varchar(50) DEFAULT NULL COMMENT '法定代表人姓名',
+  `legal_man_duty` varchar(50) DEFAULT NULL COMMENT '法定代表人职务',
+  `legal_man_pro_title` varchar(50) DEFAULT NULL COMMENT '法定代表人职称',
+  `legal_man_idcard_type` varchar(2) DEFAULT NULL COMMENT '法定代表人证件类型',
+  `legal_man_idcard_number` varchar(30) DEFAULT NULL COMMENT '法定代表人证件号码',
+  `reg_capital` decimal(18,4) DEFAULT NULL COMMENT '注册资本',
+  `fact_reg_capital` decimal(18,4) DEFAULT NULL COMMENT '实收资本',
+  `capital_currency_type` varchar(255) DEFAULT NULL COMMENT '资本币种',
+  `register_date` datetime DEFAULT NULL COMMENT '注册日期',
+  `establish_date` datetime DEFAULT NULL COMMENT '成立日期',
+  `office_phone` varchar(20) DEFAULT NULL COMMENT '办公电话',
+  `fax_number` varchar(20) DEFAULT NULL COMMENT '传真号码',
+  `link_man` varchar(50) DEFAULT NULL COMMENT '联系人姓名',
+  `link_phone` varchar(50) DEFAULT NULL COMMENT '联系人电话',
+  `email` varchar(100) DEFAULT NULL COMMENT '企业邮箱',
+  `web_site` varchar(200) DEFAULT NULL COMMENT '企业网址',
+  `upload_status` varchar(4) DEFAULT NULL COMMENT '上传状态',
   PRIMARY KEY (`code`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
-DROP TABLE IF EXISTS `thf_pay_roll`;
-CREATE TABLE `thf_pay_roll` (
-  `code` varchar(32) NOT NULL COMMENT '编号',
-  `pay_roll_code` varchar(22) DEFAULT NULL COMMENT '工资单编码',
-  `local_project_code` varchar(32) DEFAULT NULL COMMENT '本地项目编号',
-  `project_code` varchar(20) DEFAULT NULL COMMENT '项目编码',
-  `corp_code` varchar(18) DEFAULT NULL COMMENT '所属企业统一社会信用代码',
-  `corp_name` varchar(200) DEFAULT NULL COMMENT '所属企业名称',
-  `team_sys_no` int(11) DEFAULT NULL COMMENT '班组编号',
-  `pay_month` datetime DEFAULT NULL COMMENT '发放工资的年月',
-  PRIMARY KEY (`code`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='人员工资单';
-
-DROP TABLE IF EXISTS `thf_pay_roll_detail`;
-CREATE TABLE `thf_pay_roll_detail` (
-  `code` varchar(32) NOT NULL COMMENT '编号',
-  `pay_roll_code` varchar(22) DEFAULT NULL COMMENT '工资单编码',
-  `worker_name` varchar(50) DEFAULT NULL COMMENT '工人姓名',
-  `idcard_type` varchar(2) DEFAULT NULL COMMENT '证件类型',
-  `idcard_number` varchar(30) DEFAULT NULL COMMENT '证件号码',
-  `days` int(11) DEFAULT NULL COMMENT '出勤天数',
-  `work_hours` decimal(5,2) DEFAULT NULL COMMENT '总工时',
-  `pay_roll_bank_card_number` varchar(30) DEFAULT NULL COMMENT '工人工资卡号',
-  `pay_roll_bank_code` varchar(4) DEFAULT NULL COMMENT '工人工资卡银行代码',
-  `pay_roll_bank_name` varchar(50) DEFAULT NULL COMMENT '工人工资卡开户行名称',
-  `pay_bank_card_number` varchar(30) DEFAULT NULL COMMENT '工资代发银行卡号',
-  `pay_bank_code` varchar(4) DEFAULT NULL COMMENT '工资代发银行代码',
-  `pay_bank_name` varchar(50) DEFAULT NULL COMMENT '工资代发开户行名称',
-  `total_pay_amount` decimal(16,2) DEFAULT NULL COMMENT '应发金额',
-  `actual_amount` decimal(16,2) DEFAULT NULL COMMENT '实发金额',
-  `is_back_pay` tinyint(1) DEFAULT NULL COMMENT '是否是补发',
-  `balance_date` datetime DEFAULT NULL COMMENT '发放日期',
-  `third_pay_roll_code` varchar(50) DEFAULT NULL COMMENT '第三方工资单编号',
-  PRIMARY KEY (`code`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='人员工资单明细';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='企业基本信息';
 
 DROP TABLE IF EXISTS `thf_project`;
 CREATE TABLE `thf_project` (
@@ -120,6 +100,30 @@ CREATE TABLE `thf_project_corp_info` (
   PRIMARY KEY (`code`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='项目参建单位';
 
+DROP TABLE IF EXISTS `thf_team_master`;
+CREATE TABLE `thf_team_master` (
+  `code` varchar(32) NOT NULL COMMENT '编号',
+  `team_sys_no` int(11) DEFAULT NULL COMMENT '班组编号',
+  `local_project_code` varchar(32) DEFAULT NULL COMMENT '本地项目编号',
+  `project_code` varchar(20) DEFAULT NULL COMMENT '项目编码',
+  `corp_code` varchar(18) DEFAULT NULL COMMENT '班组所在企业统一社会信用代码',
+  `corp_name` varchar(200) DEFAULT NULL COMMENT '班组所在企业名称',
+  `team_name` varchar(100) DEFAULT NULL COMMENT '班组名称',
+  `team_leader_name` varchar(50) DEFAULT NULL COMMENT '班组长姓名',
+  `team_leader_phone` varchar(50) DEFAULT NULL COMMENT '班组长联系电话',
+  `team_leader_idcard_type` varchar(2) DEFAULT NULL COMMENT '班组长证件类型',
+  `team_leader_id_number` varchar(30) DEFAULT NULL COMMENT '班组长证件号码',
+  `responsible_person_name` varchar(50) DEFAULT NULL COMMENT '责任人姓名',
+  `responsible_person_phone` varchar(50) DEFAULT NULL COMMENT '责任人联系电话',
+  `responsible_person_idcard_type` varchar(2) DEFAULT NULL COMMENT '责任人证件类型',
+  `responsible_person_id_number` varchar(30) DEFAULT NULL COMMENT '责任人证件号码',
+  `remark` varchar(200) DEFAULT NULL COMMENT '备注',
+  `entry_time` datetime DEFAULT NULL COMMENT '进场日期',
+  `exit_time` datetime DEFAULT NULL COMMENT '退场日期',
+  `parent_code` varchar(30) DEFAULT NULL COMMENT '上级部门编号',
+  PRIMARY KEY (`code`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='班组';
+
 DROP TABLE IF EXISTS `thf_project_worker`;
 CREATE TABLE `thf_project_worker` (
   `code` varchar(32) NOT NULL COMMENT '编号',
@@ -191,6 +195,42 @@ CREATE TABLE `thf_project_worker_entry_exit_history` (
   PRIMARY KEY (`code`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='人员进退场';
 
+DROP TABLE IF EXISTS `thf_pay_roll`;
+CREATE TABLE `thf_pay_roll` (
+  `code` varchar(32) NOT NULL COMMENT '编号',
+  `pay_roll_code` varchar(22) DEFAULT NULL COMMENT '工资单编码',
+  `local_project_code` varchar(32) DEFAULT NULL COMMENT '本地项目编号',
+  `project_code` varchar(20) DEFAULT NULL COMMENT '项目编码',
+  `corp_code` varchar(18) DEFAULT NULL COMMENT '所属企业统一社会信用代码',
+  `corp_name` varchar(200) DEFAULT NULL COMMENT '所属企业名称',
+  `team_sys_no` int(11) DEFAULT NULL COMMENT '班组编号',
+  `pay_month` datetime DEFAULT NULL COMMENT '发放工资的年月',
+  PRIMARY KEY (`code`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='人员工资单';
+
+DROP TABLE IF EXISTS `thf_pay_roll_detail`;
+CREATE TABLE `thf_pay_roll_detail` (
+  `code` varchar(32) NOT NULL COMMENT '编号',
+  `pay_roll_code` varchar(22) DEFAULT NULL COMMENT '工资单编码',
+  `worker_name` varchar(50) DEFAULT NULL COMMENT '工人姓名',
+  `idcard_type` varchar(2) DEFAULT NULL COMMENT '证件类型',
+  `idcard_number` varchar(30) DEFAULT NULL COMMENT '证件号码',
+  `days` int(11) DEFAULT NULL COMMENT '出勤天数',
+  `work_hours` decimal(5,2) DEFAULT NULL COMMENT '总工时',
+  `pay_roll_bank_card_number` varchar(30) DEFAULT NULL COMMENT '工人工资卡号',
+  `pay_roll_bank_code` varchar(4) DEFAULT NULL COMMENT '工人工资卡银行代码',
+  `pay_roll_bank_name` varchar(50) DEFAULT NULL COMMENT '工人工资卡开户行名称',
+  `pay_bank_card_number` varchar(30) DEFAULT NULL COMMENT '工资代发银行卡号',
+  `pay_bank_code` varchar(4) DEFAULT NULL COMMENT '工资代发银行代码',
+  `pay_bank_name` varchar(50) DEFAULT NULL COMMENT '工资代发开户行名称',
+  `total_pay_amount` decimal(16,2) DEFAULT NULL COMMENT '应发金额',
+  `actual_amount` decimal(16,2) DEFAULT NULL COMMENT '实发金额',
+  `is_back_pay` tinyint(1) DEFAULT NULL COMMENT '是否是补发',
+  `balance_date` datetime DEFAULT NULL COMMENT '发放日期',
+  `third_pay_roll_code` varchar(50) DEFAULT NULL COMMENT '第三方工资单编号',
+  PRIMARY KEY (`code`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='人员工资单明细';
+
 DROP TABLE IF EXISTS `thf_subbranch`;
 CREATE TABLE `thf_subbranch` (
   `code` varchar(32) NOT NULL COMMENT '编号',
@@ -200,6 +240,19 @@ CREATE TABLE `thf_subbranch` (
   `updater` varchar(32) DEFAULT NULL COMMENT '更新人',
   `update_datetime` datetime DEFAULT NULL COMMENT '更新时间',
   `remark` text COMMENT '备注',
+  PRIMARY KEY (`code`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+DROP TABLE IF EXISTS `thf_operator_guide`;
+CREATE TABLE `thf_operator_guide` (
+  `code` varchar(32) NOT NULL COMMENT '编号',
+  `title` varchar(255) DEFAULT NULL COMMENT '标题',
+  `content` text COMMENT '操作内容',
+  `order_no` int(11) DEFAULT NULL COMMENT '排序编号',
+  `system_code` varchar(32) DEFAULT NULL COMMENT '系统编号',
+  `updater` varchar(32) DEFAULT NULL COMMENT '更新人',
+  `update_datetime` datetime DEFAULT NULL COMMENT '更新时间',
+  `remark` varchar(255) DEFAULT NULL COMMENT '备注',
   PRIMARY KEY (`code`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
@@ -214,30 +267,6 @@ CREATE TABLE `thf_supervise` (
   `remark` varchar(255) DEFAULT NULL COMMENT '备注',
   PRIMARY KEY (`code`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
-DROP TABLE IF EXISTS `thf_team_master`;
-CREATE TABLE `thf_team_master` (
-  `code` varchar(32) NOT NULL COMMENT '编号',
-  `team_sys_no` int(11) DEFAULT NULL COMMENT '班组编号',
-  `local_project_code` varchar(32) DEFAULT NULL COMMENT '本地项目编号',
-  `project_code` varchar(20) DEFAULT NULL COMMENT '项目编码',
-  `corp_code` varchar(18) DEFAULT NULL COMMENT '班组所在企业统一社会信用代码',
-  `corp_name` varchar(200) DEFAULT NULL COMMENT '班组所在企业名称',
-  `team_name` varchar(100) DEFAULT NULL COMMENT '班组名称',
-  `team_leader_name` varchar(50) DEFAULT NULL COMMENT '班组长姓名',
-  `team_leader_phone` varchar(50) DEFAULT NULL COMMENT '班组长联系电话',
-  `team_leader_idcard_type` varchar(2) DEFAULT NULL COMMENT '班组长证件类型',
-  `team_leader_id_number` varchar(30) DEFAULT NULL COMMENT '班组长证件号码',
-  `responsible_person_name` varchar(50) DEFAULT NULL COMMENT '责任人姓名',
-  `responsible_person_phone` varchar(50) DEFAULT NULL COMMENT '责任人联系电话',
-  `responsible_person_idcard_type` varchar(2) DEFAULT NULL COMMENT '责任人证件类型',
-  `responsible_person_id_number` varchar(30) DEFAULT NULL COMMENT '责任人证件号码',
-  `remark` varchar(200) DEFAULT NULL COMMENT '备注',
-  `entry_time` datetime DEFAULT NULL COMMENT '进场日期',
-  `exit_time` datetime DEFAULT NULL COMMENT '退场日期',
-  `parent_code` varchar(30) DEFAULT NULL COMMENT '上级部门编号',
-  PRIMARY KEY (`code`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='班组';
 
 DROP TABLE IF EXISTS `thf_user`;
 CREATE TABLE `thf_user` (
@@ -314,35 +343,6 @@ CREATE TABLE `thf_worker_contract` (
   `remark` text COMMENT '备注',
   PRIMARY KEY (`code`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='劳动合同';
-
-DROP TABLE IF EXISTS `tqy_corp_basicinfo`;
-CREATE TABLE `tqy_corp_basicinfo` (
-  `code` varchar(32) NOT NULL COMMENT '编号',
-  `corp_code` varchar(18) DEFAULT NULL COMMENT '统一社会信用代码',
-  `corp_name` varchar(200) DEFAULT NULL COMMENT '企业名称',
-  `corp_type` varchar(3) DEFAULT NULL COMMENT '企业登记注册类型',
-  `license_num` varchar(50) DEFAULT NULL COMMENT '工商营业执照注册号',
-  `area_code` varchar(6) DEFAULT NULL COMMENT '注册地区编码',
-  `address` varchar(200) DEFAULT NULL COMMENT '企业营业地址',
-  `zip_code` varchar(6) DEFAULT NULL COMMENT '邮政编码',
-  `legal_man` varchar(50) DEFAULT NULL COMMENT '法定代表人姓名',
-  `legal_man_duty` varchar(50) DEFAULT NULL COMMENT '法定代表人职务',
-  `legal_man_pro_title` varchar(50) DEFAULT NULL COMMENT '法定代表人职称',
-  `legal_man_idcard_type` varchar(2) DEFAULT NULL COMMENT '法定代表人证件类型',
-  `legal_man_idcard_number` varchar(30) DEFAULT NULL COMMENT '法定代表人证件号码',
-  `reg_capital` decimal(18,4) DEFAULT NULL COMMENT '注册资本',
-  `fact_reg_capital` decimal(18,4) DEFAULT NULL COMMENT '实收资本',
-  `capital_currency_type` varchar(255) DEFAULT NULL COMMENT '资本币种',
-  `register_date` datetime DEFAULT NULL COMMENT '注册日期',
-  `establish_date` datetime DEFAULT NULL COMMENT '成立日期',
-  `office_phone` varchar(20) DEFAULT NULL COMMENT '办公电话',
-  `fax_number` varchar(20) DEFAULT NULL COMMENT '传真号码',
-  `link_man` varchar(50) DEFAULT NULL COMMENT '联系人姓名',
-  `link_phone` varchar(50) DEFAULT NULL COMMENT '联系人电话',
-  `email` varchar(100) DEFAULT NULL COMMENT '企业邮箱',
-  `web_site` varchar(200) DEFAULT NULL COMMENT '企业网址',
-  PRIMARY KEY (`code`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='企业基本信息';
 
 DROP TABLE IF EXISTS `tsys_config`;
 CREATE TABLE `tsys_config` (

@@ -19,6 +19,8 @@ public interface IProjectConfigBO extends IPaginableBO<ProjectConfig> {
 
     public ProjectConfig getProjectConfig(String code);
 
+    public ProjectConfig getDefaultProjectConfig();
+
     public ProjectConfig getProjectConfigByLocal(String localProjectCode);
 
     public ProjectConfig getProjectConfigByProject(String projectCode);

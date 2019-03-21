@@ -6,17 +6,19 @@ import com.cdkj.gchf.bo.base.IPaginableBO;
 import com.cdkj.gchf.bo.base.Paginable;
 import com.cdkj.gchf.domain.ProjectConfig;
 import com.cdkj.gchf.domain.ProjectWorker;
+import com.cdkj.gchf.dto.req.XN631690Req;
+import com.cdkj.gchf.dto.req.XN631692Req;
 import com.cdkj.gchf.dto.req.XN631911Req;
 import com.cdkj.gchf.dto.req.XN631912Req;
 import com.cdkj.gchf.dto.req.XN631913Req;
 
 public interface IProjectWorkerBO extends IPaginableBO<ProjectWorker> {
 
-    public String saveProjectWorker(ProjectWorker data);
+    public String saveProjectWorker(XN631690Req req);
 
-    public int removeProjectWorker(String code);
+    public void removeProjectWorker(String code);
 
-    public int refreshProjectWorker(ProjectWorker data);
+    public void refreshProjectWorker(XN631692Req req);
 
     public List<ProjectWorker> queryProjectWorkerList(ProjectWorker condition);
 

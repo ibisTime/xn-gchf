@@ -49,7 +49,8 @@ public class ProjectWorkerDAOImpl extends AMybatisTemplate
 
     @Override
     public int update(ProjectWorker projectWorker) {
-        return 0;
+        return super.update(NAMESPACE.concat("update_projectWorker"),
+            projectWorker);
     }
 
 }

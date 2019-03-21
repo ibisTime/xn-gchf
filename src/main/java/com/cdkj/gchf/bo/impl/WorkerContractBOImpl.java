@@ -45,23 +45,15 @@ public class WorkerContractBOImpl extends PaginableBOImpl<WorkerContract>
     }
 
     @Override
-    public int removeWorkerContract(String code) {
-        int count = 0;
-        if (StringUtils.isNotBlank(code)) {
-            WorkerContract data = new WorkerContract();
-            data.setCode(code);
-            count = workerContractDAO.delete(data);
-        }
-        return count;
+    public void removeWorkerContract(String code) {
+        WorkerContract data = new WorkerContract();
+        data.setCode(code);
+        workerContractDAO.delete(data);
     }
 
     @Override
-    public int refreshWorkerContract(WorkerContract data) {
-        int count = 0;
-        if (StringUtils.isNotBlank(data.getCode())) {
-            count = workerContractDAO.update(data);
-        }
-        return count;
+    public void refreshWorkerContract(WorkerContract data) {
+        workerContractDAO.update(data);
     }
 
     @Override

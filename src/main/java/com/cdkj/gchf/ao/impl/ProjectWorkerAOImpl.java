@@ -11,6 +11,8 @@ import com.cdkj.gchf.bo.IProjectWorkerBO;
 import com.cdkj.gchf.bo.base.Paginable;
 import com.cdkj.gchf.domain.ProjectConfig;
 import com.cdkj.gchf.domain.ProjectWorker;
+import com.cdkj.gchf.dto.req.XN631690Req;
+import com.cdkj.gchf.dto.req.XN631692Req;
 import com.cdkj.gchf.dto.req.XN631911Req;
 import com.cdkj.gchf.dto.req.XN631912Req;
 import com.cdkj.gchf.dto.req.XN631913Req;
@@ -26,18 +28,18 @@ public class ProjectWorkerAOImpl implements IProjectWorkerAO {
     private IProjectConfigBO projectConfigBO;
 
     @Override
-    public String addProjectWorker(ProjectWorker data) {
-        return projectWorkerBO.saveProjectWorker(data);
+    public String addProjectWorker(XN631690Req req) {
+        return projectWorkerBO.saveProjectWorker(req);
     }
 
     @Override
-    public int editProjectWorker(ProjectWorker data) {
-        return projectWorkerBO.refreshProjectWorker(data);
+    public void editProjectWorker(XN631692Req req) {
+        projectWorkerBO.refreshProjectWorker(req);
     }
 
     @Override
-    public int dropProjectWorker(String code) {
-        return projectWorkerBO.removeProjectWorker(code);
+    public void dropProjectWorker(String code) {
+        projectWorkerBO.removeProjectWorker(code);
     }
 
     @Override

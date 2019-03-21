@@ -30,13 +30,13 @@ public class WorkerContractAOImpl implements IWorkerContractAO {
     }
 
     @Override
-    public int editWorkerContract(WorkerContract data) {
-        return workerContractBO.refreshWorkerContract(data);
+    public void editWorkerContract(WorkerContract data) {
+        workerContractBO.refreshWorkerContract(data);
     }
 
     @Override
-    public int dropWorkerContract(String code) {
-        return workerContractBO.removeWorkerContract(code);
+    public void dropWorkerContract(String code) {
+        workerContractBO.removeWorkerContract(code);
     }
 
     @Override

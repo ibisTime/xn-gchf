@@ -6,6 +6,8 @@ import org.springframework.stereotype.Component;
 
 import com.cdkj.gchf.bo.base.Paginable;
 import com.cdkj.gchf.domain.ProjectWorker;
+import com.cdkj.gchf.dto.req.XN631690Req;
+import com.cdkj.gchf.dto.req.XN631692Req;
 import com.cdkj.gchf.dto.req.XN631911Req;
 import com.cdkj.gchf.dto.req.XN631912Req;
 import com.cdkj.gchf.dto.req.XN631913Req;
@@ -14,11 +16,11 @@ import com.cdkj.gchf.dto.req.XN631913Req;
 public interface IProjectWorkerAO {
     static final String DEFAULT_ORDER_COLUMN = "code";
 
-    public String addProjectWorker(ProjectWorker data);
+    public String addProjectWorker(XN631690Req req);
 
-    public int dropProjectWorker(String code);
+    public void dropProjectWorker(String code);
 
-    public int editProjectWorker(ProjectWorker data);
+    public void editProjectWorker(XN631692Req req);
 
     public Paginable<ProjectWorker> queryProjectWorkerPage(int start, int limit,
             ProjectWorker condition);

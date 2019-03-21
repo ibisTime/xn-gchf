@@ -13,9 +13,9 @@ public interface IWorkerContractBO extends IPaginableBO<WorkerContract> {
 
     public String saveWorkerContract(WorkerContract data);
 
-    public int removeWorkerContract(String code);
+    public void removeWorkerContract(String code);
 
-    public int refreshWorkerContract(WorkerContract data);
+    public void refreshWorkerContract(WorkerContract data);
 
     public List<WorkerContract> queryWorkerContractList(
             WorkerContract condition);

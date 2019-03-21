@@ -15,9 +15,9 @@ public interface IWorkerContractAO {
 
     public String addWorkerContract(WorkerContract data);
 
-    public int dropWorkerContract(String code);
+    public void dropWorkerContract(String code);
 
-    public int editWorkerContract(WorkerContract data);
+    public void editWorkerContract(WorkerContract data);
 
     public Paginable<WorkerContract> queryWorkerContractPage(int start,
             int limit, WorkerContract condition);

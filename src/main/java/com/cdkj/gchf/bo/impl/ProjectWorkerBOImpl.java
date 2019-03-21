@@ -18,6 +18,8 @@ import com.cdkj.gchf.dao.IProjectWorkerDAO;
 import com.cdkj.gchf.domain.ProjectConfig;
 import com.cdkj.gchf.domain.ProjectWorker;
 import com.cdkj.gchf.domain.TeamMaster;
+import com.cdkj.gchf.dto.req.XN631690Req;
+import com.cdkj.gchf.dto.req.XN631692Req;
 import com.cdkj.gchf.dto.req.XN631911Req;
 import com.cdkj.gchf.dto.req.XN631912Req;
 import com.cdkj.gchf.dto.req.XN631913Req;
@@ -34,35 +36,31 @@ public class ProjectWorkerBOImpl extends PaginableBOImpl<ProjectWorker>
     private IProjectWorkerDAO projectWorkerDAO;
 
     @Override
-    public String saveProjectWorker(ProjectWorker data) {
+    public String saveProjectWorker(XN631690Req data) {
         String code = null;
+        ProjectWorker projectWorkerInfo = new ProjectWorker();
+        BeanUtils.copyProperties(data, projectWorkerInfo);
         if (data != null) {
             code = OrderNoGenerater
                 .generate(EGeneratePrefix.ProjectWorker.getCode());
-            data.setCode(code);
-            projectWorkerDAO.insert(data);
+            projectWorkerInfo.setCode(code);
+            projectWorkerDAO.insert(projectWorkerInfo);
         }
         return code;
     }
 
     @Override
-    public int removeProjectWorker(String code) {
-        int count = 0;
-        if (StringUtils.isNotBlank(code)) {
-            ProjectWorker data = new ProjectWorker();
-            data.setCode(code);
-            count = projectWorkerDAO.delete(data);
-        }
-        return count;
+    public void removeProjectWorker(String code) {
+        ProjectWorker data = new ProjectWorker();
+        data.setCode(code);
+        projectWorkerDAO.delete(data);
     }
 
     @Override
-    public int refreshProjectWorker(ProjectWorker data) {
-        int count = 0;
-        if (StringUtils.isNotBlank(data.getCode())) {
-            count = projectWorkerDAO.update(data);
-        }
-        return count;
+    public void refreshProjectWorker(XN631692Req req) {
+        ProjectWorker projectWorkerInfo = new ProjectWorker();
+        BeanUtils.copyProperties(req, projectWorkerInfo);
+        projectWorkerDAO.update(projectWorkerInfo);
     }
 
     @Override

@@ -11,6 +11,8 @@ import com.cdkj.gchf.bo.IProjectWorkerEntryExitHistoryBO;
 import com.cdkj.gchf.bo.base.Paginable;
 import com.cdkj.gchf.domain.ProjectConfig;
 import com.cdkj.gchf.domain.ProjectWorkerEntryExitHistory;
+import com.cdkj.gchf.dto.req.XN631730Req;
+import com.cdkj.gchf.dto.req.XN631732Req;
 import com.cdkj.gchf.dto.req.XN631914Req;
 import com.cdkj.gchf.dto.req.XN631915Req;
 import com.cdkj.gchf.exception.BizException;
@@ -26,22 +28,20 @@ public class ProjectWorkerEntryExitHistoryAOImpl
     private IProjectConfigBO projectConfigBO;
 
     @Override
-    public String addProjectWorkerEntryExitHistory(
-            ProjectWorkerEntryExitHistory data) {
+    public String addProjectWorkerEntryExitHistory(XN631730Req data) {
         return projectWorkerEntryExitHistoryBO
             .saveProjectWorkerEntryExitHistory(data);
     }
 
     @Override
-    public int editProjectWorkerEntryExitHistory(
-            ProjectWorkerEntryExitHistory data) {
-        return projectWorkerEntryExitHistoryBO
-            .refreshProjectWorkerEntryExitHistory(data);
+    public void editProjectWorkerEntryExitHistory(XN631732Req req) {
+        projectWorkerEntryExitHistoryBO
+            .refreshProjectWorkerEntryExitHistory(req);
     }
 
     @Override
-    public int dropProjectWorkerEntryExitHistory(String code) {
-        return projectWorkerEntryExitHistoryBO
+    public void dropProjectWorkerEntryExitHistory(String code) {
+        projectWorkerEntryExitHistoryBO
             .removeProjectWorkerEntryExitHistory(code);
     }
 
@@ -89,6 +89,12 @@ public class ProjectWorkerEntryExitHistoryAOImpl
             String code) {
         return projectWorkerEntryExitHistoryBO
             .getProjectWorkerEntryExitHistory(code);
+    }
+
+    @Override
+    public Object queryProjectWorkerEntryExitHistory(String code) {
+        return projectWorkerEntryExitHistoryBO
+            .queryProjectWorkerEntryExitHistory(code);
     }
 
 }

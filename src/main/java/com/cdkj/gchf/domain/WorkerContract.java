@@ -18,9 +18,6 @@ public class WorkerContract extends ABaseDO {
     // 编号
     private String code;
 
-    // 本地项目编号
-    private String localProjectCode;
-
     // 项目编码
     private String projectCode;
 
@@ -78,20 +75,15 @@ public class WorkerContract extends ABaseDO {
     // 备注
     private String remark;
 
+    // 状态
+    private String uploadStatus;
+
     public String getCode() {
         return code;
     }
 
     public void setCode(String code) {
         this.code = code;
-    }
-
-    public String getLocalProjectCode() {
-        return localProjectCode;
-    }
-
-    public void setLocalProjectCode(String localProjectCode) {
-        this.localProjectCode = localProjectCode;
     }
 
     public String getProjectCode() {
@@ -244,6 +236,14 @@ public class WorkerContract extends ABaseDO {
 
     public void setRemark(String remark) {
         this.remark = remark;
+    }
+
+    public String getUploadStatus() {
+        return uploadStatus;
+    }
+
+    public void setUploadStatus(String uploadStatus) {
+        this.uploadStatus = uploadStatus;
     }
 
 }

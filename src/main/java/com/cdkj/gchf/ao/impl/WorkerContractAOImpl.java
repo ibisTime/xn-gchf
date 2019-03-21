@@ -11,6 +11,8 @@ import com.cdkj.gchf.bo.IWorkerContractBO;
 import com.cdkj.gchf.bo.base.Paginable;
 import com.cdkj.gchf.domain.ProjectConfig;
 import com.cdkj.gchf.domain.WorkerContract;
+import com.cdkj.gchf.dto.req.XN631670Req;
+import com.cdkj.gchf.dto.req.XN631672Req;
 import com.cdkj.gchf.dto.req.XN631916Req;
 import com.cdkj.gchf.dto.req.XN631917Req;
 import com.cdkj.gchf.exception.BizException;
@@ -25,12 +27,12 @@ public class WorkerContractAOImpl implements IWorkerContractAO {
     private IProjectConfigBO projectConfigBO;
 
     @Override
-    public String addWorkerContract(WorkerContract data) {
-        return workerContractBO.saveWorkerContract(data);
+    public String addWorkerContract(XN631670Req req) {
+        return workerContractBO.saveWorkerContract(req);
     }
 
     @Override
-    public void editWorkerContract(WorkerContract data) {
+    public void editWorkerContract(XN631672Req data) {
         workerContractBO.refreshWorkerContract(data);
     }
 

@@ -6,16 +6,18 @@ import com.cdkj.gchf.bo.base.IPaginableBO;
 import com.cdkj.gchf.bo.base.Paginable;
 import com.cdkj.gchf.domain.ProjectConfig;
 import com.cdkj.gchf.domain.WorkerContract;
+import com.cdkj.gchf.dto.req.XN631670Req;
+import com.cdkj.gchf.dto.req.XN631672Req;
 import com.cdkj.gchf.dto.req.XN631916Req;
 import com.cdkj.gchf.dto.req.XN631917Req;
 
 public interface IWorkerContractBO extends IPaginableBO<WorkerContract> {
 
-    public String saveWorkerContract(WorkerContract data);
+    public String saveWorkerContract(XN631670Req req);
 
     public void removeWorkerContract(String code);
 
-    public void refreshWorkerContract(WorkerContract data);
+    public void refreshWorkerContract(XN631672Req data);
 
     public List<WorkerContract> queryWorkerContractList(
             WorkerContract condition);

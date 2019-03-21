@@ -6,6 +6,8 @@ import org.springframework.stereotype.Component;
 
 import com.cdkj.gchf.bo.base.Paginable;
 import com.cdkj.gchf.domain.ProjectWorkerEntryExitHistory;
+import com.cdkj.gchf.dto.req.XN631730Req;
+import com.cdkj.gchf.dto.req.XN631732Req;
 import com.cdkj.gchf.dto.req.XN631914Req;
 import com.cdkj.gchf.dto.req.XN631915Req;
 
@@ -13,13 +15,13 @@ import com.cdkj.gchf.dto.req.XN631915Req;
 public interface IProjectWorkerEntryExitHistoryAO {
     static final String DEFAULT_ORDER_COLUMN = "code";
 
-    public String addProjectWorkerEntryExitHistory(
-            ProjectWorkerEntryExitHistory data);
+    public String addProjectWorkerEntryExitHistory(XN631730Req data);
 
-    public int dropProjectWorkerEntryExitHistory(String code);
+    public void dropProjectWorkerEntryExitHistory(String code);
 
-    public int editProjectWorkerEntryExitHistory(
-            ProjectWorkerEntryExitHistory data);
+    public void editProjectWorkerEntryExitHistory(XN631732Req data);
+
+    public Object queryProjectWorkerEntryExitHistory(String code);
 
     public Paginable<ProjectWorkerEntryExitHistory> queryProjectWorkerEntryExitHistoryPage(
             int start, int limit, ProjectWorkerEntryExitHistory condition);

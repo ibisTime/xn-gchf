@@ -58,7 +58,8 @@ public class ProjectWorkerEntryExitHistoryDAOImpl extends AMybatisTemplate
     @Override
     public int update(
             ProjectWorkerEntryExitHistory projectWorkerEntryExitHistory) {
-        return 0;
+        return super.update("update_projectWorkerEntryExitHistory",
+            projectWorkerEntryExitHistory);
     }
 
 }

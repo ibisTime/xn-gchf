@@ -18,6 +18,8 @@ import com.cdkj.gchf.dao.IWorkerContractDAO;
 import com.cdkj.gchf.domain.ProjectConfig;
 import com.cdkj.gchf.domain.TeamMaster;
 import com.cdkj.gchf.domain.WorkerContract;
+import com.cdkj.gchf.dto.req.XN631670Req;
+import com.cdkj.gchf.dto.req.XN631672Req;
 import com.cdkj.gchf.dto.req.XN631916Req;
 import com.cdkj.gchf.dto.req.XN631917Req;
 import com.cdkj.gchf.enums.EGeneratePrefix;
@@ -33,14 +35,14 @@ public class WorkerContractBOImpl extends PaginableBOImpl<WorkerContract>
     private IWorkerContractDAO workerContractDAO;
 
     @Override
-    public String saveWorkerContract(WorkerContract data) {
+    public String saveWorkerContract(XN631670Req req) {
         String code = null;
-        if (data != null) {
-            code = OrderNoGenerater
-                .generate(EGeneratePrefix.WorkerContract.getCode());
-            data.setCode(code);
-            workerContractDAO.insert(data);
-        }
+        WorkerContract workerContract = new WorkerContract();
+        BeanUtils.copyProperties(req, workerContract);
+        code = OrderNoGenerater
+            .generate(EGeneratePrefix.WorkerContract.getCode());
+        workerContract.setCode(code);
+        workerContractDAO.insert(workerContract);
         return code;
     }
 
@@ -52,8 +54,10 @@ public class WorkerContractBOImpl extends PaginableBOImpl<WorkerContract>
     }
 
     @Override
-    public void refreshWorkerContract(WorkerContract data) {
-        workerContractDAO.update(data);
+    public void refreshWorkerContract(XN631672Req data) {
+        WorkerContract workerContract = new WorkerContract();
+        BeanUtils.copyProperties(data, workerContract);
+        workerContractDAO.update(workerContract);
     }
 
     @Override

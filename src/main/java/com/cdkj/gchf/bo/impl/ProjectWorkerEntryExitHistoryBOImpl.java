@@ -17,6 +17,8 @@ import com.cdkj.gchf.core.OrderNoGenerater;
 import com.cdkj.gchf.dao.IProjectWorkerEntryExitHistoryDAO;
 import com.cdkj.gchf.domain.ProjectConfig;
 import com.cdkj.gchf.domain.ProjectWorkerEntryExitHistory;
+import com.cdkj.gchf.dto.req.XN631730Req;
+import com.cdkj.gchf.dto.req.XN631732Req;
 import com.cdkj.gchf.dto.req.XN631914Req;
 import com.cdkj.gchf.dto.req.XN631915Req;
 import com.cdkj.gchf.enums.EGeneratePrefix;
@@ -33,37 +35,29 @@ public class ProjectWorkerEntryExitHistoryBOImpl
     private IProjectWorkerEntryExitHistoryDAO projectWorkerEntryExitHistoryDAO;
 
     @Override
-    public String saveProjectWorkerEntryExitHistory(
-            ProjectWorkerEntryExitHistory data) {
+    public String saveProjectWorkerEntryExitHistory(XN631730Req req) {
+        ProjectWorkerEntryExitHistory data = new ProjectWorkerEntryExitHistory();
+        BeanUtils.copyProperties(req, data);
         String code = null;
-        if (data != null) {
-            code = OrderNoGenerater.generate(
-                EGeneratePrefix.ProjectWorkerEntryExitHistory.getCode());
-            data.setCode(code);
-            projectWorkerEntryExitHistoryDAO.insert(data);
-        }
+        code = OrderNoGenerater
+            .generate(EGeneratePrefix.ProjectWorkerEntryExitHistory.getCode());
+        data.setCode(code);
+        projectWorkerEntryExitHistoryDAO.insert(data);
         return code;
     }
 
     @Override
-    public int removeProjectWorkerEntryExitHistory(String code) {
-        int count = 0;
-        if (StringUtils.isNotBlank(code)) {
-            ProjectWorkerEntryExitHistory data = new ProjectWorkerEntryExitHistory();
-            data.setCode(code);
-            count = projectWorkerEntryExitHistoryDAO.delete(data);
-        }
-        return count;
+    public void removeProjectWorkerEntryExitHistory(String code) {
+        ProjectWorkerEntryExitHistory data = new ProjectWorkerEntryExitHistory();
+        data.setCode(code);
+        projectWorkerEntryExitHistoryDAO.delete(data);
     }
 
     @Override
-    public int refreshProjectWorkerEntryExitHistory(
-            ProjectWorkerEntryExitHistory data) {
-        int count = 0;
-        if (StringUtils.isNotBlank(data.getCode())) {
-            count = projectWorkerEntryExitHistoryDAO.update(data);
-        }
-        return count;
+    public void refreshProjectWorkerEntryExitHistory(XN631732Req req) {
+        ProjectWorkerEntryExitHistory projectWorkerEntryExitHistory = new ProjectWorkerEntryExitHistory();
+        BeanUtils.copyProperties(req, projectWorkerEntryExitHistory);
+        projectWorkerEntryExitHistoryDAO.update(projectWorkerEntryExitHistory);
     }
 
     @Override
@@ -118,6 +112,13 @@ public class ProjectWorkerEntryExitHistoryBOImpl
             }
         }
         return data;
+    }
+
+    @Override
+    public Object queryProjectWorkerEntryExitHistory(String code) {
+        ProjectWorkerEntryExitHistory condition = new ProjectWorkerEntryExitHistory();
+        condition.setCode(code);
+        return projectWorkerEntryExitHistoryDAO.select(condition);
     }
 
 }

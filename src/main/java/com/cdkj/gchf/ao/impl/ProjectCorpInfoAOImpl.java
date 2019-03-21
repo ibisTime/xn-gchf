@@ -1,11 +1,7 @@
 package com.cdkj.gchf.ao.impl;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.List;
 
-import org.apache.commons.lang.time.DateUtils;
-import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -13,17 +9,14 @@ import com.cdkj.gchf.ao.IProjectCorpInfoAO;
 import com.cdkj.gchf.bo.IProjectConfigBO;
 import com.cdkj.gchf.bo.IProjectCorpInfoBO;
 import com.cdkj.gchf.bo.base.Paginable;
-import com.cdkj.gchf.common.DateUtil;
 import com.cdkj.gchf.domain.ProjectConfig;
 import com.cdkj.gchf.domain.ProjectCorpInfo;
 import com.cdkj.gchf.dto.req.XN631630Req;
 import com.cdkj.gchf.dto.req.XN631632Req;
-import com.cdkj.gchf.dto.req.XN631646Req;
 import com.cdkj.gchf.dto.req.XN631905Req;
 import com.cdkj.gchf.dto.req.XN631906Req;
 import com.cdkj.gchf.dto.req.XN631907Req;
 import com.cdkj.gchf.exception.BizException;
-import com.fasterxml.jackson.databind.BeanProperty;
 
 @Service
 public class ProjectCorpInfoAOImpl implements IProjectCorpInfoAO {
@@ -34,24 +27,23 @@ public class ProjectCorpInfoAOImpl implements IProjectCorpInfoAO {
     @Autowired
     private IProjectConfigBO projectConfigBO;
 
-
-	@Override
-	public String addProjectCorpInfo(XN631630Req data) {
-		//
-		return projectCorpInfoBO.saveProjectCorpInfo(data);
-	}
+    @Override
+    public String addProjectCorpInfo(XN631630Req data) {
+        //
+        return projectCorpInfoBO.saveProjectCorpInfo(data);
+    }
 
     @Override
     public void dropProjectCorpInfo(String code) {
-         projectCorpInfoBO.removeProjectCorpInfo(code);
+        projectCorpInfoBO.removeProjectCorpInfo(code);
     }
 
-	@Override
-	public void editProjectCorpInfo(XN631632Req req) {
-		
-		projectCorpInfoBO.refreshProjectCorpInfo(req);
-	}
-	
+    @Override
+    public void editProjectCorpInfo(XN631632Req req) {
+
+        projectCorpInfoBO.refreshProjectCorpInfo(req);
+    }
+
     @Override
     public void uploadProjectCorpInfo(XN631905Req req) {
         ProjectConfig projectConfig = projectConfigBO
@@ -77,17 +69,17 @@ public class ProjectCorpInfoAOImpl implements IProjectCorpInfoAO {
         projectCorpInfoBO.doUpdate(req, projectConfig);
     }
 
-	@Override
-	public Paginable<ProjectCorpInfo> queryProjectCorpInfo(XN631907Req req) {
-		ProjectConfig projectConfig = projectConfigBO
-	            .getProjectConfigByProject(req.getProjectCode());
+    @Override
+    public Paginable<ProjectCorpInfo> queryProjectCorpInfo(XN631907Req req) {
+        ProjectConfig projectConfig = projectConfigBO
+            .getProjectConfigByProject(req.getProjectCode());
 
-	    if (null == projectConfig) {
-	        throw new BizException("XN631906", "该项目未配置，无法修改");
-	    }
-	        
-	    return projectCorpInfoBO.doQuery(req, projectConfig);
-	}
+        if (null == projectConfig) {
+            throw new BizException("XN631906", "该项目未配置，无法修改");
+        }
+
+        return projectCorpInfoBO.doQuery(req, projectConfig);
+    }
 
     @Override
     public Paginable<ProjectCorpInfo> queryProjectCorpInfoPage(int start,
@@ -105,6 +97,5 @@ public class ProjectCorpInfoAOImpl implements IProjectCorpInfoAO {
     public ProjectCorpInfo getProjectCorpInfo(String code) {
         return projectCorpInfoBO.getProjectCorpInfo(code);
     }
-
 
 }

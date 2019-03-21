@@ -6,6 +6,8 @@ import org.springframework.stereotype.Component;
 
 import com.cdkj.gchf.bo.base.Paginable;
 import com.cdkj.gchf.domain.TeamMaster;
+import com.cdkj.gchf.dto.req.XN631650Req;
+import com.cdkj.gchf.dto.req.XN631652Req;
 import com.cdkj.gchf.dto.req.XN631908Req;
 import com.cdkj.gchf.dto.req.XN631909Req;
 import com.cdkj.gchf.dto.req.XN631910Req;
@@ -14,11 +16,11 @@ import com.cdkj.gchf.dto.req.XN631910Req;
 public interface ITeamMasterAO {
     static final String DEFAULT_ORDER_COLUMN = "code";
 
-    public String addTeamMaster(TeamMaster data);
+    public String addTeamMaster(XN631650Req data);
 
-    public int dropTeamMaster(String code);
+    public void dropTeamMaster(String code);
 
-    public int editTeamMaster(TeamMaster data);
+    public void editTeamMaster(XN631652Req data);
 
     public Paginable<TeamMaster> queryTeamMasterPage(int start, int limit,
             TeamMaster condition);

@@ -3,7 +3,7 @@ package com.cdkj.gchf.dto.req;
 import java.util.Date;
 
 import org.hibernate.validator.constraints.NotBlank;
-import org.springframework.format.annotation.DateTimeFormat;
+
 /**
  * 
  * @ClassName:  XN631630Req   
@@ -13,135 +13,130 @@ import org.springframework.format.annotation.DateTimeFormat;
  * @Copyright:
  */
 public class XN631630Req {
-	//用户id
-	@NotBlank
-	private String userId;
-	
-	// 项目编码
-	@NotBlank
-	private String projectCode;
+    // 用户id
+    @NotBlank
+    private String userId;
 
-	// 统一社会信用代码
-	@NotBlank
-	private String corpCode;
+    // 项目编码
+    @NotBlank
+    private String projectCode;
 
-	// 企业名称
-	@NotBlank
-	private String corpName;
+    // 统一社会信用代码
+    @NotBlank
+    private String corpCode;
 
-	// 参建类型
-	@NotBlank
-	private String corpType;
+    // 企业名称
+    @NotBlank
+    private String corpName;
 
-	// 进场时间。格式 yyyy-MM-dd HH:mm:ss
-	private Date entryTime;
+    // 参建类型
+    @NotBlank
+    private String corpType;
 
-	// 退场时间。格式 yyyy-MM-dd HH:mm:ss
-	private Date exitTime;
+    // 进场时间。格式 yyyy-MM-dd HH:mm:ss
+    private Date entryTime;
 
-	// 项目经理名称
-	private String pmName;
+    // 退场时间。格式 yyyy-MM-dd HH:mm:ss
+    private Date exitTime;
 
-	// 项目经理证件类型
-	private String pmIDCardType;
+    // 项目经理名称
+    private String pmName;
 
-	// 项目经理证件号码
-	private String pmIDCardNumber;
+    // 项目经理证件类型
+    private String pmIDCardType;
 
-	// 项目经理电话
-	private String pmPhone;
+    // 项目经理证件号码
+    private String pmIDCardNumber;
 
-	public String getProjectCode() {
-		return projectCode;
-	}
+    // 项目经理电话
+    private String pmPhone;
 
-	public void setProjectCode(String projectCode) {
-		this.projectCode = projectCode;
-	}
+    public String getProjectCode() {
+        return projectCode;
+    }
 
-	public String getCorpCode() {
-		return corpCode;
-	}
+    public void setProjectCode(String projectCode) {
+        this.projectCode = projectCode;
+    }
 
-	public void setCorpCode(String corpCode) {
-		this.corpCode = corpCode;
-	}
+    public String getCorpCode() {
+        return corpCode;
+    }
 
-	public String getCorpName() {
-		return corpName;
-	}
+    public void setCorpCode(String corpCode) {
+        this.corpCode = corpCode;
+    }
 
-	public void setCorpName(String corpName) {
-		this.corpName = corpName;
-	}
+    public String getCorpName() {
+        return corpName;
+    }
 
-	public String getCorpType() {
-		return corpType;
-	}
+    public void setCorpName(String corpName) {
+        this.corpName = corpName;
+    }
 
-	public void setCorpType(String corpType) {
-		this.corpType = corpType;
-	}
+    public String getCorpType() {
+        return corpType;
+    }
 
-	public Date getEntryTime() {
-		return entryTime;
-	}
+    public void setCorpType(String corpType) {
+        this.corpType = corpType;
+    }
 
-	public void setEntryTime(Date entryTime) {
-		this.entryTime = entryTime;
-	}
+    public Date getEntryTime() {
+        return entryTime;
+    }
 
-	public Date getExitTime() {
-		return exitTime;
-	}
+    public void setEntryTime(Date entryTime) {
+        this.entryTime = entryTime;
+    }
 
-	public void setExitTime(Date exitTime) {
-		this.exitTime = exitTime;
-	}
+    public Date getExitTime() {
+        return exitTime;
+    }
 
-	public String getPmName() {
-		return pmName;
-	}
+    public void setExitTime(Date exitTime) {
+        this.exitTime = exitTime;
+    }
 
-	public void setPmName(String pmName) {
-		this.pmName = pmName;
-	}
-	
+    public String getPmName() {
+        return pmName;
+    }
 
-	public String getPmPhone() {
-		return pmPhone;
-	}
+    public void setPmName(String pmName) {
+        this.pmName = pmName;
+    }
 
-	public void setPmPhone(String pmPhone) {
-		this.pmPhone = pmPhone;
-	}
+    public String getPmPhone() {
+        return pmPhone;
+    }
 
-	public String getUserId() {
-		return userId;
-	}
+    public void setPmPhone(String pmPhone) {
+        this.pmPhone = pmPhone;
+    }
 
-	public void setUserId(String userId) {
-		this.userId = userId;
-	}
+    public String getUserId() {
+        return userId;
+    }
 
-	public String getPmIDCardType() {
-		return pmIDCardType;
-	}
+    public void setUserId(String userId) {
+        this.userId = userId;
+    }
 
-	public void setPmIDCardType(String pmIDCardType) {
-		this.pmIDCardType = pmIDCardType;
-	}
+    public String getPmIDCardType() {
+        return pmIDCardType;
+    }
 
-	public String getPmIDCardNumber() {
-		return pmIDCardNumber;
-	}
+    public void setPmIDCardType(String pmIDCardType) {
+        this.pmIDCardType = pmIDCardType;
+    }
 
-	public void setPmIDCardNumber(String pmIDCardNumber) {
-		this.pmIDCardNumber = pmIDCardNumber;
-	}
-	
-	
-	
-	
-	
+    public String getPmIDCardNumber() {
+        return pmIDCardNumber;
+    }
+
+    public void setPmIDCardNumber(String pmIDCardNumber) {
+        this.pmIDCardNumber = pmIDCardNumber;
+    }
+
 }

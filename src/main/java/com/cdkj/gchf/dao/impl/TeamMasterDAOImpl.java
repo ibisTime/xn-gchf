@@ -49,7 +49,7 @@ public class TeamMasterDAOImpl extends AMybatisTemplate
 
     @Override
     public int update(TeamMaster data) {
-        return 0;
+        return super.update(NAMESPACE.concat("update_teamMaster"), data);
     }
 
 }

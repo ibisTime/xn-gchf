@@ -5,21 +5,23 @@
 	<resultMap id="teamMaster_DB_Result" type="teamMaster">
 		<result column="code" property="code" />
 		<result column="team_sys_no" property="teamSysNo" />
-		<result column="local_project_code" property="localProjectCode" />
 		<result column="project_code" property="projectCode" />
 		<result column="corp_code" property="corpCode" />
 		<result column="corp_name" property="corpName" />
+		
 		<result column="team_name" property="teamName" />
 		<result column="team_leader_name" property="teamLeaderName" />
 		<result column="team_leader_phone" property="teamLeaderPhone" />
 		<result column="team_leader_idcard_type" property="teamLeaderIdcardType" />
 		<result column="team_leader_id_number" property="teamLeaderIdNumber" />
+		
 		<result column="responsible_person_name" property="responsiblePersonName" />
 		<result column="responsible_person_phone" property="responsiblePersonPhone" />
 		<result column="responsible_person_idcard_type" property="responsiblePersonIdcardType" />
 		<result column="responsible_person_id_number" property="responsiblePersonIdNumber" />
 		<result column="remark" property="remark" />
 		<result column="entry_time" property="entryTime" />
+		
 		<result column="exit_time" property="exitTime" />
 		<result column="parent_code" property="parentCode" />
 	</resultMap>
@@ -34,22 +36,24 @@
 		SELECT
 		t.code
 		,t.team_sys_no
-		,t.local_project_code
 		,t.project_code
 		,t.corp_code
 		,t.corp_name
 		,t.team_name
 		,t.team_leader_name
+		
 		,t.team_leader_phone
 		,t.team_leader_idcard_type
 		,t.team_leader_id_number
 		,t.responsible_person_name
 		,t.responsible_person_phone
+		
 		,t.responsible_person_idcard_type
 		,t.responsible_person_id_number
 		,t.remark
 		,t.entry_time
 		,t.exit_time
+		
 		,t.parent_code
 		FROM
 		thf_team_master t
@@ -72,42 +76,46 @@
 		thf_team_master(
 		code
 		,team_sys_no
-		,local_project_code
 		,project_code
 		,corp_code
 		,corp_name
 		,team_name
+		
 		,team_leader_name
 		,team_leader_phone
 		,team_leader_idcard_type
 		,team_leader_id_number
 		,responsible_person_name
+		
 		,responsible_person_phone
 		,responsible_person_idcard_type
 		,responsible_person_id_number
 		,remark
 		,entry_time
+		
 		,exit_time
 		,parent_code
 		)
 		VALUES(
 		#{code}
 		,#{teamSysNo}
-		,#{localProjectCode}
 		,#{projectCode}
 		,#{corpCode}
 		,#{corpName}
 		,#{teamName}
+		
 		,#{teamLeaderName}
 		,#{teamLeaderPhone}
 		,#{teamLeaderIdcardType}
 		,#{teamLeaderIdNumber}
 		,#{responsiblePersonName}
+		
 		,#{responsiblePersonPhone}
 		,#{responsiblePersonIdcardType}
 		,#{responsiblePersonIdNumber}
 		,#{remark}
 		,#{entryTime}
+		
 		,#{exitTime}
 		,#{parentCode}
 		)
@@ -117,25 +125,31 @@
 		UPDATE thf_team_master
 		SET
 		team_sys_no = #{teamSysNo}
-		,local_project_code = #{localProjectCode}
 		,project_code = #{projectCode}
 		,corp_code = #{corpCode}
 		,corp_name = #{corpName}
 		,team_name = #{teamName}
 		,team_leader_name = #{teamLeaderName}
+		
 		,team_leader_phone = #{teamLeaderPhone}
 		,team_leader_idcard_type = #{teamLeaderIdcardType}
 		,team_leader_id_number = #{teamLeaderIdNumber}
 		,responsible_person_name = #{responsiblePersonName}
 		,responsible_person_phone = #{responsiblePersonPhone}
+		
 		,responsible_person_idcard_type = #{responsiblePersonIdcardType}
 		,responsible_person_id_number = #{responsiblePersonIdNumber}
 		,remark = #{remark}
 		,entry_time = #{entryTime}
 		,exit_time = #{exitTime}
+		
 		,parent_code = #{parentCode}
 		WHERE code = #{code}
 	</update>
+	
+	<delete id="delete_teamMaster" parameterType="teamMaster">
+		delete from thf_team_master WHERE code = #{code}
+	</delete>
 
 
 </mapper>

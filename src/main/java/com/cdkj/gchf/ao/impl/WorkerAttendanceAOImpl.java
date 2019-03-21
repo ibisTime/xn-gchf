@@ -11,6 +11,8 @@ import com.cdkj.gchf.bo.IWorkerAttendanceBO;
 import com.cdkj.gchf.bo.base.Paginable;
 import com.cdkj.gchf.domain.ProjectConfig;
 import com.cdkj.gchf.domain.WorkerAttendance;
+import com.cdkj.gchf.dto.req.XN631710Req;
+import com.cdkj.gchf.dto.req.XN631712Req;
 import com.cdkj.gchf.dto.req.XN631918Req;
 import com.cdkj.gchf.dto.req.XN631919Req;
 import com.cdkj.gchf.exception.BizException;
@@ -25,13 +27,13 @@ public class WorkerAttendanceAOImpl implements IWorkerAttendanceAO {
     private IProjectConfigBO projectConfigBO;
 
     @Override
-    public String addWorkerAttendance(WorkerAttendance data) {
+    public String addWorkerAttendance(XN631710Req data) {
         return workerAttendanceBO.saveWorkerAttendance(data);
     }
 
     @Override
-    public int editWorkerAttendance(WorkerAttendance data) {
-        return workerAttendanceBO.refreshWorkerAttendance(data);
+    public void editWorkerAttendance(XN631712Req data) {
+        workerAttendanceBO.refreshWorkerAttendance(data);
     }
 
     @Override

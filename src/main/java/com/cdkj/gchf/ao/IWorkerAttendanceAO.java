@@ -6,6 +6,8 @@ import org.springframework.stereotype.Component;
 
 import com.cdkj.gchf.bo.base.Paginable;
 import com.cdkj.gchf.domain.WorkerAttendance;
+import com.cdkj.gchf.dto.req.XN631710Req;
+import com.cdkj.gchf.dto.req.XN631712Req;
 import com.cdkj.gchf.dto.req.XN631918Req;
 import com.cdkj.gchf.dto.req.XN631919Req;
 
@@ -13,11 +15,11 @@ import com.cdkj.gchf.dto.req.XN631919Req;
 public interface IWorkerAttendanceAO {
     static final String DEFAULT_ORDER_COLUMN = "code";
 
-    public String addWorkerAttendance(WorkerAttendance data);
+    public String addWorkerAttendance(XN631710Req data);
 
     public int dropWorkerAttendance(String code);
 
-    public int editWorkerAttendance(WorkerAttendance data);
+    public void editWorkerAttendance(XN631712Req data);
 
     public Paginable<WorkerAttendance> queryWorkerAttendancePage(int start,
             int limit, WorkerAttendance condition);

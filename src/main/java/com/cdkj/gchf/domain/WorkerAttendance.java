@@ -18,9 +18,6 @@ public class WorkerAttendance extends ABaseDO {
     // 编号
     private String code;
 
-    // 本地项目编号
-    private String localProjectCode;
-
     // 项目编码
     private String projectCode;
 
@@ -40,10 +37,10 @@ public class WorkerAttendance extends ABaseDO {
     private String workerName;
 
     // 证件类型
-    private String idcardType;
+    private String idCardType;
 
     // 证件号码
-    private String idcardNumber;
+    private String idCardNumber;
 
     // 出工状态（正常，迟到，早退）
     private String status;
@@ -55,7 +52,7 @@ public class WorkerAttendance extends ABaseDO {
     private String direction;
 
     // 刷卡近照
-    private String imageUrl;
+    private String image;
 
     // 通道
     private String channel;
@@ -90,20 +87,14 @@ public class WorkerAttendance extends ABaseDO {
     // 备注
     private String remark;
 
+    private String uploadStatus;
+
     public String getCode() {
         return code;
     }
 
     public void setCode(String code) {
         this.code = code;
-    }
-
-    public String getLocalProjectCode() {
-        return localProjectCode;
-    }
-
-    public void setLocalProjectCode(String localProjectCode) {
-        this.localProjectCode = localProjectCode;
     }
 
     public String getProjectCode() {
@@ -154,22 +145,6 @@ public class WorkerAttendance extends ABaseDO {
         this.workerName = workerName;
     }
 
-    public String getIdcardType() {
-        return idcardType;
-    }
-
-    public void setIdcardType(String idcardType) {
-        this.idcardType = idcardType;
-    }
-
-    public String getIdcardNumber() {
-        return idcardNumber;
-    }
-
-    public void setIdcardNumber(String idcardNumber) {
-        this.idcardNumber = idcardNumber;
-    }
-
     public String getStatus() {
         return status;
     }
@@ -194,12 +169,28 @@ public class WorkerAttendance extends ABaseDO {
         this.direction = direction;
     }
 
-    public String getImageUrl() {
-        return imageUrl;
+    public String getIdCardType() {
+        return idCardType;
     }
 
-    public void setImageUrl(String imageUrl) {
-        this.imageUrl = imageUrl;
+    public void setIdCardType(String idCardType) {
+        this.idCardType = idCardType;
+    }
+
+    public String getIdCardNumber() {
+        return idCardNumber;
+    }
+
+    public void setIdCardNumber(String idCardNumber) {
+        this.idCardNumber = idCardNumber;
+    }
+
+    public String getImage() {
+        return image;
+    }
+
+    public void setImage(String image) {
+        this.image = image;
     }
 
     public String getChannel() {
@@ -288,6 +279,14 @@ public class WorkerAttendance extends ABaseDO {
 
     public void setRemark(String remark) {
         this.remark = remark;
+    }
+
+    public String getUploadStatus() {
+        return uploadStatus;
+    }
+
+    public void setUploadStatus(String uploadStatus) {
+        this.uploadStatus = uploadStatus;
     }
 
 }

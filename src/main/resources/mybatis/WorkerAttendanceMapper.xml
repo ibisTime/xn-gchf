@@ -4,19 +4,18 @@
 <mapper namespace="com.cdkj.gchf.dao.IWorkerAttendanceDAO">
 	<resultMap id="workerAttendance_DB_Result" type="workerAttendance">
 		<result column="code" property="code" />
-		<result column="local_project_code" property="localProjectCode" />
 		<result column="project_code" property="projectCode" />
 		<result column="project_name" property="projectName" />
 		<result column="team_sys_no" property="teamSysNo" />
 		<result column="team_name" property="teamName" />
 		<result column="worker_code" property="workerCode" />
 		<result column="worker_name" property="workerName" />
-		<result column="idcard_type" property="idcardType" />
-		<result column="idcard_number" property="idcardNumber" />
+		<result column="idcard_type" property="idCardType" />
+		<result column="idcard_number" property="idCardNumber" />
 		<result column="status" property="status" />
 		<result column="date" property="date" />
 		<result column="direction" property="direction" />
-		<result column="image_url" property="imageUrl" />
+		<result column="image" property="image" />
 		<result column="channel" property="channel" />
 		<result column="attend_type" property="attendType" />
 		<result column="lng" property="lng" />
@@ -28,6 +27,7 @@
 		<result column="sim" property="sim" />
 		<result column="terminal_code" property="terminalCode" />
 		<result column="remark" property="remark" />
+		<result column="upload_status" property="uploadStatus" />
 	</resultMap>
 	<sql id="where_condition">
 		<trim prefix="WHERE" prefixOverrides="AND | OR">
@@ -36,33 +36,144 @@
 			</if>
 		</trim>
 	</sql>
-	<select id="select_workerAttendance" parameterType="workerAttendance" resultMap="workerAttendance_DB_Result">
+
+
+	<insert id="insert_workerAttendance" parameterType="workerAttendance">
+		INSERT INTO
+		thf_worker_attendance(
+		code
+		,project_code
+		,project_name
+		,team_sys_no
+		,team_name
+		,worker_code
+		,worker_name
+		
+		,idcard_type
+		,idcard_number
+		,status
+		,date
+		,direction
+		,image
+		,channel
+		
+		,attend_type
+		,lng
+		,lat
+		,create_datetime
+		,start_datetime
+		,end_datetime
+		
+		,settle_datetime
+		,sim
+		,terminal_code
+		,remark
+		,upload_status
+		)
+		VALUES(
+		#{code}
+		,#{projectCode}
+		,#{projectName}
+		,#{teamSysNo}
+		,#{teamName}
+		,#{workerCode}
+		
+		,#{workerName}
+		,#{idCardType}
+		,#{idCardNumber}
+		,#{status}
+		,#{date}
+		
+		,#{direction}
+		,#{image}
+		,#{channel}
+		,#{attendType}
+		,#{lng}
+		,#{lat}
+		
+		,#{createDatetime}
+		,#{startDatetime}
+		,#{endDatetime}
+		,#{settleDatetime}
+		,#{sim}
+		
+		,#{terminalCode}
+		,#{remark}
+		,#{uploadStatus}
+		)
+	</insert>
+	<delete id="delete_workerAttendance" parameterType="workerAttendance">
+		DELETE from thf_worker_attendance WHERE code = #{code}
+	</delete>
+
+	<update id="update_workerAttendance" parameterType="workerAttendance">
+		UPDATE
+		thf_worker_attendance
+		SET
+		project_code = #{projectCode}
+		,project_name = #{projectName}
+		,team_sys_no = #{teamSysNo}
+		,team_name = #{teamName}
+		
+		,worker_code = #{workerCode}
+		,worker_name = #{workerName}
+		,idcard_type = #{idCardType}
+		,idcard_number = #{idCardNumber}
+		,status = #{status}
+		
+		,date = #{date}
+		,direction = #{direction}
+		,image = #{image}
+		,channel = #{channel}
+		,attend_type = #{attendType}
+		
+		,lng = #{lng}
+		,lat = #{lat}
+		,create_datetime = #{createDatetime}
+		,start_datetime = #{startDatetime}
+		,end_datetime = #{endDatetime}
+		
+		,settle_datetime = #{settleDatetime}
+		,sim = #{sim}
+		,terminal_code = #{terminalCode}
+		,remark = #{remark}
+		,upload_status = #{uploadStatus}
+		WHERE
+		code = #{code}
+	</update>
+
+	<select id="select_workerAttendance" parameterType="workerAttendance"
+		resultMap="workerAttendance_DB_Result">
 		SELECT
 		t.code
-		,t.local_project_code
 		,t.project_code
 		,t.project_name
 		,t.team_sys_no
 		,t.team_name
 		,t.worker_code
+		
 		,t.worker_name
 		,t.idcard_type
 		,t.idcard_number
 		,t.status
 		,t.date
 		,t.direction
-		,t.image_url
+		
+		,t.image
 		,t.channel
 		,t.attend_type
 		,t.lng
 		,t.lat
+		
 		,t.create_datetime
 		,t.start_datetime
 		,t.end_datetime
 		,t.settle_datetime
 		,t.sim
+		
 		,t.terminal_code
 		,t.remark
+		,t.upload_status
 		FROM
 		thf_worker_attendance t
 		<include refid="where_condition" />
@@ -78,94 +189,6 @@
 		SELECT count(1) FROM thf_worker_attendance t
 		<include refid="where_condition" />
 	</select>
-
-	<insert id="insert_workerAttendance" parameterType="workerAttendance">
-		INSERT INTO
-		thf_worker_attendance(
-		code
-		,local_project_code
-		,project_code
-		,project_name
-		,team_sys_no
-		,team_name
-		,worker_code
-		,worker_name
-		,idcard_type
-		,idcard_number
-		,status
-		,date
-		,direction
-		,image_url
-		,channel
-		,attend_type
-		,lng
-		,lat
-		,create_datetime
-		,start_datetime
-		,end_datetime
-		,settle_datetime
-		,sim
-		,terminal_code
-		,remark
-		)
-		VALUES(
-		#{code}
-		,#{localProjectCode}
-		,#{projectCode}
-		,#{projectName}
-		,#{teamSysNo}
-		,#{teamName}
-		,#{workerCode}
-		,#{workerName}
-		,#{idcardType}
-		,#{idcardNumber}
-		,#{status}
-		,#{date}
-		,#{direction}
-		,#{imageUrl}
-		,#{channel}
-		,#{attendType}
-		,#{lng}
-		,#{lat}
-		,#{createDatetime}
-		,#{startDatetime}
-		,#{endDatetime}
-		,#{settleDatetime}
-		,#{sim}
-		,#{terminalCode}
-		,#{remark}
-		)
-	</insert>
-
-	<update id="update_workerAttendance" parameterType="workerAttendance">
-		UPDATE thf_worker_attendance
-		SET
-		local_project_code = #{localProjectCode}
-		,project_code = #{projectCode}
-		,project_name = #{projectName}
-		,team_sys_no = #{teamSysNo}
-		,team_name = #{teamName}
-		,worker_code = #{workerCode}
-		,worker_name = #{workerName}
-		,idcard_type = #{idcardType}
-		,idcard_number = #{idcardNumber}
-		,status = #{status}
-		,date = #{date}
-		,direction = #{direction}
-		,image_url = #{imageUrl}
-		,channel = #{channel}
-		,attend_type = #{attendType}
-		,lng = #{lng}
-		,lat = #{lat}
-		,create_datetime = #{createDatetime}
-		,start_datetime = #{startDatetime}
-		,end_datetime = #{endDatetime}
-		,settle_datetime = #{settleDatetime}
-		,sim = #{sim}
-		,terminal_code = #{terminalCode}
-		,remark = #{remark}
-		WHERE code = #{code}
-	</update>
 
 
 </mapper>

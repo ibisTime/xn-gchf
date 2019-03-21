@@ -49,7 +49,8 @@ public class WorkerAttendanceDAOImpl extends AMybatisTemplate
 
     @Override
     public int update(WorkerAttendance workerAttendance) {
-        return 0;
+        return super.update(NAMESPACE.concat("update_workerAttendance"),
+            workerAttendance);
     }
 
 }

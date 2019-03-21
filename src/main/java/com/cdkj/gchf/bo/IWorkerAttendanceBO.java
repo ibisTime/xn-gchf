@@ -6,16 +6,18 @@ import com.cdkj.gchf.bo.base.IPaginableBO;
 import com.cdkj.gchf.bo.base.Paginable;
 import com.cdkj.gchf.domain.ProjectConfig;
 import com.cdkj.gchf.domain.WorkerAttendance;
+import com.cdkj.gchf.dto.req.XN631710Req;
+import com.cdkj.gchf.dto.req.XN631712Req;
 import com.cdkj.gchf.dto.req.XN631918Req;
 import com.cdkj.gchf.dto.req.XN631919Req;
 
 public interface IWorkerAttendanceBO extends IPaginableBO<WorkerAttendance> {
 
-    public String saveWorkerAttendance(WorkerAttendance data);
+    public String saveWorkerAttendance(XN631710Req data);
 
     public int removeWorkerAttendance(String code);
 
-    public int refreshWorkerAttendance(WorkerAttendance data);
+    public void refreshWorkerAttendance(XN631712Req data);
 
     public List<WorkerAttendance> queryWorkerAttendanceList(
             WorkerAttendance condition);

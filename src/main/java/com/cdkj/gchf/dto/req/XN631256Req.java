@@ -1,5 +1,7 @@
 package com.cdkj.gchf.dto.req;
 
+import org.hibernate.validator.constraints.NotBlank;
+
 /**
  * 详细查询企业信息
  * @author: silver 
@@ -8,7 +10,12 @@ package com.cdkj.gchf.dto.req;
  */
 public class XN631256Req {
 
+    @NotBlank
     private String code;
+
+    // 用户编号
+    @NotBlank
+    private String userId;
 
     public String getCode() {
         return code;
@@ -16,6 +23,14 @@ public class XN631256Req {
 
     public void setCode(String code) {
         this.code = code;
+    }
+
+    public String getUserId() {
+        return userId;
+    }
+
+    public void setUserId(String userId) {
+        this.userId = userId;
     }
 
 }

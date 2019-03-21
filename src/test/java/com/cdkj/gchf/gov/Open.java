@@ -19,13 +19,14 @@ public class Open {
     public void projectSubContractorAdd() {
 
         Map<String, String> dataMap = new HashMap<String, String>();
-        dataMap.put("requestSerialCode", "corp-upload-2019031419-1-1370");
+        dataMap.put("requestSerialCode", "projectworker-add-2019032111-1-0858");
 
         String data = JSONObject.toJSON(dataMap).toString();
 
         System.out.println(data);
 
-        GovConnecter.getGovData("AsyncHandleResult.Query", data);
+        GovConnecter.getGovData("AsyncHandleResult.Query", data,
+            "3311222019030004", "6307a2c2403b72d08ca978e5dfea1813");
 
     }
 }

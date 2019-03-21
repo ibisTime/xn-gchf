@@ -31,6 +31,7 @@
 		<result column="link_phone" property="linkPhone" />
 		<result column="email" property="email" />
 		<result column="web_site" property="webSite" />
+		<result column="upload_status" property="uploadStatus" />
 	</resultMap>
 	
 	<sql id="where_condition">
@@ -46,6 +47,9 @@
 			</if>
 			<if test="corpType != null and corpType != '' ">
 				AND t.corp_type = #{corpType}
+			</if>
+			<if test="uploadStatus != null and uploadStatus != '' ">
+				AND t.upload_status = #{uploadStatus}
 			</if>
 		</trim>
 	</sql>
@@ -80,6 +84,7 @@
 		,t.link_phone
 		,t.email
 		,t.web_site
+		,t.upload_status
 		FROM
 		tqy_corp_basicinfo t
 		<include refid="where_condition" />
@@ -127,6 +132,7 @@
 		,link_phone
 		,email
 		,web_site
+		,upload_status
 		)
 		VALUES(
 		#{code}
@@ -157,6 +163,7 @@
 		,#{linkPhone}
 		,#{email}
 		,#{webSite}
+		,#{uploadStatus}
 		)
 	</insert>
 
@@ -190,6 +197,13 @@
 		,link_phone = #{linkPhone}
 		,email = #{email}
 		,web_site = #{webSite}
+		WHERE code = #{code}
+	</update>
+	
+	<update id="update_uploadCorpBasicinfo" parameterType="corpBasicinfo">
+		UPDATE tqy_corp_basicinfo
+		SET
+		upload_status = #{uploadStatus}
 		WHERE code = #{code}
 	</update>
 	

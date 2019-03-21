@@ -1,6 +1,5 @@
 package com.cdkj.gchf.bo.impl;
 
-import java.text.SimpleDateFormat;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -14,7 +13,6 @@ import com.alibaba.fastjson.JSONObject;
 import com.cdkj.gchf.bo.IProjectCorpInfoBO;
 import com.cdkj.gchf.bo.base.Paginable;
 import com.cdkj.gchf.bo.base.PaginableBOImpl;
-import com.cdkj.gchf.common.DateUtil;
 import com.cdkj.gchf.core.OrderNoGenerater;
 import com.cdkj.gchf.dao.IProjectCorpInfoDAO;
 import com.cdkj.gchf.domain.ProjectConfig;
@@ -28,7 +26,6 @@ import com.cdkj.gchf.enums.EGeneratePrefix;
 import com.cdkj.gchf.exception.BizException;
 import com.cdkj.gchf.gov.GovConnecter;
 import com.cdkj.gchf.gov.GovUtil;
-import com.fasterxml.jackson.databind.BeanProperty;
 
 @Component
 public class ProjectCorpInfoBOImpl extends PaginableBOImpl<ProjectCorpInfo>
@@ -39,14 +36,14 @@ public class ProjectCorpInfoBOImpl extends PaginableBOImpl<ProjectCorpInfo>
 
     @Override
     public String saveProjectCorpInfo(XN631630Req req) {
-    	ProjectCorpInfo projectCorpInfo = new ProjectCorpInfo();
-    	BeanUtils.copyProperties(req, projectCorpInfo);
-    	
+        ProjectCorpInfo projectCorpInfo = new ProjectCorpInfo();
+        BeanUtils.copyProperties(req, projectCorpInfo);
+
         String code = OrderNoGenerater
-                .generate(EGeneratePrefix.ProjectCorpInfo.getCode());
+            .generate(EGeneratePrefix.ProjectCorpInfo.getCode());
         projectCorpInfo.setCode(code);
         projectCorpInfoDAO.insert(projectCorpInfo);
-            
+
         return code;
     }
 
@@ -55,15 +52,15 @@ public class ProjectCorpInfoBOImpl extends PaginableBOImpl<ProjectCorpInfo>
         if (StringUtils.isNotBlank(code)) {
             ProjectCorpInfo data = new ProjectCorpInfo();
             data.setCode(code);
-           projectCorpInfoDAO.delete(data);
+            projectCorpInfoDAO.delete(data);
         }
     }
 
     @Override
     public void refreshProjectCorpInfo(XN631632Req req) {
-    	ProjectCorpInfo projectCorpInfo = new ProjectCorpInfo();
-    	BeanUtils.copyProperties(req, projectCorpInfo);
-    	
+        ProjectCorpInfo projectCorpInfo = new ProjectCorpInfo();
+        BeanUtils.copyProperties(req, projectCorpInfo);
+
         projectCorpInfoDAO.update(projectCorpInfo);
     }
 

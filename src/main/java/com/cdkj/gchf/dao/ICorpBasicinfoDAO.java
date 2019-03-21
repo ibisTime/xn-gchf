@@ -8,4 +8,6 @@ public interface ICorpBasicinfoDAO extends IBaseDAO<CorpBasicinfo> {
 
     int update(CorpBasicinfo corpBasicinfo);
 
+    int updateUploadStatus(CorpBasicinfo corpBasicinfo);
+
 }

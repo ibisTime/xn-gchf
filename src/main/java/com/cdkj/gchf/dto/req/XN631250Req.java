@@ -84,6 +84,10 @@ public class XN631250Req {
     // 企业网址
     private String webSite;
 
+    // 用户编号
+    @NotBlank
+    private String userId;
+
     public String getCorpCode() {
         return corpCode;
     }
@@ -266,6 +270,14 @@ public class XN631250Req {
 
     public void setWebSite(String webSite) {
         this.webSite = webSite;
+    }
+
+    public String getUserId() {
+        return userId;
+    }
+
+    public void setUserId(String userId) {
+        this.userId = userId;
     }
 
 }

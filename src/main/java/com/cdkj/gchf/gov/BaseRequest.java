@@ -129,7 +129,7 @@ public abstract class BaseRequest {
         httpPost.setEntity(new StringEntity(
             new ObjectMapper().writeValueAsString(map), "utf-8"));
 
-        System.out.println("请求地址：" + url);
+        // System.out.println("请求地址：" + url);
 
         // 执行请求操作，并拿到结果（同步阻塞）
         CloseableHttpResponse response = client.execute(httpPost);
@@ -189,10 +189,10 @@ public abstract class BaseRequest {
             setGetHead(httpGet, headMap);
             CloseableHttpResponse response1 = httpclient.execute(httpGet);
             try {
-                System.out.println(response1.getStatusLine());
+                // System.out.println(response1.getStatusLine());
                 HttpEntity entity = response1.getEntity();
                 responseContent = getRespString(entity);
-                System.out.println("debug:" + responseContent);
+                // System.out.println("debug:" + responseContent);
                 EntityUtils.consume(entity);
             } finally {
                 response1.close();

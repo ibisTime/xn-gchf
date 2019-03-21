@@ -53,4 +53,9 @@ public class CorpBasicinfoDAOImpl extends AMybatisTemplate
             corpBasicinfo);
     }
 
+    @Override
+    public int updateUploadStatus(CorpBasicinfo corpBasicinfo) {
+        return super.update(NAMESPACE.concat("update_uploadCorpBasicinfo"),
+            corpBasicinfo);
+    }
 }

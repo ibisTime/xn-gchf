@@ -86,6 +86,9 @@ public class CorpBasicinfo extends ABaseDO {
     // 企业网址
     private String webSite;
 
+    // 上传状态
+    private String uploadStatus;
+
     /****DB Properties****/
 
     // 资本币种
@@ -289,6 +292,14 @@ public class CorpBasicinfo extends ABaseDO {
 
     public void setCapitalCurrencyTypeName(String capitalCurrencyTypeName) {
         this.capitalCurrencyTypeName = capitalCurrencyTypeName;
+    }
+
+    public String getUploadStatus() {
+        return uploadStatus;
+    }
+
+    public void setUploadStatus(String uploadStatus) {
+        this.uploadStatus = uploadStatus;
     }
 
 }

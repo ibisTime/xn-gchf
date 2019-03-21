@@ -17,6 +17,9 @@ public class XN631632Req {
     // 项目编码
     private String projectCode;
 
+    // 项目名称
+    private String projectName;
+
     // 统一社会信用代码，如果无统一社会信用代码，则用组织机构代码
     @NotBlank
     private String corpCode;
@@ -141,6 +144,14 @@ public class XN631632Req {
 
     public void setCode(String code) {
         this.code = code;
+    }
+
+    public String getProjectName() {
+        return projectName;
+    }
+
+    public void setProjectName(String projectName) {
+        this.projectName = projectName;
     }
 
 }

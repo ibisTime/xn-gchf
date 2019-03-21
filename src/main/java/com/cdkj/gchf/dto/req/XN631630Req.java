@@ -21,6 +21,9 @@ public class XN631630Req {
     @NotBlank
     private String projectCode;
 
+    // 项目名称
+    private String projectName;
+
     // 统一社会信用代码
     @NotBlank
     private String corpCode;
@@ -137,6 +140,14 @@ public class XN631630Req {
 
     public void setPmIDCardNumber(String pmIDCardNumber) {
         this.pmIDCardNumber = pmIDCardNumber;
+    }
+
+    public String getProjectName() {
+        return projectName;
+    }
+
+    public void setProjectName(String projectName) {
+        this.projectName = projectName;
     }
 
 }

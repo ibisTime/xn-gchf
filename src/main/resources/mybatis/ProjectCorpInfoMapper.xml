@@ -71,7 +71,7 @@
 	<insert id="insert_projectCorpInfo" parameterType="projectCorpInfo">
 		INSERT INTO
 		thf_project_corp_info(
-		code
+		 code
 		,project_code
 		,project_name
 		,corp_code

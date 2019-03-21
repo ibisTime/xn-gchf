@@ -1,5 +1,7 @@
 package com.cdkj.gchf.dto.req;
 
+import java.util.Date;
+
 import org.hibernate.validator.constraints.NotBlank;
 
 public class XN631670Req {
@@ -27,6 +29,23 @@ public class XN631670Req {
     @NotBlank
     private String idCardNumber;
 
+    // 证件类型
+    private String idcardType;
+
+    private String workerCode;
+
+    private String workerName;
+
+    private String workerMobile;
+
+    private String updater;
+
+    private Date updateDatetime;
+
+    private String remark;
+
+    private String uploadStatus;
+
     // 合同编号
     @NotBlank
     private String contractCode;
@@ -42,6 +61,9 @@ public class XN631670Req {
     // 结束时间
     @NotBlank
     private String endDate;
+
+    // 时间
+    private Date date;
 
     private String unit;
 
@@ -151,6 +173,78 @@ public class XN631670Req {
 
     public void setIsUpload(String isUpload) {
         this.isUpload = isUpload;
+    }
+
+    public String getIdcardType() {
+        return idcardType;
+    }
+
+    public void setIdcardType(String idcardType) {
+        this.idcardType = idcardType;
+    }
+
+    public String getWorkerCode() {
+        return workerCode;
+    }
+
+    public void setWorkerCode(String workerCode) {
+        this.workerCode = workerCode;
+    }
+
+    public String getWorkerName() {
+        return workerName;
+    }
+
+    public void setWorkerName(String workerName) {
+        this.workerName = workerName;
+    }
+
+    public String getWorkerMobile() {
+        return workerMobile;
+    }
+
+    public void setWorkerMobile(String workerMobile) {
+        this.workerMobile = workerMobile;
+    }
+
+    public String getUpdater() {
+        return updater;
+    }
+
+    public void setUpdater(String updater) {
+        this.updater = updater;
+    }
+
+    public Date getUpdateDatetime() {
+        return updateDatetime;
+    }
+
+    public void setUpdateDatetime(Date updateDatetime) {
+        this.updateDatetime = updateDatetime;
+    }
+
+    public String getRemark() {
+        return remark;
+    }
+
+    public void setRemark(String remark) {
+        this.remark = remark;
+    }
+
+    public String getUploadStatus() {
+        return uploadStatus;
+    }
+
+    public void setUploadStatus(String uploadStatus) {
+        this.uploadStatus = uploadStatus;
+    }
+
+    public Date getDate() {
+        return date;
+    }
+
+    public void setDate(Date date) {
+        this.date = date;
     }
 
 }

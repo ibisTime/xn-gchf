@@ -24,6 +24,7 @@
 		
 		<result column="exit_time" property="exitTime" />
 		<result column="parent_code" property="parentCode" />
+		<result column="upload_status" property="uploadStatus" />
 	</resultMap>
 	<sql id="where_condition">
 		<trim prefix="WHERE" prefixOverrides="AND | OR">
@@ -55,6 +56,7 @@
 		,t.exit_time
 		
 		,t.parent_code
+		,t.upload_status
 		FROM
 		thf_team_master t
 		<include refid="where_condition" />
@@ -95,6 +97,7 @@
 		
 		,exit_time
 		,parent_code
+		,upload_status
 		)
 		VALUES(
 		#{code}
@@ -118,6 +121,7 @@
 		
 		,#{exitTime}
 		,#{parentCode}
+		,#{uploadStatus}
 		)
 	</insert>
 
@@ -142,6 +146,7 @@
 		,remark = #{remark}
 		,entry_time = #{entryTime}
 		,exit_time = #{exitTime}
+		,upload_status = #{uploadtatus}
 		
 		,parent_code = #{parentCode}
 		WHERE code = #{code}

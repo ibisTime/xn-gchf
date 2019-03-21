@@ -21,6 +21,9 @@ public class XN631650Req {
     // 班组所在企业名称
     private String corpName;
 
+    // 班组编号
+    private Integer teamSysNo;
+
     // 班组名称，
     @NotBlank
     private String teamName;
@@ -32,10 +35,10 @@ public class XN631650Req {
     private String responsiblePersonPhone;
 
     // 责任人证件类型
-    private String responsiblePersonIDCardType;
+    private String responsiblePersonIdcardType;
 
     // 责任人证件号码
-    private String responsiblePersonIDNumber;
+    private String responsiblePersonIdNumber;
 
     // 备注
     private String remark;
@@ -45,6 +48,24 @@ public class XN631650Req {
 
     // 退场日期
     private String exitTime;
+
+    // 班组长姓名
+    private String teamLeaderName;
+
+    // 班组长联系电话
+    private String teamLeaderPhone;
+
+    // 班组长证件类型
+    private String teamLeaderIdcardType;
+
+    // 班组长证件号码
+    private String teamLeaderIdNumber;
+
+    // 上级部门编号
+    private String parentCode;
+
+    // 是否上传
+    private String uploadStatus;
 
     public String getCode() {
         return code;
@@ -110,23 +131,6 @@ public class XN631650Req {
         this.responsiblePersonPhone = responsiblePersonPhone;
     }
 
-    public String getResponsiblePersonIDCardType() {
-        return responsiblePersonIDCardType;
-    }
-
-    public void setResponsiblePersonIDCardType(
-            String responsiblePersonIDCardType) {
-        this.responsiblePersonIDCardType = responsiblePersonIDCardType;
-    }
-
-    public String getResponsiblePersonIDNumber() {
-        return responsiblePersonIDNumber;
-    }
-
-    public void setResponsiblePersonIDNumber(String responsiblePersonIDNumber) {
-        this.responsiblePersonIDNumber = responsiblePersonIDNumber;
-    }
-
     public String getRemark() {
         return remark;
     }
@@ -149,6 +153,79 @@ public class XN631650Req {
 
     public void setExitTime(String exitTime) {
         this.exitTime = exitTime;
+    }
+
+    public Integer getTeamSysNo() {
+        return teamSysNo;
+    }
+
+    public void setTeamSysNo(Integer teamSysNo) {
+        this.teamSysNo = teamSysNo;
+    }
+
+    public String getTeamLeaderName() {
+        return teamLeaderName;
+    }
+
+    public void setTeamLeaderName(String teamLeaderName) {
+        this.teamLeaderName = teamLeaderName;
+    }
+
+    public String getTeamLeaderPhone() {
+        return teamLeaderPhone;
+    }
+
+    public void setTeamLeaderPhone(String teamLeaderPhone) {
+        this.teamLeaderPhone = teamLeaderPhone;
+    }
+
+    public String getTeamLeaderIdcardType() {
+        return teamLeaderIdcardType;
+    }
+
+    public void setTeamLeaderIdcardType(String teamLeaderIdcardType) {
+        this.teamLeaderIdcardType = teamLeaderIdcardType;
+    }
+
+    public String getTeamLeaderIdNumber() {
+        return teamLeaderIdNumber;
+    }
+
+    public void setTeamLeaderIdNumber(String teamLeaderIdNumber) {
+        this.teamLeaderIdNumber = teamLeaderIdNumber;
+    }
+
+    public String getResponsiblePersonIdcardType() {
+        return responsiblePersonIdcardType;
+    }
+
+    public void setResponsiblePersonIdcardType(
+            String responsiblePersonIdcardType) {
+        this.responsiblePersonIdcardType = responsiblePersonIdcardType;
+    }
+
+    public String getResponsiblePersonIdNumber() {
+        return responsiblePersonIdNumber;
+    }
+
+    public void setResponsiblePersonIdNumber(String responsiblePersonIdNumber) {
+        this.responsiblePersonIdNumber = responsiblePersonIdNumber;
+    }
+
+    public String getParentCode() {
+        return parentCode;
+    }
+
+    public void setParentCode(String parentCode) {
+        this.parentCode = parentCode;
+    }
+
+    public String getUploadStatus() {
+        return uploadStatus;
+    }
+
+    public void setUploadStatus(String uploadStatus) {
+        this.uploadStatus = uploadStatus;
     }
 
 }

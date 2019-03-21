@@ -61,6 +61,9 @@ public class ProjectWorkerEntryExitHistory extends ABaseDO {
     // 凭证扫描件
     private String voucherUrl;
 
+    // 状态
+    private String uploadStatus;
+
     /****DB Properties****/
     private List<XN631914ReqWorker> workerList;
 
@@ -190,6 +193,14 @@ public class ProjectWorkerEntryExitHistory extends ABaseDO {
 
     public void setWorkerList(List<XN631914ReqWorker> workerList) {
         this.workerList = workerList;
+    }
+
+    public String getUploadStatus() {
+        return uploadStatus;
+    }
+
+    public void setUploadStatus(String uploadStatus) {
+        this.uploadStatus = uploadStatus;
     }
 
 }

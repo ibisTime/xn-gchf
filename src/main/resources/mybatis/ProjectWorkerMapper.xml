@@ -55,6 +55,7 @@
 		
 		<result column="update_datetime" property="updateDatetime" />
 		<result column="remark" property="remark" />
+		<result column="upload_status" property="uploadStatus" />
 	</resultMap>
 	<sql id="where_condition">
 		<trim prefix="WHERE" prefixOverrides="AND | OR">
@@ -117,6 +118,7 @@
 		,t.updater
 		,t.update_datetime
 		,t.remark
+		,t.upload_status
 		FROM
 		thf_project_worker t
 		<include refid="where_condition" />
@@ -188,6 +190,7 @@
 		,updater
 		,update_datetime
 		,remark
+		,upload_status
 		)
 		VALUES(
 		#{code}
@@ -241,6 +244,7 @@
 		,#{updater}
 		,#{updateDatetime}
 		,#{remark}
+		,#{uploadStatus}
 		)
 	</insert>
 
@@ -297,6 +301,7 @@
 		,updater = #{updater}
 		,update_datetime = #{updateDatetime}
 		,remark = #{remark}
+		,upload_status = #{uploadStatus}
 		WHERE code = #{code}
 	</update>
 

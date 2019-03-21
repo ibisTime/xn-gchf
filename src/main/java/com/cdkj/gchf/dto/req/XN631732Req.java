@@ -57,7 +57,7 @@ public class XN631732Req {
     private String voucherUrl;
 
     // 状态
-    private String upload_status;
+    private String uploadStatus;
 
     public String getUserId() {
         return userId;
@@ -171,12 +171,12 @@ public class XN631732Req {
         this.voucherUrl = voucherUrl;
     }
 
-    public String getUpload_status() {
-        return upload_status;
+    public String getUploadStatus() {
+        return uploadStatus;
     }
 
-    public void setUpload_status(String upload_status) {
-        this.upload_status = upload_status;
+    public void setUploadStatus(String uploadStatus) {
+        this.uploadStatus = uploadStatus;
     }
 
     public String getCode() {

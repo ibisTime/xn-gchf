@@ -18,6 +18,7 @@
 		<result column="date" property="date" />
 		<result column="type" property="type" />
 		<result column="voucher_url" property="voucherUrl" />
+		<result column="upload_status" property="uploadStatus" />
 	</resultMap>
 	<sql id="where_condition">
 		<trim prefix="WHERE" prefixOverrides="AND | OR">
@@ -48,6 +49,7 @@
 		,type
 		
 		,voucher_url
+		,upload_status
 		)
 		VALUES(
 		#{code}
@@ -67,6 +69,7 @@
 		,#{date}
 		,#{type}
 		,#{voucherUrl}
+		,#{uploadStatus}
 		)
 	</insert>
     
@@ -93,6 +96,7 @@
 		
 		,type = #{type}
 		,voucher_url = #{voucherUrl}
+		,upload_status = #{uploadStatus}
 		WHERE code = #{code}
 	</update>
 	
@@ -115,6 +119,7 @@
         
         ,t.type
         ,t.voucher_url
+        ,t.upload_status
         FROM
         thf_project_worker_entry_exit_history t
         <include refid="where_condition" />

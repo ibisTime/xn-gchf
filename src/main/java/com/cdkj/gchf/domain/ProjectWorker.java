@@ -17,9 +17,6 @@ public class ProjectWorker extends ABaseDO {
     // 编号
     private String code;
 
-    // 本地项目编号
-    private String localProjectCode;
-
     // 项目编码
     private String projectCode;
 
@@ -211,14 +208,6 @@ public class ProjectWorker extends ABaseDO {
 
     public void setCode(String code) {
         this.code = code;
-    }
-
-    public String getLocalProjectCode() {
-        return localProjectCode;
-    }
-
-    public void setLocalProjectCode(String localProjectCode) {
-        this.localProjectCode = localProjectCode;
     }
 
     public String getProjectCode() {

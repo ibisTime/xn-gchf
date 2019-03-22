@@ -124,6 +124,20 @@
 			</if>
 		</trim>
 	</select>
+	
+	<select id="select_briefUser" parameterType="user" resultMap="user_DB_Result">
+		SELECT
+		t.user_id
+		,t.type
+		,t.organization_code
+		,t.real_name
+		,t.login_name
+		,t.role_code
+		,t.status
+		FROM
+		thf_user t 
+		<include refid="where_condition" />
+	</select>
 
 	<select id="select_user_count" parameterType="user"
 		resultType="java.lang.Long">

@@ -291,7 +291,6 @@ CREATE TABLE `thf_user` (
 DROP TABLE IF EXISTS `thf_worker_attendance`;
 CREATE TABLE `thf_worker_attendance` (
   `code` varchar(32) NOT NULL COMMENT '编号',
-  `local_project_code` varchar(32) DEFAULT NULL COMMENT '本地项目编号',
   `project_code` varchar(20) DEFAULT NULL COMMENT '项目编码',
   `project_name` varchar(200) DEFAULT NULL COMMENT '项目名称',
   `team_sys_no` int(11) DEFAULT NULL COMMENT '班组编号',
@@ -321,7 +320,6 @@ CREATE TABLE `thf_worker_attendance` (
 DROP TABLE IF EXISTS `thf_worker_contract`;
 CREATE TABLE `thf_worker_contract` (
   `code` varchar(32) NOT NULL COMMENT '编号',
-  `local_project_code` varchar(32) DEFAULT NULL COMMENT '本地项目编号',
   `project_code` varchar(20) DEFAULT NULL COMMENT '项目编码',
   `project_name` varchar(200) DEFAULT NULL COMMENT '项目名称',
   `corp_code` varchar(18) DEFAULT NULL COMMENT '所属企业统一社会信用代码',
@@ -343,6 +341,19 @@ CREATE TABLE `thf_worker_contract` (
   `remark` text COMMENT '备注',
   PRIMARY KEY (`code`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='劳动合同';
+
+DROP TABLE IF EXISTS `tsys_operate_log`;
+CREATE TABLE `tsys_operate_log` (
+  `code` varchar(32) NOT NULL COMMENT '编号',
+  `ref_type` varchar(32) DEFAULT NULL COMMENT '关联类型',
+  `ref_code` varchar(32) DEFAULT NULL COMMENT '关联编号',
+  `operate` varchar(32) DEFAULT NULL COMMENT '操作名称',
+  `operator` varchar(32) DEFAULT NULL COMMENT '操作人编号',
+  `operator_name` varchar(32) DEFAULT NULL COMMENT '操作人名称',
+  `operate_datetime` datetime DEFAULT NULL COMMENT '操作时间',
+  `remark` text COMMENT '备注',
+  PRIMARY KEY (`code`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='操作日志';
 
 DROP TABLE IF EXISTS `tsys_config`;
 CREATE TABLE `tsys_config` (

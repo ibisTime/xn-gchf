@@ -8,21 +8,23 @@ import org.springframework.stereotype.Service;
 import com.alibaba.fastjson.JSONObject;
 import com.cdkj.gchf.ao.ICorpBasicinfoAO;
 import com.cdkj.gchf.bo.ICorpBasicinfoBO;
+import com.cdkj.gchf.bo.IOperateLogBO;
 import com.cdkj.gchf.bo.IProjectConfigBO;
+import com.cdkj.gchf.bo.IUserBO;
 import com.cdkj.gchf.bo.base.Paginable;
 import com.cdkj.gchf.domain.CorpBasicinfo;
 import com.cdkj.gchf.domain.ProjectConfig;
+import com.cdkj.gchf.domain.User;
 import com.cdkj.gchf.dto.req.XN631250Req;
 import com.cdkj.gchf.dto.req.XN631251Req;
 import com.cdkj.gchf.dto.req.XN631900Req;
 import com.cdkj.gchf.dto.req.XN631901Req;
-import com.cdkj.gchf.enums.EGovAsyncStatus;
+import com.cdkj.gchf.enums.EOperateLogOperate;
+import com.cdkj.gchf.enums.EOperateLogRefType;
 import com.cdkj.gchf.enums.EUploadStatus;
 import com.cdkj.gchf.exception.BizException;
-import com.cdkj.gchf.gov.AsyncRes;
-import com.cdkj.gchf.gov.GovAsync;
+import com.cdkj.gchf.gov.AsyncQueueHolder;
 import com.cdkj.gchf.gov.GovConnecter;
-import com.cdkj.gchf.gov.GovUtil;
 
 @Service
 public class CorpBasicinfoAOImpl implements ICorpBasicinfoAO {
@@ -32,6 +34,12 @@ public class CorpBasicinfoAOImpl implements ICorpBasicinfoAO {
 
     @Autowired
     private IProjectConfigBO projectConfigBO;
+
+    @Autowired
+    private IOperateLogBO operateLogBO;
+
+    @Autowired
+    private IUserBO userBO;
 
     @Override
     public String addCorpBasicinfo(XN631250Req req) {
@@ -67,6 +75,8 @@ public class CorpBasicinfoAOImpl implements ICorpBasicinfoAO {
     @Override
     public void uploadCorpBasicinfo(List<String> codeList, String userId) {
 
+        User operator = userBO.getBriefUser(userId);
+
         ProjectConfig defaultProjectConfig = projectConfigBO
             .getDefaultProjectConfig();
         if (null == defaultProjectConfig) {
@@ -83,19 +93,16 @@ public class CorpBasicinfoAOImpl implements ICorpBasicinfoAO {
                 defaultProjectConfig.getProjectCode(),
                 defaultProjectConfig.getSecret());
 
-            // 查询上传结果
-            String requestSerialCode = GovUtil
-                .parseRequestSerialCode(resString);
-            AsyncRes asyncRes = GovAsync.queryAsyncHandleResult(
-                requestSerialCode, defaultProjectConfig.getProjectCode(),
-                defaultProjectConfig.getSecret());
+            // 添加到上传状态更新队列
+            AsyncQueueHolder.addSerial(resString, defaultProjectConfig,
+                "corpBasicinfoBO", code,
+                EUploadStatus.UPLOAD_UNEDITABLE.getCode());
 
-            // 更新上传状态
-            if (EGovAsyncStatus.SUCCESS.getCode()
-                .equals(asyncRes.getStatus())) {
-                corpBasicinfoBO.refreshUploadStatus(code,
-                    EUploadStatus.UPLOAD_UNEDITABLE.getCode());
-            }
+            // TODO remark 添加操作日志
+            operateLogBO.saveOperateLog(
+                EOperateLogRefType.CorpBasicinfo.getCode(), code,
+                EOperateLogOperate.UploadCorpBasicinfo.getValue(), operator,
+                "");
 
         }
     }

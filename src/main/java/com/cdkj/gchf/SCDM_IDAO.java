@@ -9,21 +9,23 @@ import com.cdkj.gchf.common.DateUtil;
 
 public class SCDM_IDAO {
     // 实体
-    private static String key = "projectBuilderLicense";
+    private static String key = "operateLog";
 
     // 实体名称
-    private static String keyName = "项目许可证";
+    private static String keyName = "操作日志";
 
     // 包路径
     private static String packge = "com.cdkj.gchf.";
 
     // 表名
-    private static String dbname = "thf_project_builder_license";
+    private static String dbname = "tsys_operate_log";
 
-    private static String[] DBwords = { "code", "project_code", "prj_name",
-            "builder_license_num" };
+    private static String[] DBwords = { "code", "ref_type", "ref_code",
+            "operate", "operator", "operator_name", "operate_datetime",
+            "remark" };
 
-    private static String[] DBwordsName = { "编号", "项目编号", "项目名称", "施工许可证号" };
+    private static String[] DBwordsName = { "编号", "关联类型", "关联编号", "操作名称",
+            "操作人编号", "操作人名称", "操作时间", "备注" };
 
     public void testname() throws Exception {
     }
@@ -36,7 +38,7 @@ public class SCDM_IDAO {
     public static void main(String[] args) {
 
         System.out.println("*********开始打印*********");
-        String path = "/Users/silver/Desktop/tmp/thf_project_builder_license";
+        String path = "/Users/silver/Desktop/tmp/tsys_operate_log";
 
         File DOMAINfile = new File(path, Key + ".java");
 

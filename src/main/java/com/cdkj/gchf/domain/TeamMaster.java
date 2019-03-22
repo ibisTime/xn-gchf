@@ -24,9 +24,6 @@ public class TeamMaster extends ABaseDO {
     // 班组编号
     private Integer teamSysNo;
 
-    // 本地项目编号
-    private String localProjectCode;
-
     // 项目编码
     private String projectCode;
 
@@ -99,14 +96,6 @@ public class TeamMaster extends ABaseDO {
 
     public void setTeamSysNo(Integer teamSysNo) {
         this.teamSysNo = teamSysNo;
-    }
-
-    public String getLocalProjectCode() {
-        return localProjectCode;
-    }
-
-    public void setLocalProjectCode(String localProjectCode) {
-        this.localProjectCode = localProjectCode;
     }
 
     public String getProjectCode() {

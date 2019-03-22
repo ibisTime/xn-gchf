@@ -8,31 +8,47 @@
 		<result column="project_name" property="projectName" />
 		<result column="corp_code" property="corpCode" />
 		<result column="corp_name" property="corpName" />
+		
 		<result column="idcard_type" property="idcardType" />
 		<result column="idcard_number" property="idcardNumber" />
 		<result column="worker_code" property="workerCode" />
 		<result column="worker_name" property="workerName" />
 		<result column="worker_mobile" property="workerMobile" />
+		
 		<result column="contract_code" property="contractCode" />
 		<result column="contract_period_type" property="contractPeriodType" />
 		<result column="start_date" property="startDate" />
 		<result column="end_date" property="endDate" />
 		<result column="unit" property="unit" />
+		
 		<result column="unit_price" property="unitPrice" />
 		<result column="content_pic" property="contentPic" />
 		<result column="updater" property="updater" />
 		<result column="update_datetime" property="updateDatetime" />
 		<result column="remark" property="remark" />
+		
 		<result column="upload_status" property="uploadStatus" />
 	</resultMap>
+	
 	<sql id="where_condition">
 		<trim prefix="WHERE" prefixOverrides="AND | OR">
 			<if test="code != null and code != '' ">
 				AND t.code = #{code}
 			</if>
+			<if test="projectCode != null and projectCode != '' ">
+				AND t.project_code = #{projectCode}
+			</if>
+			<if test="corpCode != null and corpCode != '' ">
+				AND t.corp_code = #{corpCode}
+			</if>
+			<if test="contractCode != null and contractCode != '' ">
+				AND t.contract_code = #{contractCode}
+			</if>
+			<if test="uploadStatus != null and uploadStatus != '' ">
+				AND t.upload_status = #{uploadStatus}
+			</if>
 		</trim>
 	</sql>
-	
 
 	<insert id="insert_workerContract" parameterType="workerContract">
 		INSERT INTO

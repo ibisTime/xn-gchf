@@ -38,7 +38,9 @@ public enum EGeneratePrefix {
 
     PayRoll("PR", "工资单"),
 
-    ProjectBuilderLicense("PBL", "项目许可证");
+    ProjectBuilderLicense("PBL", "项目许可证"),
+
+    OperateLog("OL", "操作日志");
 
     public static Map<String, EGeneratePrefix> getMap() {
         Map<String, EGeneratePrefix> map = new HashMap<String, EGeneratePrefix>();

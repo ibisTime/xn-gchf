@@ -9,16 +9,13 @@ import com.alibaba.fastjson.JSONObject;
 import com.cdkj.gchf.common.ExcelUtil;
 import com.cdkj.gchf.gov.GovConnecter;
 
-public class TeamMasterUploader {
+public class TeamMasterUploader extends BaseInfo {
 
-    private final static String EXCEL_FILE_PATH = "/Users/silver/Desktop/JM/导入数据/锦鸿建设.兰芽科技项目/项目班组导入模板.xlsx";
+    private final static String EXCEL_FILE_PATH = BASH_EXCEL_FILE_PATH
+            + "项目班组导入模板.xlsx";
 
     private final static String EXCEL_FILE_COLUMNS[] = { "projectCode",
             "corpCode", "corpName", "teamName" };
-
-    private final static String PROJECT_CODE = "3311222019030002";
-
-    private final static String SECRET = "8ec1924ad80f349e71fadf50e75db627";
 
     public static void main(String args[]) {
 
@@ -28,6 +25,9 @@ public class TeamMasterUploader {
         if (CollectionUtils.isNotEmpty(dataList)) {
             for (Map<String, String> dataMap : dataList) {
                 String data = JSONObject.toJSONString(dataMap);
+
+                System.out.println(data);
+
                 GovConnecter.getGovData("Team.Add", data, PROJECT_CODE, SECRET);
             }
         }

@@ -8,6 +8,7 @@ import java.util.Map;
 import org.junit.Test;
 
 import com.alibaba.fastjson.JSONObject;
+import com.cdkj.gchf.common.AesUtils;
 
 public class ProjectWorker {
     /**
@@ -32,8 +33,8 @@ public class ProjectWorker {
         workerMap.put("workerName", "黄明海");
         workerMap.put("isTeamLeader", "0");
         workerMap.put("idCardType", "01");
-        workerMap.put("idCardNumber",
-            "yv6OjH5mvG7nOyHvkfx32b13ywNNpfeGr5ZrOYV7RAc=");// 413024196804304833
+        workerMap.put("idCardNumber", AesUtils.encrypt("413024196804304833",
+            "24484b262dd63dd584902a266bdbdca0"));// 413024196804304833
         workerMap.put("workType", "040");
         workerMap.put("nation", "汉");
         workerMap.put("address", "河南省潢川县张集乡杨集村西赵营组");

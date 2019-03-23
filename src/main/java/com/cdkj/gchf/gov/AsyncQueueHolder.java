@@ -17,15 +17,26 @@ import com.cdkj.gchf.spring.SpringContextHolder;
 public class AsyncQueueHolder {
 
     private static class serialMQHolder {
-        private static LinkedList<QueueBean> instance = new LinkedList<QueueBean>();
+        private static LinkedList<QueueBean> serialMQ = new LinkedList<QueueBean>();
     }
 
+    /**
+     * 添加到上传状态更新队列，由定时器进行状态更新
+     * @param resString 国家平台返回结果
+     * @param projectConfig 系统配置
+     * @param boClass bo类型，用于更新状态
+     * @param code 数据编号
+     * @param status 上传状态
+     * @param logCode 日志编号
+     * @create: Mar 23, 2019 2:04:23 PM silver
+     * @history:
+     */
     public static void addSerial(String resString, ProjectConfig projectConfig,
             String boClass, String code, String status, String logCode) {
 
         String requestSerialCode = GovUtil.parseRequestSerialCode(resString);
 
-        serialMQHolder.instance.addLast(
+        serialMQHolder.serialMQ.addLast(
             new QueueBean(requestSerialCode, projectConfig.getProjectCode(),
                 projectConfig.getSecret(), boClass, code, status, logCode));
 
@@ -35,8 +46,8 @@ public class AsyncQueueHolder {
     private void syncSerial() {
 
         synchronized (this) {
-            while (CollectionUtils.isNotEmpty(serialMQHolder.instance)) {
-                QueueBean queueBean = serialMQHolder.instance.peekFirst();
+            while (CollectionUtils.isNotEmpty(serialMQHolder.serialMQ)) {
+                QueueBean queueBean = serialMQHolder.serialMQ.peekFirst();
 
                 AsyncRes asyncRes = GovUtil.queryAsyncHandleResult(
                     queueBean.getRequestSerialCode(),
@@ -50,7 +61,7 @@ public class AsyncQueueHolder {
 
                     refreshLogRemark(queueBean.getLogCode(), asyncRes);
 
-                    serialMQHolder.instance.remove(queueBean);
+                    serialMQHolder.serialMQ.remove(queueBean);
                 }
 
                 if (EGovAsyncStatus.FAIL.getCode()
@@ -58,7 +69,7 @@ public class AsyncQueueHolder {
 
                     refreshLogRemark(queueBean.getLogCode(), asyncRes);
 
-                    serialMQHolder.instance.remove(queueBean);
+                    serialMQHolder.serialMQ.remove(queueBean);
                 }
 
             }

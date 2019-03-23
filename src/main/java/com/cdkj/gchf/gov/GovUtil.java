@@ -35,7 +35,6 @@ public class GovUtil {
         if (null != dataJson) {
             String rowJson = dataJson.getString("rows");
 
-            // 替换返回的字段
             if (null != replaceMap && !replaceMap.isEmpty()) {
                 for (String oldString : replaceMap.keySet()) {
                     rowJson = rowJson.replace(oldString,
@@ -66,8 +65,10 @@ public class GovUtil {
     public static AsyncRes queryAsyncHandleResult(String requestSerialCode,
             String projectCode, String secert) {
 
+        String code = null;
         String result = null;
         String status = null;
+        String message = null;
 
         Map<String, String> dataMap = new HashMap<String, String>();
         dataMap.put("requestSerialCode", requestSerialCode);
@@ -85,7 +86,10 @@ public class GovUtil {
             status = dataJson.getString("status");
         }
 
-        return new AsyncRes(result, status);
+        code = resJson.getString("code");
+        message = resJson.getString("message");
+
+        return new AsyncRes(code, result, status, message);
     }
 
     /**

@@ -11,6 +11,8 @@ public interface IOperateLogBO extends IPaginableBO<OperateLog> {
     public String saveOperateLog(String refType, String refCode, String operate,
             User operator, String remark);
 
+    public void refreshRemark(String code, String remark);
+
     public List<OperateLog> queryOperateLogList(OperateLog condition);
 
     public OperateLog getOperateLog(String code);

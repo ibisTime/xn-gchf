@@ -45,6 +45,16 @@ public class OperateLogBOImpl extends PaginableBOImpl<OperateLog>
     }
 
     @Override
+    public void refreshRemark(String code, String remark) {
+        OperateLog operateLog = new OperateLog();
+
+        operateLog.setCode(code);
+        operateLog.setRemark(remark);
+
+        operateLogDAO.updateRemark(operateLog);
+    }
+
+    @Override
     public List<OperateLog> queryOperateLogList(OperateLog condition) {
         return operateLogDAO.selectList(condition);
     }
@@ -62,4 +72,5 @@ public class OperateLogBOImpl extends PaginableBOImpl<OperateLog>
         }
         return data;
     }
+
 }

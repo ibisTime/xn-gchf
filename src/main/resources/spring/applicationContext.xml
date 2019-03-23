@@ -27,10 +27,10 @@
     <bean id="springContextHolder" class="com.cdkj.gchf.spring.SpringContextHolder"></bean>
     
     <!-- 配置定时任务-->
-    <task:executor id="executor" pool-size="5" />
+    <task:executor id="executor" pool-size="1" />
     
     <!--配置线程池-->
-    <task:scheduler id="scheduler" pool-size="10" />
+    <task:scheduler id="scheduler" pool-size="1" />
     <task:annotation-driven executor="executor" scheduler="scheduler" />
     
     <!-- 参数验证 -->

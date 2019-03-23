@@ -5,7 +5,7 @@ public class QueueBean {
     /**
      * 国家平台接口异步调用结果
      */
-    private String connectRes;
+    private String requestSerialCode;
 
     /**
      * 项目编号
@@ -32,9 +32,10 @@ public class QueueBean {
      */
     private String status;
 
-    public String getConnectRes() {
-        return connectRes;
-    }
+    /**
+     * 日志编号
+     */
+    private String logCode;
 
     public String getProjectCode() {
         return projectCode;
@@ -52,8 +53,12 @@ public class QueueBean {
         this.secret = secret;
     }
 
-    public void setConnectRes(String connectRes) {
-        this.connectRes = connectRes;
+    public String getRequestSerialCode() {
+        return requestSerialCode;
+    }
+
+    public void setRequestSerialCode(String requestSerialCode) {
+        this.requestSerialCode = requestSerialCode;
     }
 
     public String getBoClass() {
@@ -80,15 +85,24 @@ public class QueueBean {
         this.status = status;
     }
 
-    public QueueBean(String connectRes, String projectCode, String secret,
-            String boClass, String code, String status) {
+    public String getLogCode() {
+        return logCode;
+    }
+
+    public void setLogCode(String logCode) {
+        this.logCode = logCode;
+    }
+
+    public QueueBean(String requestSerialCode, String projectCode,
+            String secret, String boClass, String code, String status,
+            String logCode) {
         super();
-        this.connectRes = connectRes;
+        this.requestSerialCode = requestSerialCode;
         this.projectCode = projectCode;
         this.secret = secret;
         this.boClass = boClass;
         this.code = code;
         this.status = status;
+        this.logCode = logCode;
     }
-
 }

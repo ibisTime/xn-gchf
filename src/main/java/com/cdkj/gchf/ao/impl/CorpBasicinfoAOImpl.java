@@ -93,16 +93,16 @@ public class CorpBasicinfoAOImpl implements ICorpBasicinfoAO {
                 defaultProjectConfig.getProjectCode(),
                 defaultProjectConfig.getSecret());
 
+            // 添加操作日志
+            String logCode = operateLogBO.saveOperateLog(
+                EOperateLogRefType.CorpBasicinfo.getCode(), code,
+                EOperateLogOperate.UploadCorpBasicinfo.getValue(), operator,
+                null);
+
             // 添加到上传状态更新队列
             AsyncQueueHolder.addSerial(resString, defaultProjectConfig,
                 "corpBasicinfoBO", code,
-                EUploadStatus.UPLOAD_UNEDITABLE.getCode());
-
-            // TODO remark 添加操作日志
-            operateLogBO.saveOperateLog(
-                EOperateLogRefType.CorpBasicinfo.getCode(), code,
-                EOperateLogOperate.UploadCorpBasicinfo.getValue(), operator,
-                "");
+                EUploadStatus.UPLOAD_UNEDITABLE.getCode(), logCode);
 
         }
     }

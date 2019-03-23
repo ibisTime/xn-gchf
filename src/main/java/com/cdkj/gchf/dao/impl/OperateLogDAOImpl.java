@@ -47,4 +47,10 @@ public class OperateLogDAOImpl extends AMybatisTemplate
             count, condition, OperateLog.class);
     }
 
+    @Override
+    public int updateRemark(OperateLog operateLog) {
+        return super.update(NAMESPACE.concat("update_operateLogRemark"),
+            operateLog);
+    }
+
 }

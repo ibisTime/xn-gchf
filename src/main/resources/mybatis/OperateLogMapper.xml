@@ -84,19 +84,11 @@
 		)
 	</insert>
 
-	<update id="update_operateLog" parameterType="operateLog">
+	<update id="update_operateLogRemark" parameterType="operateLog">
 		UPDATE tsys_operate_log
 		SET
-		ref_type = #{refType}
-		,ref_code = #{refCode}
-		,operate = #{operate}
-		,operator = #{operator}
-		
-		,operator_name = #{operatorName}
-		,operate_datetime = #{operateDatetime}
-		,remark = #{remark}
+		remark = #{remark}
 		WHERE code = #{code}
 	</update>
-
 
 </mapper>

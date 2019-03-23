@@ -5,4 +5,7 @@ import com.cdkj.gchf.domain.OperateLog;
 
 public interface IOperateLogDAO extends IBaseDAO<OperateLog> {
     String NAMESPACE = IOperateLogDAO.class.getName().concat(".");
+
+    int updateRemark(OperateLog operateLog);
+
 }

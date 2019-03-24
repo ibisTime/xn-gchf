@@ -12,14 +12,15 @@ import com.alibaba.fastjson.JSONObject;
 import com.cdkj.gchf.bo.IWorkerAttendanceBO;
 import com.cdkj.gchf.bo.base.Paginable;
 import com.cdkj.gchf.bo.base.PaginableBOImpl;
+import com.cdkj.gchf.common.AesUtils;
 import com.cdkj.gchf.core.OrderNoGenerater;
 import com.cdkj.gchf.dao.IWorkerAttendanceDAO;
 import com.cdkj.gchf.domain.ProjectConfig;
-import com.cdkj.gchf.domain.TeamMaster;
 import com.cdkj.gchf.domain.WorkerAttendance;
 import com.cdkj.gchf.dto.req.XN631710Req;
 import com.cdkj.gchf.dto.req.XN631712Req;
 import com.cdkj.gchf.dto.req.XN631918Req;
+import com.cdkj.gchf.dto.req.XN631918ReqData;
 import com.cdkj.gchf.dto.req.XN631919Req;
 import com.cdkj.gchf.enums.EGeneratePrefix;
 import com.cdkj.gchf.gov.GovConnecter;
@@ -62,10 +63,14 @@ public class WorkerAttendanceBOImpl extends PaginableBOImpl<WorkerAttendance>
 
     @Override
     public void doUpload(XN631918Req req, ProjectConfig projectConfig) {
-        TeamMaster teamMaster = new TeamMaster();
-        BeanUtils.copyProperties(req, teamMaster);
 
-        String data = JSONObject.toJSONStringWithDateFormat(teamMaster,
+        List<XN631918ReqData> dataList = req.getDataList();
+        for (XN631918ReqData data : dataList) {
+            data.setIdCardNumber(AesUtils.encrypt(data.getIdCardNumber(),
+                projectConfig.getSecret()));
+        }
+
+        String data = JSONObject.toJSONStringWithDateFormat(req,
             "yyyy-MM-dd HH:mm:ss");
 
         GovConnecter.getGovData("WorkerAttendance.Add", data,

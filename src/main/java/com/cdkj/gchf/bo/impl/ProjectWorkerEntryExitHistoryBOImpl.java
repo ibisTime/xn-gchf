@@ -13,6 +13,7 @@ import com.alibaba.fastjson.JSONObject;
 import com.cdkj.gchf.bo.IProjectWorkerEntryExitHistoryBO;
 import com.cdkj.gchf.bo.base.Paginable;
 import com.cdkj.gchf.bo.base.PaginableBOImpl;
+import com.cdkj.gchf.common.AesUtils;
 import com.cdkj.gchf.core.OrderNoGenerater;
 import com.cdkj.gchf.dao.IProjectWorkerEntryExitHistoryDAO;
 import com.cdkj.gchf.domain.ProjectConfig;
@@ -20,6 +21,7 @@ import com.cdkj.gchf.domain.ProjectWorkerEntryExitHistory;
 import com.cdkj.gchf.dto.req.XN631730Req;
 import com.cdkj.gchf.dto.req.XN631732Req;
 import com.cdkj.gchf.dto.req.XN631914Req;
+import com.cdkj.gchf.dto.req.XN631914ReqWorker;
 import com.cdkj.gchf.dto.req.XN631915Req;
 import com.cdkj.gchf.enums.EGeneratePrefix;
 import com.cdkj.gchf.exception.BizException;
@@ -62,11 +64,15 @@ public class ProjectWorkerEntryExitHistoryBOImpl
 
     @Override
     public void doUpload(XN631914Req req, ProjectConfig projectConfig) {
-        ProjectWorkerEntryExitHistory projectWorkerEntryExitHistory = new ProjectWorkerEntryExitHistory();
-        BeanUtils.copyProperties(req, projectWorkerEntryExitHistory);
 
-        String data = JSONObject.toJSONStringWithDateFormat(
-            projectWorkerEntryExitHistory, "yyyy-MM-dd").toString();
+        List<XN631914ReqWorker> workerList = req.getWorkerList();
+        for (XN631914ReqWorker worker : workerList) {
+            worker.setIdCardNumber(AesUtils.encrypt(worker.getIdCardNumber(),
+                projectConfig.getSecret()));
+        }
+
+        String data = JSONObject.toJSONStringWithDateFormat(req, "yyyy-MM-dd")
+            .toString();
 
         GovConnecter.getGovData("WorkerEntryExit.Add", data,
             projectConfig.getProjectCode(), projectConfig.getSecret());

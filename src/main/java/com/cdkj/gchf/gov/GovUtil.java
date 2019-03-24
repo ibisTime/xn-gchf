@@ -5,6 +5,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.commons.lang3.StringUtils;
+
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.cdkj.gchf.bo.base.Page;
@@ -27,13 +29,18 @@ public class GovUtil {
             Integer pageSize, String queryString,
             Map<String, String> replaceMap, Class<T> toClazz) {
 
+        queryString = queryString.replace("null", "\"\"");
         JSONObject resJson = JSONObject.parseObject(queryString);
         JSONObject dataJson = resJson.getJSONObject("data");
         List<T> dataList = new ArrayList<>();
         long totalCount = 0L;
 
         if (null != dataJson) {
+
             String rowJson = dataJson.getString("rows");
+            if (StringUtils.isEmpty(rowJson)) {
+                rowJson = dataJson.getString("detailList");
+            }
 
             if (null != replaceMap && !replaceMap.isEmpty()) {
                 for (String oldString : replaceMap.keySet()) {
@@ -44,7 +51,8 @@ public class GovUtil {
 
             dataList = (List<T>) JSONArray.parseArray(rowJson, toClazz);
 
-            totalCount = Long.parseLong(dataJson.getString("totalCount"));
+            totalCount = dataList.size();
+
         }
 
         Paginable<T> page = new Page<T>(pageIndex, pageSize, totalCount);

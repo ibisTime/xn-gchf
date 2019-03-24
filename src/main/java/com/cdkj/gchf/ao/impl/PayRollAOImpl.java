@@ -10,6 +10,7 @@ import com.cdkj.gchf.bo.IPayRollBO;
 import com.cdkj.gchf.bo.IProjectConfigBO;
 import com.cdkj.gchf.bo.base.Paginable;
 import com.cdkj.gchf.domain.PayRoll;
+import com.cdkj.gchf.domain.PayRollDetail;
 import com.cdkj.gchf.domain.ProjectConfig;
 import com.cdkj.gchf.dto.req.XN631920Req;
 import com.cdkj.gchf.dto.req.XN631921Req;
@@ -52,7 +53,7 @@ public class PayRollAOImpl implements IPayRollAO {
     }
 
     @Override
-    public Paginable<PayRoll> queryPayRoll(XN631921Req req) {
+    public Paginable<PayRollDetail> queryPayRoll(XN631921Req req) {
         ProjectConfig projectConfig = projectConfigBO
             .getProjectConfigByProject(req.getProjectCode());
 

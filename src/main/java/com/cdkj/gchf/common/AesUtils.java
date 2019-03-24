@@ -10,7 +10,6 @@ import javax.crypto.spec.SecretKeySpec;
 
 import org.bouncycastle.jce.provider.BouncyCastleProvider;
 
-import sun.misc.BASE64Decoder;
 import sun.misc.BASE64Encoder;
 
 public class AesUtils {
@@ -23,6 +22,7 @@ public class AesUtils {
 
         // 原始数据
         String data = "413024196804304833";
+
         // 密钥
         String sessionKey = "24484b262dd63dd584902a266bdbdca0";
 
@@ -36,37 +36,26 @@ public class AesUtils {
         String encryptedData = null;
         try {
 
-            Security.addProvider(new BouncyCastleProvider());
-
             String iv = sessionKey.substring(0, 16);
 
             // 用Base64编码
             BASE64Encoder encoder = new BASE64Encoder();
-            String baseData = encoder.encode(data.getBytes());
-            String baseSessionKey = encoder.encode(sessionKey.getBytes());
-            String baseIv = encoder.encode(iv.getBytes());
-
-            // 加密之前，先从Base64格式还原到原始格式
-            BASE64Decoder decoder = new BASE64Decoder();
-            byte[] dataByte = decoder.decodeBuffer(baseData);
-            byte[] keyByte = decoder.decodeBuffer(baseSessionKey);
-            byte[] ivByte = decoder.decodeBuffer(baseIv);
 
             // 指定算法，模式，填充方式，创建一个Cipher
             Cipher cipher = Cipher.getInstance("AES/CBC/PKCS7Padding", "BC");
 
             // 生成Key对象
-            Key sKeySpec = new SecretKeySpec(keyByte, "AES");
+            Key sKeySpec = new SecretKeySpec(sessionKey.getBytes(), "AES");
 
             // 把向量初始化到算法参数
             AlgorithmParameters params = AlgorithmParameters.getInstance("AES");
-            params.init(new IvParameterSpec(ivByte));
+            params.init(new IvParameterSpec(iv.getBytes()));
 
             // 指定用途，密钥，参数 初始化Cipher对象
             cipher.init(Cipher.ENCRYPT_MODE, sKeySpec, params);
 
             // 指定加密
-            byte[] result = cipher.doFinal(dataByte);
+            byte[] result = cipher.doFinal(data.getBytes());
 
             // 对结果进行Base64编码，否则会得到一串乱码，不便于后续操作
             encryptedData = encoder.encode(result);

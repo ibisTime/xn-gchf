@@ -13,6 +13,7 @@ import com.alibaba.fastjson.JSONObject;
 import com.cdkj.gchf.bo.ITeamMasterBO;
 import com.cdkj.gchf.bo.base.Paginable;
 import com.cdkj.gchf.bo.base.PaginableBOImpl;
+import com.cdkj.gchf.common.AesUtils;
 import com.cdkj.gchf.core.OrderNoGenerater;
 import com.cdkj.gchf.dao.ITeamMasterDAO;
 import com.cdkj.gchf.domain.ProjectConfig;
@@ -65,10 +66,18 @@ public class TeamMasterBOImpl extends PaginableBOImpl<TeamMaster>
     @Override
     public void doUpload(XN631908Req req, ProjectConfig projectConfig) {
 
-        TeamMaster teamMaster = new TeamMaster();
-        BeanUtils.copyProperties(req, teamMaster);
+        if (StringUtils.isNotBlank(req.getResponsiblePersonIdNumber())) {
+            req.setResponsiblePersonIdNumber(AesUtils.encrypt(
+                req.getResponsiblePersonIdNumber(), projectConfig.getSecret()));
+        }
 
-        String data = JSONObject.toJSON(teamMaster).toString();
+        if (StringUtils.isNotBlank(req.getTeamLeaderIdNumber())) {
+            req.setTeamLeaderIdNumber(AesUtils.encrypt(
+                req.getTeamLeaderIdNumber(), projectConfig.getSecret()));
+        }
+
+        String data = JSONObject.toJSONStringWithDateFormat(req, "yyyy-MM-dd")
+            .toString();
 
         GovConnecter.getGovData("Team.Add", data,
             projectConfig.getProjectCode(), projectConfig.getSecret());
@@ -76,10 +85,14 @@ public class TeamMasterBOImpl extends PaginableBOImpl<TeamMaster>
 
     @Override
     public void doUpdate(XN631909Req req, ProjectConfig projectConfig) {
-        TeamMaster teamMaster = new TeamMaster();
-        BeanUtils.copyProperties(req, teamMaster);
 
-        String data = JSONObject.toJSON(teamMaster).toString();
+        if (StringUtils.isNotBlank(req.getResponsiblePersonIdNumber())) {
+            req.setResponsiblePersonIdNumber(AesUtils.encrypt(
+                req.getResponsiblePersonIdNumber(), projectConfig.getSecret()));
+        }
+
+        String data = JSONObject.toJSONStringWithDateFormat(req, "yyyy-MM-dd")
+            .toString();
 
         GovConnecter.getGovData("Team.Update", data,
             projectConfig.getProjectCode(), projectConfig.getSecret());

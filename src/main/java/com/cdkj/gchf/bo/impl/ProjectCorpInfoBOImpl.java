@@ -13,6 +13,7 @@ import com.alibaba.fastjson.JSONObject;
 import com.cdkj.gchf.bo.IProjectCorpInfoBO;
 import com.cdkj.gchf.bo.base.Paginable;
 import com.cdkj.gchf.bo.base.PaginableBOImpl;
+import com.cdkj.gchf.common.AesUtils;
 import com.cdkj.gchf.core.OrderNoGenerater;
 import com.cdkj.gchf.dao.IProjectCorpInfoDAO;
 import com.cdkj.gchf.domain.ProjectConfig;
@@ -67,12 +68,13 @@ public class ProjectCorpInfoBOImpl extends PaginableBOImpl<ProjectCorpInfo>
     @Override
     public void doUpload(XN631905Req req, ProjectConfig projectConfig) {
 
-        ProjectCorpInfo projectCorpInfo = new ProjectCorpInfo();
-        BeanUtils.copyProperties(req, projectCorpInfo);
+        if (StringUtils.isNotBlank(req.getPmIdcardNumber())) {
+            req.setPmIdcardNumber(AesUtils.encrypt(req.getPmIdcardNumber(),
+                projectConfig.getSecret()));
+        }
 
         String data = JSONObject
-            .toJSONStringWithDateFormat(projectCorpInfo, "yyyy-MM-dd HH:mm:ss")
-            .toString();
+            .toJSONStringWithDateFormat(req, "yyyy-MM-dd HH:mm:ss").toString();
 
         GovConnecter.getGovData("ProjectSubContractor.Add", data,
             projectConfig.getProjectCode(), projectConfig.getSecret());
@@ -80,12 +82,14 @@ public class ProjectCorpInfoBOImpl extends PaginableBOImpl<ProjectCorpInfo>
 
     @Override
     public void doUpdate(XN631906Req req, ProjectConfig projectConfig) {
-        ProjectCorpInfo projectCorpInfo = new ProjectCorpInfo();
-        BeanUtils.copyProperties(req, projectCorpInfo);
+
+        if (StringUtils.isNotBlank(req.getPmIdcardNumber())) {
+            req.setPmIdcardNumber(AesUtils.encrypt(req.getPmIdcardNumber(),
+                projectConfig.getSecret()));
+        }
 
         String data = JSONObject
-            .toJSONStringWithDateFormat(projectCorpInfo, "yyyy-MM-dd HH:mm:ss")
-            .toString();
+            .toJSONStringWithDateFormat(req, "yyyy-MM-dd HH:mm:ss").toString();
 
         GovConnecter.getGovData("ProjectSubContractor.Update", data,
             projectConfig.getProjectCode(), projectConfig.getSecret());

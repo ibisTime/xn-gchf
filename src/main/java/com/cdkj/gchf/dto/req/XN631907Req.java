@@ -1,7 +1,5 @@
 package com.cdkj.gchf.dto.req;
 
-import org.hibernate.validator.constraints.NotBlank;
-
 import com.cdkj.gchf.gov.APIRequestBase;
 
 /**
@@ -15,7 +13,6 @@ public class XN631907Req extends APIRequestBase {
     private static final long serialVersionUID = 4903119830939604546L;
 
     // 项目编码
-    @NotBlank
     private String projectCode;
 
     // 统一社会信用代码

@@ -7,7 +7,7 @@ import org.hibernate.validator.constraints.NotBlank;
 import com.cdkj.gchf.gov.APIRequestBase;
 
 /**
- * 上传人员工资
+ * 查询人员工资
  * @author: silver 
  * @since: Mar 13, 2019 1:34:10 PM 
  * @history:

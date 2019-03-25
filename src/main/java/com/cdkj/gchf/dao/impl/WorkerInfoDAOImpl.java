@@ -8,7 +8,7 @@ import com.cdkj.gchf.dao.IWorkerInfoDAO;
 import com.cdkj.gchf.dao.base.support.AMybatisTemplate;
 import com.cdkj.gchf.domain.WorkerInfo;
 
-@Repository("WorkerInfoDAOImpl")
+@Repository("workerInfoDAOImpl")
 public class WorkerInfoDAOImpl extends AMybatisTemplate
         implements IWorkerInfoDAO {
 
@@ -24,7 +24,7 @@ public class WorkerInfoDAOImpl extends AMybatisTemplate
 
     @Override
     public int updateWorkerInfo(WorkerInfo condition) {
-        return 0;
+        return super.delete(NAMESPACE.concat("update_WorkerInfo"), condition);
     }
 
     @Override

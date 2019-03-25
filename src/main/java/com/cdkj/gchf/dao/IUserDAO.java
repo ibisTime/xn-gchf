@@ -7,6 +7,9 @@ public interface IUserDAO extends IBaseDAO<User> {
 
     String NAMESPACE = IUserDAO.class.getName().concat(".");
 
+    // 查询用户简介
+    User selectBriefUser(User data);
+
     // 更新状态
     public void updateStatus(User data);
 

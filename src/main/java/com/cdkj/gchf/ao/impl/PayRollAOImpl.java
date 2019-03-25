@@ -90,7 +90,7 @@ public class PayRollAOImpl implements IPayRollAO {
     }
 
     @Override
-    public Paginable<PayRoll> queryPayRoll(XN631921Req req) {
+    public Paginable<PayRollDetail> queryPayRoll(XN631921Req req) {
         ProjectConfig projectConfig = projectConfigBO
             .getProjectConfigByProject(req.getProjectCode());
 

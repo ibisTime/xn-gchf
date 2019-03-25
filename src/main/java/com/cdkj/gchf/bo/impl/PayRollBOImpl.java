@@ -12,12 +12,15 @@ import com.alibaba.fastjson.JSONObject;
 import com.cdkj.gchf.bo.IPayRollBO;
 import com.cdkj.gchf.bo.base.Paginable;
 import com.cdkj.gchf.bo.base.PaginableBOImpl;
+import com.cdkj.gchf.common.AesUtils;
 import com.cdkj.gchf.core.OrderNoGenerater;
 import com.cdkj.gchf.dao.IPayRollDAO;
 import com.cdkj.gchf.domain.PayRoll;
+import com.cdkj.gchf.domain.PayRollDetail;
 import com.cdkj.gchf.domain.ProjectConfig;
 import com.cdkj.gchf.dto.req.XN631770Req;
 import com.cdkj.gchf.dto.req.XN631920Req;
+import com.cdkj.gchf.dto.req.XN631920ReqDateil;
 import com.cdkj.gchf.dto.req.XN631921Req;
 import com.cdkj.gchf.enums.EGeneratePrefix;
 import com.cdkj.gchf.exception.BizException;
@@ -48,6 +51,19 @@ public class PayRollBOImpl extends PaginableBOImpl<PayRoll>
     @Override
     public void doUpload(XN631920Req req, ProjectConfig projectConfig) {
 
+        List<XN631920ReqDateil> dateilList = req.getDetailList();
+        for (XN631920ReqDateil detail : dateilList) {
+            detail.setIdCardNumber(AesUtils.encrypt(detail.getIdCardNumber(),
+                projectConfig.getSecret()));
+
+            detail.setPayRollBankCardNumber(AesUtils.encrypt(
+                detail.getPayRollBankCardNumber(), projectConfig.getSecret()));
+
+            detail.setPayBankCardNumber(AesUtils.encrypt(
+                detail.getPayBankCardNumber(), projectConfig.getSecret()));
+
+        }
+
         String data = JSONObject.toJSON(req).toString();
 
         GovConnecter.getGovData("Payroll.Add", data,
@@ -55,7 +71,7 @@ public class PayRollBOImpl extends PaginableBOImpl<PayRoll>
     }
 
     @Override
-    public Paginable<PayRoll> doQuery(XN631921Req req,
+    public Paginable<PayRollDetail> doQuery(XN631921Req req,
             ProjectConfig projectConfig) {
 
         String data = JSONObject.toJSON(req).toString();
@@ -65,8 +81,8 @@ public class PayRollBOImpl extends PaginableBOImpl<PayRoll>
 
         Map<String, String> replaceMap = new HashMap<>();
 
-        Paginable<PayRoll> page = GovUtil.parseGovPage(req.getPageIndex(),
-            req.getPageSize(), queryString, replaceMap, PayRoll.class);
+        Paginable<PayRollDetail> page = GovUtil.parseGovPage(req.getPageIndex(),
+            req.getPageSize(), queryString, replaceMap, PayRollDetail.class);
 
         return page;
     }

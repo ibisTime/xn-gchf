@@ -1,5 +1,7 @@
 package com.cdkj.gchf.dto.req;
 
+import org.hibernate.validator.constraints.NotBlank;
+
 import com.cdkj.gchf.gov.APIRequestBase;
 
 /**
@@ -16,6 +18,7 @@ public class XN631910Req extends APIRequestBase {
     private Integer teamSysNo;
 
     // 项目编码
+    @NotBlank
     private String projectCode;
 
     // 班组名称

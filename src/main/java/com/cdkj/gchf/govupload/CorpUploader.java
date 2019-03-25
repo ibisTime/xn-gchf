@@ -9,16 +9,13 @@ import com.alibaba.fastjson.JSONObject;
 import com.cdkj.gchf.common.ExcelUtil;
 import com.cdkj.gchf.gov.GovConnecter;
 
-public class CorpUploader {
+public class CorpUploader extends BaseInfo {
 
-    private final static String EXCEL_FILE_PATH = "/Users/silver/Desktop/JM/导入数据/正达。九州新时代/企业信息导入模版.xlsx";
+    private final static String EXCEL_FILE_PATH = BASH_EXCEL_FILE_PATH
+            + "企业信息导入模版.xlsx";
 
     private final static String EXCEL_FILE_COLUMNS[] = { "corpCode", "corpName",
             "areaCode" };
-
-    private final static String PROJECT_CODE = "3311222019030005";
-
-    private final static String SECRET = "03037a55b99f508d43e732d4d47df2f0";
 
     public static void main(String args[]) {
 

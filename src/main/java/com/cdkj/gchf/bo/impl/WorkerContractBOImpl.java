@@ -13,14 +13,15 @@ import com.alibaba.fastjson.JSONObject;
 import com.cdkj.gchf.bo.IWorkerContractBO;
 import com.cdkj.gchf.bo.base.Paginable;
 import com.cdkj.gchf.bo.base.PaginableBOImpl;
+import com.cdkj.gchf.common.AesUtils;
 import com.cdkj.gchf.core.OrderNoGenerater;
 import com.cdkj.gchf.dao.IWorkerContractDAO;
 import com.cdkj.gchf.domain.ProjectConfig;
-import com.cdkj.gchf.domain.TeamMaster;
 import com.cdkj.gchf.domain.WorkerContract;
 import com.cdkj.gchf.dto.req.XN631670Req;
 import com.cdkj.gchf.dto.req.XN631672Req;
 import com.cdkj.gchf.dto.req.XN631916Req;
+import com.cdkj.gchf.dto.req.XN631916ReqContract;
 import com.cdkj.gchf.dto.req.XN631917Req;
 import com.cdkj.gchf.enums.EGeneratePrefix;
 import com.cdkj.gchf.exception.BizException;
@@ -62,11 +63,15 @@ public class WorkerContractBOImpl extends PaginableBOImpl<WorkerContract>
 
     @Override
     public void doUpload(XN631916Req req, ProjectConfig projectConfig) {
-        TeamMaster teamMaster = new TeamMaster();
-        BeanUtils.copyProperties(req, teamMaster);
 
-        String data = JSONObject
-            .toJSONStringWithDateFormat(teamMaster, "yyyy-MM-dd").toString();
+        List<XN631916ReqContract> contractList = req.getContractList();
+        for (XN631916ReqContract contract : contractList) {
+            contract.setIdCardNumber(AesUtils.encrypt(
+                contract.getIdCardNumber(), projectConfig.getSecret()));
+        }
+
+        String data = JSONObject.toJSONStringWithDateFormat(req, "yyyy-MM-dd")
+            .toString();
 
         GovConnecter.getGovData("WorkerContract.Add", data,
             projectConfig.getProjectCode(), projectConfig.getSecret());

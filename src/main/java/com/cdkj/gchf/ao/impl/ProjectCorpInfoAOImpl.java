@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 
 import com.cdkj.gchf.ao.IProjectCorpInfoAO;
 import com.cdkj.gchf.bo.IProjectConfigBO;
@@ -71,6 +72,10 @@ public class ProjectCorpInfoAOImpl implements IProjectCorpInfoAO {
 
     @Override
     public Paginable<ProjectCorpInfo> queryProjectCorpInfo(XN631907Req req) {
+        if (StringUtils.isEmpty(req.getProjectCode())) {
+            throw new BizException("XN63190", "请选择对应项目");
+        }
+
         ProjectConfig projectConfig = projectConfigBO
             .getProjectConfigByProject(req.getProjectCode());
 

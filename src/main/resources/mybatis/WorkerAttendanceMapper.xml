@@ -8,35 +8,51 @@
 		<result column="project_name" property="projectName" />
 		<result column="team_sys_no" property="teamSysNo" />
 		<result column="team_name" property="teamName" />
+		
 		<result column="worker_code" property="workerCode" />
 		<result column="worker_name" property="workerName" />
 		<result column="idcard_type" property="idCardType" />
 		<result column="idcard_number" property="idCardNumber" />
 		<result column="status" property="status" />
+		
 		<result column="date" property="date" />
 		<result column="direction" property="direction" />
 		<result column="image" property="image" />
 		<result column="channel" property="channel" />
 		<result column="attend_type" property="attendType" />
+		
 		<result column="lng" property="lng" />
 		<result column="lat" property="lat" />
 		<result column="create_datetime" property="createDatetime" />
 		<result column="start_datetime" property="startDatetime" />
 		<result column="end_datetime" property="endDatetime" />
+		
 		<result column="settle_datetime" property="settleDatetime" />
 		<result column="sim" property="sim" />
 		<result column="terminal_code" property="terminalCode" />
 		<result column="remark" property="remark" />
 		<result column="upload_status" property="uploadStatus" />
 	</resultMap>
+	
 	<sql id="where_condition">
 		<trim prefix="WHERE" prefixOverrides="AND | OR">
 			<if test="code != null and code != '' ">
 				AND t.code = #{code}
 			</if>
+			<if test="projectCode != null and projectCode != '' ">
+				AND t.project_code = #{projectCode}
+			</if>
+			<if test="teamSysNo != null and teamSysNo != '' ">
+				AND t.team_sys_no = #{teamSysNo}
+			</if>
+			<if test="status != null and status != '' ">
+				AND t.status = #{status}
+			</if>
+			<if test="uploadStatus != null and uploadStatus != '' ">
+				AND t.upload_status = #{uploadStatus}
+			</if>
 		</trim>
 	</sql>
-
 
 	<insert id="insert_workerAttendance" parameterType="workerAttendance">
 		INSERT INTO

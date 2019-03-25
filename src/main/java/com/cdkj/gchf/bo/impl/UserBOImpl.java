@@ -170,6 +170,13 @@ public class UserBOImpl extends PaginableBOImpl<User> implements IUserBO {
     }
 
     @Override
+    public User getBriefUser(String userId) {
+        User user = new User();
+        user.setUserId(userId);
+        return userDAO.selectBriefUser(user);
+    }
+
+    @Override
     public List<User> getUserByOrganization(String organizationCode) {
         List<User> list = new ArrayList<User>();
         if (StringUtils.isNotBlank(organizationCode)) {

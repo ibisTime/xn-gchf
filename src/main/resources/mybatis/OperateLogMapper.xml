@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cdkj.gchf.dao.IOperateLogDAO">
+	<resultMap id="operateLog_DB_Result" type="operateLog">
+		<result column="code" property="code" />
+		<result column="ref_type" property="refType" />
+		<result column="ref_code" property="refCode" />
+		<result column="operate" property="operate" />
+		<result column="operator" property="operator" />
+		
+		<result column="operator_name" property="operatorName" />
+		<result column="operate_datetime" property="operateDatetime" />
+		<result column="remark" property="remark" />
+	</resultMap>
+	
+	<sql id="where_condition">
+		<trim prefix="WHERE" prefixOverrides="AND | OR">
+			<if test="code != null and code != '' ">
+				AND t.code = #{code}
+			</if>
+			<if test="refType != null and refType != '' ">
+				AND t.ref_type = #{refType}
+			</if>
+			<if test="refCode != null and refCode != '' ">
+				AND t.ref_code = #{refCode}
+			</if>
+			<if test="operator != null and operator != '' ">
+				AND t.operator = #{operator}
+			</if>
+		</trim>
+	</sql>
+	
+	<select id="select_operateLog" parameterType="operateLog" resultMap="operateLog_DB_Result">
+		SELECT
+		t.code
+		,t.ref_type
+		,t.ref_code
+		,t.operate
+		,t.operator
+		
+		,t.operator_name
+		,t.operate_datetime
+		,t.remark
+		FROM
+		tsys_operate_log t
+		<include refid="where_condition" />
+		<trim prefix="ORDER BY ">
+			<if test="order != null and order != '' ">
+				t.${order}
+			</if>
+		</trim>
+	</select>
+
+	<select id="select_operateLog_count" parameterType="operateLog"
+		resultType="java.lang.Long">
+		SELECT count(1) FROM tsys_operate_log t
+		<include refid="where_condition" />
+	</select>
+
+	<insert id="insert_operateLog" parameterType="operateLog">
+		INSERT INTO
+		tsys_operate_log(
+		code
+		,ref_type
+		,ref_code
+		,operate
+		,operator
+		
+		,operator_name
+		,operate_datetime
+		,remark
+		)
+		VALUES(
+		#{code}
+		,#{refType}
+		,#{refCode}
+		,#{operate}
+		,#{operator}
+		
+		,#{operatorName}
+		,#{operateDatetime}
+		,#{remark}
+		)
+	</insert>
+
+	<update id="update_operateLogRemark" parameterType="operateLog">
+		UPDATE tsys_operate_log
+		SET
+		remark = #{remark}
+		WHERE code = #{code}
+	</update>
+
+</mapper>

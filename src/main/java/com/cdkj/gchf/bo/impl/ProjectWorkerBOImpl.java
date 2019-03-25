@@ -13,14 +13,15 @@ import com.alibaba.fastjson.JSONObject;
 import com.cdkj.gchf.bo.IProjectWorkerBO;
 import com.cdkj.gchf.bo.base.Paginable;
 import com.cdkj.gchf.bo.base.PaginableBOImpl;
+import com.cdkj.gchf.common.AesUtils;
 import com.cdkj.gchf.core.OrderNoGenerater;
 import com.cdkj.gchf.dao.IProjectWorkerDAO;
 import com.cdkj.gchf.domain.ProjectConfig;
 import com.cdkj.gchf.domain.ProjectWorker;
-import com.cdkj.gchf.domain.TeamMaster;
 import com.cdkj.gchf.dto.req.XN631690Req;
 import com.cdkj.gchf.dto.req.XN631692Req;
 import com.cdkj.gchf.dto.req.XN631911Req;
+import com.cdkj.gchf.dto.req.XN631911ReqWorker;
 import com.cdkj.gchf.dto.req.XN631912Req;
 import com.cdkj.gchf.dto.req.XN631913Req;
 import com.cdkj.gchf.enums.EGeneratePrefix;
@@ -65,10 +66,21 @@ public class ProjectWorkerBOImpl extends PaginableBOImpl<ProjectWorker>
 
     @Override
     public void doUpload(XN631911Req req, ProjectConfig projectConfig) {
-        TeamMaster teamMaster = new TeamMaster();
-        BeanUtils.copyProperties(req, teamMaster);
 
-        String data = JSONObject.toJSON(teamMaster).toString();
+        List<XN631911ReqWorker> workerList = req.getWorkerList();
+        for (XN631911ReqWorker worker : workerList) {
+            worker.setIdCardNumber(AesUtils.encrypt(worker.getIdCardNumber(),
+                projectConfig.getSecret()));
+
+            if (StringUtils.isNotBlank(worker.getPayRollBankCardNumber())) {
+                worker.setPayRollBankCardNumber(
+                    AesUtils.encrypt(worker.getPayRollBankCardNumber(),
+                        projectConfig.getSecret()));
+            }
+        }
+
+        String data = JSONObject.toJSONStringWithDateFormat(req, "yyyy-MM-dd")
+            .toString();
 
         GovConnecter.getGovData("ProjectWorker.Add", data,
             projectConfig.getProjectCode(), projectConfig.getSecret());
@@ -76,10 +88,17 @@ public class ProjectWorkerBOImpl extends PaginableBOImpl<ProjectWorker>
 
     @Override
     public void doUpdate(XN631912Req req, ProjectConfig projectConfig) {
-        ProjectWorker projectWorker = new ProjectWorker();
-        BeanUtils.copyProperties(req, projectWorker);
 
-        String data = JSONObject.toJSON(projectWorker).toString();
+        req.setIdCardNumber(
+            AesUtils.encrypt(req.getIdCardNumber(), projectConfig.getSecret()));
+
+        if (StringUtils.isNotBlank(req.getPayRollBankCardNumber())) {
+            req.setPayRollBankCardNumber(AesUtils.encrypt(
+                req.getPayRollBankCardNumber(), projectConfig.getSecret()));
+        }
+
+        String data = JSONObject.toJSONStringWithDateFormat(req, "yyyy-MM-dd")
+            .toString();
 
         GovConnecter.getGovData("ProjectWorker.Update", data,
             projectConfig.getProjectCode(), projectConfig.getSecret());

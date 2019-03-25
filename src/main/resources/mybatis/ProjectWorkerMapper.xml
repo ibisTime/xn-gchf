@@ -57,13 +57,30 @@
 		<result column="remark" property="remark" />
 		<result column="upload_status" property="uploadStatus" />
 	</resultMap>
+	
 	<sql id="where_condition">
 		<trim prefix="WHERE" prefixOverrides="AND | OR">
 			<if test="code != null and code != '' ">
 				AND t.code = #{code}
 			</if>
+			<if test="projectCode != null and projectCode != '' ">
+				AND t.project_code = #{projectCode}
+			</if>
+			<if test="corpCode != null and corpCode != '' ">
+				AND t.corp_code = #{corpCode}
+			</if>
+			<if test="teamSysNo != null and teamSysNo != '' ">
+				AND t.team_sys_no = #{teamSysNo}
+			</if>
+			<if test="workerCode != null and workerCode != '' ">
+				AND t.worker_code = #{workerCode}
+			</if>
+			<if test="idCardNumber != null and idCardNumber != '' ">
+				AND t.idcard_number = #{idCardNumber}
+			</if>
 		</trim>
 	</sql>
+	
 	<select id="select_projectWorker" parameterType="projectWorker" resultMap="projectWorker_DB_Result">
 		SELECT
 		 t.code

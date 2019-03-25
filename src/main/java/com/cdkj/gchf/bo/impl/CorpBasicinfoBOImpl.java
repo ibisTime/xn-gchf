@@ -84,8 +84,10 @@ public class CorpBasicinfoBOImpl extends PaginableBOImpl<CorpBasicinfo>
     @Override
     public void doUpload(XN631900Req req, ProjectConfig projectConfig) {
 
-        req.setLegalManIdcardNumber(AesUtils
-            .encrypt(req.getLegalManIdcardNumber(), projectConfig.getSecret()));
+        if (StringUtils.isNotBlank(req.getLegalManIdcardNumber())) {
+            req.setLegalManIdcardNumber(AesUtils.encrypt(
+                req.getLegalManIdcardNumber(), projectConfig.getSecret()));
+        }
 
         CorpBasicinfo corpBasicinfo = new CorpBasicinfo();
         BeanUtils.copyProperties(req, corpBasicinfo);

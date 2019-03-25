@@ -12,17 +12,14 @@ import com.cdkj.gchf.common.AesUtils;
 import com.cdkj.gchf.common.ExcelUtil;
 import com.cdkj.gchf.gov.GovConnecter;
 
-public class ProjectWorkerEntryExitUploader {
+public class ProjectWorkerEntryExitUploader extends BaseInfo {
 
-    private final static String EXCEL_FILE_PATH = "/Users/silver/Desktop/JM/导入数据/工艺美校二标段/班组人员进退场导入模板.xlsx";
+    private final static String EXCEL_FILE_PATH = BASH_EXCEL_FILE_PATH
+            + "班组人员进退场导入模板.xlsx";
 
     private final static String EXCEL_FILE_COLUMNS[] = { "projectCode",
             "corpCode", "corpName", "teamSysNo", "idCardType", "idCardNumber",
             "date", "type" };
-
-    private final static String PROJECT_CODE = "3311222019030004";
-
-    private final static String SECRET = "6307a2c2403b72d08ca978e5dfea1813";
 
     public static void main(String args[]) {
 

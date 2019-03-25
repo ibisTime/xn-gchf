@@ -1,7 +1,5 @@
 package com.cdkj.gchf.dto.req;
 
-import java.util.Date;
-
 import javax.validation.constraints.Min;
 
 import org.hibernate.validator.constraints.NotBlank;
@@ -43,7 +41,7 @@ public class XN631911ReqWorker extends APIRequestBase {
     private Integer workRole;
 
     // 制卡时间
-    private Date issueCardDate;
+    private String issueCardDate;
 
     // 制卡采集照片
     private String issueCardPicUrl;
@@ -86,7 +84,7 @@ public class XN631911ReqWorker extends APIRequestBase {
     private String politicsType;
 
     // 加入公会时间
-    private Date joinedTime;
+    private String joinedTime;
 
     // 手机号码
     @NotBlank
@@ -175,14 +173,6 @@ public class XN631911ReqWorker extends APIRequestBase {
 
     public void setWorkRole(Integer workRole) {
         this.workRole = workRole;
-    }
-
-    public Date getIssueCardDate() {
-        return issueCardDate;
-    }
-
-    public void setIssueCardDate(Date issueCardDate) {
-        this.issueCardDate = issueCardDate;
     }
 
     public String getIssueCardPicUrl() {
@@ -279,14 +269,6 @@ public class XN631911ReqWorker extends APIRequestBase {
 
     public void setPoliticsType(String politicsType) {
         this.politicsType = politicsType;
-    }
-
-    public Date getJoinedTime() {
-        return joinedTime;
-    }
-
-    public void setJoinedTime(Date joinedTime) {
-        this.joinedTime = joinedTime;
     }
 
     public String getCellPhone() {
@@ -391,6 +373,22 @@ public class XN631911ReqWorker extends APIRequestBase {
 
     public void setExpiryDate(String expiryDate) {
         this.expiryDate = expiryDate;
+    }
+
+    public String getIssueCardDate() {
+        return issueCardDate;
+    }
+
+    public void setIssueCardDate(String issueCardDate) {
+        this.issueCardDate = issueCardDate;
+    }
+
+    public String getJoinedTime() {
+        return joinedTime;
+    }
+
+    public void setJoinedTime(String joinedTime) {
+        this.joinedTime = joinedTime;
     }
 
 }

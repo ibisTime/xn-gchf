@@ -28,6 +28,12 @@ public class UserDAOImpl extends AMybatisTemplate implements IUserDAO {
     }
 
     @Override
+    public User selectBriefUser(User data) {
+        return super.select(NAMESPACE.concat("select_briefUser"), data,
+            User.class);
+    }
+
+    @Override
     public long selectTotalCount(User condition) {
         return super.selectTotalCount(NAMESPACE.concat("select_user_count"),
             condition);

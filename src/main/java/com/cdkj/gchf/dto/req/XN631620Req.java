@@ -11,7 +11,6 @@ import org.hibernate.validator.constraints.NotBlank;
 public class XN631620Req {
 
     // 本地项目编号
-    @NotBlank
     private String localProjectCode;
 
     // 国家平台项目编码

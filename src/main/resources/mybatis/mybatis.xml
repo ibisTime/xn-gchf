@@ -32,6 +32,7 @@
 		<typeAlias alias="projectBuilderLicense" type="com.cdkj.gchf.domain.ProjectBuilderLicense" />
 		<typeAlias alias="bankCardInfo" type="com.cdkj.gchf.domain.BankCardInfo" />
 		<typeAlias alias="payRollDetail" type="com.cdkj.gchf.domain.PayRollDetail" />
+		<typeAlias alias="operateLog" type="com.cdkj.gchf.domain.OperateLog" />
 		
 	</typeAliases>
 </configuration>

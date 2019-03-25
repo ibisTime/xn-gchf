@@ -44,7 +44,7 @@ public class XN631916ReqContract {
     // 计量单位
     private Integer unit;
 
-    // 计量单位
+    // 计量单价
     private BigDecimal unitPrice;
 
     public String getCorpCode() {

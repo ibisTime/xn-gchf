@@ -4,11 +4,14 @@
     xmlns:aop="http://www.springframework.org/schema/aop" 
     xmlns:tx="http://www.springframework.org/schema/tx" 
     xmlns:context="http://www.springframework.org/schema/context"
+    xmlns:task="http://www.springframework.org/schema/task"
     xsi:schemaLocation="  
             http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd  
             http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop.xsd  
             http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd
-            http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd"  
+            http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd
+            http://www.springframework.org/schema/task
+			http://www.springframework.org/schema/task/spring-task-3.0.xsd"  
             default-lazy-init="false"> 
 
 	<!-- 注解注入 -->
@@ -23,12 +26,17 @@
  
     <bean id="springContextHolder" class="com.cdkj.gchf.spring.SpringContextHolder"></bean>
     
+    <!-- 配置定时任务-->
+    <task:executor id="executor" pool-size="1" />
+    
+    <!--配置线程池-->
+    <task:scheduler id="scheduler" pool-size="1" />
+    <task:annotation-driven executor="executor" scheduler="scheduler" />
+    
     <!-- 参数验证 -->
 	 <bean id="validator" class="org.springframework.validation.beanvalidation.LocalValidatorFactoryBean">
         <property name="providerClass" value="org.hibernate.validator.HibernateValidator"/>
     </bean>    
-
-
 
 	<!-- mybatis写 -->
     <bean id="sqlSessionFactoryMaster" class="org.mybatis.spring.SqlSessionFactoryBean">

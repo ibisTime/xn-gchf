@@ -87,6 +87,7 @@
 	<bean id="payRollBO" class="com.cdkj.gchf.bo.impl.PayRollBOImpl">
 		<property name="paginableDAO" ref="payRollDAOImpl"/>
 	</bean>
+	
 	<bean id="payRollDetailBO" class="com.cdkj.gchf.bo.impl.PayRollDetailBOImpl">
         <property name="paginableDAO" ref="payRollDetailDAOImpl"/>
     </bean>
@@ -97,6 +98,10 @@
 	
 	<bean id="bankCardBankBO" class="com.cdkj.gchf.bo.impl.BankCardBankBOImpl">
 		<property name="paginableDAO" ref="bankCardInfoDAOImpl"/>
+	</bean>
+	
+	<bean id="operateLogBO" class="com.cdkj.gchf.bo.impl.OperateLogBOImpl">
+		<property name="paginableDAO" ref="operateLogDAOImpl"/>
 	</bean>
 	
 </beans>

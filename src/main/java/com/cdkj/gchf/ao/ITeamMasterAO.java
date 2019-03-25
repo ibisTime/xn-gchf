@@ -22,6 +22,8 @@ public interface ITeamMasterAO {
 
     public void editTeamMaster(XN631652Req data);
 
+    public void uploadTeamMaster(List<String> codeList, String userId);
+
     public Paginable<TeamMaster> queryTeamMasterPage(int start, int limit,
             TeamMaster condition);
 

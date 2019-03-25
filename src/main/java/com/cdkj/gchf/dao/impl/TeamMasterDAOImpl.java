@@ -52,4 +52,10 @@ public class TeamMasterDAOImpl extends AMybatisTemplate
         return super.update(NAMESPACE.concat("update_teamMaster"), data);
     }
 
+    @Override
+    public int updateUploadStatus(TeamMaster data) {
+        return super.update(NAMESPACE.concat("update_teamMasterUploadStatus"),
+            data);
+    }
+
 }

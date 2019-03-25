@@ -9,6 +9,7 @@
 		<result column="corp_code" property="corpCode" />
 		<result column="corp_name" property="corpName" />
 		
+		<result column="local_team_sys_no" property="localTeamSysNo" />
 		<result column="team_sys_no" property="teamSysNo" />
 		<result column="team_name" property="teamName" />
 		<result column="worker_code" property="workerCode" />
@@ -78,6 +79,9 @@
 			<if test="idCardNumber != null and idCardNumber != '' ">
 				AND t.idcard_number = #{idCardNumber}
 			</if>
+			<if test="localTeamSysNo != null and localTeamSysNo != '' ">
+				AND t.local_team_sys_no = #{localTeamSysNo}
+			</if>
 		</trim>
 	</sql>
 	
@@ -89,6 +93,7 @@
 		,t.corp_code
 		,t.corp_name
 		
+		,t.local_team_sys_no
 		,t.team_sys_no
 		,t.team_name
 		,t.worker_code
@@ -161,6 +166,7 @@
 		,corp_code
 		,corp_name
 		
+		,local_team_sys_no
 		,team_sys_no
 		,team_name
 		,worker_code
@@ -217,6 +223,7 @@
 		,#{corpName}
 		,#{teamSysNo}
 		
+		,#{localTeamSysNo}
 		,#{teamName}
 		,#{workerCode}
 		,#{workerName}
@@ -322,6 +329,13 @@
 		WHERE code = #{code}
 	</update>
 
+	<update id="update_teamSysNoByLocal">
+		UPDATE thf_project_worker
+		SET
+		team_sys_no = #{teamSysNo}
+		WHERE local_team_sys_no = #{localTeamSysNo} 
+	</update>
+	
 	<delete id="delete_projectWorker" parameterType="projectWorker">
 	    delete from thf_project_worker WHERE code = #{code} 
 	</delete>

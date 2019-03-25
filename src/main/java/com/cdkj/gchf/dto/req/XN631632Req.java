@@ -46,6 +46,9 @@ public class XN631632Req {
     // 项目经理电话
     private String pmPhone;
 
+    // 备注
+    private String remark;
+
     public String getUserId() {
         return userId;
     }
@@ -140,6 +143,14 @@ public class XN631632Req {
 
     public void setProjectName(String projectName) {
         this.projectName = projectName;
+    }
+
+    public String getRemark() {
+        return remark;
+    }
+
+    public void setRemark(String remark) {
+        this.remark = remark;
     }
 
 }

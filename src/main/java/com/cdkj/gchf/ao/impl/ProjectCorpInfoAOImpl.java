@@ -65,6 +65,13 @@ public class ProjectCorpInfoAOImpl implements IProjectCorpInfoAO {
     @Override
     public void dropProjectCorpInfo(String code) {
 
+        ProjectCorpInfo projectCorpInfo = projectCorpInfoBO
+            .getProjectCorpInfo(code);
+        if (EUploadStatus.UPLOAD_EDITABLE.getCode()
+            .equals(projectCorpInfo.getUploadStatus())) {
+            throw new BizException("XN631631", "参建单位已上传，无法删除");
+        }
+
         projectCorpInfoBO.removeProjectCorpInfo(code);
 
     }
@@ -83,6 +90,59 @@ public class ProjectCorpInfoAOImpl implements IProjectCorpInfoAO {
 
         projectCorpInfoBO.refreshUploadStatus(req.getCode(),
             EUploadStatus.TO_UPLOAD.getCode());
+
+        User briefUser = userBO.getBriefUser(req.getUserId());
+        operateLogBO.saveOperateLog(
+            EOperateLogRefType.ProjectCorpinfo.getCode(), req.getCode(),
+            EOperateLogOperate.EditProjectCorpinfo.getValue(), briefUser,
+            req.getRemark());
+
+    }
+
+    @Override
+    @Transactional
+    public void uploadProjectCorpInfo(String userId, List<String> codes) {
+        User briefUser = userBO.getBriefUser(userId);
+
+        for (String code : codes) {
+
+            ProjectCorpInfo projectCorpInfo = projectCorpInfoBO
+                .getProjectCorpInfo(code);
+
+            if (EUploadStatus.UPLOAD_EDITABLE.getCode()
+                .equals(projectCorpInfo.getUploadStatus()))
+                continue;
+
+            // 调用国家平台上传数据
+            ProjectConfig projectConfig = projectConfigBO
+                .getProjectConfigByLocal(projectCorpInfo.getProjectCode());
+            if (null == projectConfig) {
+                throw new BizException("XN631634", "不存在已配置的项目，无法上传");
+            }
+
+            String encrypt = AesUtils.encrypt(
+                projectCorpInfo.getPmIDCardNumber(), projectConfig.getSecret());
+            projectCorpInfo.setPmIDCardNumber(encrypt);
+            projectCorpInfo.setProjectCode(projectConfig.getProjectCode());
+
+            String json = JSONObject.toJSONStringWithDateFormat(projectCorpInfo,
+                "yyyy-MM-dd HH:mm:ss").toString();
+
+            String resString = GovConnecter.getGovData(
+                "ProjectSubContractor.Add", json,
+                projectConfig.getProjectCode(), projectConfig.getSecret());
+
+            // 保存操作日志
+            String saveOperateLog = operateLogBO.saveOperateLog(
+                EOperateLogRefType.ProjectCorpinfo.getCode(), code,
+                EOperateLogOperate.UploadProjectCorpinfo.getValue(), briefUser,
+                null);
+
+            // 状态消息队列更新数据库状态
+            AsyncQueueHolder.addSerial(resString, projectConfig,
+                "projectCorpInfoBO", code,
+                EUploadStatus.UPLOAD_EDITABLE.getCode(), saveOperateLog);
+        }
 
     }
 
@@ -142,51 +202,6 @@ public class ProjectCorpInfoAOImpl implements IProjectCorpInfoAO {
     @Override
     public ProjectCorpInfo getProjectCorpInfo(String code) {
         return projectCorpInfoBO.getProjectCorpInfo(code);
-    }
-
-    @Transactional
-    @Override
-    public void uploadProjectCorpInfo(String userId, List<String> codes) {
-        // 根据userid 获取项目配置
-        User briefUser = userBO.getBriefUser(userId);
-
-        // 根据codes拿到数据
-        for (String code : codes) {
-
-            ProjectCorpInfo projectCorpInfo = projectCorpInfoBO
-                .getProjectCorpInfo(code);
-
-            // 调用国家平台上传数据
-            ProjectConfig projectConfig = projectConfigBO
-                .getProjectConfigByLocal(projectCorpInfo.getProjectCode());
-            if (null == projectConfig) {
-                throw new BizException("XN631634", "不存在已配置的项目，无法上传");
-            }
-
-            String encrypt = AesUtils.encrypt(
-                projectCorpInfo.getPmIDCardNumber(), projectConfig.getSecret());
-            projectCorpInfo.setPmIDCardNumber(encrypt);
-            projectCorpInfo.setProjectCode(projectConfig.getProjectCode());
-
-            String json = JSONObject.toJSONStringWithDateFormat(projectCorpInfo,
-                "yyyy-MM-dd HH:mm:ss").toString();
-
-            String resString = GovConnecter.getGovData(
-                "ProjectSubContractor.Add", json,
-                projectConfig.getProjectCode(), projectConfig.getSecret());
-
-            // 保存操作日志
-            String saveOperateLog = operateLogBO.saveOperateLog(
-                EOperateLogRefType.ProjectCorpinfo.getCode(), code,
-                EOperateLogOperate.UploadProjectCorpinfo.getValue(), briefUser,
-                null);
-
-            // 状态消息队列更新数据库状态
-            AsyncQueueHolder.addSerial(resString, projectConfig,
-                "projectCorpInfoBO", code,
-                EUploadStatus.UPLOAD_EDITABLE.getCode(), saveOperateLog);
-        }
-
     }
 
 }

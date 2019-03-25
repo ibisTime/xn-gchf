@@ -22,6 +22,8 @@ public interface IProjectCorpInfoAO {
 
     public void editProjectCorpInfo(XN631632Req req);
 
+    public void uploadProjectCorpInfo(String userId, List<String> codes);
+
     public Paginable<ProjectCorpInfo> queryProjectCorpInfoPage(int start,
             int limit, ProjectCorpInfo condition);
 
@@ -29,8 +31,6 @@ public interface IProjectCorpInfoAO {
             ProjectCorpInfo condition);
 
     public ProjectCorpInfo getProjectCorpInfo(String code);
-
-    public void uploadProjectCorpInfo(String userId, List<String> codes);
 
     /****国家平台接口****/
     public void uploadProjectCorpInfo(XN631905Req data);

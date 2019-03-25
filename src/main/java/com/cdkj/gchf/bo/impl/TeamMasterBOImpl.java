@@ -37,22 +37,23 @@ public class TeamMasterBOImpl extends PaginableBOImpl<TeamMaster>
 
     @Override
     public String saveTeamMaster(XN631650Req data) {
-        String code = null;
         TeamMaster teamMasterInfo = new TeamMaster();
         BeanUtils.copyProperties(data, teamMasterInfo);
-        if (data != null) {
-            code = OrderNoGenerater
-                .generate(EGeneratePrefix.TeamMaster.getCode());
-            teamMasterInfo.setCode(code);
-            teamMasterDAO.insert(teamMasterInfo);
-        }
+
+        String code = OrderNoGenerater
+            .generate(EGeneratePrefix.TeamMaster.getCode());
+        teamMasterInfo.setCode(code);
+        teamMasterDAO.insert(teamMasterInfo);
+
         return code;
     }
 
     @Override
     public void removeTeamMaster(String code) {
         TeamMaster data = new TeamMaster();
+
         data.setCode(code);
+
         teamMasterDAO.delete(data);
     }
 
@@ -60,7 +61,18 @@ public class TeamMasterBOImpl extends PaginableBOImpl<TeamMaster>
     public void refreshTeamMaster(XN631652Req data) {
         TeamMaster teamMaster = new TeamMaster();
         BeanUtils.copyProperties(data, teamMaster);
+
         teamMasterDAO.update(teamMaster);
+    }
+
+    @Override
+    public void refreshUploadStatus(String code, String uploadStatus) {
+        TeamMaster teamMaster = new TeamMaster();
+
+        teamMaster.setCode(code);
+        teamMaster.setUploadStatus(uploadStatus);
+
+        teamMasterDAO.updateUploadStatus(teamMaster);
     }
 
     @Override

@@ -20,6 +20,9 @@ public interface IProjectWorkerBO extends IPaginableBO<ProjectWorker> {
 
     public void refreshProjectWorker(XN631692Req req);
 
+    public void refreshTeamSysNoByLocal(String localTeamSysNo,
+            String teamSysNo);
+
     public List<ProjectWorker> queryProjectWorkerList(ProjectWorker condition);
 
     public ProjectWorker getProjectWorker(String code);

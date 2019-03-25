@@ -8,7 +8,11 @@ package com.cdkj.gchf.enums;
  */
 public enum EOperateLogOperate {
 
-    UploadCorpBasicinfo("01", "上传企业基本信息");
+    UploadCorpBasicinfo("01", "上传企业基本信息"),
+
+    StartProjectConfig("02", "启用项目配置"),
+
+    StopProjectConfig("03", "停用项目配置");
 
     EOperateLogOperate(String code, String value) {
         this.code = code;

@@ -97,6 +97,7 @@ CREATE TABLE `thf_project_corp_info` (
   `pm_idcard_type` varchar(2) DEFAULT NULL COMMENT '项目经理证件类型',
   `pm_idcard_number` varchar(30) DEFAULT NULL COMMENT '项目经理证件号码',
   `pm_phone` varchar(50) DEFAULT NULL COMMENT '项目经理电话',
+  `upload_status` varchar(4) DEFAULT NULL COMMENT '上传状态',
   PRIMARY KEY (`code`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='项目参建单位';
 

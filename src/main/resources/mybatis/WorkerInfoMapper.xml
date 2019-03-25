@@ -1,0 +1,201 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cdkj.gchf.dao.IWorkerInfoDAO">
+	<resultMap id="WorkerInfo_DB_Result" type="WorkerInfo">
+		<result column="code" property="code" />
+		<result column="name" property="name" />
+		<result column="id_card_type" property="idCardType" />
+		<result column="id_card_number" property="idCardNumber" />
+		<result column="gender" property="gender" />
+		<result column="nation" property="nation" />
+		<result column="edu_level" property="eduLevel" />
+		<result column="degree" property="degree" />
+		<result column="worker_type" property="workerType" />
+		<result column="birthday" property="birthday" />
+		<result column="birth_place_code" property="birthPlaceCode" />
+		<result column="address" property="address" />
+		<result column="head_image_url" property="headImageUrl" />
+		<result column="politics_type" property="politicsType" />
+		<result column="is_joined" property="isJoined" />
+		<result column="joined_time" property="joinedTime" />
+		<result column="cell_phone" property="cellPhone" />
+		<result column="culture_level_type" property="cultureLevelType" />
+		<result column="specialty" property="specialty" />
+		<result column="has_bad_medical_history" property="hasBadMedicalHistory" />
+		<result column="urgent_link_man" property="urgentLinkMan" />
+		<result column="urgent_link_man_phone" property="urgentLinkManPhone" />
+		<result column="work_type_code" property="workTypeCode" />
+		<result column="work_corp_name" property="workCorpName" />
+		<result column="work_date" property="workDate" />
+		<result column="marital_status" property="maritalStatus" />
+		<result column="grant_org" property="grantOrg" />
+		<result column="positive_id_card_image_url" property="positiveIdCardImageUrl" />
+		<result column="negative_id_card_image_url" property="negativeIdCardImageUrl" />
+		<result column="start_date" property="startDate" />
+		<result column="expiry_date" property="expiryDate" />
+	</resultMap>
+	<sql id="where_condition">
+		<trim prefix="WHERE" prefixOverrides="AND | OR">
+			<if test="code != null and code != '' ">
+				AND t.code = #{code}
+			</if>
+		</trim>
+	</sql>
+	<select id="select_WorkerInfo" parameterType="WorkerInfo" resultMap="WorkerInfo_DB_Result">
+		SELECT
+		t.code
+		,t.name
+		,t.id_card_type
+		,t.id_card_number
+		,t.gender
+		,t.nation
+		,t.edu_level
+		,t.degree
+		,t.worker_type
+		,t.birthday
+		,t.birth_place_code
+		,t.address
+		,t.head_image_url
+		,t.politics_type
+		,t.is_joined
+		,t.joined_time
+		,t.cell_phone
+		,t.culture_level_type
+		,t.specialty
+		,t.has_bad_medical_history
+		,t.urgent_link_man
+		,t.urgent_link_man_phone
+		,t.work_type_code
+		,t.work_corp_name
+		,t.work_date
+		,t.marital_status
+		,t.grant_org
+		,t.positive_id_card_image_url
+		,t.negative_id_card_image_url
+		,t.start_date
+		,t.expiry_date
+		FROM
+		thf_worker_info t
+		<include refid="where_condition" />
+		<trim prefix="ORDER BY ">
+			<if test="order != null and order != '' ">
+				t.${order}
+			</if>
+		</trim>
+	</select>
+
+	<select id="select_WorkerInfo_count" parameterType="WorkerInfo"
+		resultType="java.lang.Long">
+		SELECT count(1) FROM thf_worker_info t
+		<include refid="where_condition" />
+	</select>
+
+	<insert id="insert_WorkerInfo" parameterType="WorkerInfo">
+		INSERT INTO
+		thf_worker_info(
+		code
+		,name
+		,id_card_type
+		,id_card_number
+		,gender
+		,nation
+		,edu_level
+		,degree
+		,worker_type
+		,birthday
+		,birth_place_code
+		,address
+		,head_image_url
+		,politics_type
+		,is_joined
+		,joined_time
+		,cell_phone
+		,culture_level_type
+		,specialty
+		,has_bad_medical_history
+		,urgent_link_man
+		,urgent_link_man_phone
+		,work_type_code
+		,work_corp_name
+		,work_date
+		,marital_status
+		,grant_org
+		,positive_id_card_image_url
+		,negative_id_card_image_url
+		,start_date
+		,expiry_date
+		)
+		VALUES(
+		#{code}
+		,#{name}
+		,#{idCardType}
+		,#{idCardNumber}
+		,#{gender}
+		,#{nation}
+		,#{eduLevel}
+		,#{degree}
+		,#{workerType}
+		,#{birthday}
+		,#{birthPlaceCode}
+		,#{address}
+		,#{headImageUrl}
+		,#{politicsType}
+		,#{isJoined}
+		,#{joinedTime}
+		,#{cellPhone}
+		,#{cultureLevelType}
+		,#{specialty}
+		,#{hasBadMedicalHistory}
+		,#{urgentLinkMan}
+		,#{urgentLinkManPhone}
+		,#{workTypeCode}
+		,#{workCorpName}
+		,#{workDate}
+		,#{maritalStatus}
+		,#{grantOrg}
+		,#{positiveIdCardImageUrl}
+		,#{negativeIdCardImageUrl}
+		,#{startDate}
+		,#{expiryDate}
+		)
+	</insert>
+
+	<update id="update_WorkerInfo" parameterType="WorkerInfo">
+		UPDATE thf_worker_info
+		SET
+		name = #{name}
+		,id_card_type = #{idCardType}
+		,id_card_number = #{idCardNumber}
+		,gender = #{gender}
+		,nation = #{nation}
+		,edu_level = #{eduLevel}
+		,degree = #{degree}
+		,worker_type = #{workerType}
+		,birthday = #{birthday}
+		,birth_place_code = #{birthPlaceCode}
+		,address = #{address}
+		,head_image_url = #{headImageUrl}
+		,politics_type = #{politicsType}
+		,is_joined = #{isJoined}
+		,joined_time = #{joinedTime}
+		,cell_phone = #{cellPhone}
+		,culture_level_type = #{cultureLevelType}
+		,specialty = #{specialty}
+		,has_bad_medical_history = #{hasBadMedicalHistory}
+		,urgent_link_man = #{urgentLinkMan}
+		,urgent_link_man_phone = #{urgentLinkManPhone}
+		,work_type_code = #{workTypeCode}
+		,work_corp_name = #{workCorpName}
+		,work_date = #{workDate}
+		,marital_status = #{maritalStatus}
+		,grant_org = #{grantOrg}
+		,positive_id_card_image_url = #{positiveIdCardImageUrl}
+		,negative_id_card_image_url = #{negativeIdCardImageUrl}
+		,start_date = #{startDate}
+		,expiry_date = #{expiryDate}
+		WHERE code = #{code}
+	</update>
+
+
+</mapper>

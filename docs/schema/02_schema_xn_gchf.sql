@@ -288,6 +288,42 @@ CREATE TABLE `thf_user` (
   PRIMARY KEY (`user_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
+DROP TABLE IF EXISTS `thf_worker_info`;
+CREATE TABLE `thf_worker_info` (
+  `code` varchar(32) NOT NULL COMMENT '编号',
+  `name` varchar(50) NOT NULL COMMENT '工人姓名',
+  `id_card_type` char(2) NOT NULL COMMENT '证件类型',
+  `id_card_number` varchar(30) NOT NULL COMMENT '证件号码',
+  `gender` int(11) NOT NULL COMMENT '工人性别',
+  `nation` varchar(10) NOT NULL COMMENT '民族',
+  `edu_level` int(11) DEFAULT NULL COMMENT '学历',
+  `degree` int(11) DEFAULT NULL COMMENT '学位',
+  `worker_type` int(11) DEFAULT NULL COMMENT '类别',
+  `birthday` datetime NOT NULL COMMENT '出生日期',
+  `birth_place_code` char(6) NOT NULL COMMENT '籍贯 身份证号码前六位',
+  `address` varchar(200) NOT NULL COMMENT '住址',
+  `head_image_url` varchar(300) NOT NULL COMMENT '头像 二代身份证上面的头像',
+  `politics_type` char(2) DEFAULT NULL COMMENT '政治面貌',
+  `is_joined` tinyint(1) DEFAULT NULL COMMENT '是否加入工会',
+  `joined_time` datetime DEFAULT NULL COMMENT '加入工会时间 已加入工会时，此字段必须有值',
+  `cell_phone` varchar(20) NOT NULL COMMENT '手机号码',
+  `culture_level_type` char(2) DEFAULT NULL COMMENT '文化程度',
+  `specialty` varchar(200) DEFAULT NULL COMMENT '特长',
+  `has_bad_medical_history` tinyint(1) NOT NULL COMMENT '否有重大病史',
+  `urgent_link_man` varchar(50) DEFAULT NULL COMMENT '紧急联系人姓名',
+  `urgent_link_man_phone` varchar(50) DEFAULT NULL COMMENT '紧急联系电话',
+  `work_type_code` char(4) NOT NULL COMMENT '当前工种',
+  `work_corp_name` varchar(200) DEFAULT NULL COMMENT '当前聘用企业',
+  `work_date` datetime DEFAULT NULL COMMENT '开始工作日期',
+  `marital_status` char(2) DEFAULT NULL COMMENT '婚姻状况',
+  `grant_org` varchar(20) NOT NULL COMMENT '发证机关',
+  `positive_id_card_image_url` varchar(300) DEFAULT NULL COMMENT '正面照 URL',
+  `negative_id_card_image_url` varchar(300) DEFAULT NULL COMMENT '反面照 URL',
+  `start_date` datetime DEFAULT NULL COMMENT '有效期开始日期',
+  `expiry_date` datetime DEFAULT NULL COMMENT '有效期结束日期',
+  PRIMARY KEY (`code`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='人员实名信息数据表';
+
 DROP TABLE IF EXISTS `thf_worker_attendance`;
 CREATE TABLE `thf_worker_attendance` (
   `code` varchar(32) NOT NULL COMMENT '编号',

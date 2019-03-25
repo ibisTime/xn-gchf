@@ -44,7 +44,9 @@ public enum EGeneratePrefix {
 
     BankCardInfo("BCI", "银行卡"),
 
-    OperateLog("OL", "操作日志");
+    OperateLog("OL", "操作日志"),
+
+    WorkerInfo("WI", "人员实名信息");
 
     public static Map<String, EGeneratePrefix> getMap() {
         Map<String, EGeneratePrefix> map = new HashMap<String, EGeneratePrefix>();

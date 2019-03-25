@@ -35,6 +35,17 @@ public class PayRollBOImpl extends PaginableBOImpl<PayRoll>
     private IPayRollDAO payRollDAO;
 
     @Override
+    public String savePayRoll(XN631770Req data) {
+        PayRoll payRoll = new PayRoll();
+        BeanUtils.copyProperties(data, payRoll);
+        String code = OrderNoGenerater
+            .generate(EGeneratePrefix.PayRoll.getCode());
+        payRoll.setCode(code);
+        payRollDAO.insert(payRoll);
+        return code;
+    }
+
+    @Override
     public int removePayRoll(String code) {
         PayRoll data = new PayRoll();
         data.setCode(code);
@@ -102,17 +113,6 @@ public class PayRollBOImpl extends PaginableBOImpl<PayRoll>
             throw new BizException("xn0000", "工资单编号不存在");
         }
         return data;
-    }
-
-    @Override
-    public String savePayRoll(XN631770Req data) {
-        PayRoll payRoll = new PayRoll();
-        BeanUtils.copyProperties(data, payRoll);
-        String code = OrderNoGenerater
-            .generate(EGeneratePrefix.PayRoll.getCode());
-        payRoll.setCode(code);
-        payRollDAO.insert(payRoll);
-        return code;
     }
 
 }

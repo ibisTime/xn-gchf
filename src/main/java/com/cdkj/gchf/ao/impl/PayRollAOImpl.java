@@ -2,6 +2,7 @@ package com.cdkj.gchf.ao.impl;
 
 import java.util.List;
 
+import org.apache.commons.collections.CollectionUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -104,7 +105,19 @@ public class PayRollAOImpl implements IPayRollAO {
     @Override
     public Paginable<PayRoll> queryPayRollPage(int start, int limit,
             PayRoll condition) {
-        return payRollBO.getPaginable(start, limit, condition);
+        Paginable<PayRoll> page = payRollBO.getPaginable(start, limit,
+            condition);
+
+        List<PayRoll> payRollList = page.getList();
+        if (CollectionUtils.isNotEmpty(payRollList)) {
+            for (PayRoll payRoll : payRollList) {
+                payRoll.setPayRollDetailList(
+                    payRollDetailBO.queryListByPayRoll(payRoll.getCode()));
+            }
+
+        }
+
+        return page;
     }
 
     @Override

@@ -27,6 +27,9 @@
 			<if test="code != null and code != '' ">
 				AND t.code = #{code}
 			</if>
+			<if test="payRollCode != null and payRollCode != '' ">
+				AND t.pay_roll_code = #{payRollCode}
+			</if>
 		</trim>
 	</sql>
 	<select id="select_PayRollDetail" parameterType="payRollDetail"

@@ -22,22 +22,33 @@ public class PayRollDetailBOImpl extends PaginableBOImpl<PayRollDetail>
     private PayRollDetailDAOImpl payRollDetailDAO;
 
     @Override
+    public void savePayRollDetail(String projectCode,
+            List<XN631770ReqDetail> data) {
+        for (XN631770ReqDetail xn631770ReqDetail : data) {
+            String code = OrderNoGenerater
+                .generate(EGeneratePrefix.PayRollDetail.getCode());
+            PayRollDetail payRollDetail = new PayRollDetail();
+            payRollDetail.setCode(code);
+            payRollDetail.setPayRollCode(projectCode);
+            BeanUtils.copyProperties(xn631770ReqDetail, payRollDetail);
+            payRollDetailDAO.insert(payRollDetail);
+        }
+    }
+
+    @Override
     public long getTotalCount(PayRollDetail condition) {
-        // TODO Auto-generated method stub
         return 0;
     }
 
     @Override
     public Paginable<PayRollDetail> getPaginable(int start,
             PayRollDetail condition) {
-        // TODO Auto-generated method stub
         return null;
     }
 
     @Override
     public Paginable<PayRollDetail> getPaginable(int start, int pageSize,
             PayRollDetail condition) {
-        // TODO Auto-generated method stub
         return null;
     }
 
@@ -50,22 +61,16 @@ public class PayRollDetailBOImpl extends PaginableBOImpl<PayRollDetail>
 
     @Override
     public int updatePayRollDetail(PayRollDetail data) {
-        // TODO Auto-generated method stub
         return 0;
     }
 
     @Override
-    public void savePayRollDetail(String projectCode,
-            List<XN631770ReqDetail> data) {
-        for (XN631770ReqDetail xn631770ReqDetail : data) {
-            String code = OrderNoGenerater
-                .generate(EGeneratePrefix.PayRollDetail.getCode());
-            PayRollDetail payRollDetail = new PayRollDetail();
-            payRollDetail.setCode(code);
-            payRollDetail.setPayRollCode(projectCode);
-            BeanUtils.copyProperties(xn631770ReqDetail, payRollDetail);
-            payRollDetailDAO.insert(payRollDetail);
-        }
+    public List<PayRollDetail> queryListByPayRoll(String payRollCode) {
+        PayRollDetail payRollDetail = new PayRollDetail();
+
+        payRollDetail.setPayRollCode(payRollCode);
+
+        return payRollDetailDAO.selectList(payRollDetail);
     }
 
 }

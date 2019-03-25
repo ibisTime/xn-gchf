@@ -15,4 +15,6 @@ public interface IPayRollDetailBO extends IPaginableBO<PayRollDetail> {
 
     public int updatePayRollDetail(PayRollDetail data);
 
+    List<PayRollDetail> queryListByPayRoll(String payRollCode);
+
 }

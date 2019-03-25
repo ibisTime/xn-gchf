@@ -41,6 +41,9 @@ public class PayRoll extends ABaseDO {
     // 明细列表
     private List<XN631920ReqDateil> detailList;
 
+    // 明细列表
+    private List<PayRollDetail> payRollDetailList;
+
     public String getCode() {
         return code;
     }
@@ -103,6 +106,14 @@ public class PayRoll extends ABaseDO {
 
     public void setDetailList(List<XN631920ReqDateil> detailList) {
         this.detailList = detailList;
+    }
+
+    public List<PayRollDetail> getPayRollDetailList() {
+        return payRollDetailList;
+    }
+
+    public void setPayRollDetailList(List<PayRollDetail> payRollDetailList) {
+        this.payRollDetailList = payRollDetailList;
     }
 
 }

@@ -2,17 +2,21 @@ package com.cdkj.gchf.ao.impl;
 
 import java.util.List;
 
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.cdkj.gchf.ao.IProjectAO;
+import com.cdkj.gchf.bo.ICorpBasicinfoBO;
 import com.cdkj.gchf.bo.IProjectBO;
 import com.cdkj.gchf.bo.IProjectBuilderLicenseBO;
 import com.cdkj.gchf.bo.base.Paginable;
+import com.cdkj.gchf.domain.CorpBasicinfo;
 import com.cdkj.gchf.domain.Project;
 import com.cdkj.gchf.dto.req.XN631600Req;
 import com.cdkj.gchf.dto.req.XN631602Req;
+import com.cdkj.gchf.exception.BizException;
 
 @Service
 public class ProjectAOImpl implements IProjectAO {
@@ -23,11 +27,30 @@ public class ProjectAOImpl implements IProjectAO {
     @Autowired
     private IProjectBuilderLicenseBO projectBuilderLicenseBO;
 
+    @Autowired
+    private ICorpBasicinfoBO corpBasicinfoBO;
+
     @Override
     @Transactional
     public String addProject(XN631600Req req) {
 
-        String projectCode = projectBO.saveProject(req);
+        CorpBasicinfo contractorCorpInfo = corpBasicinfoBO
+            .getCorpBasicinfoByCorp(req.getContractorCorpCode());
+        if (null == contractorCorpInfo) {
+            throw new BizException("XN631600", "总承包单位不存在");
+        }
+
+        CorpBasicinfo buildCorpInfo = null;
+        if (StringUtils.isNotBlank(req.getBuildCorpCode())) {
+            buildCorpInfo = corpBasicinfoBO
+                .getCorpBasicinfoByCorp(req.getBuildCorpCode());
+            if (null == buildCorpInfo) {
+                throw new BizException("XN631600", "建设单位不存在");
+            }
+        }
+
+        String projectCode = projectBO.saveProject(req, contractorCorpInfo,
+            buildCorpInfo);
 
         // 添加施工许可证
         projectBuilderLicenseBO.saveProjectBuilderLicense(projectCode,
@@ -40,6 +63,21 @@ public class ProjectAOImpl implements IProjectAO {
     @Transactional
     public void editProject(XN631602Req req) {
 
+        CorpBasicinfo contractorCorpInfo = corpBasicinfoBO
+            .getCorpBasicinfoByCorp(req.getContractorCorpCode());
+        if (null == contractorCorpInfo) {
+            throw new BizException("XN631600", "总承包单位不存在");
+        }
+
+        CorpBasicinfo buildCorpInfo = null;
+        if (StringUtils.isNotBlank(req.getBuildCorpCode())) {
+            buildCorpInfo = corpBasicinfoBO
+                .getCorpBasicinfoByCorp(req.getBuildCorpCode());
+            if (null == buildCorpInfo) {
+                throw new BizException("XN631600", "建设单位不存在");
+            }
+        }
+
         // 删除旧的施工许可证
         projectBuilderLicenseBO.removeByProject(req.getCode());
 
@@ -47,7 +85,7 @@ public class ProjectAOImpl implements IProjectAO {
         projectBuilderLicenseBO.saveProjectBuilderLicense(req.getCode(),
             req.getBuilderLicenses());
 
-        projectBO.refreshProject(req);
+        projectBO.refreshProject(req, contractorCorpInfo, buildCorpInfo);
     }
 
     @Override

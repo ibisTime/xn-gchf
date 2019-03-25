@@ -100,6 +100,12 @@
 		,secret = #{secret}
 		WHERE code = #{code}
 	</update>
-
+	
+	<update id="update_projectConfigStatus" parameterType="projectConfig">
+		UPDATE thf_project_config
+		SET
+		status = #{status}
+		WHERE code = #{code}
+	</update>
 
 </mapper>

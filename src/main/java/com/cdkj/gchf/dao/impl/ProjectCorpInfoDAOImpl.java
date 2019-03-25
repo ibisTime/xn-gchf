@@ -49,7 +49,15 @@ public class ProjectCorpInfoDAOImpl extends AMybatisTemplate
 
     @Override
     public int update(ProjectCorpInfo projectCorpInfo) {
-        return super.update(NAMESPACE.concat("update_projectCorpInfo"), projectCorpInfo);
+        return super.update(NAMESPACE.concat("update_projectCorpInfo"),
+            projectCorpInfo);
+    }
+
+    @Override
+    public int updateUploadStatus(ProjectCorpInfo projectCorpInfo) {
+        return super.update(
+            NAMESPACE.concat("update_projectCorpInfoUploadStatus"),
+            projectCorpInfo);
     }
 
 }

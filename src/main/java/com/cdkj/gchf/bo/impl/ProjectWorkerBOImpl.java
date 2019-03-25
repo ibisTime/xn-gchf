@@ -28,6 +28,7 @@ import com.cdkj.gchf.enums.EGeneratePrefix;
 import com.cdkj.gchf.exception.BizException;
 import com.cdkj.gchf.gov.GovConnecter;
 import com.cdkj.gchf.gov.GovUtil;
+import com.cdkj.gchf.gov.SerialHandler;
 
 @Component
 public class ProjectWorkerBOImpl extends PaginableBOImpl<ProjectWorker>
@@ -82,8 +83,10 @@ public class ProjectWorkerBOImpl extends PaginableBOImpl<ProjectWorker>
         String data = JSONObject.toJSONStringWithDateFormat(req, "yyyy-MM-dd")
             .toString();
 
-        GovConnecter.getGovData("ProjectWorker.Add", data,
+        String resString = GovConnecter.getGovData("ProjectWorker.Add", data,
             projectConfig.getProjectCode(), projectConfig.getSecret());
+
+        SerialHandler.handle(resString, projectConfig);
     }
 
     @Override

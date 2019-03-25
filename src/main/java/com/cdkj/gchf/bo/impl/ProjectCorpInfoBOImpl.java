@@ -24,6 +24,7 @@ import com.cdkj.gchf.dto.req.XN631905Req;
 import com.cdkj.gchf.dto.req.XN631906Req;
 import com.cdkj.gchf.dto.req.XN631907Req;
 import com.cdkj.gchf.enums.EGeneratePrefix;
+import com.cdkj.gchf.enums.EUploadStatus;
 import com.cdkj.gchf.exception.BizException;
 import com.cdkj.gchf.gov.GovConnecter;
 import com.cdkj.gchf.gov.GovUtil;
@@ -43,6 +44,7 @@ public class ProjectCorpInfoBOImpl extends PaginableBOImpl<ProjectCorpInfo>
         String code = OrderNoGenerater
             .generate(EGeneratePrefix.ProjectCorpInfo.getCode());
         projectCorpInfo.setCode(code);
+        projectCorpInfo.setUploadStatus(EUploadStatus.TO_UPLOAD.getCode());
         projectCorpInfoDAO.insert(projectCorpInfo);
 
         return code;
@@ -63,6 +65,16 @@ public class ProjectCorpInfoBOImpl extends PaginableBOImpl<ProjectCorpInfo>
         BeanUtils.copyProperties(req, projectCorpInfo);
 
         projectCorpInfoDAO.update(projectCorpInfo);
+    }
+
+    @Override
+    public void refreshUploadStatus(String code, String uploadStatus) {
+        ProjectCorpInfo projectCorpInfo = new ProjectCorpInfo();
+
+        projectCorpInfo.setCode(code);
+        projectCorpInfo.setUploadStatus(uploadStatus);
+
+        projectCorpInfoDAO.updateUploadStatus(projectCorpInfo);
     }
 
     @Override

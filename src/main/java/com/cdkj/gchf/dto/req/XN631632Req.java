@@ -24,10 +24,6 @@ public class XN631632Req {
     @NotBlank
     private String corpCode;
 
-    // 企业名称
-    @NotBlank
-    private String corpName;
-
     // 参建类型
     @NotBlank
     private String corpType;
@@ -72,14 +68,6 @@ public class XN631632Req {
 
     public void setCorpCode(String corpCode) {
         this.corpCode = corpCode;
-    }
-
-    public String getCorpName() {
-        return corpName;
-    }
-
-    public void setCorpName(String corpName) {
-        this.corpName = corpName;
     }
 
     public String getCorpType() {

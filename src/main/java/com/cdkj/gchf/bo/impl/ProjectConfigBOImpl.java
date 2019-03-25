@@ -58,6 +58,16 @@ public class ProjectConfigBOImpl extends PaginableBOImpl<ProjectConfig>
     }
 
     @Override
+    public void refreshStatus(String code, String status) {
+        ProjectConfig projectConfig = new ProjectConfig();
+
+        projectConfig.setCode(code);
+        projectConfig.setStatus(status);
+
+        projectConfigDAO.updateStatus(projectConfig);
+    }
+
+    @Override
     public List<ProjectConfig> queryProjectConfigList(ProjectConfig condition) {
         return projectConfigDAO.selectList(condition);
     }

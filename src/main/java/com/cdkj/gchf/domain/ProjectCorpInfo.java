@@ -15,7 +15,7 @@ public class ProjectCorpInfo extends ABaseDO {
     private static final long serialVersionUID = -7557784826164456147L;
 
     String code;
-    
+
     // 项目编码
     private String projectCode;
 
@@ -48,6 +48,9 @@ public class ProjectCorpInfo extends ABaseDO {
 
     // 项目经理电话
     private String pmPhone;
+
+    // 上传状态
+    private String uploadStatus;
 
     public void setProjectCode(String projectCode) {
         this.projectCode = projectCode;
@@ -114,22 +117,22 @@ public class ProjectCorpInfo extends ABaseDO {
     }
 
     public String getPmIDCardType() {
-		return pmIDCardType;
-	}
+        return pmIDCardType;
+    }
 
-	public void setPmIDCardType(String pmIDCardType) {
-		this.pmIDCardType = pmIDCardType;
-	}
+    public void setPmIDCardType(String pmIDCardType) {
+        this.pmIDCardType = pmIDCardType;
+    }
 
-	public String getPmIDCardNumber() {
-		return pmIDCardNumber;
-	}
+    public String getPmIDCardNumber() {
+        return pmIDCardNumber;
+    }
 
-	public void setPmIDCardNumber(String pmIDCardNumber) {
-		this.pmIDCardNumber = pmIDCardNumber;
-	}
+    public void setPmIDCardNumber(String pmIDCardNumber) {
+        this.pmIDCardNumber = pmIDCardNumber;
+    }
 
-	public void setPmPhone(String pmPhone) {
+    public void setPmPhone(String pmPhone) {
         this.pmPhone = pmPhone;
     }
 
@@ -137,18 +140,24 @@ public class ProjectCorpInfo extends ABaseDO {
         return pmPhone;
     }
 
-	public String getCode() {
-		return code;
-	}
+    public String getCode() {
+        return code;
+    }
 
-	public void setCode(String code) {
-		this.code = code;
-	}
+    public void setCode(String code) {
+        this.code = code;
+    }
 
-	public static long getSerialversionuid() {
-		return serialVersionUID;
-	}
-    
-    
+    public static long getSerialversionuid() {
+        return serialVersionUID;
+    }
+
+    public String getUploadStatus() {
+        return uploadStatus;
+    }
+
+    public void setUploadStatus(String uploadStatus) {
+        this.uploadStatus = uploadStatus;
+    }
 
 }

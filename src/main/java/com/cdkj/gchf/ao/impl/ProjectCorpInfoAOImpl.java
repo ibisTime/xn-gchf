@@ -4,12 +4,15 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 
 import com.cdkj.gchf.ao.IProjectCorpInfoAO;
+import com.cdkj.gchf.bo.ICorpBasicinfoBO;
 import com.cdkj.gchf.bo.IProjectConfigBO;
 import com.cdkj.gchf.bo.IProjectCorpInfoBO;
 import com.cdkj.gchf.bo.base.Paginable;
+import com.cdkj.gchf.domain.CorpBasicinfo;
 import com.cdkj.gchf.domain.ProjectConfig;
 import com.cdkj.gchf.domain.ProjectCorpInfo;
 import com.cdkj.gchf.dto.req.XN631630Req;
@@ -17,6 +20,7 @@ import com.cdkj.gchf.dto.req.XN631632Req;
 import com.cdkj.gchf.dto.req.XN631905Req;
 import com.cdkj.gchf.dto.req.XN631906Req;
 import com.cdkj.gchf.dto.req.XN631907Req;
+import com.cdkj.gchf.enums.EUploadStatus;
 import com.cdkj.gchf.exception.BizException;
 
 @Service
@@ -28,21 +32,43 @@ public class ProjectCorpInfoAOImpl implements IProjectCorpInfoAO {
     @Autowired
     private IProjectConfigBO projectConfigBO;
 
+    @Autowired
+    private ICorpBasicinfoBO corpBasicinfoBO;
+
     @Override
     public String addProjectCorpInfo(XN631630Req data) {
-        //
+
+        CorpBasicinfo corpBasicinfo = corpBasicinfoBO
+            .getCorpBasicinfo(data.getCorpCode());
+        if (null == corpBasicinfo) {
+            throw new BizException("XN631630", "企业信息不存在不存在");
+        }
+
         return projectCorpInfoBO.saveProjectCorpInfo(data);
     }
 
     @Override
     public void dropProjectCorpInfo(String code) {
+
         projectCorpInfoBO.removeProjectCorpInfo(code);
+
     }
 
     @Override
+    @Transactional
     public void editProjectCorpInfo(XN631632Req req) {
 
+        CorpBasicinfo corpBasicinfo = corpBasicinfoBO
+            .getCorpBasicinfo(req.getCorpCode());
+        if (null == corpBasicinfo) {
+            throw new BizException("XN631630", "企业信息不存在不存在");
+        }
+
         projectCorpInfoBO.refreshProjectCorpInfo(req);
+
+        projectCorpInfoBO.refreshUploadStatus(req.getCode(),
+            EUploadStatus.TO_UPLOAD.getCode());
+
     }
 
     @Override

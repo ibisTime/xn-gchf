@@ -10,6 +10,14 @@ import com.cdkj.gchf.exception.BizException;
 import com.cdkj.gchf.exception.ParaException;
 import com.cdkj.gchf.spring.SpringContextHolder;
 
+/**
+ * 
+ * @ClassName:  XN631652   
+ * @Description:修改项目班组
+ * @author: Old3
+ * @date:   2019年3月25日 下午1:00:45     
+ * @Copyright:
+ */
 public class XN631652 extends AProcessor {
     private ITeamMasterAO teamMasterAO = SpringContextHolder
         .getBean(ITeamMasterAO.class);

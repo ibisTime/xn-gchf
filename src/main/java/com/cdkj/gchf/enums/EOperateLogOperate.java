@@ -12,7 +12,9 @@ public enum EOperateLogOperate {
 
     StartProjectConfig("02", "启用项目配置"),
 
-    StopProjectConfig("03", "停用项目配置");
+    StopProjectConfig("03", "停用项目配置"),
+
+    UploadProjectCorpinfo("04", "上传参见单位基本信息");
 
     EOperateLogOperate(String code, String value) {
         this.code = code;

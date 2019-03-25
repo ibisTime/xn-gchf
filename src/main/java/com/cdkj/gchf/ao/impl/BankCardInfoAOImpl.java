@@ -14,8 +14,8 @@ import com.cdkj.gchf.dto.req.XN631750Req;
 import com.cdkj.gchf.dto.req.XN631752Req;
 import com.cdkj.gchf.dto.req.XN631767Req;
 
-@Service(value = "bankCardInfoAOIMPL")
-public class BankCardInfoAOIMPL implements IBankCardInfoAO {
+@Service(value = "bankCardInfoAOImpl")
+public class BankCardInfoAOImpl implements IBankCardInfoAO {
     @Autowired
     private IBankCardBankBO bankCardBankBO;
 

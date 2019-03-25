@@ -10,7 +10,9 @@ public enum EOperateLogRefType {
 
     CorpBasicinfo("01", "企业基本信息"),
 
-    ProjectConfig("02", "项目配置");
+    ProjectConfig("02", "项目配置"),
+
+    ProjectCorpinfo("03", "参见单位基本信息");
 
     EOperateLogRefType(String code, String value) {
         this.code = code;

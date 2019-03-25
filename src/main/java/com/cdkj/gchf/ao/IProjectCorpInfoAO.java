@@ -30,6 +30,8 @@ public interface IProjectCorpInfoAO {
 
     public ProjectCorpInfo getProjectCorpInfo(String code);
 
+    public void uploadProjectCorpInfo(String userId, List<String> codes);
+
     /****国家平台接口****/
     public void uploadProjectCorpInfo(XN631905Req data);
 

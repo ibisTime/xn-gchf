@@ -2,9 +2,12 @@ package com.cdkj.gchf.ao;
 
 import java.util.List;
 
+import org.springframework.stereotype.Component;
+
 import com.cdkj.gchf.bo.base.Paginable;
 import com.cdkj.gchf.domain.ChannelBank;
 
+@Component
 public interface IChannelBankAO {
     static final String DEFAULT_ORDER_COLUMN = "id";
 

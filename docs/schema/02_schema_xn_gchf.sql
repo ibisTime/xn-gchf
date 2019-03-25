@@ -97,6 +97,7 @@ CREATE TABLE `thf_project_corp_info` (
   `pm_idcard_type` varchar(2) DEFAULT NULL COMMENT '项目经理证件类型',
   `pm_idcard_number` varchar(30) DEFAULT NULL COMMENT '项目经理证件号码',
   `pm_phone` varchar(50) DEFAULT NULL COMMENT '项目经理电话',
+  `upload_status` varchar(4) DEFAULT NULL COMMENT '上传状态',
   PRIMARY KEY (`code`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='项目参建单位';
 
@@ -121,6 +122,7 @@ CREATE TABLE `thf_team_master` (
   `entry_time` datetime DEFAULT NULL COMMENT '进场日期',
   `exit_time` datetime DEFAULT NULL COMMENT '退场日期',
   `parent_code` varchar(30) DEFAULT NULL COMMENT '上级部门编号',
+  `upload_status` varchar(4) DEFAULT NULL COMMENT '上传状态',
   PRIMARY KEY (`code`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='班组';
 
@@ -132,6 +134,7 @@ CREATE TABLE `thf_project_worker` (
   `project_name` varchar(255) DEFAULT NULL COMMENT '项目名称',
   `corp_code` varchar(18) DEFAULT NULL COMMENT '班组所在企业统一社会信用代码',
   `corp_name` varchar(200) DEFAULT NULL COMMENT '班组所在企业名称',
+  `local_team_sys_no` varchar(32) DEFAULT NULL COMMENT '本地班组编号',
   `team_sys_no` int(11) DEFAULT NULL COMMENT '班组编号',
   `team_name` varchar(100) DEFAULT NULL COMMENT '班组名称',
   `worker_code` varchar(32) DEFAULT NULL COMMENT '员工编号',

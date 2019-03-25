@@ -4,13 +4,20 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.cdkj.gchf.ao.IProjectConfigAO;
+import com.cdkj.gchf.bo.IOperateLogBO;
 import com.cdkj.gchf.bo.IProjectConfigBO;
+import com.cdkj.gchf.bo.IUserBO;
 import com.cdkj.gchf.bo.base.Paginable;
 import com.cdkj.gchf.domain.ProjectConfig;
+import com.cdkj.gchf.domain.User;
 import com.cdkj.gchf.dto.req.XN631620Req;
 import com.cdkj.gchf.dto.req.XN631622Req;
+import com.cdkj.gchf.enums.EOperateLogOperate;
+import com.cdkj.gchf.enums.EOperateLogRefType;
+import com.cdkj.gchf.enums.EProjectConfigStatus;
 import com.cdkj.gchf.exception.BizException;
 
 @Service
@@ -18,6 +25,12 @@ public class ProjectConfigAOImpl implements IProjectConfigAO {
 
     @Autowired
     private IProjectConfigBO projectConfigBO;
+
+    @Autowired
+    private IOperateLogBO operateLogBO;
+
+    @Autowired
+    private IUserBO userBO;
 
     @Override
     public String addProjectConfig(XN631620Req req) {
@@ -46,6 +59,28 @@ public class ProjectConfigAOImpl implements IProjectConfigAO {
     }
 
     @Override
+    @Transactional
+    public void startStop(String code, String userId, String remark) {
+        User operator = userBO.getBriefUser(userId);
+
+        ProjectConfig projectConfig = projectConfigBO.getProjectConfig(code);
+
+        String status = EProjectConfigStatus.START.getCode();
+        String operate = EOperateLogOperate.StartProjectConfig.getValue();
+
+        if (EProjectConfigStatus.START.getCode()
+            .equals(projectConfig.getStatus())) {
+            status = EProjectConfigStatus.STOP.getCode();
+            operate = EOperateLogOperate.StopProjectConfig.getValue();
+        }
+
+        projectConfigBO.refreshStatus(code, status);
+
+        operateLogBO.saveOperateLog(EOperateLogRefType.ProjectConfig.getCode(),
+            code, operate, operator, remark);
+    }
+
+    @Override
     public Paginable<ProjectConfig> queryProjectConfigPage(int start, int limit,
             ProjectConfig condition) {
         return projectConfigBO.getPaginable(start, limit, condition);
@@ -60,4 +95,5 @@ public class ProjectConfigAOImpl implements IProjectConfigAO {
     public ProjectConfig getProjectConfig(String code) {
         return projectConfigBO.getProjectConfig(code);
     }
+
 }

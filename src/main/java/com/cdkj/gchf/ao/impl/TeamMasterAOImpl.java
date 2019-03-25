@@ -5,18 +5,27 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.alibaba.fastjson.JSONObject;
 import com.cdkj.gchf.ao.ITeamMasterAO;
+import com.cdkj.gchf.bo.IOperateLogBO;
 import com.cdkj.gchf.bo.IProjectConfigBO;
 import com.cdkj.gchf.bo.ITeamMasterBO;
+import com.cdkj.gchf.bo.IUserBO;
 import com.cdkj.gchf.bo.base.Paginable;
 import com.cdkj.gchf.domain.ProjectConfig;
 import com.cdkj.gchf.domain.TeamMaster;
+import com.cdkj.gchf.domain.User;
 import com.cdkj.gchf.dto.req.XN631650Req;
 import com.cdkj.gchf.dto.req.XN631652Req;
 import com.cdkj.gchf.dto.req.XN631908Req;
 import com.cdkj.gchf.dto.req.XN631909Req;
 import com.cdkj.gchf.dto.req.XN631910Req;
+import com.cdkj.gchf.enums.EOperateLogOperate;
+import com.cdkj.gchf.enums.EOperateLogRefType;
+import com.cdkj.gchf.enums.EUploadStatus;
 import com.cdkj.gchf.exception.BizException;
+import com.cdkj.gchf.gov.AsyncQueueHolder;
+import com.cdkj.gchf.gov.GovConnecter;
 
 @Service
 public class TeamMasterAOImpl implements ITeamMasterAO {
@@ -27,9 +36,20 @@ public class TeamMasterAOImpl implements ITeamMasterAO {
     @Autowired
     private IProjectConfigBO projectConfigBO;
 
+    @Autowired
+    private IUserBO userBO;
+
+    @Autowired
+    private IOperateLogBO operateLogBO;
+
     @Override
     public String addTeamMaster(XN631650Req data) {
         return teamMasterBO.saveTeamMaster(data);
+    }
+
+    @Override
+    public void dropTeamMaster(String code) {
+        teamMasterBO.removeTeamMaster(code);
     }
 
     @Override
@@ -38,8 +58,38 @@ public class TeamMasterAOImpl implements ITeamMasterAO {
     }
 
     @Override
-    public void dropTeamMaster(String code) {
-        teamMasterBO.removeTeamMaster(code);
+    public void uploadTeamMaster(List<String> codeList, String userId) {
+
+        User operator = userBO.getBriefUser(userId);
+
+        for (String code : codeList) {
+            TeamMaster teamMaster = teamMasterBO.getTeamMaster(code);
+
+            if (EUploadStatus.UPLOAD_EDITABLE.getCode()
+                .equals(teamMaster.getUploadStatus()))
+                continue;
+
+            ProjectConfig projectConfig = projectConfigBO
+                .getProjectConfigByLocal(teamMaster.getProjectCode());
+            if (null == projectConfig) {
+                throw new BizException("XN631253", "不存在已配置的项目，无法上传");
+            }
+
+            // 上传班组信息
+            String resString = GovConnecter.getGovData("Team.Add",
+                JSONObject.toJSONString(teamMaster),
+                projectConfig.getProjectCode(), projectConfig.getSecret());
+
+            // 添加操作日志
+            String logCode = operateLogBO.saveOperateLog(
+                EOperateLogRefType.TeamMaster.getCode(), code,
+                EOperateLogOperate.UploadTeamMaster.getValue(), operator, null);
+
+            // 添加到上传状态更新队列
+            AsyncQueueHolder.addSerial(resString, projectConfig, "teamMasterBO",
+                code, EUploadStatus.UPLOAD_EDITABLE.getCode(), logCode);
+
+        }
     }
 
     @Override

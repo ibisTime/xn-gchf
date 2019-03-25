@@ -24,10 +24,6 @@ public class XN631632Req {
     @NotBlank
     private String corpCode;
 
-    // 企业名称
-    @NotBlank
-    private String corpName;
-
     // 参建类型
     @NotBlank
     private String corpType;
@@ -49,6 +45,9 @@ public class XN631632Req {
 
     // 项目经理电话
     private String pmPhone;
+
+    // 备注
+    private String remark;
 
     public String getUserId() {
         return userId;
@@ -72,14 +71,6 @@ public class XN631632Req {
 
     public void setCorpCode(String corpCode) {
         this.corpCode = corpCode;
-    }
-
-    public String getCorpName() {
-        return corpName;
-    }
-
-    public void setCorpName(String corpName) {
-        this.corpName = corpName;
     }
 
     public String getCorpType() {
@@ -152,6 +143,14 @@ public class XN631632Req {
 
     public void setProjectName(String projectName) {
         this.projectName = projectName;
+    }
+
+    public String getRemark() {
+        return remark;
+    }
+
+    public void setRemark(String remark) {
+        this.remark = remark;
     }
 
 }

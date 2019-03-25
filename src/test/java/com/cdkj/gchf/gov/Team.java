@@ -60,14 +60,14 @@ public class Team {
         Map<String, String> dataMap = new HashMap<String, String>();
         dataMap.put("pageIndex", "0");
         dataMap.put("pageSize", "10");
-        dataMap.put("projectCode", "3311222019030005");
+        dataMap.put("projectCode", "33112220190310002");
 
         String data = JSONObject.toJSON(dataMap).toString();
 
         System.out.println(data);
 
-        GovConnecter.getGovData("Team.Query", data, "3311222019030005",
-            "03037a55b99f508d43e732d4d47df2f0");
+        GovConnecter.getGovData("Team.Query", data, "33112220190310002",
+            "24484b262dd63dd584902a266bdbdca0");
 
         // team-add-2019031411-1-0262
         // teamSysNo : 100156750

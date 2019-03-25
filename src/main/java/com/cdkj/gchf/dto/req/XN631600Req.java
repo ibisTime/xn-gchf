@@ -19,10 +19,6 @@ public class XN631600Req {
     @NotBlank
     private String contractorCorpCode;
 
-    // 总承包单位名称
-    @NotBlank
-    private String contractorCorpName;
-
     // 项目名称
     @NotBlank
     private String name;
@@ -33,9 +29,6 @@ public class XN631600Req {
     // 项目分类
     @NotBlank
     private String category;
-
-    // 建设单位名称
-    private String buildCorpName;
 
     // 建设单位统一社会信用代码
     private String buildCorpCode;
@@ -93,10 +86,10 @@ public class XN631600Req {
     // 建设规模
     private String prjSize;
 
-    // 建设性质
+    // 建设性质（property_num）
     private String propertyNum;
 
-    // 工程用途
+    // 工程用途（function_num）
     private String prjNum;
 
     // 国籍或地区
@@ -121,14 +114,6 @@ public class XN631600Req {
         this.contractorCorpCode = contractorCorpCode;
     }
 
-    public String getContractorCorpName() {
-        return contractorCorpName;
-    }
-
-    public void setContractorCorpName(String contractorCorpName) {
-        this.contractorCorpName = contractorCorpName;
-    }
-
     public String getName() {
         return name;
     }
@@ -151,14 +136,6 @@ public class XN631600Req {
 
     public void setCategory(String category) {
         this.category = category;
-    }
-
-    public String getBuildCorpName() {
-        return buildCorpName;
-    }
-
-    public void setBuildCorpName(String buildCorpName) {
-        this.buildCorpName = buildCorpName;
     }
 
     public String getBuildCorpCode() {

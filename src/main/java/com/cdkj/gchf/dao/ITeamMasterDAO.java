@@ -8,4 +8,6 @@ public interface ITeamMasterDAO extends IBaseDAO<TeamMaster> {
 
     int update(TeamMaster data);
 
+    int updateUploadStatus(TeamMaster data);
+
 }

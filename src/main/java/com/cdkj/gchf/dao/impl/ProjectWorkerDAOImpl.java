@@ -53,4 +53,10 @@ public class ProjectWorkerDAOImpl extends AMybatisTemplate
             projectWorker);
     }
 
+    @Override
+    public int updateTeamSysNoByLocal(ProjectWorker projectWorker) {
+        return super.update(NAMESPACE.concat("update_teamSysNoByLocal"),
+            projectWorker);
+    }
+
 }

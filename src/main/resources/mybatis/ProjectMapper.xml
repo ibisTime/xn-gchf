@@ -53,6 +53,9 @@
 			<if test="category != null and category != '' ">
 				AND t.category = #{category}
 			</if>
+			<if test="prjStatus != null and prjStatus != '' ">
+				AND t.prj_status = #{prjStatus}
+			</if>
 		</trim>
 	</sql>
 	

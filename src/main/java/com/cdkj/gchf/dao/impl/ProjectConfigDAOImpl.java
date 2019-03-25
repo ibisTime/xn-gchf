@@ -60,4 +60,10 @@ public class ProjectConfigDAOImpl extends AMybatisTemplate
             projectConfig);
     }
 
+    @Override
+    public int updateStatus(ProjectConfig projectConfig) {
+        return super.update(NAMESPACE.concat("update_projectConfigStatus"),
+            projectConfig);
+    }
+
 }

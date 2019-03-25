@@ -8,5 +8,7 @@ public interface IProjectConfigDAO extends IBaseDAO<ProjectConfig> {
 
     int update(ProjectConfig projectConfig);
 
+    int updateStatus(ProjectConfig projectConfig);
+
     ProjectConfig selectDefaultProjectConfig(ProjectConfig projectConfig);
 }

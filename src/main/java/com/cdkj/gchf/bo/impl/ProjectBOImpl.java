@@ -11,6 +11,7 @@ import com.cdkj.gchf.bo.IProjectBO;
 import com.cdkj.gchf.bo.base.PaginableBOImpl;
 import com.cdkj.gchf.core.OrderNoGenerater;
 import com.cdkj.gchf.dao.IProjectDAO;
+import com.cdkj.gchf.domain.CorpBasicinfo;
 import com.cdkj.gchf.domain.Project;
 import com.cdkj.gchf.dto.req.XN631600Req;
 import com.cdkj.gchf.dto.req.XN631602Req;
@@ -25,23 +26,30 @@ public class ProjectBOImpl extends PaginableBOImpl<Project>
     private IProjectDAO projectDAO;
 
     @Override
-    public String saveProject(XN631600Req req) {
+    public String saveProject(XN631600Req req, CorpBasicinfo contractorCorpInfo,
+            CorpBasicinfo buildCorpInfo) {
         Project project = new Project();
         BeanUtils.copyProperties(req, project);
 
         String code = OrderNoGenerater
             .generate(EGeneratePrefix.Project.getCode());
         project.setCode(code);
+        project.setContractorCorpName(contractorCorpInfo.getCorpName());
+        project.setBuildCorpName(buildCorpInfo.getCorpName());
+
         projectDAO.insert(project);
 
         return code;
     }
 
     @Override
-    public void refreshProject(XN631602Req req) {
+    public void refreshProject(XN631602Req req,
+            CorpBasicinfo contractorCorpInfo, CorpBasicinfo buildCorpInfo) {
 
         Project project = new Project();
         BeanUtils.copyProperties(req, project);
+        project.setContractorCorpName(contractorCorpInfo.getCorpName());
+        project.setBuildCorpName(buildCorpInfo.getCorpName());
 
         projectDAO.update(project);
     }

@@ -8,6 +8,7 @@ import java.util.Map;
 import org.junit.Test;
 
 import com.alibaba.fastjson.JSONObject;
+import com.cdkj.gchf.common.AesUtils;
 
 public class WorkerEntryExit {
     /**
@@ -20,17 +21,17 @@ public class WorkerEntryExit {
     public void workerEntryExitAdd() {
 
         Map<String, Object> dataMap = new HashMap<String, Object>();
-        dataMap.put("projectCode", "3311222019030002");
-        dataMap.put("corpCode", "91331122MA2A0M9B7N");
-        dataMap.put("corpName", "浙江兰芽科技有限公司");
-        dataMap.put("teamSysNo", "100156750");
+        dataMap.put("projectCode", "33112220190310002");
+        dataMap.put("corpCode", "913311001484116584");
+        dataMap.put("corpName", "正达建设有限公司");
+        dataMap.put("teamSysNo", "1500152541");
 
         List<Map<String, String>> workerList = new ArrayList<>();
 
         Map<String, String> workerMap = new HashMap<String, String>();
         workerMap.put("idCardType", "01");
-        workerMap.put("idCardNumber",
-            "YUWesLNXSNln9U5qm/CabbuFulAkEcMPWkt7tIAhSKM=");// 413024196804304833
+        workerMap.put("idCardNumber", AesUtils.encrypt("413024196804304823",
+            "24484b262dd63dd584902a266bdbdca0"));// 413024196804304833
         workerMap.put("date", "2019-03-13");
         workerMap.put("type", "1");
 
@@ -52,8 +53,10 @@ public class WorkerEntryExit {
         Map<String, String> dataMap = new HashMap<String, String>();
         dataMap.put("pageIndex", "0");
         dataMap.put("pageSize", "10");
-        dataMap.put("corpCode", "91331122MA2A0M9B7N");
-        dataMap.put("projectCode", "3311222019030002");
+        dataMap.put("teamSysNo", "1500151464");
+        dataMap.put("projectCode", "33112220190310002");
+        dataMap.put("idCardNumber", AesUtils.encrypt("413024196804304823",
+            "24484b262dd63dd584902a266bdbdca0"));
 
         String data = JSONObject.toJSON(dataMap).toString();
 

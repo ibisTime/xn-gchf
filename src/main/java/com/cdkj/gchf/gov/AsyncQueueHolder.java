@@ -8,7 +8,7 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 
-import com.cdkj.gchf.bo.IOperateLogBO;
+import com.alibaba.fastjson.JSONObject;
 import com.cdkj.gchf.domain.ProjectConfig;
 import com.cdkj.gchf.enums.EGovAsyncStatus;
 import com.cdkj.gchf.spring.SpringContextHolder;
@@ -61,6 +61,10 @@ public class AsyncQueueHolder {
 
                     refreshLogRemark(queueBean.getLogCode(), asyncRes);
 
+                    if ("teamMasterBO".equals(queueBean.getBoClass())) {
+                        syncTeamSysNo(queueBean.getCode(), asyncRes);
+                    }
+
                     serialMQHolder.serialMQ.remove(queueBean);
                 }
 
@@ -102,7 +106,7 @@ public class AsyncQueueHolder {
         Object result = null;
 
         try {
-            result = SpringContextHolder.getBean(IOperateLogBO.class);
+            result = SpringContextHolder.getBean("operateLogBO");
 
             String remark = StringUtils.isEmpty(asyncRes.getResult())
                     ? asyncRes.getMessage()
@@ -110,6 +114,28 @@ public class AsyncQueueHolder {
             String[] arges = new String[] { code, remark };
 
             Method method = result.getClass().getMethod("refreshRemark",
+                new Class[] { String.class, String.class });
+
+            method.invoke(result, arges);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+    }
+
+    private void syncTeamSysNo(String code, AsyncRes asyncRes) {
+        JSONObject resultJson = JSONObject.parseObject(asyncRes.getResult());
+        String sysTeamNo = resultJson.getString("teamSysNo");
+
+        Object result = null;
+
+        try {
+            result = SpringContextHolder.getBean("projectWorkerBO");
+            String[] arges = new String[] { code, sysTeamNo };
+
+            Method method = result.getClass().getMethod(
+                "refreshTeamSysNoByLocal",
                 new Class[] { String.class, String.class });
 
             method.invoke(result, arges);

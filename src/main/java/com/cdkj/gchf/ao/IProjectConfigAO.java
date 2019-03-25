@@ -19,6 +19,8 @@ public interface IProjectConfigAO {
 
     public void editProjectConfig(XN631622Req req);
 
+    public void startStop(String code, String userId, String remark);
+
     public Paginable<ProjectConfig> queryProjectConfigPage(int start, int limit,
             ProjectConfig condition);
 

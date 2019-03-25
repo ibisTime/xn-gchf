@@ -87,6 +87,10 @@ public class CorpBasicinfoAOImpl implements ICorpBasicinfoAO {
             CorpBasicinfo corpBasicinfo = corpBasicinfoBO
                 .getCorpBasicinfo(code);
 
+            if (EUploadStatus.UPLOAD_UNEDITABLE.getCode()
+                .equals(corpBasicinfo.getUploadStatus()))
+                continue;
+
             // 上传企业信息
             String resString = GovConnecter.getGovData("Corp.Upload",
                 JSONObject.toJSONString(corpBasicinfo),

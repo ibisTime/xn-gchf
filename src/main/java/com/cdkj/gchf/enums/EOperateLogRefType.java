@@ -8,7 +8,13 @@ package com.cdkj.gchf.enums;
  */
 public enum EOperateLogRefType {
 
-    CorpBasicinfo("01", "企业基本信息"), ProjectCorpinfo("02", "参见单位基本信息");
+    CorpBasicinfo("01", "企业基本信息"),
+
+    ProjectConfig("02", "项目配置信息"),
+
+    ProjectCorpinfo("03", "参见单位基本信息"),
+
+    TeamMaster("04", "项目班组信息");
 
     EOperateLogRefType(String code, String value) {
         this.code = code;

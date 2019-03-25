@@ -29,7 +29,10 @@ public class ProjectWorker extends ABaseDO {
     // 班组所在企业名称
     private String corpName;
 
-    // 班组编号
+    // 本地班组编号
+    private String localTeamSysNo;
+
+    // 国家平台班组编号
     private Integer teamSysNo;
 
     // 班组名称
@@ -696,6 +699,14 @@ public class ProjectWorker extends ABaseDO {
 
     public void setExpiryDate(String expiryDate) {
         this.expiryDate = expiryDate;
+    }
+
+    public String getLocalTeamSysNo() {
+        return localTeamSysNo;
+    }
+
+    public void setLocalTeamSysNo(String localTeamSysNo) {
+        this.localTeamSysNo = localTeamSysNo;
     }
 
 }

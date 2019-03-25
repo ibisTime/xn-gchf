@@ -20,6 +20,8 @@ public interface IProjectCorpInfoBO extends IPaginableBO<ProjectCorpInfo> {
 
     public void refreshProjectCorpInfo(XN631632Req req);
 
+    public void refreshUploadStatus(String code, String uploadStatus);
+
     public List<ProjectCorpInfo> queryProjectCorpInfoList(
             ProjectCorpInfo condition);
 
@@ -29,8 +31,8 @@ public interface IProjectCorpInfoBO extends IPaginableBO<ProjectCorpInfo> {
     public void doUpload(XN631905Req req, ProjectConfig projectConfig);
 
     public void doUpdate(XN631906Req req, ProjectConfig projectConfig);
-    
+
     public Paginable<ProjectCorpInfo> doQuery(XN631907Req req,
             ProjectConfig projectConfig);
-    
+
 }

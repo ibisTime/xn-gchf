@@ -68,6 +68,9 @@ public class TeamMaster extends ABaseDO {
     // 上级部门编号
     private String parentCode;
 
+    // 上传状态
+    private String uploadStatus;
+
     /****DB Properties****/
 
     public String getCode() {
@@ -213,6 +216,14 @@ public class TeamMaster extends ABaseDO {
 
     public void setParentCode(String parentCode) {
         this.parentCode = parentCode;
+    }
+
+    public String getUploadStatus() {
+        return uploadStatus;
+    }
+
+    public void setUploadStatus(String uploadStatus) {
+        this.uploadStatus = uploadStatus;
     }
 
 }

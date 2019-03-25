@@ -28,6 +28,7 @@ import com.cdkj.gchf.enums.EGeneratePrefix;
 import com.cdkj.gchf.exception.BizException;
 import com.cdkj.gchf.gov.GovConnecter;
 import com.cdkj.gchf.gov.GovUtil;
+import com.cdkj.gchf.gov.SerialHandler;
 
 @Component
 public class ProjectWorkerBOImpl extends PaginableBOImpl<ProjectWorker>
@@ -38,22 +39,22 @@ public class ProjectWorkerBOImpl extends PaginableBOImpl<ProjectWorker>
 
     @Override
     public String saveProjectWorker(XN631690Req data) {
-        String code = null;
         ProjectWorker projectWorkerInfo = new ProjectWorker();
         BeanUtils.copyProperties(data, projectWorkerInfo);
-        if (data != null) {
-            code = OrderNoGenerater
-                .generate(EGeneratePrefix.ProjectWorker.getCode());
-            projectWorkerInfo.setCode(code);
-            projectWorkerDAO.insert(projectWorkerInfo);
-        }
+        String code = OrderNoGenerater
+            .generate(EGeneratePrefix.ProjectWorker.getCode());
+        projectWorkerInfo.setCode(code);
+
+        projectWorkerDAO.insert(projectWorkerInfo);
         return code;
     }
 
     @Override
     public void removeProjectWorker(String code) {
         ProjectWorker data = new ProjectWorker();
+
         data.setCode(code);
+
         projectWorkerDAO.delete(data);
     }
 
@@ -61,7 +62,19 @@ public class ProjectWorkerBOImpl extends PaginableBOImpl<ProjectWorker>
     public void refreshProjectWorker(XN631692Req req) {
         ProjectWorker projectWorkerInfo = new ProjectWorker();
         BeanUtils.copyProperties(req, projectWorkerInfo);
+
         projectWorkerDAO.update(projectWorkerInfo);
+    }
+
+    @Override
+    public void refreshTeamSysNoByLocal(String localTeamSysNo,
+            String teamSysNo) {
+        ProjectWorker projectWorker = new ProjectWorker();
+
+        projectWorker.setLocalTeamSysNo(localTeamSysNo);
+        projectWorker.setTeamSysNo(Integer.parseInt(teamSysNo));
+
+        projectWorkerDAO.updateTeamSysNoByLocal(projectWorker);
     }
 
     @Override
@@ -82,8 +95,10 @@ public class ProjectWorkerBOImpl extends PaginableBOImpl<ProjectWorker>
         String data = JSONObject.toJSONStringWithDateFormat(req, "yyyy-MM-dd")
             .toString();
 
-        GovConnecter.getGovData("ProjectWorker.Add", data,
+        String resString = GovConnecter.getGovData("ProjectWorker.Add", data,
             projectConfig.getProjectCode(), projectConfig.getSecret());
+
+        SerialHandler.handle(resString, projectConfig);
     }
 
     @Override

@@ -17,6 +17,7 @@
 		
 		<result column="pm_idcard_number" property="pmIDCardNumber" />
 		<result column="pm_phone" property="pmPhone" />
+		<result column="upload_status" property="uploadStatus" />
 	</resultMap>
 	
 	<sql id="where_condition">
@@ -32,6 +33,9 @@
 			</if>
 			<if test="corpType != null and corpType != '' ">
 				AND t.corp_type = #{corpType}
+			</if>
+			<if test="uploadStatus != null and uploadStatus != '' ">
+				AND t.upload_status = #{uploadStatus}
 			</if>
 		</trim>
 	</sql>
@@ -52,6 +56,7 @@
 		
 		,t.pm_idcard_number
 		,t.pm_phone
+		,t.upload_status
 		FROM
 		thf_project_corp_info t
 		<include refid="where_condition" />
@@ -85,6 +90,7 @@
 		
 		,pm_idcard_number
 		,pm_phone
+		,upload_status
 		)
 		VALUES(
 		#{code}
@@ -101,6 +107,7 @@
 		
 		,#{pmIDCardNumber}
 		,#{pmPhone}
+		,#{uploadStatus}
 		)
 	</insert>
 
@@ -120,6 +127,13 @@
 		,pm_idcard_number = #{pmIDCardNumber}
 		
 		,pm_phone = #{pmPhone}
+		WHERE code = #{code}
+	</update>
+	
+	<update id="update_projectCorpInfoUploadStatus" parameterType="projectCorpInfo">
+		UPDATE thf_project_corp_info
+		SET
+		upload_status = #{uploadStatus}
 		WHERE code = #{code}
 	</update>
 	

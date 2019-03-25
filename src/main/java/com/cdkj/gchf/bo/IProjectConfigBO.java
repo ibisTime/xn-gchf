@@ -15,6 +15,8 @@ public interface IProjectConfigBO extends IPaginableBO<ProjectConfig> {
 
     public void refreshProjectConfig(XN631622Req req);
 
+    public void refreshStatus(String code, String status);
+
     public List<ProjectConfig> queryProjectConfigList(ProjectConfig condition);
 
     public ProjectConfig getProjectConfig(String code);

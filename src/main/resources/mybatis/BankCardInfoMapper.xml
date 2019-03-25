@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cdkj.gchf.dao.IBankCardInfoDAO">
+	<resultMap id="bankCardinfo_DB_Result" type="bankCardInfo">
+		<result column="code" property="code" />
+		<result column="business_type" property="businessType" />
+		<result column="business_sys_no" property="businessSysNo" />
+		<result column="bank_name" property="bankName" />
+
+		<result column="bank_number" property="bankNumber" />
+		<result column="bank_link_number" property="bankLinkNumber" />
+		<result column="upload_status" property="uploadStatus" />
+	</resultMap>
+
+	<sql id="where_condition">
+		<trim prefix="WHERE" prefixOverrides="AND | OR">
+			<if test="code != null and code != '' ">
+				AND t.code = #{code}
+			</if>
+			<if test="bankName != null and bankName != '' ">
+				AND t.bankName = #{bankName}
+			</if>
+			<if test="bankNumber != null and bankNumber != '' ">
+				AND t.bank_number = #{bankNumber}
+			</if>
+			<if test="uploadStatus != null and uploadStatus != '' ">
+				AND t.upload_status = #{uploadStatus}
+			</if>
+			<if test="uploadStatus != null and uploadStatus != '' ">
+				AND t.upload_status = #{uploadStatus}
+			</if>
+		</trim>
+	</sql>
+
+	<insert id="insert_bankCardInfo" parameterType="bankCardInfo">
+		INSERT INTO
+		thf_bank_card_info(
+		code
+		,business_type
+		,business_sys_no
+		,bank_name
+		,bank_number
+
+		,bank_link_number
+		,upload_status
+		)
+		VALUES(
+		#{code}
+		,#{businessType}
+		,#{businessSysNo}
+		,#{bankName}
+		,#{bankNumber}
+
+		,#{bankLinkNumber}
+		,#{uploadStatus}
+		)
+	</insert>
+
+	<delete id="delete_bankCardInfo" parameterType="bankCardInfo">
+		DELETE from
+		thf_bank_card_info WHERE code = #{code}
+	</delete>
+
+	<update id="update_bankCardInfo" parameterType="bankCardInfo">
+		UPDATE
+		thf_bank_card_info
+		SET
+		upload_status = #{uploadStatus}
+		,business_type = #{businessType} 
+		,business_sys_no = #{businessSysNo}
+		,bank_name = #{bankName}
+		,bank_link_number = #{bankLinkNumber} 
+		,bank_number = #{bankNumber}
+		WHERE code =
+		#{code}
+	</update>
+
+	<select id="select_bankCardInfo" parameterType="bankCardInfo"
+		resultMap="bankCardinfo_DB_Result">
+		SELECT
+		t.code
+		,t.business_type
+		,t.business_sys_no
+		,t.bank_number
+		,t.bank_link_number
+
+		,t.upload_status
+		FROM
+		thf_bank_card_info t
+		<include refid="where_condition" />
+		<trim prefix="ORDER BY ">
+			<if test="order != null and order != '' ">
+				t.${order}
+			</if>
+		</trim>
+	</select>
+
+	<select id="select_bankCardInfo_count" parameterType="bankCardInfo"
+		resultType="java.lang.Long">
+		SELECT count(1) FROM tqy_corp_basicinfo t
+		<include refid="where_condition" />
+	</select>
+
+</mapper>

@@ -30,6 +30,8 @@
 		<typeAlias alias="payRoll" type="com.cdkj.gchf.domain.PayRoll" />
 		
 		<typeAlias alias="projectBuilderLicense" type="com.cdkj.gchf.domain.ProjectBuilderLicense" />
+		<typeAlias alias="bankCardInfo" type="com.cdkj.gchf.domain.BankCardInfo" />
+		<typeAlias alias="payRollDetail" type="com.cdkj.gchf.domain.PayRollDetail" />
 		
 	</typeAliases>
 </configuration>

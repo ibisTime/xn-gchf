@@ -1,0 +1,147 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cdkj.gchf.dao.IPayRollDetailDAO">
+	<resultMap id="payRollDetail_DB_Result" type="payRollDetail">
+		<result column="code" property="code" />
+		<result column="pay_roll_code" property="payRollCode" />
+		<result column="worker_name" property="workerName" />
+		<result column="idcard_type" property="idcardType" />
+		<result column="idcard_number" property="idcardNumber" />
+		<result column="days" property="days" />
+		<result column="work_hours" property="workHours" />
+		<result column="pay_roll_bank_card_number" property="payRollBankCardNumber" />
+		<result column="pay_roll_bank_code" property="payRollBankCode" />
+		<result column="pay_roll_bank_name" property="payRollBankName" />
+		<result column="pay_bank_card_number" property="payBankCardNumber" />
+		<result column="pay_bank_code" property="payBankCode" />
+		<result column="pay_bank_name" property="payBankName" />
+		<result column="total_pay_amount" property="totalPayAmount" />
+		<result column="actual_amount" property="actualAmount" />
+		<result column="is_back_pay" property="isBackPay" />
+		<result column="balance_date" property="balanceDate" />
+		<result column="third_pay_roll_code" property="thirdPayRollCode" />
+	</resultMap>
+	<sql id="where_condition">
+		<trim prefix="WHERE" prefixOverrides="AND | OR">
+			<if test="code != null and code != '' ">
+				AND t.code = #{code}
+			</if>
+		</trim>
+	</sql>
+	<select id="select_PayRollDetail" parameterType="payRollDetail"
+		resultMap="payRollDetail_DB_Result">
+		SELECT
+		t.code
+		,t.pay_roll_code
+		,t.worker_name
+		,idcard_type
+		,idcard_number
+		,days
+		,work_hours
+		,pay_roll_bank_card_number
+		,pay_roll_bank_code
+		,pay_roll_bank_name
+		,pay_bank_card_number
+		,pay_bank_code
+		,pay_bank_name
+		,total_pay_amount
+		,actual_amount
+		,is_back_pay
+		,balance_date
+		,third_pay_roll_code
+
+		FROM
+		thf_pay_roll_detail t
+		<include refid="where_condition" />
+		<trim prefix="ORDER BY ">
+			<if test="order != null and order != '' ">
+				t.${order}
+			</if>
+		</trim>
+	</select>
+
+	<select id="select_payRollDetail_count" parameterType="payRollDetail"
+		resultType="java.lang.Long">
+		SELECT count(1) FROM thf_pay_roll_detail t
+		<include refid="where_condition" />
+	</select>
+
+	<insert id="insert_PayRollDetail" parameterType="payRollDetail">
+		INSERT INTO
+		thf_pay_roll_detail(
+		code
+		,pay_roll_code
+		,worker_name
+		,idcard_type
+		,idcard_number
+		,days
+		,work_hours
+		,pay_roll_bank_card_number
+		,pay_roll_bank_code
+		,pay_roll_bank_name
+		,pay_bank_card_number
+		,pay_bank_code
+		,pay_bank_name
+		,total_pay_amount
+		,actual_amount
+		,is_back_pay
+		,balance_date
+		,third_pay_roll_code
+		)
+		VALUES(
+		#{code}
+		,#{payRollCode}
+		,#{workerName}
+		,#{idcardType}
+		,#{idcardNumber}
+		,#{days}
+		,#{workHours}
+		,#{payRollBankCardNumber}
+		,#{payRollBankCode}
+		,#{payRollBankName}
+		,#{payBankCardNumber}
+		,#{payBankCode}
+		,#{payBankName}
+		,#{totalPayAmount}
+		,#{actualAmount}
+		,#{isBackPay}
+		,#{balanceDate}
+		,#{thirdPayRollCode}
+		)
+	</insert>
+
+	<delete id="delete_PayRollDetail" parameterType="payRoll">
+		DELETE from
+		thf_pay_roll_detail WHERE pay_roll_code = #{payRollCode}
+	</delete>
+	<update id="update_PayRollDetail" parameterType="payRoll">
+		UPDATE
+		thf_pay_roll_detail
+		SET
+		pay_roll_code = #{payRollCode}
+		,worker_name =
+		#{workerName}
+		,idcard_type = #{idcardType}
+		,idcard_number =
+		#{idcardNumber}
+		,days = #{days}
+		,work_hours = #{workHours}
+		,pay_roll_bank_card_number = #{payRollBankCardNumber}
+		,pay_roll_bank_code = #{payRollBankCode}
+		,pay_roll_bank_name =
+		#{payRollBankName}
+		,pay_bank_card_number = #{payBankCardNumber}
+		,pay_bank_code = #{payBankCode}
+		,pay_bank_name = #{payBankName}
+		,total_pay_amount = #{totalPayAmount}
+		,actual_amount = #{actualAmount}
+		,is_back_pay = #{isBackPay}
+		,balance_date = #{balanceDate}
+		,third_pay_roll_code = #{thirdPayRollCode}
+		WHERE code =
+		#{code}
+	</update>
+
+
+</mapper>

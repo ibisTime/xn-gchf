@@ -22,9 +22,6 @@ public class PayRoll extends ABaseDO {
     // 工资单编码
     private String payRollCode;
 
-    // 本地项目编号
-    private String localProjectCode;
-
     // 项目编码
     private String projectCode;
 
@@ -58,14 +55,6 @@ public class PayRoll extends ABaseDO {
 
     public void setPayRollCode(String payRollCode) {
         this.payRollCode = payRollCode;
-    }
-
-    public String getLocalProjectCode() {
-        return localProjectCode;
-    }
-
-    public void setLocalProjectCode(String localProjectCode) {
-        this.localProjectCode = localProjectCode;
     }
 
     public String getProjectCode() {

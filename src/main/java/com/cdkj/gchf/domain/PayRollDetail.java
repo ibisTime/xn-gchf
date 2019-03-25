@@ -21,6 +21,9 @@ public class PayRollDetail extends ABaseDO {
     // 工资单编码
     private String payRollCode;
 
+    // 项目编码
+    private String projectCode;
+
     // 工人姓名
     private String workerName;
 
@@ -211,6 +214,14 @@ public class PayRollDetail extends ABaseDO {
 
     public void setThirdPayRollCode(String thirdPayRollCode) {
         this.thirdPayRollCode = thirdPayRollCode;
+    }
+
+    public String getProjectCode() {
+        return projectCode;
+    }
+
+    public void setProjectCode(String projectCode) {
+        this.projectCode = projectCode;
     }
 
 }

@@ -2,17 +2,26 @@ package com.cdkj.gchf.ao.impl;
 
 import java.util.List;
 
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.cdkj.gchf.ao.IPayRollAO;
 import com.cdkj.gchf.bo.IPayRollBO;
+import com.cdkj.gchf.bo.IPayRollDetailBO;
 import com.cdkj.gchf.bo.IProjectConfigBO;
 import com.cdkj.gchf.bo.base.Paginable;
+import com.cdkj.gchf.core.OrderNoGenerater;
 import com.cdkj.gchf.domain.PayRoll;
+import com.cdkj.gchf.domain.PayRollDetail;
 import com.cdkj.gchf.domain.ProjectConfig;
+import com.cdkj.gchf.dto.req.XN631770Req;
+import com.cdkj.gchf.dto.req.XN631770ReqDetail;
+import com.cdkj.gchf.dto.req.XN631772Req;
 import com.cdkj.gchf.dto.req.XN631920Req;
 import com.cdkj.gchf.dto.req.XN631921Req;
+import com.cdkj.gchf.enums.EGeneratePrefix;
 import com.cdkj.gchf.exception.BizException;
 
 @Service
@@ -22,20 +31,49 @@ public class PayRollAOImpl implements IPayRollAO {
     private IPayRollBO payRollBO;
 
     @Autowired
+    private IPayRollDetailBO payRollDetailBO;
+
+    @Autowired
     private IProjectConfigBO projectConfigBO;
 
+    @Transactional
     @Override
-    public String addPayRoll(PayRoll data) {
-        return payRollBO.savePayRoll(data);
+    public String addPayRoll(XN631770Req data) {
+        String code = null;
+        PayRoll payRoll = new PayRoll();
+        BeanUtils.copyProperties(data, payRoll);
+        code = OrderNoGenerater.generate(EGeneratePrefix.PayRoll.getCode());
+        payRoll.setCode(code);
+        payRollBO.savePayRoll(data);
+        payRollDetailBO.savePayRollDetail(data.getPayRollCode(),
+            data.getDetailList());
+        return code;
     }
 
     @Override
-    public int editPayRoll(PayRoll data) {
-        return payRollBO.refreshPayRoll(data);
+    public int editPayRoll(XN631772Req req) {
+        PayRoll payRoll = new PayRoll();
+        BeanUtils.copyProperties(req, payRoll);
+        String corpCode = req.getCorpCode();
+        List<XN631770ReqDetail> detailList = req.getDetailList();
+        if (detailList != null && detailList.size() != 0) {
+            for (XN631770ReqDetail xn631770ReqDetail : detailList) {
+                PayRollDetail payRollDetail = new PayRollDetail();
+                payRollDetail.setPayRollCode(corpCode);
+                BeanUtils.copyProperties(xn631770ReqDetail, payRollDetail);
+                payRollDetailBO.updatePayRollDetail(payRollDetail);
+            }
+        }
+        return payRollBO.refreshPayRoll(payRoll);
     }
 
     @Override
     public int dropPayRoll(String code) {
+        PayRoll payRoll = new PayRoll();
+        payRoll.setCode(code);
+        List<PayRoll> queryPayRollList = payRollBO.queryPayRollList(payRoll);
+        String payRollCode = queryPayRollList.get(0).getPayRollCode();
+        payRollDetailBO.deletePayRollDetail(payRollCode);
         return payRollBO.removePayRoll(code);
     }
 

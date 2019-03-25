@@ -4,7 +4,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -16,6 +16,7 @@ import com.cdkj.gchf.core.OrderNoGenerater;
 import com.cdkj.gchf.dao.IPayRollDAO;
 import com.cdkj.gchf.domain.PayRoll;
 import com.cdkj.gchf.domain.ProjectConfig;
+import com.cdkj.gchf.dto.req.XN631770Req;
 import com.cdkj.gchf.dto.req.XN631920Req;
 import com.cdkj.gchf.dto.req.XN631921Req;
 import com.cdkj.gchf.enums.EGeneratePrefix;
@@ -31,33 +32,16 @@ public class PayRollBOImpl extends PaginableBOImpl<PayRoll>
     private IPayRollDAO payRollDAO;
 
     @Override
-    public String savePayRoll(PayRoll data) {
-        String code = null;
-        if (data != null) {
-            code = OrderNoGenerater.generate(EGeneratePrefix.PayRoll.getCode());
-            data.setCode(code);
-            payRollDAO.insert(data);
-        }
-        return code;
-    }
-
-    @Override
     public int removePayRoll(String code) {
-        int count = 0;
-        if (StringUtils.isNotBlank(code)) {
-            PayRoll data = new PayRoll();
-            data.setCode(code);
-            count = payRollDAO.delete(data);
-        }
-        return count;
+        PayRoll data = new PayRoll();
+        data.setCode(code);
+        return payRollDAO.delete(data);
     }
 
     @Override
     public int refreshPayRoll(PayRoll data) {
         int count = 0;
-        if (StringUtils.isNotBlank(data.getCode())) {
-            count = payRollDAO.update(data);
-        }
+        count = payRollDAO.update(data);
         return count;
     }
 
@@ -95,15 +79,24 @@ public class PayRollBOImpl extends PaginableBOImpl<PayRoll>
     @Override
     public PayRoll getPayRoll(String code) {
         PayRoll data = null;
-        if (StringUtils.isNotBlank(code)) {
-            PayRoll condition = new PayRoll();
-            condition.setCode(code);
-            data = payRollDAO.select(condition);
-            if (data == null) {
-                throw new BizException("xn0000", "工资单编号不存在");
-            }
+        PayRoll condition = new PayRoll();
+        condition.setCode(code);
+        data = payRollDAO.select(condition);
+        if (data == null) {
+            throw new BizException("xn0000", "工资单编号不存在");
         }
         return data;
+    }
+
+    @Override
+    public String savePayRoll(XN631770Req data) {
+        PayRoll payRoll = new PayRoll();
+        BeanUtils.copyProperties(data, payRoll);
+        String code = OrderNoGenerater
+            .generate(EGeneratePrefix.PayRoll.getCode());
+        payRoll.setCode(code);
+        payRollDAO.insert(payRoll);
+        return code;
     }
 
 }

@@ -6,6 +6,8 @@ import org.springframework.stereotype.Component;
 
 import com.cdkj.gchf.bo.base.Paginable;
 import com.cdkj.gchf.domain.PayRoll;
+import com.cdkj.gchf.dto.req.XN631770Req;
+import com.cdkj.gchf.dto.req.XN631772Req;
 import com.cdkj.gchf.dto.req.XN631920Req;
 import com.cdkj.gchf.dto.req.XN631921Req;
 
@@ -13,11 +15,11 @@ import com.cdkj.gchf.dto.req.XN631921Req;
 public interface IPayRollAO {
     static final String DEFAULT_ORDER_COLUMN = "code";
 
-    public String addPayRoll(PayRoll data);
+    public String addPayRoll(XN631770Req req);
 
     public int dropPayRoll(String code);
 
-    public int editPayRoll(PayRoll data);
+    public int editPayRoll(XN631772Req req);
 
     public Paginable<PayRoll> queryPayRollPage(int start, int limit,
             PayRoll condition);

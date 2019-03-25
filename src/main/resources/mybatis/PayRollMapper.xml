@@ -5,7 +5,6 @@
 	<resultMap id="payRoll_DB_Result" type="payRoll">
 		<result column="code" property="code" />
 		<result column="pay_roll_code" property="payRollCode" />
-		<result column="local_project_code" property="localProjectCode" />
 		<result column="project_code" property="projectCode" />
 		<result column="corp_code" property="corpCode" />
 		<result column="corp_name" property="corpName" />
@@ -17,13 +16,18 @@
 			<if test="code != null and code != '' ">
 				AND t.code = #{code}
 			</if>
+			<if test="payRollCode != null and payRollCode != '' ">
+                AND t.pay_roll_code = #{payRollCode}
+            </if>
+            <if test="corp_name != null and corp_name != '' ">
+                AND t.corp_name = #{corpName}
+            </if>
 		</trim>
 	</sql>
 	<select id="select_payRoll" parameterType="payRoll" resultMap="payRoll_DB_Result">
 		SELECT
 		t.code
 		,t.pay_roll_code
-		,t.local_project_code
 		,t.project_code
 		,t.corp_code
 		,t.corp_name
@@ -50,7 +54,6 @@
 		thf_pay_roll(
 		code
 		,pay_roll_code
-		,local_project_code
 		,project_code
 		,corp_code
 		,corp_name
@@ -60,7 +63,6 @@
 		VALUES(
 		#{code}
 		,#{payRollCode}
-		,#{localProjectCode}
 		,#{projectCode}
 		,#{corpCode}
 		,#{corpName}
@@ -69,18 +71,23 @@
 		)
 	</insert>
 
+
 	<update id="update_payRoll" parameterType="payRoll">
 		UPDATE thf_pay_roll
 		SET
 		pay_roll_code = #{payRollCode}
-		,local_project_code = #{localProjectCode}
 		,project_code = #{projectCode}
 		,corp_code = #{corpCode}
 		,corp_name = #{corpName}
-		,team_sys_no = #{teamSysNo}
+		,team_sys_no =
+		#{teamSysNo}
 		,pay_month = #{payMonth}
 		WHERE code = #{code}
 	</update>
+
+	<delete id="delete_payRoll" parameterType="payRoll">
+		DELETE from thf_pay_roll where code = #{code}
+	</delete>
 
 
 </mapper>

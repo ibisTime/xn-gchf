@@ -128,17 +128,17 @@ public class AsyncQueueHolder {
         JSONObject resultJson = JSONObject.parseObject(asyncRes.getResult());
         String sysTeamNo = resultJson.getString("teamSysNo");
 
-        Object result = null;
-
         try {
-            result = SpringContextHolder.getBean("projectWorkerBO");
-            String[] arges = new String[] { code, sysTeamNo };
 
-            Method method = result.getClass().getMethod(
+            // 更新项目班组国家平台班组编号
+            Object teamMaster = SpringContextHolder.getBean("teamMasterBO");
+            String[] teamMasterArges = new String[] { code, sysTeamNo };
+
+            Method teamMasterMethod = teamMaster.getClass().getMethod(
                 "refreshTeamSysNoByLocal",
                 new Class[] { String.class, String.class });
 
-            method.invoke(result, arges);
+            teamMasterMethod.invoke(teamMaster, teamMasterArges);
 
         } catch (Exception e) {
             e.printStackTrace();

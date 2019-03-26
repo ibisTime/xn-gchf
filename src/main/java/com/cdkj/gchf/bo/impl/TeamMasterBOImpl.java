@@ -76,6 +76,16 @@ public class TeamMasterBOImpl extends PaginableBOImpl<TeamMaster>
     }
 
     @Override
+    public void refreshTeamSysNoByLocal(String code, String teamSysNo) {
+        TeamMaster teamMaster = new TeamMaster();
+
+        teamMaster.setCode(code);
+        teamMaster.setTeamSysNo(Integer.parseInt(teamSysNo));
+
+        teamMasterDAO.updateTeamSysNo(teamMaster);
+    }
+
+    @Override
     public void doUpload(XN631908Req req, ProjectConfig projectConfig) {
 
         if (StringUtils.isNotBlank(req.getResponsiblePersonIdNumber())) {

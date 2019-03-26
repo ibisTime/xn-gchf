@@ -24,8 +24,8 @@ public class XN631730Req {
     private String corpName;
 
     // 班组编号
-    @Min(0)
-    private Integer teamSysNo;
+    @NotBlank
+    private String teamSysNo;
 
     // 员工编号
     private String workerCode;
@@ -94,11 +94,11 @@ public class XN631730Req {
         this.corpName = corpName;
     }
 
-    public Integer getTeamSysNo() {
+    public String getTeamSysNo() {
         return teamSysNo;
     }
 
-    public void setTeamSysNo(Integer teamSysNo) {
+    public void setTeamSysNo(String teamSysNo) {
         this.teamSysNo = teamSysNo;
     }
 

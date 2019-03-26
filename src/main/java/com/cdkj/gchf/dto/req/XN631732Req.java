@@ -22,9 +22,6 @@ public class XN631732Req {
     // 工人所属企业名称
     private String corpName;
 
-    // 班组编号
-    private Integer teamSysNo;
-
     // 员工编号
     private String workerCode;
 
@@ -89,14 +86,6 @@ public class XN631732Req {
 
     public void setCorpName(String corpName) {
         this.corpName = corpName;
-    }
-
-    public Integer getTeamSysNo() {
-        return teamSysNo;
-    }
-
-    public void setTeamSysNo(Integer teamSysNo) {
-        this.teamSysNo = teamSysNo;
     }
 
     public String getWorkerCode() {

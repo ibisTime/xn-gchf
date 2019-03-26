@@ -25,7 +25,7 @@ public class WorkerAttendance extends ABaseDO {
     private String projectName;
 
     // 班组编号
-    private Integer teamSysNo;
+    private String teamSysNo;
 
     // 班组名称
     private String teamName;
@@ -113,11 +113,11 @@ public class WorkerAttendance extends ABaseDO {
         this.projectName = projectName;
     }
 
-    public Integer getTeamSysNo() {
+    public String getTeamSysNo() {
         return teamSysNo;
     }
 
-    public void setTeamSysNo(Integer teamSysNo) {
+    public void setTeamSysNo(String teamSysNo) {
         this.teamSysNo = teamSysNo;
     }
 

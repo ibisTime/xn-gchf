@@ -3,8 +3,6 @@ package com.cdkj.gchf.dto.req;
 import java.math.BigDecimal;
 import java.util.Date;
 
-import javax.validation.constraints.Min;
-
 import org.hibernate.validator.constraints.NotBlank;
 
 public class XN631710Req {
@@ -21,8 +19,8 @@ public class XN631710Req {
     private String projectName;
 
     // 平台生成的班组编号
-    @Min(0)
-    private Integer teamSysNo;
+    @NotBlank
+    private String teamSysNo;
 
     // 证件号码
     @NotBlank
@@ -106,11 +104,11 @@ public class XN631710Req {
         this.projectCode = projectCode;
     }
 
-    public Integer getTeamSysNo() {
+    public String getTeamSysNo() {
         return teamSysNo;
     }
 
-    public void setTeamSysNo(Integer teamSysNo) {
+    public void setTeamSysNo(String teamSysNo) {
         this.teamSysNo = teamSysNo;
     }
 

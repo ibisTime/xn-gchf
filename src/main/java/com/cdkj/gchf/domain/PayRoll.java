@@ -32,7 +32,7 @@ public class PayRoll extends ABaseDO {
     private String corpName;
 
     // 班组编号
-    private Integer teamSysNo;
+    private String teamSysNo;
 
     // 发放工资的年月
     private Date payMonth;
@@ -84,11 +84,11 @@ public class PayRoll extends ABaseDO {
         this.corpName = corpName;
     }
 
-    public Integer getTeamSysNo() {
+    public String getTeamSysNo() {
         return teamSysNo;
     }
 
-    public void setTeamSysNo(Integer teamSysNo) {
+    public void setTeamSysNo(String teamSysNo) {
         this.teamSysNo = teamSysNo;
     }
 

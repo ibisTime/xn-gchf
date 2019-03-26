@@ -18,8 +18,11 @@ public enum EOperateLogOperate {
 
     EditProjectCorpinfo("05", "修改参见单位基本信息"),
 
-    UploadTeamMaster("06", "上传项目班组信息");
+    UploadTeamMaster("06", "上传项目班组信息"),
 
+    UploadWorkContract("07", "上传劳动合同信息"),
+
+    UploadWorkAtendance("08", "上传人员考勤信息");
     EOperateLogOperate(String code, String value) {
         this.code = code;
         this.value = value;

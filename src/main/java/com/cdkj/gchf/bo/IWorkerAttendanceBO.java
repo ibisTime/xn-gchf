@@ -10,6 +10,7 @@ import com.cdkj.gchf.dto.req.XN631710Req;
 import com.cdkj.gchf.dto.req.XN631712Req;
 import com.cdkj.gchf.dto.req.XN631918Req;
 import com.cdkj.gchf.dto.req.XN631919Req;
+import com.google.gson.JsonObject;
 
 public interface IWorkerAttendanceBO extends IPaginableBO<WorkerAttendance> {
 
@@ -23,6 +24,9 @@ public interface IWorkerAttendanceBO extends IPaginableBO<WorkerAttendance> {
             WorkerAttendance condition);
 
     public WorkerAttendance getWorkerAttendance(String code);
+
+    public JsonObject getRequestJson(WorkerAttendance workerAttendance,
+            ProjectConfig projectConfigByLocal);
 
     /****国家平台接口****/
     public void doUpload(XN631918Req req, ProjectConfig projectConfig);

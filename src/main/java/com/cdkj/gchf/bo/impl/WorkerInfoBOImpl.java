@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -17,6 +18,7 @@ import com.cdkj.gchf.core.OrderNoGenerater;
 import com.cdkj.gchf.dao.IWorkerInfoDAO;
 import com.cdkj.gchf.domain.ProjectConfig;
 import com.cdkj.gchf.domain.WorkerInfo;
+import com.cdkj.gchf.dto.req.XN631791Req;
 import com.cdkj.gchf.enums.EGeneratePrefix;
 import com.cdkj.gchf.exception.BizException;
 import com.cdkj.gchf.gov.GovConnecter;
@@ -41,13 +43,10 @@ public class WorkerInfoBOImpl extends PaginableBOImpl<WorkerInfo>
 
     @Override
     public String saveWorkerInfo(WorkerInfo data) {
-        String code = null;
-        if (data != null) {
-            code = OrderNoGenerater
-                .generate(EGeneratePrefix.WorkerInfo.getCode());
-            data.setCode(code);
-            WorkerInfoDAO.insert(data);
-        }
+        String code = OrderNoGenerater
+            .generate(EGeneratePrefix.WorkerInfo.getCode());
+        data.setCode(code);
+        WorkerInfoDAO.insert(data);
         return code;
     }
 
@@ -63,12 +62,10 @@ public class WorkerInfoBOImpl extends PaginableBOImpl<WorkerInfo>
     }
 
     @Override
-    public int refreshWorkerInfo(WorkerInfo data) {
-        int count = 0;
-        if (StringUtils.isNotBlank(data.getCode())) {
-            count = WorkerInfoDAO.updateWorkerInfo(data);
-        }
-        return count;
+    public int refreshWorkerInfo(XN631791Req req) {
+        WorkerInfo workerInfo = new WorkerInfo();
+        BeanUtils.copyProperties(req, workerInfo);
+        return WorkerInfoDAO.updateWorkerInfo(workerInfo);
     }
 
     @Override
@@ -100,13 +97,11 @@ public class WorkerInfoBOImpl extends PaginableBOImpl<WorkerInfo>
     @Override
     public WorkerInfo getWorkerInfo(String code) {
         WorkerInfo data = null;
-        if (StringUtils.isNotBlank(code)) {
-            WorkerInfo condition = new WorkerInfo();
-            condition.setCode(code);
-            data = WorkerInfoDAO.select(condition);
-            if (data == null) {
-                throw new BizException("xn0000", "�� ��Ų�����");
-            }
+        WorkerInfo condition = new WorkerInfo();
+        condition.setCode(code);
+        data = WorkerInfoDAO.select(condition);
+        if (data == null) {
+            throw new BizException("XN631806", "信息不存在");
         }
         return data;
     }

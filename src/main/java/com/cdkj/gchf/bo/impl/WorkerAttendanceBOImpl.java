@@ -1,5 +1,6 @@
 package com.cdkj.gchf.bo.impl;
 
+import java.text.SimpleDateFormat;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -27,6 +28,8 @@ import com.cdkj.gchf.enums.EGeneratePrefix;
 import com.cdkj.gchf.gov.GovConnecter;
 import com.cdkj.gchf.gov.GovUtil;
 import com.cdkj.gchf.gov.SerialHandler;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonObject;
 
 @Component
 public class WorkerAttendanceBOImpl extends PaginableBOImpl<WorkerAttendance>
@@ -112,11 +115,39 @@ public class WorkerAttendanceBOImpl extends PaginableBOImpl<WorkerAttendance>
 
     @Override
     public WorkerAttendance getWorkerAttendance(String code) {
-        WorkerAttendance data = null;
-        WorkerAttendance condition = new WorkerAttendance();
-        condition.setCode(code);
-        data = workerAttendanceDAO.select(condition);
-        return data;
+        WorkerAttendance workerAttendance = new WorkerAttendance();
+        workerAttendance.setCode(code);
+        return workerAttendanceDAO.select(workerAttendance);
+    }
+
+    @Override
+    public JsonObject getRequestJson(WorkerAttendance workerAttendance,
+            ProjectConfig projectConfigByLocal) {
+        workerAttendance.setProjectCode(projectConfigByLocal.getProjectCode());
+        JsonObject jsonObject = new JsonObject();
+        jsonObject.addProperty("projectCode",
+            projectConfigByLocal.getProjectCode());
+        jsonObject.addProperty("teamSysNo", workerAttendance.getTeamSysNo());
+        JsonArray dataList = new JsonArray();
+        JsonObject childJson = new JsonObject();
+        childJson.addProperty("idCardType", workerAttendance.getIdCardType());
+        childJson.addProperty("idCardNumber",
+            AesUtils.encrypt(workerAttendance.getIdCardNumber(),
+                projectConfigByLocal.getSecret()));
+
+        childJson.addProperty("date",
+            new SimpleDateFormat("yyyy-MM-dd hh:mm:ss")
+                .format(workerAttendance.getDate()));
+        childJson.addProperty("direction", workerAttendance.getDirection());
+        childJson.addProperty("image", workerAttendance.getImage());
+        childJson.addProperty("channel", workerAttendance.getChannel());
+        childJson.addProperty("attendType", workerAttendance.getAttendType());
+        childJson.addProperty("lng", workerAttendance.getLng());
+        childJson.addProperty("lat", workerAttendance.getLat());
+
+        dataList.add(childJson);
+        jsonObject.add("dataList", dataList);
+        return jsonObject;
     }
 
 }

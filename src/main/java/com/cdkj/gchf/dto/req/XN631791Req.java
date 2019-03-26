@@ -4,10 +4,13 @@ import java.util.Date;
 
 import org.hibernate.validator.constraints.NotBlank;
 
-public class XN631790Req {
+public class XN631791Req {
     // 用户id
     @NotBlank
     private String userId;
+
+    // 编号
+    private String code;
 
     // 工人姓名
     @NotBlank
@@ -115,6 +118,14 @@ public class XN631790Req {
 
     public void setUserId(String userId) {
         this.userId = userId;
+    }
+
+    public String getCode() {
+        return code;
+    }
+
+    public void setCode(String code) {
+        this.code = code;
     }
 
     public String getName() {
@@ -356,5 +367,4 @@ public class XN631790Req {
     public void setExpiryDate(Date expiryDate) {
         this.expiryDate = expiryDate;
     }
-
 }

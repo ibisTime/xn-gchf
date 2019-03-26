@@ -6,6 +6,7 @@ import com.cdkj.gchf.bo.base.IPaginableBO;
 import com.cdkj.gchf.bo.base.Paginable;
 import com.cdkj.gchf.domain.ProjectConfig;
 import com.cdkj.gchf.domain.WorkerInfo;
+import com.cdkj.gchf.dto.req.XN631791Req;
 
 public interface IWorkerInfoBO extends IPaginableBO<WorkerInfo> {
 
@@ -15,7 +16,7 @@ public interface IWorkerInfoBO extends IPaginableBO<WorkerInfo> {
 
     public int removeWorkerInfo(String code);
 
-    public int refreshWorkerInfo(WorkerInfo data);
+    public int refreshWorkerInfo(XN631791Req data);
 
     public List<WorkerInfo> queryWorkerInfoList(WorkerInfo condition);
 

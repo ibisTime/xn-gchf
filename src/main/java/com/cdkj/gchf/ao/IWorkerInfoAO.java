@@ -7,6 +7,7 @@ import org.springframework.stereotype.Component;
 import com.cdkj.gchf.bo.base.Paginable;
 import com.cdkj.gchf.domain.WorkerInfo;
 import com.cdkj.gchf.dto.req.XN631790Req;
+import com.cdkj.gchf.dto.req.XN631791Req;
 
 @Component
 public interface IWorkerInfoAO {
@@ -16,7 +17,7 @@ public interface IWorkerInfoAO {
 
     public int dropWorkerInfo(String code);
 
-    public int editWorkerInfo(WorkerInfo data);
+    public int editWorkerInfo(XN631791Req data);
 
     public Paginable<WorkerInfo> queryWorkerInfoPage(int start, int limit,
             WorkerInfo condition);

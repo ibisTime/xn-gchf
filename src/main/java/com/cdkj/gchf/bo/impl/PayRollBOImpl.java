@@ -26,6 +26,7 @@ import com.cdkj.gchf.enums.EGeneratePrefix;
 import com.cdkj.gchf.exception.BizException;
 import com.cdkj.gchf.gov.GovConnecter;
 import com.cdkj.gchf.gov.GovUtil;
+import com.cdkj.gchf.gov.SerialHandler;
 
 @Component
 public class PayRollBOImpl extends PaginableBOImpl<PayRoll>
@@ -77,8 +78,10 @@ public class PayRollBOImpl extends PaginableBOImpl<PayRoll>
 
         String data = JSONObject.toJSON(req).toString();
 
-        GovConnecter.getGovData("Payroll.Add", data,
+        String resString = GovConnecter.getGovData("Payroll.Add", data,
             projectConfig.getProjectCode(), projectConfig.getSecret());
+
+        SerialHandler.handle(resString, projectConfig);
     }
 
     @Override

@@ -27,6 +27,7 @@ import com.cdkj.gchf.enums.EGeneratePrefix;
 import com.cdkj.gchf.exception.BizException;
 import com.cdkj.gchf.gov.GovConnecter;
 import com.cdkj.gchf.gov.GovUtil;
+import com.cdkj.gchf.gov.SerialHandler;
 
 @Component
 public class ProjectWorkerEntryExitHistoryBOImpl
@@ -74,8 +75,10 @@ public class ProjectWorkerEntryExitHistoryBOImpl
         String data = JSONObject.toJSONStringWithDateFormat(req, "yyyy-MM-dd")
             .toString();
 
-        GovConnecter.getGovData("WorkerEntryExit.Add", data,
+        String resString = GovConnecter.getGovData("WorkerEntryExit.Add", data,
             projectConfig.getProjectCode(), projectConfig.getSecret());
+
+        SerialHandler.handle(resString, projectConfig);
     }
 
     @Override

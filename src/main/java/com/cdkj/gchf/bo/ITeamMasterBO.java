@@ -22,6 +22,8 @@ public interface ITeamMasterBO extends IPaginableBO<TeamMaster> {
 
     public void refreshUploadStatus(String code, String uploadStatus);
 
+    public void refreshTeamSysNoByLocal(String code, String teamSysNo);
+
     public List<TeamMaster> queryTeamMasterList(TeamMaster condition);
 
     public TeamMaster getTeamMaster(String code);

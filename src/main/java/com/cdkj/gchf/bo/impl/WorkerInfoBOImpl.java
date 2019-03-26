@@ -1,20 +1,28 @@
 package com.cdkj.gchf.bo.impl;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import com.alibaba.fastjson.JSONObject;
 import com.cdkj.gchf.bo.IWorkerInfoBO;
+import com.cdkj.gchf.bo.base.Paginable;
 import com.cdkj.gchf.bo.base.PaginableBOImpl;
+import com.cdkj.gchf.common.AesUtils;
 import com.cdkj.gchf.core.OrderNoGenerater;
 import com.cdkj.gchf.dao.IWorkerInfoDAO;
+import com.cdkj.gchf.domain.ProjectConfig;
 import com.cdkj.gchf.domain.WorkerInfo;
 import com.cdkj.gchf.dto.req.XN631791Req;
 import com.cdkj.gchf.enums.EGeneratePrefix;
 import com.cdkj.gchf.exception.BizException;
+import com.cdkj.gchf.gov.GovConnecter;
+import com.cdkj.gchf.gov.GovUtil;
 
 @Component
 public class WorkerInfoBOImpl extends PaginableBOImpl<WorkerInfo>
@@ -61,6 +69,27 @@ public class WorkerInfoBOImpl extends PaginableBOImpl<WorkerInfo>
     }
 
     @Override
+    public Paginable<WorkerInfo> doQuery(String idCardNumber,
+            ProjectConfig projectConfig) {
+        WorkerInfo workerInfo = new WorkerInfo();
+        workerInfo.setIdCardType("01");
+        workerInfo.setIdCardNumber(
+            AesUtils.encrypt(idCardNumber, projectConfig.getSecret()));
+
+        String data = JSONObject.toJSON(workerInfo).toString();
+
+        String queryString = GovConnecter.getGovData("Worker.Query", data,
+            projectConfig.getProjectCode(), projectConfig.getSecret());
+
+        Map<String, String> replaceMap = new HashMap<>();
+
+        Paginable<WorkerInfo> page = GovUtil.parseGovPage(0, 1, queryString,
+            replaceMap, WorkerInfo.class);
+
+        return page;
+    }
+
+    @Override
     public List<WorkerInfo> queryWorkerInfoList(WorkerInfo condition) {
         return WorkerInfoDAO.selectList(condition);
     }
@@ -81,4 +110,5 @@ public class WorkerInfoBOImpl extends PaginableBOImpl<WorkerInfo>
     public WorkerInfo getWorkerInfoByCondition(WorkerInfo workerInfo) {
         return WorkerInfoDAO.select(workerInfo);
     }
+
 }

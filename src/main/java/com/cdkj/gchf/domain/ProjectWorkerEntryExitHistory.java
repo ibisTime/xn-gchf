@@ -29,7 +29,7 @@ public class ProjectWorkerEntryExitHistory extends ABaseDO {
     private String corpName;
 
     // 班组编号
-    private Integer teamSysNo;
+    private String teamSysNo;
 
     // 员工编号
     private String workerCode;
@@ -99,11 +99,11 @@ public class ProjectWorkerEntryExitHistory extends ABaseDO {
         this.corpName = corpName;
     }
 
-    public Integer getTeamSysNo() {
+    public String getTeamSysNo() {
         return teamSysNo;
     }
 
-    public void setTeamSysNo(Integer teamSysNo) {
+    public void setTeamSysNo(String teamSysNo) {
         this.teamSysNo = teamSysNo;
     }
 

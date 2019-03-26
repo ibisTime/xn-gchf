@@ -14,6 +14,7 @@ import com.cdkj.gchf.bo.IWorkerAttendanceBO;
 import com.cdkj.gchf.bo.base.Paginable;
 import com.cdkj.gchf.bo.base.PaginableBOImpl;
 import com.cdkj.gchf.common.AesUtils;
+import com.cdkj.gchf.common.DateUtil;
 import com.cdkj.gchf.core.OrderNoGenerater;
 import com.cdkj.gchf.dao.IWorkerAttendanceDAO;
 import com.cdkj.gchf.domain.ProjectConfig;
@@ -26,6 +27,7 @@ import com.cdkj.gchf.dto.req.XN631919Req;
 import com.cdkj.gchf.enums.EGeneratePrefix;
 import com.cdkj.gchf.gov.GovConnecter;
 import com.cdkj.gchf.gov.GovUtil;
+import com.cdkj.gchf.gov.SerialHandler;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 
@@ -76,8 +78,10 @@ public class WorkerAttendanceBOImpl extends PaginableBOImpl<WorkerAttendance>
         String data = JSONObject.toJSONStringWithDateFormat(req,
             "yyyy-MM-dd HH:mm:ss");
 
-        GovConnecter.getGovData("WorkerAttendance.Add", data,
+        String resString = GovConnecter.getGovData("WorkerAttendance.Add", data,
             projectConfig.getProjectCode(), projectConfig.getSecret());
+
+        SerialHandler.handle(resString, projectConfig);
     }
 
     @Override
@@ -85,6 +89,8 @@ public class WorkerAttendanceBOImpl extends PaginableBOImpl<WorkerAttendance>
             ProjectConfig projectConfig) {
         WorkerAttendance workerAttendance = new WorkerAttendance();
         BeanUtils.copyProperties(req, workerAttendance);
+        workerAttendance.setDate(DateUtil.strToDate(req.getDate(),
+            DateUtil.FRONT_DATE_FORMAT_STRING));
 
         String data = JSONObject.toJSONStringWithDateFormat(workerAttendance,
             "yyyy-MM-dd");

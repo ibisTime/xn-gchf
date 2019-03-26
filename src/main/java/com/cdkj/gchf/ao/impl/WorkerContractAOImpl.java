@@ -3,6 +3,7 @@ package com.cdkj.gchf.ao.impl;
 import java.text.SimpleDateFormat;
 import java.util.List;
 
+import org.apache.commons.collections.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -10,15 +11,18 @@ import org.springframework.transaction.annotation.Transactional;
 import com.cdkj.gchf.ao.IWorkerContractAO;
 import com.cdkj.gchf.bo.IOperateLogBO;
 import com.cdkj.gchf.bo.IProjectConfigBO;
+import com.cdkj.gchf.bo.IProjectWorkerBO;
 import com.cdkj.gchf.bo.IUserBO;
 import com.cdkj.gchf.bo.IWorkerContractBO;
 import com.cdkj.gchf.bo.base.Paginable;
 import com.cdkj.gchf.common.AesUtils;
 import com.cdkj.gchf.domain.ProjectConfig;
+import com.cdkj.gchf.domain.ProjectWorker;
 import com.cdkj.gchf.domain.User;
 import com.cdkj.gchf.domain.WorkerContract;
 import com.cdkj.gchf.dto.req.XN631670Req;
 import com.cdkj.gchf.dto.req.XN631672Req;
+import com.cdkj.gchf.dto.req.XN631913Req;
 import com.cdkj.gchf.dto.req.XN631916Req;
 import com.cdkj.gchf.dto.req.XN631917Req;
 import com.cdkj.gchf.enums.EOperateLogOperate;
@@ -44,6 +48,9 @@ public class WorkerContractAOImpl implements IWorkerContractAO {
 
     @Autowired
     private IOperateLogBO operateLogBO;
+
+    @Autowired
+    private IProjectWorkerBO projectWorkerBO;
 
     @Override
     public String addWorkerContract(XN631670Req req) {
@@ -81,7 +88,35 @@ public class WorkerContractAOImpl implements IWorkerContractAO {
             throw new BizException("XN631917", "该项目未配置，无法查询");
         }
 
-        return workerContractBO.doQuery(req, projectConfig);
+        Paginable<WorkerContract> page = workerContractBO.doQuery(req,
+            projectConfig);
+
+        if (null != page && CollectionUtils.isNotEmpty(page.getList())) {
+            for (WorkerContract workerContract : page.getList()) {
+
+                XN631913Req workerReq = new XN631913Req(req.getProjectCode(),
+                    workerContract.getCorpCode(),
+                    workerContract.getIdcardNumber());
+                workerReq.setPageIndex(0);
+                workerReq.setPageSize(1);
+                Paginable<ProjectWorker> projectWorker = projectWorkerBO
+                    .doQuery(workerReq, projectConfig);
+                if (null != projectWorker && CollectionUtils
+                    .isNotEmpty(projectWorker.getList())) {
+                    workerContract.setWorkerName(
+                        projectWorker.getList().get(0).getWorkerName());
+                }
+
+                String idcardNumber = AesUtils.decrypt(
+                    workerContract.getIdcardNumber(),
+                    projectConfig.getSecret());
+
+                workerContract.setIdcardNumber(idcardNumber);
+
+            }
+        }
+
+        return page;
 
     }
 

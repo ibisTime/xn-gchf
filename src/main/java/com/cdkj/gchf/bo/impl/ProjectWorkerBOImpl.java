@@ -67,17 +67,6 @@ public class ProjectWorkerBOImpl extends PaginableBOImpl<ProjectWorker>
     }
 
     @Override
-    public void refreshTeamSysNoByLocal(String localTeamSysNo,
-            String teamSysNo) {
-        ProjectWorker projectWorker = new ProjectWorker();
-
-        projectWorker.setLocalTeamSysNo(localTeamSysNo);
-        projectWorker.setTeamSysNo(Integer.parseInt(teamSysNo));
-
-        projectWorkerDAO.updateTeamSysNoByLocal(projectWorker);
-    }
-
-    @Override
     public void doUpload(XN631911Req req, ProjectConfig projectConfig) {
 
         List<XN631911ReqWorker> workerList = req.getWorkerList();

@@ -148,8 +148,7 @@
 	<update id="update_teamMaster" parameterType="teamMaster">
 		UPDATE thf_team_master
 		SET
-		team_sys_no = #{teamSysNo}
-		,project_code = #{projectCode}
+		project_code = #{projectCode}
 		,corp_code = #{corpCode}
 		,corp_name = #{corpName}
 		,team_name = #{teamName}
@@ -175,6 +174,13 @@
 		UPDATE thf_team_master
 		SET
 		upload_status = #{uploadStatus}
+		WHERE code = #{code}
+	</update>
+	
+	<update id="update_teamMasterTeamSysNo" parameterType="teamMaster">
+		UPDATE thf_team_master
+		SET
+		team_sys_no = #{teamSysNo}
 		WHERE code = #{code}
 	</update>
 	

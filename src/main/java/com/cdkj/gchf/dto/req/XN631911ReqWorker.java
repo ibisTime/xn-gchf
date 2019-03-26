@@ -65,7 +65,7 @@ public class XN631911ReqWorker extends APIRequestBase {
     private String payRollTopBankCode;
 
     // 有无购买工伤或意外伤害保险
-    private Integer hasBuyInsurance;
+    private String hasBuyInsurance;
 
     // 民族
     @NotBlank
@@ -231,11 +231,11 @@ public class XN631911ReqWorker extends APIRequestBase {
         this.payRollTopBankCode = payRollTopBankCode;
     }
 
-    public Integer getHasBuyInsurance() {
+    public String getHasBuyInsurance() {
         return hasBuyInsurance;
     }
 
-    public void setHasBuyInsurance(Integer hasBuyInsurance) {
+    public void setHasBuyInsurance(String hasBuyInsurance) {
         this.hasBuyInsurance = hasBuyInsurance;
     }
 

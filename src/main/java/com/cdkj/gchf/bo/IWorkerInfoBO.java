@@ -3,6 +3,8 @@ package com.cdkj.gchf.bo;
 import java.util.List;
 
 import com.cdkj.gchf.bo.base.IPaginableBO;
+import com.cdkj.gchf.bo.base.Paginable;
+import com.cdkj.gchf.domain.ProjectConfig;
 import com.cdkj.gchf.domain.WorkerInfo;
 import com.cdkj.gchf.dto.req.XN631791Req;
 
@@ -21,4 +23,8 @@ public interface IWorkerInfoBO extends IPaginableBO<WorkerInfo> {
     public WorkerInfo getWorkerInfo(String code);
 
     public WorkerInfo getWorkerInfoByCondition(WorkerInfo workerInfo);
+
+    /****国家平台接口****/
+    public Paginable<WorkerInfo> doQuery(String idCardNumber,
+            ProjectConfig projectConfig);
 }

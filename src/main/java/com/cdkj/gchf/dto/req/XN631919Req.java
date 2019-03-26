@@ -1,7 +1,5 @@
 package com.cdkj.gchf.dto.req;
 
-import java.util.Date;
-
 import org.hibernate.validator.constraints.NotBlank;
 
 import com.cdkj.gchf.gov.APIRequestBase;
@@ -27,7 +25,7 @@ public class XN631919Req extends APIRequestBase {
     private String idCardNumber;
 
     // 考勤时间
-    private Date date;
+    private String date;
 
     // 班组编号
     private Integer teamSysNo;
@@ -56,11 +54,11 @@ public class XN631919Req extends APIRequestBase {
         this.idCardNumber = idCardNumber;
     }
 
-    public Date getDate() {
+    public String getDate() {
         return date;
     }
 
-    public void setDate(Date date) {
+    public void setDate(String date) {
         this.date = date;
     }
 

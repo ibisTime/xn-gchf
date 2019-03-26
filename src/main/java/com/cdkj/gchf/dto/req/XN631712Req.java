@@ -21,9 +21,6 @@ public class XN631712Req {
     // 项目名称
     private String projectName;
 
-    // 平台生成的班组编号
-    private Integer teamSysNo;
-
     // 证件号码
     private String idCardType;
 
@@ -114,14 +111,6 @@ public class XN631712Req {
 
     public void setProjectName(String projectName) {
         this.projectName = projectName;
-    }
-
-    public Integer getTeamSysNo() {
-        return teamSysNo;
-    }
-
-    public void setTeamSysNo(Integer teamSysNo) {
-        this.teamSysNo = teamSysNo;
     }
 
     public String getIdCardType() {

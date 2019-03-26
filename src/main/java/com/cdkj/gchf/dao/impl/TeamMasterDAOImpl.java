@@ -58,4 +58,10 @@ public class TeamMasterDAOImpl extends AMybatisTemplate
             data);
     }
 
+    @Override
+    public int updateTeamSysNo(TeamMaster data) {
+        return super.update(NAMESPACE.concat("update_teamMasterTeamSysNo"),
+            data);
+    }
+
 }

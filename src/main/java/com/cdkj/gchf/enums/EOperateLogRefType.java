@@ -14,7 +14,11 @@ public enum EOperateLogRefType {
 
     ProjectCorpinfo("03", "参见单位基本信息"),
 
-    TeamMaster("04", "项目班组信息");
+    TeamMaster("04", "项目班组信息"),
+
+    WorkContract("05", "劳动合同信息"),
+
+    WorkAttendance("06", "人员考勤信息");
 
     EOperateLogRefType(String code, String value) {
         this.code = code;

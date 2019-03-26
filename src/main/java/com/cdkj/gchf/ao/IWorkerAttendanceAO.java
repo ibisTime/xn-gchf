@@ -29,6 +29,9 @@ public interface IWorkerAttendanceAO {
 
     public WorkerAttendance getWorkerAttendance(String code);
 
+    public void uploadWorkerAttendanceList(String userId,
+            List<String> codeList);
+
     /****国家平台接口****/
     public void uploadWorkerAttendance(XN631918Req data);
 

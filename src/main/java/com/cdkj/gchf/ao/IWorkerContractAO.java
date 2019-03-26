@@ -29,6 +29,8 @@ public interface IWorkerContractAO {
 
     public WorkerContract getWorkerContract(String code);
 
+    public void uploadWorkContractList(String userId, List<String> codeList);
+
     /****国家平台接口****/
     public void uploadWorkerContract(XN631916Req req);
 

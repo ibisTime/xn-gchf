@@ -6,16 +6,26 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.cdkj.gchf.ao.IWorkerAttendanceAO;
+import com.cdkj.gchf.bo.IOperateLogBO;
 import com.cdkj.gchf.bo.IProjectConfigBO;
+import com.cdkj.gchf.bo.ITeamMasterBO;
+import com.cdkj.gchf.bo.IUserBO;
 import com.cdkj.gchf.bo.IWorkerAttendanceBO;
 import com.cdkj.gchf.bo.base.Paginable;
 import com.cdkj.gchf.domain.ProjectConfig;
+import com.cdkj.gchf.domain.User;
 import com.cdkj.gchf.domain.WorkerAttendance;
 import com.cdkj.gchf.dto.req.XN631710Req;
 import com.cdkj.gchf.dto.req.XN631712Req;
 import com.cdkj.gchf.dto.req.XN631918Req;
 import com.cdkj.gchf.dto.req.XN631919Req;
+import com.cdkj.gchf.enums.EOperateLogOperate;
+import com.cdkj.gchf.enums.EOperateLogRefType;
+import com.cdkj.gchf.enums.EUploadStatus;
 import com.cdkj.gchf.exception.BizException;
+import com.cdkj.gchf.gov.AsyncQueueHolder;
+import com.cdkj.gchf.gov.GovConnecter;
+import com.google.gson.JsonObject;
 
 @Service
 public class WorkerAttendanceAOImpl implements IWorkerAttendanceAO {
@@ -25,6 +35,15 @@ public class WorkerAttendanceAOImpl implements IWorkerAttendanceAO {
 
     @Autowired
     private IProjectConfigBO projectConfigBO;
+
+    @Autowired
+    private IUserBO userBO;
+
+    @Autowired
+    private IOperateLogBO operateLogBO;
+
+    @Autowired
+    private ITeamMasterBO teamMasterBO;
 
     @Override
     public String addWorkerAttendance(XN631710Req data) {
@@ -80,6 +99,40 @@ public class WorkerAttendanceAOImpl implements IWorkerAttendanceAO {
     @Override
     public WorkerAttendance getWorkerAttendance(String code) {
         return workerAttendanceBO.getWorkerAttendance(code);
+    }
+
+    @Override
+    public void uploadWorkerAttendanceList(String userId,
+            List<String> codeList) {
+        User briefUser = userBO.getBriefUser(userId);
+        for (String code : codeList) {
+            WorkerAttendance workerAttendance = workerAttendanceBO
+                .getWorkerAttendance(code);
+
+            ProjectConfig projectConfigByLocal = projectConfigBO
+                .getProjectConfigByLocal(workerAttendance.getProjectCode());
+
+            if (projectConfigByLocal == null) {
+                throw new BizException("XN631714", "该项目未配置，无法查询");
+            }
+            // teamMasterBO.getTeamMaster(workerAttendance.getTeamSysNo());
+            JsonObject requestJson = workerAttendanceBO
+                .getRequestJson(workerAttendance, projectConfigByLocal);
+            System.out.println(requestJson);
+            String resString = GovConnecter.getGovData("WorkerAttendance.Add",
+                requestJson.toString(), projectConfigByLocal.getProjectCode(),
+                projectConfigByLocal.getSecret());
+
+            String saveOperateLog = operateLogBO.saveOperateLog(
+                EOperateLogRefType.WorkAttendance.getCode(), code,
+                EOperateLogOperate.UploadWorkAtendance.getValue(), briefUser,
+                null);
+
+            AsyncQueueHolder.addSerial(resString, projectConfigByLocal,
+                "workerAttendanceBO", code,
+                EUploadStatus.UPLOAD_UNEDITABLE.getCode(), saveOperateLog);
+
+        }
     }
 
 }

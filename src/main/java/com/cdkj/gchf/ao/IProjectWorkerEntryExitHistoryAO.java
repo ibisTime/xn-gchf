@@ -32,6 +32,9 @@ public interface IProjectWorkerEntryExitHistoryAO {
     public ProjectWorkerEntryExitHistory getProjectWorkerEntryExitHistory(
             String code);
 
+    public void uploadProjectWorkerEntryExitHistoryList(String userId,
+            List<String> codeList);
+
     /****国家平台接口****/
     public void uploadProjectWorkerEntryExitHistory(XN631914Req data);
 

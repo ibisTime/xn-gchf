@@ -6,16 +6,20 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.cdkj.gchf.ao.IProjectWorkerEntryExitHistoryAO;
+import com.cdkj.gchf.bo.IOperateLogBO;
 import com.cdkj.gchf.bo.IProjectConfigBO;
 import com.cdkj.gchf.bo.IProjectWorkerEntryExitHistoryBO;
+import com.cdkj.gchf.bo.IUserBO;
 import com.cdkj.gchf.bo.base.Paginable;
 import com.cdkj.gchf.domain.ProjectConfig;
 import com.cdkj.gchf.domain.ProjectWorkerEntryExitHistory;
+import com.cdkj.gchf.domain.User;
 import com.cdkj.gchf.dto.req.XN631730Req;
 import com.cdkj.gchf.dto.req.XN631732Req;
 import com.cdkj.gchf.dto.req.XN631914Req;
 import com.cdkj.gchf.dto.req.XN631915Req;
 import com.cdkj.gchf.exception.BizException;
+import com.google.gson.JsonObject;
 
 @Service
 public class ProjectWorkerEntryExitHistoryAOImpl
@@ -26,6 +30,12 @@ public class ProjectWorkerEntryExitHistoryAOImpl
 
     @Autowired
     private IProjectConfigBO projectConfigBO;
+
+    @Autowired
+    private IUserBO userBO;
+
+    @Autowired
+    private IOperateLogBO operateLogBO;
 
     @Override
     public String addProjectWorkerEntryExitHistory(XN631730Req data) {
@@ -95,6 +105,23 @@ public class ProjectWorkerEntryExitHistoryAOImpl
     public Object queryProjectWorkerEntryExitHistory(String code) {
         return projectWorkerEntryExitHistoryBO
             .queryProjectWorkerEntryExitHistory(code);
+    }
+
+    @Override
+    public void uploadProjectWorkerEntryExitHistoryList(String userId,
+            List<String> codeList) {
+        User briefUser = userBO.getBriefUser(userId);
+        for (String code : codeList) {
+            ProjectWorkerEntryExitHistory projectWorkerEntryExitHistory = projectWorkerEntryExitHistoryBO
+                .getProjectWorkerEntryExitHistory(code);
+            projectWorkerEntryExitHistory.getProjectCode();
+            ProjectConfig projectConfigByLocal = projectConfigBO
+                .getProjectConfigByLocal(
+                    projectWorkerEntryExitHistory.getProjectCode());
+            JsonObject jsonObject = new JsonObject();
+            jsonObject.addProperty("projectCode",
+                projectConfigByLocal.getProjectCode());
+        }
     }
 
 }

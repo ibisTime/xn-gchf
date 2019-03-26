@@ -1,24 +1,31 @@
 package com.cdkj.gchf.bo.impl;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.commons.collections.CollectionUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.alibaba.fastjson.JSONObject;
 import com.cdkj.gchf.bo.IPayRollBO;
+import com.cdkj.gchf.bo.ITeamMasterBO;
+import com.cdkj.gchf.bo.base.Page;
 import com.cdkj.gchf.bo.base.Paginable;
 import com.cdkj.gchf.bo.base.PaginableBOImpl;
 import com.cdkj.gchf.common.AesUtils;
+import com.cdkj.gchf.common.DateUtil;
 import com.cdkj.gchf.core.OrderNoGenerater;
 import com.cdkj.gchf.dao.IPayRollDAO;
 import com.cdkj.gchf.domain.PayRoll;
 import com.cdkj.gchf.domain.PayRollDetail;
 import com.cdkj.gchf.domain.ProjectConfig;
+import com.cdkj.gchf.domain.TeamMaster;
 import com.cdkj.gchf.dto.req.XN631770Req;
+import com.cdkj.gchf.dto.req.XN631910Req;
 import com.cdkj.gchf.dto.req.XN631920Req;
 import com.cdkj.gchf.dto.req.XN631920ReqDateil;
 import com.cdkj.gchf.dto.req.XN631921Req;
@@ -34,6 +41,9 @@ public class PayRollBOImpl extends PaginableBOImpl<PayRoll>
 
     @Autowired
     private IPayRollDAO payRollDAO;
+
+    @Autowired
+    private ITeamMasterBO teamMasterBO;
 
     @Override
     public String savePayRoll(XN631770Req data) {
@@ -94,11 +104,58 @@ public class PayRollBOImpl extends PaginableBOImpl<PayRoll>
             projectConfig.getProjectCode(), projectConfig.getSecret());
 
         Map<String, String> replaceMap = new HashMap<>();
+        replaceMap.put("payMonth", "payMonthString");
 
-        Paginable<PayRollDetail> page = GovUtil.parseGovPage(req.getPageIndex(),
-            req.getPageSize(), queryString, replaceMap, PayRollDetail.class);
+        Paginable<PayRoll> page = GovUtil.parseGovPage(req.getPageIndex(),
+            req.getPageSize(), queryString, replaceMap, PayRoll.class);
 
-        return page;
+        Paginable<PayRollDetail> detailPage = new Page<PayRollDetail>(
+            page.getPageNo(), page.getPageSize(), page.getTotalCount());
+        List<PayRoll> payRollList = page.getList();
+        List<PayRollDetail> payRollDetailList = new ArrayList<>();
+
+        if (CollectionUtils.isNotEmpty(payRollList)) {
+            for (PayRoll payRoll : payRollList) {
+                if (CollectionUtils.isNotEmpty(payRoll.getDetailList())) {
+                    for (XN631920ReqDateil reqDateil : payRoll
+                        .getDetailList()) {
+                        PayRollDetail payRollDetail = new PayRollDetail();
+                        BeanUtils.copyProperties(reqDateil, payRollDetail);
+
+                        payRollDetail.setCorpName(payRoll.getCorpName());
+                        payRollDetail.setBalanceDate(
+                            DateUtil.strToDate(reqDateil.getBalanceDate(),
+                                DateUtil.FRONT_DATE_FORMAT_STRING));
+
+                        XN631910Req teamReq = new XN631910Req(
+                            Integer.parseInt(payRoll.getTeamSysNo()),
+                            payRoll.getProjectCode());
+                        teamReq.setPageIndex(0);
+                        teamReq.setPageSize(1);
+
+                        Paginable<TeamMaster> teamPage = teamMasterBO
+                            .doQuery(teamReq, projectConfig);
+
+                        if (null != teamPage && CollectionUtils
+                            .isNotEmpty(teamPage.getList())) {
+                            TeamMaster teamMaster = teamPage.getList().get(0);
+                            payRollDetail.setTeamName(teamMaster.getTeamName());
+                            payRollDetail
+                                .setProjectName(projectConfig.getProjectName());
+                            payRollDetail
+                                .setProjectCode(projectConfig.getProjectCode());
+                            payRollDetail.setCorpCode(payRoll.getCorpCode());
+                        }
+
+                        payRollDetailList.add(payRollDetail);
+                    }
+                }
+
+            }
+        }
+        detailPage.setList(payRollDetailList);
+
+        return detailPage;
     }
 
     @Override

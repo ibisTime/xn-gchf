@@ -42,10 +42,10 @@ public class XN631916ReqContract {
     private Date endDate;
 
     // 计量单位
-    private Integer unit;
+    private String unit;
 
     // 计量单价
-    private BigDecimal unitPrice;
+    private String unitPrice;
 
     public String getCorpCode() {
         return corpCode;
@@ -103,19 +103,19 @@ public class XN631916ReqContract {
         this.endDate = endDate;
     }
 
-    public Integer getUnit() {
+    public String getUnit() {
         return unit;
     }
 
-    public void setUnit(Integer unit) {
+    public void setUnit(String unit) {
         this.unit = unit;
     }
 
-    public BigDecimal getUnitPrice() {
+    public String getUnitPrice() {
         return unitPrice;
     }
 
-    public void setUnitPrice(BigDecimal unitPrice) {
+    public void setUnitPrice(String unitPrice) {
         this.unitPrice = unitPrice;
     }
 

@@ -72,6 +72,25 @@ public class PayRollDetail extends ABaseDO {
     // 第三方工资单编号
     private String thirdPayRollCode;
 
+    /****DB Properties****/
+    // 项目名称
+    private String projectName;
+
+    // 班组名称
+    private String teamName;
+
+    // 企业名称
+    private String corpName;
+
+    // 企业编号
+    private String corpCode;
+
+    // 证件类型
+    private String idCardType;
+
+    // 证件号码
+    private String idCardNumber;
+
     public String getCode() {
         return code;
     }
@@ -222,6 +241,54 @@ public class PayRollDetail extends ABaseDO {
 
     public void setProjectCode(String projectCode) {
         this.projectCode = projectCode;
+    }
+
+    public String getProjectName() {
+        return projectName;
+    }
+
+    public void setProjectName(String projectName) {
+        this.projectName = projectName;
+    }
+
+    public String getTeamName() {
+        return teamName;
+    }
+
+    public void setTeamName(String teamName) {
+        this.teamName = teamName;
+    }
+
+    public String getCorpName() {
+        return corpName;
+    }
+
+    public void setCorpName(String corpName) {
+        this.corpName = corpName;
+    }
+
+    public String getIdCardType() {
+        return idCardType;
+    }
+
+    public void setIdCardType(String idCardType) {
+        this.idCardType = idCardType;
+    }
+
+    public String getIdCardNumber() {
+        return idCardNumber;
+    }
+
+    public void setIdCardNumber(String idCardNumber) {
+        this.idCardNumber = idCardNumber;
+    }
+
+    public String getCorpCode() {
+        return corpCode;
+    }
+
+    public void setCorpCode(String corpCode) {
+        this.corpCode = corpCode;
     }
 
 }

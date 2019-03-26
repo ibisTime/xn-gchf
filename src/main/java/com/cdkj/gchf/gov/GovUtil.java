@@ -39,7 +39,7 @@ public class GovUtil {
 
             String rowJson = dataJson.getString("rows");
             if (StringUtils.isEmpty(rowJson)) {
-                rowJson = dataJson.getString("detailList");
+                rowJson = "[" + dataJson.toJSONString() + "]";
             }
 
             if (null != replaceMap && !replaceMap.isEmpty()) {

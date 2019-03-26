@@ -28,7 +28,7 @@
 				AND t.status = #{status}
 			</if>
 			<if test="projectName != null and projectName != '' ">
-				AND t.project_name like '%'#{projectName}'%'
+				AND t.project_name like "%"#{projectName}"%"
 			</if>
 		</trim>
 	</sql>

@@ -44,6 +44,9 @@ public class PayRoll extends ABaseDO {
     // 明细列表
     private List<PayRollDetail> payRollDetailList;
 
+    // 发放工资的年月
+    private String payMonthString;
+
     public String getCode() {
         return code;
     }
@@ -114,6 +117,14 @@ public class PayRoll extends ABaseDO {
 
     public void setPayRollDetailList(List<PayRollDetail> payRollDetailList) {
         this.payRollDetailList = payRollDetailList;
+    }
+
+    public String getPayMonthString() {
+        return payMonthString;
+    }
+
+    public void setPayMonthString(String payMonthString) {
+        this.payMonthString = payMonthString;
     }
 
 }

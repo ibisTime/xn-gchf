@@ -70,4 +70,10 @@ public class XN631910Req extends APIRequestBase {
         this.corpName = corpName;
     }
 
+    public XN631910Req(Integer teamSysNo, String projectCode) {
+        super();
+        this.teamSysNo = teamSysNo;
+        this.projectCode = projectCode;
+    }
+
 }

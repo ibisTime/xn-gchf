@@ -91,12 +91,6 @@ public class PayRollDetail extends ABaseDO {
     // 企业编号
     private String corpCode;
 
-    // 证件类型
-    private String idCardType;
-
-    // 证件号码
-    private String idCardNumber;
-
     public String getCode() {
         return code;
     }
@@ -287,22 +281,6 @@ public class PayRollDetail extends ABaseDO {
 
     public void setCorpName(String corpName) {
         this.corpName = corpName;
-    }
-
-    public String getIdCardType() {
-        return idCardType;
-    }
-
-    public void setIdCardType(String idCardType) {
-        this.idCardType = idCardType;
-    }
-
-    public String getIdCardNumber() {
-        return idCardNumber;
-    }
-
-    public void setIdCardNumber(String idCardNumber) {
-        this.idCardNumber = idCardNumber;
     }
 
     public String getCorpCode() {

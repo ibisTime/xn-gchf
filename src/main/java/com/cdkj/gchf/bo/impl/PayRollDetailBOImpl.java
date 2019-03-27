@@ -31,13 +31,14 @@ public class PayRollDetailBOImpl extends PaginableBOImpl<PayRollDetail>
     @Override
     public void savePayRollDetail(String projectCode,
             List<XN631770ReqDetail> data) {
+
         for (XN631770ReqDetail xn631770ReqDetail : data) {
             String code = OrderNoGenerater
                 .generate(EGeneratePrefix.PayRollDetail.getCode());
             PayRollDetail payRollDetail = new PayRollDetail();
+            BeanUtils.copyProperties(xn631770ReqDetail, payRollDetail);
             payRollDetail.setCode(code);
             payRollDetail.setPayRollCode(projectCode);
-            BeanUtils.copyProperties(xn631770ReqDetail, payRollDetail);
             payRollDetailDAO.insert(payRollDetail);
         }
     }

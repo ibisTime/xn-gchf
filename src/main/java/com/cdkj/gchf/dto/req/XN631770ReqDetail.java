@@ -7,9 +7,13 @@ import javax.validation.constraints.Min;
 import org.hibernate.validator.constraints.NotBlank;
 
 public class XN631770ReqDetail {
+    // 证件类型
+    @NotBlank
+    private String idcardType;
+
     // 证件号码
     @NotBlank
-    private String idCardNumber;
+    private String idcardNumber;
 
     // 出勤天数
     private Integer days;
@@ -63,11 +67,11 @@ public class XN631770ReqDetail {
     private String thirdPayRollCode;
 
     public String getIdCardNumber() {
-        return idCardNumber;
+        return idcardNumber;
     }
 
-    public void setIdCardNumber(String idCardNumber) {
-        this.idCardNumber = idCardNumber;
+    public void setIdCardNumber(String idcardNumber) {
+        this.idcardNumber = idcardNumber;
     }
 
     public Integer getDays() {
@@ -180,6 +184,22 @@ public class XN631770ReqDetail {
 
     public void setThirdPayRollCode(String thirdPayRollCode) {
         this.thirdPayRollCode = thirdPayRollCode;
+    }
+
+    public String getIdcardType() {
+        return idcardType;
+    }
+
+    public void setIdcardType(String idcardType) {
+        this.idcardType = idcardType;
+    }
+
+    public String getIdcardNumber() {
+        return idcardNumber;
+    }
+
+    public void setIdcardNumber(String idcardNumber) {
+        this.idcardNumber = idcardNumber;
     }
 
 }

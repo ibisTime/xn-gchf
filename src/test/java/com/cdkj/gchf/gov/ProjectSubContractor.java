@@ -61,14 +61,15 @@ public class ProjectSubContractor {
         Map<String, String> dataMap = new HashMap<String, String>();
         dataMap.put("pageIndex", "0");
         dataMap.put("pageSize", "10");
-        dataMap.put("projectCode", "3311222019030002");
-        // dataMap.put("corpCode", "91331122MA2A0M9B7N");
+        dataMap.put("projectCode", "33112220190310002");
+        dataMap.put("corpCode", "913311001484116584");
 
         String data = JSONObject.toJSON(dataMap).toString();
 
         System.out.println(data);
 
-        GovConnecter.getGovData("ProjectSubContractor.Query", data);
+        GovConnecter.getGovData("ProjectSubContractor.Query", data,
+            "33112220190310002", "24484b262dd63dd584902a266bdbdca0");
 
         // subcontractor-add-2019031411-1-0280
     }

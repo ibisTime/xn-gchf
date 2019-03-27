@@ -23,9 +23,6 @@ public class XN631772Req {
     // 工人所属企业统一社会信用代码
     private String corpCode;
 
-    // 工人所属企业名称
-    private String corpName;
-
     // 平台为班组分配的接入编号
     private String teamSysNo;
 
@@ -61,14 +58,6 @@ public class XN631772Req {
 
     public void setCorpCode(String corpCode) {
         this.corpCode = corpCode;
-    }
-
-    public String getCorpName() {
-        return corpName;
-    }
-
-    public void setCorpName(String corpName) {
-        this.corpName = corpName;
     }
 
     public String getTeamSysNo() {

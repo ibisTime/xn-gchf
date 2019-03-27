@@ -5,25 +5,33 @@ import java.util.List;
 import org.apache.commons.collections.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.cdkj.gchf.ao.IProjectWorkerEntryExitHistoryAO;
 import com.cdkj.gchf.bo.IOperateLogBO;
 import com.cdkj.gchf.bo.IProjectConfigBO;
 import com.cdkj.gchf.bo.IProjectWorkerBO;
 import com.cdkj.gchf.bo.IProjectWorkerEntryExitHistoryBO;
+import com.cdkj.gchf.bo.ITeamMasterBO;
 import com.cdkj.gchf.bo.IUserBO;
 import com.cdkj.gchf.bo.base.Paginable;
 import com.cdkj.gchf.common.AesUtils;
 import com.cdkj.gchf.domain.ProjectConfig;
 import com.cdkj.gchf.domain.ProjectWorker;
 import com.cdkj.gchf.domain.ProjectWorkerEntryExitHistory;
+import com.cdkj.gchf.domain.TeamMaster;
 import com.cdkj.gchf.domain.User;
 import com.cdkj.gchf.dto.req.XN631730Req;
 import com.cdkj.gchf.dto.req.XN631732Req;
 import com.cdkj.gchf.dto.req.XN631913Req;
 import com.cdkj.gchf.dto.req.XN631914Req;
 import com.cdkj.gchf.dto.req.XN631915Req;
+import com.cdkj.gchf.enums.EOperateLogOperate;
+import com.cdkj.gchf.enums.EOperateLogRefType;
+import com.cdkj.gchf.enums.EUploadStatus;
 import com.cdkj.gchf.exception.BizException;
+import com.cdkj.gchf.gov.AsyncQueueHolder;
+import com.cdkj.gchf.gov.GovConnecter;
 import com.google.gson.JsonObject;
 
 @Service
@@ -44,6 +52,9 @@ public class ProjectWorkerEntryExitHistoryAOImpl
 
     @Autowired
     private IProjectWorkerBO projectWorkerBO;
+
+    @Autowired
+    private ITeamMasterBO teamMasterBO;
 
     @Override
     public String addProjectWorkerEntryExitHistory(XN631730Req data) {
@@ -144,6 +155,7 @@ public class ProjectWorkerEntryExitHistoryAOImpl
             .queryProjectWorkerEntryExitHistory(code);
     }
 
+    @Transactional
     @Override
     public void uploadProjectWorkerEntryExitHistoryList(String userId,
             List<String> codeList) {
@@ -155,9 +167,29 @@ public class ProjectWorkerEntryExitHistoryAOImpl
             ProjectConfig projectConfigByLocal = projectConfigBO
                 .getProjectConfigByLocal(
                     projectWorkerEntryExitHistory.getProjectCode());
-            JsonObject jsonObject = new JsonObject();
-            jsonObject.addProperty("projectCode",
-                projectConfigByLocal.getProjectCode());
+
+            TeamMaster teamMaster = teamMasterBO
+                .getTeamMaster(projectWorkerEntryExitHistory.getTeamSysNo());
+
+            JsonObject requestJson = projectWorkerEntryExitHistoryBO
+                .getRequestJson(teamMaster, projectWorkerEntryExitHistory,
+                    projectConfigByLocal);
+            System.out.println(requestJson.toString());
+
+            String resString = GovConnecter.getGovData("WorkerEntryExit.Add",
+                requestJson.toString(), projectConfigByLocal.getProjectCode(),
+                projectConfigByLocal.getSecret());
+
+            String operateLog = operateLogBO.saveOperateLog(
+                EOperateLogRefType.ProjectWorkerEntryExitHistory.getCode(),
+                code, EOperateLogOperate.UploadProjectWorkerEntryExitHistory
+                    .getValue(),
+                briefUser, null);
+
+            AsyncQueueHolder.addSerial(resString, projectConfigByLocal,
+                "projectWorkerEntryExitHistoryBO", code,
+                EUploadStatus.UPLOAD_UNEDITABLE.getCode(), operateLog);
+
         }
     }
 

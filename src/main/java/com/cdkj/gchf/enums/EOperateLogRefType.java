@@ -18,7 +18,11 @@ public enum EOperateLogRefType {
 
     WorkContract("05", "劳动合同信息"),
 
-    WorkAttendance("06", "人员考勤信息");
+    WorkAttendance("06", "人员考勤信息"),
+
+    ProjectWorkerEntryExitHistory("07", "人员进退场信息"),
+
+    PayRoll("08", "工资单信息");
 
     EOperateLogRefType(String code, String value) {
         this.code = code;

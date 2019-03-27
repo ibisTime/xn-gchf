@@ -175,4 +175,9 @@ public class PayRollBOImpl extends PaginableBOImpl<PayRoll>
         return data;
     }
 
+    @Override
+    public PayRoll getPayRollByCondition(PayRoll condition) {
+        return payRollDAO.select(condition);
+    }
+
 }

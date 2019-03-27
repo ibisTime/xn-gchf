@@ -19,7 +19,6 @@ public class Payroll {
      */
     @Test
     public void payrollAdd() {
-
         Map<String, Object> dataMap = new HashMap<String, Object>();
         dataMap.put("projectCode", "33112220190310002");
         dataMap.put("corpCode", "913311001484116584");
@@ -31,9 +30,14 @@ public class Payroll {
 
         Map<String, String> detailMap = new HashMap<String, String>();
         detailMap.put("idCardType", "01");
+        detailMap.put("idCardNumber", AesUtils.encrypt("413024196804304833",
+            "24484b262dd63dd584902a266bdbdca0")
+        // "YUWesLNXSNln9U5qm/CabbuFulAkEcMPWkt7tIAhSKM="
+        );// 413024196804304833
         detailMap.put("idCardNumber", AesUtils.encrypt("421081199510142315",
             "24484b262dd63dd584902a266bdbdca0"));// 413024196804304833
         detailMap.put("days", "21");
+        // "eK+GfxqUJaqmzO/lx5KGDRkVt83bWuQsU7J7bS/WyPY="
         detailMap.put("workHours", "100");
         detailMap.put("payRollBankCardNumber", AesUtils.encrypt(
             "6217231208010442535", "24484b262dd63dd584902a266bdbdca0"));// 6217231208010442535
@@ -56,6 +60,7 @@ public class Payroll {
 
         System.out.println(data);
 
+        // GovConnecter.getGovData("Payroll.Add", data);
         GovConnecter.getGovData("Payroll.Add", data, "33112220190310002",
             "24484b262dd63dd584902a266bdbdca0");
 

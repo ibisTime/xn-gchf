@@ -19,8 +19,11 @@
 			<if test="payRollCode != null and payRollCode != '' ">
                 AND t.pay_roll_code = #{payRollCode}
             </if>
-            <if test="corp_name != null and corp_name != '' ">
+            <if test="corpName != null and corpName != '' ">
                 AND t.corp_name = #{corpName}
+            </if>
+            <if test="teamSysNo != null and teamSysNo != '' ">
+                AND t.team_sys_no = #{teamSysNo}
             </if>
 		</trim>
 	</sql>

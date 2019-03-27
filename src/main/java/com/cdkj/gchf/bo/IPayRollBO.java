@@ -23,6 +23,8 @@ public interface IPayRollBO extends IPaginableBO<PayRoll> {
 
     public PayRoll getPayRoll(String code);
 
+    public PayRoll getPayRollByCondition(PayRoll condition);
+
     /****国家平台接口****/
     public void doUpload(XN631920Req req, ProjectConfig projectConfig);
 

@@ -22,7 +22,12 @@ public enum EOperateLogOperate {
 
     UploadWorkContract("07", "上传劳动合同信息"),
 
-    UploadWorkAtendance("08", "上传人员考勤信息");
+    UploadWorkAtendance("08", "上传人员考勤信息"),
+
+    UploadProjectWorkerEntryExitHistory("09", "上传人员进退场信息"),
+
+    UploadPayRoll("10", "上传工资单信息");
+
     EOperateLogOperate(String code, String value) {
         this.code = code;
         this.value = value;

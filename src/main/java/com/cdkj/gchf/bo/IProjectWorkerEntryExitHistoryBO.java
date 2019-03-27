@@ -6,10 +6,12 @@ import com.cdkj.gchf.bo.base.IPaginableBO;
 import com.cdkj.gchf.bo.base.Paginable;
 import com.cdkj.gchf.domain.ProjectConfig;
 import com.cdkj.gchf.domain.ProjectWorkerEntryExitHistory;
+import com.cdkj.gchf.domain.TeamMaster;
 import com.cdkj.gchf.dto.req.XN631730Req;
 import com.cdkj.gchf.dto.req.XN631732Req;
 import com.cdkj.gchf.dto.req.XN631914Req;
 import com.cdkj.gchf.dto.req.XN631915Req;
+import com.google.gson.JsonObject;
 
 public interface IProjectWorkerEntryExitHistoryBO
         extends IPaginableBO<ProjectWorkerEntryExitHistory> {
@@ -27,6 +29,10 @@ public interface IProjectWorkerEntryExitHistoryBO
 
     public ProjectWorkerEntryExitHistory getProjectWorkerEntryExitHistory(
             String code);
+
+    public JsonObject getRequestJson(TeamMaster teamMaster,
+            ProjectWorkerEntryExitHistory projectWorkerEntryExitHistory,
+            ProjectConfig projectConfigByLocal);
 
     /****国家平台接口****/
     public void doUpload(XN631914Req req, ProjectConfig projectConfig);

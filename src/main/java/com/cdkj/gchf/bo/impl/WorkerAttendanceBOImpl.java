@@ -18,6 +18,7 @@ import com.cdkj.gchf.common.DateUtil;
 import com.cdkj.gchf.core.OrderNoGenerater;
 import com.cdkj.gchf.dao.IWorkerAttendanceDAO;
 import com.cdkj.gchf.domain.ProjectConfig;
+import com.cdkj.gchf.domain.TeamMaster;
 import com.cdkj.gchf.domain.WorkerAttendance;
 import com.cdkj.gchf.dto.req.XN631710Req;
 import com.cdkj.gchf.dto.req.XN631712Req;
@@ -121,13 +122,15 @@ public class WorkerAttendanceBOImpl extends PaginableBOImpl<WorkerAttendance>
     }
 
     @Override
-    public JsonObject getRequestJson(WorkerAttendance workerAttendance,
+    public JsonObject getRequestJson(TeamMaster teamMaster,
+            WorkerAttendance workerAttendance,
             ProjectConfig projectConfigByLocal) {
         workerAttendance.setProjectCode(projectConfigByLocal.getProjectCode());
         JsonObject jsonObject = new JsonObject();
         jsonObject.addProperty("projectCode",
             projectConfigByLocal.getProjectCode());
-        jsonObject.addProperty("teamSysNo", workerAttendance.getTeamSysNo());
+
+        jsonObject.addProperty("teamSysNo", teamMaster.getTeamSysNo());
         JsonArray dataList = new JsonArray();
         JsonObject childJson = new JsonObject();
         childJson.addProperty("idCardType", workerAttendance.getIdCardType());

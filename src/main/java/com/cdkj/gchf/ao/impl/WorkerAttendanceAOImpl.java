@@ -12,6 +12,7 @@ import com.cdkj.gchf.bo.IUserBO;
 import com.cdkj.gchf.bo.IWorkerAttendanceBO;
 import com.cdkj.gchf.bo.base.Paginable;
 import com.cdkj.gchf.domain.ProjectConfig;
+import com.cdkj.gchf.domain.TeamMaster;
 import com.cdkj.gchf.domain.User;
 import com.cdkj.gchf.domain.WorkerAttendance;
 import com.cdkj.gchf.dto.req.XN631710Req;
@@ -111,9 +112,11 @@ public class WorkerAttendanceAOImpl implements IWorkerAttendanceAO {
             if (projectConfigByLocal == null) {
                 throw new BizException("XN631714", "该项目未配置，无法查询");
             }
-            // teamMasterBO.getTeamMaster(workerAttendance.getTeamSysNo());
-            JsonObject requestJson = workerAttendanceBO
-                .getRequestJson(workerAttendance, projectConfigByLocal);
+            TeamMaster teamMaster = teamMasterBO
+                .getTeamMaster(workerAttendance.getTeamSysNo());
+
+            JsonObject requestJson = workerAttendanceBO.getRequestJson(
+                teamMaster, workerAttendance, projectConfigByLocal);
             System.out.println(requestJson);
             String resString = GovConnecter.getGovData("WorkerAttendance.Add",
                 requestJson.toString(), projectConfigByLocal.getProjectCode(),

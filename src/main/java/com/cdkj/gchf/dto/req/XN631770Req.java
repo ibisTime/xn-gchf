@@ -11,7 +11,6 @@ public class XN631770Req {
     private String userId;
 
     // 工资单编码
-    @NotBlank
     private String payRollCode;
 
     // 平台为项目分配的接入编码
@@ -33,10 +32,6 @@ public class XN631770Req {
     // 发放工资的月份
     @NotBlank
     private String payMonth;
-
-    // 证件类型
-    @NotBlank
-    private String idCardType;
 
     @NotEmpty
     private List<XN631770ReqDetail> detailList;
@@ -89,14 +84,6 @@ public class XN631770Req {
 
     public void setPayMonth(String payMonth) {
         this.payMonth = payMonth;
-    }
-
-    public String getIdCardType() {
-        return idCardType;
-    }
-
-    public void setIdCardType(String idCardType) {
-        this.idCardType = idCardType;
     }
 
     public List<XN631770ReqDetail> getDetailList() {

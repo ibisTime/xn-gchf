@@ -32,9 +32,6 @@
 			<if test="code != null and code != '' ">
 				AND t.code = #{code}
 			</if>
-			<if test="teamSysNo != null and teamSysNo != '' ">
-				AND t.code = #{teamSysNo}
-			</if>
 			<if test="projectCode != null and projectCode != '' ">
 				AND t.project_code = #{projectCode}
 			</if>
@@ -50,6 +47,9 @@
 			<if test="uploadStatus != null and uploadStatus != '' ">
 				AND t.upload_status = #{uploadStatus}
 			</if>
+			<if test="teamSysNo != null and teamSysNo != '' ">
+                AND t.team_sys_no = #{teamSysNo}
+            </if>
 		</trim>
 	</sql>
 	

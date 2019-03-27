@@ -21,6 +21,7 @@
 		<result column="is_back_pay" property="isBackPay" />
 		<result column="balance_date" property="balanceDate" />
 		<result column="third_pay_roll_code" property="thirdPayRollCode" />
+		<result column="upload_status" property="uploadStatus" />
 	</resultMap>
 	<sql id="where_condition">
 		<trim prefix="WHERE" prefixOverrides="AND | OR">

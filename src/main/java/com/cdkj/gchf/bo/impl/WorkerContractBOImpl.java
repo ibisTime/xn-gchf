@@ -9,7 +9,9 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
+import com.alibaba.fastjson.serializer.SerializerFeature;
 import com.cdkj.gchf.bo.IWorkerContractBO;
 import com.cdkj.gchf.bo.base.Paginable;
 import com.cdkj.gchf.bo.base.PaginableBOImpl;
@@ -18,6 +20,7 @@ import com.cdkj.gchf.core.OrderNoGenerater;
 import com.cdkj.gchf.dao.IWorkerContractDAO;
 import com.cdkj.gchf.domain.ProjectConfig;
 import com.cdkj.gchf.domain.WorkerContract;
+import com.cdkj.gchf.dto.req.SerializeFilterHolder;
 import com.cdkj.gchf.dto.req.XN631670Req;
 import com.cdkj.gchf.dto.req.XN631672Req;
 import com.cdkj.gchf.dto.req.XN631916Req;
@@ -71,8 +74,13 @@ public class WorkerContractBOImpl extends PaginableBOImpl<WorkerContract>
                 contract.getIdCardNumber(), projectConfig.getSecret()));
         }
 
-        String data = JSONObject.toJSONStringWithDateFormat(req, "yyyy-MM-dd")
-            .toString();
+        // String data = JSONObject.toJSONStringWithDateFormat(req,
+        // "yyyy-MM-dd")
+        // .toString();
+        JSON.DEFFAULT_DATE_FORMAT = "yyyy-MM-dd";
+        String data = JSONObject.toJSONString(req,
+            SerializeFilterHolder.XN631916Filter(),
+            SerializerFeature.WriteDateUseDateFormat);
 
         String resString = GovConnecter.getGovData("WorkerContract.Add", data,
             projectConfig.getProjectCode(), projectConfig.getSecret());

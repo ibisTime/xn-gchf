@@ -1,5 +1,7 @@
 package com.cdkj.gchf.dto.req;
 
+import java.util.Date;
+
 import javax.validation.constraints.Min;
 
 import org.hibernate.validator.constraints.NotBlank;
@@ -41,7 +43,7 @@ public class XN631911ReqWorker extends APIRequestBase {
     private Integer workRole;
 
     // 制卡时间
-    private String issueCardDate;
+    private Date issueCardDate;
 
     // 制卡采集照片
     private String issueCardPicUrl;
@@ -375,11 +377,11 @@ public class XN631911ReqWorker extends APIRequestBase {
         this.expiryDate = expiryDate;
     }
 
-    public String getIssueCardDate() {
+    public Date getIssueCardDate() {
         return issueCardDate;
     }
 
-    public void setIssueCardDate(String issueCardDate) {
+    public void setIssueCardDate(Date issueCardDate) {
         this.issueCardDate = issueCardDate;
     }
 

@@ -20,11 +20,11 @@ public class Payroll {
     @Test
     public void payrollAdd() {
         Map<String, Object> dataMap = new HashMap<String, Object>();
-        dataMap.put("projectCode", "3311222019030002");
-        dataMap.put("corpCode", "91331122MA2A0M9B7N");
-        dataMap.put("corpName", "浙江兰芽科技有限公司");
-        dataMap.put("teamSysNo", "100156750");
-        dataMap.put("payMonth", "2018-11");
+        dataMap.put("projectCode", "33112220190310002");
+        dataMap.put("corpCode", "913311001484116584");
+        dataMap.put("corpName", "正达建设有限公司");
+        dataMap.put("teamSysNo", "1500151464");
+        dataMap.put("payMonth", "2019-03");
 
         List<Map<String, String>> detailList = new ArrayList<>();
 
@@ -34,8 +34,11 @@ public class Payroll {
             "24484b262dd63dd584902a266bdbdca0")
         // "YUWesLNXSNln9U5qm/CabbuFulAkEcMPWkt7tIAhSKM="
         );// 413024196804304833
+        detailMap.put("idCardNumber", AesUtils.encrypt("421081199510142315",
+            "24484b262dd63dd584902a266bdbdca0"));// 413024196804304833
         detailMap.put("days", "21");
         // "eK+GfxqUJaqmzO/lx5KGDRkVt83bWuQsU7J7bS/WyPY="
+        detailMap.put("workHours", "100");
         detailMap.put("payRollBankCardNumber", AesUtils.encrypt(
             "6217231208010442535", "24484b262dd63dd584902a266bdbdca0"));// 6217231208010442535
         detailMap.put("payRollBankCode", "102");
@@ -47,7 +50,7 @@ public class Payroll {
         detailMap.put("totalPayAmount", "6500");
         detailMap.put("actualAmount", "6500");
         detailMap.put("isBackPay", "0");
-        detailMap.put("balanceDate", "2018-11-15");
+        detailMap.put("balanceDate", "2019-03-11");
         detailMap.put("thirdPayRollCode", "01");
 
         detailList.add(detailMap);
@@ -70,15 +73,18 @@ public class Payroll {
         Map<String, String> dataMap = new HashMap<String, String>();
         dataMap.put("pageIndex", "0");
         dataMap.put("pageSize", "10");
-        dataMap.put("date", "2019-03-13");
-        dataMap.put("corpCode", "91331122MA2A0M9B7N");
-        dataMap.put("projectCode", "3311222019030002");
+        dataMap.put("payMonth", "2019-03");
+        dataMap.put("corpName", "正达建设有限公司");
+        dataMap.put("corpCode", "913311001484116584");
+        dataMap.put("projectCode", "33112220190310002");
+        dataMap.put("teamSysNo", "1500151464");
 
         String data = JSONObject.toJSON(dataMap).toString();
 
         System.out.println(data);
 
-        GovConnecter.getGovData("WorkerAttendance.Query", data);
+        GovConnecter.getGovData("Payroll.Query", data, "33112220190310002",
+            "24484b262dd63dd584902a266bdbdca0");
 
         // team-add-2019031411-1-0262
         // teamSysNo : 100156750

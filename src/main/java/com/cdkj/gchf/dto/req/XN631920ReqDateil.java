@@ -72,6 +72,10 @@ public class XN631920ReqDateil {
     @NotBlank
     private String thirdPayRollCode;
 
+    /****DB Properties****/
+    // 工人名称
+    private String workerName;
+
     public String getIdCardType() {
         return idCardType;
     }
@@ -190,6 +194,14 @@ public class XN631920ReqDateil {
 
     public void setThirdPayRollCode(String thirdPayRollCode) {
         this.thirdPayRollCode = thirdPayRollCode;
+    }
+
+    public String getWorkerName() {
+        return workerName;
+    }
+
+    public void setWorkerName(String workerName) {
+        this.workerName = workerName;
     }
 
 }

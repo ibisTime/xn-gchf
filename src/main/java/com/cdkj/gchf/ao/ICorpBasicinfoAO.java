@@ -8,6 +8,7 @@ import com.cdkj.gchf.bo.base.Paginable;
 import com.cdkj.gchf.domain.CorpBasicinfo;
 import com.cdkj.gchf.dto.req.XN631250Req;
 import com.cdkj.gchf.dto.req.XN631251Req;
+import com.cdkj.gchf.dto.req.XN631253ReqCode;
 import com.cdkj.gchf.dto.req.XN631900Req;
 import com.cdkj.gchf.dto.req.XN631901Req;
 
@@ -21,7 +22,7 @@ public interface ICorpBasicinfoAO {
 
     public void editCorpBasicinfo(XN631251Req data);
 
-    void uploadCorpBasicinfo(List<String> codeList, String userId);
+    void uploadCorpBasicinfo(List<XN631253ReqCode> codeList, String userId);
 
     public Paginable<CorpBasicinfo> queryCorpBasicinfoPage(int start, int limit,
             CorpBasicinfo condition);

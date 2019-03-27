@@ -19,6 +19,9 @@ public class XN631257Req extends AListReq {
     @NotBlank
     private String userId;
 
+    // 上传状态
+    private String uploadStatus;
+
     public String getCorpCode() {
         return corpCode;
     }
@@ -33,6 +36,14 @@ public class XN631257Req extends AListReq {
 
     public void setUserId(String userId) {
         this.userId = userId;
+    }
+
+    public String getUploadStatus() {
+        return uploadStatus;
+    }
+
+    public void setUploadStatus(String uploadStatus) {
+        this.uploadStatus = uploadStatus;
     }
 
 }

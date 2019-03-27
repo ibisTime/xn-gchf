@@ -8,7 +8,6 @@ import org.springframework.stereotype.Service;
 import com.cdkj.gchf.ao.IWorkerAttendanceAO;
 import com.cdkj.gchf.bo.IOperateLogBO;
 import com.cdkj.gchf.bo.IProjectConfigBO;
-import com.cdkj.gchf.bo.ITeamMasterBO;
 import com.cdkj.gchf.bo.IUserBO;
 import com.cdkj.gchf.bo.IWorkerAttendanceBO;
 import com.cdkj.gchf.bo.base.Paginable;
@@ -41,9 +40,6 @@ public class WorkerAttendanceAOImpl implements IWorkerAttendanceAO {
 
     @Autowired
     private IOperateLogBO operateLogBO;
-
-    @Autowired
-    private ITeamMasterBO teamMasterBO;
 
     @Override
     public String addWorkerAttendance(XN631710Req data) {

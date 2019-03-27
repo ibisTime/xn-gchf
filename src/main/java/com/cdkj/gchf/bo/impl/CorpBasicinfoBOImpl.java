@@ -1,5 +1,6 @@
 package com.cdkj.gchf.bo.impl;
 
+import java.math.BigDecimal;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -14,6 +15,7 @@ import com.cdkj.gchf.bo.ICorpBasicinfoBO;
 import com.cdkj.gchf.bo.base.Paginable;
 import com.cdkj.gchf.bo.base.PaginableBOImpl;
 import com.cdkj.gchf.common.AesUtils;
+import com.cdkj.gchf.common.DateUtil;
 import com.cdkj.gchf.core.OrderNoGenerater;
 import com.cdkj.gchf.dao.ICorpBasicinfoDAO;
 import com.cdkj.gchf.domain.CorpBasicinfo;
@@ -44,6 +46,23 @@ public class CorpBasicinfoBOImpl extends PaginableBOImpl<CorpBasicinfo>
         CorpBasicinfo corpBasicinfo = new CorpBasicinfo();
         BeanUtils.copyProperties(req, corpBasicinfo);
         corpBasicinfo.setCode(code);
+
+        if (StringUtils.isNotBlank(req.getRegCapital())) {
+            corpBasicinfo.setRegCapital(new BigDecimal(req.getRegCapital()));
+        }
+        if (StringUtils.isNotBlank(req.getFactRegCapital())) {
+            corpBasicinfo
+                .setFactRegCapital(new BigDecimal(req.getFactRegCapital()));
+        }
+        if (StringUtils.isNotBlank(req.getRegisterDate())) {
+            corpBasicinfo.setRegisterDate(DateUtil.strToDate(
+                req.getRegisterDate(), DateUtil.FRONT_DATE_FORMAT_STRING));
+        }
+        if (StringUtils.isNotBlank(req.getEstablishDate())) {
+            corpBasicinfo.setEstablishDate(DateUtil.strToDate(
+                req.getEstablishDate(), DateUtil.FRONT_DATE_FORMAT_STRING));
+        }
+
         corpBasicinfo.setUploadStatus(EUploadStatus.TO_UPLOAD.getCode());
 
         corpBasicinfoDAO.insert(corpBasicinfo);
@@ -67,6 +86,22 @@ public class CorpBasicinfoBOImpl extends PaginableBOImpl<CorpBasicinfo>
 
         CorpBasicinfo corpBasicinfo = new CorpBasicinfo();
         BeanUtils.copyProperties(data, corpBasicinfo);
+
+        if (StringUtils.isNotBlank(data.getRegCapital())) {
+            corpBasicinfo.setRegCapital(new BigDecimal(data.getRegCapital()));
+        }
+        if (StringUtils.isNotBlank(data.getFactRegCapital())) {
+            corpBasicinfo
+                .setFactRegCapital(new BigDecimal(data.getFactRegCapital()));
+        }
+        if (StringUtils.isNotBlank(data.getRegisterDate())) {
+            corpBasicinfo.setRegisterDate(DateUtil.strToDate(
+                data.getRegisterDate(), DateUtil.FRONT_DATE_FORMAT_STRING));
+        }
+        if (StringUtils.isNotBlank(data.getEstablishDate())) {
+            corpBasicinfo.setEstablishDate(DateUtil.strToDate(
+                data.getEstablishDate(), DateUtil.FRONT_DATE_FORMAT_STRING));
+        }
 
         corpBasicinfoDAO.update(corpBasicinfo);
     }

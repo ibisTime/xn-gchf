@@ -43,7 +43,7 @@
 				AND t.corp_code = #{corpCode}
 			</if>
 			<if test="corpName != null and corpName != '' ">
-				AND t.corp_name = #{corpName}
+				AND t.corp_name like "%"#{corpName}"%"
 			</if>
 			<if test="corpType != null and corpType != '' ">
 				AND t.corp_type = #{corpType}
@@ -207,4 +207,7 @@
 		WHERE code = #{code}
 	</update>
 	
+	<delete id="delete_corpBasicinfo">
+		DELETE FROM tqy_corp_basicinfo WHERE code = #{code}
+	</delete>
 </mapper>

@@ -8,6 +8,7 @@ import java.util.Map;
 import org.junit.Test;
 
 import com.alibaba.fastjson.JSONObject;
+import com.cdkj.gchf.common.AesUtils;
 
 public class Payroll {
     /**
@@ -18,7 +19,6 @@ public class Payroll {
      */
     @Test
     public void payrollAdd() {
-
         Map<String, Object> dataMap = new HashMap<String, Object>();
         dataMap.put("projectCode", "3311222019030002");
         dataMap.put("corpCode", "91331122MA2A0M9B7N");
@@ -30,14 +30,18 @@ public class Payroll {
 
         Map<String, String> detailMap = new HashMap<String, String>();
         detailMap.put("idCardType", "01");
-        detailMap.put("idCardNumber",
-            "YUWesLNXSNln9U5qm/CabbuFulAkEcMPWkt7tIAhSKM=");// 413024196804304833
+        detailMap.put("idCardNumber", AesUtils.encrypt("413024196804304833",
+            "24484b262dd63dd584902a266bdbdca0")
+        // "YUWesLNXSNln9U5qm/CabbuFulAkEcMPWkt7tIAhSKM="
+        );// 413024196804304833
         detailMap.put("days", "21");
-        detailMap.put("payRollBankCardNumber",
-            "FJfdPSnfyNeRd9frKTIQJWEmjPq/oNT7HLl+jHr4oF0=");// 6217231208010442535
+        // "eK+GfxqUJaqmzO/lx5KGDRkVt83bWuQsU7J7bS/WyPY="
+        detailMap.put("payRollBankCardNumber", AesUtils.encrypt(
+            "6217231208010442535", "24484b262dd63dd584902a266bdbdca0"));// 6217231208010442535
         detailMap.put("payRollBankCode", "102");
         detailMap.put("payRollBankName", "中国工商银行");
-        detailMap.put("PayBankCardNumber", "qQUjCYHpGVoKcCIov+pZ5g==");// 381874747048
+        detailMap.put("PayBankCardNumber", AesUtils.encrypt("381874747048",
+            "24484b262dd63dd584902a266bdbdca0"));// 381874747048
         detailMap.put("PayBankCode", "104");
         detailMap.put("PayBankName", "中国银行");
         detailMap.put("totalPayAmount", "6500");
@@ -53,7 +57,9 @@ public class Payroll {
 
         System.out.println(data);
 
-        GovConnecter.getGovData("Payroll.Add", data);
+        // GovConnecter.getGovData("Payroll.Add", data);
+        GovConnecter.getGovData("Payroll.Add", data, "33112220190310002",
+            "24484b262dd63dd584902a266bdbdca0");
 
         // workderattendance-add-2019031415-1-2270
     }

@@ -1,9 +1,9 @@
 package com.cdkj.gchf.api.impl;
 
-import com.cdkj.gchf.ao.IProjectWorkerEntryExitHistoryAO;
+import com.cdkj.gchf.ao.IPayRollAO;
 import com.cdkj.gchf.api.AProcessor;
 import com.cdkj.gchf.core.ObjValidater;
-import com.cdkj.gchf.dto.req.XN631734Req;
+import com.cdkj.gchf.dto.req.XN631774Req;
 import com.cdkj.gchf.dto.res.BooleanRes;
 import com.cdkj.gchf.exception.BizException;
 import com.cdkj.gchf.exception.ParaException;
@@ -12,29 +12,28 @@ import com.cdkj.gchf.spring.SpringContextHolder;
 
 /**
  * 
- * @ClassName:  XN631734   
- * @Description:批量上传人员进退场
+ * @ClassName:  XN631774   
+ * @Description: 批量上传工资单
  * @author: Old3
- * @date:   2019年3月26日 上午9:49:17     
+ * @date:   2019年3月26日 下午2:10:12     
  * @Copyright:
  */
-public class XN631734 extends AProcessor {
-    private IProjectWorkerEntryExitHistoryAO projectWorkerEntryExitHistoryAO = SpringContextHolder
-        .getBean(IProjectWorkerEntryExitHistoryAO.class);
+public class XN631774 extends AProcessor {
+    private IPayRollAO payRollAO = SpringContextHolder
+        .getBean(IPayRollAO.class);
 
-    private XN631734Req req = null;
+    private XN631774Req req = null;
 
     @Override
     public Object doBusiness() throws BizException {
-        projectWorkerEntryExitHistoryAO.uploadProjectWorkerEntryExitHistoryList(
-            req.getUserId(), req.getCodeList());
+        payRollAO.uploadPayRollList(req.getUserId(), req.getCodeList());
         return new BooleanRes(true);
     }
 
     @Override
     public void doCheck(String inputparams, String operator)
             throws ParaException {
-        req = JsonUtils.json2Bean(inputparams, XN631734Req.class);
+        req = JsonUtils.json2Bean(inputparams, XN631774Req.class);
         ObjValidater.validateReq(req);
     }
 

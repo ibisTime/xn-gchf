@@ -29,6 +29,10 @@ public interface IPayRollAO {
 
     public PayRoll getPayRoll(String code);
 
+    public void uploadPayRollList(String userId, List<String> codeList);
+
+    public void refreshPayRollCodeByLocal(String code, String payRollCode);
+
     /****国家平台接口****/
     public void uploadPayRoll(XN631920Req data);
 

@@ -18,7 +18,7 @@ public class TeamMaster extends ABaseDO {
     private String code;
 
     // 班组编号
-    private Integer teamSysNo;
+    private String teamSysNo;
 
     // 项目编码
     private String projectCode;
@@ -81,11 +81,11 @@ public class TeamMaster extends ABaseDO {
         this.code = code;
     }
 
-    public Integer getTeamSysNo() {
+    public String getTeamSysNo() {
         return teamSysNo;
     }
 
-    public void setTeamSysNo(Integer teamSysNo) {
+    public void setTeamSysNo(String teamSysNo) {
         this.teamSysNo = teamSysNo;
     }
 

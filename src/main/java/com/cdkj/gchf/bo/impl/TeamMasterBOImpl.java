@@ -80,7 +80,7 @@ public class TeamMasterBOImpl extends PaginableBOImpl<TeamMaster>
         TeamMaster teamMaster = new TeamMaster();
 
         teamMaster.setCode(code);
-        teamMaster.setTeamSysNo(Integer.parseInt(teamSysNo));
+        teamMaster.setTeamSysNo(teamSysNo);
 
         teamMasterDAO.updateTeamSysNo(teamMaster);
     }
@@ -156,6 +156,11 @@ public class TeamMasterBOImpl extends PaginableBOImpl<TeamMaster>
             }
         }
         return data;
+    }
+
+    @Override
+    public TeamMaster getTeamMasterByCondition(TeamMaster condition) {
+        return teamMasterDAO.select(condition);
     }
 
 }

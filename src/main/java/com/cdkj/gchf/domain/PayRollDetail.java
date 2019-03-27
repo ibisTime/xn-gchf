@@ -72,6 +72,12 @@ public class PayRollDetail extends ABaseDO {
     // 第三方工资单编号
     private String thirdPayRollCode;
 
+    // 状态
+    private String uploadStatus;
+
+    // 补发日期
+    private String backPayMonth;
+
     public String getCode() {
         return code;
     }
@@ -222,6 +228,22 @@ public class PayRollDetail extends ABaseDO {
 
     public void setProjectCode(String projectCode) {
         this.projectCode = projectCode;
+    }
+
+    public String getUploadStatus() {
+        return uploadStatus;
+    }
+
+    public void setUploadStatus(String uploadStatus) {
+        this.uploadStatus = uploadStatus;
+    }
+
+    public String getBackPayMonth() {
+        return backPayMonth;
+    }
+
+    public void setBackPayMonth(String backPayMonth) {
+        this.backPayMonth = backPayMonth;
     }
 
 }

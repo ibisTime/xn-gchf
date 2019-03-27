@@ -28,6 +28,8 @@ public interface ITeamMasterBO extends IPaginableBO<TeamMaster> {
 
     public TeamMaster getTeamMaster(String code);
 
+    public TeamMaster getTeamMasterByCondition(TeamMaster condition);
+
     /****国家平台接口****/
     public void doUpload(XN631908Req req, ProjectConfig projectConfig);
 

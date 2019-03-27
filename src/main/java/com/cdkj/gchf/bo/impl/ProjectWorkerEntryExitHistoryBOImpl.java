@@ -1,5 +1,6 @@
 package com.cdkj.gchf.bo.impl;
 
+import java.text.SimpleDateFormat;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -18,6 +19,7 @@ import com.cdkj.gchf.core.OrderNoGenerater;
 import com.cdkj.gchf.dao.IProjectWorkerEntryExitHistoryDAO;
 import com.cdkj.gchf.domain.ProjectConfig;
 import com.cdkj.gchf.domain.ProjectWorkerEntryExitHistory;
+import com.cdkj.gchf.domain.TeamMaster;
 import com.cdkj.gchf.dto.req.XN631730Req;
 import com.cdkj.gchf.dto.req.XN631732Req;
 import com.cdkj.gchf.dto.req.XN631914Req;
@@ -28,6 +30,8 @@ import com.cdkj.gchf.exception.BizException;
 import com.cdkj.gchf.gov.GovConnecter;
 import com.cdkj.gchf.gov.GovUtil;
 import com.cdkj.gchf.gov.SerialHandler;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonObject;
 
 @Component
 public class ProjectWorkerEntryExitHistoryBOImpl
@@ -128,6 +132,36 @@ public class ProjectWorkerEntryExitHistoryBOImpl
         ProjectWorkerEntryExitHistory condition = new ProjectWorkerEntryExitHistory();
         condition.setCode(code);
         return projectWorkerEntryExitHistoryDAO.select(condition);
+    }
+
+    @Override
+    public JsonObject getRequestJson(TeamMaster teamMaster,
+            ProjectWorkerEntryExitHistory projectWorkerEntryExitHistory,
+            ProjectConfig projectConfigByLocal) {
+        JsonObject jsonObject = new JsonObject();
+        jsonObject.addProperty("projectCode",
+            projectConfigByLocal.getProjectCode());
+        jsonObject.addProperty("corpCode",
+            projectWorkerEntryExitHistory.getCorpCode());
+        jsonObject.addProperty("corpName",
+            projectWorkerEntryExitHistory.getCorpName());
+        jsonObject.addProperty("teamSysNo", teamMaster.getTeamSysNo());
+        JsonArray jsonArray = new JsonArray();
+        JsonObject childJson = new JsonObject();
+        childJson.addProperty("idCardType",
+            projectWorkerEntryExitHistory.getIdcardType());
+        childJson.addProperty("idCardNumber",
+            AesUtils.encrypt(projectWorkerEntryExitHistory.getIdcardNumber(),
+                projectConfigByLocal.getSecret()));
+        childJson.addProperty("date", new SimpleDateFormat("yyyy-MM-dd")
+            .format(projectWorkerEntryExitHistory.getDate()));
+        childJson.addProperty("voucher",
+            projectWorkerEntryExitHistory.getVoucherUrl());
+        childJson.addProperty("type", projectWorkerEntryExitHistory.getType());
+        jsonArray.add(childJson);
+        jsonObject.add("workerList", jsonArray);
+        System.out.println(jsonObject.toString());
+        return jsonObject;
     }
 
 }

@@ -3,7 +3,6 @@ package com.cdkj.gchf.gov;
 import java.lang.reflect.Method;
 import java.util.LinkedList;
 
-import org.apache.commons.collections.CollectionUtils;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
@@ -46,9 +45,7 @@ public class AsyncQueueHolder {
     private void syncSerial() {
 
         synchronized (this) {
-            while (CollectionUtils.isNotEmpty(serialMQHolder.serialMQ)) {
-                QueueBean queueBean = serialMQHolder.serialMQ.peekFirst();
-
+            for (QueueBean queueBean : serialMQHolder.serialMQ) {
                 AsyncRes asyncRes = GovUtil.queryAsyncHandleResult(
                     queueBean.getRequestSerialCode(),
                     queueBean.getProjectCode(), queueBean.getSecret());
@@ -64,7 +61,9 @@ public class AsyncQueueHolder {
                     if ("teamMasterBO".equals(queueBean.getBoClass())) {
                         syncTeamSysNo(queueBean.getCode(), asyncRes);
                     }
-
+                    if ("payRollDetailBO".equals(queueBean.getBoClass())) {
+                        syncPayRollDetailNo(queueBean.getCode(), asyncRes);
+                    }
                     serialMQHolder.serialMQ.remove(queueBean);
                 }
 
@@ -75,7 +74,6 @@ public class AsyncQueueHolder {
 
                     serialMQHolder.serialMQ.remove(queueBean);
                 }
-
             }
         }
 
@@ -109,8 +107,7 @@ public class AsyncQueueHolder {
             result = SpringContextHolder.getBean("operateLogBO");
 
             String remark = StringUtils.isEmpty(asyncRes.getResult())
-                    ? asyncRes.getMessage()
-                    : asyncRes.getResult();
+                    ? asyncRes.getMessage() : asyncRes.getResult();
             String[] arges = new String[] { code, remark };
 
             Method method = result.getClass().getMethod("refreshRemark",
@@ -139,6 +136,28 @@ public class AsyncQueueHolder {
                 new Class[] { String.class, String.class });
 
             teamMasterMethod.invoke(teamMaster, teamMasterArges);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+    }
+
+    private void syncPayRollDetailNo(String code, AsyncRes asyncRes) {
+        JSONObject resultJson = JSONObject.parseObject(asyncRes.getResult());
+        String payRollCode = resultJson.getString("payRollCode");
+
+        try {
+
+            // 更新工资单国家平台编号
+            Object payRollBO = SpringContextHolder.getBean("payRollBO");
+            String[] teamMasterArges = new String[] { code, payRollCode };
+
+            Method teamMasterMethod = payRollBO.getClass().getMethod(
+                "refreshPayRollCodeByLocal",
+                new Class[] { String.class, String.class });
+
+            teamMasterMethod.invoke(payRollBO, teamMasterArges);
 
         } catch (Exception e) {
             e.printStackTrace();

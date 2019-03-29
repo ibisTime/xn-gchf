@@ -86,7 +86,7 @@ public class XN631911ReqWorker extends APIRequestBase {
     private String politicsType;
 
     // 加入公会时间
-    private String joinedTime;
+    private Date joinedTime;
 
     // 手机号码
     @NotBlank
@@ -385,11 +385,11 @@ public class XN631911ReqWorker extends APIRequestBase {
         this.issueCardDate = issueCardDate;
     }
 
-    public String getJoinedTime() {
+    public Date getJoinedTime() {
         return joinedTime;
     }
 
-    public void setJoinedTime(String joinedTime) {
+    public void setJoinedTime(Date joinedTime) {
         this.joinedTime = joinedTime;
     }
 

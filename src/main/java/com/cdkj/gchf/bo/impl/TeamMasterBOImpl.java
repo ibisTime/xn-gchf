@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,6 +28,7 @@ import com.cdkj.gchf.enums.EGeneratePrefix;
 import com.cdkj.gchf.exception.BizException;
 import com.cdkj.gchf.gov.GovConnecter;
 import com.cdkj.gchf.gov.GovUtil;
+import com.cdkj.gchf.gov.SerialHandler;
 
 @Component
 public class TeamMasterBOImpl extends PaginableBOImpl<TeamMaster>
@@ -101,8 +103,10 @@ public class TeamMasterBOImpl extends PaginableBOImpl<TeamMaster>
         String data = JSONObject.toJSONStringWithDateFormat(req, "yyyy-MM-dd")
             .toString();
 
-        GovConnecter.getGovData("Team.Add", data,
+        String resString = GovConnecter.getGovData("Team.Add", data,
             projectConfig.getProjectCode(), projectConfig.getSecret());
+
+        SerialHandler.handle(resString, projectConfig);
     }
 
     @Override
@@ -116,8 +120,10 @@ public class TeamMasterBOImpl extends PaginableBOImpl<TeamMaster>
         String data = JSONObject.toJSONStringWithDateFormat(req, "yyyy-MM-dd")
             .toString();
 
-        GovConnecter.getGovData("Team.Update", data,
+        String resString = GovConnecter.getGovData("Team.Update", data,
             projectConfig.getProjectCode(), projectConfig.getSecret());
+
+        SerialHandler.handle(resString, projectConfig);
     }
 
     @Override
@@ -135,6 +141,17 @@ public class TeamMasterBOImpl extends PaginableBOImpl<TeamMaster>
 
         Paginable<TeamMaster> page = GovUtil.parseGovPage(req.getPageIndex(),
             req.getPageSize(), queryString, replaceMap, TeamMaster.class);
+
+        if (null != page && CollectionUtils.isNotEmpty(page.getList())) {
+            for (TeamMaster master : page.getList()) {
+                if (StringUtils
+                    .isNotBlank(master.getResponsiblePersonIdNumber())) {
+                    master.setResponsiblePersonIdNumber(
+                        AesUtils.decrypt(master.getResponsiblePersonIdNumber(),
+                            projectConfig.getSecret()));
+                }
+            }
+        }
 
         return page;
     }

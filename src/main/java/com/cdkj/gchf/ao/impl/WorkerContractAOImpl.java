@@ -94,9 +94,12 @@ public class WorkerContractAOImpl implements IWorkerContractAO {
         if (null != page && CollectionUtils.isNotEmpty(page.getList())) {
             for (WorkerContract workerContract : page.getList()) {
 
+                String idcardNumber = AesUtils.decrypt(
+                    workerContract.getIdcardNumber(),
+                    projectConfig.getSecret());
+
                 XN631913Req workerReq = new XN631913Req(req.getProjectCode(),
-                    workerContract.getCorpCode(),
-                    workerContract.getIdcardNumber());
+                    workerContract.getCorpCode(), idcardNumber);
                 workerReq.setPageIndex(0);
                 workerReq.setPageSize(1);
                 Paginable<ProjectWorker> projectWorker = projectWorkerBO
@@ -106,10 +109,6 @@ public class WorkerContractAOImpl implements IWorkerContractAO {
                     workerContract.setWorkerName(
                         projectWorker.getList().get(0).getWorkerName());
                 }
-
-                String idcardNumber = AesUtils.decrypt(
-                    workerContract.getIdcardNumber(),
-                    projectConfig.getSecret());
 
                 workerContract.setIdcardNumber(idcardNumber);
 

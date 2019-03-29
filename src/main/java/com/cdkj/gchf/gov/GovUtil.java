@@ -38,8 +38,11 @@ public class GovUtil {
         if (null != dataJson) {
 
             String rowJson = dataJson.getString("rows");
+            Boolean payRollFlag = false;
+
             if (StringUtils.isEmpty(rowJson)) {
                 rowJson = "[" + dataJson.toJSONString() + "]";
+                payRollFlag = true;
             }
 
             if (null != replaceMap && !replaceMap.isEmpty()) {
@@ -51,8 +54,11 @@ public class GovUtil {
 
             dataList = (List<T>) JSONArray.parseArray(rowJson, toClazz);
 
-            totalCount = dataList.size();
-
+            if (payRollFlag) {
+                totalCount = dataList.size();
+            } else {
+                totalCount = Long.parseLong(dataJson.getString("totalCount"));
+            }
         }
 
         Paginable<T> page = new Page<T>(pageIndex, pageSize, totalCount);

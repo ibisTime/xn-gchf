@@ -12,6 +12,7 @@ import com.cdkj.gchf.bo.IOperateLogBO;
 import com.cdkj.gchf.bo.IProjectConfigBO;
 import com.cdkj.gchf.bo.IUserBO;
 import com.cdkj.gchf.bo.base.Paginable;
+import com.cdkj.gchf.common.AesUtils;
 import com.cdkj.gchf.domain.CorpBasicinfo;
 import com.cdkj.gchf.domain.ProjectConfig;
 import com.cdkj.gchf.domain.User;
@@ -99,6 +100,10 @@ public class CorpBasicinfoAOImpl implements ICorpBasicinfoAO {
             if (EUploadStatus.UPLOAD_UNEDITABLE.getCode()
                 .equals(corpBasicinfo.getUploadStatus()))
                 continue;
+
+            corpBasicinfo.setLegalManIdcardNumber(
+                AesUtils.encrypt(corpBasicinfo.getLegalManIdcardNumber(),
+                    defaultProjectConfig.getSecret()));
 
             // 上传企业信息
             String resString = GovConnecter.getGovData("Corp.Upload",

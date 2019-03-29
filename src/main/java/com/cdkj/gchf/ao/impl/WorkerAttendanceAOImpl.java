@@ -2,21 +2,27 @@ package com.cdkj.gchf.ao.impl;
 
 import java.util.List;
 
+import org.apache.commons.collections.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.cdkj.gchf.ao.IWorkerAttendanceAO;
 import com.cdkj.gchf.bo.IOperateLogBO;
 import com.cdkj.gchf.bo.IProjectConfigBO;
+import com.cdkj.gchf.bo.IProjectWorkerBO;
+import com.cdkj.gchf.bo.ITeamMasterBO;
 import com.cdkj.gchf.bo.IUserBO;
 import com.cdkj.gchf.bo.IWorkerAttendanceBO;
 import com.cdkj.gchf.bo.base.Paginable;
+import com.cdkj.gchf.common.AesUtils;
 import com.cdkj.gchf.domain.ProjectConfig;
+import com.cdkj.gchf.domain.ProjectWorker;
 import com.cdkj.gchf.domain.TeamMaster;
 import com.cdkj.gchf.domain.User;
 import com.cdkj.gchf.domain.WorkerAttendance;
 import com.cdkj.gchf.dto.req.XN631710Req;
 import com.cdkj.gchf.dto.req.XN631712Req;
+import com.cdkj.gchf.dto.req.XN631913Req;
 import com.cdkj.gchf.dto.req.XN631918Req;
 import com.cdkj.gchf.dto.req.XN631919Req;
 import com.cdkj.gchf.enums.EOperateLogOperate;
@@ -41,6 +47,12 @@ public class WorkerAttendanceAOImpl implements IWorkerAttendanceAO {
 
     @Autowired
     private IOperateLogBO operateLogBO;
+
+    @Autowired
+    private ITeamMasterBO teamMasterBO;
+
+    @Autowired
+    private IProjectWorkerBO projectWorkerBO;
 
     @Override
     public String addWorkerAttendance(XN631710Req data) {
@@ -78,7 +90,38 @@ public class WorkerAttendanceAOImpl implements IWorkerAttendanceAO {
             throw new BizException("XN631919", "该项目未配置，无法查询");
         }
 
-        return workerAttendanceBO.doQuery(req, projectConfig);
+        Paginable<WorkerAttendance> page = workerAttendanceBO.doQuery(req,
+            projectConfig);
+
+        if (null != page && CollectionUtils.isNotEmpty(page.getList())) {
+            for (WorkerAttendance workerAttendance : page.getList()) {
+
+                String idcardNumber = AesUtils.decrypt(
+                    workerAttendance.getIdCardNumber(),
+                    projectConfig.getSecret());
+
+                XN631913Req workerReq = new XN631913Req(req.getProjectCode(),
+                    null, idcardNumber);
+                workerReq.setPageIndex(0);
+                workerReq.setPageSize(1);
+                Paginable<ProjectWorker> projectWorker = projectWorkerBO
+                    .doQuery(workerReq, projectConfig);
+
+                if (null != projectWorker && CollectionUtils
+                    .isNotEmpty(projectWorker.getList())) {
+                    workerAttendance.setCorpName(
+                        projectWorker.getList().get(0).getCorpName());
+                    workerAttendance.setTeamName(
+                        projectWorker.getList().get(0).getTeamName());
+                    workerAttendance.setWorkerName(
+                        projectWorker.getList().get(0).getWorkerName());
+                }
+
+                workerAttendance.setIdCardNumber(idcardNumber);
+            }
+        }
+
+        return page;
     }
 
     @Override

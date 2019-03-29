@@ -54,7 +54,7 @@ public class PayRollAOImpl implements IPayRollAO {
     private IUserBO userBO;
 
     @Autowired
-    private IOperateLogBO operateBO;
+    private IOperateLogBO operateLogBO;
 
     @Autowired
     private ITeamMasterBO teamMasterBO;
@@ -79,7 +79,7 @@ public class PayRollAOImpl implements IPayRollAO {
         payRollDetailBO.savePayRollDetail(code, data.getDetailList());
 
         User briefUser = userBO.getBriefUser(data.getUserId());
-        operateBO.saveOperateLog(EOperateLogRefType.PayRoll.getCode(), code,
+        operateLogBO.saveOperateLog(EOperateLogRefType.PayRoll.getCode(), code,
             EOperateLogRefType.PayRoll.getValue(), briefUser, "新增工资单" + code);
 
         return code;
@@ -220,7 +220,7 @@ public class PayRollAOImpl implements IPayRollAO {
                     uploadRequestJsontoPlantform.toString(),
                     projectConfig.getProjectCode(), projectConfig.getSecret());
 
-                String log = operateBO.saveOperateLog(
+                String log = operateLogBO.saveOperateLog(
                     EOperateLogRefType.PayRoll.getCode(),
                     uploadRequestJsontoPlantform.toString(),
                     EOperateLogOperate.UploadPayRoll.getValue(), user, null);

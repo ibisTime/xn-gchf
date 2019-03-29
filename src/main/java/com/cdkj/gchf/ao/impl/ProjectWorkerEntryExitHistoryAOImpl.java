@@ -103,9 +103,12 @@ public class ProjectWorkerEntryExitHistoryAOImpl
             for (ProjectWorkerEntryExitHistory projectWorkerEntryExitHistory : page
                 .getList()) {
 
+                String idcardNumber = AesUtils.decrypt(
+                    projectWorkerEntryExitHistory.getIdcardNumber(),
+                    projectConfig.getSecret());
+
                 XN631913Req workerReq = new XN631913Req(req.getProjectCode(),
-                    projectWorkerEntryExitHistory.getCorpCode(),
-                    projectWorkerEntryExitHistory.getIdcardNumber());
+                    projectWorkerEntryExitHistory.getCorpCode(), idcardNumber);
                 workerReq.setPageIndex(0);
                 workerReq.setPageSize(1);
                 Paginable<ProjectWorker> projectWorker = projectWorkerBO
@@ -115,10 +118,6 @@ public class ProjectWorkerEntryExitHistoryAOImpl
                     projectWorkerEntryExitHistory.setWorkerName(
                         projectWorker.getList().get(0).getWorkerName());
                 }
-
-                String idcardNumber = AesUtils.decrypt(
-                    projectWorkerEntryExitHistory.getIdcardNumber(),
-                    projectConfig.getSecret());
 
                 projectWorkerEntryExitHistory.setIdcardNumber(idcardNumber);
 

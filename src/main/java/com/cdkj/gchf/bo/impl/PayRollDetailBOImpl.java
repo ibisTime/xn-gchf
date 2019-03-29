@@ -8,7 +8,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.cdkj.gchf.bo.IPayRollDetailBO;
-import com.cdkj.gchf.bo.base.Paginable;
 import com.cdkj.gchf.bo.base.PaginableBOImpl;
 import com.cdkj.gchf.common.AesUtils;
 import com.cdkj.gchf.core.OrderNoGenerater;
@@ -41,23 +40,6 @@ public class PayRollDetailBOImpl extends PaginableBOImpl<PayRollDetail>
             payRollDetail.setPayRollCode(projectCode);
             payRollDetailDAO.insert(payRollDetail);
         }
-    }
-
-    @Override
-    public long getTotalCount(PayRollDetail condition) {
-        return 0;
-    }
-
-    @Override
-    public Paginable<PayRollDetail> getPaginable(int start,
-            PayRollDetail condition) {
-        return null;
-    }
-
-    @Override
-    public Paginable<PayRollDetail> getPaginable(int start, int pageSize,
-            PayRollDetail condition) {
-        return null;
     }
 
     @Override

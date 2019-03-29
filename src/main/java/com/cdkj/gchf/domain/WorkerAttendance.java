@@ -89,6 +89,10 @@ public class WorkerAttendance extends ABaseDO {
 
     private String uploadStatus;
 
+    /****DB Properties****/
+    // 所在企业
+    private String corpName;
+
     public String getCode() {
         return code;
     }
@@ -287,6 +291,14 @@ public class WorkerAttendance extends ABaseDO {
 
     public void setUploadStatus(String uploadStatus) {
         this.uploadStatus = uploadStatus;
+    }
+
+    public String getCorpName() {
+        return corpName;
+    }
+
+    public void setCorpName(String corpName) {
+        this.corpName = corpName;
     }
 
 }

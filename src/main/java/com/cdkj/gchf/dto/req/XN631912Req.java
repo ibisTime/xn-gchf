@@ -56,7 +56,7 @@ public class XN631912Req {
 
     // 工人类型
     @Min(0)
-    private Integer workerRole;
+    private Integer workRole;
 
     // 制卡时间
     private Date issueCardDate;
@@ -225,12 +225,12 @@ public class XN631912Req {
         this.workType = workType;
     }
 
-    public Integer getWorkerRole() {
-        return workerRole;
+    public Integer getWorkRole() {
+        return workRole;
     }
 
-    public void setWorkerRole(Integer workerRole) {
-        this.workerRole = workerRole;
+    public void setWorkRole(Integer workRole) {
+        this.workRole = workRole;
     }
 
     public Date getIssueCardDate() {

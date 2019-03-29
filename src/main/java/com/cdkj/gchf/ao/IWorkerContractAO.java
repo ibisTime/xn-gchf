@@ -8,6 +8,7 @@ import com.cdkj.gchf.bo.base.Paginable;
 import com.cdkj.gchf.domain.WorkerContract;
 import com.cdkj.gchf.dto.req.XN631670Req;
 import com.cdkj.gchf.dto.req.XN631672Req;
+import com.cdkj.gchf.dto.req.XN631673Req;
 import com.cdkj.gchf.dto.req.XN631916Req;
 import com.cdkj.gchf.dto.req.XN631917Req;
 
@@ -17,7 +18,7 @@ public interface IWorkerContractAO {
 
     public String addWorkerContract(XN631670Req req);
 
-    public void dropWorkerContract(String code);
+    public void dropWorkerContract(String userId, String code);
 
     public void editWorkerContract(XN631672Req data);
 
@@ -28,6 +29,8 @@ public interface IWorkerContractAO {
             WorkerContract condition);
 
     public WorkerContract getWorkerContract(String code);
+
+    public void importWorkContractList(XN631673Req req);
 
     public void uploadWorkContractList(String userId, List<String> codeList);
 

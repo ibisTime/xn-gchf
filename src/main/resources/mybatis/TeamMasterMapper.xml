@@ -148,24 +148,13 @@
 	<update id="update_teamMaster" parameterType="teamMaster">
 		UPDATE thf_team_master
 		SET
-		project_code = #{projectCode}
-		,corp_code = #{corpCode}
-		,corp_name = #{corpName}
-		,team_name = #{teamName}
-		,team_leader_name = #{teamLeaderName}
-		
-		,team_leader_phone = #{teamLeaderPhone}
-		,team_leader_idcard_type = #{teamLeaderIdcardType}
-		,team_leader_id_number = #{teamLeaderIdNumber}
+		team_name = #{teamName}
 		,responsible_person_name = #{responsiblePersonName}
 		,responsible_person_phone = #{responsiblePersonPhone}
-		
 		,responsible_person_idcard_type = #{responsiblePersonIdcardType}
 		,responsible_person_id_number = #{responsiblePersonIdNumber}
-		,remark = #{remark}
 		,entry_time = #{entryTime}
 		,exit_time = #{exitTime}
-		
 		,parent_code = #{parentCode}
 		WHERE code = #{code}
 	</update>

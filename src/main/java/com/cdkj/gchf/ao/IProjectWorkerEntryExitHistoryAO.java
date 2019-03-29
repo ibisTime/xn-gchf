@@ -8,6 +8,7 @@ import com.cdkj.gchf.bo.base.Paginable;
 import com.cdkj.gchf.domain.ProjectWorkerEntryExitHistory;
 import com.cdkj.gchf.dto.req.XN631730Req;
 import com.cdkj.gchf.dto.req.XN631732Req;
+import com.cdkj.gchf.dto.req.XN631733Req;
 import com.cdkj.gchf.dto.req.XN631914Req;
 import com.cdkj.gchf.dto.req.XN631915Req;
 
@@ -34,6 +35,8 @@ public interface IProjectWorkerEntryExitHistoryAO {
 
     public void uploadProjectWorkerEntryExitHistoryList(String userId,
             List<String> codeList);
+
+    public void importProjectWorkerEntryExitHistoryList(XN631733Req req);
 
     /****国家平台接口****/
     public void uploadProjectWorkerEntryExitHistory(XN631914Req data);

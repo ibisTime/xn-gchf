@@ -1,5 +1,8 @@
 package com.cdkj.gchf.dto.req;
 
+import java.math.BigDecimal;
+import java.util.Date;
+
 import org.hibernate.validator.constraints.NotBlank;
 
 public class XN631672Req {
@@ -11,38 +14,18 @@ public class XN631672Req {
     @NotBlank
     private String code;
 
-    // 项目编码
-    private String projectCode;
-
-    // 项目名称
-    private String projectName;
-
-    // 参建单位信用编号
-    private String corpCode;
-
-    // 参建单位信用名称
-    private String corpName;
-
-    // 身份证号码
-    private String idCardNumber;
-
-    // 合同编号
-    private String contractCode;
-
-    // 合同期限类型
-    private String contractPeriodType;
-
     // 开始时间
-    private String startDate;
+    private Date startDate;
 
     // 结束时间
-    private String endDate;
+    private Date endDate;
 
-    private String unit;
+    // 计量单位
+    private Integer unit;
 
-    private String unitPrice;
+    private BigDecimal unitPrice;
 
-    private String isUpload;
+    private String contentPic;
 
     public String getCode() {
         return code;
@@ -60,99 +43,44 @@ public class XN631672Req {
         this.userId = userId;
     }
 
-    public String getProjectCode() {
-        return projectCode;
-    }
-
-    public void setProjectCode(String projectCode) {
-        this.projectCode = projectCode;
-    }
-
-    public String getProjectName() {
-        return projectName;
-    }
-
-    public void setProjectName(String projectName) {
-        this.projectName = projectName;
-    }
-
-    public String getCorpCode() {
-        return corpCode;
-    }
-
-    public void setCorpCode(String corpCode) {
-        this.corpCode = corpCode;
-    }
-
-    public String getCorpName() {
-        return corpName;
-    }
-
-    public void setCorpName(String corpName) {
-        this.corpName = corpName;
-    }
-
-    public String getIdCardNumber() {
-        return idCardNumber;
-    }
-
-    public void setIdCardNumber(String idCardNumber) {
-        this.idCardNumber = idCardNumber;
-    }
-
-    public String getContractCode() {
-        return contractCode;
-    }
-
-    public void setContractCode(String contractCode) {
-        this.contractCode = contractCode;
-    }
-
-    public String getContractPeriodType() {
-        return contractPeriodType;
-    }
-
-    public void setContractPeriodType(String contractPeriodType) {
-        this.contractPeriodType = contractPeriodType;
-    }
-
-    public String getStartDate() {
+    public Date getStartDate() {
         return startDate;
     }
 
-    public void setStartDate(String startDate) {
+    public void setStartDate(Date startDate) {
         this.startDate = startDate;
     }
 
-    public String getEndDate() {
+    public Date getEndDate() {
         return endDate;
     }
 
-    public void setEndDate(String endDate) {
+    public void setEndDate(Date endDate) {
         this.endDate = endDate;
     }
 
-    public String getUnit() {
+    public Integer getUnit() {
         return unit;
     }
 
-    public void setUnit(String unit) {
+    public void setUnit(Integer unit) {
         this.unit = unit;
     }
 
-    public String getUnitPrice() {
+    public BigDecimal getUnitPrice() {
         return unitPrice;
     }
 
-    public void setUnitPrice(String unitPrice) {
+    public void setUnitPrice(BigDecimal unitPrice) {
         this.unitPrice = unitPrice;
     }
 
-    public String getIsUpload() {
-        return isUpload;
+    public String getContentPic() {
+        return contentPic;
     }
 
-    public void setIsUpload(String isUpload) {
-        this.isUpload = isUpload;
+    public void setContentPic(String contentPic) {
+        this.contentPic = contentPic;
     }
+
 }

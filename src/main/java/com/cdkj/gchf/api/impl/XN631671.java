@@ -1,6 +1,6 @@
 package com.cdkj.gchf.api.impl;
 
-import com.cdkj.gchf.ao.IProjectWorkerEntryExitHistoryAO;
+import com.cdkj.gchf.ao.IWorkerContractAO;
 import com.cdkj.gchf.api.AProcessor;
 import com.cdkj.gchf.common.JsonUtil;
 import com.cdkj.gchf.core.ObjValidater;
@@ -18,15 +18,14 @@ import com.cdkj.gchf.spring.SpringContextHolder;
  * @Copyright:
  */
 public class XN631671 extends AProcessor {
-    private IProjectWorkerEntryExitHistoryAO projectWorkerEntryExitHistoryAO = SpringContextHolder
-        .getBean(IProjectWorkerEntryExitHistoryAO.class);
+    private IWorkerContractAO workerContractAO = SpringContextHolder
+        .getBean(IWorkerContractAO.class);
 
     private XN631671Req req = null;
 
     @Override
     public Object doBusiness() throws BizException {
-        projectWorkerEntryExitHistoryAO
-            .dropProjectWorkerEntryExitHistory(req.getCode());
+        workerContractAO.dropWorkerContract(req.getUserId(), req.getCode());
         return new Boolean(true);
     }
 

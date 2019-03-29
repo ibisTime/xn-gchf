@@ -1,5 +1,6 @@
 package com.cdkj.gchf.dto.req;
 
+import java.math.BigDecimal;
 import java.util.Date;
 
 import org.hibernate.validator.constraints.NotBlank;
@@ -10,40 +11,26 @@ public class XN631670Req {
     private String userId;
 
     // 项目编码
-    @NotBlank
+    @NotBlank(message = "项目编码不存在")
     private String projectCode;
 
-    // 项目名称
-    @NotBlank
-    private String projectName;
-
     // 参建单位信用编号
-    @NotBlank
+    @NotBlank(message = "企业信息不存在")
     private String corpCode;
 
-    // 参建单位信用名称
-    @NotBlank
-    private String corpName;
-
-    // 身份证号码
-    @NotBlank
-    private String idCardNumber;
-
-    // 证件类型
-    private String idcardType;
-
+    // 员工编号
     private String workerCode;
 
-    private String workerName;
-
-    private String workerMobile;
-
+    // 更新人
     private String updater;
 
+    // 更新时间
     private Date updateDatetime;
 
+    // 备注
     private String remark;
 
+    // 状态
     private String uploadStatus;
 
     // 合同编号
@@ -51,25 +38,22 @@ public class XN631670Req {
     private String contractCode;
 
     // 合同期限类型
-    @NotBlank
-    private String contractPeriodType;
+    private Integer contractPeriodType;
 
     // 开始时间
-    @NotBlank
-    private String startDate;
+    private Date startDate;
 
     // 结束时间
-    @NotBlank
-    private String endDate;
+    private Date endDate;
 
-    // 时间
-    private Date date;
+    // 计量单位
+    private Integer unit;
 
-    private String unit;
+    // 计量单位
+    private BigDecimal unitPrice;
 
-    private String unitPrice;
-
-    private String isUpload;
+    // 合同照片
+    private String contentPic;
 
     public String getUserId() {
         return userId;
@@ -87,14 +71,6 @@ public class XN631670Req {
         this.projectCode = projectCode;
     }
 
-    public String getProjectName() {
-        return projectName;
-    }
-
-    public void setProjectName(String projectName) {
-        this.projectName = projectName;
-    }
-
     public String getCorpCode() {
         return corpCode;
     }
@@ -103,108 +79,12 @@ public class XN631670Req {
         this.corpCode = corpCode;
     }
 
-    public String getCorpName() {
-        return corpName;
-    }
-
-    public void setCorpName(String corpName) {
-        this.corpName = corpName;
-    }
-
-    public String getIdCardNumber() {
-        return idCardNumber;
-    }
-
-    public void setIdCardNumber(String idCardNumber) {
-        this.idCardNumber = idCardNumber;
-    }
-
-    public String getContractCode() {
-        return contractCode;
-    }
-
-    public void setContractCode(String contractCode) {
-        this.contractCode = contractCode;
-    }
-
-    public String getContractPeriodType() {
-        return contractPeriodType;
-    }
-
-    public void setContractPeriodType(String contractPeriodType) {
-        this.contractPeriodType = contractPeriodType;
-    }
-
-    public String getStartDate() {
-        return startDate;
-    }
-
-    public void setStartDate(String startDate) {
-        this.startDate = startDate;
-    }
-
-    public String getEndDate() {
-        return endDate;
-    }
-
-    public void setEndDate(String endDate) {
-        this.endDate = endDate;
-    }
-
-    public String getUnit() {
-        return unit;
-    }
-
-    public void setUnit(String unit) {
-        this.unit = unit;
-    }
-
-    public String getUnitPrice() {
-        return unitPrice;
-    }
-
-    public void setUnitPrice(String unitPrice) {
-        this.unitPrice = unitPrice;
-    }
-
-    public String getIsUpload() {
-        return isUpload;
-    }
-
-    public void setIsUpload(String isUpload) {
-        this.isUpload = isUpload;
-    }
-
-    public String getIdcardType() {
-        return idcardType;
-    }
-
-    public void setIdcardType(String idcardType) {
-        this.idcardType = idcardType;
-    }
-
     public String getWorkerCode() {
         return workerCode;
     }
 
     public void setWorkerCode(String workerCode) {
         this.workerCode = workerCode;
-    }
-
-    public String getWorkerName() {
-        return workerName;
-    }
-
-    public void setWorkerName(String workerName) {
-        this.workerName = workerName;
-    }
-
-    public String getWorkerMobile() {
-        return workerMobile;
-    }
-
-    public void setWorkerMobile(String workerMobile) {
-        this.workerMobile = workerMobile;
     }
 
     public String getUpdater() {
@@ -239,12 +119,60 @@ public class XN631670Req {
         this.uploadStatus = uploadStatus;
     }
 
-    public Date getDate() {
-        return date;
+    public String getContractCode() {
+        return contractCode;
     }
 
-    public void setDate(Date date) {
-        this.date = date;
+    public void setContractCode(String contractCode) {
+        this.contractCode = contractCode;
+    }
+
+    public Integer getContractPeriodType() {
+        return contractPeriodType;
+    }
+
+    public void setContractPeriodType(Integer contractPeriodType) {
+        this.contractPeriodType = contractPeriodType;
+    }
+
+    public Date getStartDate() {
+        return startDate;
+    }
+
+    public void setStartDate(Date startDate) {
+        this.startDate = startDate;
+    }
+
+    public Date getEndDate() {
+        return endDate;
+    }
+
+    public void setEndDate(Date endDate) {
+        this.endDate = endDate;
+    }
+
+    public Integer getUnit() {
+        return unit;
+    }
+
+    public void setUnit(Integer unit) {
+        this.unit = unit;
+    }
+
+    public BigDecimal getUnitPrice() {
+        return unitPrice;
+    }
+
+    public void setUnitPrice(BigDecimal unitPrice) {
+        this.unitPrice = unitPrice;
+    }
+
+    public String getContentPic() {
+        return contentPic;
+    }
+
+    public void setContentPic(String contentPic) {
+        this.contentPic = contentPic;
     }
 
 }

@@ -1,6 +1,7 @@
 package com.cdkj.gchf.dto.req;
 
-import java.util.List;
+import java.math.BigDecimal;
+import java.util.Date;
 
 import org.hibernate.validator.constraints.NotBlank;
 
@@ -13,28 +14,26 @@ public class XN631772Req {
     @NotBlank
     private String code;
 
-    // 工资单编码
-    private String payRollCode;
-
-    // 平台为项目分配的接入编码
     @NotBlank
-    private String projectCode;
+    private String payRollDetailCode;
 
-    // 工人所属企业统一社会信用代码
-    private String corpCode;
+    // 出勤天数
+    private Integer days;
 
-    // 平台为班组分配的接入编号
-    private String teamSysNo;
+    // 工作时长
+    private BigDecimal workHours;
 
-    // 发放工资的月份
-    private String payMonth;
+    // 应发金额
+    private BigDecimal totalPayAmount;
 
-    // 证件类型
-    private String idCardType;
+    // 是否是补发
+    private Integer isBackPay;
 
-    private List<XN631770ReqDetail> detailList;
+    // 发放日期
+    private Date balanceDate;
 
-    private List<XN631770ReqAttachments> attachments;
+    // 第三方工资单编号
+    private String thirdPayRollCode;
 
     public String getUserId() {
         return userId;
@@ -44,76 +43,68 @@ public class XN631772Req {
         this.userId = userId;
     }
 
-    public String getProjectCode() {
-        return projectCode;
-    }
-
-    public void setProjectCode(String projectCode) {
-        this.projectCode = projectCode;
-    }
-
-    public String getCorpCode() {
-        return corpCode;
-    }
-
-    public void setCorpCode(String corpCode) {
-        this.corpCode = corpCode;
-    }
-
-    public String getTeamSysNo() {
-        return teamSysNo;
-    }
-
-    public void setTeamSysNo(String teamSysNo) {
-        this.teamSysNo = teamSysNo;
-    }
-
-    public String getPayMonth() {
-        return payMonth;
-    }
-
-    public void setPayMonth(String payMonth) {
-        this.payMonth = payMonth;
-    }
-
-    public String getIdCardType() {
-        return idCardType;
-    }
-
-    public void setIdCardType(String idCardType) {
-        this.idCardType = idCardType;
-    }
-
-    public List<XN631770ReqDetail> getDetailList() {
-        return detailList;
-    }
-
-    public void setDetailList(List<XN631770ReqDetail> detailList) {
-        this.detailList = detailList;
-    }
-
-    public List<XN631770ReqAttachments> getAttachments() {
-        return attachments;
-    }
-
-    public void setAttachments(List<XN631770ReqAttachments> attachments) {
-        this.attachments = attachments;
-    }
-
-    public String getPayRollCode() {
-        return payRollCode;
-    }
-
-    public void setPayRollCode(String payRollCode) {
-        this.payRollCode = payRollCode;
-    }
-
     public String getCode() {
         return code;
     }
 
     public void setCode(String code) {
         this.code = code;
+    }
+
+    public Integer getDays() {
+        return days;
+    }
+
+    public void setDays(Integer days) {
+        this.days = days;
+    }
+
+    public BigDecimal getWorkHours() {
+        return workHours;
+    }
+
+    public void setWorkHours(BigDecimal workHours) {
+        this.workHours = workHours;
+    }
+
+    public BigDecimal getTotalPayAmount() {
+        return totalPayAmount;
+    }
+
+    public void setTotalPayAmount(BigDecimal totalPayAmount) {
+        this.totalPayAmount = totalPayAmount;
+    }
+
+    public Integer getIsBackPay() {
+        return isBackPay;
+    }
+
+    public void setIsBackPay(Integer isBackPay) {
+        this.isBackPay = isBackPay;
+    }
+
+    public Date getBalanceDate() {
+        return balanceDate;
+    }
+
+    public void setBalanceDate(Date balanceDate) {
+        this.balanceDate = balanceDate;
+    }
+
+    public String getThirdPayRollCode() {
+        return thirdPayRollCode;
+    }
+
+    public void setThirdPayRollCode(String thirdPayRollCode) {
+        this.thirdPayRollCode = thirdPayRollCode;
+    }
+
+    public String getPayRollDetailCode() {
+        return payRollDetailCode;
+    }
+
+    public void setPayRollDetailCode(String payRollDetailCode) {
+        this.payRollDetailCode = payRollDetailCode;
     }
 
 }

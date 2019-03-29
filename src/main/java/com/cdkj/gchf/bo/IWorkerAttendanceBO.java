@@ -30,6 +30,9 @@ public interface IWorkerAttendanceBO extends IPaginableBO<WorkerAttendance> {
             WorkerAttendance workerAttendance,
             ProjectConfig projectConfigByLocal);
 
+    public void saveWorkerAttendanceToPlantform(String userId,
+            List<String> codeList);
+
     /****国家平台接口****/
     public void doUpload(XN631918Req req, ProjectConfig projectConfig);
 

@@ -1,6 +1,6 @@
 package com.cdkj.gchf.dto.req;
 
-import javax.validation.constraints.Min;
+import java.util.Date;
 
 import org.hibernate.validator.constraints.NotBlank;
 
@@ -13,47 +13,34 @@ public class XN631692Req {
     private String code;
 
     // 项目编码
-    @NotBlank
     private String projectCode;
 
     // 企业统一社会信用代码
-    @NotBlank
     private String corpCode;
 
     // 企业名称
     @NotBlank
     private String corpName;
 
-    // 班组名称
-    @NotBlank
-    private String teamName;
-
     // 班组编号
-    @Min(0)
-    private Integer teamSysNo;
+    private String teamSysNo;
 
     // 工人姓名
-    @NotBlank
     private String workerName;
 
     // 是否班组长
-    @Min(0)
     private Integer isTeamLeader;
 
     // 证件类型
-    @NotBlank
     private String idCardType;
 
     // 证件号码
-    @NotBlank
     private String idCardNumber;
 
     // 当前工种
-    @NotBlank
     private String workType;
 
     // 工人类型
-    @Min(0)
     private Integer workRole;
 
     // 发卡时间
@@ -80,64 +67,7 @@ public class XN631692Req {
     // 是否购买工伤或意外伤害保险
     private String hasBuyInsurance;
 
-    // 民族
-    @NotBlank
-    private String nation;
-
-    // 住址
-    @NotBlank
-    private String address;
-
-    // 头像
-    @NotBlank
-    private String headImage;
-
-    // 政治面貌
-    private String politicsType;
-
-    // 加入工会时间
-    private String joinedTime;
-
-    // 手机号码
-    @NotBlank
-    private String cellPhone;
-
-    // 文化程度
-    private String cultureLevelType;
-
-    // 特长
-    private String Specialty;
-
-    // 是否有重大病史
-    private Integer hasBadMedicalHistory;
-
-    // 紧急联系人姓名
-    private String urgentLinkMan;
-
-    // 紧急联系方式
-    private String urgentLinkManPhone;
-
-    // 开始工作日期
-    private String workDate;
-
-    // 婚姻状况
-    private String maritalStatus;
-
-    // 发证机关
-    @NotBlank
-    private String grantOrg;
-
-    // 正面照
-    private String positiveIDCardImage;
-
-    // 反面照
-    private String negativeIDCardImage;
-
-    // 证件有效期开始日期
-    private String startDate;
-
-    // 证件有效期结束日期
-    private String expiryDate;
+    private Date workDate;
 
     public String getUserId() {
         return userId;
@@ -145,6 +75,14 @@ public class XN631692Req {
 
     public void setUserId(String userId) {
         this.userId = userId;
+    }
+
+    public String getCode() {
+        return code;
+    }
+
+    public void setCode(String code) {
+        this.code = code;
     }
 
     public String getProjectCode() {
@@ -171,19 +109,11 @@ public class XN631692Req {
         this.corpName = corpName;
     }
 
-    public String getTeamName() {
-        return teamName;
-    }
-
-    public void setTeamName(String teamName) {
-        this.teamName = teamName;
-    }
-
-    public Integer getTeamSysNo() {
+    public String getTeamSysNo() {
         return teamSysNo;
     }
 
-    public void setTeamSysNo(Integer teamSysNo) {
+    public void setTeamSysNo(String teamSysNo) {
         this.teamSysNo = teamSysNo;
     }
 
@@ -299,156 +229,12 @@ public class XN631692Req {
         this.hasBuyInsurance = hasBuyInsurance;
     }
 
-    public String getNation() {
-        return nation;
-    }
-
-    public void setNation(String nation) {
-        this.nation = nation;
-    }
-
-    public String getAddress() {
-        return address;
-    }
-
-    public void setAddress(String address) {
-        this.address = address;
-    }
-
-    public String getHeadImage() {
-        return headImage;
-    }
-
-    public void setHeadImage(String headImage) {
-        this.headImage = headImage;
-    }
-
-    public String getPoliticsType() {
-        return politicsType;
-    }
-
-    public void setPoliticsType(String politicsType) {
-        this.politicsType = politicsType;
-    }
-
-    public String getJoinedTime() {
-        return joinedTime;
-    }
-
-    public void setJoinedTime(String joinedTime) {
-        this.joinedTime = joinedTime;
-    }
-
-    public String getCellPhone() {
-        return cellPhone;
-    }
-
-    public void setCellPhone(String cellPhone) {
-        this.cellPhone = cellPhone;
-    }
-
-    public String getCultureLevelType() {
-        return cultureLevelType;
-    }
-
-    public void setCultureLevelType(String cultureLevelType) {
-        this.cultureLevelType = cultureLevelType;
-    }
-
-    public String getSpecialty() {
-        return Specialty;
-    }
-
-    public void setSpecialty(String specialty) {
-        Specialty = specialty;
-    }
-
-    public Integer getHasBadMedicalHistory() {
-        return hasBadMedicalHistory;
-    }
-
-    public void setHasBadMedicalHistory(Integer hasBadMedicalHistory) {
-        this.hasBadMedicalHistory = hasBadMedicalHistory;
-    }
-
-    public String getUrgentLinkMan() {
-        return urgentLinkMan;
-    }
-
-    public void setUrgentLinkMan(String urgentLinkMan) {
-        this.urgentLinkMan = urgentLinkMan;
-    }
-
-    public String getUrgentLinkManPhone() {
-        return urgentLinkManPhone;
-    }
-
-    public void setUrgentLinkManPhone(String urgentLinkManPhone) {
-        this.urgentLinkManPhone = urgentLinkManPhone;
-    }
-
-    public String getWorkDate() {
+    public Date getWorkDate() {
         return workDate;
     }
 
-    public void setWorkDate(String workDate) {
+    public void setWorkDate(Date workDate) {
         this.workDate = workDate;
-    }
-
-    public String getMaritalStatus() {
-        return maritalStatus;
-    }
-
-    public void setMaritalStatus(String maritalStatus) {
-        this.maritalStatus = maritalStatus;
-    }
-
-    public String getGrantOrg() {
-        return grantOrg;
-    }
-
-    public void setGrantOrg(String grantOrg) {
-        this.grantOrg = grantOrg;
-    }
-
-    public String getPositiveIDCardImage() {
-        return positiveIDCardImage;
-    }
-
-    public void setPositiveIDCardImage(String positiveIDCardImage) {
-        this.positiveIDCardImage = positiveIDCardImage;
-    }
-
-    public String getNegativeIDCardImage() {
-        return negativeIDCardImage;
-    }
-
-    public void setNegativeIDCardImage(String negativeIDCardImage) {
-        this.negativeIDCardImage = negativeIDCardImage;
-    }
-
-    public String getStartDate() {
-        return startDate;
-    }
-
-    public void setStartDate(String startDate) {
-        this.startDate = startDate;
-    }
-
-    public String getExpiryDate() {
-        return expiryDate;
-    }
-
-    public void setExpiryDate(String expiryDate) {
-        this.expiryDate = expiryDate;
-    }
-
-    public String getCode() {
-        return code;
-    }
-
-    public void setCode(String code) {
-        this.code = code;
     }
 
 }

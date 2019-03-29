@@ -10,14 +10,21 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.alibaba.fastjson.JSONObject;
+import com.cdkj.gchf.bo.ICorpBasicinfoBO;
+import com.cdkj.gchf.bo.IProjectConfigBO;
 import com.cdkj.gchf.bo.IProjectWorkerBO;
+import com.cdkj.gchf.bo.ITeamMasterBO;
+import com.cdkj.gchf.bo.IWorkerInfoBO;
 import com.cdkj.gchf.bo.base.Paginable;
 import com.cdkj.gchf.bo.base.PaginableBOImpl;
 import com.cdkj.gchf.common.AesUtils;
 import com.cdkj.gchf.core.OrderNoGenerater;
 import com.cdkj.gchf.dao.IProjectWorkerDAO;
+import com.cdkj.gchf.domain.CorpBasicinfo;
 import com.cdkj.gchf.domain.ProjectConfig;
 import com.cdkj.gchf.domain.ProjectWorker;
+import com.cdkj.gchf.domain.TeamMaster;
+import com.cdkj.gchf.domain.WorkerInfo;
 import com.cdkj.gchf.dto.req.XN631690Req;
 import com.cdkj.gchf.dto.req.XN631692Req;
 import com.cdkj.gchf.dto.req.XN631911Req;
@@ -25,6 +32,7 @@ import com.cdkj.gchf.dto.req.XN631911ReqWorker;
 import com.cdkj.gchf.dto.req.XN631912Req;
 import com.cdkj.gchf.dto.req.XN631913Req;
 import com.cdkj.gchf.enums.EGeneratePrefix;
+import com.cdkj.gchf.enums.EUploadStatus;
 import com.cdkj.gchf.exception.BizException;
 import com.cdkj.gchf.gov.GovConnecter;
 import com.cdkj.gchf.gov.GovUtil;
@@ -37,10 +45,40 @@ public class ProjectWorkerBOImpl extends PaginableBOImpl<ProjectWorker>
     @Autowired
     private IProjectWorkerDAO projectWorkerDAO;
 
+    @Autowired
+    private ICorpBasicinfoBO corpBasicinfoBO;
+
+    @Autowired
+    private IProjectConfigBO projectConfigBO;
+
+    @Autowired
+    private ITeamMasterBO teamMasterBO;
+
+    @Autowired
+    private IWorkerInfoBO workerInfoBO;
+
     @Override
     public String saveProjectWorker(XN631690Req data) {
         ProjectWorker projectWorkerInfo = new ProjectWorker();
+        CorpBasicinfo corpBasicinfo = corpBasicinfoBO
+            .getCorpBasicinfoByCorp(data.getCorpCode());
+        projectWorkerInfo.setProjectName(corpBasicinfo.getCorpName());
         BeanUtils.copyProperties(data, projectWorkerInfo);
+
+        ProjectConfig configByLocal = projectConfigBO
+            .getProjectConfigByLocal(data.getProjectCode());
+        projectWorkerInfo.setProjectName(configByLocal.getProjectName());
+
+        TeamMaster teamMaster = teamMasterBO
+            .getTeamMaster(String.valueOf(data.getTeamSysNo()));
+        projectWorkerInfo.setTeamName(teamMaster.getTeamName());
+
+        WorkerInfo workerInfo = workerInfoBO
+            .getWorkerInfo(data.getWorkerCode());
+
+        projectWorkerInfo.setWorkType(workerInfo.getWorkerType());
+        projectWorkerInfo.setWorkerMobile(workerInfo.getCellPhone());
+        projectWorkerInfo.setUploadStatus(EUploadStatus.TO_UPLOAD.getCode());
         String code = OrderNoGenerater
             .generate(EGeneratePrefix.ProjectWorker.getCode());
         projectWorkerInfo.setCode(code);
@@ -144,6 +182,13 @@ public class ProjectWorkerBOImpl extends PaginableBOImpl<ProjectWorker>
             }
         }
         return data;
+    }
+
+    @Override
+    public ProjectWorker getProjectWorkerByProjectCode(String code) {
+        ProjectWorker condition = new ProjectWorker();
+        condition.setProjectCode(code);
+        return projectWorkerDAO.select(condition);
     }
 
 }

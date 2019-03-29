@@ -3,6 +3,7 @@ package com.cdkj.gchf.ao.impl;
 import java.util.List;
 
 import org.apache.commons.collections.CollectionUtils;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -23,6 +24,7 @@ import com.cdkj.gchf.domain.TeamMaster;
 import com.cdkj.gchf.domain.User;
 import com.cdkj.gchf.dto.req.XN631730Req;
 import com.cdkj.gchf.dto.req.XN631732Req;
+import com.cdkj.gchf.dto.req.XN631733Req;
 import com.cdkj.gchf.dto.req.XN631913Req;
 import com.cdkj.gchf.dto.req.XN631914Req;
 import com.cdkj.gchf.dto.req.XN631915Req;
@@ -32,6 +34,7 @@ import com.cdkj.gchf.enums.EUploadStatus;
 import com.cdkj.gchf.exception.BizException;
 import com.cdkj.gchf.gov.AsyncQueueHolder;
 import com.cdkj.gchf.gov.GovConnecter;
+import com.cdkj.gchf.gov.WorkerEntryExit;
 import com.google.gson.JsonObject;
 
 @Service
@@ -58,18 +61,40 @@ public class ProjectWorkerEntryExitHistoryAOImpl
 
     @Override
     public String addProjectWorkerEntryExitHistory(XN631730Req data) {
+        ProjectWorker projectWorker = projectWorkerBO
+            .getProjectWorker(data.getProjectWorkerCode());
+
+        ProjectWorkerEntryExitHistory workerEntryExitHistory = projectWorkerEntryExitHistoryBO
+            .getProjectWorkerEntryExitHistoryByIdCardNumber(
+                projectWorker.getIdCardNumber());
+        if (workerEntryExitHistory != null) {
+            throw new BizException("XN631730", "人员进退场已添加");
+        }
         return projectWorkerEntryExitHistoryBO
             .saveProjectWorkerEntryExitHistory(data);
     }
 
     @Override
     public void editProjectWorkerEntryExitHistory(XN631732Req req) {
+        ProjectWorkerEntryExitHistory projectWorkerEntryExitHistory = projectWorkerEntryExitHistoryBO
+            .getProjectWorkerEntryExitHistory(req.getCode());
+        if (projectWorkerEntryExitHistory.getUploadStatus()
+            .equals(EUploadStatus.UPLOAD_UNEDITABLE.getCode())) {
+            throw new BizException("XN631732", "人员进退场已上传,不可编辑");
+        }
+
         projectWorkerEntryExitHistoryBO
             .refreshProjectWorkerEntryExitHistory(req);
     }
 
     @Override
     public void dropProjectWorkerEntryExitHistory(String code) {
+        ProjectWorkerEntryExitHistory projectWorkerEntryExitHistory = projectWorkerEntryExitHistoryBO
+            .getProjectWorkerEntryExitHistory(code);
+        if (projectWorkerEntryExitHistory.getUploadStatus()
+            .equals(EUploadStatus.UPLOAD_UNEDITABLE.getCode())) {
+            throw new BizException("XN631731", "人员进退场已上传，不可删除");
+        }
         projectWorkerEntryExitHistoryBO
             .removeProjectWorkerEntryExitHistory(code);
     }
@@ -191,6 +216,18 @@ public class ProjectWorkerEntryExitHistoryAOImpl
                 EUploadStatus.UPLOAD_UNEDITABLE.getCode(), operateLog);
 
         }
+    }
+
+    @Override
+    public void importProjectWorkerEntryExitHistoryList(XN631733Req req) {
+
+        for (WorkerEntryExit entryExit : req.getWorkerEntryExitHistoryList()) {
+            XN631730Req data = new XN631730Req();
+            BeanUtils.copyProperties(entryExit, data);
+            projectWorkerEntryExitHistoryBO
+                .saveProjectWorkerEntryExitHistory(data);
+        }
+
     }
 
 }

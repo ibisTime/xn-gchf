@@ -13,12 +13,7 @@ public class XN631652Req {
     @NotBlank
     private String userId;
 
-    // 班组编号
-    @NotBlank
-    private String teamSysNo;
-
     // 班组名称
-    @NotBlank
     private String teamName;
 
     // 责任人姓名，
@@ -56,14 +51,6 @@ public class XN631652Req {
 
     public void setUserId(String userId) {
         this.userId = userId;
-    }
-
-    public String getTeamSysNo() {
-        return teamSysNo;
-    }
-
-    public void setTeamSysNo(String teamSysNo) {
-        this.teamSysNo = teamSysNo;
     }
 
     public String getTeamName() {

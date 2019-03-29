@@ -17,7 +17,6 @@ public class XN631726 extends AProcessor {
 
     @Override
     public Object doBusiness() throws BizException {
-        // return new PKCodeRes(workerAttendanceAO.addWorkerAttendance(req));
         return workerAttendanceAO.getWorkerAttendance(req.getCode());
     }
 

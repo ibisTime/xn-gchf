@@ -30,6 +30,9 @@ public interface IProjectWorkerEntryExitHistoryBO
     public ProjectWorkerEntryExitHistory getProjectWorkerEntryExitHistory(
             String code);
 
+    public ProjectWorkerEntryExitHistory getProjectWorkerEntryExitHistoryByIdCardNumber(
+            String idCardNumber);
+
     public JsonObject getRequestJson(TeamMaster teamMaster,
             ProjectWorkerEntryExitHistory projectWorkerEntryExitHistory,
             ProjectConfig projectConfigByLocal);

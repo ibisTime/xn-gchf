@@ -15,20 +15,9 @@ public class XN631710Req {
     @NotBlank
     private String projectCode;
 
-    // 项目名称
-    private String projectName;
-
     // 平台生成的班组编号
     @NotBlank
     private String teamSysNo;
-
-    // 证件号码
-    @NotBlank
-    private String idCardType;
-
-    // 证件号码
-    @NotBlank
-    private String idCardNumber;
 
     // 刷卡时间
     private Date date;
@@ -36,9 +25,6 @@ public class XN631710Req {
     // 刷卡进出方向
     @NotBlank
     private String direction;
-
-    // 刷卡近照
-    private String image;
 
     // 通道的名称
     private String channel;
@@ -52,14 +38,8 @@ public class XN631710Req {
     // WGS84 纬度
     private BigDecimal lat;
 
-    // 班组名称
-    private String teamName;
-
     // 员工编号
-    private String workerCode;
-
-    // 员工名称
-    private String workerName;
+    private String projectWorkerCode;
 
     // 出工状态
     private String status;
@@ -81,12 +61,6 @@ public class XN631710Req {
 
     // 考勤机编号
     private String terminalCode;
-
-    // 备注
-    private String remark;
-
-    // 状态
-    private String uploadStatus;
 
     public String getUserId() {
         return userId;
@@ -112,22 +86,6 @@ public class XN631710Req {
         this.teamSysNo = teamSysNo;
     }
 
-    public String getIdCardType() {
-        return idCardType;
-    }
-
-    public void setIdCardType(String idCardType) {
-        this.idCardType = idCardType;
-    }
-
-    public String getIdCardNumber() {
-        return idCardNumber;
-    }
-
-    public void setIdCardNumber(String idCardNumber) {
-        this.idCardNumber = idCardNumber;
-    }
-
     public Date getDate() {
         return date;
     }
@@ -142,14 +100,6 @@ public class XN631710Req {
 
     public void setDirection(String direction) {
         this.direction = direction;
-    }
-
-    public String getImage() {
-        return image;
-    }
-
-    public void setImage(String image) {
-        this.image = image;
     }
 
     public String getChannel() {
@@ -184,28 +134,12 @@ public class XN631710Req {
         this.lat = lat;
     }
 
-    public String getTeamName() {
-        return teamName;
+    public String getProjectWorkerCode() {
+        return projectWorkerCode;
     }
 
-    public void setTeamName(String teamName) {
-        this.teamName = teamName;
-    }
-
-    public String getWorkerCode() {
-        return workerCode;
-    }
-
-    public void setWorkerCode(String workerCode) {
-        this.workerCode = workerCode;
-    }
-
-    public String getWorkerName() {
-        return workerName;
-    }
-
-    public void setWorkerName(String workerName) {
-        this.workerName = workerName;
+    public void setProjectWorkerCode(String projectWorkerCode) {
+        this.projectWorkerCode = projectWorkerCode;
     }
 
     public String getStatus() {
@@ -262,30 +196,6 @@ public class XN631710Req {
 
     public void setTerminalCode(String terminalCode) {
         this.terminalCode = terminalCode;
-    }
-
-    public String getRemark() {
-        return remark;
-    }
-
-    public void setRemark(String remark) {
-        this.remark = remark;
-    }
-
-    public String getUploadStatus() {
-        return uploadStatus;
-    }
-
-    public void setUploadStatus(String uploadStatus) {
-        this.uploadStatus = uploadStatus;
-    }
-
-    public String getProjectName() {
-        return projectName;
-    }
-
-    public void setProjectName(String projectName) {
-        this.projectName = projectName;
     }
 
 }

@@ -32,7 +32,12 @@ public class XN631785 extends AProcessor {
         int start = StringValidater.toInteger(req.getStart());
         int limit = StringValidater.toInteger(req.getLimit());
         PayRoll condition = new PayRoll();
+        String column = null;
         BeanUtils.copyProperties(req, condition);
+        if (req.getOrderColumn() == null) {
+            column = IPayRollAO.DEFAULT_ORDER_COLUMN;
+        }
+        condition.setOrder(column, req.getOrderDir());
         return payRollAO.queryPayRollPage(start, limit, condition);
     }
 

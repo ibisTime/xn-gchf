@@ -1,5 +1,6 @@
 package com.cdkj.gchf.api.impl;
 
+import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.BeanUtils;
 
 import com.cdkj.gchf.ao.IWorkerAttendanceAO;
@@ -30,7 +31,11 @@ public class XN631727 extends AProcessor {
     public Object doBusiness() throws BizException {
         WorkerAttendance condition = new WorkerAttendance();
         BeanUtils.copyProperties(req, condition);
-        condition.setOrder(req.getOrderColumn(), true);
+        String column = null;
+        if (StringUtils.isBlank(column)) {
+            column = IWorkerAttendanceAO.DEFAULT_ORDER_COLUMN;
+        }
+        condition.setOrder(req.getOrderColumn(), req.getOrderDir());
         return workerAttendanceAO.queryWorkerAttendanceList(condition);
     }
 

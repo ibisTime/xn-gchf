@@ -8,14 +8,19 @@ import org.springframework.stereotype.Service;
 import com.cdkj.gchf.ao.IProjectWorkerAO;
 import com.cdkj.gchf.bo.IProjectConfigBO;
 import com.cdkj.gchf.bo.IProjectWorkerBO;
+import com.cdkj.gchf.bo.ITeamMasterBO;
+import com.cdkj.gchf.bo.IWorkerInfoBO;
 import com.cdkj.gchf.bo.base.Paginable;
 import com.cdkj.gchf.domain.ProjectConfig;
 import com.cdkj.gchf.domain.ProjectWorker;
+import com.cdkj.gchf.domain.TeamMaster;
+import com.cdkj.gchf.domain.WorkerInfo;
 import com.cdkj.gchf.dto.req.XN631690Req;
 import com.cdkj.gchf.dto.req.XN631692Req;
 import com.cdkj.gchf.dto.req.XN631911Req;
 import com.cdkj.gchf.dto.req.XN631912Req;
 import com.cdkj.gchf.dto.req.XN631913Req;
+import com.cdkj.gchf.enums.EUploadStatus;
 import com.cdkj.gchf.exception.BizException;
 
 @Service
@@ -27,18 +32,42 @@ public class ProjectWorkerAOImpl implements IProjectWorkerAO {
     @Autowired
     private IProjectConfigBO projectConfigBO;
 
+    @Autowired
+    private IWorkerInfoBO workerInfoBO;
+
+    @Autowired
+    private ITeamMasterBO teamMasterBO;
+
     @Override
     public String addProjectWorker(XN631690Req req) {
+
+        WorkerInfo workerInfo = workerInfoBO.getWorkerInfo(req.getWorkerCode());
+        if (workerInfo == null) {
+            throw new BizException("XN631690", "人员编号无效,项目人员不存在");
+        }
+        TeamMaster teamMaster = teamMasterBO.getTeamMaster(req.getTeamSysNo());
+        if (teamMaster == null) {
+            throw new BizException("XN631690", "班组信息不存在");
+        }
+
         return projectWorkerBO.saveProjectWorker(req);
     }
 
     @Override
     public void editProjectWorker(XN631692Req req) {
+        if (projectWorkerBO.getProjectWorker(req.getCode()).getUploadStatus()
+            .equals(EUploadStatus.UPLOAD_UNEDITABLE.getCode())) {
+            throw new BizException("XN631692", "班组人员已上传,无法删除");
+        }
         projectWorkerBO.refreshProjectWorker(req);
     }
 
     @Override
     public void dropProjectWorker(String code) {
+        if (projectWorkerBO.getProjectWorker(code).getUploadStatus()
+            .equals(EUploadStatus.UPLOAD_UNEDITABLE.getCode())) {
+            throw new BizException("XN631691", "班组人员已上传,无法删除");
+        }
         projectWorkerBO.removeProjectWorker(code);
     }
 

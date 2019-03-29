@@ -8,6 +8,7 @@ import com.cdkj.gchf.bo.base.Paginable;
 import com.cdkj.gchf.domain.WorkerAttendance;
 import com.cdkj.gchf.dto.req.XN631710Req;
 import com.cdkj.gchf.dto.req.XN631712Req;
+import com.cdkj.gchf.dto.req.XN631713Req;
 import com.cdkj.gchf.dto.req.XN631918Req;
 import com.cdkj.gchf.dto.req.XN631919Req;
 
@@ -28,6 +29,8 @@ public interface IWorkerAttendanceAO {
             WorkerAttendance condition);
 
     public WorkerAttendance getWorkerAttendance(String code);
+
+    public void importWorkerAttendanceList(XN631713Req req);
 
     public void uploadWorkerAttendanceList(String userId,
             List<String> codeList);

@@ -30,7 +30,7 @@ public class ProjectWorker extends ABaseDO {
     private String corpName;
 
     // 班组编号
-    private Integer teamSysNo;
+    private String teamSysNo;
 
     // 班组名称
     private String teamName;
@@ -202,6 +202,9 @@ public class ProjectWorker extends ABaseDO {
     // 证件有效期结束日期
     private String expiryDate;
 
+    // 状态
+    private String uploadStatus;
+
     public String getCode() {
         return code;
     }
@@ -242,11 +245,11 @@ public class ProjectWorker extends ABaseDO {
         this.corpName = corpName;
     }
 
-    public Integer getTeamSysNo() {
+    public String getTeamSysNo() {
         return teamSysNo;
     }
 
-    public void setTeamSysNo(Integer teamSysNo) {
+    public void setTeamSysNo(String teamSysNo) {
         this.teamSysNo = teamSysNo;
     }
 
@@ -696,6 +699,14 @@ public class ProjectWorker extends ABaseDO {
 
     public void setExpiryDate(String expiryDate) {
         this.expiryDate = expiryDate;
+    }
+
+    public String getUploadStatus() {
+        return uploadStatus;
+    }
+
+    public void setUploadStatus(String uploadStatus) {
+        this.uploadStatus = uploadStatus;
     }
 
 }

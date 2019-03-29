@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Component;
 
 import com.cdkj.gchf.bo.IOperateLogBO;
@@ -17,6 +18,7 @@ import com.cdkj.gchf.enums.EGeneratePrefix;
 import com.cdkj.gchf.exception.BizException;
 
 @Component
+@Primary
 public class OperateLogBOImpl extends PaginableBOImpl<OperateLog>
         implements IOperateLogBO {
 

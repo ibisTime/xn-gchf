@@ -48,16 +48,19 @@ public class PayRollBOImpl extends PaginableBOImpl<PayRoll>
     @Override
     public String savePayRoll(XN631770Req data) {
         PayRoll payRoll = new PayRoll();
+
         BeanUtils.copyProperties(data, payRoll);
         String code = OrderNoGenerater
             .generate(EGeneratePrefix.PayRoll.getCode());
         payRoll.setCode(code);
+        payRoll.setPayMonth(data.getPayMonth());
         payRollDAO.insert(payRoll);
         return code;
     }
 
     @Override
     public int removePayRoll(String code) {
+
         PayRoll data = new PayRoll();
         data.setCode(code);
         return payRollDAO.delete(data);

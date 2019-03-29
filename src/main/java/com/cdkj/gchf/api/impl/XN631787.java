@@ -28,10 +28,13 @@ public class XN631787 extends AProcessor {
 
     @Override
     public Object doBusiness() throws BizException {
-        String orderColumn = req.getOrderColumn();
         PayRoll condition = new PayRoll();
-        condition.setOrder(orderColumn, true);
         BeanUtils.copyProperties(req, condition);
+        String column = null;
+        if (req.getOrderColumn() == null) {
+            column = IPayRollAO.DEFAULT_ORDER_COLUMN;
+        }
+        condition.setOrder(column, req.getOrderDir());
         return payRollAO.queryPayRollList(condition);
     }
 

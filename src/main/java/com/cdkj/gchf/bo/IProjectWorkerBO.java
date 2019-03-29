@@ -24,6 +24,8 @@ public interface IProjectWorkerBO extends IPaginableBO<ProjectWorker> {
 
     public ProjectWorker getProjectWorker(String code);
 
+    public ProjectWorker getProjectWorkerByProjectCode(String code);
+
     /****国家平台接口****/
     public void doUpload(XN631911Req req, ProjectConfig projectConfig);
 

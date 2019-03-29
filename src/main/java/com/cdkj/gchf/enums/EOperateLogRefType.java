@@ -22,7 +22,9 @@ public enum EOperateLogRefType {
 
     ProjectWorkerEntryExitHistory("07", "人员进退场信息"),
 
-    PayRoll("08", "工资单信息");
+    PayRoll("08", "工资单信息"),
+
+    WorkerInfo("09", "人员实名制信息");
 
     EOperateLogRefType(String code, String value) {
         this.code = code;

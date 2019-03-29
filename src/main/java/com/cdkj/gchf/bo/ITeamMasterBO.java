@@ -8,6 +8,7 @@ import com.cdkj.gchf.domain.ProjectConfig;
 import com.cdkj.gchf.domain.TeamMaster;
 import com.cdkj.gchf.dto.req.XN631650Req;
 import com.cdkj.gchf.dto.req.XN631652Req;
+import com.cdkj.gchf.dto.req.XN631653Req;
 import com.cdkj.gchf.dto.req.XN631908Req;
 import com.cdkj.gchf.dto.req.XN631909Req;
 import com.cdkj.gchf.dto.req.XN631910Req;
@@ -16,7 +17,7 @@ public interface ITeamMasterBO extends IPaginableBO<TeamMaster> {
 
     public String saveTeamMaster(XN631650Req data);
 
-    public void removeTeamMaster(String code);
+    public void removeTeamMaster(String userId, String code);
 
     public void refreshTeamMaster(XN631652Req data);
 
@@ -30,6 +31,8 @@ public interface ITeamMasterBO extends IPaginableBO<TeamMaster> {
 
     public TeamMaster getTeamMasterByCondition(TeamMaster condition);
 
+    public void saveTeamMasterByImport(XN631653Req req);
+
     /****国家平台接口****/
     public void doUpload(XN631908Req req, ProjectConfig projectConfig);
 
@@ -37,4 +40,6 @@ public interface ITeamMasterBO extends IPaginableBO<TeamMaster> {
 
     public Paginable<TeamMaster> doQuery(XN631910Req req,
             ProjectConfig projectConfig);
+
+    public void uploadTeamMaster(List<String> codeList, String userId);
 }

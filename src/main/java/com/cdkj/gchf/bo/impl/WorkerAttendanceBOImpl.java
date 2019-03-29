@@ -10,7 +10,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.alibaba.fastjson.JSONObject;
+import com.cdkj.gchf.bo.ICorpBasicinfoBO;
+import com.cdkj.gchf.bo.IOperateLogBO;
+import com.cdkj.gchf.bo.IProjectConfigBO;
+import com.cdkj.gchf.bo.IProjectCorpInfoBO;
+import com.cdkj.gchf.bo.IProjectWorkerBO;
+import com.cdkj.gchf.bo.ITeamMasterBO;
+import com.cdkj.gchf.bo.IUserBO;
 import com.cdkj.gchf.bo.IWorkerAttendanceBO;
+import com.cdkj.gchf.bo.IWorkerInfoBO;
 import com.cdkj.gchf.bo.base.Paginable;
 import com.cdkj.gchf.bo.base.PaginableBOImpl;
 import com.cdkj.gchf.common.AesUtils;
@@ -18,7 +26,9 @@ import com.cdkj.gchf.common.DateUtil;
 import com.cdkj.gchf.core.OrderNoGenerater;
 import com.cdkj.gchf.dao.IWorkerAttendanceDAO;
 import com.cdkj.gchf.domain.ProjectConfig;
+import com.cdkj.gchf.domain.ProjectWorker;
 import com.cdkj.gchf.domain.TeamMaster;
+import com.cdkj.gchf.domain.User;
 import com.cdkj.gchf.domain.WorkerAttendance;
 import com.cdkj.gchf.dto.req.XN631710Req;
 import com.cdkj.gchf.dto.req.XN631712Req;
@@ -26,6 +36,11 @@ import com.cdkj.gchf.dto.req.XN631918Req;
 import com.cdkj.gchf.dto.req.XN631918ReqData;
 import com.cdkj.gchf.dto.req.XN631919Req;
 import com.cdkj.gchf.enums.EGeneratePrefix;
+import com.cdkj.gchf.enums.EOperateLogOperate;
+import com.cdkj.gchf.enums.EOperateLogRefType;
+import com.cdkj.gchf.enums.EUploadStatus;
+import com.cdkj.gchf.exception.BizException;
+import com.cdkj.gchf.gov.AsyncQueueHolder;
 import com.cdkj.gchf.gov.GovConnecter;
 import com.cdkj.gchf.gov.GovUtil;
 import com.cdkj.gchf.gov.SerialHandler;
@@ -37,16 +52,53 @@ public class WorkerAttendanceBOImpl extends PaginableBOImpl<WorkerAttendance>
         implements IWorkerAttendanceBO {
 
     @Autowired
+    private IWorkerAttendanceBO workerAttendanceBO;
+
+    @Autowired
+    private IProjectConfigBO projectConfigBO;
+
+    @Autowired
+    private IUserBO userBO;
+
+    @Autowired
+    private IOperateLogBO operateLogBO;
+
+    @Autowired
+    private ITeamMasterBO teamMasterBO;
+
+    @Autowired
     private IWorkerAttendanceDAO workerAttendanceDAO;
+
+    @Autowired
+    private ICorpBasicinfoBO basicinfoBO;
+
+    @Autowired
+    private IWorkerInfoBO workerInfoBO;
+
+    @Autowired
+    private IProjectCorpInfoBO projectCorpInfoBO;
+
+    private IProjectWorkerBO projectWorkerBO;
 
     @Override
     public String saveWorkerAttendance(XN631710Req data) {
         String code = null;
         WorkerAttendance workerAttendance = new WorkerAttendance();
         BeanUtils.copyProperties(data, workerAttendance);
+        ProjectConfig projectConfigByLocal = projectConfigBO
+            .getProjectConfigByLocal(data.getProjectCode());
+        workerAttendance.setProjectName(projectConfigByLocal.getProjectName());
+        ProjectWorker projectWorker = projectWorkerBO
+            .getProjectWorker(data.getProjectWorkerCode());
+        workerAttendance.setWorkerCode(projectWorker.getWorkerCode());
+        workerAttendance.setWorkerName(projectWorker.getWorkerName());
+        workerAttendance.setIdCardNumber(projectWorker.getIdCardNumber());
+        workerAttendance.setIdCardType(projectWorker.getIdCardType());
+        workerAttendance.setUploadStatus(EUploadStatus.TO_UPLOAD.getCode());
         code = OrderNoGenerater
             .generate(EGeneratePrefix.WorkerAttendance.getCode());
         workerAttendance.setCode(code);
+        System.out.println(workerAttendanceDAO);
         workerAttendanceDAO.insert(workerAttendance);
         return code;
     }
@@ -62,9 +114,16 @@ public class WorkerAttendanceBOImpl extends PaginableBOImpl<WorkerAttendance>
 
     @Override
     public void refreshWorkerAttendance(XN631712Req data) {
-        WorkerAttendance workerAttendance = new WorkerAttendance();
-        BeanUtils.copyProperties(data, workerAttendance);
-        workerAttendanceDAO.update(workerAttendance);
+
+        User user = userBO.getBriefUser(data.getUserId());
+        WorkerAttendance tempWorkerAttendance = new WorkerAttendance();
+        tempWorkerAttendance.setCode(data.getCode());
+        WorkerAttendance select = workerAttendanceDAO
+            .select(tempWorkerAttendance);
+        select.setDate(data.getDate());
+        workerAttendanceDAO.update(select);
+        operateLogBO.saveOperateLog(EOperateLogRefType.WorkAttendance.getCode(),
+            data.getCode(), "修改人员考勤", user, null);
     }
 
     @Override
@@ -151,6 +210,39 @@ public class WorkerAttendanceBOImpl extends PaginableBOImpl<WorkerAttendance>
         dataList.add(childJson);
         jsonObject.add("dataList", dataList);
         return jsonObject;
+    }
+
+    @Override
+    public void saveWorkerAttendanceToPlantform(String userId,
+            List<String> codeList) {
+        User briefUser = userBO.getBriefUser(userId);
+        for (String code : codeList) {
+            WorkerAttendance workerAttendance = workerAttendanceBO
+                .getWorkerAttendance(code);
+
+            ProjectConfig projectConfigByLocal = projectConfigBO
+                .getProjectConfigByLocal(workerAttendance.getProjectCode());
+
+            if (projectConfigByLocal == null) {
+                throw new BizException("XN631714", "该项目未配置，无法查询");
+            }
+            TeamMaster teamMaster = teamMasterBO
+                .getTeamMaster(workerAttendance.getTeamSysNo());
+
+            JsonObject requestJson = getRequestJson(teamMaster,
+                workerAttendance, projectConfigByLocal);
+            System.out.println(requestJson);
+            String resString = GovConnecter.getGovData("WorkerAttendance.Add",
+                requestJson.toString(), projectConfigByLocal.getProjectCode(),
+                projectConfigByLocal.getSecret());
+            String saveOperateLog = operateLogBO.saveOperateLog(
+                EOperateLogRefType.WorkAttendance.getCode(), code,
+                EOperateLogOperate.UploadWorkAtendance.getValue(), briefUser,
+                null);
+            AsyncQueueHolder.addSerial(resString, projectConfigByLocal,
+                "workerAttendanceBO", code,
+                EUploadStatus.UPLOAD_UNEDITABLE.getCode(), saveOperateLog);
+        }
     }
 
 }

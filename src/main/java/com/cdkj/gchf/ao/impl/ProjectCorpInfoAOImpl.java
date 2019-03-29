@@ -7,7 +7,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 
-import com.alibaba.fastjson.JSONObject;
 import com.cdkj.gchf.ao.IProjectCorpInfoAO;
 import com.cdkj.gchf.bo.ICorpBasicinfoBO;
 import com.cdkj.gchf.bo.IOperateLogBO;
@@ -15,13 +14,14 @@ import com.cdkj.gchf.bo.IProjectConfigBO;
 import com.cdkj.gchf.bo.IProjectCorpInfoBO;
 import com.cdkj.gchf.bo.IUserBO;
 import com.cdkj.gchf.bo.base.Paginable;
-import com.cdkj.gchf.common.AesUtils;
 import com.cdkj.gchf.domain.CorpBasicinfo;
 import com.cdkj.gchf.domain.ProjectConfig;
 import com.cdkj.gchf.domain.ProjectCorpInfo;
 import com.cdkj.gchf.domain.User;
 import com.cdkj.gchf.dto.req.XN631630Req;
 import com.cdkj.gchf.dto.req.XN631632Req;
+import com.cdkj.gchf.dto.req.XN631633Req;
+import com.cdkj.gchf.dto.req.XN631633ReqList;
 import com.cdkj.gchf.dto.req.XN631905Req;
 import com.cdkj.gchf.dto.req.XN631906Req;
 import com.cdkj.gchf.dto.req.XN631907Req;
@@ -29,8 +29,6 @@ import com.cdkj.gchf.enums.EOperateLogOperate;
 import com.cdkj.gchf.enums.EOperateLogRefType;
 import com.cdkj.gchf.enums.EUploadStatus;
 import com.cdkj.gchf.exception.BizException;
-import com.cdkj.gchf.gov.AsyncQueueHolder;
-import com.cdkj.gchf.gov.GovConnecter;
 
 @Service
 public class ProjectCorpInfoAOImpl implements IProjectCorpInfoAO {
@@ -54,9 +52,9 @@ public class ProjectCorpInfoAOImpl implements IProjectCorpInfoAO {
     public String addProjectCorpInfo(XN631630Req data) {
 
         CorpBasicinfo corpBasicinfo = corpBasicinfoBO
-            .getCorpBasicinfo(data.getCorpCode());
+            .getCorpBasicinfoByCorp(data.getCorpCode());
         if (null == corpBasicinfo) {
-            throw new BizException("XN631630", "企业信息不存在不存在");
+            throw new BizException("XN631630", "企业信息不存在");
         }
 
         return projectCorpInfoBO.saveProjectCorpInfo(data);
@@ -83,7 +81,7 @@ public class ProjectCorpInfoAOImpl implements IProjectCorpInfoAO {
         CorpBasicinfo corpBasicinfo = corpBasicinfoBO
             .getCorpBasicinfo(req.getCorpCode());
         if (null == corpBasicinfo) {
-            throw new BizException("XN631630", "企业信息不存在不存在");
+            throw new BizException("XN631630", "企业信息不存在");
         }
 
         projectCorpInfoBO.refreshProjectCorpInfo(req);
@@ -102,61 +100,18 @@ public class ProjectCorpInfoAOImpl implements IProjectCorpInfoAO {
     @Override
     @Transactional
     public void uploadProjectCorpInfo(String userId, List<String> codes) {
-        User briefUser = userBO.getBriefUser(userId);
 
-        for (String code : codes) {
-
-            ProjectCorpInfo projectCorpInfo = projectCorpInfoBO
-                .getProjectCorpInfo(code);
-
-            if (EUploadStatus.UPLOAD_EDITABLE.getCode()
-                .equals(projectCorpInfo.getUploadStatus()))
-                continue;
-
-            // 调用国家平台上传数据
-            ProjectConfig projectConfig = projectConfigBO
-                .getProjectConfigByLocal(projectCorpInfo.getProjectCode());
-            if (null == projectConfig) {
-                throw new BizException("XN631634", "不存在已配置的项目，无法上传");
-            }
-
-            String encrypt = AesUtils.encrypt(
-                projectCorpInfo.getPmIDCardNumber(), projectConfig.getSecret());
-            projectCorpInfo.setPmIDCardNumber(encrypt);
-            projectCorpInfo.setProjectCode(projectConfig.getProjectCode());
-
-            String json = JSONObject.toJSONStringWithDateFormat(projectCorpInfo,
-                "yyyy-MM-dd HH:mm:ss").toString();
-
-            String resString = GovConnecter.getGovData(
-                "ProjectSubContractor.Add", json,
-                projectConfig.getProjectCode(), projectConfig.getSecret());
-
-            // 保存操作日志
-            String saveOperateLog = operateLogBO.saveOperateLog(
-                EOperateLogRefType.ProjectCorpinfo.getCode(), code,
-                EOperateLogOperate.UploadProjectCorpinfo.getValue(), briefUser,
-                null);
-
-            // 状态消息队列更新数据库状态
-            AsyncQueueHolder.addSerial(resString, projectConfig,
-                "projectCorpInfoBO", code,
-                EUploadStatus.UPLOAD_EDITABLE.getCode(), saveOperateLog);
-        }
-
+        projectCorpInfoBO.uploadProjectCorpInfo(userId, codes);
     }
 
     @Override
     public void uploadProjectCorpInfo(XN631905Req req) {
         ProjectConfig projectConfig = projectConfigBO
             .getProjectConfigByProject(req.getProjectCode());
-
         if (null == projectConfig) {
             throw new BizException("XN631905", "该项目未配置，无法上传");
         }
-
         projectCorpInfoBO.doUpload(req, projectConfig);
-
     }
 
     @Override
@@ -202,6 +157,20 @@ public class ProjectCorpInfoAOImpl implements IProjectCorpInfoAO {
     @Override
     public ProjectCorpInfo getProjectCorpInfo(String code) {
         return projectCorpInfoBO.getProjectCorpInfo(code);
+    }
+
+    @Transactional
+    @Override
+    public void importProjectCorpInfo(XN631633Req req) {
+        List<XN631633ReqList> projectCorpInfos = req.getProjectCorpInfos();
+
+        for (XN631633ReqList requestProjectCourpInfo : projectCorpInfos) {
+            if (corpBasicinfoBO.getCorpBasicinfo(
+                requestProjectCourpInfo.getCorpCode()) == null) {
+                throw new BizException("XN631633", "企业信息不存在");
+            }
+        }
+        projectCorpInfoBO.importProjectCorpInfo(req);
     }
 
 }

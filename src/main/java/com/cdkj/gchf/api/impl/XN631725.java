@@ -30,9 +30,14 @@ public class XN631725 extends AProcessor {
     @Override
     public Object doBusiness() throws BizException {
         WorkerAttendance condition = new WorkerAttendance();
+        BeanUtils.copyProperties(req, condition);
         int start = StringValidater.toInteger(req.getStart());
         int limit = StringValidater.toInteger(req.getStart());
-        BeanUtils.copyProperties(req, condition);
+        String column = null;
+        if (org.apache.commons.lang.StringUtils.isBlank(column)) {
+            column = IWorkerAttendanceAO.DEFAULT_ORDER_COLUMN;
+        }
+        condition.setOrder(column, req.getOrderDir());
         return workerAttendanceAO.queryWorkerAttendancePage(start, limit,
             condition);
     }

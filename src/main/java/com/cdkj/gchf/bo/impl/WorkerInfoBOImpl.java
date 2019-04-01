@@ -22,6 +22,7 @@ import com.cdkj.gchf.domain.ProjectConfig;
 import com.cdkj.gchf.domain.WorkerInfo;
 import com.cdkj.gchf.dto.req.XN631790Req;
 import com.cdkj.gchf.dto.req.XN631791Req;
+import com.cdkj.gchf.dto.req.XN631792Req;
 import com.cdkj.gchf.enums.EGeneratePrefix;
 import com.cdkj.gchf.exception.BizException;
 import com.cdkj.gchf.gov.GovConnecter;
@@ -71,13 +72,6 @@ public class WorkerInfoBOImpl extends PaginableBOImpl<WorkerInfo>
             count = WorkerInfoDAO.delete(data);
         }
         return count;
-    }
-
-    @Override
-    public int refreshWorkerInfo(XN631791Req req) {
-        WorkerInfo workerInfo = new WorkerInfo();
-        BeanUtils.copyProperties(req, workerInfo);
-        return WorkerInfoDAO.updateWorkerInfo(workerInfo);
     }
 
     @Override
@@ -146,6 +140,22 @@ public class WorkerInfoBOImpl extends PaginableBOImpl<WorkerInfo>
         }
         code = OrderNoGenerater.generate(EGeneratePrefix.WorkerInfo.getValue());
         return code;
+    }
+
+    @Override
+    public int refreshWorkerInfo(XN631791Req req) {
+        WorkerInfo condition = new WorkerInfo();
+        condition.setCode(req.getCode());
+        BeanUtils.copyProperties(req, condition);
+        return WorkerInfoDAO.updateWorkerInfoAboutIdcard(condition);
+    }
+
+    @Override
+    public int refreshWorkerInfo(XN631792Req req) {
+        WorkerInfo workerInfo = new WorkerInfo();
+        workerInfo.setCode(req.getCode());
+        BeanUtils.copyProperties(req, workerInfo);
+        return WorkerInfoDAO.updateWorkerInfoAboutPhone(workerInfo);
     }
 
 }

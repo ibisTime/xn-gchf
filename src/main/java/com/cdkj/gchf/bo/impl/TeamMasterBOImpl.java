@@ -34,6 +34,7 @@ import com.cdkj.gchf.dto.req.XN631908Req;
 import com.cdkj.gchf.dto.req.XN631909Req;
 import com.cdkj.gchf.dto.req.XN631910Req;
 import com.cdkj.gchf.enums.EGeneratePrefix;
+import com.cdkj.gchf.enums.EIdCardType;
 import com.cdkj.gchf.enums.EOperateLogOperate;
 import com.cdkj.gchf.enums.EOperateLogRefType;
 import com.cdkj.gchf.enums.EUploadStatus;
@@ -232,6 +233,10 @@ public class TeamMasterBOImpl extends PaginableBOImpl<TeamMaster>
     public void saveTeamMasterByImport(XN631653Req req) {
         User user = userBO.getBriefUser(req.getUserId());
         for (XN631653ReqData xn631654ReqData : req.getDataList()) {
+
+            EIdCardType
+                .checkExists(xn631654ReqData.getResponsiblePersonIdcardType());
+
             String code = null;
             TeamMaster teamMaster = new TeamMaster();
             teamMaster.setCorpCode(req.getCorpCode());

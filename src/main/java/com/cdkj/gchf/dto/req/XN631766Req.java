@@ -3,9 +3,11 @@ package com.cdkj.gchf.dto.req;
 import org.hibernate.validator.constraints.NotBlank;
 
 public class XN631766Req {
+    // 编号
     @NotBlank
     private String code;
 
+    // 用户id
     @NotBlank
     private String userId;
 

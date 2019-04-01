@@ -48,130 +48,157 @@
 			</if>
 		</trim>
 	</sql>
-	
+
 	<insert id="insert_WorkerInfo" parameterType="workerInfo">
-        INSERT INTO
-        thf_worker_info(
-        code
-        ,name
-        ,id_card_type
-        ,id_card_number
-        ,gender
-        ,nation
-        
-        ,edu_level
-        ,degree
-        ,worker_type
-        ,birthday
-        ,birth_place_code
-        ,address
-        ,head_image_url
-        
-        ,politics_type
-        ,is_joined
-        ,joined_time
-        ,cell_phone
-        ,culture_level_type
-        ,specialty
-        
-        ,has_bad_medical_history
-        ,urgent_link_man
-        ,urgent_link_man_phone
-        ,work_type_code
-        ,work_corp_name
-        ,work_date
-        
-        ,marital_status
-        ,grant_org
-        ,positive_id_card_image_url
-        ,negative_id_card_image_url
-        ,start_date
-        ,expiry_date
-        )
-        VALUES(
-        #{code}
-        ,#{name}
-        ,#{idCardType}
-        ,#{idCardNumber}
-        ,#{gender}
-        ,#{nation}
-        
-        ,#{eduLevel}
-        ,#{degree}
-        ,#{workerType}
-        ,#{birthday}
-        ,#{birthPlaceCode}
-        ,#{address}
-        
-        ,#{headImageUrl}
-        ,#{politicsType}
-        ,#{isJoined}
-        ,#{joinedTime}
-        ,#{cellPhone}
-        ,#{cultureLevelType}
-        
-        ,#{specialty}
-        ,#{hasBadMedicalHistory}
-        ,#{urgentLinkMan}
-        ,#{urgentLinkManPhone}
-        ,#{workTypeCode}
-        ,#{workCorpName}
-        
-        ,#{workDate}
-        ,#{maritalStatus}
-        ,#{grantOrg}
-        ,#{positiveIdCardImageUrl}
-        ,#{negativeIdCardImageUrl}
-        ,#{startDate}
-        ,#{expiryDate}
-        )
-    </insert>
-    
-    <delete id="delete_WorkerInfo" parameterType="workerInfo">
-        DELETE from thf_worker_info WHERE code = #{code}
-    </delete>
-	
+		INSERT INTO
+		thf_worker_info(
+		code
+		,name
+		,id_card_type
+		,id_card_number
+		,gender
+		,nation
+
+		,edu_level
+		,degree
+		,worker_type
+		,birthday
+		,birth_place_code
+		,address
+		,head_image_url
+
+		,politics_type
+		,is_joined
+		,joined_time
+		,cell_phone
+		,culture_level_type
+		,specialty
+
+		,has_bad_medical_history
+		,urgent_link_man
+		,urgent_link_man_phone
+		,work_type_code
+		,work_corp_name
+		,work_date
+
+		,marital_status
+		,grant_org
+		,positive_id_card_image_url
+		,negative_id_card_image_url
+		,start_date
+		,expiry_date
+		)
+		VALUES(
+		#{code}
+		,#{name}
+		,#{idCardType}
+		,#{idCardNumber}
+		,#{gender}
+		,#{nation}
+
+		,#{eduLevel}
+		,#{degree}
+		,#{workerType}
+		,#{birthday}
+		,#{birthPlaceCode}
+		,#{address}
+
+		,#{headImageUrl}
+		,#{politicsType}
+		,#{isJoined}
+		,#{joinedTime}
+		,#{cellPhone}
+		,#{cultureLevelType}
+
+		,#{specialty}
+		,#{hasBadMedicalHistory}
+		,#{urgentLinkMan}
+		,#{urgentLinkManPhone}
+		,#{workTypeCode}
+		,#{workCorpName}
+
+		,#{workDate}
+		,#{maritalStatus}
+		,#{grantOrg}
+		,#{positiveIdCardImageUrl}
+		,#{negativeIdCardImageUrl}
+		,#{startDate}
+		,#{expiryDate}
+		)
+	</insert>
+
+	<delete id="delete_WorkerInfo" parameterType="workerInfo">
+		DELETE from thf_worker_info WHERE code = #{code}
+	</delete>
+
 	<update id="update_WorkerInfo" parameterType="workerInfo">
-        UPDATE
-        thf_worker_info
-        SET
-        name = #{name}
-        ,id_card_type = #{idCardType}
-        ,id_card_number = #{idCardNumber}
-        ,gender = #{gender}
-        ,nation = #{nation}
-        ,edu_level = #{eduLevel}
-        
-        ,degree = #{degree}
-        ,worker_type = #{workerType}
-        ,birthday = #{birthday}
-        ,birth_place_code = #{birthPlaceCode}
-        ,address = #{address}
-        ,head_image_url = #{headImageUrl}
-        ,politics_type = #{politicsType}
-        
-        ,is_joined =  #{isJoined}
-        ,joined_time = #{joinedTime}
-        ,cell_phone = #{cellPhone}
-        ,culture_level_type = #{cultureLevelType}
-        ,specialty = #{specialty}
-        ,has_bad_medical_history = #{hasBadMedicalHistory}
-        
-        ,urgent_link_man =  #{urgentLinkMan}
-        ,urgent_link_man_phone = #{urgentLinkManPhone}
-        ,work_type_code = #{workTypeCode}
-        ,work_corp_name = #{workCorpName}
-        ,work_date = #{workDate}
-        ,marital_status = #{maritalStatus}
-        
-        ,grant_org =  #{grantOrg}
-        ,positive_id_card_image_url = #{positiveIdCardImageUrl}
-        ,negative_id_card_image_url = #{negativeIdCardImageUrl}
-        ,start_date =  #{startDate}
-        ,expiry_date = #{expiryDate}
-        WHERE code = #{code}
-    </update>
-	
+		UPDATE
+		thf_worker_info
+		SET
+		name = #{name}
+		,id_card_type = #{idCardType}
+		,id_card_number = #{idCardNumber}
+		,gender = #{gender}
+		,nation = #{nation}
+		,edu_level = #{eduLevel}
+
+		,degree = #{degree}
+		,worker_type = #{workerType}
+		,birthday = #{birthday}
+		,birth_place_code = #{birthPlaceCode}
+		,address = #{address}
+		,head_image_url = #{headImageUrl}
+		,politics_type = #{politicsType}
+
+		,is_joined = #{isJoined}
+		,joined_time = #{joinedTime}
+		,cell_phone = #{cellPhone}
+		,culture_level_type = #{cultureLevelType}
+		,specialty = #{specialty}
+		,has_bad_medical_history = #{hasBadMedicalHistory}
+
+		,urgent_link_man = #{urgentLinkMan}
+		,urgent_link_man_phone = #{urgentLinkManPhone}
+		,work_type_code = #{workTypeCode}
+		,work_corp_name = #{workCorpName}
+		,work_date = #{workDate}
+		,marital_status = #{maritalStatus}
+
+		,grant_org = #{grantOrg}
+		,positive_id_card_image_url = #{positiveIdCardImageUrl}
+		,negative_id_card_image_url = #{negativeIdCardImageUrl}
+		,start_date = #{startDate}
+		,expiry_date = #{expiryDate}
+		WHERE code = #{code}
+	</update>
+
+	<update id="update_WorkerInfoAboutIdcard" parameterType="workerInfo">
+		UPDATE
+		thf_worker_info
+		SET
+		,id_card_type = #{idCardType}
+		,id_card_number = #{idCardNumber}
+		,head_image_url = #{headImageUrl}
+		,grant_org = #{grantOrg}
+		,positive_id_card_image_url = #{positiveIdCardImageUrl}
+		,negative_id_card_image_url = #{negativeIdCardImageUrl}
+		,start_date = #{startDate}
+		,expiry_date = #{expiryDate}
+		WHERE code = #{code}
+	</update>
+
+	<update id="update_WorkerInfoAboutPhone" parameterType="workerInfo">
+		UPDATE
+		thf_worker_info
+		SET
+		
+		cell_phone = #{cellPhone}
+		,urgent_link_man = #{urgentLinkMan}
+		,urgent_link_man_phone = #{urgentLinkManPhone}
+
+		WHERE code = #{code}
+	</update>
+
 	<select id="select_WorkerInfo" parameterType="workerInfo"
 		resultMap="WorkerInfo_DB_Result">
 		SELECT
@@ -222,9 +249,9 @@
 		<include refid="where_condition" />
 	</select>
 
-	
 
-	
+
+
 
 
 </mapper>

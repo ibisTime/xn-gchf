@@ -1,7 +1,5 @@
 package com.cdkj.gchf.dto.req;
 
-import java.util.Date;
-
 import org.hibernate.validator.constraints.NotBlank;
 
 public class XN631791Req {
@@ -10,107 +8,20 @@ public class XN631791Req {
     private String userId;
 
     // 编号
+    @NotBlank
     private String code;
 
-    // 工人姓名
-    @NotBlank
-    private String name;
-
-    // 证件类型
-    @NotBlank
-    private String idCardType;
-
-    // 证件号码
-    @NotBlank
-    private String idCardNumber;
-
-    // 工人性别
-    private Integer gender;
-
-    // 民族
-    @NotBlank
-    private String nation;
-
-    // 学历
-    private String eduLevel;
-
-    // 学位
-    private Integer degree;
-
-    // 类别
-    private String workerType;
-
-    // 出生日期
-    private Date birthday;
-
-    // 籍贯 身份证号码前六位
-    @NotBlank
-    private String birthPlaceCode;
-
-    // 住址
-    @NotBlank
-    private String address;
-
-    // 头像 二代身份证上面的头像
-    @NotBlank
-    private String headImageUrl;
-
-    // 政治面貌
-    private String politicsType;
-
-    // 是否加入工会
-    private Integer isJoined;
-
-    // 加入工会时间 已加入工会时，此字段必须有值
-    private String joinedTime;
-
-    // 手机号码
-    @NotBlank
-    private String cellPhone;
-
-    // 文化程度
-    private String cultureLevelType;
-
-    // 特长
-    private String specialty;
-
-    // 否有重大病史
-    private Integer hasBadMedicalHistory;
-
-    // 紧急联系人姓名
-    private String urgentLinkMan;
-
-    // 紧急联系电话
-    private String urgentLinkManPhone;
-
-    // 当前工种
-    @NotBlank
-    private String workTypeCode;
-
-    // 当前聘用企业
-    private String workCorpName;
-
-    // 开始工作日期
-    private Date workDate;
-
-    // 婚姻状况
-    private String maritalStatus;
-
-    // 发证机关
-    @NotBlank
-    private String grantOrg;
-
     // 正面照 URL
+    @NotBlank
     private String positiveIdCardImageUrl;
 
     // 反面照 URL
+    @NotBlank
     private String negativeIdCardImageUrl;
 
-    // 有效期开始日期
-    private Date startDate;
-
-    // 有效期结束日期
-    private Date expiryDate;
+    // 身份证号
+    @NotBlank
+    private String idCardNumber;
 
     public String getUserId() {
         return userId;
@@ -126,214 +37,6 @@ public class XN631791Req {
 
     public void setCode(String code) {
         this.code = code;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getIdCardType() {
-        return idCardType;
-    }
-
-    public void setIdCardType(String idCardType) {
-        this.idCardType = idCardType;
-    }
-
-    public String getIdCardNumber() {
-        return idCardNumber;
-    }
-
-    public void setIdCardNumber(String idCardNumber) {
-        this.idCardNumber = idCardNumber;
-    }
-
-    public Integer getGender() {
-        return gender;
-    }
-
-    public void setGender(Integer gender) {
-        this.gender = gender;
-    }
-
-    public String getNation() {
-        return nation;
-    }
-
-    public void setNation(String nation) {
-        this.nation = nation;
-    }
-
-    public String getEduLevel() {
-        return eduLevel;
-    }
-
-    public void setEduLevel(String eduLevel) {
-        this.eduLevel = eduLevel;
-    }
-
-    public Integer getDegree() {
-        return degree;
-    }
-
-    public void setDegree(Integer degree) {
-        this.degree = degree;
-    }
-
-    public String getWorkerType() {
-        return workerType;
-    }
-
-    public void setWorkerType(String workerType) {
-        this.workerType = workerType;
-    }
-
-    public Date getBirthday() {
-        return birthday;
-    }
-
-    public void setBirthday(Date birthday) {
-        this.birthday = birthday;
-    }
-
-    public String getBirthPlaceCode() {
-        return birthPlaceCode;
-    }
-
-    public void setBirthPlaceCode(String birthPlaceCode) {
-        this.birthPlaceCode = birthPlaceCode;
-    }
-
-    public String getAddress() {
-        return address;
-    }
-
-    public void setAddress(String address) {
-        this.address = address;
-    }
-
-    public String getHeadImageUrl() {
-        return headImageUrl;
-    }
-
-    public void setHeadImageUrl(String headImageUrl) {
-        this.headImageUrl = headImageUrl;
-    }
-
-    public String getPoliticsType() {
-        return politicsType;
-    }
-
-    public void setPoliticsType(String politicsType) {
-        this.politicsType = politicsType;
-    }
-
-    public Integer getIsJoined() {
-        return isJoined;
-    }
-
-    public void setIsJoined(Integer isJoined) {
-        this.isJoined = isJoined;
-    }
-
-    public String getJoinedTime() {
-        return joinedTime;
-    }
-
-    public void setJoinedTime(String joinedTime) {
-        this.joinedTime = joinedTime;
-    }
-
-    public String getCellPhone() {
-        return cellPhone;
-    }
-
-    public void setCellPhone(String cellPhone) {
-        this.cellPhone = cellPhone;
-    }
-
-    public String getCultureLevelType() {
-        return cultureLevelType;
-    }
-
-    public void setCultureLevelType(String cultureLevelType) {
-        this.cultureLevelType = cultureLevelType;
-    }
-
-    public String getSpecialty() {
-        return specialty;
-    }
-
-    public void setSpecialty(String specialty) {
-        this.specialty = specialty;
-    }
-
-    public Integer getHasBadMedicalHistory() {
-        return hasBadMedicalHistory;
-    }
-
-    public void setHasBadMedicalHistory(Integer hasBadMedicalHistory) {
-        this.hasBadMedicalHistory = hasBadMedicalHistory;
-    }
-
-    public String getUrgentLinkMan() {
-        return urgentLinkMan;
-    }
-
-    public void setUrgentLinkMan(String urgentLinkMan) {
-        this.urgentLinkMan = urgentLinkMan;
-    }
-
-    public String getUrgentLinkManPhone() {
-        return urgentLinkManPhone;
-    }
-
-    public void setUrgentLinkManPhone(String urgentLinkManPhone) {
-        this.urgentLinkManPhone = urgentLinkManPhone;
-    }
-
-    public String getWorkTypeCode() {
-        return workTypeCode;
-    }
-
-    public void setWorkTypeCode(String workTypeCode) {
-        this.workTypeCode = workTypeCode;
-    }
-
-    public String getWorkCorpName() {
-        return workCorpName;
-    }
-
-    public void setWorkCorpName(String workCorpName) {
-        this.workCorpName = workCorpName;
-    }
-
-    public Date getWorkDate() {
-        return workDate;
-    }
-
-    public void setWorkDate(Date workDate) {
-        this.workDate = workDate;
-    }
-
-    public String getMaritalStatus() {
-        return maritalStatus;
-    }
-
-    public void setMaritalStatus(String maritalStatus) {
-        this.maritalStatus = maritalStatus;
-    }
-
-    public String getGrantOrg() {
-        return grantOrg;
-    }
-
-    public void setGrantOrg(String grantOrg) {
-        this.grantOrg = grantOrg;
     }
 
     public String getPositiveIdCardImageUrl() {
@@ -352,19 +55,12 @@ public class XN631791Req {
         this.negativeIdCardImageUrl = negativeIdCardImageUrl;
     }
 
-    public Date getStartDate() {
-        return startDate;
+    public String getIdCardNumber() {
+        return idCardNumber;
     }
 
-    public void setStartDate(Date startDate) {
-        this.startDate = startDate;
+    public void setIdCardNumber(String idCardNumber) {
+        this.idCardNumber = idCardNumber;
     }
 
-    public Date getExpiryDate() {
-        return expiryDate;
-    }
-
-    public void setExpiryDate(Date expiryDate) {
-        this.expiryDate = expiryDate;
-    }
 }

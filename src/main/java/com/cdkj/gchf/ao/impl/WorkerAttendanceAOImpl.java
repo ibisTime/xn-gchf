@@ -32,6 +32,8 @@ import com.cdkj.gchf.dto.req.XN631713ReqData;
 import com.cdkj.gchf.dto.req.XN631913Req;
 import com.cdkj.gchf.dto.req.XN631918Req;
 import com.cdkj.gchf.dto.req.XN631919Req;
+import com.cdkj.gchf.enums.EDirectionType;
+import com.cdkj.gchf.enums.EIdCardType;
 import com.cdkj.gchf.enums.EOperateLogRefType;
 import com.cdkj.gchf.enums.EUploadStatus;
 import com.cdkj.gchf.exception.BizException;
@@ -192,6 +194,10 @@ public class WorkerAttendanceAOImpl implements IWorkerAttendanceAO {
         List<XN631713ReqData> workerAttendanceList = req
             .getWorkerAttendanceList();
         for (XN631713ReqData xn631713ReqData : workerAttendanceList) {
+            // 校验数据字典数据
+            EDirectionType.checkExists(xn631713ReqData.getDirection());
+            EIdCardType.checkExists(xn631713ReqData.getIdcardType());
+
             // 核实企业信息
             ProjectCorpInfo corpInfoByCorpCode = projectCorpInfoBO
                 .getProjectCorpInfoByCorpCode(xn631713ReqData.getCorpCode());

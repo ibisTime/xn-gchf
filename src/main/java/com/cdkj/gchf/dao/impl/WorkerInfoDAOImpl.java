@@ -24,7 +24,13 @@ public class WorkerInfoDAOImpl extends AMybatisTemplate
 
     @Override
     public int updateWorkerInfo(WorkerInfo condition) {
-        return super.delete(NAMESPACE.concat("update_WorkerInfo"), condition);
+        return super.update(NAMESPACE.concat("update_WorkerInfo"), condition);
+    }
+
+    @Override
+    public int updateWorkerInfoAboutIdcard(WorkerInfo condition) {
+        return super.update(NAMESPACE.concat("update_WorkerInfoAboutIdcard"),
+            condition);
     }
 
     @Override
@@ -50,6 +56,12 @@ public class WorkerInfoDAOImpl extends AMybatisTemplate
             int count) {
         return super.selectList(NAMESPACE.concat("select_WorkerInfo"), start,
             count, condition, WorkerInfo.class);
+    }
+
+    @Override
+    public int updateWorkerInfoAboutPhone(WorkerInfo condition) {
+        return super.update(NAMESPACE.concat("update_WorkerInfoAboutPhone"),
+            condition);
     }
 
 }

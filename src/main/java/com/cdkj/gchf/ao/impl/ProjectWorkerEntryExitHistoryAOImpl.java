@@ -32,6 +32,8 @@ import com.cdkj.gchf.dto.req.XN631733ReqData;
 import com.cdkj.gchf.dto.req.XN631913Req;
 import com.cdkj.gchf.dto.req.XN631914Req;
 import com.cdkj.gchf.dto.req.XN631915Req;
+import com.cdkj.gchf.enums.EEntryExitType;
+import com.cdkj.gchf.enums.EIdCardType;
 import com.cdkj.gchf.enums.EOperateLogOperate;
 import com.cdkj.gchf.enums.EOperateLogRefType;
 import com.cdkj.gchf.enums.EUploadStatus;
@@ -245,6 +247,10 @@ public class ProjectWorkerEntryExitHistoryAOImpl
 
         List<XN631733ReqData> dateList = req.getDateList();
         for (XN631733ReqData xn631733ReqData : dateList) {
+            // 校验数据字典类型数据
+            EIdCardType.checkExists(xn631733ReqData.getIdcardType());
+            EEntryExitType
+                .checkExists(String.valueOf(xn631733ReqData.getType()));
             ProjectWorkerEntryExitHistory entryExitHistory = new ProjectWorkerEntryExitHistory();
             entryExitHistory.setProjectCode(projectCode);
             WorkerInfo infoByIdCardNumber = workerInfoBO

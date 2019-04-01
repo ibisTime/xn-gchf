@@ -36,7 +36,12 @@ import com.cdkj.gchf.dto.req.XN631911ReqWorker;
 import com.cdkj.gchf.dto.req.XN631912Req;
 import com.cdkj.gchf.dto.req.XN631913Req;
 import com.cdkj.gchf.enums.EGeneratePrefix;
+import com.cdkj.gchf.enums.EIdCardType;
+import com.cdkj.gchf.enums.EIsNotType;
+import com.cdkj.gchf.enums.EPoliticsType;
 import com.cdkj.gchf.enums.EUploadStatus;
+import com.cdkj.gchf.enums.EWorkerRoleType;
+import com.cdkj.gchf.enums.EWorkerType;
 import com.cdkj.gchf.gov.GovConnecter;
 import com.cdkj.gchf.gov.GovUtil;
 import com.cdkj.gchf.gov.SerialHandler;
@@ -210,37 +215,48 @@ public class ProjectWorkerBOImpl extends PaginableBOImpl<ProjectWorker>
      * 
      * <p>Title: saveProjectWorkersByImport</p>   
      * <p>Description: 导入班组人员</p>   
-     * @param req   
-     * @see com.cdkj.gchf.bo.IProjectWorkerBO#saveProjectWorkersByImport(com.cdkj.gchf.dto.req.XN631693Req)
      */
     @Transactional
     @Override
     public void saveProjectWorkersByImport(XN631693Req req) {
         String projectcode = req.getProjectcode();
         List<XN631693ReqData> workerList = req.getWorkerList();
-        for (XN631693ReqData projectWorkerDate : workerList) {
+        for (XN631693ReqData projectWorkerData : workerList) {
             String code = null;
-            // 保存班组人员信息
+            // 数据字典检查
+            EIdCardType.checkExists(projectWorkerData.getIdCardType());
+            EIsNotType.checkExists(
+                String.valueOf(projectWorkerData.getIsTeamLeader()));
+            if (projectWorkerData.getHasBadMedicalHistory() != null) {
+                EIsNotType
+                    .checkExists(projectWorkerData.getHasBadMedicalHistory());
+            }
+            EIsNotType.checkExists(projectWorkerData.getHasBuyInsurance());
+            EWorkerRoleType
+                .checkExists(String.valueOf(projectWorkerData.getWorkRole()));
+            EWorkerType.checkExists(projectWorkerData.getWorkType());
+            EPoliticsType.checkExists(projectWorkerData.getPoliticsType());
+            //
             ProjectWorker projectWorker = new ProjectWorker();
             code = OrderNoGenerater
                 .generate(EGeneratePrefix.ProjectWorker.getValue());
             projectWorker.setCode(code);
-            BeanUtils.copyProperties(projectWorkerDate, projectWorker);
+            BeanUtils.copyProperties(projectWorkerData, projectWorker);
             projectWorker.setProjectCode(projectcode);
             CorpBasicinfo corpBasicinfo = corpBasicinfoBO
-                .getCorpBasicinfoByCorp(projectWorkerDate.getCorpCode());
+                .getCorpBasicinfoByCorp(projectWorkerData.getCorpCode());
             projectWorker.setCorpName(corpBasicinfo.getCorpName());
             // 检查人员实名信息表是否存在员工信息
             WorkerInfo infoByIdCardNumber = workerInfoBO
                 .getWorkerInfoByIdCardNumber(
-                    projectWorkerDate.getIdCardNumber());
+                    projectWorkerData.getIdCardNumber());
             if (infoByIdCardNumber != null) {
                 BeanUtils.copyProperties(infoByIdCardNumber, projectWorker);
                 projectWorkerDAO.insert(projectWorker);
             } else {
                 WorkerInfo workerInfo = new WorkerInfo();
                 // 插入基本信息到人员实名信息表
-                BeanUtils.copyProperties(projectWorkerDate, workerInfo);
+                BeanUtils.copyProperties(projectWorkerData, workerInfo);
                 workerInfoBO.saveWorkerInfo(workerInfo);
             }
 

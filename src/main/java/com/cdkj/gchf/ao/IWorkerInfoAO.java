@@ -8,6 +8,7 @@ import com.cdkj.gchf.bo.base.Paginable;
 import com.cdkj.gchf.domain.WorkerInfo;
 import com.cdkj.gchf.dto.req.XN631790Req;
 import com.cdkj.gchf.dto.req.XN631791Req;
+import com.cdkj.gchf.dto.req.XN631792Req;
 
 @Component
 public interface IWorkerInfoAO {
@@ -15,9 +16,11 @@ public interface IWorkerInfoAO {
 
     public String addWorkerInfo(XN631790Req req);
 
-    public int dropWorkerInfo(String code);
+    public int addWorkerInfoIdCardInfo(XN631791Req req);
 
-    public int editWorkerInfo(XN631791Req data);
+    public int addWorkerInfoContact(XN631792Req req);
+
+    public int dropWorkerInfo(String code);
 
     public Paginable<WorkerInfo> queryWorkerInfoPage(int start, int limit,
             WorkerInfo condition);

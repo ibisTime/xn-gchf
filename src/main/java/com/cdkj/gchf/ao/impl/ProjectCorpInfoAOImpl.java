@@ -25,8 +25,10 @@ import com.cdkj.gchf.dto.req.XN631633ReqList;
 import com.cdkj.gchf.dto.req.XN631905Req;
 import com.cdkj.gchf.dto.req.XN631906Req;
 import com.cdkj.gchf.dto.req.XN631907Req;
+import com.cdkj.gchf.enums.EIdCardType;
 import com.cdkj.gchf.enums.EOperateLogOperate;
 import com.cdkj.gchf.enums.EOperateLogRefType;
+import com.cdkj.gchf.enums.EProjectCorpType;
 import com.cdkj.gchf.enums.EUploadStatus;
 import com.cdkj.gchf.exception.BizException;
 
@@ -165,6 +167,10 @@ public class ProjectCorpInfoAOImpl implements IProjectCorpInfoAO {
         List<XN631633ReqList> projectCorpInfos = req.getProjectCorpInfos();
 
         for (XN631633ReqList requestProjectCourpInfo : projectCorpInfos) {
+
+            EProjectCorpType.checkExists(requestProjectCourpInfo.getCorpType());
+            EIdCardType.checkExists(requestProjectCourpInfo.getPmIDCardType());
+
             if (corpBasicinfoBO.getCorpBasicinfo(
                 requestProjectCourpInfo.getCorpCode()) == null) {
                 throw new BizException("XN631633",

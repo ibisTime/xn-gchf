@@ -12,6 +12,7 @@ import com.cdkj.gchf.common.IdCardChecker;
 import com.cdkj.gchf.domain.WorkerInfo;
 import com.cdkj.gchf.dto.req.XN631790Req;
 import com.cdkj.gchf.dto.req.XN631791Req;
+import com.cdkj.gchf.dto.req.XN631792Req;
 import com.cdkj.gchf.exception.BizException;
 
 @Service
@@ -28,12 +29,6 @@ public class WorkerInfoAOImpl implements IWorkerInfoAO {
             throw new BizException("XN631790", "身份证信息错误");
         }
         return WorkerInfoBO.saveWorkerInfo(req);
-    }
-
-    @Override
-    public int editWorkerInfo(XN631791Req req) {
-
-        return WorkerInfoBO.refreshWorkerInfo(req);
     }
 
     @Override
@@ -59,4 +54,15 @@ public class WorkerInfoAOImpl implements IWorkerInfoAO {
     public WorkerInfo getWorkerInfo(String code) {
         return WorkerInfoBO.getWorkerInfo(code);
     }
+
+    @Override
+    public int addWorkerInfoIdCardInfo(XN631791Req req) {
+        return WorkerInfoBO.refreshWorkerInfo(req);
+    }
+
+    @Override
+    public int addWorkerInfoContact(XN631792Req req) {
+        return WorkerInfoBO.refreshWorkerInfo(req);
+    }
+
 }

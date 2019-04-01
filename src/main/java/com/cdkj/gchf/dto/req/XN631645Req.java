@@ -9,12 +9,16 @@ public class XN631645Req extends APageReq {
     @NotBlank
     private String userId;
 
+    // 项目编号
     private String projectCode;
 
+    // 项目名称
     private String projectName;
 
+    // 企业类型
     private String corpType;
 
+    // 企业名称
     private String corpName;
 
     public String getUserId() {

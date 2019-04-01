@@ -8,4 +8,8 @@ public interface IWorkerInfoDAO extends IBaseDAO<WorkerInfo> {
     String NAMESPACE = IWorkerInfoDAO.class.getName().concat(".");
 
     int updateWorkerInfo(WorkerInfo condition);
+
+    int updateWorkerInfoAboutIdcard(WorkerInfo condition);
+
+    int updateWorkerInfoAboutPhone(WorkerInfo condition);
 }

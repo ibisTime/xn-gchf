@@ -28,6 +28,7 @@ import com.cdkj.gchf.dto.req.XN631673ReqData;
 import com.cdkj.gchf.dto.req.XN631913Req;
 import com.cdkj.gchf.dto.req.XN631916Req;
 import com.cdkj.gchf.dto.req.XN631917Req;
+import com.cdkj.gchf.enums.EContractPeriodType;
 import com.cdkj.gchf.enums.EUploadStatus;
 import com.cdkj.gchf.exception.BizException;
 
@@ -183,6 +184,11 @@ public class WorkerContractAOImpl implements IWorkerContractAO {
         }
         List<XN631673ReqData> workContractList = req.getWorkContractList();
         for (XN631673ReqData xn631673ReqData : workContractList) {
+
+            // 校验数据字典数据
+            EContractPeriodType
+                .checkExists(xn631673ReqData.getContractPeriodType());
+
             WorkerContract workerContract = new WorkerContract();
             // 核实参见单位信息
             ProjectCorpInfo corpInfoByCorpCode = projectCorpInfoBO

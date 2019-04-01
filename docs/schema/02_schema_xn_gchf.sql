@@ -172,6 +172,8 @@ CREATE TABLE `thf_project_worker` (
   `total_leaving_days` decimal(10,1) DEFAULT '0.0' COMMENT '累积请假天数',
   `updater` varchar(32) DEFAULT NULL COMMENT '更新人',
   `update_datetime` datetime DEFAULT NULL COMMENT '更新时间',
+  `upload_status` varchar(4) DEFAULT NULL COMMENT '状态',
+  `local_team_sys_no` varchar(32) DEFAULT NULL COMMENT '本地班组编号',
   `remark` text COMMENT '备注',
   PRIMARY KEY (`code`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='班组人员';
@@ -179,7 +181,6 @@ CREATE TABLE `thf_project_worker` (
 DROP TABLE IF EXISTS `thf_project_worker_entry_exit_history`;
 CREATE TABLE `thf_project_worker_entry_exit_history` (
   `code` varchar(32) NOT NULL COMMENT '编号',
-  `local_project_code` varchar(32) DEFAULT NULL COMMENT '本地项目编号',
   `project_code` varchar(20) DEFAULT NULL COMMENT '项目编码',
   `corp_code` varchar(18) DEFAULT NULL COMMENT '班组所在企业统一社会信用代码',
   `corp_name` varchar(200) DEFAULT NULL COMMENT '班组所在企业名称',
@@ -194,6 +195,7 @@ CREATE TABLE `thf_project_worker_entry_exit_history` (
   `date` datetime DEFAULT NULL COMMENT '时间',
   `type` int(11) DEFAULT NULL COMMENT '类型',
   `voucher_url` varchar(200) DEFAULT NULL COMMENT '凭证扫描件',
+  `upload_status` varchar(4) DEFAULT NULL COMMENT '状态',
   PRIMARY KEY (`code`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='人员进退场';
 
@@ -201,7 +203,6 @@ DROP TABLE IF EXISTS `thf_pay_roll`;
 CREATE TABLE `thf_pay_roll` (
   `code` varchar(32) NOT NULL COMMENT '编号',
   `pay_roll_code` varchar(22) DEFAULT NULL COMMENT '工资单编码',
-  `local_project_code` varchar(32) DEFAULT NULL COMMENT '本地项目编号',
   `project_code` varchar(20) DEFAULT NULL COMMENT '项目编码',
   `corp_code` varchar(18) DEFAULT NULL COMMENT '所属企业统一社会信用代码',
   `corp_name` varchar(200) DEFAULT NULL COMMENT '所属企业名称',
@@ -230,6 +231,30 @@ CREATE TABLE `thf_pay_roll_detail` (
   `is_back_pay` tinyint(1) DEFAULT NULL COMMENT '是否是补发',
   `balance_date` datetime DEFAULT NULL COMMENT '发放日期',
   `third_pay_roll_code` varchar(50) DEFAULT NULL COMMENT '第三方工资单编号',
+  `upload_status` varchar(4) DEFAULT NULL COMMENT '状态',
+  `employ_code` varchar(50) DEFAULT NULL COMMENT '雇佣编号',
+  `project_code` varchar(50) DEFAULT NULL COMMENT '项目编号',
+  `project_name` varchar(30) DEFAULT NULL COMMENT '项目名称',
+  `message_code` varchar(50) DEFAULT NULL COMMENT '消息编号',
+  `staff_code` varchar(50) DEFAULT NULL COMMENT '员工编号',
+  `staff_name` varchar(10) DEFAULT NULL COMMENT '员工姓名',
+  `attendance_days` varchar(30) DEFAULT NULL COMMENT '出勤天数',
+  `delay_hours` varchar(10) DEFAULT NULL COMMENT '迟到小时数',
+  `early_hours` varchar(255) DEFAULT NULL COMMENT '早退小时数',
+  `should_amount` varchar(30) DEFAULT NULL COMMENT '应发工资(程序计算)',
+  `status` varchar(4) DEFAULT NULL COMMENT '状态',
+  `create_datetime` datetime DEFAULT NULL COMMENT '创建时间',
+  `cut_amount` varchar(30) DEFAULT NULL COMMENT '扣减金额',
+  `award_amount` varchar(30) DEFAULT NULL COMMENT '奖励金额',
+  `tax` varchar(30) DEFAULT NULL COMMENT '税费',
+  `applu_user` varchar(30) DEFAULT NULL COMMENT '调整人',
+  `apply_datetime` datetime DEFAULT NULL COMMENT '调整时间',
+  `apply_note` varchar(50) DEFAULT NULL COMMENT '调整说明',
+  `approve_user` varchar(50) DEFAULT NULL COMMENT '审核人',
+  `approve_datetime` datetime DEFAULT NULL COMMENT '审核时间',
+  `approve_note` varchar(50) DEFAULT NULL COMMENT '审核说明',
+  `supply_amount` varchar(10) DEFAULT NULL COMMENT '补发工资',
+  `late_pay_datetime` datetime DEFAULT NULL COMMENT '最近一次发放时间',
   PRIMARY KEY (`code`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='人员工资单明细';
 
@@ -352,6 +377,7 @@ CREATE TABLE `thf_worker_attendance` (
   `sim` decimal(4,2) DEFAULT NULL COMMENT '人脸识别准确率',
   `terminal_code` varchar(50) DEFAULT NULL COMMENT '考勤机编号',
   `remark` text COMMENT '备注',
+  `upload_status` varchar(4) COMMENT '状态' DEFAULT NULL,
   PRIMARY KEY (`code`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='人员考勤';
 
@@ -377,6 +403,7 @@ CREATE TABLE `thf_worker_contract` (
   `updater` varchar(32) DEFAULT NULL COMMENT '更新人',
   `update_datetime` datetime DEFAULT NULL COMMENT '更新时间',
   `remark` text COMMENT '备注',
+  `upload_status` varchar(4) DEFAULT NULL COMMENT '状态',
   PRIMARY KEY (`code`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='劳动合同';
 

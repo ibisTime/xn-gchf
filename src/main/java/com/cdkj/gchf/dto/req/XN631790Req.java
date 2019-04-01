@@ -31,9 +31,11 @@ public class XN631790Req {
     @NotBlank
     private String idCardNumber;
 
-    // 籍贯 身份证号码前六位
-    @NotBlank
-    private String birthPlaceCode;
+    // 有效期开始日期
+    private Date startDate;
+
+    // 有效期结束日期
+    private Date expiryDate;
 
     // 住址
     @NotBlank
@@ -99,14 +101,6 @@ public class XN631790Req {
         this.idCardNumber = idCardNumber;
     }
 
-    public String getBirthPlaceCode() {
-        return birthPlaceCode;
-    }
-
-    public void setBirthPlaceCode(String birthPlaceCode) {
-        this.birthPlaceCode = birthPlaceCode;
-    }
-
     public String getAddress() {
         return address;
     }
@@ -121,6 +115,22 @@ public class XN631790Req {
 
     public void setGrantOrg(String grantOrg) {
         this.grantOrg = grantOrg;
+    }
+
+    public Date getStartDate() {
+        return startDate;
+    }
+
+    public void setStartDate(Date startDate) {
+        this.startDate = startDate;
+    }
+
+    public Date getExpiryDate() {
+        return expiryDate;
+    }
+
+    public void setExpiryDate(Date expiryDate) {
+        this.expiryDate = expiryDate;
     }
 
 }

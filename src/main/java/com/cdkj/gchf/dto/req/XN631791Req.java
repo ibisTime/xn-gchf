@@ -11,6 +11,10 @@ public class XN631791Req {
     @NotBlank
     private String code;
 
+    // 头像
+    @NotBlank
+    private String headImageUrl;
+
     // 正面照 URL
     @NotBlank
     private String positiveIdCardImageUrl;
@@ -18,10 +22,6 @@ public class XN631791Req {
     // 反面照 URL
     @NotBlank
     private String negativeIdCardImageUrl;
-
-    // 身份证号
-    @NotBlank
-    private String idCardNumber;
 
     public String getUserId() {
         return userId;
@@ -55,12 +55,12 @@ public class XN631791Req {
         this.negativeIdCardImageUrl = negativeIdCardImageUrl;
     }
 
-    public String getIdCardNumber() {
-        return idCardNumber;
+    public String getHeadImageUrl() {
+        return headImageUrl;
     }
 
-    public void setIdCardNumber(String idCardNumber) {
-        this.idCardNumber = idCardNumber;
+    public void setHeadImageUrl(String headImageUrl) {
+        this.headImageUrl = headImageUrl;
     }
 
 }

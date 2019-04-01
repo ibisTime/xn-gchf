@@ -53,13 +53,22 @@ public class WorkerInfoBOImpl extends PaginableBOImpl<WorkerInfo>
 
     @Override
     public String saveWorkerInfo(XN631790Req req) {
-        WorkerInfo data = new WorkerInfo();
         String code = OrderNoGenerater
             .generate(EGeneratePrefix.WorkerInfo.getCode());
         WorkerInfo workerInfo = new WorkerInfo();
-        BeanUtils.copyProperties(data, workerInfo);
-        data.setCode(code);
-        WorkerInfoDAO.insert(data);
+        workerInfo.setIdCardType("01");
+        workerInfo.setBirthPlaceCode(req.getIdCardNumber().substring(0, 5));
+        workerInfo.setHeadImageUrl("default");
+        workerInfo.setCellPhone("");
+        workerInfo.setHasBadMedicalHistory(0);
+        workerInfo.setWorkerType("");
+        workerInfo.setWorkTypeCode("");
+        BeanUtils.copyProperties(req, workerInfo);
+        workerInfo.setName(req.getName());
+        workerInfo.setCode(code);
+        workerInfo.setWorkerType("");
+        // -----------
+        WorkerInfoDAO.insert(workerInfo);
         return code;
     }
 

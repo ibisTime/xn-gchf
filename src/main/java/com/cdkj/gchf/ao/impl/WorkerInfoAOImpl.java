@@ -23,7 +23,15 @@ public class WorkerInfoAOImpl implements IWorkerInfoAO {
 
     @Override
     public String addWorkerInfo(XN631790Req req) {
-
+        if (req.getBirthday() == null) {
+            throw new BizException("XN631790", "出生日期不能为空");
+        }
+        if (req.getStartDate() == null) {
+            throw new BizException("XN631790", "有效期开始日期不能为空");
+        }
+        if (req.getExpiryDate() == null) {
+            throw new BizException("XN631790", "有效期结束日期不能为空");
+        }
         IdCardChecker idCardChecker = new IdCardChecker(req.getIdCardNumber());
         if (!idCardChecker.validate()) {
             throw new BizException("XN631790", "身份证信息错误");

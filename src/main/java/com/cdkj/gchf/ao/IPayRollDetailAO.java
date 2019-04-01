@@ -5,23 +5,24 @@ import java.util.List;
 import org.springframework.stereotype.Component;
 
 import com.cdkj.gchf.bo.base.Paginable;
-import com.cdkj.gchf.domain.PayRoll;
+import com.cdkj.gchf.domain.PayRollDetail;
+import com.cdkj.gchf.dto.req.XN631813Req;
 
 @Component
 public interface IPayRollDetailAO {
     static final String DEFAULT_ORDER_COLUMN = "code";
 
-    public String addPayRollDetail(PayRoll data);
+    public String addPayRollDetail(PayRollDetail data);
 
     public int dropPayRollDetail(String code);
 
-    public int editPayRollDetail(PayRoll data);
+    public int editPayRollDetail(XN631813Req req);
 
-    public Paginable<PayRoll> queryPayRollDetailPage(int start, int limit,
-            PayRoll condition);
+    public Paginable<PayRollDetail> queryPayRollDetailPage(int start, int limit,
+            PayRollDetail condition);
 
-    public List<PayRoll> queryPayRollDetailList(PayRoll condition);
+    public List<PayRollDetail> queryPayRollDetailList(PayRollDetail condition);
 
-    public PayRoll getPayDetailRoll(String code);
+    public PayRollDetail getPayDetailRoll(String code);
 
 }

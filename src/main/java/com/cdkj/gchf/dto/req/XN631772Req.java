@@ -1,6 +1,5 @@
 package com.cdkj.gchf.dto.req;
 
-import java.math.BigDecimal;
 import java.util.Date;
 
 import org.hibernate.validator.constraints.NotBlank;
@@ -14,26 +13,11 @@ public class XN631772Req {
     @NotBlank
     private String code;
 
-    @NotBlank
-    private String payRollDetailCode;
+    // 发放工资的年月
+    private Date payMonth;
 
-    // 出勤天数
-    private Integer days;
-
-    // 工作时长
-    private BigDecimal workHours;
-
-    // 应发金额
-    private BigDecimal totalPayAmount;
-
-    // 是否是补发
-    private Integer isBackPay;
-
-    // 发放日期
-    private Date balanceDate;
-
-    // 第三方工资单编号
-    private String thirdPayRollCode;
+    // 班组编号
+    private String teamSysNo;
 
     public String getUserId() {
         return userId;
@@ -51,60 +35,20 @@ public class XN631772Req {
         this.code = code;
     }
 
-    public Integer getDays() {
-        return days;
+    public Date getPayMonth() {
+        return payMonth;
     }
 
-    public void setDays(Integer days) {
-        this.days = days;
+    public void setPayMonth(Date payMonth) {
+        this.payMonth = payMonth;
     }
 
-    public BigDecimal getWorkHours() {
-        return workHours;
+    public String getTeamSysNo() {
+        return teamSysNo;
     }
 
-    public void setWorkHours(BigDecimal workHours) {
-        this.workHours = workHours;
-    }
-
-    public BigDecimal getTotalPayAmount() {
-        return totalPayAmount;
-    }
-
-    public void setTotalPayAmount(BigDecimal totalPayAmount) {
-        this.totalPayAmount = totalPayAmount;
-    }
-
-    public Integer getIsBackPay() {
-        return isBackPay;
-    }
-
-    public void setIsBackPay(Integer isBackPay) {
-        this.isBackPay = isBackPay;
-    }
-
-    public Date getBalanceDate() {
-        return balanceDate;
-    }
-
-    public void setBalanceDate(Date balanceDate) {
-        this.balanceDate = balanceDate;
-    }
-
-    public String getThirdPayRollCode() {
-        return thirdPayRollCode;
-    }
-
-    public void setThirdPayRollCode(String thirdPayRollCode) {
-        this.thirdPayRollCode = thirdPayRollCode;
-    }
-
-    public String getPayRollDetailCode() {
-        return payRollDetailCode;
-    }
-
-    public void setPayRollDetailCode(String payRollDetailCode) {
-        this.payRollDetailCode = payRollDetailCode;
+    public void setTeamSysNo(String teamSysNo) {
+        this.teamSysNo = teamSysNo;
     }
 
 }

@@ -105,7 +105,7 @@ public class PayRollAOImpl implements IPayRollAO {
         if (payRoll == null) {
             throw new BizException("XN631772", "工资单不存在");
         }
-        return payRollDetailBO.updatePayRollDetail(req);
+        return payRollBO.updatePayRollDetail(req);
     }
 
     @Transactional

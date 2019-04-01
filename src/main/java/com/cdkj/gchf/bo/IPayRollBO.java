@@ -8,6 +8,7 @@ import com.cdkj.gchf.domain.PayRoll;
 import com.cdkj.gchf.domain.PayRollDetail;
 import com.cdkj.gchf.domain.ProjectConfig;
 import com.cdkj.gchf.dto.req.XN631770Req;
+import com.cdkj.gchf.dto.req.XN631772Req;
 import com.cdkj.gchf.dto.req.XN631920Req;
 import com.cdkj.gchf.dto.req.XN631921Req;
 
@@ -22,6 +23,8 @@ public interface IPayRollBO extends IPaginableBO<PayRoll> {
     public int removePayRoll(String code);
 
     public int refreshPayRoll(PayRoll data);
+
+    public int updatePayRollDetail(XN631772Req req);
 
     public List<PayRoll> queryPayRollList(PayRoll condition);
 

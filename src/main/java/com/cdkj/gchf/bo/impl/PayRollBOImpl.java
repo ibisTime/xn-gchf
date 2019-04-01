@@ -27,6 +27,7 @@ import com.cdkj.gchf.domain.PayRollDetail;
 import com.cdkj.gchf.domain.ProjectConfig;
 import com.cdkj.gchf.domain.TeamMaster;
 import com.cdkj.gchf.dto.req.XN631770Req;
+import com.cdkj.gchf.dto.req.XN631772Req;
 import com.cdkj.gchf.dto.req.XN631910Req;
 import com.cdkj.gchf.dto.req.XN631920Req;
 import com.cdkj.gchf.dto.req.XN631920ReqDateil;
@@ -229,6 +230,15 @@ public class PayRollBOImpl extends PaginableBOImpl<PayRoll>
         payRoll.setCode(code);
         payRollDAO.insert(payRoll);
         return payRoll;
+    }
+
+    @Override
+    public int updatePayRollDetail(XN631772Req req) {
+        PayRoll condition = new PayRoll();
+        condition.setCode(req.getCode());
+        PayRoll payRoll = payRollDAO.select(condition);
+        BeanUtils.copyProperties(req, payRoll);
+        return payRollDAO.update(payRoll);
     }
 
 }

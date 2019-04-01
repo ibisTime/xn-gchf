@@ -2,24 +2,34 @@ package com.cdkj.gchf.ao.impl;
 
 import java.util.List;
 
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.cdkj.gchf.ao.IWorkerAttendanceAO;
+import com.cdkj.gchf.bo.IOperateLogBO;
 import com.cdkj.gchf.bo.IProjectConfigBO;
+import com.cdkj.gchf.bo.IProjectCorpInfoBO;
 import com.cdkj.gchf.bo.IProjectWorkerBO;
 import com.cdkj.gchf.bo.ITeamMasterBO;
+import com.cdkj.gchf.bo.IUserBO;
 import com.cdkj.gchf.bo.IWorkerAttendanceBO;
+import com.cdkj.gchf.bo.IWorkerInfoBO;
 import com.cdkj.gchf.bo.base.Paginable;
 import com.cdkj.gchf.domain.ProjectConfig;
+import com.cdkj.gchf.domain.ProjectCorpInfo;
 import com.cdkj.gchf.domain.ProjectWorker;
 import com.cdkj.gchf.domain.TeamMaster;
+import com.cdkj.gchf.domain.User;
 import com.cdkj.gchf.domain.WorkerAttendance;
+import com.cdkj.gchf.domain.WorkerInfo;
 import com.cdkj.gchf.dto.req.XN631710Req;
 import com.cdkj.gchf.dto.req.XN631712Req;
 import com.cdkj.gchf.dto.req.XN631713Req;
+import com.cdkj.gchf.dto.req.XN631713ReqData;
 import com.cdkj.gchf.dto.req.XN631918Req;
 import com.cdkj.gchf.dto.req.XN631919Req;
+import com.cdkj.gchf.enums.EOperateLogRefType;
 import com.cdkj.gchf.enums.EUploadStatus;
 import com.cdkj.gchf.exception.BizException;
 
@@ -37,6 +47,18 @@ public class WorkerAttendanceAOImpl implements IWorkerAttendanceAO {
 
     @Autowired
     private IProjectWorkerBO projectWorkerBO;
+
+    @Autowired
+    private IProjectCorpInfoBO projectCorpInfoBO;
+
+    @Autowired
+    private IWorkerInfoBO workerInfoBO;
+
+    @Autowired
+    private IOperateLogBO operateLogBO;
+
+    @Autowired
+    private IUserBO userBO;
 
     @Override
     public String addWorkerAttendance(XN631710Req data) {
@@ -131,6 +153,44 @@ public class WorkerAttendanceAOImpl implements IWorkerAttendanceAO {
 
     @Override
     public void importWorkerAttendanceList(XN631713Req req) {
+
+        User user = userBO.getBriefUser(req.getUserId());
+        List<XN631713ReqData> workerAttendanceList = req
+            .getWorkerAttendanceList();
+        for (XN631713ReqData xn631713ReqData : workerAttendanceList) {
+            // 核实企业信息
+            ProjectCorpInfo corpInfoByCorpCode = projectCorpInfoBO
+                .getProjectCorpInfoByCorpCode(xn631713ReqData.getCorpCode());
+            if (corpInfoByCorpCode == null) {
+                throw new BizException("XN631713",
+                    "企业信息不存在" + xn631713ReqData.getCorpCode());
+            }
+            // 核实身份信息
+            String idcardNumber = xn631713ReqData.getIdcardNumber();
+            WorkerInfo workerInfoByIdCardNumber = workerInfoBO
+                .getWorkerInfoByIdCardNumber(idcardNumber);
+            if (workerInfoByIdCardNumber == null) {
+                throw new BizException("XN631713",
+                    "员工信息不存在" + xn631713ReqData.getIdcardNumber());
+            }
+            // 录入数据
+            WorkerAttendance workerAttendance = new WorkerAttendance();
+            BeanUtils.copyProperties(xn631713ReqData, workerAttendance);
+            BeanUtils.copyProperties(workerInfoByIdCardNumber,
+                workerAttendance);
+            TeamMaster condition = new TeamMaster();
+            condition.setCorpCode(xn631713ReqData.getCorpCode());
+            condition.setTeamName(xn631713ReqData.getTeamName());
+            TeamMaster masterByCondition = teamMasterBO
+                .getTeamMasterByCondition(condition);
+            workerAttendance.setTeamSysNo(masterByCondition.getCode());
+            workerAttendance.setUploadStatus(EUploadStatus.TO_UPLOAD.getCode());
+            String code = workerAttendanceBO
+                .saveWorkerAttendance(workerAttendance);
+            operateLogBO.saveOperateLog(
+                EOperateLogRefType.WorkAttendance.getCode(), code, "导入人员考勤",
+                user, null);
+        }
     }
 
 }

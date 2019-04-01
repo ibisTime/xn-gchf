@@ -15,6 +15,8 @@ public interface IWorkerInfoBO extends IPaginableBO<WorkerInfo> {
 
     public String saveWorkerInfo(XN631790Req req);
 
+    public String saveWorkerInfo(WorkerInfo workerInfo);
+
     public int removeWorkerInfo(String code);
 
     public int refreshWorkerInfo(XN631791Req data);

@@ -3,18 +3,20 @@ package com.cdkj.gchf.ao.impl;
 import java.util.List;
 
 import org.apache.commons.collections.CollectionUtils;
-import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.cdkj.gchf.ao.IProjectWorkerEntryExitHistoryAO;
+import com.cdkj.gchf.bo.ICorpBasicinfoBO;
 import com.cdkj.gchf.bo.IOperateLogBO;
 import com.cdkj.gchf.bo.IProjectConfigBO;
+import com.cdkj.gchf.bo.IProjectCorpInfoBO;
 import com.cdkj.gchf.bo.IProjectWorkerBO;
 import com.cdkj.gchf.bo.IProjectWorkerEntryExitHistoryBO;
 import com.cdkj.gchf.bo.ITeamMasterBO;
 import com.cdkj.gchf.bo.IUserBO;
+import com.cdkj.gchf.bo.IWorkerInfoBO;
 import com.cdkj.gchf.bo.base.Paginable;
 import com.cdkj.gchf.common.AesUtils;
 import com.cdkj.gchf.domain.ProjectConfig;
@@ -22,9 +24,11 @@ import com.cdkj.gchf.domain.ProjectWorker;
 import com.cdkj.gchf.domain.ProjectWorkerEntryExitHistory;
 import com.cdkj.gchf.domain.TeamMaster;
 import com.cdkj.gchf.domain.User;
+import com.cdkj.gchf.domain.WorkerInfo;
 import com.cdkj.gchf.dto.req.XN631730Req;
 import com.cdkj.gchf.dto.req.XN631732Req;
 import com.cdkj.gchf.dto.req.XN631733Req;
+import com.cdkj.gchf.dto.req.XN631733ReqData;
 import com.cdkj.gchf.dto.req.XN631913Req;
 import com.cdkj.gchf.dto.req.XN631914Req;
 import com.cdkj.gchf.dto.req.XN631915Req;
@@ -34,7 +38,6 @@ import com.cdkj.gchf.enums.EUploadStatus;
 import com.cdkj.gchf.exception.BizException;
 import com.cdkj.gchf.gov.AsyncQueueHolder;
 import com.cdkj.gchf.gov.GovConnecter;
-import com.cdkj.gchf.gov.WorkerEntryExit;
 import com.google.gson.JsonObject;
 
 @Service
@@ -58,6 +61,15 @@ public class ProjectWorkerEntryExitHistoryAOImpl
 
     @Autowired
     private ITeamMasterBO teamMasterBO;
+
+    @Autowired
+    private ICorpBasicinfoBO corpBasicinfoBO;
+
+    @Autowired
+    private IWorkerInfoBO workerInfoBO;
+
+    @Autowired
+    private IProjectCorpInfoBO projectCorpInfoBO;
 
     @Override
     public String addProjectWorkerEntryExitHistory(XN631730Req data) {
@@ -218,16 +230,54 @@ public class ProjectWorkerEntryExitHistoryAOImpl
         }
     }
 
+    /**
+     * <p>Description: 导入人员进退场</p>   
+     */
+    @Transactional
     @Override
     public void importProjectWorkerEntryExitHistoryList(XN631733Req req) {
-
-        for (WorkerEntryExit entryExit : req.getWorkerEntryExitHistoryList()) {
-            XN631730Req data = new XN631730Req();
-            BeanUtils.copyProperties(entryExit, data);
-            projectWorkerEntryExitHistoryBO
-                .saveProjectWorkerEntryExitHistory(data);
+        User user = userBO.getBriefUser(req.getUserId());
+        String projectCode = req.getProjectCode();
+        ProjectConfig configByLocal = projectConfigBO
+            .getProjectConfigByLocal(projectCode);
+        if (configByLocal == null) {
+            throw new BizException("XN631733", "项目不存在" + req.getProjectCode());
         }
 
+        List<XN631733ReqData> dateList = req.getDateList();
+        for (XN631733ReqData xn631733ReqData : dateList) {
+            ProjectWorkerEntryExitHistory entryExitHistory = new ProjectWorkerEntryExitHistory();
+            entryExitHistory.setProjectCode(projectCode);
+            WorkerInfo infoByIdCardNumber = workerInfoBO
+                .getWorkerInfoByIdCardNumber(xn631733ReqData.getIdcardNumber());
+            if (infoByIdCardNumber == null) {
+                throw new BizException("XN631733",
+                    "项目人员未录入" + xn631733ReqData.getIdcardNumber());
+            }
+            // 根据idcardnumber和项目名称获取班组信息
+            TeamMaster condition = new TeamMaster();
+            condition.setTeamName(xn631733ReqData.getTeamName());
+            condition.setProjectCode(projectCode);
+            TeamMaster masterByCondition = teamMasterBO
+                .getTeamMasterByCondition(condition);
+            entryExitHistory.setCorpCode(masterByCondition.getCorpCode());
+            entryExitHistory.setCorpName(masterByCondition.getCorpName());
+            entryExitHistory.setWorkerCode(infoByIdCardNumber.getCode());
+            entryExitHistory.setWorkerName(infoByIdCardNumber.getName());
+            entryExitHistory.setPosition(infoByIdCardNumber.getWorkerType());
+            entryExitHistory
+                .setJoinDatetime(infoByIdCardNumber.getJoinedTime());
+            entryExitHistory.setIdcardType(xn631733ReqData.getIdcardType());
+            entryExitHistory.setIdcardNumber(xn631733ReqData.getIdcardNumber());
+
+            entryExitHistory.setDate(xn631733ReqData.getDate());
+            entryExitHistory.setType(xn631733ReqData.getType());
+            String code = projectWorkerEntryExitHistoryBO
+                .saveProjectWorkerEntryExitHistory(entryExitHistory);
+            operateLogBO.saveOperateLog(
+                EOperateLogRefType.WorkAttendance.getCode(), code, "导入人员进退场信息",
+                user, null);
+        }
     }
 
 }

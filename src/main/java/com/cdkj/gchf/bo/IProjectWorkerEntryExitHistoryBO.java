@@ -18,6 +18,9 @@ public interface IProjectWorkerEntryExitHistoryBO
 
     public String saveProjectWorkerEntryExitHistory(XN631730Req data);
 
+    public String saveProjectWorkerEntryExitHistory(
+            ProjectWorkerEntryExitHistory entryExitHistory);
+
     public void removeProjectWorkerEntryExitHistory(String code);
 
     public void refreshProjectWorkerEntryExitHistory(XN631732Req data);

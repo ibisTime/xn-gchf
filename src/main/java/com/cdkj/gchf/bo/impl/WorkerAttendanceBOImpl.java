@@ -78,6 +78,7 @@ public class WorkerAttendanceBOImpl extends PaginableBOImpl<WorkerAttendance>
     @Autowired
     private IProjectCorpInfoBO projectCorpInfoBO;
 
+    @Autowired
     private IProjectWorkerBO projectWorkerBO;
 
     @Override
@@ -98,7 +99,6 @@ public class WorkerAttendanceBOImpl extends PaginableBOImpl<WorkerAttendance>
         code = OrderNoGenerater
             .generate(EGeneratePrefix.WorkerAttendance.getCode());
         workerAttendance.setCode(code);
-        System.out.println(workerAttendanceDAO);
         workerAttendanceDAO.insert(workerAttendance);
         return code;
     }
@@ -121,6 +121,7 @@ public class WorkerAttendanceBOImpl extends PaginableBOImpl<WorkerAttendance>
         WorkerAttendance select = workerAttendanceDAO
             .select(tempWorkerAttendance);
         select.setDate(data.getDate());
+        select.setDirection(data.getDirection());
         workerAttendanceDAO.update(select);
         operateLogBO.saveOperateLog(EOperateLogRefType.WorkAttendance.getCode(),
             data.getCode(), "修改人员考勤", user, null);
@@ -243,6 +244,20 @@ public class WorkerAttendanceBOImpl extends PaginableBOImpl<WorkerAttendance>
                 "workerAttendanceBO", code,
                 EUploadStatus.UPLOAD_UNEDITABLE.getCode(), saveOperateLog);
         }
+    }
+
+    @Override
+    public String saveWorkerAttendance(WorkerAttendance workerAttendance) {
+        String code = null;
+        if (workerAttendance == null) {
+            throw new BizException("添加考勤失败 考勤信息不能为空");
+
+        }
+        code = OrderNoGenerater
+            .generate(EGeneratePrefix.WorkerAttendance.getValue());
+        workerAttendance.setCode(code);
+        workerAttendanceDAO.insert(workerAttendance);
+        return code;
     }
 
 }

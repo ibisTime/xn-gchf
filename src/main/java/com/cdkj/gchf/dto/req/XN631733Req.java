@@ -5,14 +5,15 @@ import java.util.List;
 import org.hibernate.validator.constraints.NotBlank;
 import org.hibernate.validator.constraints.NotEmpty;
 
-import com.cdkj.gchf.gov.WorkerEntryExit;
-
 public class XN631733Req {
     @NotBlank
     private String userId;
 
     @NotEmpty
-    private List<WorkerEntryExit> workerEntryExitHistoryList;
+    private List<XN631733ReqData> dateList;
+
+    @NotBlank
+    private String projectCode;
 
     public String getUserId() {
         return userId;
@@ -22,13 +23,20 @@ public class XN631733Req {
         this.userId = userId;
     }
 
-    public List<WorkerEntryExit> getWorkerEntryExitHistoryList() {
-        return workerEntryExitHistoryList;
+    public String getProjectCode() {
+        return projectCode;
     }
 
-    public void setWorkerEntryExitHistoryList(
-            List<WorkerEntryExit> workerEntryExitHistoryList) {
-        this.workerEntryExitHistoryList = workerEntryExitHistoryList;
+    public void setProjectCode(String projectCode) {
+        this.projectCode = projectCode;
+    }
+
+    public List<XN631733ReqData> getDateList() {
+        return dateList;
+    }
+
+    public void setDateList(List<XN631733ReqData> dateList) {
+        this.dateList = dateList;
     }
 
 }

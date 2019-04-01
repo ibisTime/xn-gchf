@@ -196,11 +196,11 @@ public class ProjectCorpInfoBOImpl extends PaginableBOImpl<ProjectCorpInfo>
             ProjectCorpInfo projectCorpInfo = new ProjectCorpInfo();
             ProjectConfig configByLocal = projectConfigBO
                 .getProjectConfigByLocal(req.getProjectCode());
+            BeanUtils.copyProperties(data, projectCorpInfo);
             projectCorpInfo.setCorpCode(data.getCorpCode());
             projectCorpInfo.setCorpName(data.getCorpName());
             projectCorpInfo.setProjectCode(configByLocal.getProjectCode());
             projectCorpInfo.setProjectName(configByLocal.getProjectName());
-            BeanUtils.copyProperties(data, projectCorpInfo);
             saveProjectCorpInfo(projectCorpInfo);
             // 操作日志
             code = OrderNoGenerater

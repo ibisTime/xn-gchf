@@ -3,23 +3,15 @@ package com.cdkj.gchf.dto.req;
 import java.util.Date;
 
 public class XN631653ReqData {
-    // 班组编号
-    private String teamSysNo;
 
     // 班组名称
     private String teamName;
 
-    // 班组长姓名
-    private String teamLeaderName;
+    // 所在企业统一社会信用代码
+    private String corpCode;
 
-    // 班组长联系电话
-    private String teamLeaderPhone;
-
-    // 班组长证件类型
-    private String teamLeaderIdcardType;
-
-    // 班组长证件号码
-    private String teamLeaderIdNumber;
+    // 企业名称
+    private String corpName;
 
     // 责任人姓名
     private String responsiblePersonName;
@@ -39,13 +31,8 @@ public class XN631653ReqData {
     // 退场日期
     private Date exitTime;
 
-    public String getTeamSysNo() {
-        return teamSysNo;
-    }
-
-    public void setTeamSysNo(String teamSysNo) {
-        this.teamSysNo = teamSysNo;
-    }
+    // 备注
+    private String remark;
 
     public String getTeamName() {
         return teamName;
@@ -53,38 +40,6 @@ public class XN631653ReqData {
 
     public void setTeamName(String teamName) {
         this.teamName = teamName;
-    }
-
-    public String getTeamLeaderName() {
-        return teamLeaderName;
-    }
-
-    public void setTeamLeaderName(String teamLeaderName) {
-        this.teamLeaderName = teamLeaderName;
-    }
-
-    public String getTeamLeaderPhone() {
-        return teamLeaderPhone;
-    }
-
-    public void setTeamLeaderPhone(String teamLeaderPhone) {
-        this.teamLeaderPhone = teamLeaderPhone;
-    }
-
-    public String getTeamLeaderIdcardType() {
-        return teamLeaderIdcardType;
-    }
-
-    public void setTeamLeaderIdcardType(String teamLeaderIdcardType) {
-        this.teamLeaderIdcardType = teamLeaderIdcardType;
-    }
-
-    public String getTeamLeaderIdNumber() {
-        return teamLeaderIdNumber;
-    }
-
-    public void setTeamLeaderIdNumber(String teamLeaderIdNumber) {
-        this.teamLeaderIdNumber = teamLeaderIdNumber;
     }
 
     public String getResponsiblePersonName() {
@@ -134,6 +89,30 @@ public class XN631653ReqData {
 
     public void setExitTime(Date exitTime) {
         this.exitTime = exitTime;
+    }
+
+    public String getCorpCode() {
+        return corpCode;
+    }
+
+    public void setCorpCode(String corpCode) {
+        this.corpCode = corpCode;
+    }
+
+    public String getCorpName() {
+        return corpName;
+    }
+
+    public void setCorpName(String corpName) {
+        this.corpName = corpName;
+    }
+
+    public String getRemark() {
+        return remark;
+    }
+
+    public void setRemark(String remark) {
+        this.remark = remark;
     }
 
 }

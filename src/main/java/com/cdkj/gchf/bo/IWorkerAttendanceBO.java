@@ -17,6 +17,8 @@ public interface IWorkerAttendanceBO extends IPaginableBO<WorkerAttendance> {
 
     public String saveWorkerAttendance(XN631710Req data);
 
+    public String saveWorkerAttendance(WorkerAttendance workerAttendance);
+
     public int removeWorkerAttendance(String code);
 
     public void refreshWorkerAttendance(XN631712Req data);

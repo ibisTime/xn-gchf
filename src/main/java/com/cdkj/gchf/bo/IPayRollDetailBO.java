@@ -16,6 +16,8 @@ public interface IPayRollDetailBO extends IPaginableBO<PayRollDetail> {
     public void savePayRollDetail(String projectCode,
             List<XN631770ReqDetail> data);
 
+    public String savePayRollDetail(PayRollDetail payRollDetail);
+
     public int deletePayRollDetailByPayRollCode(String payRollCode);
 
     public int deletePayRollDetail(String code);

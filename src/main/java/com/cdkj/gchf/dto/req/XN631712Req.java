@@ -16,6 +16,9 @@ public class XN631712Req {
     // 刷卡时间
     private Date date;
 
+    // 刷卡进出方向
+    private String direction;
+
     public String getUserId() {
         return userId;
     }
@@ -38,6 +41,14 @@ public class XN631712Req {
 
     public void setDate(Date date) {
         this.date = date;
+    }
+
+    public String getDirection() {
+        return direction;
+    }
+
+    public void setDirection(String direction) {
+        this.direction = direction;
     }
 
 }

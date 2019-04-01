@@ -188,4 +188,17 @@ public class ProjectWorkerEntryExitHistoryBOImpl
             .select(projectWorkerEntryExitHistory);
     }
 
+    @Override
+    public String saveProjectWorkerEntryExitHistory(
+            ProjectWorkerEntryExitHistory entryExitHistory) {
+        String code = null;
+        if (entryExitHistory == null) {
+            throw new BizException("进退场信息不能为空");
+        }
+        code = OrderNoGenerater
+            .generate(EGeneratePrefix.ProjectWorkerEntryExitHistory.getValue());
+        projectWorkerEntryExitHistoryDAO.insert(entryExitHistory);
+        return code;
+    }
+
 }

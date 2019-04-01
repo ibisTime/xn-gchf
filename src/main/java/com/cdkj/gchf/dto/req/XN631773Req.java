@@ -13,7 +13,7 @@ public class XN631773Req {
     private String projectCode;
 
     @NotEmpty
-    private List<XN631770Req> dateList;
+    private List<XN631773ReqData> dateList;
 
     public String getUserId() {
         return userId;
@@ -31,11 +31,11 @@ public class XN631773Req {
         this.projectCode = projectCode;
     }
 
-    public List<XN631770Req> getDateList() {
+    public List<XN631773ReqData> getDateList() {
         return dateList;
     }
 
-    public void setDateList(List<XN631770Req> dateList) {
+    public void setDateList(List<XN631773ReqData> dateList) {
         this.dateList = dateList;
     }
 

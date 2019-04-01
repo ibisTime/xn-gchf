@@ -167,7 +167,8 @@ public class ProjectCorpInfoAOImpl implements IProjectCorpInfoAO {
         for (XN631633ReqList requestProjectCourpInfo : projectCorpInfos) {
             if (corpBasicinfoBO.getCorpBasicinfo(
                 requestProjectCourpInfo.getCorpCode()) == null) {
-                throw new BizException("XN631633", "企业信息不存在");
+                throw new BizException("XN631633",
+                    "企业信息不存在" + requestProjectCourpInfo.getCorpCode());
             }
         }
         projectCorpInfoBO.importProjectCorpInfo(req);

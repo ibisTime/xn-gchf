@@ -3,8 +3,10 @@ package com.cdkj.gchf.ao.impl;
 import java.util.List;
 
 import org.apache.commons.collections.CollectionUtils;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.cdkj.gchf.ao.IWorkerContractAO;
 import com.cdkj.gchf.bo.IProjectConfigBO;
@@ -22,6 +24,7 @@ import com.cdkj.gchf.domain.WorkerInfo;
 import com.cdkj.gchf.dto.req.XN631670Req;
 import com.cdkj.gchf.dto.req.XN631672Req;
 import com.cdkj.gchf.dto.req.XN631673Req;
+import com.cdkj.gchf.dto.req.XN631673ReqData;
 import com.cdkj.gchf.dto.req.XN631913Req;
 import com.cdkj.gchf.dto.req.XN631916Req;
 import com.cdkj.gchf.dto.req.XN631917Req;
@@ -165,9 +168,39 @@ public class WorkerContractAOImpl implements IWorkerContractAO {
         workerContractBO.saveWorkerContractToPlantfrom(userId, codeList);
     }
 
+    /**
+     * <p>Description:导入劳动合同 </p>   
+     */
+    @Transactional
     @Override
     public void importWorkContractList(XN631673Req req) {
-
+        ProjectConfig configByLocal = projectConfigBO
+            .getProjectConfigByLocal(req.getProjectCode());
+        if (configByLocal == null) {
+            throw new BizException("XN631673", "项目不存在");
+        }
+        List<XN631673ReqData> workContractList = req.getWorkContractList();
+        for (XN631673ReqData xn631673ReqData : workContractList) {
+            WorkerContract workerContract = new WorkerContract();
+            // 核实参见单位信息
+            ProjectCorpInfo corpInfoByCorpCode = projectCorpInfoBO
+                .getProjectCorpInfoByCorpCode(xn631673ReqData.getCorpCode());
+            if (corpInfoByCorpCode == null) {
+                throw new BizException("XN631673",
+                    "参建单位信息不存在" + xn631673ReqData.getCorpCode());
+            }
+            // 取得个人信息
+            WorkerInfo workerInfoByIdCardNumber = workerInfoBO
+                .getWorkerInfoByIdCardNumber(xn631673ReqData.getIdCardNumber());
+            if (workerInfoByIdCardNumber == null) {
+                throw new BizException("XN631673",
+                    "人员信息不存在" + xn631673ReqData.getIdCardNumber());
+            }
+            BeanUtils.copyProperties(xn631673ReqData, workerContract);
+            BeanUtils.copyProperties(workerInfoByIdCardNumber, workerContract);
+            // 录入数据
+            workerContractBO.saveWorkerContract(workerContract);
+        }
     }
 
 }

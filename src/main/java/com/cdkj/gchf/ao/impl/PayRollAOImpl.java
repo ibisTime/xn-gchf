@@ -14,13 +14,17 @@ import com.cdkj.gchf.bo.IOperateLogBO;
 import com.cdkj.gchf.bo.IPayRollBO;
 import com.cdkj.gchf.bo.IPayRollDetailBO;
 import com.cdkj.gchf.bo.IProjectConfigBO;
+import com.cdkj.gchf.bo.IProjectCorpInfoBO;
+import com.cdkj.gchf.bo.IProjectWorkerBO;
 import com.cdkj.gchf.bo.ITeamMasterBO;
 import com.cdkj.gchf.bo.IUserBO;
+import com.cdkj.gchf.bo.IWorkerInfoBO;
 import com.cdkj.gchf.bo.base.Paginable;
 import com.cdkj.gchf.domain.CorpBasicinfo;
 import com.cdkj.gchf.domain.PayRoll;
 import com.cdkj.gchf.domain.PayRollDetail;
 import com.cdkj.gchf.domain.ProjectConfig;
+import com.cdkj.gchf.domain.ProjectCorpInfo;
 import com.cdkj.gchf.domain.TeamMaster;
 import com.cdkj.gchf.domain.User;
 import com.cdkj.gchf.dto.req.XN631770Req;
@@ -50,6 +54,9 @@ public class PayRollAOImpl implements IPayRollAO {
     private IProjectConfigBO projectConfigBO;
 
     @Autowired
+    private IProjectCorpInfoBO projectCorpInfoBO;
+
+    @Autowired
     private IUserBO userBO;
 
     @Autowired
@@ -60,6 +67,12 @@ public class PayRollAOImpl implements IPayRollAO {
 
     @Autowired
     private ICorpBasicinfoBO corpBasicinfoBO;
+
+    @Autowired
+    private IWorkerInfoBO workerInfoBO;
+
+    @Autowired
+    private IProjectWorkerBO projectWorkerBO;
 
     @Transactional
     @Override
@@ -221,8 +234,76 @@ public class PayRollAOImpl implements IPayRollAO {
         payRollBO.refreshPayRoll(payRoll);
     }
 
+    @Transactional
     @Override
     public void importPayRollCodeList(XN631773Req req) {
+        User user = userBO.getBriefUser(req.getUserId());
+        ProjectCorpInfo corpInfoByCorpCode = projectCorpInfoBO
+            .getProjectCorpInfoByCorpCode(req.getProjectCode());
+        if (corpInfoByCorpCode == null) {
+            throw new BizException("XN631773", "参建单位不存在");
+        }
+        // String payMonth = null;
+        // List<XN631773ReqData> dateList = req.getDateList();
+        // for (XN631773ReqData xn631773ReqData : dateList) {
+        // // 判断班组信息
+        // // 工资单-工资单详情 可是月份在子参数里面怎么提到外面呢
+        // TeamMaster condition = new TeamMaster();
+        // condition.setCorpCode(corpInfoByCorpCode.getCorpCode());
+        // condition.setTeamName(xn631773ReqData.getTeamName());
+        // TeamMaster masterByCondition = teamMasterBO
+        // .getTeamMasterByCondition(condition);
+        //
+        // if (masterByCondition == null) {
+        // throw new BizException("XN631773", "班组信息不存在");
+        // }
+        //
+        // WorkerInfo workerByIdCardNumber = projectWorkerBO
+        // .getProjectWorkerByIdCardNumber(
+        // xn631773ReqData.getIdCardNumber());
+        //
+        // if (payMonth != null
+        // & payMonth.equals(xn631773ReqData.getPayMonth())) {
+        // // 同一月份的工资单
+        // PayRoll payRoll = new PayRoll();
+        // payRoll.setProjectCode(req.getProjectCode());
+        // payRoll.setCorpCode(corpInfoByCorpCode.getCorpCode());
+        // payRoll.setCorpName(corpInfoByCorpCode.getCorpName());
+        // payRoll.setTeamSysNo(masterByCondition.getCode());
+        // PayRoll selectPayRoll = new PayRoll();
+        // PayRoll payRollByCondition = payRollBO
+        // .getPayRollByCondition(selectPayRoll);
+        // if (payRollByCondition != null) {
+        // // 存在工资单 新增工资单详情
+        //
+        // PayRollDetail payRollDetail = new PayRollDetail();
+        // BeanUtils.copyProperties(xn631773ReqData, payRollDetail);
+        // payRollDetail.setPayRollCode(payRollByCondition.getCode());
+        // payRollDetail.setWorkerName(workerByIdCardNumber.getName());
+        // payRollDetail
+        // .setIdcardType(workerByIdCardNumber.getIdCardType());
+        // payRollDetail.setDays(xn631773ReqData.getDays());
+        // payRollDetail.setWorkHours(xn631773ReqData.getWorkHours());
+        // if (payRollDetail.getIsBackPay() != null) {
+        // payRollDetail
+        // .setIsBackPay(xn631773ReqData.getIsBackPay());
+        // }
+        // payRollDetail
+        // .setBalanceDate(xn631773ReqData.getBackPayMonth());
+        // String code = payRollDetailBO
+        // .savePayRollDetail(payRollDetail);
+        // operateBO.saveOperateLog(
+        // EOperateLogRefType.PayRollDetail.getCode(), code,
+        // "导入工资单", user, null);
+        // }
+        // // 不存在工资单
+        // String code = payRollBO.savePayRoll(payRoll);
+        // payMonth = xn631773ReqData.getPayMonth();
+        //
+        // }
+        // payMonth = xn631773ReqData.getPayMonth();
+        // }
+
     }
 
 }

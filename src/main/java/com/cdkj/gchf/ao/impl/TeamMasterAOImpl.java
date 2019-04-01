@@ -143,7 +143,7 @@ public class TeamMasterAOImpl implements ITeamMasterAO {
         CorpBasicinfo corpBasicinfo = corpBasicinfoBO
             .getCorpBasicinfoByCorp(req.getCorpCode());
         if (corpBasicinfo == null) {
-            throw new BizException("XN631654", "企业信息编号不存在");
+            throw new BizException("XN631654", "企业信息编号不存在" + req.getCorpCode());
         }
         // 判断项目是否存在
         ProjectCorpInfo condition = new ProjectCorpInfo();
@@ -151,7 +151,7 @@ public class TeamMasterAOImpl implements ITeamMasterAO {
         ProjectCorpInfo projectCorpInfo = projectCorpInfoBO
             .getProjectCorpInfo(condition);
         if (projectCorpInfo == null) {
-            throw new BizException("XN631654", "项目不存在");
+            throw new BizException("XN631654", "项目不存在" + req.getProjectCode());
         }
         teamMasterBO.saveTeamMasterByImport(req);
     }

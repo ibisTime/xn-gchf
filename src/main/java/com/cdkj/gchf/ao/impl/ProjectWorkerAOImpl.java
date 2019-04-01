@@ -17,6 +17,7 @@ import com.cdkj.gchf.domain.TeamMaster;
 import com.cdkj.gchf.domain.WorkerInfo;
 import com.cdkj.gchf.dto.req.XN631690Req;
 import com.cdkj.gchf.dto.req.XN631692Req;
+import com.cdkj.gchf.dto.req.XN631693Req;
 import com.cdkj.gchf.dto.req.XN631911Req;
 import com.cdkj.gchf.dto.req.XN631912Req;
 import com.cdkj.gchf.dto.req.XN631913Req;
@@ -122,6 +123,16 @@ public class ProjectWorkerAOImpl implements IProjectWorkerAO {
     @Override
     public ProjectWorker getProjectWorker(String code) {
         return projectWorkerBO.getProjectWorker(code);
+    }
+
+    @Override
+    public void importProjectWorkers(XN631693Req req) {
+        ProjectConfig configByLocal = projectConfigBO
+            .getProjectConfigByLocal(req.getProjectcode());
+        if (configByLocal == null) {
+            throw new BizException("XN631693", "项目不存在");
+        }
+        projectWorkerBO.saveProjectWorkersByImport(req);
     }
 
 }

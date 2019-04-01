@@ -5,14 +5,18 @@ import java.util.List;
 import org.hibernate.validator.constraints.NotBlank;
 import org.hibernate.validator.constraints.NotEmpty;
 
-import com.cdkj.gchf.domain.ProjectWorker;
+import com.cdkj.gchf.api.impl.XN631693ReqData;
 
 public class XN631693Req {
     @NotBlank
     private String userId;
 
     @NotEmpty
-    private List<ProjectWorker> workerList;
+    private List<XN631693ReqData> workerList;
+
+    // 项目编号
+    @NotBlank
+    private String projectcode;
 
     public String getUserId() {
         return userId;
@@ -22,11 +26,19 @@ public class XN631693Req {
         this.userId = userId;
     }
 
-    public List<ProjectWorker> getWorkerList() {
+    public String getProjectcode() {
+        return projectcode;
+    }
+
+    public void setProjectcode(String projectcode) {
+        this.projectcode = projectcode;
+    }
+
+    public List<XN631693ReqData> getWorkerList() {
         return workerList;
     }
 
-    public void setWorkerList(List<ProjectWorker> workerList) {
+    public void setWorkerList(List<XN631693ReqData> workerList) {
         this.workerList = workerList;
     }
 

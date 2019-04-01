@@ -24,7 +24,9 @@ public enum EOperateLogRefType {
 
     PayRoll("08", "工资单信息"),
 
-    WorkerInfo("09", "人员实名制信息");
+    WorkerInfo("09", "人员实名制信息"),
+
+    PayRollDetail("10", "工资单详情信息");
 
     EOperateLogRefType(String code, String value) {
         this.code = code;

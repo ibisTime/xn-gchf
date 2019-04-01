@@ -13,6 +13,10 @@ public class XN631645Req extends APageReq {
 
     private String projectName;
 
+    private String corpType;
+
+    private String corpName;
+
     public String getUserId() {
         return userId;
     }
@@ -35,6 +39,22 @@ public class XN631645Req extends APageReq {
 
     public void setProjectName(String projectName) {
         this.projectName = projectName;
+    }
+
+    public String getCorpType() {
+        return corpType;
+    }
+
+    public void setCorpType(String corpType) {
+        this.corpType = corpType;
+    }
+
+    public String getCorpName() {
+        return corpName;
+    }
+
+    public void setCorpName(String corpName) {
+        this.corpName = corpName;
     }
 
 }

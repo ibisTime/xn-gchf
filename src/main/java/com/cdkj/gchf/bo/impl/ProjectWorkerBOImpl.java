@@ -8,8 +8,10 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.alibaba.fastjson.JSONObject;
+import com.cdkj.gchf.api.impl.XN631693ReqData;
 import com.cdkj.gchf.bo.ICorpBasicinfoBO;
 import com.cdkj.gchf.bo.IProjectConfigBO;
 import com.cdkj.gchf.bo.IProjectWorkerBO;
@@ -27,13 +29,13 @@ import com.cdkj.gchf.domain.TeamMaster;
 import com.cdkj.gchf.domain.WorkerInfo;
 import com.cdkj.gchf.dto.req.XN631690Req;
 import com.cdkj.gchf.dto.req.XN631692Req;
+import com.cdkj.gchf.dto.req.XN631693Req;
 import com.cdkj.gchf.dto.req.XN631911Req;
 import com.cdkj.gchf.dto.req.XN631911ReqWorker;
 import com.cdkj.gchf.dto.req.XN631912Req;
 import com.cdkj.gchf.dto.req.XN631913Req;
 import com.cdkj.gchf.enums.EGeneratePrefix;
 import com.cdkj.gchf.enums.EUploadStatus;
-import com.cdkj.gchf.exception.BizException;
 import com.cdkj.gchf.gov.GovConnecter;
 import com.cdkj.gchf.gov.GovUtil;
 import com.cdkj.gchf.gov.SerialHandler;
@@ -177,9 +179,6 @@ public class ProjectWorkerBOImpl extends PaginableBOImpl<ProjectWorker>
             ProjectWorker condition = new ProjectWorker();
             condition.setCode(code);
             data = projectWorkerDAO.select(condition);
-            if (data == null) {
-                throw new BizException("xn0000", "项目人员不存在");
-            }
         }
         return data;
     }
@@ -189,6 +188,56 @@ public class ProjectWorkerBOImpl extends PaginableBOImpl<ProjectWorker>
         ProjectWorker condition = new ProjectWorker();
         condition.setProjectCode(code);
         return projectWorkerDAO.select(condition);
+    }
+
+    /**
+     * 
+     * <p>Title: saveProjectWorkersByImport</p>   
+     * <p>Description: 导入班组人员</p>   
+     * @param req   
+     * @see com.cdkj.gchf.bo.IProjectWorkerBO#saveProjectWorkersByImport(com.cdkj.gchf.dto.req.XN631693Req)
+     */
+    @Transactional
+    @Override
+    public void saveProjectWorkersByImport(XN631693Req req) {
+        String projectcode = req.getProjectcode();
+        List<XN631693ReqData> workerList = req.getWorkerList();
+        for (XN631693ReqData projectWorkerDate : workerList) {
+            String code = null;
+            // 保存班组人员信息
+            ProjectWorker projectWorker = new ProjectWorker();
+            code = OrderNoGenerater
+                .generate(EGeneratePrefix.ProjectWorker.getValue());
+            projectWorker.setCode(code);
+            BeanUtils.copyProperties(projectWorkerDate, projectWorker);
+            projectWorker.setProjectCode(projectcode);
+            CorpBasicinfo corpBasicinfo = corpBasicinfoBO
+                .getCorpBasicinfoByCorp(projectWorkerDate.getCorpCode());
+            projectWorker.setCorpName(corpBasicinfo.getCorpName());
+            // 检查人员实名信息表是否存在员工信息
+            WorkerInfo infoByIdCardNumber = workerInfoBO
+                .getWorkerInfoByIdCardNumber(
+                    projectWorkerDate.getIdCardNumber());
+            if (infoByIdCardNumber != null) {
+                BeanUtils.copyProperties(infoByIdCardNumber, projectWorker);
+                projectWorkerDAO.insert(projectWorker);
+            } else {
+                WorkerInfo workerInfo = new WorkerInfo();
+                // 插入基本信息到人员实名信息表
+                BeanUtils.copyProperties(projectWorkerDate, workerInfo);
+                workerInfoBO.saveWorkerInfo(workerInfo);
+            }
+
+        }
+    }
+
+    @Override
+    public WorkerInfo getProjectWorkerByIdCardNumber(String idCardNumber) {
+        WorkerInfo workerInfo = new WorkerInfo();
+        workerInfo.setIdCardNumber(idCardNumber);
+        WorkerInfo infoByCondition = workerInfoBO
+            .getWorkerInfoByCondition(workerInfo);
+        return infoByCondition;
     }
 
 }

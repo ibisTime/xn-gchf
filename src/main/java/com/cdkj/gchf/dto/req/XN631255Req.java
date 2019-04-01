@@ -19,6 +19,15 @@ public class XN631255Req extends APageReq {
     @NotBlank
     private String userId;
 
+    // 企业名称
+    private String corpName;
+
+    // 企业登记注册类型
+    private String corpType;
+
+    // 上传状态
+    private String uploadStatus;
+
     public String getCorpCode() {
         return corpCode;
     }
@@ -33,6 +42,30 @@ public class XN631255Req extends APageReq {
 
     public void setUserId(String userId) {
         this.userId = userId;
+    }
+
+    public String getCorpName() {
+        return corpName;
+    }
+
+    public void setCorpName(String corpName) {
+        this.corpName = corpName;
+    }
+
+    public String getCorpType() {
+        return corpType;
+    }
+
+    public void setCorpType(String corpType) {
+        this.corpType = corpType;
+    }
+
+    public String getUploadStatus() {
+        return uploadStatus;
+    }
+
+    public void setUploadStatus(String uploadStatus) {
+        this.uploadStatus = uploadStatus;
     }
 
 }

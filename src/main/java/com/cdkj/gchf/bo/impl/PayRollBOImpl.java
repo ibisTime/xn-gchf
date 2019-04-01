@@ -1,11 +1,13 @@
 package com.cdkj.gchf.bo.impl;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -129,6 +131,28 @@ public class PayRollBOImpl extends PaginableBOImpl<PayRoll>
                         payRollDetail.setBalanceDate(
                             DateUtil.strToDate(reqDateil.getBalanceDate(),
                                 DateUtil.FRONT_DATE_FORMAT_STRING));
+
+                        if (StringUtils.isNotBlank(reqDateil.getDays())) {
+                            payRollDetail
+                                .setDays(Integer.parseInt(reqDateil.getDays()));
+                        }
+
+                        if (StringUtils.isNotBlank(reqDateil.getWorkHours())) {
+                            payRollDetail.setWorkHours(
+                                new BigDecimal(reqDateil.getWorkHours()));
+                        }
+
+                        payRollDetail.setIdcardNumber(
+                            AesUtils.decrypt(reqDateil.getIdCardNumber(),
+                                projectConfig.getSecret()));
+
+                        payRollDetail.setPayRollBankCardNumber(AesUtils.decrypt(
+                            reqDateil.getPayRollBankCardNumber(),
+                            projectConfig.getSecret()));
+
+                        payRollDetail.setPayBankCardNumber(AesUtils.decrypt(
+                            reqDateil.getPayRollBankCardNumber(),
+                            projectConfig.getSecret()));
 
                         XN631910Req teamReq = new XN631910Req(
                             Integer.parseInt(payRoll.getTeamSysNo()),

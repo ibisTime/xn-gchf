@@ -12,11 +12,13 @@ import com.cdkj.gchf.bo.IOperateLogBO;
 import com.cdkj.gchf.bo.IProjectConfigBO;
 import com.cdkj.gchf.bo.IUserBO;
 import com.cdkj.gchf.bo.base.Paginable;
+import com.cdkj.gchf.common.AesUtils;
 import com.cdkj.gchf.domain.CorpBasicinfo;
 import com.cdkj.gchf.domain.ProjectConfig;
 import com.cdkj.gchf.domain.User;
 import com.cdkj.gchf.dto.req.XN631250Req;
 import com.cdkj.gchf.dto.req.XN631251Req;
+import com.cdkj.gchf.dto.req.XN631253ReqCode;
 import com.cdkj.gchf.dto.req.XN631900Req;
 import com.cdkj.gchf.dto.req.XN631901Req;
 import com.cdkj.gchf.enums.EOperateLogOperate;
@@ -69,11 +71,19 @@ public class CorpBasicinfoAOImpl implements ICorpBasicinfoAO {
 
     @Override
     public int dropCorpBasicinfo(String code) {
+        CorpBasicinfo corpBasicinfo = corpBasicinfoBO.getCorpBasicinfo(code);
+
+        if (EUploadStatus.UPLOAD_UNEDITABLE.getCode()
+            .equals(corpBasicinfo.getUploadStatus())) {
+            throw new BizException("XN631250", "当前状态下不可删除");
+        }
+
         return corpBasicinfoBO.removeCorpBasicinfo(code);
     }
 
     @Override
-    public void uploadCorpBasicinfo(List<String> codeList, String userId) {
+    public void uploadCorpBasicinfo(List<XN631253ReqCode> codeList,
+            String userId) {
 
         User operator = userBO.getBriefUser(userId);
 
@@ -83,29 +93,36 @@ public class CorpBasicinfoAOImpl implements ICorpBasicinfoAO {
             throw new BizException("XN631253", "不存在已配置的项目，无法上传");
         }
 
-        for (String code : codeList) {
+        for (XN631253ReqCode codeReq : codeList) {
             CorpBasicinfo corpBasicinfo = corpBasicinfoBO
-                .getCorpBasicinfo(code);
+                .getCorpBasicinfo(codeReq.getCode());
 
             if (EUploadStatus.UPLOAD_UNEDITABLE.getCode()
                 .equals(corpBasicinfo.getUploadStatus()))
                 continue;
 
+            corpBasicinfo.setLegalManIdcardNumber(
+                AesUtils.encrypt(corpBasicinfo.getLegalManIdcardNumber(),
+                    defaultProjectConfig.getSecret()));
+
             // 上传企业信息
             String resString = GovConnecter.getGovData("Corp.Upload",
-                JSONObject.toJSONString(corpBasicinfo),
+                JSONObject
+                    .toJSONStringWithDateFormat(corpBasicinfo, "yyyy-MM-dd")
+                    .toString(),
                 defaultProjectConfig.getProjectCode(),
                 defaultProjectConfig.getSecret());
 
             // 添加操作日志
             String logCode = operateLogBO.saveOperateLog(
-                EOperateLogRefType.CorpBasicinfo.getCode(), code,
+                EOperateLogRefType.CorpBasicinfo.getCode(),
+                corpBasicinfo.getCode(),
                 EOperateLogOperate.UploadCorpBasicinfo.getValue(), operator,
                 null);
 
             // 添加到上传状态更新队列
             AsyncQueueHolder.addSerial(resString, defaultProjectConfig,
-                "corpBasicinfoBO", code,
+                "corpBasicinfoBO", corpBasicinfo.getCode(),
                 EUploadStatus.UPLOAD_UNEDITABLE.getCode(), logCode);
 
         }

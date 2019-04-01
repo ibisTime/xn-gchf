@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -144,8 +145,10 @@ public class ProjectWorkerBOImpl extends PaginableBOImpl<ProjectWorker>
         String data = JSONObject.toJSONStringWithDateFormat(req, "yyyy-MM-dd")
             .toString();
 
-        GovConnecter.getGovData("ProjectWorker.Update", data,
+        String resString = GovConnecter.getGovData("ProjectWorker.Update", data,
             projectConfig.getProjectCode(), projectConfig.getSecret());
+
+        SerialHandler.handle(resString, projectConfig);
     }
 
     @Override
@@ -153,6 +156,11 @@ public class ProjectWorkerBOImpl extends PaginableBOImpl<ProjectWorker>
             ProjectConfig projectConfig) {
         ProjectWorker projectWorker = new ProjectWorker();
         BeanUtils.copyProperties(req, projectWorker);
+
+        if (StringUtils.isNotBlank(req.getIdCardNumber())) {
+            projectWorker.setIdCardNumber(AesUtils
+                .encrypt(req.getIdCardNumber(), projectConfig.getSecret()));
+        }
 
         String data = JSONObject.toJSON(projectWorker).toString();
 
@@ -163,6 +171,14 @@ public class ProjectWorkerBOImpl extends PaginableBOImpl<ProjectWorker>
 
         Paginable<ProjectWorker> page = GovUtil.parseGovPage(req.getPageIndex(),
             req.getPageSize(), queryString, replaceMap, ProjectWorker.class);
+
+        if (null != page && CollectionUtils.isNotEmpty(page.getList())) {
+            for (ProjectWorker worker : page.getList()) {
+                worker.setIdCardNumber(AesUtils.decrypt(
+                    worker.getIdCardNumber(), projectConfig.getSecret()));
+                // worker.setWorkerRole(Integer.parseInt(worker.getWorkerRole()));
+            }
+        }
 
         return page;
     }

@@ -1,9 +1,11 @@
 package com.cdkj.gchf.ao.impl;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import org.apache.commons.collections.CollectionUtils;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -30,6 +32,7 @@ import com.cdkj.gchf.domain.User;
 import com.cdkj.gchf.dto.req.XN631770Req;
 import com.cdkj.gchf.dto.req.XN631772Req;
 import com.cdkj.gchf.dto.req.XN631773Req;
+import com.cdkj.gchf.dto.req.XN631773ReqData;
 import com.cdkj.gchf.dto.req.XN631920Req;
 import com.cdkj.gchf.dto.req.XN631921Req;
 import com.cdkj.gchf.enums.EOperateLogOperate;
@@ -60,7 +63,7 @@ public class PayRollAOImpl implements IPayRollAO {
     private IUserBO userBO;
 
     @Autowired
-    private IOperateLogBO operateBO;
+    private IOperateLogBO operateLogBO;
 
     @Autowired
     private ITeamMasterBO teamMasterBO;
@@ -88,6 +91,11 @@ public class PayRollAOImpl implements IPayRollAO {
         }
         String code = payRollBO.savePayRoll(data);
         payRollDetailBO.savePayRollDetail(code, data.getDetailList());
+
+        User briefUser = userBO.getBriefUser(data.getUserId());
+        operateLogBO.saveOperateLog(EOperateLogRefType.PayRoll.getCode(), code,
+            EOperateLogRefType.PayRoll.getValue(), briefUser, "新增工资单" + code);
+
         return code;
     }
 
@@ -208,7 +216,7 @@ public class PayRollAOImpl implements IPayRollAO {
                     uploadRequestJsontoPlantform.toString(),
                     projectConfig.getProjectCode(), projectConfig.getSecret());
 
-                String log = operateBO.saveOperateLog(
+                String log = operateLogBO.saveOperateLog(
                     EOperateLogRefType.PayRoll.getCode(),
                     uploadRequestJsontoPlantform.toString(),
                     EOperateLogOperate.UploadPayRoll.getValue(), user, null);
@@ -243,67 +251,43 @@ public class PayRollAOImpl implements IPayRollAO {
         if (corpInfoByCorpCode == null) {
             throw new BizException("XN631773", "参建单位不存在");
         }
-        // String payMonth = null;
-        // List<XN631773ReqData> dateList = req.getDateList();
-        // for (XN631773ReqData xn631773ReqData : dateList) {
-        // // 判断班组信息
-        // // 工资单-工资单详情 可是月份在子参数里面怎么提到外面呢
-        // TeamMaster condition = new TeamMaster();
-        // condition.setCorpCode(corpInfoByCorpCode.getCorpCode());
-        // condition.setTeamName(xn631773ReqData.getTeamName());
-        // TeamMaster masterByCondition = teamMasterBO
-        // .getTeamMasterByCondition(condition);
-        //
-        // if (masterByCondition == null) {
-        // throw new BizException("XN631773", "班组信息不存在");
-        // }
-        //
-        // WorkerInfo workerByIdCardNumber = projectWorkerBO
-        // .getProjectWorkerByIdCardNumber(
-        // xn631773ReqData.getIdCardNumber());
-        //
-        // if (payMonth != null
-        // & payMonth.equals(xn631773ReqData.getPayMonth())) {
-        // // 同一月份的工资单
-        // PayRoll payRoll = new PayRoll();
-        // payRoll.setProjectCode(req.getProjectCode());
-        // payRoll.setCorpCode(corpInfoByCorpCode.getCorpCode());
-        // payRoll.setCorpName(corpInfoByCorpCode.getCorpName());
-        // payRoll.setTeamSysNo(masterByCondition.getCode());
-        // PayRoll selectPayRoll = new PayRoll();
-        // PayRoll payRollByCondition = payRollBO
-        // .getPayRollByCondition(selectPayRoll);
-        // if (payRollByCondition != null) {
-        // // 存在工资单 新增工资单详情
-        //
-        // PayRollDetail payRollDetail = new PayRollDetail();
-        // BeanUtils.copyProperties(xn631773ReqData, payRollDetail);
-        // payRollDetail.setPayRollCode(payRollByCondition.getCode());
-        // payRollDetail.setWorkerName(workerByIdCardNumber.getName());
-        // payRollDetail
-        // .setIdcardType(workerByIdCardNumber.getIdCardType());
-        // payRollDetail.setDays(xn631773ReqData.getDays());
-        // payRollDetail.setWorkHours(xn631773ReqData.getWorkHours());
-        // if (payRollDetail.getIsBackPay() != null) {
-        // payRollDetail
-        // .setIsBackPay(xn631773ReqData.getIsBackPay());
-        // }
-        // payRollDetail
-        // .setBalanceDate(xn631773ReqData.getBackPayMonth());
-        // String code = payRollDetailBO
-        // .savePayRollDetail(payRollDetail);
-        // operateBO.saveOperateLog(
-        // EOperateLogRefType.PayRollDetail.getCode(), code,
-        // "导入工资单", user, null);
-        // }
-        // // 不存在工资单
-        // String code = payRollBO.savePayRoll(payRoll);
-        // payMonth = xn631773ReqData.getPayMonth();
-        //
-        // }
-        // payMonth = xn631773ReqData.getPayMonth();
-        // }
-
+        List<XN631773ReqData> dateList = req.getDateList();
+        Date payMonth = req.getPayMonth();
+        for (XN631773ReqData xn631773ReqData : dateList) {
+            if (xn631773ReqData.getPayMonth().getMonth() != payMonth
+                .getMonth()) {
+                throw new BizException("XN631773", "导入的工资单月数不匹配");
+            }
+            TeamMaster condition = new TeamMaster();
+            condition.setCorpCode(xn631773ReqData.getCorpCode());
+            condition.setTeamName(xn631773ReqData.getTeamName());
+            condition.setProjectCode(req.getProjectCode());
+            TeamMaster teamMasterByCondition = teamMasterBO
+                .getTeamMasterByCondition(condition);
+            if (teamMasterByCondition == null) {
+                throw new BizException("XN631773", "班组信息不存在");
+            }
+            PayRoll payRollcondition = new PayRoll();
+            payRollcondition.setCorpCode(xn631773ReqData.getCorpCode());
+            payRollcondition.setTeamSysNo(xn631773ReqData.getTeamName());
+            payRollcondition.setProjectCode(req.getProjectCode());
+            PayRoll payRollByCondition = payRollBO
+                .getPayRollByCondition(payRollcondition);
+            if (payRollByCondition == null) {
+                payRollcondition.setPayMonth(req.getPayMonth());
+                payRollBO.savePayRoll(payRollcondition);
+            } else {
+                String code = payRollByCondition.getCode();
+                PayRollDetail payRollDetail = new PayRollDetail();
+                payRollDetail.setPayRollCode(code);
+                BeanUtils.copyProperties(xn631773ReqData, payRollDetail);
+                String savePayRollDetailCode = payRollDetailBO
+                    .savePayRollDetail(payRollDetail);
+                operateLogBO.saveOperateLog(
+                    EOperateLogRefType.PayRollDetail.getCode(),
+                    savePayRollDetailCode, "导入工资单", user, null);
+            }
+        }
     }
 
 }

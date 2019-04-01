@@ -107,7 +107,8 @@ public class AsyncQueueHolder {
             result = SpringContextHolder.getBean("operateLogBO");
 
             String remark = StringUtils.isEmpty(asyncRes.getResult())
-                    ? asyncRes.getMessage() : asyncRes.getResult();
+                    ? asyncRes.getMessage()
+                    : asyncRes.getResult();
             String[] arges = new String[] { code, remark };
 
             Method method = result.getClass().getMethod("refreshRemark",
@@ -151,13 +152,13 @@ public class AsyncQueueHolder {
 
             // 更新工资单国家平台编号
             Object payRollBO = SpringContextHolder.getBean("payRollBO");
-            String[] teamMasterArges = new String[] { code, payRollCode };
+            String[] payRollArges = new String[] { code, payRollCode };
 
-            Method teamMasterMethod = payRollBO.getClass().getMethod(
+            Method payRollMethod = payRollBO.getClass().getMethod(
                 "refreshPayRollCodeByLocal",
                 new Class[] { String.class, String.class });
 
-            teamMasterMethod.invoke(payRollBO, teamMasterArges);
+            payRollMethod.invoke(payRollBO, payRollArges);
 
         } catch (Exception e) {
             e.printStackTrace();

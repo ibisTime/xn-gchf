@@ -23,10 +23,10 @@ public class XN631920ReqDateil {
     private String idCardNumber;
 
     // 出勤天数
-    private Integer days;
+    private String days;
 
     // 总工时
-    private BigDecimal workHours;
+    private String workHours;
 
     // 工人工资卡号
     @NotBlank
@@ -92,19 +92,19 @@ public class XN631920ReqDateil {
         this.idCardNumber = idCardNumber;
     }
 
-    public Integer getDays() {
+    public String getDays() {
         return days;
     }
 
-    public void setDays(Integer days) {
+    public void setDays(String days) {
         this.days = days;
     }
 
-    public BigDecimal getWorkHours() {
+    public String getWorkHours() {
         return workHours;
     }
 
-    public void setWorkHours(BigDecimal workHours) {
+    public void setWorkHours(String workHours) {
         this.workHours = workHours;
     }
 

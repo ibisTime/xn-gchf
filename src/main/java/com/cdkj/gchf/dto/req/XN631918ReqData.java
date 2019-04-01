@@ -1,6 +1,5 @@
 package com.cdkj.gchf.dto.req;
 
-import java.math.BigDecimal;
 import java.util.Date;
 
 import org.hibernate.validator.constraints.NotBlank;
@@ -38,10 +37,10 @@ public class XN631918ReqData {
     private String attendType;
 
     // 经度
-    private BigDecimal lng;
+    private String lng;
 
     // 纬度
-    private BigDecimal lat;
+    private String lat;
 
     public String getIdCardType() {
         return idCardType;
@@ -99,19 +98,19 @@ public class XN631918ReqData {
         this.attendType = attendType;
     }
 
-    public BigDecimal getLng() {
+    public String getLng() {
         return lng;
     }
 
-    public void setLng(BigDecimal lng) {
+    public void setLng(String lng) {
         this.lng = lng;
     }
 
-    public BigDecimal getLat() {
+    public String getLat() {
         return lat;
     }
 
-    public void setLat(BigDecimal lat) {
+    public void setLat(String lat) {
         this.lat = lat;
     }
 

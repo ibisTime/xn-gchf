@@ -8,6 +8,10 @@ public class XN631665Req extends APageReq {
      */
     private static final long serialVersionUID = 1L;
 
+    private String projectCode;
+
+    private String corpCode;
+
     // 编号
     private String code;
 
@@ -29,6 +33,22 @@ public class XN631665Req extends APageReq {
 
     public void setUserId(String userId) {
         this.userId = userId;
+    }
+
+    public String getProjectCode() {
+        return projectCode;
+    }
+
+    public void setProjectCode(String projectCode) {
+        this.projectCode = projectCode;
+    }
+
+    public String getCorpCode() {
+        return corpCode;
+    }
+
+    public void setCorpCode(String corpCode) {
+        this.corpCode = corpCode;
     }
 
 }

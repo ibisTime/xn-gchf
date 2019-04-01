@@ -11,6 +11,10 @@ public class XN631725Req extends APageReq {
     // 编号
     private String code;
 
+    private String projectCode;
+
+    private String corpCode;
+
     // 用户id
     @NotBlank
     private String userId;
@@ -29,6 +33,22 @@ public class XN631725Req extends APageReq {
 
     public void setUserId(String userId) {
         this.userId = userId;
+    }
+
+    public String getProjectCode() {
+        return projectCode;
+    }
+
+    public void setProjectCode(String projectCode) {
+        this.projectCode = projectCode;
+    }
+
+    public String getCorpCode() {
+        return corpCode;
+    }
+
+    public void setCorpCode(String corpCode) {
+        this.corpCode = corpCode;
     }
 
 }

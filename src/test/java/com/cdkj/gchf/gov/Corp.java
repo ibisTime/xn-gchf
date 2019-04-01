@@ -35,23 +35,36 @@ public class Corp {
     }
 
     @Test
-    public void corpQuery() {
-
+    public void corpBadRecordQuery() {
         Map<String, String> dataMap = new HashMap<String, String>();
         dataMap.put("pageIndex", "0");
         dataMap.put("pageSize", "10");
-        dataMap.put("corpCode", "91331122MA2A021605");
-
-        dataMap.put("corpName", "é¦é¸¿å»ºè®¾æéå¬å¸");
+        dataMap.put("corpCode", "913311001484116584");
+        dataMap.put("corpName", "正达建设有限公司");
 
         String data = JSONObject.toJSON(dataMap).toString();
 
         System.out.println(data);
 
-        GovConnecter.getGovData("Corp.Query", data, "33112220190310002",
-            "24484b262dd63dd584902a266bdbdca0");
+        GovConnecter.getGovData("CorpBadRecord.Query", data,
+            "33112220190310002", "24484b262dd63dd584902a266bdbdca0");
 
-        // corp-upload-2019031419-1-1370
     }
 
+    @Test
+    public void corpGoodRecordQuery() {
+        Map<String, String> dataMap = new HashMap<String, String>();
+        dataMap.put("pageIndex", "0");
+        dataMap.put("pageSize", "10");
+        dataMap.put("corpCode", "913311001484116584");
+        dataMap.put("corpName", "正达建设有限公司");
+
+        String data = JSONObject.toJSON(dataMap).toString();
+
+        System.out.println(data);
+
+        GovConnecter.getGovData("CorpGoodRecord.Query", data,
+            "33112220190310002", "24484b262dd63dd584902a266bdbdca0");
+
+    }
 }

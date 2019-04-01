@@ -60,6 +60,11 @@ public class CorpBasicinfoAOImpl implements ICorpBasicinfoAO {
         CorpBasicinfo corpBasicinfo = corpBasicinfoBO
             .getCorpBasicinfo(req.getCode());
 
+        if (EUploadStatus.UPLOAD_UNEDITABLE.getCode()
+            .equals(corpBasicinfo.getUploadStatus())) {
+            throw new BizException("XN631251", "当前状态下不可修改");
+        }
+
         if (!req.getCorpCode().equals(corpBasicinfo.getCorpCode())
                 && null != corpBasicinfoBO
                     .getCorpBasicinfoByCorp(req.getCorpCode())) {

@@ -19,7 +19,8 @@ public class Open {
     public void AsyncHandleResultQuery() {
 
         Map<String, String> dataMap = new HashMap<String, String>();
-        dataMap.put("requestSerialCode", "payroll-add-2019032616-4-0001");
+        dataMap.put("requestSerialCode",
+            "projectworker-update-2019032822-4-0001");
 
         String data = JSONObject.toJSON(dataMap).toString();
 

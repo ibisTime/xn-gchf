@@ -1,12 +1,9 @@
 package com.cdkj.gchf.api.impl;
 
-import org.springframework.beans.BeanUtils;
-
 import com.cdkj.gchf.ao.IProjectWorkerAO;
 import com.cdkj.gchf.api.AProcessor;
 import com.cdkj.gchf.common.JsonUtil;
 import com.cdkj.gchf.core.ObjValidater;
-import com.cdkj.gchf.domain.ProjectWorker;
 import com.cdkj.gchf.dto.req.XN631606Req;
 import com.cdkj.gchf.exception.BizException;
 import com.cdkj.gchf.exception.ParaException;
@@ -29,9 +26,7 @@ public class XN631606 extends AProcessor {
 
     @Override
     public Object doBusiness() throws BizException {
-        ProjectWorker condition = new ProjectWorker();
-        BeanUtils.copyProperties(req, condition);
-        return projectWorkerAO.queryProjectWorkerList(condition);
+        return projectWorkerAO.getProjectWorker(req.getCode());
     }
 
     @Override

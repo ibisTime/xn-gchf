@@ -27,7 +27,7 @@ public class XN631651 extends AProcessor {
 
     @Override
     public Object doBusiness() throws BizException {
-        teamMasterAO.dropTeamMaster(req.getCode());
+        teamMasterAO.dropTeamMaster(req);
         return new BooleanRes(true);
     }
 

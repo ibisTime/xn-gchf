@@ -7,7 +7,6 @@
 		<result column="business_type" property="businessType" />
 		<result column="business_sys_no" property="businessSysNo" />
 		<result column="bank_name" property="bankName" />
-
 		<result column="bank_number" property="bankNumber" />
 		<result column="bank_link_number" property="bankLinkNumber" />
 		<result column="upload_status" property="uploadStatus" />
@@ -24,19 +23,17 @@
 			<if test="bankNumber != null and bankNumber != '' ">
 				AND t.bank_number = #{bankNumber}
 			</if>
-			<if test="uploadStatus != null and uploadStatus != '' ">
-				AND t.upload_status = #{uploadStatus}
+			<if test="businessSysNo != null and businessSysNo != '' ">
+				AND t.business_sys_no = #{businessSysNo}
 			</if>
-			<if test="uploadStatus != null and uploadStatus != '' ">
-				AND t.upload_status = #{uploadStatus}
-			</if>
+			
 		</trim>
 	</sql>
 
 	<insert id="insert_bankCardInfo" parameterType="bankCardInfo">
 		INSERT INTO
 		thf_bank_card_info(
-		code
+		 code
 		,business_type
 		,business_sys_no
 		,bank_name
@@ -66,11 +63,9 @@
 		UPDATE
 		thf_bank_card_info
 		SET
-		upload_status = #{uploadStatus}
-		,business_type = #{businessType} 
-		,business_sys_no = #{businessSysNo}
-		,bank_name = #{bankName}
-		,bank_link_number = #{bankLinkNumber} 
+		 bank_name = #{bankName}
+		,bank_link_number =
+		#{bankLinkNumber}
 		,bank_number = #{bankNumber}
 		WHERE code =
 		#{code}

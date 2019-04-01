@@ -10,6 +10,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.alibaba.fastjson.JSONObject;
+import com.cdkj.gchf.bo.IOperateLogBO;
+import com.cdkj.gchf.bo.IUserBO;
 import com.cdkj.gchf.bo.IWorkerInfoBO;
 import com.cdkj.gchf.bo.base.Paginable;
 import com.cdkj.gchf.bo.base.PaginableBOImpl;
@@ -18,6 +20,7 @@ import com.cdkj.gchf.core.OrderNoGenerater;
 import com.cdkj.gchf.dao.IWorkerInfoDAO;
 import com.cdkj.gchf.domain.ProjectConfig;
 import com.cdkj.gchf.domain.WorkerInfo;
+import com.cdkj.gchf.dto.req.XN631790Req;
 import com.cdkj.gchf.dto.req.XN631791Req;
 import com.cdkj.gchf.enums.EGeneratePrefix;
 import com.cdkj.gchf.exception.BizException;
@@ -31,6 +34,12 @@ public class WorkerInfoBOImpl extends PaginableBOImpl<WorkerInfo>
     @Autowired
     private IWorkerInfoDAO WorkerInfoDAO;
 
+    @Autowired
+    private IOperateLogBO operateLog;
+
+    @Autowired
+    private IUserBO userBO;
+
     @Override
     public boolean isWorkerInfoExist(String code) {
         WorkerInfo condition = new WorkerInfo();
@@ -42,9 +51,12 @@ public class WorkerInfoBOImpl extends PaginableBOImpl<WorkerInfo>
     }
 
     @Override
-    public String saveWorkerInfo(WorkerInfo data) {
+    public String saveWorkerInfo(XN631790Req req) {
+        WorkerInfo data = new WorkerInfo();
         String code = OrderNoGenerater
             .generate(EGeneratePrefix.WorkerInfo.getCode());
+        WorkerInfo workerInfo = new WorkerInfo();
+        BeanUtils.copyProperties(data, workerInfo);
         data.setCode(code);
         WorkerInfoDAO.insert(data);
         return code;
@@ -109,6 +121,31 @@ public class WorkerInfoBOImpl extends PaginableBOImpl<WorkerInfo>
     @Override
     public WorkerInfo getWorkerInfoByCondition(WorkerInfo workerInfo) {
         return WorkerInfoDAO.select(workerInfo);
+    }
+
+    @Override
+    public WorkerInfo getWorkerInfoByCelephone(String phone) {
+        WorkerInfo workerInfo = new WorkerInfo();
+        workerInfo.setCellPhone(phone);
+        return WorkerInfoDAO.select(workerInfo);
+    }
+
+    @Override
+    public WorkerInfo getWorkerInfoByIdCardNumber(String idCardNumber) {
+        WorkerInfo workerInfo = new WorkerInfo();
+        workerInfo.setIdCardNumber(idCardNumber);
+        return WorkerInfoDAO.select(workerInfo);
+    }
+
+    @Override
+    public String saveWorkerInfo(WorkerInfo workerInfo) {
+        String code = null;
+        int insert = WorkerInfoDAO.insert(workerInfo);
+        if (insert != 1) {
+            throw new BizException("人员实名制基本信息保存失败");
+        }
+        code = OrderNoGenerater.generate(EGeneratePrefix.WorkerInfo.getValue());
+        return code;
     }
 
 }

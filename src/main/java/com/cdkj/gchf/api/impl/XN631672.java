@@ -10,6 +10,14 @@ import com.cdkj.gchf.exception.BizException;
 import com.cdkj.gchf.exception.ParaException;
 import com.cdkj.gchf.spring.SpringContextHolder;
 
+/**
+ * 
+ * @ClassName:  XN631672   
+ * @Description: 修改劳动合同
+ * @author: Old3
+ * @date:   2019年3月27日 下午8:37:46     
+ * @Copyright:
+ */
 public class XN631672 extends AProcessor {
     private IWorkerContractAO workerContractAO = SpringContextHolder
         .getBean(IWorkerContractAO.class);

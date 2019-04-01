@@ -7,7 +7,9 @@ import org.springframework.stereotype.Component;
 import com.cdkj.gchf.bo.base.Paginable;
 import com.cdkj.gchf.domain.TeamMaster;
 import com.cdkj.gchf.dto.req.XN631650Req;
+import com.cdkj.gchf.dto.req.XN631651Req;
 import com.cdkj.gchf.dto.req.XN631652Req;
+import com.cdkj.gchf.dto.req.XN631653Req;
 import com.cdkj.gchf.dto.req.XN631908Req;
 import com.cdkj.gchf.dto.req.XN631909Req;
 import com.cdkj.gchf.dto.req.XN631910Req;
@@ -18,7 +20,7 @@ public interface ITeamMasterAO {
 
     public String addTeamMaster(XN631650Req data);
 
-    public void dropTeamMaster(String code);
+    public void dropTeamMaster(XN631651Req req);
 
     public void editTeamMaster(XN631652Req data);
 
@@ -30,6 +32,8 @@ public interface ITeamMasterAO {
     public List<TeamMaster> queryTeamMasterList(TeamMaster condition);
 
     public TeamMaster getTeamMaster(String code);
+
+    public void importTeamMaster(XN631653Req req);
 
     /****国家平台接口****/
     public void uploadTeamMaster(XN631908Req data);

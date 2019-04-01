@@ -29,8 +29,12 @@ public class XN631727 extends AProcessor {
     @Override
     public Object doBusiness() throws BizException {
         WorkerAttendance condition = new WorkerAttendance();
+        String column = null;
         BeanUtils.copyProperties(req, condition);
-        condition.setOrder(req.getOrderColumn(), true);
+        if (org.apache.commons.lang3.StringUtils.isBlank(column)) {
+            column = IWorkerAttendanceAO.DEFAULT_ORDER_COLUMN;
+        }
+        condition.setOrder(req.getOrderColumn(), req.getOrderDir());
         return workerAttendanceAO.queryWorkerAttendanceList(condition);
     }
 

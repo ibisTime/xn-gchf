@@ -25,9 +25,6 @@ public class XN631752Req {
     // 银行联号
     private String bankLinkNumber;
 
-    // 状态
-    private String uploadStatus;
-
     public String getUserId() {
         return userId;
     }
@@ -74,14 +71,6 @@ public class XN631752Req {
 
     public void setBankNumber(String bankNumber) {
         this.bankNumber = bankNumber;
-    }
-
-    public String getUploadStatus() {
-        return uploadStatus;
-    }
-
-    public void setUploadStatus(String uploadStatus) {
-        this.uploadStatus = uploadStatus;
     }
 
     public String getBankLinkNumber() {

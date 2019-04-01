@@ -8,6 +8,7 @@ import com.cdkj.gchf.bo.base.Paginable;
 import com.cdkj.gchf.domain.ProjectWorker;
 import com.cdkj.gchf.dto.req.XN631690Req;
 import com.cdkj.gchf.dto.req.XN631692Req;
+import com.cdkj.gchf.dto.req.XN631693Req;
 import com.cdkj.gchf.dto.req.XN631911Req;
 import com.cdkj.gchf.dto.req.XN631912Req;
 import com.cdkj.gchf.dto.req.XN631913Req;
@@ -28,6 +29,8 @@ public interface IProjectWorkerAO {
     public List<ProjectWorker> queryProjectWorkerList(ProjectWorker condition);
 
     public ProjectWorker getProjectWorker(String code);
+
+    public void importProjectWorkers(XN631693Req req);
 
     /****国家平台接口****/
     public void uploadProjectWorker(XN631911Req req);

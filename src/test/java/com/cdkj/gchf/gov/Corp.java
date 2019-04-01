@@ -19,8 +19,9 @@ public class Corp {
     public void corpUpload() {
 
         Map<String, String> dataMap = new HashMap<String, String>();
-        dataMap.put("corpCode", "91331122MA2A0M9B7N");
-        dataMap.put("corpName", "浙江兰芽科技有限公司");
+        dataMap.put("corpCode", "91331122MA2A021605");
+
+        dataMap.put("corpName", "锦鸿建设有限公司");
         dataMap.put("areaCode", "331122");
 
         String data = JSONObject.toJSON(dataMap).toString();

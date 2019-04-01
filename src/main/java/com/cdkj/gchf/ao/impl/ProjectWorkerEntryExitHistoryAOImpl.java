@@ -8,12 +8,15 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.cdkj.gchf.ao.IProjectWorkerEntryExitHistoryAO;
+import com.cdkj.gchf.bo.ICorpBasicinfoBO;
 import com.cdkj.gchf.bo.IOperateLogBO;
 import com.cdkj.gchf.bo.IProjectConfigBO;
+import com.cdkj.gchf.bo.IProjectCorpInfoBO;
 import com.cdkj.gchf.bo.IProjectWorkerBO;
 import com.cdkj.gchf.bo.IProjectWorkerEntryExitHistoryBO;
 import com.cdkj.gchf.bo.ITeamMasterBO;
 import com.cdkj.gchf.bo.IUserBO;
+import com.cdkj.gchf.bo.IWorkerInfoBO;
 import com.cdkj.gchf.bo.base.Paginable;
 import com.cdkj.gchf.common.AesUtils;
 import com.cdkj.gchf.domain.ProjectConfig;
@@ -21,8 +24,11 @@ import com.cdkj.gchf.domain.ProjectWorker;
 import com.cdkj.gchf.domain.ProjectWorkerEntryExitHistory;
 import com.cdkj.gchf.domain.TeamMaster;
 import com.cdkj.gchf.domain.User;
+import com.cdkj.gchf.domain.WorkerInfo;
 import com.cdkj.gchf.dto.req.XN631730Req;
 import com.cdkj.gchf.dto.req.XN631732Req;
+import com.cdkj.gchf.dto.req.XN631733Req;
+import com.cdkj.gchf.dto.req.XN631733ReqData;
 import com.cdkj.gchf.dto.req.XN631913Req;
 import com.cdkj.gchf.dto.req.XN631914Req;
 import com.cdkj.gchf.dto.req.XN631915Req;
@@ -56,20 +62,51 @@ public class ProjectWorkerEntryExitHistoryAOImpl
     @Autowired
     private ITeamMasterBO teamMasterBO;
 
+    @Autowired
+    private ICorpBasicinfoBO corpBasicinfoBO;
+
+    @Autowired
+    private IWorkerInfoBO workerInfoBO;
+
+    @Autowired
+    private IProjectCorpInfoBO projectCorpInfoBO;
+
     @Override
     public String addProjectWorkerEntryExitHistory(XN631730Req data) {
+        ProjectWorker projectWorker = projectWorkerBO
+            .getProjectWorker(data.getProjectWorkerCode());
+
+        ProjectWorkerEntryExitHistory workerEntryExitHistory = projectWorkerEntryExitHistoryBO
+            .getProjectWorkerEntryExitHistoryByIdCardNumber(
+                projectWorker.getIdCardNumber());
+        if (workerEntryExitHistory != null) {
+            throw new BizException("XN631730", "人员进退场已添加");
+        }
         return projectWorkerEntryExitHistoryBO
             .saveProjectWorkerEntryExitHistory(data);
     }
 
     @Override
     public void editProjectWorkerEntryExitHistory(XN631732Req req) {
+        ProjectWorkerEntryExitHistory projectWorkerEntryExitHistory = projectWorkerEntryExitHistoryBO
+            .getProjectWorkerEntryExitHistory(req.getCode());
+        if (projectWorkerEntryExitHistory.getUploadStatus()
+            .equals(EUploadStatus.UPLOAD_UNEDITABLE.getCode())) {
+            throw new BizException("XN631732", "人员进退场已上传,不可编辑");
+        }
+
         projectWorkerEntryExitHistoryBO
             .refreshProjectWorkerEntryExitHistory(req);
     }
 
     @Override
     public void dropProjectWorkerEntryExitHistory(String code) {
+        ProjectWorkerEntryExitHistory projectWorkerEntryExitHistory = projectWorkerEntryExitHistoryBO
+            .getProjectWorkerEntryExitHistory(code);
+        if (projectWorkerEntryExitHistory.getUploadStatus()
+            .equals(EUploadStatus.UPLOAD_UNEDITABLE.getCode())) {
+            throw new BizException("XN631731", "人员进退场已上传，不可删除");
+        }
         projectWorkerEntryExitHistoryBO
             .removeProjectWorkerEntryExitHistory(code);
     }
@@ -189,6 +226,56 @@ public class ProjectWorkerEntryExitHistoryAOImpl
                 "projectWorkerEntryExitHistoryBO", code,
                 EUploadStatus.UPLOAD_UNEDITABLE.getCode(), operateLog);
 
+        }
+    }
+
+    /**
+     * <p>Description: 导入人员进退场</p>   
+     */
+    @Transactional
+    @Override
+    public void importProjectWorkerEntryExitHistoryList(XN631733Req req) {
+        User user = userBO.getBriefUser(req.getUserId());
+        String projectCode = req.getProjectCode();
+        ProjectConfig configByLocal = projectConfigBO
+            .getProjectConfigByLocal(projectCode);
+        if (configByLocal == null) {
+            throw new BizException("XN631733", "项目不存在" + req.getProjectCode());
+        }
+
+        List<XN631733ReqData> dateList = req.getDateList();
+        for (XN631733ReqData xn631733ReqData : dateList) {
+            ProjectWorkerEntryExitHistory entryExitHistory = new ProjectWorkerEntryExitHistory();
+            entryExitHistory.setProjectCode(projectCode);
+            WorkerInfo infoByIdCardNumber = workerInfoBO
+                .getWorkerInfoByIdCardNumber(xn631733ReqData.getIdcardNumber());
+            if (infoByIdCardNumber == null) {
+                throw new BizException("XN631733",
+                    "项目人员未录入" + xn631733ReqData.getIdcardNumber());
+            }
+            // 根据idcardnumber和项目名称获取班组信息
+            TeamMaster condition = new TeamMaster();
+            condition.setTeamName(xn631733ReqData.getTeamName());
+            condition.setProjectCode(projectCode);
+            TeamMaster masterByCondition = teamMasterBO
+                .getTeamMasterByCondition(condition);
+            entryExitHistory.setCorpCode(masterByCondition.getCorpCode());
+            entryExitHistory.setCorpName(masterByCondition.getCorpName());
+            entryExitHistory.setWorkerCode(infoByIdCardNumber.getCode());
+            entryExitHistory.setWorkerName(infoByIdCardNumber.getName());
+            entryExitHistory.setPosition(infoByIdCardNumber.getWorkerType());
+            entryExitHistory
+                .setJoinDatetime(infoByIdCardNumber.getJoinedTime());
+            entryExitHistory.setIdcardType(xn631733ReqData.getIdcardType());
+            entryExitHistory.setIdcardNumber(xn631733ReqData.getIdcardNumber());
+
+            entryExitHistory.setDate(xn631733ReqData.getDate());
+            entryExitHistory.setType(xn631733ReqData.getType());
+            String code = projectWorkerEntryExitHistoryBO
+                .saveProjectWorkerEntryExitHistory(entryExitHistory);
+            operateLogBO.saveOperateLog(
+                EOperateLogRefType.WorkAttendance.getCode(), code, "导入人员进退场信息",
+                user, null);
         }
     }
 

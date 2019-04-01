@@ -6,6 +6,10 @@ public class XN631607Req extends AListReq {
      */
     private static final long serialVersionUID = 5295096972967707904L;
 
+    private String projectCode;
+
+    private String corpCode;
+
     // 用户id
     private String userId;
 
@@ -15,6 +19,22 @@ public class XN631607Req extends AListReq {
 
     public void setUserId(String userId) {
         this.userId = userId;
+    }
+
+    public String getProjectCode() {
+        return projectCode;
+    }
+
+    public void setProjectCode(String projectCode) {
+        this.projectCode = projectCode;
+    }
+
+    public String getCorpCode() {
+        return corpCode;
+    }
+
+    public void setCorpCode(String corpCode) {
+        this.corpCode = corpCode;
     }
 
 }

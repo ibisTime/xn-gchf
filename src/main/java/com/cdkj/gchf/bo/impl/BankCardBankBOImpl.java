@@ -14,6 +14,7 @@ import com.cdkj.gchf.domain.BankCardInfo;
 import com.cdkj.gchf.dto.req.XN631750Req;
 import com.cdkj.gchf.dto.req.XN631752Req;
 import com.cdkj.gchf.enums.EGeneratePrefix;
+import com.cdkj.gchf.enums.EUploadStatus;
 
 @Component
 public class BankCardBankBOImpl extends PaginableBOImpl<BankCardInfo>
@@ -29,6 +30,7 @@ public class BankCardBankBOImpl extends PaginableBOImpl<BankCardInfo>
         code = OrderNoGenerater
             .generate(EGeneratePrefix.BankCardInfo.getCode());
         bankCardInfo.setCode(code);
+        bankCardInfo.setUploadStatus(EUploadStatus.TO_UPLOAD.getCode());
         bankCardInfoDAO.insert(bankCardInfo);
         return code;
     }
@@ -42,8 +44,19 @@ public class BankCardBankBOImpl extends PaginableBOImpl<BankCardInfo>
 
     @Override
     public void refreshBankCardInfo(XN631752Req req) {
-        BankCardInfo bankCardInfo = new BankCardInfo();
-        BeanUtils.copyProperties(req, bankCardInfo);
+        BankCardInfo condition = new BankCardInfo();
+        condition.setCode(req.getCode());
+
+        BankCardInfo bankCardInfo = bankCardInfoDAO.select(condition);
+        if (req.getBankName() != null) {
+            bankCardInfo.setBankName(req.getBankName());
+        }
+        if (req.getBankNumber() != null) {
+            bankCardInfo.setBankNumber(req.getBankNumber());
+        }
+        if (req.getBankLinkNumber() != null) {
+            bankCardInfo.setBankLinkNumber(req.getBankLinkNumber());
+        }
         bankCardInfoDAO.updateBankCardInfo(bankCardInfo);
     }
 

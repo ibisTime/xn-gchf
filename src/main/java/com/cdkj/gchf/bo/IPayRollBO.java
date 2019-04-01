@@ -15,6 +15,10 @@ public interface IPayRollBO extends IPaginableBO<PayRoll> {
 
     public String savePayRoll(XN631770Req data);
 
+    public String savePayRoll(PayRoll payRoll);
+
+    public PayRoll saveAndGetPayRoll(PayRoll payRoll);
+
     public int removePayRoll(String code);
 
     public int refreshPayRoll(PayRoll data);

@@ -11,18 +11,13 @@ public class XN631650Req {
     private String userId;
 
     // 项目编码
-    @NotBlank
+
+    @NotBlank(message = "项目编号不能为空")
     private String projectCode;
 
     // 班组所在企业统一社会信用代码
-    @NotBlank
+    @NotBlank(message = "社会信用代码不能为空")
     private String corpCode;
-
-    // 班组所在企业名称
-    private String corpName;
-
-    // 班组编号
-    private Integer teamSysNo;
 
     // 班组名称，
     @NotBlank
@@ -39,9 +34,6 @@ public class XN631650Req {
 
     // 责任人证件号码
     private String responsiblePersonIdNumber;
-
-    // 备注
-    private String remark;
 
     // 进场日期
     private String entryTime;
@@ -60,12 +52,6 @@ public class XN631650Req {
 
     // 班组长证件号码
     private String teamLeaderIdNumber;
-
-    // 上级部门编号
-    private String parentCode;
-
-    // 是否上传
-    private String uploadStatus;
 
     public String getCode() {
         return code;
@@ -99,14 +85,6 @@ public class XN631650Req {
         this.corpCode = corpCode;
     }
 
-    public String getCorpName() {
-        return corpName;
-    }
-
-    public void setCorpName(String corpName) {
-        this.corpName = corpName;
-    }
-
     public String getTeamName() {
         return teamName;
     }
@@ -131,14 +109,6 @@ public class XN631650Req {
         this.responsiblePersonPhone = responsiblePersonPhone;
     }
 
-    public String getRemark() {
-        return remark;
-    }
-
-    public void setRemark(String remark) {
-        this.remark = remark;
-    }
-
     public String getEntryTime() {
         return entryTime;
     }
@@ -153,14 +123,6 @@ public class XN631650Req {
 
     public void setExitTime(String exitTime) {
         this.exitTime = exitTime;
-    }
-
-    public Integer getTeamSysNo() {
-        return teamSysNo;
-    }
-
-    public void setTeamSysNo(Integer teamSysNo) {
-        this.teamSysNo = teamSysNo;
     }
 
     public String getTeamLeaderName() {
@@ -210,22 +172,6 @@ public class XN631650Req {
 
     public void setResponsiblePersonIdNumber(String responsiblePersonIdNumber) {
         this.responsiblePersonIdNumber = responsiblePersonIdNumber;
-    }
-
-    public String getParentCode() {
-        return parentCode;
-    }
-
-    public void setParentCode(String parentCode) {
-        this.parentCode = parentCode;
-    }
-
-    public String getUploadStatus() {
-        return uploadStatus;
-    }
-
-    public void setUploadStatus(String uploadStatus) {
-        this.uploadStatus = uploadStatus;
     }
 
 }

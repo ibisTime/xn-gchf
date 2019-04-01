@@ -17,7 +17,10 @@ import com.cdkj.gchf.domain.PayRollDetail;
 import com.cdkj.gchf.domain.ProjectConfig;
 import com.cdkj.gchf.domain.TeamMaster;
 import com.cdkj.gchf.dto.req.XN631770ReqDetail;
+import com.cdkj.gchf.dto.req.XN631772Req;
 import com.cdkj.gchf.enums.EGeneratePrefix;
+import com.cdkj.gchf.enums.EUploadStatus;
+import com.cdkj.gchf.exception.BizException;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 
@@ -38,20 +41,29 @@ public class PayRollDetailBOImpl extends PaginableBOImpl<PayRollDetail>
             BeanUtils.copyProperties(xn631770ReqDetail, payRollDetail);
             payRollDetail.setCode(code);
             payRollDetail.setPayRollCode(projectCode);
+            payRollDetail.setUploadStatus(EUploadStatus.TO_UPLOAD.getCode());
             payRollDetailDAO.insert(payRollDetail);
         }
     }
 
     @Override
-    public int deletePayRollDetail(String payRollcode) {
+    public int deletePayRollDetailByPayRollCode(String payRollcode) {
         PayRollDetail payRollDetail = new PayRollDetail();
         payRollDetail.setPayRollCode(payRollcode);
         return payRollDetailDAO.delete(payRollDetail);
     }
 
     @Override
-    public int updatePayRollDetail(PayRollDetail data) {
-        return 0;
+    public int updatePayRollDetail(XN631772Req req) {
+
+        PayRollDetail condition = new PayRollDetail();
+        condition.setPayRollCode(req.getCode());
+        condition.setCode(req.getPayRollDetailCode());
+
+        PayRollDetail select = payRollDetailDAO.select(condition);
+        BeanUtils.copyProperties(req, select);
+
+        return payRollDetailDAO.update(select);
     }
 
     @Override
@@ -139,6 +151,25 @@ public class PayRollDetailBOImpl extends PaginableBOImpl<PayRollDetail>
         PayRollDetail payRollDetail = new PayRollDetail();
         payRollDetail.setPayRollCode(payRollCode);
         return payRollDetailDAO.selectList(payRollDetail);
+    }
+
+    @Override
+    public int deletePayRollDetail(String code) {
+        PayRollDetail data = new PayRollDetail();
+        data.setCode(code);
+        return payRollDetailDAO.delete(data);
+    }
+
+    @Override
+    public String savePayRollDetail(PayRollDetail payRollDetail) {
+        String code = null;
+        if (payRollDetail == null) {
+            throw new BizException("工资单详情信息不能为空");
+        }
+        code = OrderNoGenerater
+            .generate(EGeneratePrefix.PayRollDetail.getValue());
+        payRollDetailDAO.insert(payRollDetail);
+        return code;
     }
 
 }

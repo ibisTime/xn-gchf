@@ -13,6 +13,8 @@ import com.cdkj.gchf.domain.BankCardInfo;
 import com.cdkj.gchf.dto.req.XN631750Req;
 import com.cdkj.gchf.dto.req.XN631752Req;
 import com.cdkj.gchf.dto.req.XN631767Req;
+import com.cdkj.gchf.enums.EUploadStatus;
+import com.cdkj.gchf.exception.BizException;
 
 @Service(value = "bankCardInfoAOImpl")
 public class BankCardInfoAOImpl implements IBankCardInfoAO {
@@ -26,6 +28,11 @@ public class BankCardInfoAOImpl implements IBankCardInfoAO {
 
     @Override
     public void dropBankCardInfo(String code) {
+        BankCardInfo bankCardInfo = bankCardBankBO.getBankCardInfo(code);
+        if (bankCardInfo.getUploadStatus()
+            .equals(EUploadStatus.UPLOAD_UNEDITABLE.getCode())) {
+            throw new BizException("XN631750", "银行卡信息已上传,无法删除");
+        }
         bankCardBankBO.removeBankCardInfo(code);
     }
 
@@ -49,6 +56,12 @@ public class BankCardInfoAOImpl implements IBankCardInfoAO {
 
     @Override
     public void editBankCardInfo(XN631752Req req) {
+        BankCardInfo bankCardInfo = bankCardBankBO
+            .getBankCardInfo(req.getCode());
+        if (bankCardInfo.getUploadStatus()
+            .equals(EUploadStatus.UPLOAD_UNEDITABLE.getCode())) {
+            throw new BizException("XN631750", "银行卡信息已上传,无法删除");
+        }
         bankCardBankBO.refreshBankCardInfo(req);
     }
 

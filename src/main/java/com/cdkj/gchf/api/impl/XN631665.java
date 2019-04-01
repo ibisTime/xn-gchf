@@ -34,10 +34,10 @@ public class XN631665 extends AProcessor {
         TeamMaster condition = new TeamMaster();
         BeanUtils.copyProperties(req, condition);
         String column = req.getOrderColumn();
-        // 默认列
         if (StringUtils.isBlank(column)) {
             column = ITeamMasterAO.DEFAULT_ORDER_COLUMN;
         }
+        condition.setOrder(column, req.getOrderDir());
         int start = StringValidater.toInteger(req.getStart());
         int limit = StringValidater.toInteger(req.getLimit());
         return teamMasterAO.queryTeamMasterPage(start, limit, condition);

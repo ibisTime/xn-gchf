@@ -6,17 +6,24 @@ import com.cdkj.gchf.bo.base.IPaginableBO;
 import com.cdkj.gchf.bo.base.Paginable;
 import com.cdkj.gchf.domain.ProjectConfig;
 import com.cdkj.gchf.domain.WorkerInfo;
+import com.cdkj.gchf.dto.req.XN631790Req;
 import com.cdkj.gchf.dto.req.XN631791Req;
 
 public interface IWorkerInfoBO extends IPaginableBO<WorkerInfo> {
 
     public boolean isWorkerInfoExist(String code);
 
-    public String saveWorkerInfo(WorkerInfo data);
+    public String saveWorkerInfo(XN631790Req req);
+
+    public String saveWorkerInfo(WorkerInfo workerInfo);
 
     public int removeWorkerInfo(String code);
 
     public int refreshWorkerInfo(XN631791Req data);
+
+    public WorkerInfo getWorkerInfoByCelephone(String phone);
+
+    public WorkerInfo getWorkerInfoByIdCardNumber(String idCardNumber);
 
     public List<WorkerInfo> queryWorkerInfoList(WorkerInfo condition);
 

@@ -8,6 +8,7 @@ import java.util.Map;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Component;
 
 import com.alibaba.fastjson.JSONObject;
@@ -31,6 +32,7 @@ import com.cdkj.gchf.gov.GovConnecter;
 import com.cdkj.gchf.gov.GovUtil;
 
 @Component
+@Primary
 public class CorpBasicinfoBOImpl extends PaginableBOImpl<CorpBasicinfo>
         implements ICorpBasicinfoBO {
 
@@ -164,7 +166,7 @@ public class CorpBasicinfoBOImpl extends PaginableBOImpl<CorpBasicinfo>
         CorpBasicinfo data = null;
         if (StringUtils.isNotBlank(code)) {
             CorpBasicinfo condition = new CorpBasicinfo();
-            condition.setCode(code);
+            condition.setCorpCode(code);
             data = corpBasicinfoDAO.select(condition);
             if (data == null) {
                 throw new BizException("xn0000", "企业基本信息编号不存在");

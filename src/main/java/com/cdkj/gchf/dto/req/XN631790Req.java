@@ -37,6 +37,9 @@ public class XN631790Req {
     // 类别
     private String workerType;
 
+    // 当前工种
+    private String workTypeCode;
+
     // 出生日期
     private Date birthday;
 
@@ -79,10 +82,6 @@ public class XN631790Req {
 
     // 紧急联系电话
     private String urgentLinkManPhone;
-
-    // 当前工种
-    @NotBlank
-    private String workTypeCode;
 
     // 当前聘用企业
     private String workCorpName;
@@ -285,14 +284,6 @@ public class XN631790Req {
         this.urgentLinkManPhone = urgentLinkManPhone;
     }
 
-    public String getWorkTypeCode() {
-        return workTypeCode;
-    }
-
-    public void setWorkTypeCode(String workTypeCode) {
-        this.workTypeCode = workTypeCode;
-    }
-
     public String getWorkCorpName() {
         return workCorpName;
     }
@@ -355,6 +346,14 @@ public class XN631790Req {
 
     public void setExpiryDate(Date expiryDate) {
         this.expiryDate = expiryDate;
+    }
+
+    public String getWorkTypeCode() {
+        return workTypeCode;
+    }
+
+    public void setWorkTypeCode(String workTypeCode) {
+        this.workTypeCode = workTypeCode;
     }
 
 }

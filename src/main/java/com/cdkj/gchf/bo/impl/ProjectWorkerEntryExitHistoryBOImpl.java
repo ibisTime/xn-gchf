@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.alibaba.fastjson.JSONObject;
+import com.cdkj.gchf.bo.IProjectWorkerBO;
 import com.cdkj.gchf.bo.IProjectWorkerEntryExitHistoryBO;
 import com.cdkj.gchf.bo.base.Paginable;
 import com.cdkj.gchf.bo.base.PaginableBOImpl;
@@ -18,6 +19,7 @@ import com.cdkj.gchf.common.AesUtils;
 import com.cdkj.gchf.core.OrderNoGenerater;
 import com.cdkj.gchf.dao.IProjectWorkerEntryExitHistoryDAO;
 import com.cdkj.gchf.domain.ProjectConfig;
+import com.cdkj.gchf.domain.ProjectWorker;
 import com.cdkj.gchf.domain.ProjectWorkerEntryExitHistory;
 import com.cdkj.gchf.domain.TeamMaster;
 import com.cdkj.gchf.dto.req.XN631730Req;
@@ -26,6 +28,7 @@ import com.cdkj.gchf.dto.req.XN631914Req;
 import com.cdkj.gchf.dto.req.XN631914ReqWorker;
 import com.cdkj.gchf.dto.req.XN631915Req;
 import com.cdkj.gchf.enums.EGeneratePrefix;
+import com.cdkj.gchf.enums.EUploadStatus;
 import com.cdkj.gchf.exception.BizException;
 import com.cdkj.gchf.gov.GovConnecter;
 import com.cdkj.gchf.gov.GovUtil;
@@ -41,14 +44,26 @@ public class ProjectWorkerEntryExitHistoryBOImpl
     @Autowired
     private IProjectWorkerEntryExitHistoryDAO projectWorkerEntryExitHistoryDAO;
 
+    @Autowired
+    private IProjectWorkerBO projectWorkerBO;
+
     @Override
     public String saveProjectWorkerEntryExitHistory(XN631730Req req) {
         ProjectWorkerEntryExitHistory data = new ProjectWorkerEntryExitHistory();
-        BeanUtils.copyProperties(req, data);
+        ProjectWorker projectWorker = projectWorkerBO
+            .getProjectWorker(req.getProjectWorkerCode());
         String code = null;
         code = OrderNoGenerater
             .generate(EGeneratePrefix.ProjectWorkerEntryExitHistory.getCode());
+        BeanUtils.copyProperties(projectWorker, data);
         data.setCode(code);
+        data.setDate(req.getDate());
+        data.setType(req.getType());
+        data.setIdcardNumber(projectWorker.getIdCardType());
+        data.setIdcardType(projectWorker.getIdCardType());
+        data.setJoinDatetime(projectWorker.getJoinDatetime());
+        data.setLeavingDatetime(projectWorker.getLeavingDatetime());
+        data.setUploadStatus(EUploadStatus.TO_UPLOAD.getCode());
         projectWorkerEntryExitHistoryDAO.insert(data);
         return code;
     }
@@ -162,6 +177,28 @@ public class ProjectWorkerEntryExitHistoryBOImpl
         jsonObject.add("workerList", jsonArray);
         System.out.println(jsonObject.toString());
         return jsonObject;
+    }
+
+    @Override
+    public ProjectWorkerEntryExitHistory getProjectWorkerEntryExitHistoryByIdCardNumber(
+            String idCardNumber) {
+        ProjectWorkerEntryExitHistory projectWorkerEntryExitHistory = new ProjectWorkerEntryExitHistory();
+        projectWorkerEntryExitHistory.setIdcardNumber(idCardNumber);
+        return projectWorkerEntryExitHistoryDAO
+            .select(projectWorkerEntryExitHistory);
+    }
+
+    @Override
+    public String saveProjectWorkerEntryExitHistory(
+            ProjectWorkerEntryExitHistory entryExitHistory) {
+        String code = null;
+        if (entryExitHistory == null) {
+            throw new BizException("进退场信息不能为空");
+        }
+        code = OrderNoGenerater
+            .generate(EGeneratePrefix.ProjectWorkerEntryExitHistory.getValue());
+        projectWorkerEntryExitHistoryDAO.insert(entryExitHistory);
+        return code;
     }
 
 }

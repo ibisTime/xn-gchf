@@ -1,5 +1,6 @@
 package com.cdkj.gchf.api.impl;
 
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;
 
 import com.cdkj.gchf.ao.IProjectWorkerAO;
@@ -32,8 +33,13 @@ public class XN631605 extends AProcessor {
     public Object doBusiness() throws BizException {
         ProjectWorker projectWorkerInfo = new ProjectWorker();
         BeanUtils.copyProperties(req, projectWorkerInfo);
+        String column = null;
+        if (StringUtils.isBlank(column)) {
+            column = IProjectWorkerAO.DEFAULT_ORDER_COLUMN;
+        }
         int start = StringValidater.toInteger(req.getStart());
         int limit = StringValidater.toInteger(req.getLimit());
+        projectWorkerInfo.setOrder(column, req.getOrderDir());
         return projectWorkerAO.queryProjectWorkerPage(start, limit,
             projectWorkerInfo);
     }

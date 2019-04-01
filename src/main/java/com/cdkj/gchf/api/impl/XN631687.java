@@ -1,5 +1,6 @@
 package com.cdkj.gchf.api.impl;
 
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;
 
 import com.cdkj.gchf.ao.IWorkerContractAO;
@@ -30,6 +31,11 @@ public class XN631687 extends AProcessor {
     public Object doBusiness() throws BizException {
         WorkerContract condition = new WorkerContract();
         BeanUtils.copyProperties(req, condition);
+        String column = null;
+        if (StringUtils.isBlank(column)) {
+            column = IWorkerContractAO.DEFAULT_ORDER_COLUMN;
+        }
+        condition.setOrder(column, req.getOrderColumn());
         return workerContractAO.queryWorkerContractList(condition);
     }
 

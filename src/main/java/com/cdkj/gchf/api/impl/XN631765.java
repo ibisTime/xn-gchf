@@ -33,6 +33,11 @@ public class XN631765 extends AProcessor {
         BeanUtils.copyProperties(req, condition);
         int start = StringValidater.toInteger(req.getStart());
         int limit = StringValidater.toInteger(req.getLimit());
+        String column = null;
+        if (org.apache.commons.lang3.StringUtils.isBlank(column)) {
+            column = IBankCardInfoAO.DEFAULT_ORDER_COLUMN;
+        }
+        condition.setOrder(column, req.getOrderDir());
         return bankCardInfoAO.queryBankCardInfoPage(start, limit, condition);
     }
 

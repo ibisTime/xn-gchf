@@ -4,7 +4,6 @@ import com.cdkj.gchf.ao.ITeamMasterAO;
 import com.cdkj.gchf.api.AProcessor;
 import com.cdkj.gchf.common.JsonUtil;
 import com.cdkj.gchf.core.ObjValidater;
-import com.cdkj.gchf.domain.TeamMaster;
 import com.cdkj.gchf.dto.req.XN631666Req;
 import com.cdkj.gchf.exception.BizException;
 import com.cdkj.gchf.exception.ParaException;
@@ -27,9 +26,7 @@ public class XN631666 extends AProcessor {
 
     @Override
     public Object doBusiness() throws BizException {
-        TeamMaster teamMasterInfo = new TeamMaster();
-        teamMasterInfo.setCode(req.getCode());
-        return teamMasterAO.queryTeamMasterList(teamMasterInfo);
+        return teamMasterAO.getTeamMaster(req.getCode());
     }
 
     @Override

@@ -50,16 +50,19 @@ public class PayRollBOImpl extends PaginableBOImpl<PayRoll>
     @Override
     public String savePayRoll(XN631770Req data) {
         PayRoll payRoll = new PayRoll();
+
         BeanUtils.copyProperties(data, payRoll);
         String code = OrderNoGenerater
             .generate(EGeneratePrefix.PayRoll.getCode());
         payRoll.setCode(code);
+        payRoll.setPayMonth(data.getPayMonth());
         payRollDAO.insert(payRoll);
         return code;
     }
 
     @Override
     public int removePayRoll(String code) {
+
         PayRoll data = new PayRoll();
         data.setCode(code);
         return payRollDAO.delete(data);
@@ -202,6 +205,30 @@ public class PayRollBOImpl extends PaginableBOImpl<PayRoll>
     @Override
     public PayRoll getPayRollByCondition(PayRoll condition) {
         return payRollDAO.select(condition);
+    }
+
+    @Override
+    public String savePayRoll(PayRoll payRoll) {
+        String code = null;
+        if (payRoll == null) {
+            throw new BizException("工资单信息不能为空");
+        }
+        code = OrderNoGenerater.generate(EGeneratePrefix.PayRoll.getValue());
+        payRoll.setCode(code);
+        payRollDAO.insert(payRoll);
+        return code;
+    }
+
+    @Override
+    public PayRoll saveAndGetPayRoll(PayRoll payRoll) {
+        String code = null;
+        if (payRoll == null) {
+            throw new BizException("工资单信息不能为空");
+        }
+        code = OrderNoGenerater.generate(EGeneratePrefix.PayRoll.getValue());
+        payRoll.setCode(code);
+        payRollDAO.insert(payRoll);
+        return payRoll;
     }
 
 }

@@ -9,6 +9,7 @@ import com.cdkj.gchf.domain.PayRoll;
 import com.cdkj.gchf.domain.PayRollDetail;
 import com.cdkj.gchf.dto.req.XN631770Req;
 import com.cdkj.gchf.dto.req.XN631772Req;
+import com.cdkj.gchf.dto.req.XN631773Req;
 import com.cdkj.gchf.dto.req.XN631920Req;
 import com.cdkj.gchf.dto.req.XN631921Req;
 
@@ -32,6 +33,8 @@ public interface IPayRollAO {
     public void uploadPayRollList(String userId, List<String> codeList);
 
     public void refreshPayRollCodeByLocal(String code, String payRollCode);
+
+    public void importPayRollCodeList(XN631773Req req);
 
     /****国家平台接口****/
     public void uploadPayRoll(XN631920Req data);

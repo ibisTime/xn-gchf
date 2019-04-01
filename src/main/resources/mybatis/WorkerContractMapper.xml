@@ -8,28 +8,28 @@
 		<result column="project_name" property="projectName" />
 		<result column="corp_code" property="corpCode" />
 		<result column="corp_name" property="corpName" />
-		
+
 		<result column="idcard_type" property="idcardType" />
 		<result column="idcard_number" property="idcardNumber" />
 		<result column="worker_code" property="workerCode" />
 		<result column="worker_name" property="workerName" />
 		<result column="worker_mobile" property="workerMobile" />
-		
+
 		<result column="contract_code" property="contractCode" />
 		<result column="contract_period_type" property="contractPeriodType" />
 		<result column="start_date" property="startDate" />
 		<result column="end_date" property="endDate" />
 		<result column="unit" property="unit" />
-		
+
 		<result column="unit_price" property="unitPrice" />
 		<result column="content_pic" property="contentPic" />
 		<result column="updater" property="updater" />
 		<result column="update_datetime" property="updateDatetime" />
 		<result column="remark" property="remark" />
-		
+
 		<result column="upload_status" property="uploadStatus" />
 	</resultMap>
-	
+
 	<sql id="where_condition">
 		<trim prefix="WHERE" prefixOverrides="AND | OR">
 			<if test="code != null and code != '' ">
@@ -44,9 +44,20 @@
 			<if test="contractCode != null and contractCode != '' ">
 				AND t.contract_code = #{contractCode}
 			</if>
-			<if test="uploadStatus != null and uploadStatus != '' ">
-				AND t.upload_status = #{uploadStatus}
+			
+			<if test="startDate != null and startDate != '' ">
+				AND t.start_date = #{startDate}
 			</if>
+			<if test="endDate != null and endDate != '' ">
+				AND t.end_date = #{endDate}
+			</if>
+			<if test="unitPrice != null and unitPrice != '' ">
+				AND t.unit_price = #{unitPrice}
+			</if>
+			<if test="contentPic != null and contentPic != '' ">
+				AND t.content_pic = #{contentPic}
+			</if>
+
 		</trim>
 	</sql>
 
@@ -58,14 +69,14 @@
 		,project_name
 		,corp_code
 		,corp_name
-		
+
 		,idcard_type
 		,idcard_number
 		,worker_code
 		,worker_name
 		,worker_mobile
 		,contract_code
-		
+
 		,contract_period_type
 		,start_date
 		,end_date
@@ -74,7 +85,7 @@
 		,content_pic
 		,updater
 		,update_datetime
-		
+
 		,remark
 		,upload_status
 		)
@@ -85,60 +96,47 @@
 		,#{corpCode}
 		,#{corpName}
 		,#{idcardType}
-		
+
 		,#{idcardNumber}
 		,#{workerCode}
 		,#{workerName}
 		,#{workerMobile}
 		,#{contractCode}
 		,#{contractPeriodType}
-		
+
 		,#{startDate}
 		,#{endDate}
 		,#{unit}
 		,#{unitPrice}
 		,#{contentPic}
 		,#{updater}
-		
+
 		,#{updateDatetime}
 		,#{remark}
 		,#{uploadStatus}
 		)
 	</insert>
-	
+
 	<delete id="delete_workerContract" parameterType="workerContract">
-		DELETE from thf_worker_contract WHERE code = #{code}
+		DELETE from
+		thf_worker_contract WHERE code = #{code}
 	</delete>
-	
+
 	<update id="update_workerContract" parameterType="workerContract">
-		UPDATE thf_worker_contract
+		UPDATE
+		thf_worker_contract
 		SET
-		 project_code = #{projectCode}
-		,project_name = #{projectName}
-		,corp_code = #{corpCode}
-		,corp_name = #{corpName}
-		,idcard_type = #{idcardType}
-		,idcard_number = #{idcardNumber}
-		
-		,worker_code = #{workerCode}
-		,worker_name = #{workerName}
-		,worker_mobile = #{workerMobile}
-		,contract_code = #{contractCode}
-		,contract_period_type = #{contractPeriodType}
-		,start_date = #{startDate}
-		
+		start_date = #{startDate}
 		,end_date = #{endDate}
 		,unit = #{unit}
-		,unit_price = #{unitPrice}
+		,unit_price =
+		#{unitPrice}
 		,content_pic = #{contentPic}
-		,updater = #{updater}
-		,update_datetime = #{updateDatetime}
-		,remark = #{remark}
-		,upload_status = #{uploadStatus}
 		WHERE code = #{code}
 	</update>
-	
-	<select id="select_workerContract" parameterType="workerContract" resultMap="workerContract_DB_Result">
+
+	<select id="select_workerContract" parameterType="workerContract"
+		resultMap="workerContract_DB_Result">
 		SELECT
 		t.code
 		,t.project_code
@@ -146,21 +144,21 @@
 		,t.corp_code
 		,t.corp_name
 		,t.idcard_type
-		
+
 		,t.idcard_number
 		,t.worker_code
 		,t.worker_name
 		,t.worker_mobile
 		,t.contract_code
 		,t.contract_period_type
-		
+
 		,t.start_date
 		,t.end_date
 		,t.unit
 		,t.unit_price
 		,t.content_pic
 		,t.updater
-		
+
 		,t.update_datetime
 		,t.remark
 		,t.upload_status
@@ -180,5 +178,5 @@
 		<include refid="where_condition" />
 	</select>
 
-	
+
 </mapper>

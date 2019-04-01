@@ -27,6 +27,7 @@ public class XN631667 extends AProcessor {
         if (column == null) {
             column = ITeamMasterAO.DEFAULT_ORDER_COLUMN;
         }
+        teamMasterInfo.setOrder(column, req.getOrderDir());
         return teamMasterAO.queryTeamMasterList(teamMasterInfo);
     }
 

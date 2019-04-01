@@ -60,7 +60,7 @@ public class WorkerInfo extends ABaseDO {
     private Integer isJoined;
 
     // 加入工会时间 已加入工会时，此字段必须有值
-    private String joinedTime;
+    private Date joinedTime;
 
     // 手机号码
     private String cellPhone;
@@ -227,11 +227,11 @@ public class WorkerInfo extends ABaseDO {
         this.isJoined = isJoined;
     }
 
-    public String getJoinedTime() {
+    public Date getJoinedTime() {
         return joinedTime;
     }
 
-    public void setJoinedTime(String joinedTime) {
+    public void setJoinedTime(Date joinedTime) {
         this.joinedTime = joinedTime;
     }
 

@@ -7,30 +7,20 @@ public class XN631750Req {
     @NotBlank(message = "用户id不能为空")
     private String userId;
 
-    // 编号
-    private String code;
-
     // 业务类型
-    @NotBlank
     private String businessType;
 
     // 业务编号
     private Integer businessSysNo;
 
     // 银行支行名称
-    @NotBlank
     private String bankName;
 
     // 银行账户
-    @NotBlank
     private String bankNumber;
 
     // 银行联号
-    @NotBlank
     private String bankLinkNumber;
-
-    // 状态
-    private String uploadStatus;
 
     public String getUserId() {
         return userId;
@@ -38,14 +28,6 @@ public class XN631750Req {
 
     public void setUserId(String userId) {
         this.userId = userId;
-    }
-
-    public String getCode() {
-        return code;
-    }
-
-    public void setCode(String code) {
-        this.code = code;
     }
 
     public String getBusinessType() {
@@ -78,14 +60,6 @@ public class XN631750Req {
 
     public void setBankNumber(String bankNumber) {
         this.bankNumber = bankNumber;
-    }
-
-    public String getUploadStatus() {
-        return uploadStatus;
-    }
-
-    public void setUploadStatus(String uploadStatus) {
-        this.uploadStatus = uploadStatus;
     }
 
     public String getBankLinkNumber() {

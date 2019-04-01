@@ -134,7 +134,7 @@ CREATE TABLE `thf_project_worker` (
   `project_name` varchar(255) DEFAULT NULL COMMENT '项目名称',
   `corp_code` varchar(18) DEFAULT NULL COMMENT '班组所在企业统一社会信用代码',
   `corp_name` varchar(200) DEFAULT NULL COMMENT '班组所在企业名称',
-  `team_sys_no` int(11) DEFAULT NULL COMMENT '班组编号',
+  `team_sys_no` varchar(32) DEFAULT NULL COMMENT '班组编号',
   `team_name` varchar(100) DEFAULT NULL COMMENT '班组名称',
   `worker_code` varchar(32) DEFAULT NULL COMMENT '员工编号',
   `worker_name` varchar(50) DEFAULT NULL COMMENT '工人姓名',

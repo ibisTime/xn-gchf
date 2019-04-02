@@ -8,8 +8,10 @@ public class XN631665Req extends APageReq {
      */
     private static final long serialVersionUID = 1L;
 
+    // 项目编号
     private String projectCode;
 
+    // 班组所在企业统一社会信用代码
     private String corpCode;
 
     // 编号

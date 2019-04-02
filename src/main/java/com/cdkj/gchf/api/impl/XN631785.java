@@ -1,5 +1,6 @@
 package com.cdkj.gchf.api.impl;
 
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;
 
 import com.cdkj.gchf.ao.IPayRollAO;
@@ -29,12 +30,14 @@ public class XN631785 extends AProcessor {
 
     @Override
     public Object doBusiness() throws BizException {
+
+        PayRoll condition = new PayRoll();
+
+        BeanUtils.copyProperties(req, condition);
+        String column = req.getOrderColumn();
         int start = StringValidater.toInteger(req.getStart());
         int limit = StringValidater.toInteger(req.getLimit());
-        PayRoll condition = new PayRoll();
-        String column = null;
-        BeanUtils.copyProperties(req, condition);
-        if (req.getOrderColumn() == null) {
+        if (StringUtils.isBlank(column)) {
             column = IPayRollAO.DEFAULT_ORDER_COLUMN;
         }
         condition.setOrder(column, req.getOrderDir());

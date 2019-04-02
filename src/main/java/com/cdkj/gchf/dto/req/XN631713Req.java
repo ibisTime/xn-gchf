@@ -10,7 +10,7 @@ public class XN631713Req {
     private String userId;
 
     @NotEmpty
-    private List<XN631713ReqData> workerAttendanceList;
+    private List<XN631713ReqData> dataList;
 
     // 项目编号
     @NotBlank
@@ -27,13 +27,12 @@ public class XN631713Req {
         this.userId = userId;
     }
 
-    public List<XN631713ReqData> getWorkerAttendanceList() {
-        return workerAttendanceList;
+    public List<XN631713ReqData> getDataList() {
+        return dataList;
     }
 
-    public void setWorkerAttendanceList(
-            List<XN631713ReqData> workerAttendanceList) {
-        this.workerAttendanceList = workerAttendanceList;
+    public void setDataList(List<XN631713ReqData> dataList) {
+        this.dataList = dataList;
     }
 
     public String getProjectCode() {

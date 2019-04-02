@@ -13,7 +13,7 @@ public class XN631673Req {
     private String projectCode;
 
     @NotEmpty
-    private List<XN631673ReqData> workContractList;
+    private List<XN631673ReqData> dataList;
 
     public String getUserId() {
         return userId;
@@ -23,12 +23,12 @@ public class XN631673Req {
         this.userId = userId;
     }
 
-    public List<XN631673ReqData> getWorkContractList() {
-        return workContractList;
+    public List<XN631673ReqData> getDataList() {
+        return dataList;
     }
 
-    public void setWorkContractList(List<XN631673ReqData> workContractList) {
-        this.workContractList = workContractList;
+    public void setDataList(List<XN631673ReqData> dataList) {
+        this.dataList = dataList;
     }
 
     public String getProjectCode() {

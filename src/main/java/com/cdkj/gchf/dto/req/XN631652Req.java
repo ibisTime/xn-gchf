@@ -28,14 +28,14 @@ public class XN631652Req {
     // 责任人证件号码
     private String responsiblePersonIDNumber;
 
-    // 备注
-    private String remark;
-
     // 进场日期
     private Date entryTime;
 
     // 退场日期
     private Date exitTime;
+
+    // 备注
+    private String remark;
 
     public String getCode() {
         return code;

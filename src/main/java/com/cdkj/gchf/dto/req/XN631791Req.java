@@ -11,9 +11,9 @@ public class XN631791Req {
     @NotBlank
     private String code;
 
-    // 头像
+    // 手持身份证照片
     @NotBlank
-    private String headImageUrl;
+    private String handIdCardImageUrl;
 
     // 正面照 URL
     @NotBlank
@@ -55,12 +55,12 @@ public class XN631791Req {
         this.negativeIdCardImageUrl = negativeIdCardImageUrl;
     }
 
-    public String getHeadImageUrl() {
-        return headImageUrl;
+    public String getHandIdCardImageUrl() {
+        return handIdCardImageUrl;
     }
 
-    public void setHeadImageUrl(String headImageUrl) {
-        this.headImageUrl = headImageUrl;
+    public void setHandIdCardImageUrl(String handIdCardImageUrl) {
+        this.handIdCardImageUrl = handIdCardImageUrl;
     }
 
 }

@@ -12,7 +12,13 @@ public class XN631767Req extends AListReq {
     @NotBlank
     private String userId;
 
-    private String businessType;
+    private String bussinessType;
+
+    private String bussinessName;
+
+    private String uploadStatus;
+
+    private String status;
 
     public String getUserId() {
         return userId;
@@ -22,12 +28,36 @@ public class XN631767Req extends AListReq {
         this.userId = userId;
     }
 
-    public String getBusinessType() {
-        return businessType;
+    public String getUploadStatus() {
+        return uploadStatus;
     }
 
-    public void setBusinessType(String businessType) {
-        this.businessType = businessType;
+    public void setUploadStatus(String uploadStatus) {
+        this.uploadStatus = uploadStatus;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
+    public String getBussinessType() {
+        return bussinessType;
+    }
+
+    public void setBussinessType(String bussinessType) {
+        this.bussinessType = bussinessType;
+    }
+
+    public String getBussinessName() {
+        return bussinessName;
+    }
+
+    public void setBussinessName(String bussinessName) {
+        this.bussinessName = bussinessName;
     }
 
 }

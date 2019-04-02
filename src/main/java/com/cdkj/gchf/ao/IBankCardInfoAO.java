@@ -7,6 +7,7 @@ import org.springframework.stereotype.Component;
 import com.cdkj.gchf.bo.base.Paginable;
 import com.cdkj.gchf.domain.BankCardInfo;
 import com.cdkj.gchf.dto.req.XN631750Req;
+import com.cdkj.gchf.dto.req.XN631751Req;
 import com.cdkj.gchf.dto.req.XN631752Req;
 import com.cdkj.gchf.dto.req.XN631767Req;
 
@@ -24,6 +25,8 @@ public interface IBankCardInfoAO {
             BankCardInfo condition);
 
     public List<BankCardInfo> queryBankCardInfoList(XN631767Req req);
+
+    public void changeBankCardStatus(XN631751Req req);
 
     public BankCardInfo getBankCardInfo(String code);
 

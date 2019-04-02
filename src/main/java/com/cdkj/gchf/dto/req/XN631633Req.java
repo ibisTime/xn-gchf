@@ -10,7 +10,7 @@ public class XN631633Req {
     private String userId;
 
     @NotEmpty
-    private List<XN631633ReqList> projectCorpInfos;
+    private List<XN631633ReqList> dateList;
 
     @NotBlank
     private String projectCode;
@@ -23,12 +23,12 @@ public class XN631633Req {
         this.userId = userId;
     }
 
-    public List<XN631633ReqList> getProjectCorpInfos() {
-        return projectCorpInfos;
+    public List<XN631633ReqList> getDateList() {
+        return dateList;
     }
 
-    public void setProjectCorpInfos(List<XN631633ReqList> projectCorpInfos) {
-        this.projectCorpInfos = projectCorpInfos;
+    public void setDateList(List<XN631633ReqList> dateList) {
+        this.dateList = dateList;
     }
 
     public String getProjectCode() {

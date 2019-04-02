@@ -2,27 +2,40 @@ package com.cdkj.gchf.ao.impl;
 
 import java.util.List;
 
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.alibaba.fastjson.JSONObject;
 import com.cdkj.gchf.ao.IProjectWorkerAO;
+import com.cdkj.gchf.bo.ICorpBasicinfoBO;
+import com.cdkj.gchf.bo.IOperateLogBO;
 import com.cdkj.gchf.bo.IProjectConfigBO;
 import com.cdkj.gchf.bo.IProjectWorkerBO;
 import com.cdkj.gchf.bo.ITeamMasterBO;
+import com.cdkj.gchf.bo.IUserBO;
 import com.cdkj.gchf.bo.IWorkerInfoBO;
 import com.cdkj.gchf.bo.base.Paginable;
+import com.cdkj.gchf.domain.CorpBasicinfo;
 import com.cdkj.gchf.domain.ProjectConfig;
 import com.cdkj.gchf.domain.ProjectWorker;
 import com.cdkj.gchf.domain.TeamMaster;
+import com.cdkj.gchf.domain.User;
 import com.cdkj.gchf.domain.WorkerInfo;
 import com.cdkj.gchf.dto.req.XN631690Req;
 import com.cdkj.gchf.dto.req.XN631692Req;
 import com.cdkj.gchf.dto.req.XN631693Req;
+import com.cdkj.gchf.dto.req.XN631694Req;
 import com.cdkj.gchf.dto.req.XN631911Req;
 import com.cdkj.gchf.dto.req.XN631912Req;
 import com.cdkj.gchf.dto.req.XN631913Req;
+import com.cdkj.gchf.enums.EOperateLogOperate;
+import com.cdkj.gchf.enums.EOperateLogRefType;
 import com.cdkj.gchf.enums.EUploadStatus;
+import com.cdkj.gchf.enums.EWorkerType;
 import com.cdkj.gchf.exception.BizException;
+import com.cdkj.gchf.gov.AsyncQueueHolder;
+import com.cdkj.gchf.gov.GovConnecter;
 
 @Service
 public class ProjectWorkerAOImpl implements IProjectWorkerAO {
@@ -34,10 +47,19 @@ public class ProjectWorkerAOImpl implements IProjectWorkerAO {
     private IProjectConfigBO projectConfigBO;
 
     @Autowired
+    private ITeamMasterBO teamMasterBO;
+
+    @Autowired
     private IWorkerInfoBO workerInfoBO;
 
     @Autowired
-    private ITeamMasterBO teamMasterBO;
+    private ICorpBasicinfoBO corpBasicinfoBO;
+
+    @Autowired
+    private IOperateLogBO operateLogBO;
+
+    @Autowired
+    private IUserBO userBO;
 
     @Override
     public String addProjectWorker(XN631690Req req) {
@@ -50,17 +72,30 @@ public class ProjectWorkerAOImpl implements IProjectWorkerAO {
         if (teamMaster == null) {
             throw new BizException("XN631690", "班组信息不存在");
         }
+        CorpBasicinfo corpBasicinfo = corpBasicinfoBO
+            .getCorpBasicinfo(req.getCorpCode());
+        if (corpBasicinfo == null) {
+            throw new BizException("xn631690", "企业信息不存在");
+        }
 
         return projectWorkerBO.saveProjectWorker(req);
     }
 
     @Override
     public void editProjectWorker(XN631692Req req) {
+
+        User user = userBO.getBriefUser(req.getUserId());
         if (projectWorkerBO.getProjectWorker(req.getCode()).getUploadStatus()
             .equals(EUploadStatus.UPLOAD_UNEDITABLE.getCode())) {
             throw new BizException("XN631692", "班组人员已上传,无法删除");
         }
+        if (StringUtils.isNotBlank(req.getWorkType())) {
+            EWorkerType.checkExists(req.getWorkType());
+        }
         projectWorkerBO.refreshProjectWorker(req);
+        operateLogBO.saveOperateLog(EOperateLogRefType.ProjectWorker.getCode(),
+            req.getCode(), "修改项目人员信息", user, null);
+
     }
 
     @Override
@@ -133,6 +168,38 @@ public class ProjectWorkerAOImpl implements IProjectWorkerAO {
             throw new BizException("XN631693", "项目不存在");
         }
         projectWorkerBO.saveProjectWorkersByImport(req);
+    }
+
+    @Override
+    public void uploadProjectWorker(XN631694Req req) {
+        User user = userBO.getBriefUser(req.getUserId());
+        List<String> codeList = req.getCodeList();
+        for (String code : codeList) {
+            ProjectWorker projectWorker = projectWorkerBO
+                .getProjectWorker(code);
+            if (projectWorker.getUploadStatus()
+                .equals(EUploadStatus.UPLOAD_UNEDITABLE.getCode())) {
+                throw new BizException("XN631694", "项目人员已上传");
+            }
+
+            ProjectConfig projectConfigByLocal = projectConfigBO
+                .getProjectConfigByLocal(projectWorker.getProjectCode());
+
+            String jsonStringWithDateFormat = JSONObject
+                .toJSONStringWithDateFormat(projectWorker, "yyyy-MM-dd");
+            String str_gov_res = GovConnecter.getGovData("ProjectWorker.Add",
+                jsonStringWithDateFormat, projectConfigByLocal.getProjectCode(),
+                projectConfigByLocal.getSecret());
+
+            String log = operateLogBO.saveOperateLog(
+                EOperateLogRefType.ProjectWorker.getCode(), str_gov_res,
+                EOperateLogOperate.UploadProjectWorker.getValue(), user, null);
+
+            AsyncQueueHolder.addSerial(str_gov_res, projectConfigByLocal,
+                "projectWorkerBO", code,
+                EUploadStatus.UPLOAD_UNEDITABLE.getValue(), log);
+        }
+
     }
 
 }

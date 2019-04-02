@@ -13,12 +13,54 @@ public class XN631765Req extends APageReq {
     @NotBlank
     private String userId;
 
+    private String uploadStatus;
+
+    private String status;
+
+    // 业务类型
+    private String businessType;
+
+    // 业务编号
+    private String businessSysNo;
+
     public String getUserId() {
         return userId;
     }
 
     public void setUserId(String userId) {
         this.userId = userId;
+    }
+
+    public String getUploadStatus() {
+        return uploadStatus;
+    }
+
+    public void setUploadStatus(String uploadStatus) {
+        this.uploadStatus = uploadStatus;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
+    public String getBusinessType() {
+        return businessType;
+    }
+
+    public void setBusinessType(String businessType) {
+        this.businessType = businessType;
+    }
+
+    public String getBusinessSysNo() {
+        return businessSysNo;
+    }
+
+    public void setBusinessSysNo(String businessSysNo) {
+        this.businessSysNo = businessSysNo;
     }
 
 }

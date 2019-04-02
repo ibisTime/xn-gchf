@@ -21,6 +21,9 @@ public class XN631645Req extends APageReq {
     // 企业名称
     private String corpName;
 
+    // 上传状态
+    private String uploadStatus;
+
     public String getUserId() {
         return userId;
     }
@@ -59,6 +62,14 @@ public class XN631645Req extends APageReq {
 
     public void setCorpName(String corpName) {
         this.corpName = corpName;
+    }
+
+    public String getUploadStatus() {
+        return uploadStatus;
+    }
+
+    public void setUploadStatus(String uploadStatus) {
+        this.uploadStatus = uploadStatus;
     }
 
 }

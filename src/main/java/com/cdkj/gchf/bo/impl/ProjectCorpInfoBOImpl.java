@@ -190,7 +190,7 @@ public class ProjectCorpInfoBOImpl extends PaginableBOImpl<ProjectCorpInfo>
     public void importProjectCorpInfo(XN631633Req req) {
 
         User user = userBO.getBriefUser(req.getUserId());
-        for (XN631633ReqList data : req.getProjectCorpInfos()) {
+        for (XN631633ReqList data : req.getDateList()) {
             String code = null;
             // 拼数据
             ProjectCorpInfo projectCorpInfo = new ProjectCorpInfo();
@@ -201,10 +201,12 @@ public class ProjectCorpInfoBOImpl extends PaginableBOImpl<ProjectCorpInfo>
             projectCorpInfo.setCorpName(data.getCorpName());
             projectCorpInfo.setProjectCode(configByLocal.getProjectCode());
             projectCorpInfo.setProjectName(configByLocal.getProjectName());
-            saveProjectCorpInfo(projectCorpInfo);
+
             // 操作日志
             code = OrderNoGenerater
                 .generate(EGeneratePrefix.ProjectCorpInfo.getValue());
+            projectCorpInfo.setCode(code);
+            saveProjectCorpInfo(projectCorpInfo);
             operateLogBO.saveOperateLog(
                 EOperateLogRefType.ProjectCorpinfo.getCode(), code,
                 EOperateLogOperate.UploadCorpBasicinfo.getValue(), user,

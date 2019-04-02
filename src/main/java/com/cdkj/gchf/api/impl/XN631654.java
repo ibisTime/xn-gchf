@@ -26,7 +26,7 @@ public class XN631654 extends AProcessor {
 
     @Override
     public Object doBusiness() throws BizException {
-        teamMasterAO.uploadTeamMaster(req.getDataList(), req.getUserId());
+        teamMasterAO.uploadTeamMaster(req.getCodeList(), req.getUserId());
         return new BooleanRes(true);
     }
 

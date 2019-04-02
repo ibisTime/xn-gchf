@@ -1,5 +1,7 @@
 package com.cdkj.gchf.dto.req;
 
+import java.util.Date;
+
 import org.hibernate.validator.constraints.NotBlank;
 
 public class XN631650Req {
@@ -36,10 +38,10 @@ public class XN631650Req {
     private String responsiblePersonIdNumber;
 
     // 进场日期
-    private String entryTime;
+    private Date entryTime;
 
     // 退场日期
-    private String exitTime;
+    private Date exitTime;
 
     // 班组长姓名
     private String teamLeaderName;
@@ -109,19 +111,19 @@ public class XN631650Req {
         this.responsiblePersonPhone = responsiblePersonPhone;
     }
 
-    public String getEntryTime() {
+    public Date getEntryTime() {
         return entryTime;
     }
 
-    public void setEntryTime(String entryTime) {
+    public void setEntryTime(Date entryTime) {
         this.entryTime = entryTime;
     }
 
-    public String getExitTime() {
+    public Date getExitTime() {
         return exitTime;
     }
 
-    public void setExitTime(String exitTime) {
+    public void setExitTime(Date exitTime) {
         this.exitTime = exitTime;
     }
 

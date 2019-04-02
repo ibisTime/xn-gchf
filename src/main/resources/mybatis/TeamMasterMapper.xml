@@ -155,7 +155,6 @@
 		,responsible_person_id_number = #{responsiblePersonIdNumber}
 		,entry_time = #{entryTime}
 		,exit_time = #{exitTime}
-		,parent_code = #{parentCode}
 		WHERE code = #{code}
 	</update>
 	

@@ -29,7 +29,7 @@ public enum EContractPeriodType {
         Map<String, EContractPeriodType> map = getContractPeriodTypeMap();
         EContractPeriodType projectCorpType = map.get(code);
         if (null == projectCorpType) {
-            throw new BizException("xn0000", code + "对应是否类型不存在");
+            throw new BizException("xn0000", code + "对应合同类型不存在");
         }
         return projectCorpType;
     }
@@ -38,7 +38,7 @@ public enum EContractPeriodType {
         Map<String, EContractPeriodType> map = getContractPeriodTypeMap();
         EContractPeriodType projectCorpType = map.get(code);
         if (null == projectCorpType) {
-            throw new BizException("xn0000", code + "对应是否类型不存在");
+            throw new BizException("xn0000", code + "对应合同类型不存在");
         }
     }
 

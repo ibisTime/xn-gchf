@@ -18,6 +18,8 @@ public class XN631647Req extends AListReq {
 
     private String projectName;
 
+    private String uploadStatus;
+
     @NotBlank
     private String userId;
 
@@ -43,6 +45,14 @@ public class XN631647Req extends AListReq {
 
     public void setUserId(String userId) {
         this.userId = userId;
+    }
+
+    public String getUploadStatus() {
+        return uploadStatus;
+    }
+
+    public void setUploadStatus(String uploadStatus) {
+        this.uploadStatus = uploadStatus;
     }
 
 }

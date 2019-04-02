@@ -39,7 +39,6 @@ import com.cdkj.gchf.enums.EOperateLogOperate;
 import com.cdkj.gchf.enums.EOperateLogRefType;
 import com.cdkj.gchf.enums.EUploadStatus;
 import com.cdkj.gchf.exception.BizException;
-import com.cdkj.gchf.gov.AsyncQueueHolder;
 import com.cdkj.gchf.gov.GovConnecter;
 import com.cdkj.gchf.gov.GovUtil;
 import com.cdkj.gchf.gov.SerialHandler;
@@ -93,26 +92,7 @@ public class TeamMasterBOImpl extends PaginableBOImpl<TeamMaster>
         TeamMaster teamMaster = new TeamMaster();
         teamMaster.setCode(data.getCode());
         TeamMaster select = teamMasterDAO.select(teamMaster);
-        if (data.getEntryTime() != null) {
-            select.setEntryTime(data.getEntryTime());
-        }
-        if (data.getExitTime() != null) {
-            select.setExitTime(data.getExitTime());
-        }
-        if (data.getResponsiblePersonIDCardType() != null) {
-            select.setResponsiblePersonIdcardType(
-                data.getResponsiblePersonIDCardType());
-        }
-        if (data.getResponsiblePersonIDNumber() != null) {
-            select.setResponsiblePersonIdNumber(
-                data.getResponsiblePersonIDNumber());
-        }
-        if (data.getResponsiblePersonName() != null) {
-            select.setResponsiblePersonName(data.getResponsiblePersonName());
-        }
-        if (data.getResponsiblePersonPhone() != null) {
-            select.setResponsiblePersonPhone(data.getResponsiblePersonPhone());
-        }
+        BeanUtils.copyProperties(data, select);
         teamMasterDAO.update(select);
     }
 
@@ -236,10 +216,9 @@ public class TeamMasterBOImpl extends PaginableBOImpl<TeamMaster>
 
             EIdCardType
                 .checkExists(xn631654ReqData.getResponsiblePersonIdcardType());
-
             String code = null;
             TeamMaster teamMaster = new TeamMaster();
-            teamMaster.setCorpCode(req.getCorpCode());
+            teamMaster.setCorpCode(xn631654ReqData.getCorpCode());
             teamMaster.setProjectCode(req.getProjectCode());
             BeanUtils.copyProperties(xn631654ReqData, teamMaster);
             teamMasterDAO.insert(teamMaster);
@@ -251,37 +230,6 @@ public class TeamMasterBOImpl extends PaginableBOImpl<TeamMaster>
                 "导入班组信息");
         }
 
-    }
-
-    @Override
-    public void uploadTeamMaster(List<String> codeList, String userId) {
-        User operator = userBO.getBriefUser(userId);
-
-        for (String code : codeList) {
-            TeamMaster teamMaster = getTeamMaster(code);
-            if (EUploadStatus.UPLOAD_EDITABLE.getCode()
-                .equals(teamMaster.getUploadStatus()))
-                continue;
-            ProjectConfig projectConfig = projectConfigBO
-                .getProjectConfigByLocal(teamMaster.getProjectCode());
-            if (null == projectConfig) {
-                throw new BizException("XN631253", "不存在已配置的项目，无法上传");
-            }
-
-            // 上传班组信息
-            String resString = GovConnecter.getGovData("Team.Add",
-                JSONObject.toJSONString(teamMaster),
-                projectConfig.getProjectCode(), projectConfig.getSecret());
-
-            // 添加操作日志
-            String logCode = operateLogBO.saveOperateLog(
-                EOperateLogRefType.TeamMaster.getCode(), code,
-                EOperateLogOperate.UploadTeamMaster.getValue(), operator, null);
-
-            // 添加到上传状态更新队列
-            AsyncQueueHolder.addSerial(resString, projectConfig, "teamMasterBO",
-                code, EUploadStatus.UPLOAD_EDITABLE.getCode(), logCode);
-        }
     }
 
 }

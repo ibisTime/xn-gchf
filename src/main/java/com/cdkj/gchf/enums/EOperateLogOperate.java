@@ -26,7 +26,9 @@ public enum EOperateLogOperate {
 
     UploadProjectWorkerEntryExitHistory("09", "上传人员进退场信息"),
 
-    UploadPayRoll("10", "上传工资单信息");
+    UploadPayRoll("10", "上传工资单信息"),
+
+    UploadProjectWorker("11", "上传项目人员信息");
 
     EOperateLogOperate(String code, String value) {
         this.code = code;

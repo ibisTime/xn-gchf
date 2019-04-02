@@ -1,7 +1,5 @@
 package com.cdkj.gchf.dto.req;
 
-import java.util.Date;
-
 import org.hibernate.validator.constraints.NotBlank;
 
 public class XN631790Req {
@@ -14,17 +12,18 @@ public class XN631790Req {
     private String name;
 
     // 工人性别
-    private Integer gender;
+    private String gender;
+
+    private String sex;
 
     // 民族
     @NotBlank
     private String nation;
 
     // 出生日期
-    private Date birthday;
+    private String birthday;
 
     // 证件类型
-    @NotBlank
     private String idCardType;
 
     // 证件号码
@@ -32,10 +31,10 @@ public class XN631790Req {
     private String idCardNumber;
 
     // 有效期开始日期
-    private Date startDate;
+    private String startDate;
 
     // 有效期结束日期
-    private Date expiryDate;
+    private String expiryDate;
 
     // 住址
     @NotBlank
@@ -44,6 +43,32 @@ public class XN631790Req {
     // 发证机关
     @NotBlank
     private String grantOrg;
+
+    // 政治面貌
+    @NotBlank
+    private String politicsType;
+
+    // 文化程度
+    @NotBlank
+    private String cultureLevelType;
+
+    // 头像
+    @NotBlank
+    private String headImageUrl;
+
+    // 是否加入公会
+    private String isJoined;
+
+    // 加入公会时间
+    private String joinedTime;
+
+    // 特长
+    private String specialty;
+
+    // 是否有重大病历
+    private String hasBadMedicalHistory;
+
+    private String maritalStatus;
 
     public String getUserId() {
         return userId;
@@ -61,12 +86,16 @@ public class XN631790Req {
         this.name = name;
     }
 
-    public Integer getGender() {
+    public String getGender() {
         return gender;
     }
 
-    public void setGender(Integer gender) {
+    public void setGender(String gender) {
         this.gender = gender;
+    }
+
+    public void setSex(String sex) {
+        this.sex = sex;
     }
 
     public String getNation() {
@@ -77,12 +106,20 @@ public class XN631790Req {
         this.nation = nation;
     }
 
-    public Date getBirthday() {
+    public String getBirthday() {
         return birthday;
     }
 
-    public void setBirthday(Date birthday) {
+    public void setBirthday(String birthday) {
         this.birthday = birthday;
+    }
+
+    public void setStartDate(String startDate) {
+        this.startDate = startDate;
+    }
+
+    public void setExpiryDate(String expiryDate) {
+        this.expiryDate = expiryDate;
     }
 
     public String getIdCardType() {
@@ -117,20 +154,80 @@ public class XN631790Req {
         this.grantOrg = grantOrg;
     }
 
-    public Date getStartDate() {
+    public String getPoliticsType() {
+        return politicsType;
+    }
+
+    public void setPoliticsType(String politicsType) {
+        this.politicsType = politicsType;
+    }
+
+    public String getCultureLevelType() {
+        return cultureLevelType;
+    }
+
+    public void setCultureLevelType(String cultureLevelType) {
+        this.cultureLevelType = cultureLevelType;
+    }
+
+    public String getHeadImageUrl() {
+        return headImageUrl;
+    }
+
+    public void setHeadImageUrl(String headImageUrl) {
+        this.headImageUrl = headImageUrl;
+    }
+
+    public String getIsJoined() {
+        return isJoined;
+    }
+
+    public void setIsJoined(String isJoined) {
+        this.isJoined = isJoined;
+    }
+
+    public String getSpecialty() {
+        return specialty;
+    }
+
+    public void setSpecialty(String specialty) {
+        this.specialty = specialty;
+    }
+
+    public String getHasBadMedicalHistory() {
+        return hasBadMedicalHistory;
+    }
+
+    public void setHasBadMedicalHistory(String hasBadMedicalHistory) {
+        this.hasBadMedicalHistory = hasBadMedicalHistory;
+    }
+
+    public String getMaritalStatus() {
+        return maritalStatus;
+    }
+
+    public String getJoinedTime() {
+        return joinedTime;
+    }
+
+    public void setJoinedTime(String joinedTime) {
+        this.joinedTime = joinedTime;
+    }
+
+    public void setMaritalStatus(String maritalStatus) {
+        this.maritalStatus = maritalStatus;
+    }
+
+    public String getStartDate() {
         return startDate;
     }
 
-    public void setStartDate(Date startDate) {
-        this.startDate = startDate;
-    }
-
-    public Date getExpiryDate() {
+    public String getExpiryDate() {
         return expiryDate;
     }
 
-    public void setExpiryDate(Date expiryDate) {
-        this.expiryDate = expiryDate;
+    public String getSex() {
+        return sex;
     }
 
 }

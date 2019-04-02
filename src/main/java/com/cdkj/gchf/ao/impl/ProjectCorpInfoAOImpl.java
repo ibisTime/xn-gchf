@@ -58,7 +58,7 @@ public class ProjectCorpInfoAOImpl implements IProjectCorpInfoAO {
         if (null == corpBasicinfo) {
             throw new BizException("XN631630", "企业信息不存在");
         }
-
+        EProjectCorpType.checkExists(data.getCorpType());
         return projectCorpInfoBO.saveProjectCorpInfo(data);
     }
 
@@ -85,7 +85,11 @@ public class ProjectCorpInfoAOImpl implements IProjectCorpInfoAO {
         if (null == corpBasicinfo) {
             throw new BizException("XN631630", "企业信息不存在");
         }
-
+        EProjectCorpType.checkExists(req.getCorpType());
+        if (org.apache.commons.lang3.StringUtils
+            .isNotBlank(req.getPmIDCardType())) {
+            EIdCardType.checkExists(req.getPmIDCardType());
+        }
         projectCorpInfoBO.refreshProjectCorpInfo(req);
 
         projectCorpInfoBO.refreshUploadStatus(req.getCode(),
@@ -102,7 +106,6 @@ public class ProjectCorpInfoAOImpl implements IProjectCorpInfoAO {
     @Override
     @Transactional
     public void uploadProjectCorpInfo(String userId, List<String> codes) {
-
         projectCorpInfoBO.uploadProjectCorpInfo(userId, codes);
     }
 
@@ -164,7 +167,7 @@ public class ProjectCorpInfoAOImpl implements IProjectCorpInfoAO {
     @Transactional
     @Override
     public void importProjectCorpInfo(XN631633Req req) {
-        List<XN631633ReqList> projectCorpInfos = req.getProjectCorpInfos();
+        List<XN631633ReqList> projectCorpInfos = req.getDateList();
 
         for (XN631633ReqList requestProjectCourpInfo : projectCorpInfos) {
 

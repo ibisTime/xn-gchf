@@ -23,4 +23,6 @@ public interface IBankCardInfoDAO extends IBaseDAO<BankCardInfo> {
      * @throws
      */
     int updateBankCardInfo(BankCardInfo condition);
+
+    int updateBankCardInfoStatus(BankCardInfo condition);
 }

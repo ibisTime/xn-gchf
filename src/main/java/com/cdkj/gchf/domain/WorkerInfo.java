@@ -101,6 +101,9 @@ public class WorkerInfo extends ABaseDO {
     // 反面照 URL
     private String negativeIdCardImageUrl;
 
+    // 手持身份证照片
+    private String handIdCardImageUrl;
+
     // 有效期开始日期
     private Date startDate;
 
@@ -353,6 +356,14 @@ public class WorkerInfo extends ABaseDO {
 
     public void setExpiryDate(Date expiryDate) {
         this.expiryDate = expiryDate;
+    }
+
+    public String getHandIdCardImageUrl() {
+        return handIdCardImageUrl;
+    }
+
+    public void setHandIdCardImageUrl(String handIdCardImageUrl) {
+        this.handIdCardImageUrl = handIdCardImageUrl;
     }
 
 }

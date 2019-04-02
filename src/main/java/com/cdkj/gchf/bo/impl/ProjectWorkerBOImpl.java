@@ -83,10 +83,14 @@ public class ProjectWorkerBOImpl extends PaginableBOImpl<ProjectWorker>
 
         WorkerInfo workerInfo = workerInfoBO
             .getWorkerInfo(data.getWorkerCode());
-
-        projectWorkerInfo.setWorkType(workerInfo.getWorkerType());
+        projectWorkerInfo.setCorpName(corpBasicinfo.getCorpName());
         projectWorkerInfo.setWorkerMobile(workerInfo.getCellPhone());
+        projectWorkerInfo.setIdCardType(workerInfo.getIdCardType());
+        projectWorkerInfo.setIdCardNumber(workerInfo.getIdCardNumber());
+        projectWorkerInfo.setWorkerName(workerInfo.getName());
+        projectWorkerInfo.setWorkType(workerInfo.getWorkerType());
         projectWorkerInfo.setUploadStatus(EUploadStatus.TO_UPLOAD.getCode());
+        projectWorkerInfo.setLocalTeamSysNo(teamMaster.getCode());
         String code = OrderNoGenerater
             .generate(EGeneratePrefix.ProjectWorker.getCode());
         projectWorkerInfo.setCode(code);
@@ -108,7 +112,6 @@ public class ProjectWorkerBOImpl extends PaginableBOImpl<ProjectWorker>
     public void refreshProjectWorker(XN631692Req req) {
         ProjectWorker projectWorkerInfo = new ProjectWorker();
         BeanUtils.copyProperties(req, projectWorkerInfo);
-
         projectWorkerDAO.update(projectWorkerInfo);
     }
 

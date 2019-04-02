@@ -41,5 +41,4 @@ public interface ITeamMasterBO extends IPaginableBO<TeamMaster> {
     public Paginable<TeamMaster> doQuery(XN631910Req req,
             ProjectConfig projectConfig);
 
-    public void uploadTeamMaster(List<String> codeList, String userId);
 }

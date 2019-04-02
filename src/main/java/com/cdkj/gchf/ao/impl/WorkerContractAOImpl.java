@@ -65,7 +65,7 @@ public class WorkerContractAOImpl implements IWorkerContractAO {
         }
         WorkerInfo workerInfo = workerInfoBO.getWorkerInfo(req.getWorkerCode());
         if (workerInfo == null) {
-            throw new BizException("XN631670", "员工不存在");
+            throw new BizException("XN631670", "员工信息不存在");
         }
         return workerContractBO.saveWorkerContract(req);
     }
@@ -182,7 +182,7 @@ public class WorkerContractAOImpl implements IWorkerContractAO {
         if (configByLocal == null) {
             throw new BizException("XN631673", "项目不存在");
         }
-        List<XN631673ReqData> workContractList = req.getWorkContractList();
+        List<XN631673ReqData> workContractList = req.getDataList();
         for (XN631673ReqData xn631673ReqData : workContractList) {
 
             // 校验数据字典数据

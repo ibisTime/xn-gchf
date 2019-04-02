@@ -37,6 +37,9 @@
 			<if test="uploadStatus != null and uploadStatus != '' ">
 				AND t.upload_status = #{uploadStatus}
 			</if>
+			<if test="projectName != null and projectName != '' ">
+                AND t.project_name = #{projectName}
+            </if>
 		</trim>
 	</sql>
 	

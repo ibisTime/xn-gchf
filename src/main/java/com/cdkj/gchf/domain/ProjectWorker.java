@@ -205,6 +205,9 @@ public class ProjectWorker extends ABaseDO {
     // 状态
     private String uploadStatus;
 
+    // 本地班组编号
+    private String localTeamSysNo;
+
     public String getCode() {
         return code;
     }
@@ -707,6 +710,14 @@ public class ProjectWorker extends ABaseDO {
 
     public void setUploadStatus(String uploadStatus) {
         this.uploadStatus = uploadStatus;
+    }
+
+    public String getLocalTeamSysNo() {
+        return localTeamSysNo;
+    }
+
+    public void setLocalTeamSysNo(String localTeamSysNo) {
+        this.localTeamSysNo = localTeamSysNo;
     }
 
 }

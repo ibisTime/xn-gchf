@@ -191,8 +191,7 @@ public class WorkerAttendanceAOImpl implements IWorkerAttendanceAO {
     public void importWorkerAttendanceList(XN631713Req req) {
 
         User user = userBO.getBriefUser(req.getUserId());
-        List<XN631713ReqData> workerAttendanceList = req
-            .getWorkerAttendanceList();
+        List<XN631713ReqData> workerAttendanceList = req.getDataList();
         for (XN631713ReqData xn631713ReqData : workerAttendanceList) {
             // 校验数据字典数据
             EDirectionType.checkExists(xn631713ReqData.getDirection());

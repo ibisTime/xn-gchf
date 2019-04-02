@@ -32,6 +32,7 @@
 		<result column="grant_org" property="grantOrg" />
 		<result column="positive_id_card_image_url" property="positiveIdCardImageUrl" />
 		<result column="negative_id_card_image_url" property="negativeIdCardImageUrl" />
+		<result column="hand_id_card_image_url" property="handIdCardImageUrl" />
 		<result column="start_date" property="startDate" />
 		<result column="expiry_date" property="expiryDate" />
 	</resultMap>
@@ -58,43 +59,46 @@
 		,id_card_number
 		,gender
 		,nation
-		
+
 		,birthday
 		,address
 		,start_date
 		,expiry_date
 		,grant_org
 		,head_image_url
-		
+
 		,cell_phone
 		,has_bad_medical_history
 		,work_type_code
 		,birth_place_code
+		,politics_type
 		)
 		VALUES(
-		 #{code}
+		#{code}
 		,#{name}
 		,#{idCardType}
 		,#{idCardNumber}
 		,#{gender}
 		,#{nation}
-		
+
 		,#{birthday}
 		,#{address}
 		,#{startDate}
 		,#{expiryDate}
 		,#{grantOrg}
 		,#{headImageUrl}
-		
+
 		,#{cellPhone}
 		,#{hasBadMedicalHistory}
 		,#{workTypeCode}
 		,#{birthPlaceCode}
+		,#{politicsType}
 		)
 	</insert>
 
 	<delete id="delete_WorkerInfo" parameterType="workerInfo">
-		DELETE from thf_worker_info WHERE code = #{code}
+		DELETE from
+		thf_worker_info WHERE code = #{code}
 	</delete>
 
 	<update id="update_WorkerInfo" parameterType="workerInfo">
@@ -105,35 +109,43 @@
 		,id_card_type = #{idCardType}
 		,id_card_number = #{idCardNumber}
 		,gender = #{gender}
-		,nation = #{nation}
+		,nation =
+		#{nation}
 		,edu_level = #{eduLevel}
 
 		,degree = #{degree}
-		,worker_type = #{workerType}
+		,worker_type =
+		#{workerType}
 		,birthday = #{birthday}
-		,birth_place_code = #{birthPlaceCode}
+		,birth_place_code =
+		#{birthPlaceCode}
 		,address = #{address}
-		,head_image_url = #{headImageUrl}
+		,head_image_url =
+		#{headImageUrl}
 		,politics_type = #{politicsType}
 
-		,is_joined = #{isJoined}
+		,is_joined =
+		#{isJoined}
 		,joined_time = #{joinedTime}
 		,cell_phone = #{cellPhone}
 		,culture_level_type = #{cultureLevelType}
 		,specialty = #{specialty}
 		,has_bad_medical_history = #{hasBadMedicalHistory}
 
-		,urgent_link_man = #{urgentLinkMan}
+		,urgent_link_man =
+		#{urgentLinkMan}
 		,urgent_link_man_phone = #{urgentLinkManPhone}
 		,work_type_code = #{workTypeCode}
 		,work_corp_name = #{workCorpName}
 		,work_date = #{workDate}
 		,marital_status = #{maritalStatus}
 
-		,grant_org = #{grantOrg}
+		,grant_org =
+		#{grantOrg}
 		,positive_id_card_image_url = #{positiveIdCardImageUrl}
 		,negative_id_card_image_url = #{negativeIdCardImageUrl}
-		,start_date = #{startDate}
+		,start_date =
+		#{startDate}
 		,expiry_date = #{expiryDate}
 		WHERE code = #{code}
 	</update>
@@ -142,22 +154,25 @@
 		UPDATE
 		thf_worker_info
 		SET
-		 head_image_url = #{headImageUrl}
+		hand_id_card_image_url = #{handIdCardImageUrl}
 		,positive_id_card_image_url = #{positiveIdCardImageUrl}
 		,negative_id_card_image_url = #{negativeIdCardImageUrl}
-		WHERE code = #{code}
+		WHERE code =
+		#{code}
 	</update>
 
 	<update id="update_WorkerInfoAboutPhone" parameterType="workerInfo">
 		UPDATE
 		thf_worker_info
 		SET
-		
+
 		cell_phone = #{cellPhone}
-		,urgent_link_man = #{urgentLinkMan}
+		,urgent_link_man =
+		#{urgentLinkMan}
 		,urgent_link_man_phone = #{urgentLinkManPhone}
 
-		WHERE code = #{code}
+		WHERE
+		code = #{code}
 	</update>
 
 	<select id="select_WorkerInfo" parameterType="workerInfo"

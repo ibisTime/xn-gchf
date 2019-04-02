@@ -34,7 +34,7 @@ public class XN631605 extends AProcessor {
         ProjectWorker projectWorkerInfo = new ProjectWorker();
         BeanUtils.copyProperties(req, projectWorkerInfo);
         String column = null;
-        if (StringUtils.isBlank(column)) {
+        if (StringUtils.isBlank(req.getOrderColumn())) {
             column = IProjectWorkerAO.DEFAULT_ORDER_COLUMN;
         }
         int start = StringValidater.toInteger(req.getStart());

@@ -12,30 +12,8 @@ public class XN631692Req {
     @NotBlank
     private String code;
 
-    // 项目编码
-    private String projectCode;
-
-    // 企业统一社会信用代码
-    private String corpCode;
-
-    // 企业名称
-    @NotBlank
-    private String corpName;
-
-    // 班组编号
-    private String teamSysNo;
-
-    // 工人姓名
-    private String workerName;
-
     // 是否班组长
     private Integer isTeamLeader;
-
-    // 证件类型
-    private String idCardType;
-
-    // 证件号码
-    private String idCardNumber;
 
     // 当前工种
     private String workType;
@@ -67,6 +45,7 @@ public class XN631692Req {
     // 是否购买工伤或意外伤害保险
     private String hasBuyInsurance;
 
+    // 开始工作时间
     private Date workDate;
 
     public String getUserId() {
@@ -85,68 +64,12 @@ public class XN631692Req {
         this.code = code;
     }
 
-    public String getProjectCode() {
-        return projectCode;
-    }
-
-    public void setProjectCode(String projectCode) {
-        this.projectCode = projectCode;
-    }
-
-    public String getCorpCode() {
-        return corpCode;
-    }
-
-    public void setCorpCode(String corpCode) {
-        this.corpCode = corpCode;
-    }
-
-    public String getCorpName() {
-        return corpName;
-    }
-
-    public void setCorpName(String corpName) {
-        this.corpName = corpName;
-    }
-
-    public String getTeamSysNo() {
-        return teamSysNo;
-    }
-
-    public void setTeamSysNo(String teamSysNo) {
-        this.teamSysNo = teamSysNo;
-    }
-
-    public String getWorkerName() {
-        return workerName;
-    }
-
-    public void setWorkerName(String workerName) {
-        this.workerName = workerName;
-    }
-
     public Integer getIsTeamLeader() {
         return isTeamLeader;
     }
 
     public void setIsTeamLeader(Integer isTeamLeader) {
         this.isTeamLeader = isTeamLeader;
-    }
-
-    public String getIdCardType() {
-        return idCardType;
-    }
-
-    public void setIdCardType(String idCardType) {
-        this.idCardType = idCardType;
-    }
-
-    public String getIdCardNumber() {
-        return idCardNumber;
-    }
-
-    public void setIdCardNumber(String idCardNumber) {
-        this.idCardNumber = idCardNumber;
     }
 
     public String getWorkType() {

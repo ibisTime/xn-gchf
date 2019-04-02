@@ -1,5 +1,7 @@
 package com.cdkj.gchf.dto.req;
 
+import java.util.Date;
+
 import org.hibernate.validator.constraints.NotBlank;
 
 public class XN631752Req {
@@ -24,6 +26,12 @@ public class XN631752Req {
 
     // 银行联号
     private String bankLinkNumber;
+
+    // 更新人id
+    private String updater;
+
+    // 更新时间(yyyy-MM-dd HH:mm:ss)
+    private Date updateDatetime;
 
     public String getUserId() {
         return userId;
@@ -80,4 +88,21 @@ public class XN631752Req {
     public void setBankLinkNumber(String bankLinkNumber) {
         this.bankLinkNumber = bankLinkNumber;
     }
+
+    public String getUpdater() {
+        return updater;
+    }
+
+    public void setUpdater(String updater) {
+        this.updater = updater;
+    }
+
+    public Date getUpdateDatetime() {
+        return updateDatetime;
+    }
+
+    public void setUpdateDatetime(Date updateDatetime) {
+        this.updateDatetime = updateDatetime;
+    }
+
 }

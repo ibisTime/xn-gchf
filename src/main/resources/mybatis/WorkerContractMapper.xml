@@ -57,6 +57,9 @@
 			<if test="contentPic != null and contentPic != '' ">
 				AND t.content_pic = #{contentPic}
 			</if>
+			<if test="workerName != null and workerName != '' ">
+				AND t.worker_name = #{workerName}
+			</if>
 
 		</trim>
 	</sql>

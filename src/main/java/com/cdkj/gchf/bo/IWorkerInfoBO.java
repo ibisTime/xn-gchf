@@ -26,13 +26,13 @@ public interface IWorkerInfoBO extends IPaginableBO<WorkerInfo> {
 
     public WorkerInfo getWorkerInfoByCelephone(String phone);
 
-    public WorkerInfo getWorkerInfoByIdCardNumber(String idCardNumber);
-
-    public List<WorkerInfo> queryWorkerInfoList(WorkerInfo condition);
-
     public WorkerInfo getWorkerInfo(String code);
 
     public WorkerInfo getWorkerInfoByCondition(WorkerInfo workerInfo);
+
+    public WorkerInfo getWorkerInfoByIdCardNumber(String idCardNumber);
+
+    public List<WorkerInfo> queryWorkerInfoList(WorkerInfo condition);
 
     /****国家平台接口****/
     public Paginable<WorkerInfo> doQuery(String idCardNumber,

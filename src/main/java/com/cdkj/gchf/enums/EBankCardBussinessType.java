@@ -5,25 +5,18 @@ import java.util.Map;
 
 import com.cdkj.gchf.exception.BizException;
 
-/**
- * 上传状态
- * @author: silver 
- * @since: Mar 21, 2019 2:01:14 PM 
- * @history:
- */
-public enum EUploadStatus {
-    TO_UPLOAD("0", "待上传"),
+public enum EBankCardBussinessType {
 
-    UPLOAD_EDITABLE("1", "已上传可修改"),
+    CORP("0", "参见单位"),
 
-    UPLOAD_UNEDITABLE("2", "已上传不可修改");
+    USER("1", "个人用户");
 
-    EUploadStatus(String code, String value) {
+    EBankCardBussinessType(String code, String value) {
         this.code = code;
         this.value = value;
     }
 
-    public static Map<String, EContractPeriodType> getUploadStatusMap() {
+    public static Map<String, EContractPeriodType> getBankCardBussinessMap() {
         Map<String, EContractPeriodType> map = new HashMap<String, EContractPeriodType>();
         for (EContractPeriodType type : EContractPeriodType.values()) {
             map.put(type.getCode(), type);
@@ -31,20 +24,20 @@ public enum EUploadStatus {
         return map;
     }
 
-    public static EContractPeriodType getUploadStatus(String code) {
-        Map<String, EContractPeriodType> map = getUploadStatusMap();
+    public static EContractPeriodType getBankCardBussiness(String code) {
+        Map<String, EContractPeriodType> map = getBankCardBussinessMap();
         EContractPeriodType projectCorpType = map.get(code);
         if (null == projectCorpType) {
-            throw new BizException("xn0000", code + "对应上传状态不存在");
+            throw new BizException("xn0000", code + "对应银行卡状态不存在");
         }
         return projectCorpType;
     }
 
     public static void checkExists(String code) {
-        Map<String, EContractPeriodType> map = getUploadStatusMap();
+        Map<String, EContractPeriodType> map = getBankCardBussinessMap();
         EContractPeriodType projectCorpType = map.get(code);
         if (null == projectCorpType) {
-            throw new BizException("xn0000", code + "对应上传状态不存在");
+            throw new BizException("xn0000", code + "对应银行卡状态不存在");
         }
     }
 
@@ -56,7 +49,16 @@ public enum EUploadStatus {
         return code;
     }
 
+    public void setCode(String code) {
+        this.code = code;
+    }
+
     public String getValue() {
         return value;
     }
+
+    public void setValue(String value) {
+        this.value = value;
+    }
+
 }

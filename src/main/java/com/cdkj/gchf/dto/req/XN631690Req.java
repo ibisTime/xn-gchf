@@ -2,8 +2,6 @@ package com.cdkj.gchf.dto.req;
 
 import java.util.Date;
 
-import javax.validation.constraints.Min;
-
 import org.hibernate.validator.constraints.NotBlank;
 
 public class XN631690Req {
@@ -12,14 +10,15 @@ public class XN631690Req {
     private String userId;
 
     // 项目编码
-    @NotBlank
+    @NotBlank(message = "项目编码不能为空")
     private String projectCode;
 
     // 企业统一社会信用代码
-    @NotBlank
+    @NotBlank(message = "企业统一社会信用代码不能为空")
     private String corpCode;
 
     // 班组编号
+    @NotBlank(message = "班组编号不能为空")
     private String teamSysNo;
 
     // 工人编号
@@ -27,7 +26,6 @@ public class XN631690Req {
     private String workerCode;
 
     // 是否班组长
-    @Min(0)
     private Integer isTeamLeader;
 
     // 当前工种

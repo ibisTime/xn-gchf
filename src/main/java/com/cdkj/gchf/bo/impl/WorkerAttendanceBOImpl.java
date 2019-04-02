@@ -10,15 +10,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.alibaba.fastjson.JSONObject;
-import com.cdkj.gchf.bo.ICorpBasicinfoBO;
 import com.cdkj.gchf.bo.IOperateLogBO;
 import com.cdkj.gchf.bo.IProjectConfigBO;
-import com.cdkj.gchf.bo.IProjectCorpInfoBO;
 import com.cdkj.gchf.bo.IProjectWorkerBO;
 import com.cdkj.gchf.bo.ITeamMasterBO;
 import com.cdkj.gchf.bo.IUserBO;
 import com.cdkj.gchf.bo.IWorkerAttendanceBO;
-import com.cdkj.gchf.bo.IWorkerInfoBO;
 import com.cdkj.gchf.bo.base.Paginable;
 import com.cdkj.gchf.bo.base.PaginableBOImpl;
 import com.cdkj.gchf.common.AesUtils;
@@ -68,15 +65,6 @@ public class WorkerAttendanceBOImpl extends PaginableBOImpl<WorkerAttendance>
 
     @Autowired
     private IWorkerAttendanceDAO workerAttendanceDAO;
-
-    @Autowired
-    private ICorpBasicinfoBO basicinfoBO;
-
-    @Autowired
-    private IWorkerInfoBO workerInfoBO;
-
-    @Autowired
-    private IProjectCorpInfoBO projectCorpInfoBO;
 
     @Autowired
     private IProjectWorkerBO projectWorkerBO;

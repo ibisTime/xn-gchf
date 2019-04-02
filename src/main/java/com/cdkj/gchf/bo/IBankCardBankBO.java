@@ -19,5 +19,7 @@ public interface IBankCardBankBO extends IPaginableBO<BankCardInfo> {
 
     public BankCardInfo getBankCardInfo(Long id);
 
+    public int updateBankCardInfoStatus(String code);
+
     public BankCardInfo getBankCardInfo(String bankCode);
 }

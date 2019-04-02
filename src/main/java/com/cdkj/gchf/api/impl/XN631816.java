@@ -29,11 +29,10 @@ public class XN631816 extends AProcessor {
 
     @Override
     public Object doBusiness() throws BizException {
-
-        String orderColumn = null;
         PayRollDetail payRollDetail = new PayRollDetail();
         BeanUtils.copyProperties(req, payRollDetail);
-        if (StringUtils.isBlank(req.getOrderColumn())) {
+        String orderColumn = req.getOrderColumn();
+        if (StringUtils.isBlank(orderColumn)) {
             orderColumn = IPayRollDetailAO.DEFAULT_ORDER_COLUMN;
         }
         payRollDetail.setOrder(orderColumn, req.getOrderDir());

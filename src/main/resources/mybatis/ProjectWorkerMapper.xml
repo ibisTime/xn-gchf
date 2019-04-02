@@ -8,56 +8,56 @@
 		<result column="project_name" property="projectName" />
 		<result column="corp_code" property="corpCode" />
 		<result column="corp_name" property="corpName" />
-		
+
 		<result column="team_sys_no" property="teamSysNo" />
 		<result column="team_name" property="teamName" />
 		<result column="worker_code" property="workerCode" />
 		<result column="worker_name" property="workerName" />
 		<result column="worker_mobile" property="workerMobile" />
 		<result column="is_team_leader" property="isTeamLeader" />
-		
+
 		<result column="idcard_type" property="idCardType" />
 		<result column="idcard_number" property="idCardNumber" />
 		<result column="work_type" property="workType" />
 		<result column="worker_role" property="workerRole" />
 		<result column="type" property="type" />
 		<result column="entry_time" property="entryTime" />
-		
+
 		<result column="exit_time" property="exitTime" />
 		<result column="entry_attachment_url" property="entryAttachmentUrl" />
 		<result column="exit_attachment_url" property="exitAttachmentUrl" />
 		<result column="issue_card_date" property="issueCardDate" />
 		<result column="issue_card_pic_url" property="issueCardPicUrl" />
-		
+
 		<result column="card_number" property="cardNumber" />
 		<result column="pay_roll_bank_card_number" property="payRollBankCardNumber" />
 		<result column="pay_roll_bank_name" property="payRollBankName" />
 		<result column="pay_roll_top_bank_name" property="payRollTopBankName" />
 		<result column="bank_link_number" property="bankLinkNumber" />
-		
+
 		<result column="pay_roll_top_bank_code" property="payRollTopBankCode" />
 		<result column="has_contract" property="hasContract" />
 		<result column="has_buy_insurance" property="hasBuyInsurance" />
 		<result column="position" property="position" />
 		<result column="salary" property="salary" />
-		
+
 		<result column="cut_amount" property="cutAmount" />
 		<result column="status" property="status" />
 		<result column="salary_status" property="salaryStatus" />
 		<result column="join_datetime" property="joinDatetime" />
 		<result column="leaving_datetime" property="leavingDatetime" />
-		
+
 		<result column="start_datetime" property="startDatetime" />
 		<result column="last_leaving_days" property="lastLeavingDays" />
 		<result column="end_datetime" property="endDatetime" />
 		<result column="total_leaving_days" property="totalLeavingDays" />
 		<result column="updater" property="updater" />
-		
+
 		<result column="update_datetime" property="updateDatetime" />
 		<result column="remark" property="remark" />
 		<result column="upload_status" property="uploadStatus" />
 	</resultMap>
-	
+
 	<sql id="where_condition">
 		<trim prefix="WHERE" prefixOverrides="AND | OR">
 			<if test="code != null and code != '' ">
@@ -78,59 +78,63 @@
 			<if test="idCardNumber != null and idCardNumber != '' ">
 				AND t.idcard_number = #{idCardNumber}
 			</if>
+			<if test="workerName != null and workerName != '' ">
+				AND t.worker_name = #{workerName}
+			</if>
 		</trim>
 	</sql>
-	
-	<select id="select_projectWorker" parameterType="projectWorker" resultMap="projectWorker_DB_Result">
+
+	<select id="select_projectWorker" parameterType="projectWorker"
+		resultMap="projectWorker_DB_Result">
 		SELECT
-		 t.code
+		t.code
 		,t.project_code
 		,t.project_name
 		,t.corp_code
 		,t.corp_name
-		
+
 		,t.team_sys_no
 		,t.team_name
 		,t.worker_code
 		,t.worker_name
 		,t.worker_mobile
-		
+
 		,t.is_team_leader
 		,t.idcard_type
 		,t.idcard_number
 		,t.work_type
 		,t.worker_role
-		
+
 		,t.type
 		,t.entry_time
 		,t.exit_time
 		,t.entry_attachment_url
 		,t.exit_attachment_url
-		
+
 		,t.issue_card_date
 		,t.issue_card_pic_url
 		,t.card_number
 		,t.pay_roll_bank_card_number
 		,t.pay_roll_bank_name
-		
+
 		,t.pay_roll_top_bank_name
 		,t.bank_link_number
 		,t.pay_roll_top_bank_code
 		,t.has_contract
 		,t.has_buy_insurance
-		
+
 		,t.position
 		,t.salary
 		,t.cut_amount
 		,t.status
 		,t.salary_status
-		
+
 		,t.join_datetime
 		,t.leaving_datetime
 		,t.start_datetime
 		,t.last_leaving_days
 		,t.end_datetime
-		
+
 		,t.total_leaving_days
 		,t.updater
 		,t.update_datetime
@@ -155,55 +159,55 @@
 	<insert id="insert_projectWorker" parameterType="projectWorker">
 		INSERT INTO
 		thf_project_worker(
-		 code
+		code
 		,project_code
 		,project_name
 		,corp_code
 		,corp_name
-		
+
 		,team_sys_no
 		,team_name
 		,worker_code
 		,worker_name
 		,worker_mobile
-		
+
 		,is_team_leader
 		,idcard_type
 		,idcard_number
 		,work_type
 		,worker_role
-		
+
 		,type
 		,entry_time
 		,exit_time
 		,entry_attachment_url
 		,exit_attachment_url
-		
+
 		,issue_card_date
 		,issue_card_pic_url
 		,card_number
 		,pay_roll_bank_card_number
 		,pay_roll_bank_name
-		
+
 		,pay_roll_top_bank_name
 		,bank_link_number
 		,pay_roll_top_bank_code
 		,has_contract
 		,has_buy_insurance
-		
+
 		,position
 		,salary
 		,cut_amount
 		,status
 		,salary_status
 		,join_datetime
-		
+
 		,leaving_datetime
 		,start_datetime
 		,last_leaving_days
 		,end_datetime
 		,total_leaving_days
-		
+
 		,updater
 		,update_datetime
 		,remark
@@ -216,7 +220,7 @@
 		,#{corpCode}
 		,#{corpName}
 		,#{teamSysNo}
-		
+
 		,#{teamName}
 		,#{workerCode}
 		,#{workerName}
@@ -224,38 +228,38 @@
 		,#{isTeamLeader}
 		,#{idCardType}
 		,#{idCardNumber}
-		
+
 		,#{workType}
 		,#{workerRole}
 		,#{type}
 		,#{entryTime}
 		,#{exitTime}
 		,#{entryAttachmentUrl}
-		
+
 		,#{exitAttachmentUrl}
 		,#{issueCardDate}
 		,#{issueCardPicUrl}
 		,#{cardNumber}
 		,#{payRollBankCardNumber}
-		
+
 		,#{payRollBankName}
 		,#{payRollTopBankName}
 		,#{bankLinkNumber}
 		,#{payRollTopBankCode}
 		,#{hasContract}
-		
+
 		,#{hasBuyInsurance}
 		,#{position}
 		,#{salary}
 		,#{cutAmount}
 		,#{status}
-		
+
 		,#{salaryStatus}
 		,#{joinDatetime}
 		,#{leavingDatetime}
 		,#{startDatetime}
 		,#{lastLeavingDays}
-		
+
 		,#{endDatetime}
 		,#{totalLeavingDays}
 		,#{updater}
@@ -266,63 +270,27 @@
 	</insert>
 
 	<update id="update_projectWorker" parameterType="projectWorker">
-		UPDATE thf_project_worker
+		UPDATE
+		thf_project_worker
 		SET
-		 project_code = #{projectCode}
-		,project_name = #{projectName}
-		,corp_code = #{corpCode}
-		,corp_name = #{corpName}
-		,team_sys_no = #{teamSysNo}
-		
-		,team_name = #{teamName}
-		,worker_code = #{workerCode}
-		,worker_name = #{workerName}
-		,worker_mobile = #{workerMobile}
-		,is_team_leader = #{isTeamLeader}
-		,idcard_type = #{idCardType}
-		
-		,idcard_number = #{idCardNumber}
+		is_team_leader = #{isTeamLeader}
 		,work_type = #{workType}
 		,worker_role = #{workerRole}
-		,type = #{type}
-		,entry_time = #{entryTime}
-		,exit_time = #{exitTime}
-		
-		,entry_attachment_url = #{entryAttachmentUrl}
-		,exit_attachment_url = #{exitAttachmentUrl}
 		,issue_card_date = #{issueCardDate}
 		,issue_card_pic_url = #{issueCardPicUrl}
 		,card_number = #{cardNumber}
-		
 		,pay_roll_bank_card_number = #{payRollBankCardNumber}
+		
 		,pay_roll_bank_name = #{payRollBankName}
 		,pay_roll_top_bank_name = #{payRollTopBankName}
 		,bank_link_number = #{bankLinkNumber}
 		,pay_roll_top_bank_code = #{payRollTopBankCode}
-		,has_contract = #{hasContract}
-		
 		,has_buy_insurance = #{hasBuyInsurance}
-		,position = #{position}
-		,salary = #{salary}
-		,cut_amount = #{cutAmount}
-		,status = #{status}
-		
-		,salary_status = #{salaryStatus}
-		,join_datetime = #{joinDatetime}
-		,leaving_datetime = #{leavingDatetime}
-		,start_datetime = #{startDatetime}
-		,last_leaving_days = #{lastLeavingDays}
-		,end_datetime = #{endDatetime}
-		
-		,total_leaving_days = #{totalLeavingDays}
-		,updater = #{updater}
-		,update_datetime = #{updateDatetime}
-		,remark = #{remark}
-		,upload_status = #{uploadStatus}
 		WHERE code = #{code}
 	</update>
-	
+
 	<delete id="delete_projectWorker" parameterType="projectWorker">
-	    delete from thf_project_worker WHERE code = #{code} 
+		delete from
+		thf_project_worker WHERE code = #{code}
 	</delete>
 </mapper>

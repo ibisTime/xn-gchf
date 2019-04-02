@@ -1,5 +1,6 @@
 package com.cdkj.gchf.api.impl;
 
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;
 
 import com.cdkj.gchf.ao.IBankCardInfoAO;
@@ -9,6 +10,8 @@ import com.cdkj.gchf.core.ObjValidater;
 import com.cdkj.gchf.core.StringValidater;
 import com.cdkj.gchf.domain.BankCardInfo;
 import com.cdkj.gchf.dto.req.XN631765Req;
+import com.cdkj.gchf.enums.EBankCardStatus;
+import com.cdkj.gchf.enums.EUploadStatus;
 import com.cdkj.gchf.exception.BizException;
 import com.cdkj.gchf.exception.ParaException;
 import com.cdkj.gchf.spring.SpringContextHolder;
@@ -36,6 +39,12 @@ public class XN631765 extends AProcessor {
         String column = null;
         if (org.apache.commons.lang3.StringUtils.isBlank(column)) {
             column = IBankCardInfoAO.DEFAULT_ORDER_COLUMN;
+        }
+        if (StringUtils.isNotBlank(req.getStatus())) {
+            EBankCardStatus.checkExists(req.getStatus());
+        }
+        if (StringUtils.isNotBlank(req.getUploadStatus())) {
+            EUploadStatus.checkExists(req.getUploadStatus());
         }
         condition.setOrder(column, req.getOrderDir());
         return bankCardInfoAO.queryBankCardInfoPage(start, limit, condition);

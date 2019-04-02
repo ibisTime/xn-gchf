@@ -1,5 +1,6 @@
 package com.cdkj.gchf.api.impl;
 
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;
 
 import com.cdkj.gchf.ao.ITeamMasterAO;
@@ -20,11 +21,10 @@ public class XN631667 extends AProcessor {
 
     @Override
     public Object doBusiness() throws BizException {
-        req.getOrderColumn();
         TeamMaster teamMasterInfo = new TeamMaster();
         BeanUtils.copyProperties(req, teamMasterInfo);
         String column = req.getOrderColumn();
-        if (column == null) {
+        if (StringUtils.isBlank(column)) {
             column = ITeamMasterAO.DEFAULT_ORDER_COLUMN;
         }
         teamMasterInfo.setOrder(column, req.getOrderDir());

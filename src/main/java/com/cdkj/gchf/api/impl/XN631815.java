@@ -30,12 +30,12 @@ public class XN631815 extends AProcessor {
 
     @Override
     public Object doBusiness() throws BizException {
-        int limit = StringValidater.toInteger(req.getLimit());
-        int start = StringValidater.toInteger(req.getStart());
         PayRollDetail payRollDetail = new PayRollDetail();
         BeanUtils.copyProperties(req, payRollDetail);
-        String orderColumn = null;
-        if (StringUtils.isBlank(req.getOrderColumn())) {
+        int limit = StringValidater.toInteger(req.getLimit());
+        int start = StringValidater.toInteger(req.getStart());
+        String orderColumn = req.getOrderColumn();
+        if (StringUtils.isBlank(orderColumn)) {
             orderColumn = IPayRollDetailAO.DEFAULT_ORDER_COLUMN;
         }
         payRollDetail.setOrder(orderColumn, req.getOrderDir());

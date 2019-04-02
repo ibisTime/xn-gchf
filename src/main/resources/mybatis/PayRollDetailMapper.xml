@@ -34,6 +34,9 @@
 			<if test="uploadStatus != null and uploadStatus != '' ">
 				AND t.upload_status = #{uploadStatus}
 			</if>
+			<if test="workerName != null and workerName != '' ">
+				AND t.worker_name = #{workerName}
+			</if>
 		</trim>
 	</sql>
 

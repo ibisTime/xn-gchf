@@ -5,12 +5,11 @@ import java.util.List;
 import org.hibernate.validator.constraints.NotBlank;
 import org.hibernate.validator.constraints.NotEmpty;
 
-public class XN631654Req {
+public class XN631694Req {
     // userId
     @NotBlank
     private String userId;
 
-    // 上传编号
     @NotEmpty
     private List<String> codeList;
 

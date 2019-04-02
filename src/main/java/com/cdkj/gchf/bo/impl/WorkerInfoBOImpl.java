@@ -1,5 +1,8 @@
 package com.cdkj.gchf.bo.impl;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -10,8 +13,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.alibaba.fastjson.JSONObject;
-import com.cdkj.gchf.bo.IOperateLogBO;
-import com.cdkj.gchf.bo.IUserBO;
 import com.cdkj.gchf.bo.IWorkerInfoBO;
 import com.cdkj.gchf.bo.base.Paginable;
 import com.cdkj.gchf.bo.base.PaginableBOImpl;
@@ -35,12 +36,6 @@ public class WorkerInfoBOImpl extends PaginableBOImpl<WorkerInfo>
     @Autowired
     private IWorkerInfoDAO WorkerInfoDAO;
 
-    @Autowired
-    private IOperateLogBO operateLog;
-
-    @Autowired
-    private IUserBO userBO;
-
     @Override
     public boolean isWorkerInfoExist(String code) {
         WorkerInfo condition = new WorkerInfo();
@@ -55,20 +50,52 @@ public class WorkerInfoBOImpl extends PaginableBOImpl<WorkerInfo>
     public String saveWorkerInfo(XN631790Req req) {
         String code = OrderNoGenerater
             .generate(EGeneratePrefix.WorkerInfo.getCode());
-        WorkerInfo workerInfo = new WorkerInfo();
-        workerInfo.setIdCardType("01");
-        workerInfo.setBirthPlaceCode(req.getIdCardNumber().substring(0, 5));
-        workerInfo.setHeadImageUrl("default");
-        workerInfo.setCellPhone("");
-        workerInfo.setHasBadMedicalHistory(0);
-        workerInfo.setWorkerType("");
-        workerInfo.setWorkTypeCode("");
-        BeanUtils.copyProperties(req, workerInfo);
-        workerInfo.setName(req.getName());
-        workerInfo.setCode(code);
-        workerInfo.setWorkerType("");
-        // -----------
-        WorkerInfoDAO.insert(workerInfo);
+        try {
+            WorkerInfo workerInfo = new WorkerInfo();
+            BeanUtils.copyProperties(req, workerInfo);
+            workerInfo.setBirthPlaceCode(req.getIdCardNumber().substring(0, 6));
+            workerInfo.setName(req.getName());
+            workerInfo.setNation(req.getNation());
+            if (req.getBirthday() == null) {
+                throw new BizException("XN631790", "出生日期时间不能为空");
+            }
+            Date birthday = new SimpleDateFormat("yyyy-MM-dd")
+                .parse(req.getBirthday());
+            workerInfo.setBirthday(birthday);
+            workerInfo.setIdCardNumber(req.getIdCardNumber());
+            workerInfo.setIdCardType(req.getIdCardType());
+            workerInfo.setAddress(req.getAddress());
+            if (req.getStartDate() == null) {
+                throw new BizException("XN631790", "有效期开始日期不能为空");
+            }
+            Date startDate = new SimpleDateFormat("yyyy-MM-dd")
+                .parse(req.getStartDate());
+            workerInfo.setStartDate(startDate);
+            if (req.getExpiryDate() == null) {
+                throw new BizException("XN631790", "有效期结束日期不能为空");
+            }
+            Date enpiryDate = new SimpleDateFormat("yyyy-MM-dd")
+                .parse(req.getExpiryDate());
+            workerInfo.setExpiryDate(enpiryDate);
+            workerInfo.setPoliticsType(req.getPoliticsType());
+            workerInfo.setCultureLevelType(req.getCultureLevelType());
+            workerInfo.setHeadImageUrl(req.getHeadImageUrl());
+            if (req.getSex() == null) {
+                throw new BizException("XN631790", "性别不能为空");
+            }
+            workerInfo.setGender(Integer.parseInt(req.getSex()));
+            if (req.getJoinedTime() == null) {
+                throw new BizException("XN631790", "加入公会时间参数异常");
+            }
+            Date joinTime = new SimpleDateFormat("yyyy-MM-dd")
+                .parse(req.getJoinedTime());
+            workerInfo.setJoinedTime(joinTime);
+            workerInfo.setSpecialty(req.getSpecialty());
+            workerInfo.setCode(code);
+            WorkerInfoDAO.insert(workerInfo);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
         return code;
     }
 

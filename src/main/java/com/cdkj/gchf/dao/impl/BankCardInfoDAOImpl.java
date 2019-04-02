@@ -51,4 +51,10 @@ public class BankCardInfoDAOImpl extends AMybatisTemplate
         return super.update(NAMESPACE.concat("update_bankCardInfo"), condition);
     }
 
+    @Override
+    public int updateBankCardInfoStatus(BankCardInfo condition) {
+        return super.update(NAMESPACE.concat("update_bankCardInfoStatus"),
+            condition);
+    }
+
 }

@@ -29,12 +29,12 @@ import com.cdkj.gchf.dto.req.XN631913Req;
 import com.cdkj.gchf.dto.req.XN631916Req;
 import com.cdkj.gchf.dto.req.XN631917Req;
 import com.cdkj.gchf.enums.EContractPeriodType;
+import com.cdkj.gchf.enums.EUnitType;
 import com.cdkj.gchf.enums.EUploadStatus;
 import com.cdkj.gchf.exception.BizException;
 
 @Service
 public class WorkerContractAOImpl implements IWorkerContractAO {
-
     @Autowired
     private IWorkerContractBO workerContractBO;
 
@@ -52,15 +52,17 @@ public class WorkerContractAOImpl implements IWorkerContractAO {
 
     @Override
     public String addWorkerContract(XN631670Req req) {
-
+        EUnitType.checkExists(String.valueOf(req.getUnit()));
         ProjectConfig projectConfigByLocal = projectConfigBO
             .getProjectConfigByLocal(req.getProjectCode());
         if (projectConfigByLocal == null) {
             throw new BizException("XN631670", "项目未部署");
         }
-        ProjectCorpInfo corpInfoByCorpCode = projectCorpInfoBO
-            .getProjectCorpInfoByCorpCode(req.getCorpCode());
-        if (corpInfoByCorpCode == null) {
+        ProjectCorpInfo condition = new ProjectCorpInfo();
+        condition.setCode(req.getCorpCode());
+        List<ProjectCorpInfo> queryProjectCorpInfoList = projectCorpInfoBO
+            .queryProjectCorpInfoList(condition);
+        if (queryProjectCorpInfoList == null) {
             throw new BizException("XN631670", "企业信用代码无效");
         }
         WorkerInfo workerInfo = workerInfoBO.getWorkerInfo(req.getWorkerCode());

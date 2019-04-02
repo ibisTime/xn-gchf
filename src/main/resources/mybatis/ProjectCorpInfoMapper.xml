@@ -120,7 +120,6 @@
 		project_code = #{projectCode}
 		,project_name = #{projectName}
 		,corp_code = #{corpCode}
-		,corp_name = #{corpName}
 		,corp_type = #{corpType}
 		
 		,entry_time = #{entryTime}

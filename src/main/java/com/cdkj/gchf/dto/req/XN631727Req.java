@@ -8,8 +8,10 @@ public class XN631727Req extends AListReq {
      */
     private static final long serialVersionUID = -4399740571913291554L;
 
+    // 项目编码
     private String projectCode;
 
+    // 企业统一社会信用代码
     private String corpCode;
 
     // userId

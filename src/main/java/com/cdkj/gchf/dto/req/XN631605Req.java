@@ -15,6 +15,9 @@ public class XN631605Req extends APageReq {
     // 班组所在企业统一社会信用代码
     private String corpCode;
 
+    // 班组编号
+    private String teamSysNo;
+
     @NotBlank
     private String userId;
 
@@ -40,6 +43,14 @@ public class XN631605Req extends APageReq {
 
     public void setCorpCode(String corpCode) {
         this.corpCode = corpCode;
+    }
+
+    public String getTeamSysNo() {
+        return teamSysNo;
+    }
+
+    public void setTeamSysNo(String teamSysNo) {
+        this.teamSysNo = teamSysNo;
     }
 
 }

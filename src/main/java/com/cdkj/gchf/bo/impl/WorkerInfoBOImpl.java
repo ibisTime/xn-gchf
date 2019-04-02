@@ -80,13 +80,10 @@ public class WorkerInfoBOImpl extends PaginableBOImpl<WorkerInfo>
             workerInfo.setPoliticsType(req.getPoliticsType());
             workerInfo.setCultureLevelType(req.getCultureLevelType());
             workerInfo.setHeadImageUrl(req.getHeadImageUrl());
-            if (req.getSex() == null) {
+            if (req.getGender() == null) {
                 throw new BizException("XN631790", "性别不能为空");
             }
-            workerInfo.setGender(Integer.parseInt(req.getSex()));
-            if (req.getJoinedTime() == null) {
-                throw new BizException("XN631790", "加入公会时间参数异常");
-            }
+            workerInfo.setGender(Integer.parseInt(req.getGender()));
             Date joinTime = new SimpleDateFormat("yyyy-MM-dd")
                 .parse(req.getJoinedTime());
             workerInfo.setJoinedTime(joinTime);

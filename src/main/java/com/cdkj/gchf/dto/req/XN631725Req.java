@@ -11,8 +11,10 @@ public class XN631725Req extends APageReq {
     // 编号
     private String code;
 
+    // 项目编码
     private String projectCode;
 
+    // 企业唯一信用编码
     private String corpCode;
 
     // 用户id

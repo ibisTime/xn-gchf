@@ -13,6 +13,9 @@ import com.cdkj.gchf.domain.WorkerInfo;
 import com.cdkj.gchf.dto.req.XN631790Req;
 import com.cdkj.gchf.dto.req.XN631791Req;
 import com.cdkj.gchf.dto.req.XN631792Req;
+import com.cdkj.gchf.enums.ECultureLevelType;
+import com.cdkj.gchf.enums.EGender;
+import com.cdkj.gchf.enums.EPoliticsType;
 import com.cdkj.gchf.exception.BizException;
 
 @Service
@@ -32,6 +35,11 @@ public class WorkerInfoAOImpl implements IWorkerInfoAO {
         if (req.getExpiryDate() == null) {
             throw new BizException("XN631790", "有效期结束日期不能为空");
         }
+        // 数据字典校验
+        EPoliticsType.checkExists(req.getPoliticsType());
+        EGender.checkExists(req.getGender());
+        ECultureLevelType.checkExists(req.getCultureLevelType());
+
         IdCardChecker idCardChecker = new IdCardChecker(req.getIdCardNumber());
         if (!idCardChecker.validate()) {
             throw new BizException("XN631790", "身份证信息错误");

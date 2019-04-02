@@ -69,9 +69,12 @@ public class ProjectCorpInfoBOImpl extends PaginableBOImpl<ProjectCorpInfo>
         CorpBasicinfo corpBasicinfo = corpBasicinfoBO
             .getCorpBasicinfo(req.getCorpCode());
         projectCorpInfo.setCorpName(corpBasicinfo.getCorpName());
+        ProjectConfig configByLocal = projectConfigBO
+            .getProjectConfigByLocal(req.getProjectCode());
         String code = OrderNoGenerater
             .generate(EGeneratePrefix.ProjectCorpInfo.getCode());
         projectCorpInfo.setCode(code);
+        projectCorpInfo.setProjectName(configByLocal.getProjectName());
         projectCorpInfo.setUploadStatus(EUploadStatus.TO_UPLOAD.getCode());
         projectCorpInfoDAO.insert(projectCorpInfo);
 
@@ -89,10 +92,31 @@ public class ProjectCorpInfoBOImpl extends PaginableBOImpl<ProjectCorpInfo>
 
     @Override
     public void refreshProjectCorpInfo(XN631632Req req) {
-        ProjectCorpInfo projectCorpInfo = new ProjectCorpInfo();
-        BeanUtils.copyProperties(req, projectCorpInfo);
-
-        projectCorpInfoDAO.update(projectCorpInfo);
+        ProjectCorpInfo condition = new ProjectCorpInfo();
+        condition.setCode(req.getCode());
+        ProjectCorpInfo select = projectCorpInfoDAO.select(condition);
+        if (req.getCorpCode() != null) {
+            select.setCorpCode(req.getCode());
+        }
+        if (req.getProjectName() != null) {
+            select.setProjectName(req.getProjectName());
+        }
+        if (req.getEntryTime() != null) {
+            select.setEntryTime(req.getEntryTime());
+        }
+        if (req.getExitTime() != null) {
+            select.setEntryTime(req.getExitTime());
+        }
+        if (req.getPmIDCardNumber() != null) {
+            select.setPmIDCardNumber(req.getPmIDCardNumber());
+        }
+        if (req.getPmName() != null) {
+            select.setPmName(req.getPmName());
+        }
+        if (req.getPmPhone() != null) {
+            select.setPmPhone(req.getPmPhone());
+        }
+        projectCorpInfoDAO.update(select);
     }
 
     @Override
@@ -204,7 +228,7 @@ public class ProjectCorpInfoBOImpl extends PaginableBOImpl<ProjectCorpInfo>
 
             // 操作日志
             code = OrderNoGenerater
-                .generate(EGeneratePrefix.ProjectCorpInfo.getValue());
+                .generate(EGeneratePrefix.ProjectCorpInfo.getCode());
             projectCorpInfo.setCode(code);
             saveProjectCorpInfo(projectCorpInfo);
             operateLogBO.saveOperateLog(

@@ -14,8 +14,6 @@ public class XN631790Req {
     // 工人性别
     private String gender;
 
-    private String sex;
-
     // 民族
     @NotBlank
     private String nation;
@@ -92,10 +90,6 @@ public class XN631790Req {
 
     public void setGender(String gender) {
         this.gender = gender;
-    }
-
-    public void setSex(String sex) {
-        this.sex = sex;
     }
 
     public String getNation() {
@@ -224,10 +218,6 @@ public class XN631790Req {
 
     public String getExpiryDate() {
         return expiryDate;
-    }
-
-    public String getSex() {
-        return sex;
     }
 
 }

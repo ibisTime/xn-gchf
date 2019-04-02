@@ -60,6 +60,9 @@
 			<if test="workerName != null and workerName != '' ">
 				AND t.worker_name = #{workerName}
 			</if>
+			<if test="contractPeriodType != null and contractPeriodType != '' ">
+				AND t.contract_period_type = #{contractPeriodType}
+			</if>
 
 		</trim>
 	</sql>

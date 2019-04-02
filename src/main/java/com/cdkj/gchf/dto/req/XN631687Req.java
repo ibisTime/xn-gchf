@@ -8,8 +8,13 @@ public class XN631687Req extends AListReq {
      */
     private static final long serialVersionUID = 4649661256910558174L;
 
+    // 合同类型
+    private String contractPeriodType;
+
+    // 项目编码
     private String projectCode;
 
+    // 所属企业统一社会信用代码
     private String corpCode;
 
     @NotBlank
@@ -41,6 +46,14 @@ public class XN631687Req extends AListReq {
 
     public void setCorpCode(String corpCode) {
         this.corpCode = corpCode;
+    }
+
+    public String getContractPeriodType() {
+        return contractPeriodType;
+    }
+
+    public void setContractPeriodType(String contractPeriodType) {
+        this.contractPeriodType = contractPeriodType;
     }
 
 }

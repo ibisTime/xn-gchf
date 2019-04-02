@@ -33,7 +33,9 @@ public class XN631685 extends AProcessor {
     public Object doBusiness() throws BizException {
         WorkerContract condition = new WorkerContract();
         BeanUtils.copyProperties(req, condition);
+        int contractPeriod = Integer.parseInt(req.getContractPeriodType());
         String column = null;
+        condition.setContractPeriodType(contractPeriod);
         if (StringUtils.isBlank(column)) {
             column = IWorkerContractAO.DEFAULT_ORDER_COLUMN;
         }

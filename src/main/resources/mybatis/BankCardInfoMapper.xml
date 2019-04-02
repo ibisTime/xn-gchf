@@ -7,14 +7,14 @@
 		<result column="business_type" property="businessType" />
 		<result column="business_sys_no" property="businessSysNo" />
 		<result column="business_name" property="businessName" />
-		
+
 		<result column="bank_name" property="bankName" />
 		<result column="bank_number" property="bankNumber" />
 		<result column="bank_link_number" property="bankLinkNumber" />
 		<result column="create_datetime" property="createDatetime" />
 		<result column="updater" property="updater" />
 		<result column="status" property="status" />
-		
+
 		<result column="upload_status" property="uploadStatus" />
 	</resultMap>
 
@@ -33,22 +33,28 @@
 				AND t.business_sys_no = #{businessSysNo}
 			</if>
 			<if test="bankNumber != null and bankNumber != '' ">
-                AND t.bank_number = #{bankNumber}
-            </if>
-            <if test="uploadStatus != null and uploadStatus != '' ">
-                AND t.upload_status = #{uploadStatus}
-            </if>
-            <if test="status != null and status != '' ">
-                AND t.status = #{status}
-            </if>
-			
+				AND t.bank_number = #{bankNumber}
+			</if>
+			<if test="uploadStatus != null and uploadStatus != '' ">
+				AND t.upload_status = #{uploadStatus}
+			</if>
+			<if test="status != null and status != '' ">
+				AND t.status = #{status}
+			</if>
+			<if test="businessType != null and businessType != '' ">
+				AND t.business_type = #{businessType}
+			</if>
+			<if test="businessSysNo != null and businessSysNo != '' ">
+				AND t.business_sys_no = #{businessSysNo}
+			</if>
+
 		</trim>
 	</sql>
 
 	<insert id="insert_bankCardInfo" parameterType="bankCardInfo">
 		INSERT INTO
 		thf_bank_card_info(
-		 code
+		code
 		,business_type
 		,business_sys_no
 		,business_name
@@ -84,20 +90,22 @@
 		UPDATE
 		thf_bank_card_info
 		SET
-		 bank_name = #{bankName}
+		bank_name = #{bankName}
 		,bank_link_number =
 		#{bankLinkNumber}
-		,bank_number = #{bankNumber}
+		,bank_number =
+		#{bankNumber}
 		WHERE code =
 		#{code}
 	</update>
-	
+
 	<update id="update_bankCardInfoStatus" parameterType="bankCardInfo">
 		UPDATE
 		thf_bank_card_info
 		SET
-		 status = #{status}
-		,update_datetime = #{updateDatetime}
+		status = #{status}
+		,update_datetime =
+		#{updateDatetime}
 		WHERE code =
 		#{code}
 	</update>
@@ -110,11 +118,11 @@
 		,t.business_sys_no
 		,t.bank_number
 		,t.bank_link_number
-        ,t.business_name
-        ,t.create_datetime
-        ,t.updater
-        ,t.update_datetime
-        ,t.status
+		,t.business_name
+		,t.create_datetime
+		,t.updater
+		,t.update_datetime
+		,t.status
 		,t.upload_status
 		FROM
 		thf_bank_card_info t

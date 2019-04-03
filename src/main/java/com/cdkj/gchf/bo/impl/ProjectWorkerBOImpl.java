@@ -71,14 +71,14 @@ public class ProjectWorkerBOImpl extends PaginableBOImpl<ProjectWorker>
         ProjectWorker projectWorkerInfo = new ProjectWorker();
         CorpBasicinfo corpBasicinfo = corpBasicinfoBO
             .getCorpBasicinfoByCorp(data.getCorpCode());
-
         projectWorkerInfo.setProjectName(corpBasicinfo.getCorpName());
         BeanUtils.copyProperties(data, projectWorkerInfo);
 
         ProjectConfig configByLocal = projectConfigBO
             .getProjectConfigByLocal(data.getProjectCode());
-        projectWorkerInfo.setProjectName(configByLocal.getProjectName());
-
+        if (configByLocal != null) {
+            projectWorkerInfo.setProjectName(configByLocal.getProjectName());
+        }
         TeamMaster teamMaster = teamMasterBO
             .getTeamMaster(String.valueOf(data.getTeamSysNo()));
         projectWorkerInfo.setTeamName(teamMaster.getTeamName());
@@ -100,9 +100,9 @@ public class ProjectWorkerBOImpl extends PaginableBOImpl<ProjectWorker>
             EWorkerType.checkExists(data.getWorkType());
         }
         if (StringUtils.isNotBlank(data.getWorkRole())) {
-            String workerRoleCode = EWorkerRoleType
-                .getWorkerRoleCode(data.getWorkRole());
-            projectWorkerInfo.setWorkerRole(Integer.parseInt(workerRoleCode));
+            EWorkerRoleType.checkExists(data.getWorkRole());
+            projectWorkerInfo
+                .setWorkerRole(Integer.parseInt(data.getWorkRole()));
         }
         if (StringUtils.isNotBlank(data.getPayRollTopBankCode())) {
             EBankCardCodeType.checkExists(data.getPayRollTopBankCode());

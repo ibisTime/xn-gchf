@@ -2,6 +2,8 @@ package com.cdkj.gchf.enums;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Map.Entry;
+import java.util.Set;
 
 import com.cdkj.gchf.exception.BizException;
 
@@ -54,6 +56,18 @@ public enum ECultureLevelType {
         if (null == projectCorpType) {
             throw new BizException("xn0000", code + "对应文化程度类型不存在");
         }
+    }
+
+    public static String getCultureLevelType(String dictValue) {
+        Map<String, ECultureLevelType> cultureLevelMap = getCultureLevelMap();
+        Set<Entry<String, ECultureLevelType>> entrySet = cultureLevelMap
+            .entrySet();
+        for (Entry<String, ECultureLevelType> entry : entrySet) {
+            if (entry.getValue().getStatus().equals(dictValue)) {
+                return entry.getKey();
+            }
+        }
+        throw new BizException("xn0000", dictValue + "对应文化程度类型不存在");
     }
 
     ECultureLevelType(String code, String status) {

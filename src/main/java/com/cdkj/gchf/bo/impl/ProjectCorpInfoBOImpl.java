@@ -31,7 +31,9 @@ import com.cdkj.gchf.dto.req.XN631633ReqList;
 import com.cdkj.gchf.dto.req.XN631905Req;
 import com.cdkj.gchf.dto.req.XN631906Req;
 import com.cdkj.gchf.dto.req.XN631907Req;
+import com.cdkj.gchf.enums.ECorpType;
 import com.cdkj.gchf.enums.EGeneratePrefix;
+import com.cdkj.gchf.enums.EIdCardType;
 import com.cdkj.gchf.enums.EOperateLogOperate;
 import com.cdkj.gchf.enums.EOperateLogRefType;
 import com.cdkj.gchf.enums.EUploadStatus;
@@ -65,10 +67,17 @@ public class ProjectCorpInfoBOImpl extends PaginableBOImpl<ProjectCorpInfo>
     @Override
     public String saveProjectCorpInfo(XN631630Req req) {
         ProjectCorpInfo projectCorpInfo = new ProjectCorpInfo();
+        String corpType = ECorpType.getProjectCorpDictValue(req.getCorpType());
+        req.setCorpType(corpType);
         BeanUtils.copyProperties(req, projectCorpInfo);
         CorpBasicinfo corpBasicinfo = corpBasicinfoBO
             .getCorpBasicinfo(req.getCorpCode());
         projectCorpInfo.setCorpName(corpBasicinfo.getCorpName());
+        if (StringUtils.isNotBlank(req.getPmIDCardType())) {
+            String idCardType = EIdCardType
+                .getIdCardDictValue(req.getPmIDCardType());
+            projectCorpInfo.setPmIDCardType(idCardType);
+        }
         ProjectConfig configByLocal = projectConfigBO
             .getProjectConfigByLocal(req.getProjectCode());
         String code = OrderNoGenerater

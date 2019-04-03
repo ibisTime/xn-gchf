@@ -1,7 +1,5 @@
 package com.cdkj.gchf.bo.impl;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -17,6 +15,7 @@ import com.cdkj.gchf.bo.IWorkerInfoBO;
 import com.cdkj.gchf.bo.base.Paginable;
 import com.cdkj.gchf.bo.base.PaginableBOImpl;
 import com.cdkj.gchf.common.AesUtils;
+import com.cdkj.gchf.common.DateUtil;
 import com.cdkj.gchf.core.OrderNoGenerater;
 import com.cdkj.gchf.dao.IWorkerInfoDAO;
 import com.cdkj.gchf.domain.ProjectConfig;
@@ -25,6 +24,7 @@ import com.cdkj.gchf.dto.req.XN631790Req;
 import com.cdkj.gchf.dto.req.XN631791Req;
 import com.cdkj.gchf.dto.req.XN631792Req;
 import com.cdkj.gchf.enums.EGeneratePrefix;
+import com.cdkj.gchf.enums.EIsNotType;
 import com.cdkj.gchf.exception.BizException;
 import com.cdkj.gchf.gov.GovConnecter;
 import com.cdkj.gchf.gov.GovUtil;
@@ -50,49 +50,42 @@ public class WorkerInfoBOImpl extends PaginableBOImpl<WorkerInfo>
     public String saveWorkerInfo(XN631790Req req) {
         String code = OrderNoGenerater
             .generate(EGeneratePrefix.WorkerInfo.getCode());
-        try {
-            WorkerInfo workerInfo = new WorkerInfo();
-            BeanUtils.copyProperties(req, workerInfo);
-            workerInfo.setBirthPlaceCode(req.getIdCardNumber().substring(0, 6));
-            workerInfo.setName(req.getName());
-            workerInfo.setNation(req.getNation());
-            if (req.getBirthday() == null) {
-                throw new BizException("XN631790", "出生日期时间不能为空");
+        WorkerInfo workerInfo = new WorkerInfo();
+        BeanUtils.copyProperties(req, workerInfo);
+        workerInfo.setBirthPlaceCode(req.getIdCardNumber().substring(0, 6));
+        workerInfo.setName(req.getName());
+        workerInfo.setNation(req.getNation());
+        Date birthday = DateUtil.strToDate(req.getBirthday(),
+            DateUtil.FRONT_DATE_FORMAT_STRING);
+        workerInfo.setBirthday(birthday);
+
+        workerInfo.setAddress(req.getAddress());
+        Date startDate = DateUtil.strToDate(req.getStartDate(),
+            DateUtil.FRONT_DATE_FORMAT_STRING);
+        workerInfo.setStartDate(startDate);
+        Date enpiryDate = DateUtil.strToDate(req.getExpiryDate(),
+            DateUtil.FRONT_DATE_FORMAT_STRING);
+        workerInfo.setExpiryDate(enpiryDate);
+
+        workerInfo.setHeadImageUrl(req.getHeadImageUrl());
+        workerInfo.setIdCardNumber(req.getIdCardNumber());
+        workerInfo.setIdCardType(req.getIdCardType());
+        workerInfo.setGender(Integer.parseInt(req.getGender()));
+        workerInfo.setPoliticsType(req.getPoliticsType());
+        workerInfo.setCultureLevelType(req.getCultureLevelType());
+
+        if (req.getIsJoined() != null) {
+            if (req.getJoinedTime() != null) {
+                Date joinTime = DateUtil.strToDate(req.getJoinedTime(),
+                    DateUtil.FRONT_DATE_FORMAT_STRING);
+                workerInfo.setJoinedTime(joinTime);
             }
-            Date birthday = new SimpleDateFormat("yyyy-MM-dd")
-                .parse(req.getBirthday());
-            workerInfo.setBirthday(birthday);
-            workerInfo.setIdCardNumber(req.getIdCardNumber());
-            workerInfo.setIdCardType(req.getIdCardType());
-            workerInfo.setAddress(req.getAddress());
-            if (req.getStartDate() == null) {
-                throw new BizException("XN631790", "有效期开始日期不能为空");
-            }
-            Date startDate = new SimpleDateFormat("yyyy-MM-dd")
-                .parse(req.getStartDate());
-            workerInfo.setStartDate(startDate);
-            if (req.getExpiryDate() == null) {
-                throw new BizException("XN631790", "有效期结束日期不能为空");
-            }
-            Date enpiryDate = new SimpleDateFormat("yyyy-MM-dd")
-                .parse(req.getExpiryDate());
-            workerInfo.setExpiryDate(enpiryDate);
-            workerInfo.setPoliticsType(req.getPoliticsType());
-            workerInfo.setCultureLevelType(req.getCultureLevelType());
-            workerInfo.setHeadImageUrl(req.getHeadImageUrl());
-            if (req.getGender() == null) {
-                throw new BizException("XN631790", "性别不能为空");
-            }
-            workerInfo.setGender(Integer.parseInt(req.getGender()));
-            Date joinTime = new SimpleDateFormat("yyyy-MM-dd")
-                .parse(req.getJoinedTime());
-            workerInfo.setJoinedTime(joinTime);
-            workerInfo.setSpecialty(req.getSpecialty());
-            workerInfo.setCode(code);
-            WorkerInfoDAO.insert(workerInfo);
-        } catch (ParseException e) {
-            e.printStackTrace();
+            workerInfo.setIsJoined(Integer
+                .parseInt(EIsNotType.getIsNotDictCode(req.getIsJoined())));
         }
+        workerInfo.setSpecialty(req.getSpecialty());
+        workerInfo.setCode(code);
+        WorkerInfoDAO.insert(workerInfo);
         return code;
     }
 

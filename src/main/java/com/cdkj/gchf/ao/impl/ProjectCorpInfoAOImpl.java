@@ -25,6 +25,7 @@ import com.cdkj.gchf.dto.req.XN631633ReqList;
 import com.cdkj.gchf.dto.req.XN631905Req;
 import com.cdkj.gchf.dto.req.XN631906Req;
 import com.cdkj.gchf.dto.req.XN631907Req;
+import com.cdkj.gchf.enums.ECorpType;
 import com.cdkj.gchf.enums.EIdCardType;
 import com.cdkj.gchf.enums.EOperateLogOperate;
 import com.cdkj.gchf.enums.EOperateLogRefType;
@@ -58,7 +59,7 @@ public class ProjectCorpInfoAOImpl implements IProjectCorpInfoAO {
         if (null == corpBasicinfo) {
             throw new BizException("XN631630", "企业信息不存在");
         }
-        EProjectCorpType.checkExists(data.getCorpType());
+
         return projectCorpInfoBO.saveProjectCorpInfo(data);
     }
 
@@ -85,10 +86,14 @@ public class ProjectCorpInfoAOImpl implements IProjectCorpInfoAO {
         if (null == corpBasicinfo) {
             throw new BizException("XN631630", "企业信息不存在");
         }
-        EProjectCorpType.checkExists(req.getCorpType());
+        String projectCorpType = ECorpType
+            .getProjectCorpDictValue(req.getCorpType());
+        req.setCorpType(projectCorpType);
         if (org.apache.commons.lang3.StringUtils
             .isNotBlank(req.getPmIDCardType())) {
-            EIdCardType.checkExists(req.getPmIDCardType());
+            String pmImCardType = EIdCardType
+                .getIdCardDictValue(req.getPmIDCardType());
+            req.setPmIDCardType(pmImCardType);
         }
         projectCorpInfoBO.refreshProjectCorpInfo(req);
 

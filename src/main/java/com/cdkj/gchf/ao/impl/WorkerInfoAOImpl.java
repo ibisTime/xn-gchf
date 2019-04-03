@@ -15,6 +15,7 @@ import com.cdkj.gchf.dto.req.XN631791Req;
 import com.cdkj.gchf.dto.req.XN631792Req;
 import com.cdkj.gchf.enums.ECultureLevelType;
 import com.cdkj.gchf.enums.EGender;
+import com.cdkj.gchf.enums.EIdCardType;
 import com.cdkj.gchf.enums.EPoliticsType;
 import com.cdkj.gchf.exception.BizException;
 
@@ -36,9 +37,16 @@ public class WorkerInfoAOImpl implements IWorkerInfoAO {
             throw new BizException("XN631790", "有效期结束日期不能为空");
         }
         // 数据字典校验
-        EPoliticsType.checkExists(req.getPoliticsType());
-        EGender.checkExists(req.getGender());
-        ECultureLevelType.checkExists(req.getCultureLevelType());
+        String politicsType = EPoliticsType
+            .getPoliticsTypeCode(req.getPoliticsType());
+        String gender = EGender.checkDictValue(req.getGender());
+        String cultureLevel = ECultureLevelType
+            .getCultureLevelType(req.getCultureLevelType());
+        String idCardType = EIdCardType.checkDictValue(req.getIdCardType());
+        req.setGender(gender);
+        req.setPoliticsType(politicsType);
+        req.setCultureLevelType(cultureLevel);
+        req.setIdCardType(idCardType);
 
         IdCardChecker idCardChecker = new IdCardChecker(req.getIdCardNumber());
         if (!idCardChecker.validate()) {

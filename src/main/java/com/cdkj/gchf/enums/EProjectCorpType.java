@@ -2,6 +2,8 @@ package com.cdkj.gchf.enums;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Map.Entry;
+import java.util.Set;
 
 import com.cdkj.gchf.exception.BizException;
 
@@ -60,6 +62,18 @@ public enum EProjectCorpType {
         if (null == projectCorpType) {
             throw new BizException("xn0000", code + "对应参建单位类型类型不存在");
         }
+    }
+
+    public static String getProjectCorpDictValue(String dictValue) {
+        Map<String, EProjectCorpType> projectCorpTypeMap = getProjectCorpTypeMap();
+        Set<Entry<String, EProjectCorpType>> entrySet = projectCorpTypeMap
+            .entrySet();
+        for (Entry<String, EProjectCorpType> entry : entrySet) {
+            if (entry.getValue().getStatus().equals(dictValue)) {
+                return entry.getKey();
+            }
+        }
+        throw new BizException("xn0000", dictValue + "对应参建单位类型类型不存在");
     }
 
     EProjectCorpType(String code, String status) {

@@ -2,6 +2,8 @@ package com.cdkj.gchf.enums;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Map.Entry;
+import java.util.Set;
 
 import com.cdkj.gchf.exception.BizException;
 
@@ -32,6 +34,17 @@ public enum EIsNotType {
             throw new BizException("xn0000", code + "对应是否类型不存在");
         }
         return projectCorpType;
+    }
+
+    public static String getIsNotDictCode(String dictValue) {
+        Map<String, EIsNotType> map = getIsNotTypeMap();
+        Set<Entry<String, EIsNotType>> entrySet = map.entrySet();
+        for (Entry<String, EIsNotType> entry : entrySet) {
+            if (entry.getValue().getStatus().equals(dictValue)) {
+                return entry.getKey();
+            }
+        }
+        throw new BizException("xn0000", dictValue + "对应是否类型不存在");
     }
 
     public static void checkExists(String code) {

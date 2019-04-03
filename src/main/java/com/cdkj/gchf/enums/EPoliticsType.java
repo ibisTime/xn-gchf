@@ -2,6 +2,8 @@ package com.cdkj.gchf.enums;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Map.Entry;
+import java.util.Set;
 
 import com.cdkj.gchf.exception.BizException;
 
@@ -54,6 +56,17 @@ public enum EPoliticsType {
             throw new BizException("xn0000", code + "对应政治面貌类型不存在");
         }
         return projectCorpType;
+    }
+
+    public static String getPoliticsTypeCode(String dictVaule) {
+        Map<String, EPoliticsType> politicsTypeMap = getPoliticsTypeMap();
+        Set<Entry<String, EPoliticsType>> entrySet = politicsTypeMap.entrySet();
+        for (Entry<String, EPoliticsType> entry : entrySet) {
+            if (entry.getValue().getStatus().equals(dictVaule)) {
+                return entry.getKey();
+            }
+        }
+        throw new BizException("XN0000", dictVaule + "对应政治面貌类型不存在");
     }
 
     public static void checkExists(String code) {

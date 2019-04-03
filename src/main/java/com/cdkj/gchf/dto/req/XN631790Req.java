@@ -12,6 +12,7 @@ public class XN631790Req {
     private String name;
 
     // 工人性别
+    @NotBlank
     private String gender;
 
     // 民族
@@ -19,9 +20,11 @@ public class XN631790Req {
     private String nation;
 
     // 出生日期
+    @NotBlank
     private String birthday;
 
     // 证件类型
+    @NotBlank
     private String idCardType;
 
     // 证件号码
@@ -29,9 +32,11 @@ public class XN631790Req {
     private String idCardNumber;
 
     // 有效期开始日期
+    @NotBlank
     private String startDate;
 
     // 有效期结束日期
+    @NotBlank
     private String expiryDate;
 
     // 住址

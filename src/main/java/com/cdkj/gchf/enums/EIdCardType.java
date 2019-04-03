@@ -2,6 +2,8 @@ package com.cdkj.gchf.enums;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Map.Entry;
+import java.util.Set;
 
 import com.cdkj.gchf.exception.BizException;
 
@@ -64,12 +66,34 @@ public enum EIdCardType {
         return projectCorpType;
     }
 
+    public static String getIdCardDictValue(String dictValue) {
+        Map<String, EIdCardType> map = getIdCardTypeMap();
+        Set<Entry<String, EIdCardType>> entrySet = map.entrySet();
+        for (Entry<String, EIdCardType> entry : entrySet) {
+            if (entry.getValue().getStatus().equals(dictValue)) {
+                return entry.getKey();
+            }
+        }
+        throw new BizException("xn0000", dictValue + "对应证件类型不存在");
+    }
+
     public static void checkExists(String code) {
         Map<String, EIdCardType> map = getIdCardTypeMap();
         EIdCardType projectCorpType = map.get(code);
         if (null == projectCorpType) {
             throw new BizException("xn0000", code + "对应证件类型不存在");
         }
+    }
+
+    public static String checkDictValue(String dictValue) {
+        Map<String, EIdCardType> idCardTypeMap = getIdCardTypeMap();
+        Set<Entry<String, EIdCardType>> entrySet = idCardTypeMap.entrySet();
+        for (Entry<String, EIdCardType> entry : entrySet) {
+            if (entry.getValue().getStatus().equals(dictValue)) {
+                return entry.getKey();
+            }
+        }
+        throw new BizException("XN000000", dictValue + "对应证件类型不存在");
     }
 
     EIdCardType(String code, String status) {

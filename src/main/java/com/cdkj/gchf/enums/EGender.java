@@ -2,6 +2,8 @@ package com.cdkj.gchf.enums;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Map.Entry;
+import java.util.Set;
 
 import com.cdkj.gchf.exception.BizException;
 
@@ -40,6 +42,17 @@ public enum EGender {
         if (null == projectCorpType) {
             throw new BizException("xn0000", code + "对应性别类型不存在");
         }
+    }
+
+    public static String checkDictValue(String value) {
+        Map<String, EGender> genderMap = getGenderMap();
+        Set<Entry<String, EGender>> entrySet = genderMap.entrySet();
+        for (Entry<String, EGender> entry : entrySet) {
+            if (entry.getValue().getStatus().equals(value)) {
+                return entry.getKey();
+            }
+        }
+        throw new BizException("xn0000", value + "对应性别类型不存在");
     }
 
     EGender(String code, String status) {

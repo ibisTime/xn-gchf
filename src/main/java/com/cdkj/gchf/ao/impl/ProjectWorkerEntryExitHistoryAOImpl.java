@@ -11,7 +11,6 @@ import com.cdkj.gchf.ao.IProjectWorkerEntryExitHistoryAO;
 import com.cdkj.gchf.bo.ICorpBasicinfoBO;
 import com.cdkj.gchf.bo.IOperateLogBO;
 import com.cdkj.gchf.bo.IProjectConfigBO;
-import com.cdkj.gchf.bo.IProjectCorpInfoBO;
 import com.cdkj.gchf.bo.IProjectWorkerBO;
 import com.cdkj.gchf.bo.IProjectWorkerEntryExitHistoryBO;
 import com.cdkj.gchf.bo.ITeamMasterBO;
@@ -70,14 +69,13 @@ public class ProjectWorkerEntryExitHistoryAOImpl
     @Autowired
     private IWorkerInfoBO workerInfoBO;
 
-    @Autowired
-    private IProjectCorpInfoBO projectCorpInfoBO;
-
     @Override
     public String addProjectWorkerEntryExitHistory(XN631730Req data) {
         ProjectWorker projectWorker = projectWorkerBO
             .getProjectWorker(data.getProjectWorkerCode());
-
+        if (projectWorker == null) {
+            throw new BizException("XN631730", "员工信息不存在");
+        }
         ProjectWorkerEntryExitHistory workerEntryExitHistory = projectWorkerEntryExitHistoryBO
             .getProjectWorkerEntryExitHistoryByIdCardNumber(
                 projectWorker.getIdCardNumber());

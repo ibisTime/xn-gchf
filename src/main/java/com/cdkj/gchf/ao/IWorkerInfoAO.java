@@ -9,6 +9,7 @@ import com.cdkj.gchf.domain.WorkerInfo;
 import com.cdkj.gchf.dto.req.XN631790Req;
 import com.cdkj.gchf.dto.req.XN631791Req;
 import com.cdkj.gchf.dto.req.XN631792Req;
+import com.cdkj.gchf.dto.req.XN631793Req;
 
 @Component
 public interface IWorkerInfoAO {
@@ -24,6 +25,8 @@ public interface IWorkerInfoAO {
 
     public Paginable<WorkerInfo> queryWorkerInfoPage(int start, int limit,
             WorkerInfo condition);
+
+    public void readdWorkerInfo(XN631793Req req);
 
     public List<WorkerInfo> queryWorkerInfoList(WorkerInfo condition);
 

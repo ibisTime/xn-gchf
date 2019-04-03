@@ -15,17 +15,17 @@ public class XN631253Req {
 
     // 编号
     @NotEmpty
-    private List<XN631253ReqCode> codeList;
+    private List<String> codeList;
 
     // 用户编号
     @NotBlank
     private String userId;
 
-    public List<XN631253ReqCode> getCodeList() {
+    public List<String> getCodeList() {
         return codeList;
     }
 
-    public void setCodeList(List<XN631253ReqCode> codeList) {
+    public void setCodeList(List<String> codeList) {
         this.codeList = codeList;
     }
 

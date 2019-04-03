@@ -17,6 +17,8 @@ public interface ITeamMasterBO extends IPaginableBO<TeamMaster> {
 
     public String saveTeamMaster(XN631650Req data);
 
+    public String saveTeamMaster(TeamMaster teamMaster);
+
     public void removeTeamMaster(String userId, String code);
 
     public void refreshTeamMaster(XN631652Req data);

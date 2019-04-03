@@ -35,6 +35,7 @@ import com.cdkj.gchf.dto.req.XN631911Req;
 import com.cdkj.gchf.dto.req.XN631911ReqWorker;
 import com.cdkj.gchf.dto.req.XN631912Req;
 import com.cdkj.gchf.dto.req.XN631913Req;
+import com.cdkj.gchf.enums.EBankCardCodeType;
 import com.cdkj.gchf.enums.EGeneratePrefix;
 import com.cdkj.gchf.enums.EIdCardType;
 import com.cdkj.gchf.enums.EIsNotType;
@@ -70,6 +71,7 @@ public class ProjectWorkerBOImpl extends PaginableBOImpl<ProjectWorker>
         ProjectWorker projectWorkerInfo = new ProjectWorker();
         CorpBasicinfo corpBasicinfo = corpBasicinfoBO
             .getCorpBasicinfoByCorp(data.getCorpCode());
+
         projectWorkerInfo.setProjectName(corpBasicinfo.getCorpName());
         BeanUtils.copyProperties(data, projectWorkerInfo);
 
@@ -88,12 +90,30 @@ public class ProjectWorkerBOImpl extends PaginableBOImpl<ProjectWorker>
         projectWorkerInfo.setIdCardType(workerInfo.getIdCardType());
         projectWorkerInfo.setIdCardNumber(workerInfo.getIdCardNumber());
         projectWorkerInfo.setWorkerName(workerInfo.getName());
-        projectWorkerInfo.setWorkType(workerInfo.getWorkerType());
         projectWorkerInfo.setUploadStatus(EUploadStatus.TO_UPLOAD.getCode());
         projectWorkerInfo.setLocalTeamSysNo(teamMaster.getCode());
+
+        if (StringUtils.isNotBlank(data.getIsTeamLeader())) {
+            EIsNotType.checkExists(data.getIsTeamLeader());
+        }
+        if (StringUtils.isNotBlank(data.getWorkType())) {
+            EWorkerType.checkExists(data.getWorkType());
+        }
+        if (StringUtils.isNotBlank(data.getWorkRole())) {
+            String workerRoleCode = EWorkerRoleType
+                .getWorkerRoleCode(data.getWorkRole());
+            projectWorkerInfo.setWorkerRole(Integer.parseInt(workerRoleCode));
+        }
+        if (StringUtils.isNotBlank(data.getPayRollTopBankCode())) {
+            EBankCardCodeType.checkExists(data.getPayRollTopBankCode());
+        }
+        if (StringUtils.isNotBlank(data.getHasBuyInsurance())) {
+            EIsNotType.checkExists(data.getHasBuyInsurance());
+        }
         String code = OrderNoGenerater
             .generate(EGeneratePrefix.ProjectWorker.getCode());
         projectWorkerInfo.setCode(code);
+        // 回写workerinfo
 
         projectWorkerDAO.insert(projectWorkerInfo);
         return code;

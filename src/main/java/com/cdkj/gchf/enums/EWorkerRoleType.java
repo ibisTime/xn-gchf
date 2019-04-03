@@ -2,6 +2,8 @@ package com.cdkj.gchf.enums;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Map.Entry;
+import java.util.Set;
 
 import com.cdkj.gchf.exception.BizException;
 
@@ -40,6 +42,17 @@ public enum EWorkerRoleType {
         if (null == projectCorpType) {
             throw new BizException("xn0000", code + "对应是否类型不存在");
         }
+    }
+
+    public static String getWorkerRoleCode(String code) {
+        Map<String, EWorkerRoleType> map = getWorkerRoleTypeMap();
+        Set<Entry<String, EWorkerRoleType>> entrySet = map.entrySet();
+        for (Entry<String, EWorkerRoleType> entry : entrySet) {
+            if (entry.getValue().getStatus().equals(code)) {
+                return entry.getKey();
+            }
+        }
+        throw new BizException("xn0000", code + "对应工人类型不存在");
     }
 
     EWorkerRoleType(String code, String status) {

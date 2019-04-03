@@ -14,7 +14,7 @@ public class XN631750Req {
     private String businessType;
 
     // 业务编号
-    private Integer businessSysNo;
+    private String businessSysNo;
 
     // 业务名称
     private String businessName;
@@ -50,11 +50,11 @@ public class XN631750Req {
         this.businessType = businessType;
     }
 
-    public Integer getBusinessSysNo() {
+    public String getBusinessSysNo() {
         return businessSysNo;
     }
 
-    public void setBusinessSysNo(Integer businessSysNo) {
+    public void setBusinessSysNo(String businessSysNo) {
         this.businessSysNo = businessSysNo;
     }
 

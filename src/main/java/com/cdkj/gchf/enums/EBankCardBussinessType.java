@@ -7,37 +7,37 @@ import com.cdkj.gchf.exception.BizException;
 
 public enum EBankCardBussinessType {
 
-    CORP("0", "参见单位"),
+    CORP("001", "参见单位"),
 
-    USER("1", "个人用户");
+    USER("002", "个人用户");
 
     EBankCardBussinessType(String code, String value) {
         this.code = code;
         this.value = value;
     }
 
-    public static Map<String, EContractPeriodType> getBankCardBussinessMap() {
-        Map<String, EContractPeriodType> map = new HashMap<String, EContractPeriodType>();
-        for (EContractPeriodType type : EContractPeriodType.values()) {
+    public static Map<String, EBankCardBussinessType> getBankCardBussinessMap() {
+        Map<String, EBankCardBussinessType> map = new HashMap<String, EBankCardBussinessType>();
+        for (EBankCardBussinessType type : EBankCardBussinessType.values()) {
             map.put(type.getCode(), type);
         }
         return map;
     }
 
-    public static EContractPeriodType getBankCardBussiness(String code) {
-        Map<String, EContractPeriodType> map = getBankCardBussinessMap();
-        EContractPeriodType projectCorpType = map.get(code);
+    public static EBankCardBussinessType getBankCardBussiness(String code) {
+        Map<String, EBankCardBussinessType> map = getBankCardBussinessMap();
+        EBankCardBussinessType projectCorpType = map.get(code);
         if (null == projectCorpType) {
-            throw new BizException("xn0000", code + "对应银行卡状态不存在");
+            throw new BizException("xn0000", code + "对应业务类型不存在");
         }
         return projectCorpType;
     }
 
     public static void checkExists(String code) {
-        Map<String, EContractPeriodType> map = getBankCardBussinessMap();
-        EContractPeriodType projectCorpType = map.get(code);
+        Map<String, EBankCardBussinessType> map = getBankCardBussinessMap();
+        EBankCardBussinessType projectCorpType = map.get(code);
         if (null == projectCorpType) {
-            throw new BizException("xn0000", code + "对应银行卡状态不存在");
+            throw new BizException("xn0000", code + "对应业务类型不存在");
         }
     }
 

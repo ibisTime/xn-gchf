@@ -73,7 +73,7 @@ public class ProjectWorkerAOImpl implements IProjectWorkerAO {
             throw new BizException("XN631690", "班组信息不存在");
         }
         CorpBasicinfo corpBasicinfo = corpBasicinfoBO
-            .getCorpBasicinfo(req.getCorpCode());
+            .getCorpBasicinfoByCorp(req.getCorpCode());
         if (corpBasicinfo == null) {
             throw new BizException("xn631690", "企业信息不存在");
         }

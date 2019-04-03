@@ -2,6 +2,8 @@ package com.cdkj.gchf.enums;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Map.Entry;
+import java.util.Set;
 
 import com.cdkj.gchf.exception.BizException;
 
@@ -106,6 +108,17 @@ public enum EWorkerType {
         if (null == projectCorpType) {
             throw new BizException("xn0000", code + "对应证件类型类型不存在");
         }
+    }
+
+    public static String getWorkerTypeCode(String value) {
+        Map<String, EWorkerType> workerTypeMap = getWorkerTypeMap();
+        Set<Entry<String, EWorkerType>> entrySet = workerTypeMap.entrySet();
+        for (Entry<String, EWorkerType> entry : entrySet) {
+            if (entry.getValue().getStatus().equals(value)) {
+                return entry.getKey();
+            }
+        }
+        throw new BizException("XN0000", "对应工人类型不存在");
     }
 
     EWorkerType(String code, String status) {

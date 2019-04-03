@@ -18,7 +18,7 @@ public class BankCardInfo extends ABaseDO {
     private String businessType;
 
     // 业务类型
-    private Integer businessSysNo;
+    private String businessSysNo;
 
     // 业务名称
     private String businessName;
@@ -66,11 +66,11 @@ public class BankCardInfo extends ABaseDO {
         this.businessType = businessType;
     }
 
-    public Integer getBusinessSysNo() {
+    public String getBusinessSysNo() {
         return businessSysNo;
     }
 
-    public void setBusinessSysNo(Integer businessSysNo) {
+    public void setBusinessSysNo(String businessSysNo) {
         this.businessSysNo = businessSysNo;
     }
 

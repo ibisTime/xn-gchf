@@ -1,7 +1,5 @@
 package com.cdkj.gchf.dto.req;
 
-import java.util.Date;
-
 import org.hibernate.validator.constraints.NotBlank;
 
 public class XN631690Req {
@@ -26,7 +24,7 @@ public class XN631690Req {
     private String workerCode;
 
     // 是否班组长
-    private Integer isTeamLeader;
+    private String isTeamLeader;
 
     // 当前工种
     @NotBlank
@@ -60,7 +58,7 @@ public class XN631690Req {
     private String hasBuyInsurance;
 
     // 开始工作日期
-    private Date workDate;
+    private String workDate;
 
     public String getUserId() {
         return userId;
@@ -102,12 +100,16 @@ public class XN631690Req {
         this.workerCode = workerCode;
     }
 
-    public Integer getIsTeamLeader() {
+    public String getIsTeamLeader() {
         return isTeamLeader;
     }
 
-    public void setIsTeamLeader(Integer isTeamLeader) {
+    public void setIsTeamLeader(String isTeamLeader) {
         this.isTeamLeader = isTeamLeader;
+    }
+
+    public void setWorkDate(String workDate) {
+        this.workDate = workDate;
     }
 
     public String getWorkType() {
@@ -188,14 +190,6 @@ public class XN631690Req {
 
     public void setWorkRole(String workRole) {
         this.workRole = workRole;
-    }
-
-    public Date getWorkDate() {
-        return workDate;
-    }
-
-    public void setWorkDate(Date workDate) {
-        this.workDate = workDate;
     }
 
 }

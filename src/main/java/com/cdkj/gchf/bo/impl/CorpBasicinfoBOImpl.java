@@ -164,7 +164,7 @@ public class CorpBasicinfoBOImpl extends PaginableBOImpl<CorpBasicinfo>
         CorpBasicinfo data = null;
         if (StringUtils.isNotBlank(code)) {
             CorpBasicinfo condition = new CorpBasicinfo();
-            condition.setCorpCode(code);
+            condition.setCode(code);
             data = corpBasicinfoDAO.select(condition);
             if (data == null) {
                 throw new BizException("xn0000", "企业基本信息编号不存在");

@@ -6,16 +6,21 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.cdkj.gchf.ao.IWorkerInfoAO;
+import com.cdkj.gchf.bo.IOperateLogBO;
+import com.cdkj.gchf.bo.IUserBO;
 import com.cdkj.gchf.bo.IWorkerInfoBO;
 import com.cdkj.gchf.bo.base.Paginable;
 import com.cdkj.gchf.common.IdCardChecker;
+import com.cdkj.gchf.domain.User;
 import com.cdkj.gchf.domain.WorkerInfo;
 import com.cdkj.gchf.dto.req.XN631790Req;
 import com.cdkj.gchf.dto.req.XN631791Req;
 import com.cdkj.gchf.dto.req.XN631792Req;
+import com.cdkj.gchf.dto.req.XN631793Req;
 import com.cdkj.gchf.enums.ECultureLevelType;
 import com.cdkj.gchf.enums.EGender;
 import com.cdkj.gchf.enums.EIdCardType;
+import com.cdkj.gchf.enums.EOperateLogRefType;
 import com.cdkj.gchf.enums.EPoliticsType;
 import com.cdkj.gchf.exception.BizException;
 
@@ -23,7 +28,13 @@ import com.cdkj.gchf.exception.BizException;
 public class WorkerInfoAOImpl implements IWorkerInfoAO {
 
     @Autowired
-    private IWorkerInfoBO WorkerInfoBO;
+    private IWorkerInfoBO workerInfoBO;
+
+    @Autowired
+    private IUserBO userBO;
+
+    @Autowired
+    private IOperateLogBO operateLogBO;
 
     @Override
     public String addWorkerInfo(XN631790Req req) {
@@ -37,56 +48,62 @@ public class WorkerInfoAOImpl implements IWorkerInfoAO {
             throw new BizException("XN631790", "有效期结束日期不能为空");
         }
         // 数据字典校验
-        String politicsType = EPoliticsType
-            .getPoliticsTypeCode(req.getPoliticsType());
-        String gender = EGender.checkDictValue(req.getGender());
-        String cultureLevel = ECultureLevelType
-            .getCultureLevelType(req.getCultureLevelType());
-        String idCardType = EIdCardType.checkDictValue(req.getIdCardType());
-        req.setGender(gender);
-        req.setPoliticsType(politicsType);
-        req.setCultureLevelType(cultureLevel);
-        req.setIdCardType(idCardType);
+        EPoliticsType.checkExists(req.getPoliticsType());
+        EGender.checkExists(req.getGender());
+        ECultureLevelType.checkExists(req.getCultureLevelType());
+        EIdCardType.checkExists(req.getIdCardType());
 
         IdCardChecker idCardChecker = new IdCardChecker(req.getIdCardNumber());
         if (!idCardChecker.validate()) {
             throw new BizException("XN631790", "身份证信息错误");
         }
-        return WorkerInfoBO.saveWorkerInfo(req);
+        return workerInfoBO.saveWorkerInfo(req);
     }
 
     @Override
     public int dropWorkerInfo(String code) {
-        if (!WorkerInfoBO.isWorkerInfoExist(code)) {
+        if (!workerInfoBO.isWorkerInfoExist(code)) {
             throw new BizException("xn0000", "记录编号不存在");
         }
-        return WorkerInfoBO.removeWorkerInfo(code);
+        return workerInfoBO.removeWorkerInfo(code);
     }
 
     @Override
     public Paginable<WorkerInfo> queryWorkerInfoPage(int start, int limit,
             WorkerInfo condition) {
-        return WorkerInfoBO.getPaginable(start, limit, condition);
+        return workerInfoBO.getPaginable(start, limit, condition);
     }
 
     @Override
     public List<WorkerInfo> queryWorkerInfoList(WorkerInfo condition) {
-        return WorkerInfoBO.queryWorkerInfoList(condition);
+        return workerInfoBO.queryWorkerInfoList(condition);
     }
 
     @Override
     public WorkerInfo getWorkerInfo(String code) {
-        return WorkerInfoBO.getWorkerInfo(code);
+        return workerInfoBO.getWorkerInfo(code);
     }
 
     @Override
     public int addWorkerInfoIdCardInfo(XN631791Req req) {
-        return WorkerInfoBO.refreshWorkerInfo(req);
+        return workerInfoBO.refreshWorkerInfo(req);
     }
 
     @Override
     public int addWorkerInfoContact(XN631792Req req) {
-        return WorkerInfoBO.refreshWorkerInfo(req);
+        WorkerInfo workerInfo = workerInfoBO.getWorkerInfo(req.getCode());
+        if (workerInfo.getCellPhone() != null) {
+            throw new BizException("XN631792", "手机号已录入");
+        }
+        return workerInfoBO.refreshWorkerInfo(req);
+    }
+
+    @Override
+    public void readdWorkerInfo(XN631793Req req) {
+        User user = userBO.getBriefUser(req.getUserId());
+        workerInfoBO.refreshWorkerInfo(req);
+        operateLogBO.saveOperateLog(EOperateLogRefType.WorkerInfo.getCode(),
+            req.getCode(), "重新建档人员实名制信息", user, null);
     }
 
 }

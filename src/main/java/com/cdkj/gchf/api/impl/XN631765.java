@@ -34,10 +34,12 @@ public class XN631765 extends AProcessor {
     public Object doBusiness() throws BizException {
         BankCardInfo condition = new BankCardInfo();
         BeanUtils.copyProperties(req, condition);
+        condition.setBusinessSysNo(req.getBusinessSysNo());
+
         int start = StringValidater.toInteger(req.getStart());
         int limit = StringValidater.toInteger(req.getLimit());
-        String column = null;
-        if (org.apache.commons.lang3.StringUtils.isBlank(column)) {
+        String column = req.getOrderColumn();
+        if (StringUtils.isBlank(column)) {
             column = IBankCardInfoAO.DEFAULT_ORDER_COLUMN;
         }
         if (StringUtils.isNotBlank(req.getStatus())) {

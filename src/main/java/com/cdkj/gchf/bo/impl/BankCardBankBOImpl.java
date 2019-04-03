@@ -32,6 +32,7 @@ public class BankCardBankBOImpl extends PaginableBOImpl<BankCardInfo>
             .generate(EGeneratePrefix.BankCardInfo.getCode());
         bankCardInfo.setCode(code);
         BeanUtils.copyProperties(req, bankCardInfo);
+        bankCardInfo.setBankName(req.getBankName());
         bankCardInfo.setUploadStatus(EUploadStatus.TO_UPLOAD.getCode());
         bankCardInfo.setUpdateDatetime(new Date(System.currentTimeMillis()));
         bankCardInfo.setStatus(EBankCardStatus.Normal.getCode());

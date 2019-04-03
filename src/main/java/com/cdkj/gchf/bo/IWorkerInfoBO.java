@@ -9,6 +9,7 @@ import com.cdkj.gchf.domain.WorkerInfo;
 import com.cdkj.gchf.dto.req.XN631790Req;
 import com.cdkj.gchf.dto.req.XN631791Req;
 import com.cdkj.gchf.dto.req.XN631792Req;
+import com.cdkj.gchf.dto.req.XN631793Req;
 
 public interface IWorkerInfoBO extends IPaginableBO<WorkerInfo> {
 
@@ -23,6 +24,8 @@ public interface IWorkerInfoBO extends IPaginableBO<WorkerInfo> {
     public int refreshWorkerInfo(XN631791Req req);
 
     public int refreshWorkerInfo(XN631792Req req);
+
+    public int refreshWorkerInfo(XN631793Req req);
 
     public WorkerInfo getWorkerInfoByCelephone(String phone);
 

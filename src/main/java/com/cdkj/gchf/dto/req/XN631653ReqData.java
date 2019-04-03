@@ -7,11 +7,11 @@ public class XN631653ReqData {
     // 班组名称
     private String teamName;
 
-    // 所在企业统一社会信用代码
-    private String corpCode;
-
     // 企业名称
     private String corpName;
+
+    // 所在企业统一社会信用代码
+    private String corpCode;
 
     // 责任人姓名
     private String responsiblePersonName;
@@ -40,6 +40,14 @@ public class XN631653ReqData {
 
     public void setTeamName(String teamName) {
         this.teamName = teamName;
+    }
+
+    public String getCorpCode() {
+        return corpCode;
+    }
+
+    public void setCorpCode(String corpCode) {
+        this.corpCode = corpCode;
     }
 
     public String getResponsiblePersonName() {
@@ -89,14 +97,6 @@ public class XN631653ReqData {
 
     public void setExitTime(Date exitTime) {
         this.exitTime = exitTime;
-    }
-
-    public String getCorpCode() {
-        return corpCode;
-    }
-
-    public void setCorpCode(String corpCode) {
-        this.corpCode = corpCode;
     }
 
     public String getCorpName() {

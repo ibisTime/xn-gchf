@@ -23,7 +23,9 @@ public enum ECorpType {
 
     GUFENHEZUO("130", "股份合作企业"),
 
-    LIANYING("140", "联营企业"), GUOYOULIANYING("141", "国有联营企业"),
+    LIANYING("140", "联营企业"),
+
+    GUOYOULIANYING("141", "国有联营企业"),
 
     JIYILIANYING("142", "集体联营企业"),
 

@@ -67,16 +67,13 @@ public class ProjectCorpInfoBOImpl extends PaginableBOImpl<ProjectCorpInfo>
     @Override
     public String saveProjectCorpInfo(XN631630Req req) {
         ProjectCorpInfo projectCorpInfo = new ProjectCorpInfo();
-        String corpType = ECorpType.getProjectCorpDictValue(req.getCorpType());
-        req.setCorpType(corpType);
+        ECorpType.checkExists(req.getCorpType());
         BeanUtils.copyProperties(req, projectCorpInfo);
         CorpBasicinfo corpBasicinfo = corpBasicinfoBO
             .getCorpBasicinfo(req.getCorpCode());
         projectCorpInfo.setCorpName(corpBasicinfo.getCorpName());
         if (StringUtils.isNotBlank(req.getPmIDCardType())) {
-            String idCardType = EIdCardType
-                .getIdCardDictValue(req.getPmIDCardType());
-            projectCorpInfo.setPmIDCardType(idCardType);
+            EIdCardType.checkExists(req.getPmIDCardType());
         }
         ProjectConfig configByLocal = projectConfigBO
             .getProjectConfigByLocal(req.getProjectCode());

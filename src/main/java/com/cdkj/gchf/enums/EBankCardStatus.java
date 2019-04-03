@@ -14,17 +14,17 @@ public enum EBankCardStatus {
         this.value = value;
     }
 
-    public static Map<String, EContractPeriodType> getBankCardStatusMap() {
-        Map<String, EContractPeriodType> map = new HashMap<String, EContractPeriodType>();
-        for (EContractPeriodType type : EContractPeriodType.values()) {
+    public static Map<String, EBankCardStatus> getBankCardStatusMap() {
+        Map<String, EBankCardStatus> map = new HashMap<String, EBankCardStatus>();
+        for (EBankCardStatus type : EBankCardStatus.values()) {
             map.put(type.getCode(), type);
         }
         return map;
     }
 
-    public static EContractPeriodType getBankCard(String code) {
-        Map<String, EContractPeriodType> map = getBankCardStatusMap();
-        EContractPeriodType projectCorpType = map.get(code);
+    public static EBankCardStatus getBankCard(String code) {
+        Map<String, EBankCardStatus> map = getBankCardStatusMap();
+        EBankCardStatus projectCorpType = map.get(code);
         if (null == projectCorpType) {
             throw new BizException("xn0000", code + "对应银行卡状态不存在");
         }
@@ -32,8 +32,8 @@ public enum EBankCardStatus {
     }
 
     public static void checkExists(String code) {
-        Map<String, EContractPeriodType> map = getBankCardStatusMap();
-        EContractPeriodType projectCorpType = map.get(code);
+        Map<String, EBankCardStatus> map = getBankCardStatusMap();
+        EBankCardStatus projectCorpType = map.get(code);
         if (null == projectCorpType) {
             throw new BizException("xn0000", code + "对应银行卡状态不存在");
         }

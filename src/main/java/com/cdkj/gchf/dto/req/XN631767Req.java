@@ -16,6 +16,8 @@ public class XN631767Req extends AListReq {
 
     private String businessName;
 
+    private String businessSysNo;
+
     private String uploadStatus;
 
     private String status;
@@ -58,6 +60,14 @@ public class XN631767Req extends AListReq {
 
     public void setBusinessName(String businessName) {
         this.businessName = businessName;
+    }
+
+    public String getBusinessSysNo() {
+        return businessSysNo;
+    }
+
+    public void setBusinessSysNo(String businessSysNo) {
+        this.businessSysNo = businessSysNo;
     }
 
 }

@@ -29,7 +29,7 @@
 			<if test="bankNumber != null and bankNumber != '' ">
 				AND t.bank_number = #{bankNumber}
 			</if>
-			<if test="businessSysNo != null and businessSysNo != '' ">
+			<if test="businessSysNo != null  and businessSysNo != ''">
 				AND t.business_sys_no = #{businessSysNo}
 			</if>
 			<if test="bankNumber != null and bankNumber != '' ">
@@ -43,9 +43,6 @@
 			</if>
 			<if test="businessType != null and businessType != '' ">
 				AND t.business_type = #{businessType}
-			</if>
-			<if test="businessSysNo != null and businessSysNo != '' ">
-				AND t.business_sys_no = #{businessSysNo}
 			</if>
 
 		</trim>
@@ -116,6 +113,7 @@
 		t.code
 		,t.business_type
 		,t.business_sys_no
+		,t.bank_name
 		,t.bank_number
 		,t.bank_link_number
 		,t.business_name

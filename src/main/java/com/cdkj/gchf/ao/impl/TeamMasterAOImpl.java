@@ -3,6 +3,7 @@ package com.cdkj.gchf.ao.impl;
 import java.util.List;
 
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -16,7 +17,6 @@ import com.cdkj.gchf.bo.ITeamMasterBO;
 import com.cdkj.gchf.bo.IUserBO;
 import com.cdkj.gchf.bo.base.Paginable;
 import com.cdkj.gchf.common.AesUtils;
-import com.cdkj.gchf.domain.CorpBasicinfo;
 import com.cdkj.gchf.domain.ProjectConfig;
 import com.cdkj.gchf.domain.ProjectCorpInfo;
 import com.cdkj.gchf.domain.TeamMaster;
@@ -25,10 +25,10 @@ import com.cdkj.gchf.dto.req.XN631650Req;
 import com.cdkj.gchf.dto.req.XN631651Req;
 import com.cdkj.gchf.dto.req.XN631652Req;
 import com.cdkj.gchf.dto.req.XN631653Req;
+import com.cdkj.gchf.dto.req.XN631653ReqData;
 import com.cdkj.gchf.dto.req.XN631908Req;
 import com.cdkj.gchf.dto.req.XN631909Req;
 import com.cdkj.gchf.dto.req.XN631910Req;
-import com.cdkj.gchf.enums.EIdCardType;
 import com.cdkj.gchf.enums.EOperateLogOperate;
 import com.cdkj.gchf.enums.EOperateLogRefType;
 import com.cdkj.gchf.enums.EUploadStatus;
@@ -62,12 +62,6 @@ public class TeamMasterAOImpl implements ITeamMasterAO {
 
         ProjectConfig projectConfig = projectConfigBO
             .getProjectConfigByProject(data.getProjectCode());
-        if (StringUtils.isNotBlank(data.getResponsiblePersonIdcardType())) {
-            EIdCardType.checkExists(data.getResponsiblePersonIdcardType());
-        }
-        if (StringUtils.isNotBlank(data.getTeamLeaderIdcardType())) {
-            EIdCardType.checkExists(data.getTeamLeaderIdcardType());
-        }
         if (projectConfig == null) {
             throw new BizException("XN631650", "项目信息不存在,请检查项目编号");
         }
@@ -86,12 +80,16 @@ public class TeamMasterAOImpl implements ITeamMasterAO {
 
     @Override
     public void editTeamMaster(XN631652Req data) {
+        User user = userBO.getBriefUser(data.getUserId());
+
         TeamMaster teamMaster = teamMasterBO.getTeamMaster(data.getCode());
         if (teamMaster.getUploadStatus() != null & teamMaster.getUploadStatus()
             .equals(EUploadStatus.UPLOAD_UNEDITABLE.getCode())) {
             throw new BizException("XN631652", "班组信息已上传,不可修改");
         }
         teamMasterBO.refreshTeamMaster(data);
+        operateLogBO.saveOperateLog(EOperateLogRefType.TeamMaster.getCode(),
+            data.getCode(), "修改项目班组", user, null);
     }
 
     @Override
@@ -190,21 +188,28 @@ public class TeamMasterAOImpl implements ITeamMasterAO {
 
     @Override
     public void importTeamMaster(XN631653Req req) {
-        // 根据corpCode获取企业信息
-        CorpBasicinfo corpBasicinfo = corpBasicinfoBO
-            .getCorpBasicinfoByCorp(req.getCorpCode());
-        if (corpBasicinfo == null) {
-            throw new BizException("XN631654", "企业信息编号不存在" + req.getCorpCode());
-        }
-        // 判断项目是否存在
-        ProjectCorpInfo condition = new ProjectCorpInfo();
-        condition.setProjectCode(req.getProjectCode());
-        ProjectCorpInfo projectCorpInfo = projectCorpInfoBO
-            .getProjectCorpInfo(condition);
-        if (projectCorpInfo == null) {
+        User user = userBO.getBriefUser(req.getUserId());
+        ProjectConfig projectConfigByProject = projectConfigBO
+            .getProjectConfigByProject(req.getProjectCode());
+        if (projectConfigByProject == null) {
             throw new BizException("XN631654", "项目不存在" + req.getProjectCode());
         }
-        teamMasterBO.saveTeamMasterByImport(req);
+        // 根据corpCode获取企业信息
+        List<XN631653ReqData> dateList = req.getDateList();
+        for (XN631653ReqData xn631653ReqData : dateList) {
+            ProjectCorpInfo projectCorpInfo = projectCorpInfoBO
+                .getProjectCorpInfoByCorpCode(xn631653ReqData.getCorpCode());
+            if (projectCorpInfo == null) {
+                throw new BizException("XN631653", "企业信息不存在");
+            }
+            TeamMaster teamMaster = new TeamMaster();
+            BeanUtils.copyProperties(xn631653ReqData, teamMaster);
+            teamMaster.setCorpName(projectCorpInfo.getCorpName());
+            String code = teamMasterBO.saveTeamMaster(teamMaster);
+            operateLogBO.saveOperateLog(EOperateLogRefType.TeamMaster.getCode(),
+                code, "导入班组信息", user, null);
+        }
+
     }
 
 }

@@ -52,6 +52,9 @@ public class ProjectWorkerEntryExitHistoryBOImpl
         ProjectWorkerEntryExitHistory data = new ProjectWorkerEntryExitHistory();
         ProjectWorker projectWorker = projectWorkerBO
             .getProjectWorker(req.getProjectWorkerCode());
+        if (projectWorker == null) {
+            throw new BizException("XN631730", "员工信息不存在");
+        }
         String code = null;
         code = OrderNoGenerater
             .generate(EGeneratePrefix.ProjectWorkerEntryExitHistory.getCode());

@@ -86,14 +86,10 @@ public class ProjectCorpInfoAOImpl implements IProjectCorpInfoAO {
         if (null == corpBasicinfo) {
             throw new BizException("XN631630", "企业信息不存在");
         }
-        String projectCorpType = ECorpType
-            .getProjectCorpDictValue(req.getCorpType());
-        req.setCorpType(projectCorpType);
+        ECorpType.checkExists(req.getCorpType());
         if (org.apache.commons.lang3.StringUtils
             .isNotBlank(req.getPmIDCardType())) {
-            String pmImCardType = EIdCardType
-                .getIdCardDictValue(req.getPmIDCardType());
-            req.setPmIDCardType(pmImCardType);
+            EIdCardType.checkExists(req.getPmIDCardType());
         }
         projectCorpInfoBO.refreshProjectCorpInfo(req);
 

@@ -18,7 +18,6 @@ import com.cdkj.gchf.domain.ProjectConfig;
 import com.cdkj.gchf.domain.User;
 import com.cdkj.gchf.dto.req.XN631250Req;
 import com.cdkj.gchf.dto.req.XN631251Req;
-import com.cdkj.gchf.dto.req.XN631253ReqCode;
 import com.cdkj.gchf.dto.req.XN631900Req;
 import com.cdkj.gchf.dto.req.XN631901Req;
 import com.cdkj.gchf.enums.EOperateLogOperate;
@@ -87,8 +86,7 @@ public class CorpBasicinfoAOImpl implements ICorpBasicinfoAO {
     }
 
     @Override
-    public void uploadCorpBasicinfo(List<XN631253ReqCode> codeList,
-            String userId) {
+    public void uploadCorpBasicinfo(List<String> codeList, String userId) {
 
         User operator = userBO.getBriefUser(userId);
 
@@ -98,9 +96,9 @@ public class CorpBasicinfoAOImpl implements ICorpBasicinfoAO {
             throw new BizException("XN631253", "不存在已配置的项目，无法上传");
         }
 
-        for (XN631253ReqCode codeReq : codeList) {
+        for (String codeReq : codeList) {
             CorpBasicinfo corpBasicinfo = corpBasicinfoBO
-                .getCorpBasicinfo(codeReq.getCode());
+                .getCorpBasicinfo(codeReq);
 
             if (EUploadStatus.UPLOAD_UNEDITABLE.getCode()
                 .equals(corpBasicinfo.getUploadStatus()))
@@ -109,7 +107,7 @@ public class CorpBasicinfoAOImpl implements ICorpBasicinfoAO {
             corpBasicinfo.setLegalManIdcardNumber(
                 AesUtils.encrypt(corpBasicinfo.getLegalManIdcardNumber(),
                     defaultProjectConfig.getSecret()));
-
+            System.out.println(corpBasicinfo.getLegalManIdcardNumber());
             // 上传企业信息
             String resString = GovConnecter.getGovData("Corp.Upload",
                 JSONObject

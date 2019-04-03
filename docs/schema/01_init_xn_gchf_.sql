@@ -887,6 +887,22 @@ INSERT INTO `tsys_dict` (`type`,`parent_key`,`dkey`,`dvalue`,`updater`,`update_d
 INSERT INTO `tsys_dict` (`type`,`parent_key`,`dkey`,`dvalue`,`updater`,`update_datetime`,`remark`) VALUES ('1','upload_status','1','已上传可修改','admin','2018-07-27 03:07:37',NULL);
 INSERT INTO `tsys_dict` (`type`,`parent_key`,`dkey`,`dvalue`,`updater`,`update_datetime`,`remark`) VALUES ('1','upload_status','2','已上传不可修改','admin','2018-07-27 03:07:37',NULL);
 
+INSERT INTO `tsys_dict` (`type`,`parent_key`,`dkey`,`dvalue`,`updater`,`update_datetime`,`remark`) VALUES ('0',null,'bankcard_bussiness_type ','银行卡业务类型','admin','2018-07-27 03:07:37',NULL);
+INSERT INTO `tsys_dict` (`type`,`parent_key`,`dkey`,`dvalue`,`updater`,`update_datetime`,`remark`) VALUES ('1','bankcard_bussiness_type','001','参建单位','admin','2018-07-27 03:07:37',NULL);
+INSERT INTO `tsys_dict` (`type`,`parent_key`,`dkey`,`dvalue`,`updater`,`update_datetime`,`remark`) VALUES ('1','bankcard_bussiness_type','002','人员','admin','2018-07-27 03:07:37',NULL);
+
+INSERT INTO `tsys_dict` (`type`,`parent_key`,`dkey`,`dvalue`,`updater`,`update_datetime`,`remark`) VALUES ('0',null,'operate_log_ref_type ','操作日志类型','admin','2018-07-27 03:07:37',NULL);
+INSERT INTO `tsys_dict` (`type`,`parent_key`,`dkey`,`dvalue`,`updater`,`update_datetime`,`remark`) VALUES ('1','operate_log_ref_type','01','企业基本信息','admin','2018-07-27 03:07:37',NULL);
+INSERT INTO `tsys_dict` (`type`,`parent_key`,`dkey`,`dvalue`,`updater`,`update_datetime`,`remark`) VALUES ('1','operate_log_ref_type','02','项目配置信息','admin','2018-07-27 03:07:37',NULL);
+INSERT INTO `tsys_dict` (`type`,`parent_key`,`dkey`,`dvalue`,`updater`,`update_datetime`,`remark`) VALUES ('1','operate_log_ref_type','03','参见单位基本信息','admin','2018-07-27 03:07:37',NULL);
+INSERT INTO `tsys_dict` (`type`,`parent_key`,`dkey`,`dvalue`,`updater`,`update_datetime`,`remark`) VALUES ('1','operate_log_ref_type','04','项目班组信息','admin','2018-07-27 03:07:37',NULL);
+INSERT INTO `tsys_dict` (`type`,`parent_key`,`dkey`,`dvalue`,`updater`,`update_datetime`,`remark`) VALUES ('1','operate_log_ref_type','05','劳动合同信息','admin','2018-07-27 03:07:37',NULL);
+INSERT INTO `tsys_dict` (`type`,`parent_key`,`dkey`,`dvalue`,`updater`,`update_datetime`,`remark`) VALUES ('1','operate_log_ref_type','06','人员考勤信息','admin','2018-07-27 03:07:37',NULL);
+INSERT INTO `tsys_dict` (`type`,`parent_key`,`dkey`,`dvalue`,`updater`,`update_datetime`,`remark`) VALUES ('1','operate_log_ref_type','07','人员进退场信息','admin','2018-07-27 03:07:37',NULL);
+INSERT INTO `tsys_dict` (`type`,`parent_key`,`dkey`,`dvalue`,`updater`,`update_datetime`,`remark`) VALUES ('1','operate_log_ref_type','08','工资单信息','admin','2018-07-27 03:07:37',NULL);
+INSERT INTO `tsys_dict` (`type`,`parent_key`,`dkey`,`dvalue`,`updater`,`update_datetime`,`remark`) VALUES ('1','operate_log_ref_type','09','人员实名制信息','admin','2018-07-27 03:07:37',NULL);
+INSERT INTO `tsys_dict` (`type`,`parent_key`,`dkey`,`dvalue`,`updater`,`update_datetime`,`remark`) VALUES ('1','operate_log_ref_type','10','工资单详情信息','admin','2018-07-27 03:07:37',NULL);
+
 /*
 -- Query: SELECT * FROM dev_xn_gchf.tsys_config
 LIMIT 0, 1000

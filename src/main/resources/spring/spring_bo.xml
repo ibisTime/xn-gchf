@@ -54,7 +54,7 @@
 	
 	<bean id="corpBasicinfoBO" class="com.cdkj.gchf.bo.impl.CorpBasicinfoBOImpl">
 		<property name="paginableDAO" ref="corpBasicinfoDAOImpl"/>
-	</bean>	
+	</bean>
 	
 	<bean id="projectConfigBO" class="com.cdkj.gchf.bo.impl.ProjectConfigBOImpl">
 		<property name="paginableDAO" ref="projectConfigDAOImpl"/>

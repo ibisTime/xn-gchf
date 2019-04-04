@@ -9,6 +9,8 @@ public class XN631785Req extends APageReq {
      */
     private static final long serialVersionUID = -2851139745544338653L;
 
+    private String payMonth;
+
     @NotBlank
     private String userId;
 
@@ -19,4 +21,21 @@ public class XN631785Req extends APageReq {
     public void setUserID(String userId) {
         this.userId = userId;
     }
+
+    public String getPayMonth() {
+        return payMonth;
+    }
+
+    public void setPayMonth(String payMonth) {
+        this.payMonth = payMonth;
+    }
+
+    public String getUserId() {
+        return userId;
+    }
+
+    public void setUserId(String userId) {
+        this.userId = userId;
+    }
+
 }

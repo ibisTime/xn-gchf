@@ -31,11 +31,11 @@ import com.cdkj.gchf.dto.req.XN631633ReqList;
 import com.cdkj.gchf.dto.req.XN631905Req;
 import com.cdkj.gchf.dto.req.XN631906Req;
 import com.cdkj.gchf.dto.req.XN631907Req;
-import com.cdkj.gchf.enums.ECorpType;
 import com.cdkj.gchf.enums.EGeneratePrefix;
 import com.cdkj.gchf.enums.EIdCardType;
 import com.cdkj.gchf.enums.EOperateLogOperate;
 import com.cdkj.gchf.enums.EOperateLogRefType;
+import com.cdkj.gchf.enums.EProjectCorpType;
 import com.cdkj.gchf.enums.EUploadStatus;
 import com.cdkj.gchf.exception.BizException;
 import com.cdkj.gchf.gov.AsyncQueueHolder;
@@ -67,10 +67,10 @@ public class ProjectCorpInfoBOImpl extends PaginableBOImpl<ProjectCorpInfo>
     @Override
     public String saveProjectCorpInfo(XN631630Req req) {
         ProjectCorpInfo projectCorpInfo = new ProjectCorpInfo();
-        ECorpType.checkExists(req.getCorpType());
+        EProjectCorpType.checkExists(req.getCorpType());
         BeanUtils.copyProperties(req, projectCorpInfo);
         CorpBasicinfo corpBasicinfo = corpBasicinfoBO
-            .getCorpBasicinfo(req.getCorpCode());
+            .getCorpBasicinfoByCorp(req.getCorpCode());
         projectCorpInfo.setCorpName(corpBasicinfo.getCorpName());
         if (StringUtils.isNotBlank(req.getPmIDCardType())) {
             EIdCardType.checkExists(req.getPmIDCardType());

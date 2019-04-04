@@ -31,7 +31,7 @@ public class XN631747 extends AProcessor {
         ProjectWorkerEntryExitHistory condition = new ProjectWorkerEntryExitHistory();
         BeanUtils.copyProperties(req, condition);
         String column = req.getOrderColumn();
-        if (org.apache.commons.lang3.StringUtils.isNotBlank(column)) {
+        if (org.apache.commons.lang3.StringUtils.isBlank(column)) {
             column = IProjectWorkerEntryExitHistoryAO.DEFAULT_ORDER_COLUMN;
         }
         condition.setOrder(column, req.getOrderDir());

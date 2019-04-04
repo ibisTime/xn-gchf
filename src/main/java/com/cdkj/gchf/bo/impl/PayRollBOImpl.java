@@ -2,6 +2,7 @@ package com.cdkj.gchf.bo.impl;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -56,7 +57,10 @@ public class PayRollBOImpl extends PaginableBOImpl<PayRoll>
         String code = OrderNoGenerater
             .generate(EGeneratePrefix.PayRoll.getCode());
         payRoll.setCode(code);
-        payRoll.setPayMonth(data.getPayMonth());
+        data.getPayMonth();
+        Date payMonth = DateUtil.strToDate(data.getPayMonth(),
+            DateUtil.FRONT_DATE_FORMAT_STRING);
+        payRoll.setPayMonth(payMonth);
         payRollDAO.insert(payRoll);
         return code;
     }

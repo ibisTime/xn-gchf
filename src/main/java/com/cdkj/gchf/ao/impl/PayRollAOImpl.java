@@ -1,7 +1,6 @@
 package com.cdkj.gchf.ao.impl;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 import org.apache.commons.collections.CollectionUtils;
@@ -35,14 +34,10 @@ import com.cdkj.gchf.dto.req.XN631812Req;
 import com.cdkj.gchf.dto.req.XN631812ReqData;
 import com.cdkj.gchf.dto.req.XN631920Req;
 import com.cdkj.gchf.dto.req.XN631921Req;
-import com.cdkj.gchf.enums.EOperateLogOperate;
 import com.cdkj.gchf.enums.EOperateLogRefType;
 import com.cdkj.gchf.enums.EUploadStatus;
 import com.cdkj.gchf.exception.BizException;
-import com.cdkj.gchf.gov.AsyncQueueHolder;
-import com.cdkj.gchf.gov.GovConnecter;
 import com.cdkj.gchf.http.JsonUtils;
-import com.google.gson.JsonObject;
 
 @Service
 public class PayRollAOImpl implements IPayRollAO {
@@ -181,50 +176,49 @@ public class PayRollAOImpl implements IPayRollAO {
         return payRollBO.queryPayRollList(condition);
     }
 
+    /**
+     * 
+     * <p>Title: uploadPayRollList</p>   
+     * <p>Description: 上传工资单详情 </p>   
+     */
     public void uploadPayRollList(String userId, List<String> codeList) {
         User user = userBO.getBriefUser(userId);
         for (String code : codeList) {
             PayRollDetail payRollDetail = payRollDetailBO
                 .getPayRollDetail(code);
             String payRollCode = payRollDetail.getPayRollCode();
-            List<PayRollDetail> payRollDetailByPayRollCode = payRollDetailBO
-                .getPayRollDetailByPayRollCode(payRollCode);
+            // List<PayRollDetail> payRollDetailByPayRollCode = payRollDetailBO
+            // .getPayRollDetailByPayRollCode(payRollCode);
             // 拿到payroll数据
-            for (PayRollDetail tempPayRollDetail : payRollDetailByPayRollCode) {
-                PayRoll conditionPayRoll = new PayRoll();
-                conditionPayRoll.setCode(tempPayRollDetail.getPayRollCode());
-                PayRoll payRoll = payRollBO
-                    .getPayRollByCondition(conditionPayRoll);
-                TeamMaster tempteamMaster = new TeamMaster();
-                tempteamMaster.setCode(null);
-                tempteamMaster.setTeamSysNo(payRoll.getTeamSysNo());
-                TeamMaster teamMaster = teamMasterBO
-                    .getTeamMasterByCondition(tempteamMaster);
+            PayRoll payRoll = payRollBO.getPayRoll(payRollCode);
+            payRoll.getTeamSysNo();
+            payRoll.getPayMonth();
+            payRoll.getProjectCode();
+            payRoll.getCorpCode();
 
-                ProjectConfig projectConfig = projectConfigBO
-                    .getProjectConfigByLocal(payRoll.getProjectCode());
-                if (projectConfig == null) {
-                    throw new BizException("XN631774", "不存在已配置的项目，无法上传");
-                }
-
-                // 拿到工资详情code
-                JsonObject uploadRequestJsontoPlantform = payRollDetailBO
-                    .getUploadRequestJsontoPlantform(payRoll, teamMaster,
-                        projectConfig, tempPayRollDetail);
-
-                String resString = GovConnecter.getGovData("Payroll.Add",
-                    uploadRequestJsontoPlantform.toString(),
-                    projectConfig.getProjectCode(), projectConfig.getSecret());
-
-                String log = operateLogBO.saveOperateLog(
-                    EOperateLogRefType.PayRoll.getCode(),
-                    uploadRequestJsontoPlantform.toString(),
-                    EOperateLogOperate.UploadPayRoll.getValue(), user, null);
-
-                AsyncQueueHolder.addSerial(resString, projectConfig,
-                    "payRollDetailBO", code,
-                    EUploadStatus.UPLOAD_UNEDITABLE.getValue(), log);
+            ProjectConfig projectConfigByLocal = projectConfigBO
+                .getProjectConfigByLocal(payRoll.getProjectCode());
+            if (projectConfigByLocal == null) {
+                throw new BizException("XN631813", "项目未配置");
             }
+            String projectCode = projectConfigByLocal.getProjectCode();
+            TeamMaster condition = new TeamMaster();
+            // condition.setTeamSysNo(teamSysNo);
+            // teamMasterBO.getTeamMasterByCondition(condition);
+            //
+            // String resString = GovConnecter.getGovData("Payroll.Add",
+            // uploadRequestJsontoPlantform.toString(),
+            // projectConfig.getProjectCode(), projectConfig.getSecret());
+            //
+            // String log = operateLogBO.saveOperateLog(
+            // EOperateLogRefType.PayRoll.getCode(),
+            // uploadRequestJsontoPlantform.toString(),
+            // EOperateLogOperate.UploadPayRoll.getValue(), user, null);
+            //
+            // AsyncQueueHolder.addSerial(resString, projectConfig,
+            // "payRollDetailBO", code,
+            // EUploadStatus.UPLOAD_UNEDITABLE.getValue(), log);
+            // }
         }
 
     }
@@ -252,12 +246,8 @@ public class PayRollAOImpl implements IPayRollAO {
             throw new BizException("XN631773", "参建单位不存在");
         }
         List<XN631812ReqData> dateList = req.getDateList();
-        Date payMonth = req.getPayMonth();
         for (XN631812ReqData xn631773ReqData : dateList) {
-            if (xn631773ReqData.getPayMonth().getMonth() != payMonth
-                .getMonth()) {
-                throw new BizException("XN631773", "导入的工资单月数不匹配");
-            }
+            xn631773ReqData.getPayMonth();
             TeamMaster condition = new TeamMaster();
             condition.setCorpCode(xn631773ReqData.getCorpCode());
             condition.setTeamName(xn631773ReqData.getTeamName());

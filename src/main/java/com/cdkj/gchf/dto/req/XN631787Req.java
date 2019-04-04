@@ -8,6 +8,8 @@ public class XN631787Req extends AListReq {
      */
     private static final long serialVersionUID = 777797441845578835L;
 
+    private String month;
+
     @NotBlank
     private String userId;
 
@@ -17,6 +19,14 @@ public class XN631787Req extends AListReq {
 
     public void setUserId(String userId) {
         this.userId = userId;
+    }
+
+    public String getMonth() {
+        return month;
+    }
+
+    public void setMonth(String month) {
+        this.month = month;
     }
 
 }

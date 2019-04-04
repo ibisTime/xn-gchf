@@ -10,6 +10,7 @@ import com.cdkj.gchf.core.ObjValidater;
 import com.cdkj.gchf.core.StringValidater;
 import com.cdkj.gchf.domain.WorkerContract;
 import com.cdkj.gchf.dto.req.XN631685Req;
+import com.cdkj.gchf.enums.EContractPeriodType;
 import com.cdkj.gchf.exception.BizException;
 import com.cdkj.gchf.exception.ParaException;
 import com.cdkj.gchf.spring.SpringContextHolder;
@@ -33,9 +34,12 @@ public class XN631685 extends AProcessor {
     public Object doBusiness() throws BizException {
         WorkerContract condition = new WorkerContract();
         BeanUtils.copyProperties(req, condition);
-        int contractPeriod = Integer.parseInt(req.getContractPeriodType());
-        String column = null;
-        condition.setContractPeriodType(contractPeriod);
+        String column = req.getOrderColumn();
+        if (req.getContractPeriodType() != null) {
+            EContractPeriodType.checkExists(req.getContractPeriodType());
+            int contractPeriod = Integer.parseInt(req.getContractPeriodType());
+            condition.setContractPeriodType(contractPeriod);
+        }
         if (StringUtils.isBlank(column)) {
             column = IWorkerContractAO.DEFAULT_ORDER_COLUMN;
         }

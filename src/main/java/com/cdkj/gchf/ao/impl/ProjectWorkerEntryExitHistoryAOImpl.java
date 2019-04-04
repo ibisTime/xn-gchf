@@ -1,5 +1,6 @@
 package com.cdkj.gchf.ao.impl;
 
+import java.util.Date;
 import java.util.List;
 
 import org.apache.commons.collections.CollectionUtils;
@@ -18,6 +19,7 @@ import com.cdkj.gchf.bo.IUserBO;
 import com.cdkj.gchf.bo.IWorkerInfoBO;
 import com.cdkj.gchf.bo.base.Paginable;
 import com.cdkj.gchf.common.AesUtils;
+import com.cdkj.gchf.common.DateUtil;
 import com.cdkj.gchf.domain.ProjectConfig;
 import com.cdkj.gchf.domain.ProjectWorker;
 import com.cdkj.gchf.domain.ProjectWorkerEntryExitHistory;
@@ -203,10 +205,11 @@ public class ProjectWorkerEntryExitHistoryAOImpl
             ProjectConfig projectConfigByLocal = projectConfigBO
                 .getProjectConfigByLocal(
                     projectWorkerEntryExitHistory.getProjectCode());
-
+            if (projectConfigByLocal == null) {
+                throw new BizException("XN631734", "项目编号不存在");
+            }
             TeamMaster teamMaster = teamMasterBO
                 .getTeamMaster(projectWorkerEntryExitHistory.getTeamSysNo());
-
             JsonObject requestJson = projectWorkerEntryExitHistoryBO
                 .getRequestJson(teamMaster, projectWorkerEntryExitHistory,
                     projectConfigByLocal);
@@ -263,6 +266,9 @@ public class ProjectWorkerEntryExitHistoryAOImpl
             condition.setProjectCode(projectCode);
             TeamMaster masterByCondition = teamMasterBO
                 .getTeamMasterByCondition(condition);
+            if (masterByCondition == null) {
+                throw new BizException("XN631733", "班组信息不存在");
+            }
             entryExitHistory.setCorpCode(masterByCondition.getCorpCode());
             entryExitHistory.setCorpName(masterByCondition.getCorpName());
             entryExitHistory.setWorkerCode(infoByIdCardNumber.getCode());
@@ -272,8 +278,9 @@ public class ProjectWorkerEntryExitHistoryAOImpl
                 .setJoinDatetime(infoByIdCardNumber.getJoinedTime());
             entryExitHistory.setIdcardType(xn631733ReqData.getIdcardType());
             entryExitHistory.setIdcardNumber(xn631733ReqData.getIdcardNumber());
-
-            entryExitHistory.setDate(xn631733ReqData.getDate());
+            Date date = DateUtil.strToDate(xn631733ReqData.getDate(),
+                DateUtil.FRONT_DATE_FORMAT_STRING);
+            entryExitHistory.setDate(date);
             entryExitHistory.setType(xn631733ReqData.getType());
             String code = projectWorkerEntryExitHistoryBO
                 .saveProjectWorkerEntryExitHistory(entryExitHistory);

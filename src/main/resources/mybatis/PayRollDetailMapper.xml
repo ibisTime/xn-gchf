@@ -22,6 +22,7 @@
 		<result column="balance_date" property="balanceDate" />
 		<result column="third_pay_roll_code" property="thirdPayRollCode" />
 		<result column="upload_status" property="uploadStatus" />
+
 	</resultMap>
 	<sql id="where_condition">
 		<trim prefix="WHERE" prefixOverrides="AND | OR">
@@ -114,7 +115,7 @@
 	<select id="select_PayRollDetail" parameterType="payRollDetail"
 		resultMap="payRollDetail_DB_Result">
 		SELECT
-		 t.code
+		t.code
 		,t.pay_roll_code
 		,t.worker_name
 		,t.idcard_type

@@ -1,6 +1,5 @@
 package com.cdkj.gchf.dto.req;
 
-import java.util.Date;
 import java.util.List;
 
 import org.hibernate.validator.constraints.NotBlank;
@@ -31,7 +30,7 @@ public class XN631770Req {
     private String teamSysNo;
 
     // 发放工资的月份
-    private Date payMonth;
+    private String payMonth;
 
     @NotEmpty
     private List<XN631770ReqDetail> detailList;
@@ -78,11 +77,11 @@ public class XN631770Req {
         this.teamSysNo = teamSysNo;
     }
 
-    public Date getPayMonth() {
+    public String getPayMonth() {
         return payMonth;
     }
 
-    public void setPayMonth(Date payMonth) {
+    public void setPayMonth(String payMonth) {
         this.payMonth = payMonth;
     }
 

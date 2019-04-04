@@ -25,6 +25,9 @@
             <if test="teamSysNo != null and teamSysNo != '' ">
                 AND t.team_sys_no = #{teamSysNo}
             </if>
+            <if test="payMonth != null and payMonth != '' ">
+                AND t.pay_month = #{payMonth}
+            </if>
 		</trim>
 	</sql>
 	<select id="select_payRoll" parameterType="payRoll" resultMap="payRoll_DB_Result">

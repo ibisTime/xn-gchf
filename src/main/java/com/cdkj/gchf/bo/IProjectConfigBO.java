@@ -9,7 +9,7 @@ import com.cdkj.gchf.dto.req.XN631622Req;
 
 public interface IProjectConfigBO extends IPaginableBO<ProjectConfig> {
 
-    public String saveProjectConfig(XN631620Req req);
+    public String saveProjectConfig(String localProjectCode, XN631620Req req);
 
     public int removeProjectConfig(String code);
 

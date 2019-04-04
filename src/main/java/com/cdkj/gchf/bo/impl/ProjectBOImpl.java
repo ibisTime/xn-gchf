@@ -26,6 +26,19 @@ public class ProjectBOImpl extends PaginableBOImpl<Project>
     private IProjectDAO projectDAO;
 
     @Override
+    public String saveProject(String name) {
+        Project project = new Project();
+
+        String code = OrderNoGenerater
+            .generate(EGeneratePrefix.Project.getCode());
+        project.setCode(code);
+
+        projectDAO.insert(project);
+
+        return code;
+    }
+
+    @Override
     public String saveProject(XN631600Req req, CorpBasicinfo contractorCorpInfo,
             CorpBasicinfo buildCorpInfo) {
         Project project = new Project();
@@ -72,4 +85,5 @@ public class ProjectBOImpl extends PaginableBOImpl<Project>
         }
         return data;
     }
+
 }

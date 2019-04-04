@@ -25,13 +25,14 @@ public class ProjectConfigBOImpl extends PaginableBOImpl<ProjectConfig>
     private IProjectConfigDAO projectConfigDAO;
 
     @Override
-    public String saveProjectConfig(XN631620Req req) {
+    public String saveProjectConfig(String localProjectCode, XN631620Req req) {
         ProjectConfig projectConfig = new ProjectConfig();
         BeanUtils.copyProperties(req, projectConfig);
 
         String code = OrderNoGenerater
             .generate(EGeneratePrefix.ProjectConfig.getCode());
         projectConfig.setCode(code);
+        projectConfig.setLocalProjectCode(localProjectCode);
 
         projectConfigDAO.insert(projectConfig);
 

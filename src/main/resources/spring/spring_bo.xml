@@ -104,8 +104,8 @@
 	<bean id="operateLogBO" class="com.cdkj.gchf.bo.impl.OperateLogBOImpl">
 		<property name="paginableDAO" ref="operateLogDAOImpl" />
 	</bean>
+	
 	<bean id="workerInfoBO" class="com.cdkj.gchf.bo.impl.WorkerInfoBOImpl">
 		<property name="paginableDAO" ref="workerInfoDAOImpl" />
 	</bean>
-
 </beans>

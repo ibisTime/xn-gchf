@@ -16,7 +16,6 @@ import org.springframework.transaction.annotation.Transactional;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.alibaba.fastjson.serializer.SerializerFeature;
-import com.cdkj.gchf.ao.ITeamMasterAO;
 import com.cdkj.gchf.bo.IOperateLogBO;
 import com.cdkj.gchf.bo.IProjectConfigBO;
 import com.cdkj.gchf.bo.IProjectCorpInfoBO;
@@ -31,7 +30,6 @@ import com.cdkj.gchf.common.DateUtil;
 import com.cdkj.gchf.core.OrderNoGenerater;
 import com.cdkj.gchf.dao.IWorkerContractDAO;
 import com.cdkj.gchf.domain.ProjectConfig;
-import com.cdkj.gchf.domain.ProjectCorpInfo;
 import com.cdkj.gchf.domain.ProjectWorker;
 import com.cdkj.gchf.domain.User;
 import com.cdkj.gchf.domain.WorkerContract;
@@ -70,16 +68,13 @@ public class WorkerContractBOImpl extends PaginableBOImpl<WorkerContract>
     private IOperateLogBO operateLogBO;
 
     @Autowired
-    private IProjectWorkerBO projectWorkerBO;
-
-    @Autowired
-    private ITeamMasterAO teamMasterBO;
-
-    @Autowired
     private IProjectCorpInfoBO projectCorpInfoBO;
 
     @Autowired
     private IWorkerInfoBO workerInfoBO;
+
+    @Autowired
+    private IProjectWorkerBO projectWorkerBO;
 
     @Autowired
     private IWorkerContractBO workerContractBO;
@@ -189,19 +184,10 @@ public class WorkerContractBOImpl extends PaginableBOImpl<WorkerContract>
     public String saveWorkerContract(XN631670Req req) {
         ProjectWorker projectWorker = projectWorkerBO
             .getProjectWorker(req.getWorkerCode());
-        ProjectConfig projectConfigByLocal = projectConfigBO
-            .getProjectConfigByLocal(req.getProjectCode());
         String code = null;
-        ProjectCorpInfo projectCorpInfo = projectCorpInfoBO
-            .getProjectCorpInfoByCorpCode(req.getCorpCode());
         code = OrderNoGenerater
             .generate(EGeneratePrefix.WorkerContract.getCode());
-
         WorkerContract workerContract = new WorkerContract();
-        workerContract.setProjectCode(projectConfigByLocal.getProjectCode());
-        workerContract.setProjectName(projectConfigByLocal.getProjectName());
-        workerContract.setCorpCode(projectCorpInfo.getCorpCode());
-        workerContract.setCorpName(projectCorpInfo.getCorpName());
         workerContract.setUnit(Integer.parseInt(req.getUnit()));
         workerContract.setContractPeriodType(
             Integer.parseInt(req.getContractPeriodType()));
@@ -209,6 +195,8 @@ public class WorkerContractBOImpl extends PaginableBOImpl<WorkerContract>
         BeanUtils.copyProperties(req, workerContract);
         BigDecimal unitPrice = new BigDecimal(req.getUnitPrice());
         workerContract.setUnitPrice(unitPrice);
+        workerContract.setContractPeriodType(
+            Integer.parseInt(req.getContractPeriodType()));
         workerContract.setCode(code);
         Date startDate = DateUtil.strToDate(req.getStartDate(),
             DateUtil.FRONT_DATE_FORMAT_STRING);
@@ -216,6 +204,11 @@ public class WorkerContractBOImpl extends PaginableBOImpl<WorkerContract>
             DateUtil.FRONT_DATE_FORMAT_STRING);
         workerContract.setStartDate(startDate);
         workerContract.setEndDate(endDate);
+        workerContract.setStartDate(DateUtil.strToDate(req.getStartDate(),
+            DateUtil.DATA_TIME_PATTERN_1));
+        workerContract.setEndDate(
+            DateUtil.strToDate(req.getEndDate(), DateUtil.DATA_TIME_PATTERN_1));
+        workerContract.setUnitPrice(new BigDecimal(req.getUnitPrice()));
         workerContract.setUploadStatus(EUploadStatus.TO_UPLOAD.getCode());
         workerContractDAO.insert(workerContract);
         return code;

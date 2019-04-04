@@ -71,6 +71,7 @@ public class TeamMasterAOImpl implements ITeamMasterAO {
         if (corpBasicinfoByCorp == null) {
             throw new BizException("XN631650", "企业信息不存在");
         }
+
         return teamMasterBO.saveTeamMaster(data, corpBasicinfoByCorp);
     }
 
@@ -112,7 +113,6 @@ public class TeamMasterAOImpl implements ITeamMasterAO {
             if (null == projectConfig) {
                 throw new BizException("XN631253", "不存在已配置的项目，无法上传");
             }
-            // projectConfig.getProjectCode();
             // 处理需要加密的信息
             if (StringUtils
                 .isNotBlank(teamMaster.getResponsiblePersonIdNumber())) {
@@ -124,10 +124,10 @@ public class TeamMasterAOImpl implements ITeamMasterAO {
             teamMaster.setProjectCode(projectConfig.getProjectCode());
 
             // 上传班组信息
-            String jsonStringWithDateFormat = JSONObject
+            String teamMasterInfo = JSONObject
                 .toJSONStringWithDateFormat(teamMaster, "yyyy-MM-dd");
             String resString = GovConnecter.getGovData("Team.Add",
-                jsonStringWithDateFormat, projectConfig.getProjectCode(),
+                teamMasterInfo, projectConfig.getProjectCode(),
                 projectConfig.getSecret());
 
             // 添加操作日志

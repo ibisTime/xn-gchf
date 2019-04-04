@@ -12,7 +12,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.alibaba.fastjson.JSONObject;
-import com.cdkj.gchf.bo.ICorpBasicinfoBO;
 import com.cdkj.gchf.bo.IOperateLogBO;
 import com.cdkj.gchf.bo.ITeamMasterBO;
 import com.cdkj.gchf.bo.IUserBO;
@@ -46,8 +45,6 @@ import com.cdkj.gchf.gov.SerialHandler;
 @Component
 public class TeamMasterBOImpl extends PaginableBOImpl<TeamMaster>
         implements ITeamMasterBO {
-    @Autowired
-    private ICorpBasicinfoBO corpBasicinfoBO;
 
     @Autowired
     private ITeamMasterDAO teamMasterDAO;
@@ -83,10 +80,10 @@ public class TeamMasterBOImpl extends PaginableBOImpl<TeamMaster>
             teamMasterInfo
                 .setTeamLeaderIdcardType(data.getTeamLeaderIdcardType());
         }
+
         String code = OrderNoGenerater
             .generate(EGeneratePrefix.TeamMaster.getCode());
         teamMasterInfo.setCode(code);
-
         teamMasterInfo.setCorpName(corpBasicinfo.getCorpName());
         teamMasterInfo.setUploadStatus(EUploadStatus.TO_UPLOAD.getCode());
         teamMasterDAO.insert(teamMasterInfo);
@@ -103,25 +100,25 @@ public class TeamMasterBOImpl extends PaginableBOImpl<TeamMaster>
     @Override
     public void refreshTeamMaster(XN631652Req data) {
         TeamMaster teamMaster = new TeamMaster();
-        teamMaster.setCode(data.getCode());
-        TeamMaster select = teamMasterDAO.select(teamMaster);
-        BeanUtils.copyProperties(data, select);
-        if (data.getEntryTime() != null) {
+        BeanUtils.copyProperties(data, teamMaster);
+
+        if (StringUtils.isNotBlank(data.getEntryTime())) {
             Date entryTime = DateUtil.strToDate(data.getEntryTime(),
                 DateUtil.FRONT_DATE_FORMAT_STRING);
-            select.setEntryTime(entryTime);
+            teamMaster.setEntryTime(entryTime);
         }
         if (StringUtils.isNotBlank(data.getExitTime())) {
             Date exitTime = DateUtil.strToDate(data.getExitTime(),
                 DateUtil.FRONT_DATE_FORMAT_STRING);
-            select.setExitTime(exitTime);
+            teamMaster.setExitTime(exitTime);
         }
         if (StringUtils.isNotBlank(data.getResponsiblePersonIDCardType())) {
             String responsibleIdCardType = EIdCardType
                 .getIdCardDictValue(data.getResponsiblePersonIDCardType());
-            select.setResponsiblePersonIdcardType(responsibleIdCardType);
+            teamMaster.setResponsiblePersonIdcardType(responsibleIdCardType);
         }
-        teamMasterDAO.update(select);
+
+        teamMasterDAO.update(teamMaster);
     }
 
     @Override

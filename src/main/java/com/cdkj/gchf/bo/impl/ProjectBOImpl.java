@@ -32,6 +32,7 @@ public class ProjectBOImpl extends PaginableBOImpl<Project>
         String code = OrderNoGenerater
             .generate(EGeneratePrefix.Project.getCode());
         project.setCode(code);
+        project.setName(name);
 
         projectDAO.insert(project);
 

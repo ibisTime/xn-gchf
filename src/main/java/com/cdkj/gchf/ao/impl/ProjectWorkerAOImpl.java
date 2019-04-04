@@ -179,25 +179,30 @@ public class ProjectWorkerAOImpl implements IProjectWorkerAO {
                 .getProjectWorker(code);
             if (projectWorker.getUploadStatus()
                 .equals(EUploadStatus.UPLOAD_UNEDITABLE.getCode())) {
-                throw new BizException("XN631694", "项目人员已上传");
+                continue;
             }
 
-            ProjectConfig projectConfigByLocal = projectConfigBO
+            ProjectConfig projectConfig = projectConfigBO
                 .getProjectConfigByLocal(projectWorker.getProjectCode());
+            TeamMaster teamMaster = teamMasterBO
+                .getTeamMaster(projectWorker.getTeamSysNo());
 
-            String jsonStringWithDateFormat = JSONObject
+            projectWorker.setProjectCode(projectConfig.getProjectCode());
+            projectWorker.setTeamSysNo(teamMaster.getTeamSysNo());
+
+            String projectWorkerInfo = JSONObject
                 .toJSONStringWithDateFormat(projectWorker, "yyyy-MM-dd");
-            String str_gov_res = GovConnecter.getGovData("ProjectWorker.Add",
-                jsonStringWithDateFormat, projectConfigByLocal.getProjectCode(),
-                projectConfigByLocal.getSecret());
+            String resString = GovConnecter.getGovData("ProjectWorker.Add",
+                projectWorkerInfo, projectConfig.getProjectCode(),
+                projectConfig.getSecret());
 
-            String log = operateLogBO.saveOperateLog(
-                EOperateLogRefType.ProjectWorker.getCode(), str_gov_res,
+            String logCode = operateLogBO.saveOperateLog(
+                EOperateLogRefType.ProjectWorker.getCode(), resString,
                 EOperateLogOperate.UploadProjectWorker.getValue(), user, null);
 
-            AsyncQueueHolder.addSerial(str_gov_res, projectConfigByLocal,
+            AsyncQueueHolder.addSerial(resString, projectConfig,
                 "projectWorkerBO", code,
-                EUploadStatus.UPLOAD_UNEDITABLE.getValue(), log);
+                EUploadStatus.UPLOAD_UNEDITABLE.getValue(), logCode);
         }
 
     }

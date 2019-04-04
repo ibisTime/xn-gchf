@@ -1,5 +1,6 @@
 package com.cdkj.gchf.bo.impl;
 
+import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
 import java.util.HashMap;
 import java.util.List;
@@ -14,17 +15,16 @@ import org.springframework.transaction.annotation.Transactional;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.alibaba.fastjson.serializer.SerializerFeature;
-import com.cdkj.gchf.ao.ITeamMasterAO;
 import com.cdkj.gchf.bo.IOperateLogBO;
 import com.cdkj.gchf.bo.IProjectConfigBO;
 import com.cdkj.gchf.bo.IProjectCorpInfoBO;
-import com.cdkj.gchf.bo.IProjectWorkerBO;
 import com.cdkj.gchf.bo.IUserBO;
 import com.cdkj.gchf.bo.IWorkerContractBO;
 import com.cdkj.gchf.bo.IWorkerInfoBO;
 import com.cdkj.gchf.bo.base.Paginable;
 import com.cdkj.gchf.bo.base.PaginableBOImpl;
 import com.cdkj.gchf.common.AesUtils;
+import com.cdkj.gchf.common.DateUtil;
 import com.cdkj.gchf.core.OrderNoGenerater;
 import com.cdkj.gchf.dao.IWorkerContractDAO;
 import com.cdkj.gchf.domain.ProjectConfig;
@@ -65,12 +65,6 @@ public class WorkerContractBOImpl extends PaginableBOImpl<WorkerContract>
 
     @Autowired
     private IOperateLogBO operateLogBO;
-
-    @Autowired
-    private IProjectWorkerBO projectWorkerBO;
-
-    @Autowired
-    private ITeamMasterAO teamMasterBO;
 
     @Autowired
     private IProjectCorpInfoBO projectCorpInfoBO;
@@ -202,11 +196,14 @@ public class WorkerContractBOImpl extends PaginableBOImpl<WorkerContract>
         workerContract.setWorkerCode(workerInfo.getCode());
         workerContract.setWorkerName(workerInfo.getName());
         workerContract.setWorkerMobile(workerInfo.getCellPhone());
-        workerContract.setContractPeriodType(req.getContractPeriodType());
+        workerContract.setContractPeriodType(
+            Integer.parseInt(req.getContractPeriodType()));
         workerContract.setCode(code);
-        workerContract.setStartDate(req.getStartDate());
-        workerContract.setEndDate(req.getEndDate());
-        workerContract.setUnitPrice(req.getUnitPrice());
+        workerContract.setStartDate(DateUtil.strToDate(req.getStartDate(),
+            DateUtil.DATA_TIME_PATTERN_1));
+        workerContract.setEndDate(
+            DateUtil.strToDate(req.getEndDate(), DateUtil.DATA_TIME_PATTERN_1));
+        workerContract.setUnitPrice(new BigDecimal(req.getUnitPrice()));
         workerContract.setUploadStatus(EUploadStatus.TO_UPLOAD.getCode());
         workerContractDAO.insert(workerContract);
         return code;

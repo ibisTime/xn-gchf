@@ -1,8 +1,5 @@
 package com.cdkj.gchf.dto.req;
 
-import java.math.BigDecimal;
-import java.util.Date;
-
 import org.hibernate.validator.constraints.NotBlank;
 
 public class XN631670Req {
@@ -25,7 +22,7 @@ public class XN631670Req {
     private String updater;
 
     // 更新时间
-    private Date updateDatetime;
+    private String updateDatetime;
 
     // 备注
     private String remark;
@@ -38,19 +35,19 @@ public class XN631670Req {
     private String contractCode;
 
     // 合同期限类型
-    private Integer contractPeriodType;
+    private String contractPeriodType;
 
     // 开始时间
-    private Date startDate;
+    private String startDate;
 
     // 结束时间
-    private Date endDate;
+    private String endDate;
 
     // 计量单位
-    private Integer unit;
+    private String unit;
 
     // 计量单位
-    private BigDecimal unitPrice;
+    private String unitPrice;
 
     // 合同照片
     private String contentPic;
@@ -95,11 +92,11 @@ public class XN631670Req {
         this.updater = updater;
     }
 
-    public Date getUpdateDatetime() {
+    public String getUpdateDatetime() {
         return updateDatetime;
     }
 
-    public void setUpdateDatetime(Date updateDatetime) {
+    public void setUpdateDatetime(String updateDatetime) {
         this.updateDatetime = updateDatetime;
     }
 
@@ -127,43 +124,43 @@ public class XN631670Req {
         this.contractCode = contractCode;
     }
 
-    public Integer getContractPeriodType() {
+    public String getContractPeriodType() {
         return contractPeriodType;
     }
 
-    public void setContractPeriodType(Integer contractPeriodType) {
+    public void setContractPeriodType(String contractPeriodType) {
         this.contractPeriodType = contractPeriodType;
     }
 
-    public Date getStartDate() {
+    public String getStartDate() {
         return startDate;
     }
 
-    public void setStartDate(Date startDate) {
+    public void setStartDate(String startDate) {
         this.startDate = startDate;
     }
 
-    public Date getEndDate() {
+    public String getEndDate() {
         return endDate;
     }
 
-    public void setEndDate(Date endDate) {
+    public void setEndDate(String endDate) {
         this.endDate = endDate;
     }
 
-    public Integer getUnit() {
+    public String getUnit() {
         return unit;
     }
 
-    public void setUnit(Integer unit) {
+    public void setUnit(String unit) {
         this.unit = unit;
     }
 
-    public BigDecimal getUnitPrice() {
+    public String getUnitPrice() {
         return unitPrice;
     }
 
-    public void setUnitPrice(BigDecimal unitPrice) {
+    public void setUnitPrice(String unitPrice) {
         this.unitPrice = unitPrice;
     }
 

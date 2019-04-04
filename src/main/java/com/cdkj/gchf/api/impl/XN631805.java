@@ -32,6 +32,7 @@ public class XN631805 extends AProcessor {
     public Object doBusiness() throws BizException {
         WorkerInfo workerInfo = new WorkerInfo();
         BeanUtils.copyProperties(req, workerInfo);
+
         String orderColumn = req.getOrderColumn();
         int start = StringValidater.toInteger(req.getStart());
         int limit = StringValidater.toInteger(req.getLimit());
@@ -39,6 +40,7 @@ public class XN631805 extends AProcessor {
             orderColumn = IWorkerInfoAO.DEFAULT_ORDER_COLUMN;
         }
         workerInfo.setOrder(orderColumn, req.getOrderDir());
+
         return workerInfoAO.queryWorkerInfoPage(start, limit, workerInfo);
     }
 

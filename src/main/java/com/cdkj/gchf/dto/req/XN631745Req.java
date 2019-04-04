@@ -14,6 +14,10 @@ public class XN631745Req extends APageReq {
     // 企业统一社会信用代码
     private String corpCode;
 
+    private String type;
+
+    private String uploadStatus;
+
     public String getProjectCode() {
         return projectCode;
     }
@@ -32,5 +36,29 @@ public class XN631745Req extends APageReq {
 
     @NotBlank
     private String userId;
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
+    }
+
+    public String getUploadStatus() {
+        return uploadStatus;
+    }
+
+    public void setUploadStatus(String uploadStatus) {
+        this.uploadStatus = uploadStatus;
+    }
+
+    public String getUserId() {
+        return userId;
+    }
+
+    public void setUserId(String userId) {
+        this.userId = userId;
+    }
 
 }

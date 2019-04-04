@@ -1,6 +1,5 @@
 package com.cdkj.gchf.api.impl;
 
-import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.BeanUtils;
 
 import com.cdkj.gchf.ao.IProjectWorkerEntryExitHistoryAO;
@@ -31,14 +30,18 @@ public class XN631747 extends AProcessor {
     public Object doBusiness() throws BizException {
         ProjectWorkerEntryExitHistory condition = new ProjectWorkerEntryExitHistory();
         BeanUtils.copyProperties(req, condition);
-        String column = null;
-        if (StringUtils.isBlank(column)) {
+        String column = req.getOrderColumn();
+        if (org.apache.commons.lang3.StringUtils.isNotBlank(column)) {
             column = IProjectWorkerEntryExitHistoryAO.DEFAULT_ORDER_COLUMN;
         }
         condition.setOrder(column, req.getOrderDir());
-        projectWorkerEntryExitHistoryAO
+        if (req.getType() != null) {
+            int type = Integer.parseInt(req.getType());
+            condition.setType(type);
+        }
+        return projectWorkerEntryExitHistoryAO
             .queryProjectWorkerEntryExitHistoryList(condition);
-        return null;
+
     }
 
     @Override

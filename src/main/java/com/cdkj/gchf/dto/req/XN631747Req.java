@@ -9,12 +9,34 @@ public class XN631747Req extends AListReq {
 
     private String userId;
 
+    // 类型
+    private String type;
+
+    // 上传状态
+    private String uploadStatus;
+
     public String getUserId() {
         return userId;
     }
 
     public void setUserId(String userId) {
         this.userId = userId;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
+    }
+
+    public String getUploadStatus() {
+        return uploadStatus;
+    }
+
+    public void setUploadStatus(String uploadStatus) {
+        this.uploadStatus = uploadStatus;
     }
 
 }

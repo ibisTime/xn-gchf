@@ -74,6 +74,12 @@
 		,birth_place_code
 		,politics_type
 		,create_datetime
+		,is_joined
+		,joined_time
+		,specialty
+		,marital_status
+		,hand_id_card_image_url
+		,culture_level_type
 		)
 		VALUES(
 		#{code}
@@ -96,6 +102,12 @@
 		,#{birthPlaceCode}
 		,#{politicsType}
 		,#{createDatetime}
+		,#{isJoined}
+		,#{joinedTime}
+		,#{specialty}
+		,#{maritalStatus}
+		,#{handIdCardImageUrl}
+		,#{cultureLevelType}
 		)
 	</insert>
 
@@ -150,7 +162,8 @@
 		,start_date =
 		#{startDate}
 		,expiry_date = #{expiryDate}
-		,create_datetime = #{createDatetime}
+		,create_datetime =
+		#{createDatetime}
 		WHERE code = #{code}
 	</update>
 
@@ -211,6 +224,7 @@
 		,t.grant_org
 		,t.positive_id_card_image_url
 		,t.negative_id_card_image_url
+		,t.hand_id_card_image_url
 		,t.start_date
 		,t.expiry_date
 		,t.create_datetime

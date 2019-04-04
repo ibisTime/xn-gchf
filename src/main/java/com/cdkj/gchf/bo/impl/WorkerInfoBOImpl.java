@@ -63,6 +63,11 @@ public class WorkerInfoBOImpl extends PaginableBOImpl<WorkerInfo>
         Date enpiryDate = DateUtil.strToDate(req.getExpiryDate(),
             DateUtil.FRONT_DATE_FORMAT_STRING);
         workerInfo.setExpiryDate(enpiryDate);
+        if (StringUtils.isNotBlank(req.getHasBadMedicalHistory())) {
+            int hasBadMedical = Integer.parseInt(req.getHasBadMedicalHistory());
+            workerInfo.setHasBadMedicalHistory(hasBadMedical);
+        }
+        workerInfo.setSpecialty(req.getSpecialty());
         workerInfo.setGender(Integer.parseInt(req.getGender()));
         workerInfo.setPoliticsType(req.getPoliticsType());
         workerInfo.setCultureLevelType(req.getCultureLevelType());

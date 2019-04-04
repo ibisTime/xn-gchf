@@ -1,7 +1,5 @@
 package com.cdkj.gchf.dto.req;
 
-import java.math.BigDecimal;
-
 import org.hibernate.validator.constraints.NotBlank;
 
 public class XN631670Req {
@@ -37,7 +35,7 @@ public class XN631670Req {
     private String contractCode;
 
     // 合同期限类型
-    private Integer contractPeriodType;
+    private String contractPeriodType;
 
     // 开始时间
     private String startDate;
@@ -46,10 +44,10 @@ public class XN631670Req {
     private String endDate;
 
     // 计量单位
-    private Integer unit;
+    private String unit;
 
     // 计量单位
-    private BigDecimal unitPrice;
+    private String unitPrice;
 
     // 合同照片
     private String contentPic;
@@ -126,11 +124,11 @@ public class XN631670Req {
         this.contractCode = contractCode;
     }
 
-    public Integer getContractPeriodType() {
+    public String getContractPeriodType() {
         return contractPeriodType;
     }
 
-    public void setContractPeriodType(Integer contractPeriodType) {
+    public void setContractPeriodType(String contractPeriodType) {
         this.contractPeriodType = contractPeriodType;
     }
 
@@ -150,19 +148,19 @@ public class XN631670Req {
         this.endDate = endDate;
     }
 
-    public Integer getUnit() {
+    public String getUnit() {
         return unit;
     }
 
-    public void setUnit(Integer unit) {
+    public void setUnit(String unit) {
         this.unit = unit;
     }
 
-    public BigDecimal getUnitPrice() {
+    public String getUnitPrice() {
         return unitPrice;
     }
 
-    public void setUnitPrice(BigDecimal unitPrice) {
+    public void setUnitPrice(String unitPrice) {
         this.unitPrice = unitPrice;
     }
 

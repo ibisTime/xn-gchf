@@ -100,29 +100,8 @@ public class ProjectCorpInfoBOImpl extends PaginableBOImpl<ProjectCorpInfo>
     public void refreshProjectCorpInfo(XN631632Req req) {
         ProjectCorpInfo condition = new ProjectCorpInfo();
         condition.setCode(req.getCode());
-        ProjectCorpInfo select = projectCorpInfoDAO.select(condition);
-        if (req.getCorpCode() != null) {
-            select.setCorpCode(req.getCode());
-        }
-        if (req.getProjectName() != null) {
-            select.setProjectName(req.getProjectName());
-        }
-        if (req.getEntryTime() != null) {
-            select.setEntryTime(req.getEntryTime());
-        }
-        if (req.getExitTime() != null) {
-            select.setEntryTime(req.getExitTime());
-        }
-        if (req.getPmIDCardNumber() != null) {
-            select.setPmIDCardNumber(req.getPmIDCardNumber());
-        }
-        if (req.getPmName() != null) {
-            select.setPmName(req.getPmName());
-        }
-        if (req.getPmPhone() != null) {
-            select.setPmPhone(req.getPmPhone());
-        }
-        projectCorpInfoDAO.update(select);
+        BeanUtils.copyProperties(req, condition);
+        projectCorpInfoDAO.update(condition);
     }
 
     @Override

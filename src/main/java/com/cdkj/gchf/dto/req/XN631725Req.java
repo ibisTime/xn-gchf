@@ -17,6 +17,9 @@ public class XN631725Req extends APageReq {
     // 企业唯一信用编码
     private String corpCode;
 
+    // 上传状态
+    private String uploadStatus;
+
     // 用户id
     @NotBlank
     private String userId;
@@ -51,6 +54,14 @@ public class XN631725Req extends APageReq {
 
     public void setCorpCode(String corpCode) {
         this.corpCode = corpCode;
+    }
+
+    public String getUploadStatus() {
+        return uploadStatus;
+    }
+
+    public void setUploadStatus(String uploadStatus) {
+        this.uploadStatus = uploadStatus;
     }
 
 }

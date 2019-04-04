@@ -1,8 +1,5 @@
 package com.cdkj.gchf.dto.req;
 
-import java.math.BigDecimal;
-import java.util.Date;
-
 import org.hibernate.validator.constraints.NotBlank;
 
 public class XN631672Req {
@@ -15,15 +12,15 @@ public class XN631672Req {
     private String code;
 
     // 开始时间
-    private Date startDate;
+    private String startDate;
 
     // 结束时间
-    private Date endDate;
+    private String endDate;
 
     // 计量单位
-    private Integer unit;
+    private String unit;
 
-    private BigDecimal unitPrice;
+    private String unitPrice;
 
     private String contentPic;
 
@@ -43,35 +40,35 @@ public class XN631672Req {
         this.userId = userId;
     }
 
-    public Date getStartDate() {
+    public String getStartDate() {
         return startDate;
     }
 
-    public void setStartDate(Date startDate) {
+    public void setStartDate(String startDate) {
         this.startDate = startDate;
     }
 
-    public Date getEndDate() {
+    public String getEndDate() {
         return endDate;
     }
 
-    public void setEndDate(Date endDate) {
+    public void setEndDate(String endDate) {
         this.endDate = endDate;
     }
 
-    public Integer getUnit() {
+    public String getUnit() {
         return unit;
     }
 
-    public void setUnit(Integer unit) {
+    public void setUnit(String unit) {
         this.unit = unit;
     }
 
-    public BigDecimal getUnitPrice() {
+    public String getUnitPrice() {
         return unitPrice;
     }
 
-    public void setUnitPrice(BigDecimal unitPrice) {
+    public void setUnitPrice(String unitPrice) {
         this.unitPrice = unitPrice;
     }
 

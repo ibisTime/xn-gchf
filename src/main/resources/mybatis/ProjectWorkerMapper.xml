@@ -79,7 +79,7 @@
 				AND t.idcard_number = #{idCardNumber}
 			</if>
 			<if test="workerName != null and workerName != '' ">
-				AND t.worker_name = '%'#{workerName}'%'
+				AND t.worker_name LIKE CONCAT('%',#{workerName},'%')
 			</if>
 			<if test="uploadStatus != null and uploadStatus != '' ">
 				AND t.upload_status = #{uploadStatus}

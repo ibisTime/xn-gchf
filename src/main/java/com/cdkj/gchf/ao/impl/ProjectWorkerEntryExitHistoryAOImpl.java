@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.alibaba.fastjson.JSONObject;
 import com.cdkj.gchf.ao.IProjectWorkerEntryExitHistoryAO;
 import com.cdkj.gchf.bo.ICorpBasicinfoBO;
 import com.cdkj.gchf.bo.IOperateLogBO;
@@ -32,6 +33,7 @@ import com.cdkj.gchf.dto.req.XN631733Req;
 import com.cdkj.gchf.dto.req.XN631733ReqData;
 import com.cdkj.gchf.dto.req.XN631913Req;
 import com.cdkj.gchf.dto.req.XN631914Req;
+import com.cdkj.gchf.dto.req.XN631914ReqWorker;
 import com.cdkj.gchf.dto.req.XN631915Req;
 import com.cdkj.gchf.enums.EEntryExitType;
 import com.cdkj.gchf.enums.EIdCardType;
@@ -41,6 +43,7 @@ import com.cdkj.gchf.enums.EUploadStatus;
 import com.cdkj.gchf.exception.BizException;
 import com.cdkj.gchf.gov.AsyncQueueHolder;
 import com.cdkj.gchf.gov.GovConnecter;
+import com.cdkj.gchf.gov.SerialHandler;
 import com.google.gson.JsonObject;
 
 @Service
@@ -121,8 +124,18 @@ public class ProjectWorkerEntryExitHistoryAOImpl
         if (null == projectConfig) {
             throw new BizException("XN631914", "该项目未配置，无法上传");
         }
+        List<XN631914ReqWorker> workerList = req.getWorkerList();
+        for (XN631914ReqWorker worker : workerList) {
+            worker.setIdCardNumber(AesUtils.encrypt(worker.getIdCardNumber(),
+                projectConfig.getSecret()));
+        }
+        String data = JSONObject.toJSONStringWithDateFormat(req, "yyyy-MM-dd")
+            .toString();
 
-        projectWorkerEntryExitHistoryBO.doUpload(req, projectConfig);
+        String resString = GovConnecter.getGovData("WorkerEntryExit.Add", data,
+            projectConfig.getProjectCode(), projectConfig.getSecret());
+
+        SerialHandler.handle(resString, projectConfig);
     }
 
     @Override

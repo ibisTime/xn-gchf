@@ -21,6 +21,9 @@ public class XN631605Req extends APageReq {
     // 工人姓名
     private String workerName;
 
+    // 上传状态
+    private String uploadStatus;
+
     @NotBlank
     private String userId;
 
@@ -62,6 +65,14 @@ public class XN631605Req extends APageReq {
 
     public void setWorkerName(String workerName) {
         this.workerName = workerName;
+    }
+
+    public String getUploadStatus() {
+        return uploadStatus;
+    }
+
+    public void setUploadStatus(String uploadStatus) {
+        this.uploadStatus = uploadStatus;
     }
 
 }

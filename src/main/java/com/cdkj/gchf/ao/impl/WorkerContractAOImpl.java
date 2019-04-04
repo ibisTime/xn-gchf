@@ -3,6 +3,7 @@ package com.cdkj.gchf.ao.impl;
 import java.util.List;
 
 import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -52,21 +53,26 @@ public class WorkerContractAOImpl implements IWorkerContractAO {
 
     @Override
     public String addWorkerContract(XN631670Req req) {
-        EUnitType.checkExists(String.valueOf(req.getUnit()));
+
+        if (StringUtils.isNotBlank(req.getContractPeriodType())) {
+            EContractPeriodType.checkExists(req.getContractPeriodType());
+        }
+        if (StringUtils.isNotBlank(req.getUnit())) {
+            EUnitType.checkExists(req.getUnit());
+        }
         ProjectConfig projectConfigByLocal = projectConfigBO
             .getProjectConfigByLocal(req.getProjectCode());
         if (projectConfigByLocal == null) {
             throw new BizException("XN631670", "项目未部署");
         }
-        ProjectCorpInfo condition = new ProjectCorpInfo();
-        condition.setCode(req.getCorpCode());
-        List<ProjectCorpInfo> queryProjectCorpInfoList = projectCorpInfoBO
-            .queryProjectCorpInfoList(condition);
+        ProjectCorpInfo queryProjectCorpInfoList = projectCorpInfoBO
+            .getProjectCorpInfoByCorpCode(req.getCorpCode());
         if (queryProjectCorpInfoList == null) {
             throw new BizException("XN631670", "企业信用代码无效");
         }
-        WorkerInfo workerInfo = workerInfoBO.getWorkerInfo(req.getWorkerCode());
-        if (workerInfo == null) {
+        ProjectWorker projectWorker = projectWorkerBO
+            .getProjectWorker(req.getWorkerCode());
+        if (projectWorker == null) {
             throw new BizException("XN631670", "员工信息不存在");
         }
         return workerContractBO.saveWorkerContract(req);
@@ -78,6 +84,13 @@ public class WorkerContractAOImpl implements IWorkerContractAO {
             .getWorkerContract(req.getCode());
         if (workerContract == null) {
             throw new BizException("XN631672", "劳动合同不存在");
+        }
+        if (workerContract.getUploadStatus()
+            .equals(EUploadStatus.UPLOAD_UNEDITABLE.getCode())) {
+            throw new BizException("XN631672", "劳动合同已上传,无法编辑");
+        }
+        if (StringUtils.isNotBlank(req.getUnit())) {
+            EUnitType.checkExists(req.getUnit());
         }
         workerContractBO.refreshWorkerContract(req);
 

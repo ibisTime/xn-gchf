@@ -181,7 +181,9 @@ public class ProjectWorkerAOImpl implements IProjectWorkerAO {
                 .equals(EUploadStatus.UPLOAD_UNEDITABLE.getCode())) {
                 throw new BizException("XN631694", "项目人员已上传");
             }
-
+            TeamMaster teamMaster = teamMasterBO
+                .getTeamMaster(projectWorker.getTeamSysNo());
+            projectWorker.setTeamSysNo(teamMaster.getTeamSysNo());
             ProjectConfig projectConfigByLocal = projectConfigBO
                 .getProjectConfigByLocal(projectWorker.getProjectCode());
 

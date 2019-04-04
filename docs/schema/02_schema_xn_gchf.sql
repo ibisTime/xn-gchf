@@ -385,7 +385,7 @@ CREATE TABLE `thf_worker_attendance` (
 DROP TABLE IF EXISTS `thf_worker_contract`;
 CREATE TABLE `thf_worker_contract` (
   `code` varchar(32) NOT NULL COMMENT '编号',
-  `project_code` varchar(20) DEFAULT NULL COMMENT '项目编码',
+  `project_code` varchar(32) DEFAULT NULL COMMENT '项目编码',
   `project_name` varchar(200) DEFAULT NULL COMMENT '项目名称',
   `corp_code` varchar(18) DEFAULT NULL COMMENT '所属企业统一社会信用代码',
   `corp_name` varchar(200) DEFAULT NULL COMMENT '所属企业名称',

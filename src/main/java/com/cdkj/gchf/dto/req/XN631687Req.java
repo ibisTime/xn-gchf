@@ -17,6 +17,7 @@ public class XN631687Req extends AListReq {
     // 所属企业统一社会信用代码
     private String corpCode;
 
+    // 上传状态
     private String uploadStatus;
 
     @NotBlank

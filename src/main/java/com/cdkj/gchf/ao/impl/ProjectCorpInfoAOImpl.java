@@ -2,10 +2,10 @@ package com.cdkj.gchf.ao.impl;
 
 import java.util.List;
 
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.util.StringUtils;
 
 import com.cdkj.gchf.ao.IProjectCorpInfoAO;
 import com.cdkj.gchf.bo.ICorpBasicinfoBO;
@@ -25,7 +25,6 @@ import com.cdkj.gchf.dto.req.XN631633ReqList;
 import com.cdkj.gchf.dto.req.XN631905Req;
 import com.cdkj.gchf.dto.req.XN631906Req;
 import com.cdkj.gchf.dto.req.XN631907Req;
-import com.cdkj.gchf.enums.ECorpType;
 import com.cdkj.gchf.enums.EIdCardType;
 import com.cdkj.gchf.enums.EOperateLogOperate;
 import com.cdkj.gchf.enums.EOperateLogRefType;
@@ -82,13 +81,12 @@ public class ProjectCorpInfoAOImpl implements IProjectCorpInfoAO {
     public void editProjectCorpInfo(XN631632Req req) {
 
         CorpBasicinfo corpBasicinfo = corpBasicinfoBO
-            .getCorpBasicinfo(req.getCorpCode());
+            .getCorpBasicinfoByCorp(req.getCorpCode());
         if (null == corpBasicinfo) {
             throw new BizException("XN631630", "企业信息不存在");
         }
-        ECorpType.checkExists(req.getCorpType());
-        if (org.apache.commons.lang3.StringUtils
-            .isNotBlank(req.getPmIDCardType())) {
+        EProjectCorpType.checkExists(req.getCorpType());
+        if (StringUtils.isNotBlank(req.getPmIDCardType())) {
             EIdCardType.checkExists(req.getPmIDCardType());
         }
         projectCorpInfoBO.refreshProjectCorpInfo(req);

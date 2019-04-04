@@ -14,8 +14,6 @@ import org.springframework.stereotype.Component;
 import com.alibaba.fastjson.JSONObject;
 import com.cdkj.gchf.bo.ICorpBasicinfoBO;
 import com.cdkj.gchf.bo.IOperateLogBO;
-import com.cdkj.gchf.bo.IProjectConfigBO;
-import com.cdkj.gchf.bo.IProjectCorpInfoBO;
 import com.cdkj.gchf.bo.ITeamMasterBO;
 import com.cdkj.gchf.bo.IUserBO;
 import com.cdkj.gchf.bo.base.Paginable;
@@ -55,37 +53,32 @@ public class TeamMasterBOImpl extends PaginableBOImpl<TeamMaster>
     private ITeamMasterDAO teamMasterDAO;
 
     @Autowired
-    private IProjectConfigBO projectConfigBO;
-
-    @Autowired
-    private IProjectCorpInfoBO projectCorpInfoBO;
-
-    @Autowired
     private IOperateLogBO operateLogBO;
 
     @Autowired
     private IUserBO userBO;
 
     @Override
-    public String saveTeamMaster(XN631650Req data) {
+    public String saveTeamMaster(XN631650Req data,
+            CorpBasicinfo corpBasicinfo) {
         TeamMaster teamMasterInfo = new TeamMaster();
         BeanUtils.copyProperties(data, teamMasterInfo);
-        if (data.getEntryTime() != null) {
+        if (StringUtils.isNotBlank(data.getEntryTime())) {
             Date enrtyTime = DateUtil.strToDate(data.getEntryTime(),
                 DateUtil.FRONT_DATE_FORMAT_STRING);
             teamMasterInfo.setEntryTime(enrtyTime);
         }
-        if (data.getExitTime() != null) {
+        if (StringUtils.isNotBlank(data.getExitTime())) {
             Date exitTime = DateUtil.strToDate(data.getExitTime(),
                 DateUtil.FRONT_DATE_FORMAT_STRING);
             teamMasterInfo.setExitTime(exitTime);
         }
-        if (data.getResponsiblePersonIdcardType() != null) {
+        if (StringUtils.isNotBlank(data.getResponsiblePersonIdcardType())) {
             EIdCardType.checkExists(data.getResponsiblePersonIdcardType());
             teamMasterInfo.setResponsiblePersonIdcardType(
                 data.getResponsiblePersonIdcardType());
         }
-        if (data.getTeamLeaderIdcardType() != null) {
+        if (StringUtils.isNotBlank(data.getTeamLeaderIdcardType())) {
             EIdCardType.checkExists(data.getTeamLeaderIdcardType());
             teamMasterInfo
                 .setTeamLeaderIdcardType(data.getTeamLeaderIdcardType());
@@ -93,15 +86,9 @@ public class TeamMasterBOImpl extends PaginableBOImpl<TeamMaster>
         String code = OrderNoGenerater
             .generate(EGeneratePrefix.TeamMaster.getCode());
         teamMasterInfo.setCode(code);
-        CorpBasicinfo corpBasicinfoByCorp = corpBasicinfoBO
-            .getCorpBasicinfo(data.getCorpCode());
-        projectCorpInfoBO.getProjectCorpInfo(data.getCorpCode());
-        if (corpBasicinfoByCorp == null) {
-            throw new BizException("XN631650", "企业信息不存在");
-        }
-        teamMasterInfo.setCorpName(corpBasicinfoByCorp.getCorpName());
-        teamMasterInfo.setUploadStatus(EUploadStatus.TO_UPLOAD.getCode());
 
+        teamMasterInfo.setCorpName(corpBasicinfo.getCorpName());
+        teamMasterInfo.setUploadStatus(EUploadStatus.TO_UPLOAD.getCode());
         teamMasterDAO.insert(teamMasterInfo);
         return code;
     }

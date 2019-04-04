@@ -18,8 +18,15 @@ public class XN631685Req extends APageReq {
     // 合同类型
     private String contractPeriodType;
 
+    // 上传状态
+    private String uploadStatus;
+
+    // 用户id
     @NotBlank
     private String userId;
+
+    // 员工姓名
+    private String workerName;
 
     public String getUserId() {
         return userId;
@@ -51,6 +58,22 @@ public class XN631685Req extends APageReq {
 
     public void setContractPeriodType(String contractPeriodType) {
         this.contractPeriodType = contractPeriodType;
+    }
+
+    public String getUploadStatus() {
+        return uploadStatus;
+    }
+
+    public void setUploadStatus(String uploadStatus) {
+        this.uploadStatus = uploadStatus;
+    }
+
+    public String getWorkerName() {
+        return workerName;
+    }
+
+    public void setWorkerName(String workerName) {
+        this.workerName = workerName;
     }
 
 }

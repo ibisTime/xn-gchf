@@ -39,7 +39,7 @@
 				AND t.corp_code = #{corpCode}
 			</if>
 			<if test="teamName != null and teamName != '' ">
-				AND t.team_name like '%'#{teamName}'%'
+				AND t.team_name LIKE CONCAT('%', #{teamName}, '%')
 			</if>
 			<if test="parentCode != null and parentCode != '' ">
 				AND t.parent_code = #{parentCode}

@@ -17,6 +17,7 @@ import com.cdkj.gchf.bo.ITeamMasterBO;
 import com.cdkj.gchf.bo.IUserBO;
 import com.cdkj.gchf.bo.base.Paginable;
 import com.cdkj.gchf.common.AesUtils;
+import com.cdkj.gchf.domain.CorpBasicinfo;
 import com.cdkj.gchf.domain.ProjectConfig;
 import com.cdkj.gchf.domain.ProjectCorpInfo;
 import com.cdkj.gchf.domain.TeamMaster;
@@ -61,11 +62,16 @@ public class TeamMasterAOImpl implements ITeamMasterAO {
     public String addTeamMaster(XN631650Req data) {
 
         ProjectConfig projectConfig = projectConfigBO
-            .getProjectConfigByProject(data.getProjectCode());
+            .getProjectConfigByLocal(data.getProjectCode());
         if (projectConfig == null) {
             throw new BizException("XN631650", "项目信息不存在,请检查项目编号");
         }
-        return teamMasterBO.saveTeamMaster(data);
+        CorpBasicinfo corpBasicinfoByCorp = corpBasicinfoBO
+            .getCorpBasicinfoByCorp(data.getCorpCode());
+        if (corpBasicinfoByCorp == null) {
+            throw new BizException("XN631650", "企业信息不存在");
+        }
+        return teamMasterBO.saveTeamMaster(data, corpBasicinfoByCorp);
     }
 
     @Override
@@ -99,13 +105,14 @@ public class TeamMasterAOImpl implements ITeamMasterAO {
             TeamMaster teamMaster = getTeamMaster(code);
             if (EUploadStatus.UPLOAD_EDITABLE.getCode()
                 .equals(teamMaster.getUploadStatus())) {
-                throw new BizException("XN631654", "班组信息已上传");
+                continue;
             }
             ProjectConfig projectConfig = projectConfigBO
                 .getProjectConfigByLocal(teamMaster.getProjectCode());
             if (null == projectConfig) {
                 throw new BizException("XN631253", "不存在已配置的项目，无法上传");
             }
+            // projectConfig.getProjectCode();
             // 处理需要加密的信息
             if (StringUtils
                 .isNotBlank(teamMaster.getResponsiblePersonIdNumber())) {
@@ -114,6 +121,7 @@ public class TeamMasterAOImpl implements ITeamMasterAO {
                     projectConfig.getSecret());
                 teamMaster.setResponsiblePersonIdNumber(encryptIdCardNumber);
             }
+            teamMaster.setProjectCode(projectConfig.getProjectCode());
 
             // 上传班组信息
             String jsonStringWithDateFormat = JSONObject

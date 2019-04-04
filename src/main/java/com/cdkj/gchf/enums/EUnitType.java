@@ -31,7 +31,7 @@ public enum EUnitType {
         Map<String, EUnitType> map = getUnitTypeMap();
         EUnitType projectCorpType = map.get(code);
         if (null == projectCorpType) {
-            throw new BizException("xn0000", code + "对应证件类型不存在");
+            throw new BizException("xn0000", code + "对应计量单位类型不存在");
         }
         return projectCorpType;
     }
@@ -40,7 +40,7 @@ public enum EUnitType {
         Map<String, EUnitType> map = getUnitTypeMap();
         EUnitType projectCorpType = map.get(code);
         if (null == projectCorpType) {
-            throw new BizException("xn0000", code + "对应证件类型不存在");
+            throw new BizException("xn0000", code + "对应计量单位类型不存在");
         }
     }
 

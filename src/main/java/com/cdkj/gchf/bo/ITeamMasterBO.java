@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.cdkj.gchf.bo.base.IPaginableBO;
 import com.cdkj.gchf.bo.base.Paginable;
+import com.cdkj.gchf.domain.CorpBasicinfo;
 import com.cdkj.gchf.domain.ProjectConfig;
 import com.cdkj.gchf.domain.TeamMaster;
 import com.cdkj.gchf.dto.req.XN631650Req;
@@ -15,7 +16,7 @@ import com.cdkj.gchf.dto.req.XN631910Req;
 
 public interface ITeamMasterBO extends IPaginableBO<TeamMaster> {
 
-    public String saveTeamMaster(XN631650Req data);
+    public String saveTeamMaster(XN631650Req data, CorpBasicinfo corpBasicinfo);
 
     public String saveTeamMaster(TeamMaster teamMaster);
 

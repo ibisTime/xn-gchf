@@ -1,5 +1,6 @@
 package com.cdkj.gchf.bo.impl;
 
+import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
@@ -31,9 +32,9 @@ import com.cdkj.gchf.core.OrderNoGenerater;
 import com.cdkj.gchf.dao.IWorkerContractDAO;
 import com.cdkj.gchf.domain.ProjectConfig;
 import com.cdkj.gchf.domain.ProjectCorpInfo;
+import com.cdkj.gchf.domain.ProjectWorker;
 import com.cdkj.gchf.domain.User;
 import com.cdkj.gchf.domain.WorkerContract;
-import com.cdkj.gchf.domain.WorkerInfo;
 import com.cdkj.gchf.dto.req.SerializeFilterHolder;
 import com.cdkj.gchf.dto.req.XN631670Req;
 import com.cdkj.gchf.dto.req.XN631672Req;
@@ -109,16 +110,19 @@ public class WorkerContractBOImpl extends PaginableBOImpl<WorkerContract>
     @Override
     public void refreshWorkerContract(XN631672Req req) {
         WorkerContract workerContract = new WorkerContract();
-        workerContract.setCode(req.getCode());
-        workerContract.setStartDate(req.getStartDate());
-        workerContract.setEndDate(req.getEndDate());
-        workerContract.setUnit(req.getUnit());
-        workerContract.setUnitPrice(req.getUnitPrice());
-        workerContract.setContentPic(req.getContentPic());
-        if (workerContractBO.getWorkerContract(req.getCode()).getUploadStatus()
-            .equals(EUploadStatus.UPLOAD_UNEDITABLE.getCode())) {
-            throw new BizException("XN631672", "劳动合同已上传,无法编辑");
+        if (StringUtils.isNotBlank(req.getStartDate())) {
+            Date startDate = DateUtil.strToDate(req.getStartDate(),
+                DateUtil.FRONT_DATE_FORMAT_STRING);
+            workerContract.setStartDate(startDate);
         }
+        if (StringUtils.isNotBlank(req.getEndDate())) {
+            Date endDate = DateUtil.strToDate(req.getEndDate(),
+                DateUtil.FRONT_DATE_FORMAT_STRING);
+            workerContract.setStartDate(endDate);
+        }
+        workerContract.setUnit(Integer.parseInt(req.getUnit()));
+        workerContract.setUnitPrice(new BigDecimal(req.getUnitPrice()));
+        workerContract.setContentPic(req.getContentPic());
         workerContractDAO.update(workerContract);
     }
 
@@ -183,7 +187,8 @@ public class WorkerContractBOImpl extends PaginableBOImpl<WorkerContract>
 
     @Override
     public String saveWorkerContract(XN631670Req req) {
-        WorkerInfo workerInfo = workerInfoBO.getWorkerInfo(req.getWorkerCode());
+        ProjectWorker projectWorker = projectWorkerBO
+            .getProjectWorker(req.getWorkerCode());
         ProjectConfig projectConfigByLocal = projectConfigBO
             .getProjectConfigByLocal(req.getProjectCode());
         String code = null;
@@ -191,18 +196,19 @@ public class WorkerContractBOImpl extends PaginableBOImpl<WorkerContract>
             .getProjectCorpInfoByCorpCode(req.getCorpCode());
         code = OrderNoGenerater
             .generate(EGeneratePrefix.WorkerContract.getCode());
+
         WorkerContract workerContract = new WorkerContract();
-        BeanUtils.copyProperties(req, workerContract);
         workerContract.setProjectCode(projectConfigByLocal.getProjectCode());
         workerContract.setProjectName(projectConfigByLocal.getProjectName());
         workerContract.setCorpCode(projectCorpInfo.getCorpCode());
         workerContract.setCorpName(projectCorpInfo.getCorpName());
-        workerContract.setIdcardNumber(workerInfo.getIdCardNumber());
-        workerContract.setIdcardType(workerInfo.getIdCardType());
-        workerContract.setWorkerCode(workerInfo.getCode());
-        workerContract.setWorkerName(workerInfo.getName());
-        workerContract.setWorkerMobile(workerInfo.getCellPhone());
-        workerContract.setContractPeriodType(req.getContractPeriodType());
+        workerContract.setUnit(Integer.parseInt(req.getUnit()));
+        workerContract.setContractPeriodType(
+            Integer.parseInt(req.getContractPeriodType()));
+        BeanUtils.copyProperties(projectWorker, workerContract);
+        BeanUtils.copyProperties(req, workerContract);
+        BigDecimal unitPrice = new BigDecimal(req.getUnitPrice());
+        workerContract.setUnitPrice(unitPrice);
         workerContract.setCode(code);
         Date startDate = DateUtil.strToDate(req.getStartDate(),
             DateUtil.FRONT_DATE_FORMAT_STRING);

@@ -8,6 +8,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.cdkj.gchf.ao.IProjectConfigAO;
 import com.cdkj.gchf.bo.IOperateLogBO;
+import com.cdkj.gchf.bo.IProjectBO;
 import com.cdkj.gchf.bo.IProjectConfigBO;
 import com.cdkj.gchf.bo.IUserBO;
 import com.cdkj.gchf.bo.base.Paginable;
@@ -32,7 +33,11 @@ public class ProjectConfigAOImpl implements IProjectConfigAO {
     @Autowired
     private IUserBO userBO;
 
+    @Autowired
+    private IProjectBO projectBO;
+
     @Override
+    @Transactional
     public String addProjectConfig(XN631620Req req) {
 
         // if (null != projectConfigBO
@@ -45,7 +50,11 @@ public class ProjectConfigAOImpl implements IProjectConfigAO {
             throw new BizException("XN631620", "该项目已添加配置，无法再次添加");
         }
 
-        return projectConfigBO.saveProjectConfig(req);
+        String projectCode = projectBO.saveProject(req.getProjectName());
+
+        userBO.saveProjectAdmin(projectCode, req.getProjectName());
+
+        return projectConfigBO.saveProjectConfig(projectCode, req);
     }
 
     @Override

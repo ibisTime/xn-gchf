@@ -10,6 +10,8 @@ import com.cdkj.gchf.dto.req.XN631602Req;
 
 public interface IProjectBO extends IPaginableBO<Project> {
 
+    public String saveProject(String name);
+
     public String saveProject(XN631600Req req, CorpBasicinfo contractorCorpInfo,
             CorpBasicinfo buildCorpInfo);
 

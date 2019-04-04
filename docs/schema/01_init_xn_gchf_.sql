@@ -19,6 +19,9 @@ LIMIT 0, 1000
 -- Date: 2018-06-29 13:59
 */
 INSERT INTO `tsys_role` (`code`,`type`,`name`,`updater`,`update_datetime`,`remark`) VALUES ('RO201800000000000001','P','平台管理员','USYS201800000000001',now(),NULL);
+INSERT INTO `tsys_role` (`code`,`type`,`name`,`updater`,`update_datetime`,`remark`) VALUES ('RO201800000000000002','B','银行端','USYS201800000000001',now(),NULL);
+INSERT INTO `tsys_role` (`code`,`type`,`name`,`updater`,`update_datetime`,`remark`) VALUES ('RO201800000000000003','O','业主端','USYS201800000000001',now(),NULL);
+INSERT INTO `tsys_role` (`code`,`type`,`name`,`updater`,`update_datetime`,`remark`) VALUES ('RO201800000000000004','S','监管端','USYS201800000000001',now(),NULL);
 
 /*
 -- Query: SELECT * FROM dev_xn_gchf.thf_user

@@ -1,6 +1,7 @@
 package com.cdkj.gchf.bo.impl;
 
 import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -25,6 +26,7 @@ import com.cdkj.gchf.bo.IWorkerInfoBO;
 import com.cdkj.gchf.bo.base.Paginable;
 import com.cdkj.gchf.bo.base.PaginableBOImpl;
 import com.cdkj.gchf.common.AesUtils;
+import com.cdkj.gchf.common.DateUtil;
 import com.cdkj.gchf.core.OrderNoGenerater;
 import com.cdkj.gchf.dao.IWorkerContractDAO;
 import com.cdkj.gchf.domain.ProjectConfig;
@@ -185,10 +187,8 @@ public class WorkerContractBOImpl extends PaginableBOImpl<WorkerContract>
         ProjectConfig projectConfigByLocal = projectConfigBO
             .getProjectConfigByLocal(req.getProjectCode());
         String code = null;
-        ProjectCorpInfo condition = new ProjectCorpInfo();
-        condition.setCorpCode(req.getCorpCode());
         ProjectCorpInfo projectCorpInfo = projectCorpInfoBO
-            .queryProjectCorpInfoList(condition).get(0);
+            .getProjectCorpInfoByCorpCode(req.getCorpCode());
         code = OrderNoGenerater
             .generate(EGeneratePrefix.WorkerContract.getCode());
         WorkerContract workerContract = new WorkerContract();
@@ -204,9 +204,12 @@ public class WorkerContractBOImpl extends PaginableBOImpl<WorkerContract>
         workerContract.setWorkerMobile(workerInfo.getCellPhone());
         workerContract.setContractPeriodType(req.getContractPeriodType());
         workerContract.setCode(code);
-        workerContract.setStartDate(req.getStartDate());
-        workerContract.setEndDate(req.getEndDate());
-        workerContract.setUnitPrice(req.getUnitPrice());
+        Date startDate = DateUtil.strToDate(req.getStartDate(),
+            DateUtil.FRONT_DATE_FORMAT_STRING);
+        Date endDate = DateUtil.strToDate(req.getEndDate(),
+            DateUtil.FRONT_DATE_FORMAT_STRING);
+        workerContract.setStartDate(startDate);
+        workerContract.setEndDate(endDate);
         workerContract.setUploadStatus(EUploadStatus.TO_UPLOAD.getCode());
         workerContractDAO.insert(workerContract);
         return code;

@@ -44,7 +44,7 @@
 			<if test="contractCode != null and contractCode != '' ">
 				AND t.contract_code = #{contractCode}
 			</if>
-			
+
 			<if test="startDate != null and startDate != '' ">
 				AND t.start_date = #{startDate}
 			</if>
@@ -62,6 +62,9 @@
 			</if>
 			<if test="contractPeriodType != null and contractPeriodType != '' ">
 				AND t.contract_period_type = #{contractPeriodType}
+			</if>
+			<if test="uploadStatus != null and uploadStatus != '' ">
+				AND t.upload_status = #{uploadStatus}
 			</if>
 
 		</trim>

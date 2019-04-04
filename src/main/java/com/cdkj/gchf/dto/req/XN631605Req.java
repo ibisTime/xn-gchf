@@ -18,6 +18,9 @@ public class XN631605Req extends APageReq {
     // 班组编号
     private String teamSysNo;
 
+    // 工人姓名
+    private String workerName;
+
     @NotBlank
     private String userId;
 
@@ -51,6 +54,14 @@ public class XN631605Req extends APageReq {
 
     public void setTeamSysNo(String teamSysNo) {
         this.teamSysNo = teamSysNo;
+    }
+
+    public String getWorkerName() {
+        return workerName;
+    }
+
+    public void setWorkerName(String workerName) {
+        this.workerName = workerName;
     }
 
 }

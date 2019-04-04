@@ -2,6 +2,7 @@ package com.cdkj.gchf.ao.impl;
 
 import java.util.List;
 
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -38,21 +39,11 @@ public class WorkerInfoAOImpl implements IWorkerInfoAO {
 
     @Override
     public String addWorkerInfo(XN631790Req req) {
-        if (req.getBirthday() == null) {
-            throw new BizException("XN631790", "出生日期不能为空");
-        }
-        if (req.getStartDate() == null) {
-            throw new BizException("XN631790", "有效期开始日期不能为空");
-        }
-        if (req.getExpiryDate() == null) {
-            throw new BizException("XN631790", "有效期结束日期不能为空");
-        }
         // 数据字典校验
         EPoliticsType.checkExists(req.getPoliticsType());
         EGender.checkExists(req.getGender());
         ECultureLevelType.checkExists(req.getCultureLevelType());
         EIdCardType.checkExists(req.getIdCardType());
-
         IdCardChecker idCardChecker = new IdCardChecker(req.getIdCardNumber());
         if (!idCardChecker.validate()) {
             throw new BizException("XN631790", "身份证信息错误");
@@ -86,6 +77,13 @@ public class WorkerInfoAOImpl implements IWorkerInfoAO {
 
     @Override
     public int addWorkerInfoIdCardInfo(XN631791Req req) {
+        WorkerInfo workerInfo = workerInfoBO.getWorkerInfo(req.getCode());
+        if (StringUtils.isNotBlank(workerInfo.getHandIdCardImageUrl())
+                && StringUtils
+                    .isNotBlank(workerInfo.getPositiveIdCardImageUrl())
+                && StringUtils.isNotBlank(req.getNegativeIdCardImageUrl())) {
+            throw new BizException("XN631791", "照片信息已上传");
+        }
         return workerInfoBO.refreshWorkerInfo(req);
     }
 

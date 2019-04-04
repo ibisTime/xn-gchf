@@ -1,7 +1,6 @@
 package com.cdkj.gchf.dto.req;
 
 import java.math.BigDecimal;
-import java.util.Date;
 
 import org.hibernate.validator.constraints.NotBlank;
 
@@ -25,7 +24,7 @@ public class XN631670Req {
     private String updater;
 
     // 更新时间
-    private Date updateDatetime;
+    private String updateDatetime;
 
     // 备注
     private String remark;
@@ -41,10 +40,10 @@ public class XN631670Req {
     private Integer contractPeriodType;
 
     // 开始时间
-    private Date startDate;
+    private String startDate;
 
     // 结束时间
-    private Date endDate;
+    private String endDate;
 
     // 计量单位
     private Integer unit;
@@ -95,11 +94,11 @@ public class XN631670Req {
         this.updater = updater;
     }
 
-    public Date getUpdateDatetime() {
+    public String getUpdateDatetime() {
         return updateDatetime;
     }
 
-    public void setUpdateDatetime(Date updateDatetime) {
+    public void setUpdateDatetime(String updateDatetime) {
         this.updateDatetime = updateDatetime;
     }
 
@@ -135,19 +134,19 @@ public class XN631670Req {
         this.contractPeriodType = contractPeriodType;
     }
 
-    public Date getStartDate() {
+    public String getStartDate() {
         return startDate;
     }
 
-    public void setStartDate(Date startDate) {
+    public void setStartDate(String startDate) {
         this.startDate = startDate;
     }
 
-    public Date getEndDate() {
+    public String getEndDate() {
         return endDate;
     }
 
-    public void setEndDate(Date endDate) {
+    public void setEndDate(String endDate) {
         this.endDate = endDate;
     }
 

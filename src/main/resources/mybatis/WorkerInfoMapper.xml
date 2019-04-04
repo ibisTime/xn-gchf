@@ -35,6 +35,7 @@
 		<result column="hand_id_card_image_url" property="handIdCardImageUrl" />
 		<result column="start_date" property="startDate" />
 		<result column="expiry_date" property="expiryDate" />
+		<result column="create_datetime" property="createDatetime" />
 	</resultMap>
 	<sql id="where_condition">
 		<trim prefix="WHERE" prefixOverrides="AND | OR">
@@ -72,6 +73,7 @@
 		,work_type_code
 		,birth_place_code
 		,politics_type
+		,create_datetime
 		)
 		VALUES(
 		#{code}
@@ -93,6 +95,7 @@
 		,#{workTypeCode}
 		,#{birthPlaceCode}
 		,#{politicsType}
+		,#{createDatetime}
 		)
 	</insert>
 
@@ -122,16 +125,16 @@
 		,address = #{address}
 		,head_image_url =
 		#{headImageUrl}
-		,politics_type = #{politicsType}
 
+		,politics_type = #{politicsType}
 		,is_joined =
 		#{isJoined}
 		,joined_time = #{joinedTime}
 		,cell_phone = #{cellPhone}
 		,culture_level_type = #{cultureLevelType}
 		,specialty = #{specialty}
-		,has_bad_medical_history = #{hasBadMedicalHistory}
 
+		,has_bad_medical_history = #{hasBadMedicalHistory}
 		,urgent_link_man =
 		#{urgentLinkMan}
 		,urgent_link_man_phone = #{urgentLinkManPhone}
@@ -147,6 +150,7 @@
 		,start_date =
 		#{startDate}
 		,expiry_date = #{expiryDate}
+		,create_datetime = #{createDatetime}
 		WHERE code = #{code}
 	</update>
 
@@ -209,6 +213,7 @@
 		,t.negative_id_card_image_url
 		,t.start_date
 		,t.expiry_date
+		,t.create_datetime
 		FROM
 		thf_worker_info t
 		<include refid="where_condition" />

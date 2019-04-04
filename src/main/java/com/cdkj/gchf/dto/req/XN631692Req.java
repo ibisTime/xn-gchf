@@ -1,7 +1,5 @@
 package com.cdkj.gchf.dto.req;
 
-import java.util.Date;
-
 import org.hibernate.validator.constraints.NotBlank;
 
 public class XN631692Req {
@@ -13,13 +11,13 @@ public class XN631692Req {
     private String code;
 
     // 是否班组长
-    private Integer isTeamLeader;
+    private String isTeamLeader;
 
     // 当前工种
     private String workType;
 
     // 工人类型
-    private Integer workRole;
+    private String workRole;
 
     // 发卡时间
     private String issueCardDate;
@@ -46,7 +44,7 @@ public class XN631692Req {
     private String hasBuyInsurance;
 
     // 开始工作时间
-    private Date workDate;
+    private String workDate;
 
     public String getUserId() {
         return userId;
@@ -64,12 +62,16 @@ public class XN631692Req {
         this.code = code;
     }
 
-    public Integer getIsTeamLeader() {
+    public String getIsTeamLeader() {
         return isTeamLeader;
     }
 
-    public void setIsTeamLeader(Integer isTeamLeader) {
+    public void setIsTeamLeader(String isTeamLeader) {
         this.isTeamLeader = isTeamLeader;
+    }
+
+    public void setWorkRole(String workRole) {
+        this.workRole = workRole;
     }
 
     public String getWorkType() {
@@ -80,12 +82,8 @@ public class XN631692Req {
         this.workType = workType;
     }
 
-    public Integer getWorkRole() {
+    public String getWorkRole() {
         return workRole;
-    }
-
-    public void setWorkRole(Integer workRole) {
-        this.workRole = workRole;
     }
 
     public String getIssueCardDate() {
@@ -148,16 +146,16 @@ public class XN631692Req {
         return hasBuyInsurance;
     }
 
-    public void setHasBuyInsurance(String hasBuyInsurance) {
-        this.hasBuyInsurance = hasBuyInsurance;
-    }
-
-    public Date getWorkDate() {
+    public String getWorkDate() {
         return workDate;
     }
 
-    public void setWorkDate(Date workDate) {
+    public void setWorkDate(String workDate) {
         this.workDate = workDate;
+    }
+
+    public void setHasBuyInsurance(String hasBuyInsurance) {
+        this.hasBuyInsurance = hasBuyInsurance;
     }
 
 }

@@ -9,99 +9,103 @@
 		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.0.xsd
 		http://www.springframework.org/schema/jdbc http://www.springframework.org/schema/jdbc/spring-jdbc-4.0.xsd
 		http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-4.0.xsd">
-	
+
 	<!-- 分页BO层注入paginableDao -->
-	
+
 	<bean id="userBO" class="com.cdkj.gchf.bo.impl.UserBOImpl">
 		<property name="paginableDAO" ref="userDAOImpl" />
 	</bean>
-	
+
 	<bean id="sysMenuBO" class="com.cdkj.gchf.bo.impl.SYSMenuBOImpl">
-		<property name="paginableDAO" ref="sysMenuDAOImpl"/>
+		<property name="paginableDAO" ref="sysMenuDAOImpl" />
 	</bean>
-	
+
 	<bean id="sysRoleBO" class="com.cdkj.gchf.bo.impl.SYSRoleBOImpl">
-		<property name="paginableDAO" ref="sysRoleDAOImpl"/>
+		<property name="paginableDAO" ref="sysRoleDAOImpl" />
 	</bean>
-	
+
 	<bean id="sysMenuRoleBO" class="com.cdkj.gchf.bo.impl.SYSMenuRoleBOImpl">
-		<property name="paginableDAO" ref="sysMenuRoleDAOImpl"/>
+		<property name="paginableDAO" ref="sysMenuRoleDAOImpl" />
 	</bean>
-	
+
 	<bean id="sysDictBO" class="com.cdkj.gchf.bo.impl.SYSDictBOImpl">
-		<property name="paginableDAO" ref="sysDictDAOImpl"/>
-	</bean>	
-	
+		<property name="paginableDAO" ref="sysDictDAOImpl" />
+	</bean>
+
 	<bean id="sysConfigBO" class="com.cdkj.gchf.bo.impl.SYSConfigBOImpl">
-		<property name="paginableDAO" ref="sysConfigDAOImpl"/>
+		<property name="paginableDAO" ref="sysConfigDAOImpl" />
 	</bean>
-	
+
 	<bean id="projectBO" class="com.cdkj.gchf.bo.impl.ProjectBOImpl">
-		<property name="paginableDAO" ref="projectDAOImpl"/>
-	</bean>	
-	
+		<property name="paginableDAO" ref="projectDAOImpl" />
+	</bean>
+
 	<bean id="channelBankBO" class="com.cdkj.gchf.bo.impl.ChannelBankBOImpl">
-		<property name="paginableDAO" ref="channelBankDAOImpl"/>
-	</bean>	
-	
+		<property name="paginableDAO" ref="channelBankDAOImpl" />
+	</bean>
+
 	<bean id="superviseBO" class="com.cdkj.gchf.bo.impl.SuperviseBOImpl">
-		<property name="paginableDAO" ref="superviseDAOImpl"/>
-	</bean>	
-	
+		<property name="paginableDAO" ref="superviseDAOImpl" />
+	</bean>
+
 	<bean id="operatorGuideBO" class="com.cdkj.gchf.bo.impl.OperatorGuideBOImpl">
-		<property name="paginableDAO" ref="operatorGuideDAOImpl"/>
-	</bean>	
-	
+		<property name="paginableDAO" ref="operatorGuideDAOImpl" />
+	</bean>
+
 	<bean id="corpBasicinfoBO" class="com.cdkj.gchf.bo.impl.CorpBasicinfoBOImpl">
-		<property name="paginableDAO" ref="corpBasicinfoDAOImpl"/>
+		<property name="paginableDAO" ref="corpBasicinfoDAOImpl" />
 	</bean>
-	
+
 	<bean id="projectConfigBO" class="com.cdkj.gchf.bo.impl.ProjectConfigBOImpl">
-		<property name="paginableDAO" ref="projectConfigDAOImpl"/>
-	</bean>	
-	
+		<property name="paginableDAO" ref="projectConfigDAOImpl" />
+	</bean>
+
 	<bean id="projectCorpInfoBO" class="com.cdkj.gchf.bo.impl.ProjectCorpInfoBOImpl">
-		<property name="paginableDAO" ref="projectCorpInfoDAOImpl"/>
-	</bean>	
-	
+		<property name="paginableDAO" ref="projectCorpInfoDAOImpl" />
+	</bean>
+
 	<bean id="teamMasterBO" class="com.cdkj.gchf.bo.impl.TeamMasterBOImpl">
-		<property name="paginableDAO" ref="teamMasterDAOImpl"/>
-	</bean>	
-	
+		<property name="paginableDAO" ref="teamMasterDAOImpl" />
+	</bean>
+
 	<bean id="projectWorkerBO" class="com.cdkj.gchf.bo.impl.ProjectWorkerBOImpl">
-		<property name="paginableDAO" ref="projectWorkerDAOImpl"/>
+		<property name="paginableDAO" ref="projectWorkerDAOImpl" />
 	</bean>
-	
-	<bean id="projectWorkerEntryExitHistoryBO" class="com.cdkj.gchf.bo.impl.ProjectWorkerEntryExitHistoryBOImpl">
-		<property name="paginableDAO" ref="projectWorkerEntryExitHistoryDAOImpl"/>
+
+	<bean id="projectWorkerEntryExitHistoryBO"
+		class="com.cdkj.gchf.bo.impl.ProjectWorkerEntryExitHistoryBOImpl">
+		<property name="paginableDAO" ref="projectWorkerEntryExitHistoryDAOImpl" />
 	</bean>
-	
+
 	<bean id="workerContractBO" class="com.cdkj.gchf.bo.impl.WorkerContractBOImpl">
-		<property name="paginableDAO" ref="workerContractDAOImpl"/>
+		<property name="paginableDAO" ref="workerContractDAOImpl" />
 	</bean>
-	
+
 	<bean id="workerAttendanceBO" class="com.cdkj.gchf.bo.impl.WorkerAttendanceBOImpl">
-		<property name="paginableDAO" ref="workerAttendanceDAOImpl"/>
+		<property name="paginableDAO" ref="workerAttendanceDAOImpl" />
 	</bean>
-	
+
 	<bean id="payRollBO" class="com.cdkj.gchf.bo.impl.PayRollBOImpl">
-		<property name="paginableDAO" ref="payRollDAOImpl"/>
+		<property name="paginableDAO" ref="payRollDAOImpl" />
 	</bean>
-	
+
 	<bean id="payRollDetailBO" class="com.cdkj.gchf.bo.impl.PayRollDetailBOImpl">
-        <property name="paginableDAO" ref="payRollDetailDAOImpl"/>
-    </bean>
-	
+		<property name="paginableDAO" ref="payRollDetailDAOImpl" />
+	</bean>
+
 	<bean id="projectBuilderLicenseBO" class="com.cdkj.gchf.bo.impl.ProjectBuilderLicenseBOImpl">
-		<property name="paginableDAO" ref="projectBuilderLicenseDAOImpl"/>
+		<property name="paginableDAO" ref="projectBuilderLicenseDAOImpl" />
 	</bean>
-	
+
 	<bean id="bankCardBankBO" class="com.cdkj.gchf.bo.impl.BankCardBankBOImpl">
-		<property name="paginableDAO" ref="bankCardInfoDAOImpl"/>
+		<property name="paginableDAO" ref="bankCardInfoDAOImpl" />
 	</bean>
-	
+
 	<bean id="operateLogBO" class="com.cdkj.gchf.bo.impl.OperateLogBOImpl">
-		<property name="paginableDAO" ref="operateLogDAOImpl"/>
+		<property name="paginableDAO" ref="operateLogDAOImpl" />
 	</bean>
-	
+	<bean id="workerInfoBO" class="com.cdkj.gchf.bo.impl.WorkerInfoBOImpl">
+		<property name="paginableDAO" ref="workerInfoDAOImpl" />
+	</bean>
+
 </beans>

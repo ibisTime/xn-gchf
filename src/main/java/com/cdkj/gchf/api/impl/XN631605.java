@@ -33,8 +33,8 @@ public class XN631605 extends AProcessor {
     public Object doBusiness() throws BizException {
         ProjectWorker projectWorkerInfo = new ProjectWorker();
         BeanUtils.copyProperties(req, projectWorkerInfo);
-        String column = null;
-        if (StringUtils.isBlank(req.getOrderColumn())) {
+        String column = req.getOrderColumn();
+        if (StringUtils.isBlank(column)) {
             column = IProjectWorkerAO.DEFAULT_ORDER_COLUMN;
         }
         int start = StringValidater.toInteger(req.getStart());

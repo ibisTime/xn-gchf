@@ -54,37 +54,28 @@ public class WorkerInfoBOImpl extends PaginableBOImpl<WorkerInfo>
         WorkerInfo workerInfo = new WorkerInfo();
         BeanUtils.copyProperties(req, workerInfo);
         workerInfo.setBirthPlaceCode(req.getIdCardNumber().substring(0, 6));
-        workerInfo.setName(req.getName());
-        workerInfo.setNation(req.getNation());
         Date birthday = DateUtil.strToDate(req.getBirthday(),
             DateUtil.FRONT_DATE_FORMAT_STRING);
         workerInfo.setBirthday(birthday);
-
-        workerInfo.setAddress(req.getAddress());
         Date startDate = DateUtil.strToDate(req.getStartDate(),
             DateUtil.FRONT_DATE_FORMAT_STRING);
         workerInfo.setStartDate(startDate);
         Date enpiryDate = DateUtil.strToDate(req.getExpiryDate(),
             DateUtil.FRONT_DATE_FORMAT_STRING);
         workerInfo.setExpiryDate(enpiryDate);
-
-        workerInfo.setHeadImageUrl(req.getHeadImageUrl());
-        workerInfo.setIdCardNumber(req.getIdCardNumber());
-        workerInfo.setIdCardType(req.getIdCardType());
         workerInfo.setGender(Integer.parseInt(req.getGender()));
         workerInfo.setPoliticsType(req.getPoliticsType());
         workerInfo.setCultureLevelType(req.getCultureLevelType());
-
-        if (req.getIsJoined() != null) {
-            if (req.getJoinedTime() != null) {
+        workerInfo.setCreateDatetime(new Date(System.currentTimeMillis()));
+        if (StringUtils.isNotBlank(req.getIsJoined())) {
+            if (StringUtils.isNotBlank(req.getJoinedTime())) {
+                EIsNotType.checkExists(req.getIsJoined());
+                workerInfo.setIsJoined(Integer.parseInt(req.getIsJoined()));
                 Date joinTime = DateUtil.strToDate(req.getJoinedTime(),
                     DateUtil.FRONT_DATE_FORMAT_STRING);
                 workerInfo.setJoinedTime(joinTime);
             }
-            workerInfo.setIsJoined(Integer
-                .parseInt(EIsNotType.getIsNotDictCode(req.getIsJoined())));
         }
-        workerInfo.setSpecialty(req.getSpecialty());
         workerInfo.setCode(code);
         workerInfoDAO.insert(workerInfo);
         return code;
@@ -172,22 +163,7 @@ public class WorkerInfoBOImpl extends PaginableBOImpl<WorkerInfo>
     @Override
     public int refreshWorkerInfo(XN631791Req req) {
         WorkerInfo condition = new WorkerInfo();
-        condition.setCode(req.getCode());
-        WorkerInfo select = workerInfoDAO.select(condition);
-        if (select.getHandIdCardImageUrl()
-            .equals(req.getHandIdCardImageUrl())) {
-            throw new BizException("手持身份证照片已上传");
-        }
-        if (select.getPositiveIdCardImageUrl()
-            .equals(req.getPositiveIdCardImageUrl())) {
-            throw new BizException("正面照已上传");
-        }
-        if (select.getNegativeIdCardImageUrl()
-            .equals(req.getNegativeIdCardImageUrl())) {
-            throw new BizException("反面照已上传");
-        }
         BeanUtils.copyProperties(req, condition);
-
         return workerInfoDAO.updateWorkerInfoAboutIdcard(condition);
     }
 
@@ -203,47 +179,24 @@ public class WorkerInfoBOImpl extends PaginableBOImpl<WorkerInfo>
     public int refreshWorkerInfo(XN631793Req req) {
         WorkerInfo condition = new WorkerInfo();
         condition.setCode(req.getCode());
-        WorkerInfo select = workerInfoDAO.select(condition);
-        select.setName(req.getName());
-        select.setAddress(req.getAddress());
+        WorkerInfo workerInfo = workerInfoDAO.select(condition);
         Date birthDay = DateUtil.strToDate(req.getBirthday(),
             DateUtil.FRONT_DATE_FORMAT_STRING);
-        select.setBirthday(birthDay);
-        select.setCellPhone(req.getCellPhone());
-        select.setEduLevel(req.getCultureLevelType());
-        select.setGrantOrg(req.getGrantOrg());
-        select.setGender(Integer.parseInt(req.getGender()));
-        select.setHeadImageUrl(req.getHeadImageUrl());
-        select.setIdCardNumber(req.getIdCardNumber());
-        select.setIdCardType(req.getIdCardType());
-        BeanUtils.copyProperties(req, select);
+        workerInfo.setBirthday(birthDay);
+        workerInfo.setGender(Integer.parseInt(req.getGender()));
+        BeanUtils.copyProperties(req, workerInfo);
         if (StringUtils.isNotBlank(req.getIsJoined())) {
-            select.setIsJoined(Integer.parseInt(req.getIsJoined()));
+            workerInfo.setIsJoined(Integer.parseInt(req.getIsJoined()));
         }
         if (StringUtils.isNotBlank(req.getHasBadMedicalHistory())) {
-            select.setHasBadMedicalHistory(
+            workerInfo.setHasBadMedicalHistory(
                 Integer.parseInt(req.getHasBadMedicalHistory()));
         }
-        if (StringUtils.isNotBlank(req.getSpecialty())) {
-            select.setSpecialty(req.getSpecialty());
-        }
-        if (StringUtils.isNotBlank(req.getMaritalStatus())) {
-            select.setMaritalStatus(req.getMaritalStatus());
-        }
         if (StringUtils.isNotBlank(req.getJoinedTime())) {
-            select.setJoinedTime(DateUtil.strToDate(req.getJoinedTime(),
+            workerInfo.setJoinedTime(DateUtil.strToDate(req.getJoinedTime(),
                 DateUtil.FRONT_DATE_FORMAT_STRING));
         }
-        if (StringUtils.isNotBlank(req.getUrgentLinkMan())) {
-            select.setUrgentLinkMan(req.getUrgentLinkMan());
-        }
-        if (StringUtils.isNotBlank(req.getUrgentLinkManPhone())) {
-            select.setUrgentLinkManPhone(req.getUrgentLinkManPhone());
-        }
-        if (StringUtils.isNotBlank(req.getHandIdCardImageUrl())) {
-            select.setHandIdCardImageUrl(req.getHandIdCardImageUrl());
-        }
-        return workerInfoDAO.updateWorkerInfo(select);
+        return workerInfoDAO.updateWorkerInfo(workerInfo);
     }
 
 }

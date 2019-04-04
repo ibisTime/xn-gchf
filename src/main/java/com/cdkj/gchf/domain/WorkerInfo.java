@@ -110,6 +110,9 @@ public class WorkerInfo extends ABaseDO {
     // 有效期结束日期
     private Date expiryDate;
 
+    // 建档时间
+    private Date createDatetime;
+
     public String getCode() {
         return code;
     }
@@ -364,6 +367,14 @@ public class WorkerInfo extends ABaseDO {
 
     public void setHandIdCardImageUrl(String handIdCardImageUrl) {
         this.handIdCardImageUrl = handIdCardImageUrl;
+    }
+
+    public Date getCreateDatetime() {
+        return createDatetime;
+    }
+
+    public void setCreateDatetime(Date createDatetime) {
+        this.createDatetime = createDatetime;
     }
 
 }

@@ -17,6 +17,8 @@ public class XN631687Req extends AListReq {
     // 所属企业统一社会信用代码
     private String corpCode;
 
+    private String uploadStatus;
+
     @NotBlank
     private String userId;
 
@@ -54,6 +56,14 @@ public class XN631687Req extends AListReq {
 
     public void setContractPeriodType(String contractPeriodType) {
         this.contractPeriodType = contractPeriodType;
+    }
+
+    public String getUploadStatus() {
+        return uploadStatus;
+    }
+
+    public void setUploadStatus(String uploadStatus) {
+        this.uploadStatus = uploadStatus;
     }
 
 }

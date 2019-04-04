@@ -1,30 +1,16 @@
 package com.cdkj.gchf.dto.req;
 
-import java.math.BigDecimal;
-import java.util.Date;
+import java.util.List;
 
 import org.hibernate.validator.constraints.NotBlank;
+import org.hibernate.validator.constraints.NotEmpty;
 
 public class XN631813Req {
     @NotBlank
     private String userId;
 
-    @NotBlank
-    private String code;
-
-    private Integer days;
-
-    private BigDecimal workHours;
-
-    private BigDecimal totalPayAmount;
-
-    private BigDecimal actualAmount;
-
-    private Integer isBackPay;
-
-    private Date balanceDate;
-
-    private String thirdPayRollCode;
+    @NotEmpty
+    private List<String> codeList;
 
     public String getUserId() {
         return userId;
@@ -34,68 +20,12 @@ public class XN631813Req {
         this.userId = userId;
     }
 
-    public String getCode() {
-        return code;
+    public List<String> getCodeList() {
+        return codeList;
     }
 
-    public void setCode(String code) {
-        this.code = code;
-    }
-
-    public Integer getDays() {
-        return days;
-    }
-
-    public void setDays(Integer days) {
-        this.days = days;
-    }
-
-    public BigDecimal getWorkHours() {
-        return workHours;
-    }
-
-    public void setWorkHours(BigDecimal workHours) {
-        this.workHours = workHours;
-    }
-
-    public BigDecimal getTotalPayAmount() {
-        return totalPayAmount;
-    }
-
-    public void setTotalPayAmount(BigDecimal totalPayAmount) {
-        this.totalPayAmount = totalPayAmount;
-    }
-
-    public BigDecimal getActualAmount() {
-        return actualAmount;
-    }
-
-    public void setActualAmount(BigDecimal actualAmount) {
-        this.actualAmount = actualAmount;
-    }
-
-    public Integer getIsBackPay() {
-        return isBackPay;
-    }
-
-    public void setIsBackPay(Integer isBackPay) {
-        this.isBackPay = isBackPay;
-    }
-
-    public Date getBalanceDate() {
-        return balanceDate;
-    }
-
-    public void setBalanceDate(Date balanceDate) {
-        this.balanceDate = balanceDate;
-    }
-
-    public String getThirdPayRollCode() {
-        return thirdPayRollCode;
-    }
-
-    public void setThirdPayRollCode(String thirdPayRollCode) {
-        this.thirdPayRollCode = thirdPayRollCode;
+    public void setCodeList(List<String> codeList) {
+        this.codeList = codeList;
     }
 
 }

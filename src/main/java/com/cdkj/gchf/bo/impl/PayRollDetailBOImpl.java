@@ -18,7 +18,7 @@ import com.cdkj.gchf.domain.ProjectConfig;
 import com.cdkj.gchf.domain.TeamMaster;
 import com.cdkj.gchf.dto.req.XN631770ReqDetail;
 import com.cdkj.gchf.dto.req.XN631772Req;
-import com.cdkj.gchf.dto.req.XN631813Req;
+import com.cdkj.gchf.dto.req.XN631810Req;
 import com.cdkj.gchf.enums.EGeneratePrefix;
 import com.cdkj.gchf.enums.EUploadStatus;
 import com.cdkj.gchf.exception.BizException;
@@ -177,7 +177,7 @@ public class PayRollDetailBOImpl extends PaginableBOImpl<PayRollDetail>
     }
 
     @Override
-    public int updatePayRollDetail(XN631813Req data) {
+    public int updatePayRollDetail(XN631810Req data) {
         PayRollDetail condition = new PayRollDetail();
         condition.setCode(data.getCode());
         PayRollDetail select = payRollDetailDAO.select(condition);

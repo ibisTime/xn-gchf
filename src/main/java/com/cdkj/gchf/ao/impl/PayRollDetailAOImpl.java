@@ -9,7 +9,7 @@ import com.cdkj.gchf.ao.IPayRollDetailAO;
 import com.cdkj.gchf.bo.IPayRollDetailBO;
 import com.cdkj.gchf.bo.base.Paginable;
 import com.cdkj.gchf.domain.PayRollDetail;
-import com.cdkj.gchf.dto.req.XN631813Req;
+import com.cdkj.gchf.dto.req.XN631810Req;
 
 @Service
 public class PayRollDetailAOImpl implements IPayRollDetailAO {
@@ -45,7 +45,7 @@ public class PayRollDetailAOImpl implements IPayRollDetailAO {
     }
 
     @Override
-    public int editPayRollDetail(XN631813Req req) {
+    public int editPayRollDetail(XN631810Req req) {
         return payRollDetailBO.updatePayRollDetail(req);
     }
 

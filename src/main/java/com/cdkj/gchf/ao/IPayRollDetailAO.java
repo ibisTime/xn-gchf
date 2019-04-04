@@ -6,7 +6,7 @@ import org.springframework.stereotype.Component;
 
 import com.cdkj.gchf.bo.base.Paginable;
 import com.cdkj.gchf.domain.PayRollDetail;
-import com.cdkj.gchf.dto.req.XN631813Req;
+import com.cdkj.gchf.dto.req.XN631810Req;
 
 @Component
 public interface IPayRollDetailAO {
@@ -16,7 +16,7 @@ public interface IPayRollDetailAO {
 
     public int dropPayRollDetail(String code);
 
-    public int editPayRollDetail(XN631813Req req);
+    public int editPayRollDetail(XN631810Req req);
 
     public Paginable<PayRollDetail> queryPayRollDetailPage(int start, int limit,
             PayRollDetail condition);

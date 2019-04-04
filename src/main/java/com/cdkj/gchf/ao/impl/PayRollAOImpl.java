@@ -31,8 +31,8 @@ import com.cdkj.gchf.domain.TeamMaster;
 import com.cdkj.gchf.domain.User;
 import com.cdkj.gchf.dto.req.XN631770Req;
 import com.cdkj.gchf.dto.req.XN631772Req;
-import com.cdkj.gchf.dto.req.XN631773Req;
-import com.cdkj.gchf.dto.req.XN631773ReqData;
+import com.cdkj.gchf.dto.req.XN631812Req;
+import com.cdkj.gchf.dto.req.XN631812ReqData;
 import com.cdkj.gchf.dto.req.XN631920Req;
 import com.cdkj.gchf.dto.req.XN631921Req;
 import com.cdkj.gchf.enums.EOperateLogOperate;
@@ -244,16 +244,16 @@ public class PayRollAOImpl implements IPayRollAO {
 
     @Transactional
     @Override
-    public void importPayRollCodeList(XN631773Req req) {
+    public void importPayRollCodeList(XN631812Req req) {
         User user = userBO.getBriefUser(req.getUserId());
         ProjectCorpInfo corpInfoByCorpCode = projectCorpInfoBO
             .getProjectCorpInfoByCorpCode(req.getProjectCode());
         if (corpInfoByCorpCode == null) {
             throw new BizException("XN631773", "参建单位不存在");
         }
-        List<XN631773ReqData> dateList = req.getDateList();
+        List<XN631812ReqData> dateList = req.getDateList();
         Date payMonth = req.getPayMonth();
-        for (XN631773ReqData xn631773ReqData : dateList) {
+        for (XN631812ReqData xn631773ReqData : dateList) {
             if (xn631773ReqData.getPayMonth().getMonth() != payMonth
                 .getMonth()) {
                 throw new BizException("XN631773", "导入的工资单月数不匹配");

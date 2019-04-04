@@ -1,6 +1,7 @@
 package com.cdkj.gchf.bo.impl;
 
 import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -16,6 +17,7 @@ import com.cdkj.gchf.bo.IProjectWorkerEntryExitHistoryBO;
 import com.cdkj.gchf.bo.base.Paginable;
 import com.cdkj.gchf.bo.base.PaginableBOImpl;
 import com.cdkj.gchf.common.AesUtils;
+import com.cdkj.gchf.common.DateUtil;
 import com.cdkj.gchf.core.OrderNoGenerater;
 import com.cdkj.gchf.dao.IProjectWorkerEntryExitHistoryDAO;
 import com.cdkj.gchf.domain.ProjectConfig;
@@ -80,9 +82,19 @@ public class ProjectWorkerEntryExitHistoryBOImpl
 
     @Override
     public void refreshProjectWorkerEntryExitHistory(XN631732Req req) {
-        ProjectWorkerEntryExitHistory projectWorkerEntryExitHistory = new ProjectWorkerEntryExitHistory();
-        BeanUtils.copyProperties(req, projectWorkerEntryExitHistory);
-        projectWorkerEntryExitHistoryDAO.update(projectWorkerEntryExitHistory);
+        ProjectWorkerEntryExitHistory condition = new ProjectWorkerEntryExitHistory();
+        condition.setCode(req.getCode());
+        ProjectWorkerEntryExitHistory select = projectWorkerEntryExitHistoryDAO
+            .select(condition);
+        if (req.getDate() != null) {
+            Date strToDate = DateUtil.strToDate(req.getDate(),
+                DateUtil.FRONT_DATE_FORMAT_STRING);
+            select.setDate(strToDate);
+        }
+        if (req.getType() != null) {
+            select.setType(Integer.parseInt(req.getType()));
+        }
+        projectWorkerEntryExitHistoryDAO.update(select);
     }
 
     @Override

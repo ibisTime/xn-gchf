@@ -83,7 +83,7 @@ public class ProjectWorkerEntryExitHistoryAOImpl
         }
         ProjectWorkerEntryExitHistory workerEntryExitHistory = projectWorkerEntryExitHistoryBO
             .getProjectWorkerEntryExitHistoryByIdCardNumber(
-                projectWorker.getIdCardNumber());
+                projectWorker.getIdcardNumber());
         if (workerEntryExitHistory != null) {
             throw new BizException("XN631730", "人员进退场已添加");
         }
@@ -214,7 +214,6 @@ public class ProjectWorkerEntryExitHistoryAOImpl
         for (String code : codeList) {
             ProjectWorkerEntryExitHistory projectWorkerEntryExitHistory = projectWorkerEntryExitHistoryBO
                 .getProjectWorkerEntryExitHistory(code);
-            projectWorkerEntryExitHistory.getProjectCode();
             ProjectConfig projectConfigByLocal = projectConfigBO
                 .getProjectConfigByLocal(
                     projectWorkerEntryExitHistory.getProjectCode());

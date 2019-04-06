@@ -14,9 +14,14 @@ public class XN631745Req extends APageReq {
     // 企业统一社会信用代码
     private String corpCode;
 
+    // 类型
     private String type;
 
+    // 上传状态
     private String uploadStatus;
+
+    // 工人姓名
+    private String workerName;
 
     public String getProjectCode() {
         return projectCode;
@@ -59,6 +64,14 @@ public class XN631745Req extends APageReq {
 
     public void setUserId(String userId) {
         this.userId = userId;
+    }
+
+    public String getWorkerName() {
+        return workerName;
+    }
+
+    public void setWorkerName(String workerName) {
+        this.workerName = workerName;
     }
 
 }

@@ -14,6 +14,8 @@ public class XN631727Req extends AListReq {
     // 企业统一社会信用代码
     private String corpCode;
 
+    private String uploadStatus;
+
     // userId
     @NotBlank
     private String userId;
@@ -40,6 +42,14 @@ public class XN631727Req extends AListReq {
 
     public void setCorpCode(String corpCode) {
         this.corpCode = corpCode;
+    }
+
+    public String getUploadStatus() {
+        return uploadStatus;
+    }
+
+    public void setUploadStatus(String uploadStatus) {
+        this.uploadStatus = uploadStatus;
     }
 
 }

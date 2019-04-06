@@ -1,8 +1,10 @@
 package com.cdkj.gchf.ao.impl;
 
+import java.util.Date;
 import java.util.List;
 
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -14,6 +16,8 @@ import com.cdkj.gchf.bo.IProjectConfigBO;
 import com.cdkj.gchf.bo.IProjectCorpInfoBO;
 import com.cdkj.gchf.bo.IUserBO;
 import com.cdkj.gchf.bo.base.Paginable;
+import com.cdkj.gchf.common.DateUtil;
+import com.cdkj.gchf.core.OrderNoGenerater;
 import com.cdkj.gchf.domain.CorpBasicinfo;
 import com.cdkj.gchf.domain.ProjectConfig;
 import com.cdkj.gchf.domain.ProjectCorpInfo;
@@ -25,6 +29,7 @@ import com.cdkj.gchf.dto.req.XN631633ReqList;
 import com.cdkj.gchf.dto.req.XN631905Req;
 import com.cdkj.gchf.dto.req.XN631906Req;
 import com.cdkj.gchf.dto.req.XN631907Req;
+import com.cdkj.gchf.enums.EGeneratePrefix;
 import com.cdkj.gchf.enums.EIdCardType;
 import com.cdkj.gchf.enums.EOperateLogOperate;
 import com.cdkj.gchf.enums.EOperateLogRefType;
@@ -172,14 +177,45 @@ public class ProjectCorpInfoAOImpl implements IProjectCorpInfoAO {
 
             EProjectCorpType.checkExists(requestProjectCourpInfo.getCorpType());
             EIdCardType.checkExists(requestProjectCourpInfo.getPmIDCardType());
-
-            if (corpBasicinfoBO.getCorpBasicinfo(
+            if (corpBasicinfoBO.getCorpBasicinfoByCorp(
                 requestProjectCourpInfo.getCorpCode()) == null) {
                 throw new BizException("XN631633",
                     "企业信息不存在" + requestProjectCourpInfo.getCorpCode());
             }
         }
-        projectCorpInfoBO.importProjectCorpInfo(req);
+        User user = userBO.getBriefUser(req.getUserId());
+        for (XN631633ReqList data : req.getDateList()) {
+            String code = null;
+            // 拼数据
+            ProjectCorpInfo projectCorpInfo = new ProjectCorpInfo();
+            ProjectConfig configByLocal = projectConfigBO
+                .getProjectConfigByLocal(req.getProjectCode());
+            BeanUtils.copyProperties(data, projectCorpInfo);
+            projectCorpInfo.setCorpCode(data.getCorpCode());
+            projectCorpInfo.setCorpName(data.getCorpName());
+            projectCorpInfo.setProjectCode(configByLocal.getProjectCode());
+            projectCorpInfo.setProjectName(configByLocal.getProjectName());
+            if (StringUtils.isNotBlank(data.getEntryTime())) {
+                Date entryTime = DateUtil.strToDate(data.getEntryTime(),
+                    DateUtil.FRONT_DATE_FORMAT_STRING);
+                projectCorpInfo.setEntryTime(entryTime);
+            }
+            if (StringUtils.isNotBlank(data.getExitTime())) {
+                Date exitTime = DateUtil.strToDate(data.getExitTime(),
+                    DateUtil.FRONT_DATE_FORMAT_STRING);
+                projectCorpInfo.setEntryTime(exitTime);
+            }
+
+            // 操作日志
+            code = OrderNoGenerater
+                .generate(EGeneratePrefix.ProjectCorpInfo.getCode());
+            projectCorpInfo.setCode(code);
+            projectCorpInfoBO.saveProjectCorpInfo(projectCorpInfo);
+            operateLogBO.saveOperateLog(
+                EOperateLogRefType.ProjectCorpinfo.getCode(), code,
+                EOperateLogOperate.UploadCorpBasicinfo.getValue(), user,
+                "批量导入参建单位信息" + code);
+        }
     }
 
 }

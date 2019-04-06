@@ -26,8 +26,6 @@ import com.cdkj.gchf.domain.ProjectCorpInfo;
 import com.cdkj.gchf.domain.User;
 import com.cdkj.gchf.dto.req.XN631630Req;
 import com.cdkj.gchf.dto.req.XN631632Req;
-import com.cdkj.gchf.dto.req.XN631633Req;
-import com.cdkj.gchf.dto.req.XN631633ReqList;
 import com.cdkj.gchf.dto.req.XN631905Req;
 import com.cdkj.gchf.dto.req.XN631906Req;
 import com.cdkj.gchf.dto.req.XN631907Req;
@@ -193,35 +191,6 @@ public class ProjectCorpInfoBOImpl extends PaginableBOImpl<ProjectCorpInfo>
     @Override
     public ProjectCorpInfo getProjectCorpInfo(ProjectCorpInfo condition) {
         return projectCorpInfoDAO.select(condition);
-    }
-
-    @Override
-    public void importProjectCorpInfo(XN631633Req req) {
-
-        User user = userBO.getBriefUser(req.getUserId());
-        for (XN631633ReqList data : req.getDateList()) {
-            String code = null;
-            // 拼数据
-            ProjectCorpInfo projectCorpInfo = new ProjectCorpInfo();
-            ProjectConfig configByLocal = projectConfigBO
-                .getProjectConfigByLocal(req.getProjectCode());
-            BeanUtils.copyProperties(data, projectCorpInfo);
-            projectCorpInfo.setCorpCode(data.getCorpCode());
-            projectCorpInfo.setCorpName(data.getCorpName());
-            projectCorpInfo.setProjectCode(configByLocal.getProjectCode());
-            projectCorpInfo.setProjectName(configByLocal.getProjectName());
-
-            // 操作日志
-            code = OrderNoGenerater
-                .generate(EGeneratePrefix.ProjectCorpInfo.getCode());
-            projectCorpInfo.setCode(code);
-            saveProjectCorpInfo(projectCorpInfo);
-            operateLogBO.saveOperateLog(
-                EOperateLogRefType.ProjectCorpinfo.getCode(), code,
-                EOperateLogOperate.UploadCorpBasicinfo.getValue(), user,
-                "批量导入参建单位信息" + code);
-        }
-
     }
 
     @Override

@@ -6,7 +6,6 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.alibaba.fastjson.JSONObject;
 import com.cdkj.gchf.ao.IProjectWorkerAO;
 import com.cdkj.gchf.bo.ICorpBasicinfoBO;
 import com.cdkj.gchf.bo.IOperateLogBO;
@@ -26,6 +25,7 @@ import com.cdkj.gchf.dto.req.XN631690Req;
 import com.cdkj.gchf.dto.req.XN631692Req;
 import com.cdkj.gchf.dto.req.XN631693Req;
 import com.cdkj.gchf.dto.req.XN631694Req;
+import com.cdkj.gchf.dto.req.XN631694ReqData;
 import com.cdkj.gchf.dto.req.XN631911Req;
 import com.cdkj.gchf.dto.req.XN631912Req;
 import com.cdkj.gchf.dto.req.XN631913Req;
@@ -36,6 +36,8 @@ import com.cdkj.gchf.enums.EWorkerType;
 import com.cdkj.gchf.exception.BizException;
 import com.cdkj.gchf.gov.AsyncQueueHolder;
 import com.cdkj.gchf.gov.GovConnecter;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonObject;
 
 @Service
 public class ProjectWorkerAOImpl implements IProjectWorkerAO {
@@ -190,15 +192,27 @@ public class ProjectWorkerAOImpl implements IProjectWorkerAO {
 
             projectWorker.setProjectCode(projectConfig.getProjectCode());
             projectWorker.setTeamSysNo(teamMaster.getTeamSysNo());
-
-            String projectWorkerInfo = JSONObject
-                .toJSONStringWithDateFormat(projectWorker, "yyyy-MM-dd");
+            XN631694ReqData xn631694ReqData = new XN631694ReqData();
+            xn631694ReqData.setTeamMasterCode(teamMaster.getTeamSysNo());
+            JsonObject jsonObject = new JsonObject();
+            jsonObject.addProperty("projectCode",
+                projectWorker.getProjectCode());
+            jsonObject.addProperty("corpCode", projectWorker.getCorpCode());
+            jsonObject.addProperty("corpName", projectWorker.getCorpName());
+            jsonObject.addProperty("teamSysNo", teamMaster.getTeamSysNo());
+            jsonObject.addProperty("teamName", teamMaster.getTeamName());
+            JsonArray jsonArray = new JsonArray();
+            JsonObject projectWorkerJson = projectWorkerBO
+                .getProjectWorkerJson(projectWorker, projectConfig);
+            jsonArray.add(projectWorkerJson);
+            jsonObject.add("workerList", jsonArray);
+            System.out.println(jsonObject.toString());
             String resString = GovConnecter.getGovData("ProjectWorker.Add",
-                projectWorkerInfo, projectConfig.getProjectCode(),
+                jsonObject.toString(), projectConfig.getProjectCode(),
                 projectConfig.getSecret());
 
             String logCode = operateLogBO.saveOperateLog(
-                EOperateLogRefType.ProjectWorker.getCode(), resString,
+                EOperateLogRefType.ProjectWorker.getCode(), code,
                 EOperateLogOperate.UploadProjectWorker.getValue(), user, null);
 
             AsyncQueueHolder.addSerial(resString, projectConfig,

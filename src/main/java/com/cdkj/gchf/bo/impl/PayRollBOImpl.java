@@ -57,10 +57,11 @@ public class PayRollBOImpl extends PaginableBOImpl<PayRoll>
         String code = OrderNoGenerater
             .generate(EGeneratePrefix.PayRoll.getCode());
         payRoll.setCode(code);
-        data.getPayMonth();
-        Date payMonth = DateUtil.strToDate(data.getPayMonth(),
-            DateUtil.FRONT_DATE_FORMAT_STRING);
-        payRoll.setPayMonth(payMonth);
+        if (StringUtils.isNotBlank(data.getPayMonth())) {
+            Date payMonth = DateUtil.strToDate(data.getPayMonth(),
+                DateUtil.FRONT_DATE_FORMAT_STRING);
+            payRoll.setPayMonth(payMonth);
+        }
         payRollDAO.insert(payRoll);
         return code;
     }

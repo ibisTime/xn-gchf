@@ -1,5 +1,6 @@
 package com.cdkj.gchf.bo.impl;
 
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -21,6 +22,7 @@ import com.cdkj.gchf.bo.IWorkerInfoBO;
 import com.cdkj.gchf.bo.base.Paginable;
 import com.cdkj.gchf.bo.base.PaginableBOImpl;
 import com.cdkj.gchf.common.AesUtils;
+import com.cdkj.gchf.common.DateUtil;
 import com.cdkj.gchf.core.OrderNoGenerater;
 import com.cdkj.gchf.dao.IProjectWorkerDAO;
 import com.cdkj.gchf.domain.CorpBasicinfo;
@@ -46,6 +48,7 @@ import com.cdkj.gchf.enums.EWorkerType;
 import com.cdkj.gchf.gov.GovConnecter;
 import com.cdkj.gchf.gov.GovUtil;
 import com.cdkj.gchf.gov.SerialHandler;
+import com.google.gson.JsonObject;
 
 @Component
 public class ProjectWorkerBOImpl extends PaginableBOImpl<ProjectWorker>
@@ -87,17 +90,20 @@ public class ProjectWorkerBOImpl extends PaginableBOImpl<ProjectWorker>
             .getWorkerInfo(data.getWorkerCode());
         projectWorkerInfo.setCorpName(corpBasicinfo.getCorpName());
         projectWorkerInfo.setWorkerMobile(workerInfo.getCellPhone());
-        projectWorkerInfo.setIdCardType(workerInfo.getIdCardType());
-        projectWorkerInfo.setIdCardNumber(workerInfo.getIdCardNumber());
+        projectWorkerInfo.setIdcardType(workerInfo.getIdCardType());
+        projectWorkerInfo.setIdcardNumber(workerInfo.getIdCardNumber());
         projectWorkerInfo.setWorkerName(workerInfo.getName());
         projectWorkerInfo.setUploadStatus(EUploadStatus.TO_UPLOAD.getCode());
         projectWorkerInfo.setLocalTeamSysNo(teamMaster.getCode());
 
         if (StringUtils.isNotBlank(data.getIsTeamLeader())) {
             EIsNotType.checkExists(data.getIsTeamLeader());
+            projectWorkerInfo
+                .setIsTeamLeader(Integer.parseInt(data.getIsTeamLeader()));
         }
         if (StringUtils.isNotBlank(data.getWorkType())) {
             EWorkerType.checkExists(data.getWorkType());
+            projectWorkerInfo.setWorkType(data.getWorkType());
         }
         if (StringUtils.isNotBlank(data.getWorkRole())) {
             EWorkerRoleType.checkExists(data.getWorkRole());
@@ -106,9 +112,23 @@ public class ProjectWorkerBOImpl extends PaginableBOImpl<ProjectWorker>
         }
         if (StringUtils.isNotBlank(data.getPayRollTopBankCode())) {
             EBankCardCodeType.checkExists(data.getPayRollTopBankCode());
+            projectWorkerInfo
+                .setPayRollTopBankCode(data.getPayRollTopBankCode());
         }
         if (StringUtils.isNotBlank(data.getHasBuyInsurance())) {
             EIsNotType.checkExists(data.getHasBuyInsurance());
+            projectWorkerInfo.setHasBuyInsurance(
+                Integer.parseInt(data.getHasBuyInsurance()));
+        }
+        if (StringUtils.isNotBlank(data.getIssueCardDate())) {
+            Date issueCardDate = DateUtil.strToDate(data.getIssueCardDate(),
+                DateUtil.FRONT_DATE_FORMAT_STRING);
+            projectWorkerInfo.setIssueCardDate(issueCardDate);
+        }
+        if (StringUtils.isNotBlank(data.getWorkDate())) {
+            Date workDate = DateUtil.strToDate(data.getWorkDate(),
+                DateUtil.FRONT_DATE_FORMAT_STRING);
+            projectWorkerInfo.setJoinDatetime(workDate);
         }
         String code = OrderNoGenerater
             .generate(EGeneratePrefix.ProjectWorker.getCode());
@@ -186,7 +206,7 @@ public class ProjectWorkerBOImpl extends PaginableBOImpl<ProjectWorker>
         BeanUtils.copyProperties(req, projectWorker);
 
         if (StringUtils.isNotBlank(req.getIdCardNumber())) {
-            projectWorker.setIdCardNumber(AesUtils
+            projectWorker.setIdcardNumber(AesUtils
                 .encrypt(req.getIdCardNumber(), projectConfig.getSecret()));
         }
 
@@ -202,8 +222,8 @@ public class ProjectWorkerBOImpl extends PaginableBOImpl<ProjectWorker>
 
         if (null != page && CollectionUtils.isNotEmpty(page.getList())) {
             for (ProjectWorker worker : page.getList()) {
-                worker.setIdCardNumber(AesUtils.decrypt(
-                    worker.getIdCardNumber(), projectConfig.getSecret()));
+                worker.setIdcardNumber(AesUtils.decrypt(
+                    worker.getIdcardNumber(), projectConfig.getSecret()));
                 // worker.setWorkerRole(Integer.parseInt(worker.getWorkerRole()));
             }
         }
@@ -287,12 +307,75 @@ public class ProjectWorkerBOImpl extends PaginableBOImpl<ProjectWorker>
     }
 
     @Override
-    public WorkerInfo getProjectWorkerByIdCardNumber(String idCardNumber) {
-        WorkerInfo workerInfo = new WorkerInfo();
-        workerInfo.setIdCardNumber(idCardNumber);
-        WorkerInfo infoByCondition = workerInfoBO
-            .getWorkerInfoByCondition(workerInfo);
+    public ProjectWorker getProjectWorkerByIdCardNumber(String idCardNumber) {
+        ProjectWorker projectWorker = new ProjectWorker();
+        projectWorker.setIdcardNumber(idCardNumber);
+        ProjectWorker infoByCondition = projectWorkerDAO.select(projectWorker);
         return infoByCondition;
+    }
+
+    @Override
+    public JsonObject getProjectWorkerJson(ProjectWorker projectWorker,
+            ProjectConfig projectConfig) {
+        JsonObject jsonObject = new JsonObject();
+        jsonObject.addProperty("workerName", projectWorker.getWorkerName());
+        jsonObject.addProperty("isTeamLeader", projectWorker.getIsTeamLeader());
+        jsonObject.addProperty("idCardType", projectWorker.getIdcardType());
+        jsonObject.addProperty("idCardNumber", AesUtils.encrypt(
+            projectWorker.getIdcardNumber(), projectConfig.getSecret()));
+        jsonObject.addProperty("workType", projectWorker.getWorkType());
+        jsonObject.addProperty("workRole", projectWorker.getWorkerRole());
+        jsonObject.addProperty("issueCardDate",
+            DateUtil.dateToStr(projectWorker.getIssueCardDate(),
+                DateUtil.FRONT_DATE_FORMAT_STRING));
+        jsonObject.addProperty("issueCardPic",
+            projectWorker.getIssueCardPicUrl());
+        jsonObject.addProperty("cardNumber", projectWorker.getCardNumber());
+        jsonObject.addProperty("payRollBankCardNumber",
+            AesUtils.encrypt(projectWorker.getPayRollBankCardNumber(),
+                projectConfig.getSecret()));
+        jsonObject.addProperty("payRollBankName",
+            projectWorker.getPayRollBankName());
+        jsonObject.addProperty("bankLinkNumber",
+            projectWorker.getBankLinkNumber());
+        jsonObject.addProperty("payRollTopBankCode",
+            projectWorker.getPayRollTopBankCode());
+        //
+
+        jsonObject.addProperty("hasBuyInsurance",
+            projectWorker.getHasBuyInsurance());
+        WorkerInfo infoByIdCardNumber = workerInfoBO
+            .getWorkerInfoByIdCardNumber(projectWorker.getIdcardNumber());
+        jsonObject.addProperty("nation", infoByIdCardNumber.getNation());
+        jsonObject.addProperty("address", infoByIdCardNumber.getAddress());
+        jsonObject.addProperty("headImage",
+            infoByIdCardNumber.getHeadImageUrl());
+        jsonObject.addProperty("politicsType",
+            infoByIdCardNumber.getPoliticsType());
+        jsonObject.addProperty("joinedTime",
+            DateUtil.dateToStr(projectWorker.getJoinDatetime(),
+                DateUtil.FRONT_DATE_FORMAT_STRING));
+        jsonObject.addProperty("cellPhone", infoByIdCardNumber.getCellPhone());
+        jsonObject.addProperty("cultureLevelType",
+            infoByIdCardNumber.getCultureLevelType());
+        jsonObject.addProperty("Specialty", infoByIdCardNumber.getSpecialty());
+        jsonObject.addProperty("hasBadMedicalHistory",
+            projectWorker.getHasBadMedicalHistory());
+        jsonObject.addProperty("urgentLinkMan",
+            infoByIdCardNumber.getUrgentLinkMan());
+        jsonObject.addProperty("urgentLinkManPhone",
+            infoByIdCardNumber.getUrgentLinkManPhone());
+        jsonObject.addProperty("workDate", projectWorker.getWorkDate());
+        jsonObject.addProperty("maritalStatus",
+            infoByIdCardNumber.getMaritalStatus());
+        jsonObject.addProperty("grantOrg", infoByIdCardNumber.getGrantOrg());
+        jsonObject.addProperty("positiveIDCardImage",
+            infoByIdCardNumber.getPositiveIdCardImageUrl());
+        jsonObject.addProperty("negativeIDCardImage",
+            infoByIdCardNumber.getNegativeIdCardImageUrl());
+        jsonObject.addProperty("startDate", projectWorker.getStartDate());
+        jsonObject.addProperty("expiryDate", projectWorker.getExpiryDate());
+        return jsonObject;
     }
 
 }

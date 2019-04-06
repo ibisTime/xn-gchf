@@ -1,27 +1,32 @@
 package com.cdkj.gchf.bo.impl;
 
+import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.cdkj.gchf.bo.IPayRollDetailBO;
+import com.cdkj.gchf.bo.IProjectWorkerBO;
 import com.cdkj.gchf.bo.base.PaginableBOImpl;
 import com.cdkj.gchf.common.AesUtils;
+import com.cdkj.gchf.common.DateUtil;
 import com.cdkj.gchf.core.OrderNoGenerater;
 import com.cdkj.gchf.dao.impl.PayRollDetailDAOImpl;
 import com.cdkj.gchf.domain.PayRoll;
 import com.cdkj.gchf.domain.PayRollDetail;
 import com.cdkj.gchf.domain.ProjectConfig;
+import com.cdkj.gchf.domain.ProjectWorker;
 import com.cdkj.gchf.domain.TeamMaster;
 import com.cdkj.gchf.dto.req.XN631770ReqDetail;
 import com.cdkj.gchf.dto.req.XN631772Req;
 import com.cdkj.gchf.dto.req.XN631810Req;
 import com.cdkj.gchf.enums.EGeneratePrefix;
 import com.cdkj.gchf.enums.EUploadStatus;
-import com.cdkj.gchf.exception.BizException;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 
@@ -30,6 +35,9 @@ public class PayRollDetailBOImpl extends PaginableBOImpl<PayRollDetail>
         implements IPayRollDetailBO {
     @Autowired
     private PayRollDetailDAOImpl payRollDetailDAO;
+
+    @Autowired
+    private IProjectWorkerBO projectWorkerBO;
 
     @Override
     public void savePayRollDetail(String projectCode,
@@ -41,6 +49,35 @@ public class PayRollDetailBOImpl extends PaginableBOImpl<PayRollDetail>
             PayRollDetail payRollDetail = new PayRollDetail();
             BeanUtils.copyProperties(xn631770ReqDetail, payRollDetail);
             payRollDetail.setCode(code);
+            if (StringUtils.isNotBlank(xn631770ReqDetail.getDays())) {
+                payRollDetail
+                    .setDays(Integer.parseInt(xn631770ReqDetail.getDays()));
+            }
+            //
+            payRollDetail
+                .setWorkHours(new BigDecimal(xn631770ReqDetail.getWorkHours()));
+            ProjectWorker workerByIdCardNumber = projectWorkerBO
+                .getProjectWorkerByIdCardNumber(
+                    xn631770ReqDetail.getIdCardNumber());
+            payRollDetail.setWorkerName(workerByIdCardNumber.getWorkerName());
+            payRollDetail.setIdcardNumber(payRollDetail.getIdcardNumber());
+
+            payRollDetail.setActualAmount(
+                new BigDecimal(xn631770ReqDetail.getActualAmount()));
+            if (StringUtils.isNotBlank(xn631770ReqDetail.getBalanceDate())) {
+                Date balanceDate = DateUtil.strToDate(
+                    xn631770ReqDetail.getBalanceDate(),
+                    DateUtil.FRONT_DATE_FORMAT_STRING);
+                payRollDetail.setBalanceDate(balanceDate);
+            }
+            if (StringUtils.isNotBlank(xn631770ReqDetail.getIsBackPay())) {
+                payRollDetail.setIsBackPay(
+                    Integer.parseInt(xn631770ReqDetail.getIsBackPay()));
+            }
+            if (StringUtils.isNotBlank(xn631770ReqDetail.getTotalPayAmount())) {
+                payRollDetail.setTotalPayAmount(
+                    new BigDecimal(xn631770ReqDetail.getTotalPayAmount()));
+            }
             payRollDetail.setPayRollCode(projectCode);
             payRollDetail.setUploadStatus(EUploadStatus.TO_UPLOAD.getCode());
             payRollDetailDAO.insert(payRollDetail);
@@ -59,10 +96,9 @@ public class PayRollDetailBOImpl extends PaginableBOImpl<PayRollDetail>
 
         PayRollDetail condition = new PayRollDetail();
         condition.setPayRollCode(req.getCode());
-        PayRollDetail select = payRollDetailDAO.select(condition);
-        BeanUtils.copyProperties(req, select);
-
-        return payRollDetailDAO.update(select);
+        PayRollDetail payRollDetail = payRollDetailDAO.select(condition);
+        BeanUtils.copyProperties(req, payRollDetail);
+        return payRollDetailDAO.update(payRollDetail);
     }
 
     @Override
@@ -162,9 +198,7 @@ public class PayRollDetailBOImpl extends PaginableBOImpl<PayRollDetail>
     @Override
     public String savePayRollDetail(PayRollDetail payRollDetail) {
         String code = null;
-        if (payRollDetail == null) {
-            throw new BizException("工资单详情信息不能为空");
-        }
+        payRollDetail.setCode(code);
         code = OrderNoGenerater
             .generate(EGeneratePrefix.PayRollDetail.getValue());
         payRollDetailDAO.insert(payRollDetail);
@@ -180,9 +214,25 @@ public class PayRollDetailBOImpl extends PaginableBOImpl<PayRollDetail>
     public int updatePayRollDetail(XN631810Req data) {
         PayRollDetail condition = new PayRollDetail();
         condition.setCode(data.getCode());
-        PayRollDetail select = payRollDetailDAO.select(condition);
-        BeanUtils.copyProperties(data, select);
-        return payRollDetailDAO.update(select);
+        BeanUtils.copyProperties(data, condition);
+        condition.setActualAmount(new BigDecimal(data.getActualAmount()));
+        condition.setWorkHours(new BigDecimal(data.getWorkHours()));
+        if (StringUtils.isNotBlank(data.getBalanceDate())) {
+            Date balanceDate = DateUtil.strToDate(data.getBalanceDate(),
+                DateUtil.FRONT_DATE_FORMAT_STRING);
+            condition.setBalanceDate(balanceDate);
+        }
+        if (StringUtils.isNotBlank(data.getIsBackPay())) {
+            condition.setIsBackPay(Integer.parseInt(data.getIsBackPay()));
+        }
+        if (StringUtils.isNotBlank(data.getTotalPayAmount())) {
+            condition
+                .setTotalPayAmount(new BigDecimal(data.getTotalPayAmount()));
+        }
+        if (StringUtils.isNotBlank(data.getTotalPayAmount())) {
+            condition.setDays(Integer.parseInt(data.getDays()));
+        }
+        return payRollDetailDAO.update(condition);
     }
 
 }

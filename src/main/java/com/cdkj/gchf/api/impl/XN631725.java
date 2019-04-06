@@ -34,7 +34,7 @@ public class XN631725 extends AProcessor {
         BeanUtils.copyProperties(req, condition);
         int start = StringValidater.toInteger(req.getStart());
         int limit = StringValidater.toInteger(req.getStart());
-        String column = null;
+        String column = req.getOrderColumn();
         if (StringUtils.isBlank(column)) {
             column = IWorkerAttendanceAO.DEFAULT_ORDER_COLUMN;
         }

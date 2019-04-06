@@ -1,9 +1,5 @@
 package com.cdkj.gchf.dto.req;
 
-import java.math.BigDecimal;
-
-import javax.validation.constraints.Min;
-
 import org.hibernate.validator.constraints.NotBlank;
 
 public class XN631770ReqDetail {
@@ -15,11 +11,13 @@ public class XN631770ReqDetail {
     @NotBlank
     private String idcardNumber;
 
+    private String idCardNumber;
+
     // 出勤天数
-    private Integer days;
+    private String days;
 
     // 总工时
-    private BigDecimal workHours;
+    private String workHours;
 
     // 工人工资卡号
     @NotBlank
@@ -49,10 +47,9 @@ public class XN631770ReqDetail {
     private String totalPayAmount;
 
     // 实发金额
-    private BigDecimal actualAmount;
+    private String actualAmount;
 
     // 是否为补发
-    @Min(0)
     private String isBackPay;
 
     // 发放日期
@@ -66,27 +63,35 @@ public class XN631770ReqDetail {
     @NotBlank
     private String thirdPayRollCode;
 
-    public String getIdCardNumber() {
+    public String getIdcardType() {
+        return idcardType;
+    }
+
+    public void setIdcardType(String idcardType) {
+        this.idcardType = idcardType;
+    }
+
+    public String getIdcardNumber() {
         return idcardNumber;
     }
 
-    public void setIdCardNumber(String idcardNumber) {
+    public void setIdcardNumber(String idcardNumber) {
         this.idcardNumber = idcardNumber;
     }
 
-    public Integer getDays() {
+    public String getDays() {
         return days;
     }
 
-    public void setDays(Integer days) {
+    public void setDays(String days) {
         this.days = days;
     }
 
-    public BigDecimal getWorkHours() {
+    public String getWorkHours() {
         return workHours;
     }
 
-    public void setWorkHours(BigDecimal workHours) {
+    public void setWorkHours(String workHours) {
         this.workHours = workHours;
     }
 
@@ -146,11 +151,11 @@ public class XN631770ReqDetail {
         this.totalPayAmount = totalPayAmount;
     }
 
-    public BigDecimal getActualAmount() {
+    public String getActualAmount() {
         return actualAmount;
     }
 
-    public void setActualAmount(BigDecimal actualAmount) {
+    public void setActualAmount(String actualAmount) {
         this.actualAmount = actualAmount;
     }
 
@@ -186,20 +191,12 @@ public class XN631770ReqDetail {
         this.thirdPayRollCode = thirdPayRollCode;
     }
 
-    public String getIdcardType() {
-        return idcardType;
+    public String getIdCardNumber() {
+        return idCardNumber;
     }
 
-    public void setIdcardType(String idcardType) {
-        this.idcardType = idcardType;
-    }
-
-    public String getIdcardNumber() {
-        return idcardNumber;
-    }
-
-    public void setIdcardNumber(String idcardNumber) {
-        this.idcardNumber = idcardNumber;
+    public void setIdCardNumber(String idCardNumber) {
+        this.idCardNumber = idCardNumber;
     }
 
 }

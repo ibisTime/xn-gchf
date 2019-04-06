@@ -192,4 +192,8 @@ public class XN631690Req {
         this.workRole = workRole;
     }
 
+    public String getWorkDate() {
+        return workDate;
+    }
+
 }

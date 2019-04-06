@@ -81,8 +81,8 @@ public class WorkerAttendanceBOImpl extends PaginableBOImpl<WorkerAttendance>
             .getProjectWorker(data.getProjectWorkerCode());
         workerAttendance.setWorkerCode(projectWorker.getWorkerCode());
         workerAttendance.setWorkerName(projectWorker.getWorkerName());
-        workerAttendance.setIdCardNumber(projectWorker.getIdCardNumber());
-        workerAttendance.setIdCardType(projectWorker.getIdCardType());
+        workerAttendance.setIdCardNumber(projectWorker.getIdcardNumber());
+        workerAttendance.setIdCardType(projectWorker.getIdcardType());
         workerAttendance.setUploadStatus(EUploadStatus.TO_UPLOAD.getCode());
         code = OrderNoGenerater
             .generate(EGeneratePrefix.WorkerAttendance.getCode());

@@ -16,8 +16,8 @@
 		<result column="worker_mobile" property="workerMobile" />
 		<result column="is_team_leader" property="isTeamLeader" />
 
-		<result column="idcard_type" property="idCardType" />
-		<result column="idcard_number" property="idCardNumber" />
+		<result column="idcard_type" property="idcardType" />
+		<result column="idcard_number" property="idcardNumber" />
 		<result column="work_type" property="workType" />
 		<result column="worker_role" property="workerRole" />
 		<result column="type" property="type" />
@@ -75,8 +75,8 @@
 			<if test="workerCode != null and workerCode != '' ">
 				AND t.worker_code = #{workerCode}
 			</if>
-			<if test="idCardNumber != null and idCardNumber != '' ">
-				AND t.idcard_number = #{idCardNumber}
+			<if test="idcardNumber != null and idcardNumber != '' ">
+				AND t.idcard_number = #{idcardNumber}
 			</if>
 			<if test="workerName != null and workerName != '' ">
 				AND t.worker_name LIKE CONCAT('%',#{workerName},'%')
@@ -229,8 +229,8 @@
 		,#{workerName}
 		,#{workerMobile}
 		,#{isTeamLeader}
-		,#{idCardType}
-		,#{idCardNumber}
+		,#{idcardType}
+		,#{idcardNumber}
 
 		,#{workType}
 		,#{workerRole}

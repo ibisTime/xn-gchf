@@ -1,7 +1,6 @@
 package com.cdkj.gchf.bo.impl;
 
 import java.math.BigDecimal;
-import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -11,18 +10,12 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import org.springframework.transaction.annotation.Transactional;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.alibaba.fastjson.serializer.SerializerFeature;
-import com.cdkj.gchf.bo.IOperateLogBO;
-import com.cdkj.gchf.bo.IProjectConfigBO;
-import com.cdkj.gchf.bo.IProjectCorpInfoBO;
 import com.cdkj.gchf.bo.IProjectWorkerBO;
-import com.cdkj.gchf.bo.IUserBO;
 import com.cdkj.gchf.bo.IWorkerContractBO;
-import com.cdkj.gchf.bo.IWorkerInfoBO;
 import com.cdkj.gchf.bo.base.Paginable;
 import com.cdkj.gchf.bo.base.PaginableBOImpl;
 import com.cdkj.gchf.common.AesUtils;
@@ -31,7 +24,6 @@ import com.cdkj.gchf.core.OrderNoGenerater;
 import com.cdkj.gchf.dao.IWorkerContractDAO;
 import com.cdkj.gchf.domain.ProjectConfig;
 import com.cdkj.gchf.domain.ProjectWorker;
-import com.cdkj.gchf.domain.User;
 import com.cdkj.gchf.domain.WorkerContract;
 import com.cdkj.gchf.dto.req.SerializeFilterHolder;
 import com.cdkj.gchf.dto.req.XN631670Req;
@@ -40,16 +32,11 @@ import com.cdkj.gchf.dto.req.XN631916Req;
 import com.cdkj.gchf.dto.req.XN631916ReqContract;
 import com.cdkj.gchf.dto.req.XN631917Req;
 import com.cdkj.gchf.enums.EGeneratePrefix;
-import com.cdkj.gchf.enums.EOperateLogOperate;
-import com.cdkj.gchf.enums.EOperateLogRefType;
 import com.cdkj.gchf.enums.EUploadStatus;
 import com.cdkj.gchf.exception.BizException;
-import com.cdkj.gchf.gov.AsyncQueueHolder;
 import com.cdkj.gchf.gov.GovConnecter;
 import com.cdkj.gchf.gov.GovUtil;
 import com.cdkj.gchf.gov.SerialHandler;
-import com.google.gson.JsonArray;
-import com.google.gson.JsonObject;
 
 @Component
 public class WorkerContractBOImpl extends PaginableBOImpl<WorkerContract>
@@ -57,21 +44,6 @@ public class WorkerContractBOImpl extends PaginableBOImpl<WorkerContract>
 
     @Autowired
     private IWorkerContractDAO workerContractDAO;
-
-    @Autowired
-    private IProjectConfigBO projectConfigBO;
-
-    @Autowired
-    private IUserBO userBO;
-
-    @Autowired
-    private IOperateLogBO operateLogBO;
-
-    @Autowired
-    private IProjectCorpInfoBO projectCorpInfoBO;
-
-    @Autowired
-    private IWorkerInfoBO workerInfoBO;
 
     @Autowired
     private IProjectWorkerBO projectWorkerBO;
@@ -204,70 +176,10 @@ public class WorkerContractBOImpl extends PaginableBOImpl<WorkerContract>
             DateUtil.FRONT_DATE_FORMAT_STRING);
         workerContract.setStartDate(startDate);
         workerContract.setEndDate(endDate);
-        workerContract.setStartDate(DateUtil.strToDate(req.getStartDate(),
-            DateUtil.DATA_TIME_PATTERN_1));
-        workerContract.setEndDate(
-            DateUtil.strToDate(req.getEndDate(), DateUtil.DATA_TIME_PATTERN_1));
         workerContract.setUnitPrice(new BigDecimal(req.getUnitPrice()));
         workerContract.setUploadStatus(EUploadStatus.TO_UPLOAD.getCode());
         workerContractDAO.insert(workerContract);
         return code;
-    }
-
-    @Transactional
-    @Override
-    public void saveWorkerContractToPlantfrom(String userId,
-            List<String> codeList) {
-        User briefUser = userBO.getBriefUser(userId);
-
-        for (String code : codeList) {
-            WorkerContract workerContract = workerContractBO
-                .getWorkerContract(code);
-            ProjectConfig projectConfig = projectConfigBO
-                .getProjectConfigByLocal(workerContract.getProjectCode());
-            if (projectConfig == null) {
-                throw new BizException("XN631674", "该项目未配置，无法查询");
-            }
-            workerContract.setProjectCode(projectConfig.getProjectCode());
-            // 封装请求json
-            JsonObject jsonObject = new JsonObject();
-            jsonObject.addProperty("projectCode",
-                projectConfig.getProjectCode());
-            JsonObject childJson = new JsonObject();
-            childJson.addProperty("corpCode", workerContract.getCorpCode());
-            childJson.addProperty("corpName", workerContract.getCorpName());
-            childJson.addProperty("idCardType", workerContract.getIdcardType());
-
-            String encrypt = AesUtils.encrypt(workerContract.getIdcardNumber(),
-                projectConfig.getSecret());
-            childJson.addProperty("idCardNumber", encrypt);
-            childJson.addProperty("contractPeriodType",
-                workerContract.getContractPeriodType());
-            childJson.addProperty("startDate",
-                new SimpleDateFormat("yyyy-MM-dd")
-                    .format(workerContract.getStartDate()));
-            childJson.addProperty("endDate", new SimpleDateFormat("yyyy-MM-dd")
-                .format(workerContract.getEndDate()));
-            childJson.addProperty("unit", workerContract.getUnit());
-            childJson.addProperty("unitPrice", workerContract.getUnitPrice());
-            JsonArray jsonArray = new JsonArray();
-            jsonArray.add(childJson);
-            jsonObject.add("contractList", jsonArray);
-
-            // 上传到国家平台
-            String resString = GovConnecter.getGovData("WorkerContract.Add",
-                jsonObject.toString(), projectConfig.getProjectCode(),
-                projectConfig.getSecret());
-            // 增加操作日志
-            String log = operateLogBO.saveOperateLog(
-                EOperateLogRefType.WorkContract.getCode(), code,
-                EOperateLogOperate.UploadWorkContract.getValue(), briefUser,
-                null);
-            // 消息队列更新状态
-            AsyncQueueHolder.addSerial(resString, projectConfig,
-                "workerContractBO", code,
-                EUploadStatus.UPLOAD_UNEDITABLE.getCode(), log);
-        }
     }
 
 }

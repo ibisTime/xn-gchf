@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -21,6 +22,8 @@ import com.cdkj.gchf.bo.ITeamMasterBO;
 import com.cdkj.gchf.bo.IUserBO;
 import com.cdkj.gchf.bo.IWorkerInfoBO;
 import com.cdkj.gchf.bo.base.Paginable;
+import com.cdkj.gchf.common.AesUtils;
+import com.cdkj.gchf.common.DateUtil;
 import com.cdkj.gchf.domain.CorpBasicinfo;
 import com.cdkj.gchf.domain.PayRoll;
 import com.cdkj.gchf.domain.PayRollDetail;
@@ -34,10 +37,15 @@ import com.cdkj.gchf.dto.req.XN631812Req;
 import com.cdkj.gchf.dto.req.XN631812ReqData;
 import com.cdkj.gchf.dto.req.XN631920Req;
 import com.cdkj.gchf.dto.req.XN631921Req;
+import com.cdkj.gchf.enums.EOperateLogOperate;
 import com.cdkj.gchf.enums.EOperateLogRefType;
 import com.cdkj.gchf.enums.EUploadStatus;
 import com.cdkj.gchf.exception.BizException;
+import com.cdkj.gchf.gov.AsyncQueueHolder;
+import com.cdkj.gchf.gov.GovConnecter;
 import com.cdkj.gchf.http.JsonUtils;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonObject;
 
 @Service
 public class PayRollAOImpl implements IPayRollAO {
@@ -167,7 +175,6 @@ public class PayRollAOImpl implements IPayRollAO {
                     .queryListByPayRollDetail(payRoll.getCode()));
             }
         }
-
         return page;
     }
 
@@ -183,43 +190,99 @@ public class PayRollAOImpl implements IPayRollAO {
      */
     public void uploadPayRollList(String userId, List<String> codeList) {
         User user = userBO.getBriefUser(userId);
+
         for (String code : codeList) {
             PayRollDetail payRollDetail = payRollDetailBO
                 .getPayRollDetail(code);
             String payRollCode = payRollDetail.getPayRollCode();
-            // List<PayRollDetail> payRollDetailByPayRollCode = payRollDetailBO
-            // .getPayRollDetailByPayRollCode(payRollCode);
-            // 拿到payroll数据
             PayRoll payRoll = payRollBO.getPayRoll(payRollCode);
-            payRoll.getTeamSysNo();
-            payRoll.getPayMonth();
-            payRoll.getProjectCode();
-            payRoll.getCorpCode();
-
             ProjectConfig projectConfigByLocal = projectConfigBO
                 .getProjectConfigByLocal(payRoll.getProjectCode());
             if (projectConfigByLocal == null) {
-                throw new BizException("XN631813", "项目未配置");
+                continue;
             }
-            String projectCode = projectConfigByLocal.getProjectCode();
-            TeamMaster condition = new TeamMaster();
-            // condition.setTeamSysNo(teamSysNo);
-            // teamMasterBO.getTeamMasterByCondition(condition);
-            //
-            // String resString = GovConnecter.getGovData("Payroll.Add",
-            // uploadRequestJsontoPlantform.toString(),
-            // projectConfig.getProjectCode(), projectConfig.getSecret());
-            //
-            // String log = operateLogBO.saveOperateLog(
-            // EOperateLogRefType.PayRoll.getCode(),
-            // uploadRequestJsontoPlantform.toString(),
-            // EOperateLogOperate.UploadPayRoll.getValue(), user, null);
-            //
-            // AsyncQueueHolder.addSerial(resString, projectConfig,
-            // "payRollDetailBO", code,
-            // EUploadStatus.UPLOAD_UNEDITABLE.getValue(), log);
-            // }
+            String json = getRequestJsonToPlantform(payRoll, payRollDetail,
+                projectConfigByLocal);
+            String resString = GovConnecter.getGovData("Payroll.Add", json,
+                projectConfigByLocal.getProjectCode(),
+                projectConfigByLocal.getSecret());
+            String log = operateLogBO.saveOperateLog(
+                EOperateLogRefType.PayRollDetail.getCode(),
+                EOperateLogOperate.UploadPayRoll.getValue(), code, user, null);
+
+            AsyncQueueHolder.addSerial(resString, projectConfigByLocal,
+                "payRollDetailBO", code,
+                EUploadStatus.UPLOAD_UNEDITABLE.getValue(), log);
         }
+
+    }
+
+    /**
+     * 
+     * @Description: 获取请求国家平台的Json
+     * @param: @param payRoll
+     * @param: @param payRollDetail
+     * @param: @return      
+     * @return: String      
+     * @throws
+     */
+    private String getRequestJsonToPlantform(PayRoll payRoll,
+            PayRollDetail payRollDetail, ProjectConfig projectconfig) {
+        JsonObject jsonObject = new JsonObject();
+        JsonArray jsonArray = new JsonArray();
+        ProjectConfig projectConfigByLocal = projectConfigBO
+            .getProjectConfigByLocal(payRoll.getProjectCode());
+        // projectCode
+        jsonObject.addProperty("projectCode",
+            projectConfigByLocal.getProjectCode());
+        // corpCode corpName
+        ProjectCorpInfo projectCorpInfo = projectCorpInfoBO
+            .getProjectCorpInfoByCorpCode(payRoll.getCorpCode());
+        projectCorpInfo.getCorpCode();
+        jsonObject.addProperty("corpCode", projectCorpInfo.getCorpCode());
+        jsonObject.addProperty("corpName", projectCorpInfo.getCorpName());
+        // teamMasterNo
+        TeamMaster teamMaster = teamMasterBO
+            .getTeamMaster(payRoll.getTeamSysNo());
+        if (StringUtils.isBlank(teamMaster.getTeamSysNo())) {
+            throw new BizException("班组信息未上传");
+        }
+        jsonObject.addProperty("teamSysNo", teamMaster.getTeamSysNo());
+        // PayMonth
+        String payMonth = DateUtil.dateToStr(payRoll.getPayMonth(), "yyyy-MM");
+        jsonObject.addProperty("PayMonth", payMonth);
+        // payRoll data
+        JsonObject payRollData = new JsonObject();
+        BeanUtils.copyProperties(payRollDetail, payRollData);
+        payRollData.addProperty("payBankName", payRollDetail.getPayBankName());
+        payRollData.addProperty("totalPayAmount",
+            payRollDetail.getTotalPayAmount());
+        payRollData.addProperty("actualAmount",
+            payRollDetail.getActualAmount());
+        payRollData.addProperty("isBackPay", payRollDetail.getIsBackPay());
+        if (payRollDetail.getBalanceDate() != null) {
+            String balanceDate = DateUtil.dateToStr(
+                payRollDetail.getBalanceDate(),
+                DateUtil.FRONT_DATE_FORMAT_STRING);
+            payRollData.addProperty("balanceDate", balanceDate);
+        }
+        payRollData.addProperty("idCardType", payRollDetail.getIdcardType());
+        payRollData.addProperty("idCardNumber", AesUtils.encrypt(
+            payRollDetail.getIdcardNumber(), projectconfig.getSecret()));
+        payRollData.addProperty("payBankCode", payRollDetail.getPayBankCode());
+        payRollData.addProperty("payRollBankCode",
+            payRollDetail.getPayRollBankCode());
+        payRollData.addProperty("payRollBankName",
+            payRollDetail.getPayRollBankName());
+        payRollData.addProperty("payRollBankCardNumber",
+            AesUtils.encrypt(payRollDetail.getPayRollBankCardNumber(),
+                projectconfig.getSecret()));
+        payRollData.addProperty("payBankCardNumber", AesUtils.encrypt(
+            payRollDetail.getPayBankCardNumber(), projectconfig.getSecret()));
+        jsonArray.add(payRollData);
+        jsonObject.add("detailList", jsonArray);
+        System.out.println(jsonObject.toString());
+        return jsonObject.toString();
 
     }
 

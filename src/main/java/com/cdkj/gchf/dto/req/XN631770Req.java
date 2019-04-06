@@ -22,7 +22,6 @@ public class XN631770Req {
     private String corpCode;
 
     // 工人所属企业名称
-    @NotBlank
     private String corpName;
 
     // 平台为班组分配的接入编号

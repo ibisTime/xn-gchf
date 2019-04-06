@@ -48,6 +48,13 @@ public class WorkerInfoAOImpl implements IWorkerInfoAO {
         if (!idCardChecker.validate()) {
             throw new BizException("XN631790", "身份证信息错误");
         }
+        if (StringUtils.isNotBlank(req.getIdCardNumber())) {
+            WorkerInfo workerInfoByIdCardNumber = workerInfoBO
+                .getWorkerInfoByIdCardNumber(req.getIdCardNumber());
+            if (workerInfoByIdCardNumber != null) {
+                throw new BizException("XN631790", "建档失败,人员实名制信息已存在");
+            }
+        }
         return workerInfoBO.saveWorkerInfo(req);
     }
 

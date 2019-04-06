@@ -17,9 +17,6 @@ public interface IWorkerContractBO extends IPaginableBO<WorkerContract> {
 
     public String saveWorkerContract(XN631670Req req);
 
-    public void saveWorkerContractToPlantfrom(String userId,
-            List<String> codeList);
-
     public void removeWorkerContract(String userId, String code);
 
     public void refreshWorkerContract(XN631672Req data);

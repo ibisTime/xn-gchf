@@ -38,7 +38,7 @@ public class XN631745 extends AProcessor {
         }
         int start = StringValidater.toInteger(req.getStart());
         int limit = StringValidater.toInteger(req.getLimit());
-        if (req.getType() != null) {
+        if (StringUtils.isNotBlank(req.getType())) {
             int type = Integer.parseInt(req.getType());
             condition.setType(type);
         }

@@ -1,8 +1,5 @@
 package com.cdkj.gchf.dto.req;
 
-import java.math.BigDecimal;
-import java.util.Date;
-
 import org.hibernate.validator.constraints.NotBlank;
 
 public class XN631810Req {
@@ -12,17 +9,17 @@ public class XN631810Req {
     @NotBlank
     private String code;
 
-    private Integer days;
+    private String days;
 
-    private BigDecimal workHours;
+    private String workHours;
 
-    private BigDecimal totalPayAmount;
+    private String totalPayAmount;
 
-    private BigDecimal actualAmount;
+    private String actualAmount;
 
-    private Integer isBackPay;
+    private String isBackPay;
 
-    private Date balanceDate;
+    private String balanceDate;
 
     private String thirdPayRollCode;
 
@@ -42,51 +39,51 @@ public class XN631810Req {
         this.code = code;
     }
 
-    public Integer getDays() {
+    public String getDays() {
         return days;
     }
 
-    public void setDays(Integer days) {
+    public void setDays(String days) {
         this.days = days;
     }
 
-    public BigDecimal getWorkHours() {
+    public String getWorkHours() {
         return workHours;
     }
 
-    public void setWorkHours(BigDecimal workHours) {
+    public void setWorkHours(String workHours) {
         this.workHours = workHours;
     }
 
-    public BigDecimal getTotalPayAmount() {
+    public String getTotalPayAmount() {
         return totalPayAmount;
     }
 
-    public void setTotalPayAmount(BigDecimal totalPayAmount) {
+    public void setTotalPayAmount(String totalPayAmount) {
         this.totalPayAmount = totalPayAmount;
     }
 
-    public BigDecimal getActualAmount() {
+    public String getActualAmount() {
         return actualAmount;
     }
 
-    public void setActualAmount(BigDecimal actualAmount) {
+    public void setActualAmount(String actualAmount) {
         this.actualAmount = actualAmount;
     }
 
-    public Integer getIsBackPay() {
+    public String getIsBackPay() {
         return isBackPay;
     }
 
-    public void setIsBackPay(Integer isBackPay) {
+    public void setIsBackPay(String isBackPay) {
         this.isBackPay = isBackPay;
     }
 
-    public Date getBalanceDate() {
+    public String getBalanceDate() {
         return balanceDate;
     }
 
-    public void setBalanceDate(Date balanceDate) {
+    public void setBalanceDate(String balanceDate) {
         this.balanceDate = balanceDate;
     }
 

@@ -64,8 +64,8 @@ public class ProjectWorkerEntryExitHistoryBOImpl
         data.setCode(code);
         data.setDate(req.getDate());
         data.setType(req.getType());
-        data.setIdcardNumber(projectWorker.getIdCardType());
-        data.setIdcardType(projectWorker.getIdCardType());
+        data.setIdcardNumber(projectWorker.getIdcardType());
+        data.setIdcardType(projectWorker.getIdcardType());
         data.setJoinDatetime(projectWorker.getJoinDatetime());
         data.setLeavingDatetime(projectWorker.getLeavingDatetime());
         data.setUploadStatus(EUploadStatus.TO_UPLOAD.getCode());

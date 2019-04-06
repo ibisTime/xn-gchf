@@ -45,10 +45,10 @@
 				AND t.contract_code = #{contractCode}
 			</if>
 
-			<if test="startDate != null and startDate != '' ">
+			<if test="startDate != null  ">
 				AND t.start_date = #{startDate}
 			</if>
-			<if test="endDate != null and endDate != '' ">
+			<if test="endDate != null  ">
 				AND t.end_date = #{endDate}
 			</if>
 			<if test="unitPrice != null and unitPrice != '' ">
@@ -58,9 +58,9 @@
 				AND t.content_pic = #{contentPic}
 			</if>
 			<if test="workerName != null and workerName != '' ">
-				AND t.worker_name = #{workerName}
+				AND t.worker_name LIKE CONCAT('%',#{workerName},'%')
 			</if>
-			<if test="contractPeriodType != null and contractPeriodType != '' ">
+			<if test="contractPeriodType != null  ">
 				AND t.contract_period_type = #{contractPeriodType}
 			</if>
 			<if test="uploadStatus != null and uploadStatus != '' ">

@@ -18,8 +18,8 @@ public class XN631645Req extends APageReq {
     // 企业类型
     private String corpType;
 
-    // 企业名称
-    private String corpName;
+    //
+    private String corpCode;
 
     // 上传状态
     private String uploadStatus;
@@ -56,12 +56,12 @@ public class XN631645Req extends APageReq {
         this.corpType = corpType;
     }
 
-    public String getCorpName() {
-        return corpName;
+    public String getCorpCode() {
+        return corpCode;
     }
 
-    public void setCorpName(String corpName) {
-        this.corpName = corpName;
+    public void setCorpCode(String corpCode) {
+        this.corpCode = corpCode;
     }
 
     public String getUploadStatus() {

@@ -48,10 +48,10 @@ public class ProjectWorker extends ABaseDO {
     private Integer isTeamLeader;
 
     // 证件类型
-    private String idCardType;
+    private String idcardType;
 
     // 证件号码
-    private String idCardNumber;
+    private String idcardNumber;
 
     // 工种
     private String workType;
@@ -296,20 +296,20 @@ public class ProjectWorker extends ABaseDO {
         this.isTeamLeader = isTeamLeader;
     }
 
-    public String getIdCardType() {
-        return idCardType;
+    public String getIdcardType() {
+        return idcardType;
     }
 
-    public void setIdCardType(String idCardType) {
-        this.idCardType = idCardType;
+    public void setIdcardType(String idcardType) {
+        this.idcardType = idcardType;
     }
 
-    public String getIdCardNumber() {
-        return idCardNumber;
+    public String getIdcardNumber() {
+        return idcardNumber;
     }
 
-    public void setIdCardNumber(String idCardNumber) {
-        this.idCardNumber = idCardNumber;
+    public void setIdcardNumber(String idcardNumber) {
+        this.idcardNumber = idcardNumber;
     }
 
     public String getWorkType() {

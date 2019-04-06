@@ -152,6 +152,19 @@ public class ProjectWorkerBOImpl extends PaginableBOImpl<ProjectWorker>
     public void refreshProjectWorker(XN631692Req req) {
         ProjectWorker projectWorkerInfo = new ProjectWorker();
         BeanUtils.copyProperties(req, projectWorkerInfo);
+        if (StringUtils.isNotBlank(req.getIsTeamLeader())) {
+            projectWorkerInfo
+                .setIsTeamLeader(Integer.parseInt(req.getIsTeamLeader()));
+        }
+        if (StringUtils.isNotBlank(req.getWorkRole())) {
+            projectWorkerInfo
+                .setWorkerRole(Integer.parseInt(req.getWorkRole()));
+        }
+        if (StringUtils.isNotBlank(req.getHasBuyInsurance())) {
+            projectWorkerInfo
+                .setHasBuyInsurance(Integer.parseInt(req.getHasBuyInsurance()));
+        }
+
         projectWorkerDAO.update(projectWorkerInfo);
     }
 

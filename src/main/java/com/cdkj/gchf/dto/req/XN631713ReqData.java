@@ -1,7 +1,5 @@
 package com.cdkj.gchf.dto.req;
 
-import java.util.Date;
-
 import org.hibernate.validator.constraints.NotBlank;
 
 public class XN631713ReqData {
@@ -27,7 +25,7 @@ public class XN631713ReqData {
 
     // 刷卡时间
     @NotBlank
-    private Date date;
+    private String date;
 
     // 刷卡进出方向
     @NotBlank
@@ -76,11 +74,11 @@ public class XN631713ReqData {
         this.idcardNumber = idcardNumber;
     }
 
-    public Date getDate() {
+    public String getDate() {
         return date;
     }
 
-    public void setDate(Date date) {
+    public void setDate(String date) {
         this.date = date;
     }
 

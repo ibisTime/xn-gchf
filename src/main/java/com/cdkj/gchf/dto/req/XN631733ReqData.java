@@ -24,7 +24,7 @@ public class XN631733ReqData {
     private String idcardNumber;
 
     // 类型
-    private Integer type;
+    private String type;
 
     // 进退场日期
     private String date;
@@ -69,11 +69,11 @@ public class XN631733ReqData {
         this.idcardNumber = idcardNumber;
     }
 
-    public Integer getType() {
+    public String getType() {
         return type;
     }
 
-    public void setType(Integer type) {
+    public void setType(String type) {
         this.type = type;
     }
 

@@ -1,7 +1,5 @@
 package com.cdkj.gchf.dto.req;
 
-import java.util.Date;
-
 public class XN631653ReqData {
 
     // 班组名称
@@ -26,10 +24,10 @@ public class XN631653ReqData {
     private String responsiblePersonIdNumber;
 
     // 进场日期
-    private Date entryTime;
+    private String entryTime;
 
     // 退场日期
-    private Date exitTime;
+    private String exitTime;
 
     // 备注
     private String remark;
@@ -83,19 +81,19 @@ public class XN631653ReqData {
         this.responsiblePersonIdNumber = responsiblePersonIdNumber;
     }
 
-    public Date getEntryTime() {
+    public String getEntryTime() {
         return entryTime;
     }
 
-    public void setEntryTime(Date entryTime) {
+    public void setEntryTime(String entryTime) {
         this.entryTime = entryTime;
     }
 
-    public Date getExitTime() {
+    public String getExitTime() {
         return exitTime;
     }
 
-    public void setExitTime(Date exitTime) {
+    public void setExitTime(String exitTime) {
         this.exitTime = exitTime;
     }
 

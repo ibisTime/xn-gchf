@@ -1,8 +1,10 @@
 package com.cdkj.gchf.ao.impl;
 
+import java.util.Date;
 import java.util.List;
 
 import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -18,13 +20,13 @@ import com.cdkj.gchf.bo.IWorkerAttendanceBO;
 import com.cdkj.gchf.bo.IWorkerInfoBO;
 import com.cdkj.gchf.bo.base.Paginable;
 import com.cdkj.gchf.common.AesUtils;
+import com.cdkj.gchf.common.DateUtil;
 import com.cdkj.gchf.domain.ProjectConfig;
 import com.cdkj.gchf.domain.ProjectCorpInfo;
 import com.cdkj.gchf.domain.ProjectWorker;
 import com.cdkj.gchf.domain.TeamMaster;
 import com.cdkj.gchf.domain.User;
 import com.cdkj.gchf.domain.WorkerAttendance;
-import com.cdkj.gchf.domain.WorkerInfo;
 import com.cdkj.gchf.dto.req.XN631710Req;
 import com.cdkj.gchf.dto.req.XN631712Req;
 import com.cdkj.gchf.dto.req.XN631713Req;
@@ -198,31 +200,38 @@ public class WorkerAttendanceAOImpl implements IWorkerAttendanceAO {
             EIdCardType.checkExists(xn631713ReqData.getIdcardType());
 
             // 核实企业信息
+            ProjectCorpInfo projectCorpInfo = new ProjectCorpInfo();
+            projectCorpInfo.setCorpCode(xn631713ReqData.getCorpCode());
+            projectCorpInfo.setProjectCode(req.getProjectCode());
             ProjectCorpInfo corpInfoByCorpCode = projectCorpInfoBO
-                .getProjectCorpInfoByCorpCode(xn631713ReqData.getCorpCode());
+                .getProjectCorpInfo(projectCorpInfo);
             if (corpInfoByCorpCode == null) {
                 throw new BizException("XN631713",
                     "企业信息不存在" + xn631713ReqData.getCorpCode());
             }
             // 核实身份信息
             String idcardNumber = xn631713ReqData.getIdcardNumber();
-            WorkerInfo workerInfoByIdCardNumber = workerInfoBO
-                .getWorkerInfoByIdCardNumber(idcardNumber);
-            if (workerInfoByIdCardNumber == null) {
-                throw new BizException("XN631713",
-                    "员工信息不存在" + xn631713ReqData.getIdcardNumber());
+            ProjectWorker workerByIdCardNumber = projectWorkerBO
+                .getProjectWorkerByIdCardNumber(idcardNumber);
+            if (workerByIdCardNumber == null) {
+                throw new BizException("XN631713", "员工信息不存在" + idcardNumber);
             }
             // 录入数据
             WorkerAttendance workerAttendance = new WorkerAttendance();
             BeanUtils.copyProperties(xn631713ReqData, workerAttendance);
-            BeanUtils.copyProperties(workerInfoByIdCardNumber,
-                workerAttendance);
+            BeanUtils.copyProperties(workerByIdCardNumber, workerAttendance);
             TeamMaster condition = new TeamMaster();
             condition.setCorpCode(xn631713ReqData.getCorpCode());
             condition.setTeamName(xn631713ReqData.getTeamName());
             TeamMaster masterByCondition = teamMasterBO
                 .getTeamMasterByCondition(condition);
             workerAttendance.setTeamSysNo(masterByCondition.getCode());
+            if (StringUtils.isNotBlank(xn631713ReqData.getDate())) {
+                Date date = DateUtil.strToDate(xn631713ReqData.getDate(),
+                    DateUtil.FRONT_DATE_FORMAT_STRING);
+                workerAttendance.setDate(date);
+            }
+
             workerAttendance.setUploadStatus(EUploadStatus.TO_UPLOAD.getCode());
             String code = workerAttendanceBO
                 .saveWorkerAttendance(workerAttendance);

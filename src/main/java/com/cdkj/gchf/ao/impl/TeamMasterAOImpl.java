@@ -1,5 +1,6 @@
 package com.cdkj.gchf.ao.impl;
 
+import java.util.Date;
 import java.util.List;
 
 import org.apache.commons.lang3.StringUtils;
@@ -17,6 +18,7 @@ import com.cdkj.gchf.bo.ITeamMasterBO;
 import com.cdkj.gchf.bo.IUserBO;
 import com.cdkj.gchf.bo.base.Paginable;
 import com.cdkj.gchf.common.AesUtils;
+import com.cdkj.gchf.common.DateUtil;
 import com.cdkj.gchf.domain.CorpBasicinfo;
 import com.cdkj.gchf.domain.ProjectConfig;
 import com.cdkj.gchf.domain.ProjectCorpInfo;
@@ -198,20 +200,38 @@ public class TeamMasterAOImpl implements ITeamMasterAO {
     public void importTeamMaster(XN631653Req req) {
         User user = userBO.getBriefUser(req.getUserId());
         ProjectConfig projectConfigByProject = projectConfigBO
-            .getProjectConfigByProject(req.getProjectCode());
+            .getProjectConfigByLocal(req.getProjectCode());
         if (projectConfigByProject == null) {
             throw new BizException("XN631654", "项目不存在" + req.getProjectCode());
         }
         // 根据corpCode获取企业信息
         List<XN631653ReqData> dateList = req.getDateList();
         for (XN631653ReqData xn631653ReqData : dateList) {
+            // ProjectCorpInfo projectCorpInfo = projectCorpInfoBO
+            // .getProjectCorpInfoByCorpCode(xn631653ReqData.getCorpCode());
+            ProjectCorpInfo condition = new ProjectCorpInfo();
+            condition.setProjectCode(req.getProjectCode());
+            condition.setCorpCode(xn631653ReqData.getCorpCode());
             ProjectCorpInfo projectCorpInfo = projectCorpInfoBO
-                .getProjectCorpInfoByCorpCode(xn631653ReqData.getCorpCode());
+                .getProjectCorpInfo(condition);
             if (projectCorpInfo == null) {
                 throw new BizException("XN631653", "企业信息不存在");
             }
             TeamMaster teamMaster = new TeamMaster();
             BeanUtils.copyProperties(xn631653ReqData, teamMaster);
+            if (StringUtils.isNotBlank(xn631653ReqData.getEntryTime())) {
+                Date entryTime = DateUtil.strToDate(
+                    xn631653ReqData.getEntryTime(),
+                    DateUtil.FRONT_DATE_FORMAT_STRING);
+                teamMaster.setEntryTime(entryTime);
+            }
+            if (StringUtils.isNotBlank(xn631653ReqData.getExitTime())) {
+                Date exitTime = DateUtil.strToDate(
+                    xn631653ReqData.getExitTime(),
+                    DateUtil.FRONT_DATE_FORMAT_STRING);
+                teamMaster.setEntryTime(exitTime);
+            }
+            teamMaster.setProjectCode(req.getProjectCode());
             teamMaster.setCorpName(projectCorpInfo.getCorpName());
             String code = teamMasterBO.saveTeamMaster(teamMaster);
             operateLogBO.saveOperateLog(EOperateLogRefType.TeamMaster.getCode(),

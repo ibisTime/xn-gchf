@@ -207,11 +207,9 @@ public class ProjectWorkerEntryExitHistoryBOImpl
     public String saveProjectWorkerEntryExitHistory(
             ProjectWorkerEntryExitHistory entryExitHistory) {
         String code = null;
-        if (entryExitHistory == null) {
-            throw new BizException("进退场信息不能为空");
-        }
         code = OrderNoGenerater
             .generate(EGeneratePrefix.ProjectWorkerEntryExitHistory.getValue());
+        entryExitHistory.setCode(code);
         projectWorkerEntryExitHistoryDAO.insert(entryExitHistory);
         return code;
     }

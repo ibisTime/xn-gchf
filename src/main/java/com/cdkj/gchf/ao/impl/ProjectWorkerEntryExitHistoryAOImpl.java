@@ -293,7 +293,8 @@ public class ProjectWorkerEntryExitHistoryAOImpl
             Date date = DateUtil.strToDate(xn631733ReqData.getDate(),
                 DateUtil.FRONT_DATE_FORMAT_STRING);
             entryExitHistory.setDate(date);
-            entryExitHistory.setType(xn631733ReqData.getType());
+            entryExitHistory
+                .setType(Integer.parseInt(xn631733ReqData.getType()));
             String code = projectWorkerEntryExitHistoryBO
                 .saveProjectWorkerEntryExitHistory(entryExitHistory);
             operateLogBO.saveOperateLog(

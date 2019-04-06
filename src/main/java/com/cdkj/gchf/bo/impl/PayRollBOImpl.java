@@ -216,9 +216,6 @@ public class PayRollBOImpl extends PaginableBOImpl<PayRoll>
     @Override
     public String savePayRoll(PayRoll payRoll) {
         String code = null;
-        if (payRoll == null) {
-            throw new BizException("工资单信息不能为空");
-        }
         code = OrderNoGenerater.generate(EGeneratePrefix.PayRoll.getValue());
         payRoll.setCode(code);
         payRollDAO.insert(payRoll);

@@ -1,5 +1,6 @@
 package com.cdkj.gchf.ao.impl;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -303,14 +304,14 @@ public class PayRollAOImpl implements IPayRollAO {
     @Override
     public void importPayRollCodeList(XN631812Req req) {
         User user = userBO.getBriefUser(req.getUserId());
-        ProjectCorpInfo corpInfoByCorpCode = projectCorpInfoBO
-            .getProjectCorpInfoByCorpCode(req.getProjectCode());
-        if (corpInfoByCorpCode == null) {
-            throw new BizException("XN631773", "参建单位不存在");
+        ProjectConfig configByProject = projectConfigBO
+            .getProjectConfigByLocal(req.getProjectCode());
+
+        if (configByProject == null) {
+            throw new BizException("XN631773", "项目未部署");
         }
         List<XN631812ReqData> dateList = req.getDateList();
         for (XN631812ReqData xn631773ReqData : dateList) {
-            xn631773ReqData.getPayMonth();
             TeamMaster condition = new TeamMaster();
             condition.setCorpCode(xn631773ReqData.getCorpCode());
             condition.setTeamName(xn631773ReqData.getTeamName());
@@ -322,18 +323,48 @@ public class PayRollAOImpl implements IPayRollAO {
             }
             PayRoll payRollcondition = new PayRoll();
             payRollcondition.setCorpCode(xn631773ReqData.getCorpCode());
-            payRollcondition.setTeamSysNo(xn631773ReqData.getTeamName());
+            payRollcondition.setTeamSysNo(teamMasterByCondition.getCode());
             payRollcondition.setProjectCode(req.getProjectCode());
             PayRoll payRollByCondition = payRollBO
                 .getPayRollByCondition(payRollcondition);
             if (payRollByCondition == null) {
-                payRollcondition.setPayMonth(req.getPayMonth());
+                payRollcondition.setPayMonth(DateUtil.strToDate(
+                    req.getPayMonth(), DateUtil.FRONT_DATE_FORMAT_STRING));
                 payRollBO.savePayRoll(payRollcondition);
             } else {
-                String code = payRollByCondition.getCode();
+                String payRollcode = payRollByCondition.getCode();
                 PayRollDetail payRollDetail = new PayRollDetail();
-                payRollDetail.setPayRollCode(code);
+                payRollDetail.setPayRollCode(payRollcode);
                 BeanUtils.copyProperties(xn631773ReqData, payRollDetail);
+                if (StringUtils.isNotBlank(xn631773ReqData.getDays())) {
+                    payRollDetail
+                        .setDays(Integer.parseInt(xn631773ReqData.getDays()));
+                }
+                if (StringUtils.isNotBlank(xn631773ReqData.getWorkHours())) {
+                    payRollDetail.setWorkHours(
+                        new BigDecimal(xn631773ReqData.getWorkHours()));
+                }
+                if (StringUtils
+                    .isNotBlank(xn631773ReqData.getTotalPayAmount())) {
+                    payRollDetail.setTotalPayAmount(
+                        new BigDecimal(xn631773ReqData.getTotalPayAmount()));
+                }
+                if (StringUtils.isNotBlank(xn631773ReqData.getActualAmount())) {
+                    payRollDetail.setActualAmount(
+                        new BigDecimal(xn631773ReqData.getActualAmount()));
+                }
+                if (StringUtils.isBlank(xn631773ReqData.getIsBackPay())) {
+                    payRollDetail.setIsBackPay(
+                        Integer.parseInt(xn631773ReqData.getIsBackPay()));
+                    if (StringUtils
+                        .isNotBlank(xn631773ReqData.getBackPayMonth())) {
+                        payRollDetail.setBalanceDate(DateUtil.strToDate(
+                            xn631773ReqData.getBackPayMonth(),
+                            DateUtil.FRONT_DATE_FORMAT_STRING));
+                    }
+                }
+                payRollDetail
+                    .setUploadStatus(EUploadStatus.TO_UPLOAD.getCode());
                 String savePayRollDetailCode = payRollDetailBO
                     .savePayRollDetail(payRollDetail);
                 operateLogBO.saveOperateLog(

@@ -1,10 +1,5 @@
 package com.cdkj.gchf.dto.req;
 
-import java.math.BigDecimal;
-import java.util.Date;
-
-import javax.validation.constraints.Min;
-
 import org.hibernate.validator.constraints.NotBlank;
 
 public class XN631812ReqData {
@@ -21,7 +16,7 @@ public class XN631812ReqData {
     private String teamName;
 
     // 发放工资的月份
-    private Date payMonth;
+    private String payMonth;
 
     // 证件类型
     @NotBlank
@@ -32,10 +27,10 @@ public class XN631812ReqData {
     private String idCardNumber;
 
     // 出勤天数
-    private Integer days;
+    private String days;
 
     // 总工时
-    private BigDecimal workHours;
+    private String workHours;
 
     // 工人工资卡号
     @NotBlank
@@ -70,11 +65,10 @@ public class XN631812ReqData {
     private String actualAmount;
 
     // 是否为补发
-    @Min(0)
-    private Integer isBackPay;
+    private String isBackPay;
 
     // 发放日期
-    private Date backPayMonth;
+    private String backPayMonth;
 
     // 第三方工资单编号
     @NotBlank
@@ -104,6 +98,14 @@ public class XN631812ReqData {
         this.teamName = teamName;
     }
 
+    public String getPayMonth() {
+        return payMonth;
+    }
+
+    public void setPayMonth(String payMonth) {
+        this.payMonth = payMonth;
+    }
+
     public String getIdCardType() {
         return idCardType;
     }
@@ -120,11 +122,19 @@ public class XN631812ReqData {
         this.idCardNumber = idCardNumber;
     }
 
-    public BigDecimal getWorkHours() {
+    public String getDays() {
+        return days;
+    }
+
+    public void setDays(String days) {
+        this.days = days;
+    }
+
+    public String getWorkHours() {
         return workHours;
     }
 
-    public void setWorkHours(BigDecimal workHours) {
+    public void setWorkHours(String workHours) {
         this.workHours = workHours;
     }
 
@@ -192,19 +202,19 @@ public class XN631812ReqData {
         this.actualAmount = actualAmount;
     }
 
-    public Integer getIsBackPay() {
+    public String getIsBackPay() {
         return isBackPay;
     }
 
-    public void setIsBackPay(Integer isBackPay) {
+    public void setIsBackPay(String isBackPay) {
         this.isBackPay = isBackPay;
     }
 
-    public Date getBackPayMonth() {
+    public String getBackPayMonth() {
         return backPayMonth;
     }
 
-    public void setBackPayMonth(Date backPayMonth) {
+    public void setBackPayMonth(String backPayMonth) {
         this.backPayMonth = backPayMonth;
     }
 
@@ -214,22 +224,6 @@ public class XN631812ReqData {
 
     public void setThirdPayRollCode(String thirdPayRollCode) {
         this.thirdPayRollCode = thirdPayRollCode;
-    }
-
-    public Integer getDays() {
-        return days;
-    }
-
-    public void setDays(Integer days) {
-        this.days = days;
-    }
-
-    public Date getPayMonth() {
-        return payMonth;
-    }
-
-    public void setPayMonth(Date payMonth) {
-        this.payMonth = payMonth;
     }
 
 }

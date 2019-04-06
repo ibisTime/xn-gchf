@@ -15,7 +15,7 @@ public class XN631812Req {
     @NotEmpty
     private List<XN631812ReqData> dateList;
 
-    private java.util.Date payMonth;
+    private String payMonth;
 
     public String getUserId() {
         return userId;
@@ -41,11 +41,11 @@ public class XN631812Req {
         this.dateList = dateList;
     }
 
-    public java.util.Date getPayMonth() {
+    public String getPayMonth() {
         return payMonth;
     }
 
-    public void setPayMonth(java.util.Date payMonth) {
+    public void setPayMonth(String payMonth) {
         this.payMonth = payMonth;
     }
 

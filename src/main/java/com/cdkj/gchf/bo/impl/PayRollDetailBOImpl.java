@@ -198,9 +198,9 @@ public class PayRollDetailBOImpl extends PaginableBOImpl<PayRollDetail>
     @Override
     public String savePayRollDetail(PayRollDetail payRollDetail) {
         String code = null;
-        payRollDetail.setCode(code);
         code = OrderNoGenerater
-            .generate(EGeneratePrefix.PayRollDetail.getValue());
+            .generate(EGeneratePrefix.PayRollDetail.getCode());
+        payRollDetail.setCode(code);
         payRollDetailDAO.insert(payRollDetail);
         return code;
     }

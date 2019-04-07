@@ -215,7 +215,7 @@ public class TeamMasterAOImpl implements ITeamMasterAO {
             ProjectCorpInfo projectCorpInfo = projectCorpInfoBO
                 .getProjectCorpInfo(condition);
             if (projectCorpInfo == null) {
-                throw new BizException("XN631653", "企业信息不存在");
+                continue;
             }
             TeamMaster teamMaster = new TeamMaster();
             BeanUtils.copyProperties(xn631653ReqData, teamMaster);

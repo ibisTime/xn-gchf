@@ -27,6 +27,7 @@ import com.cdkj.gchf.dto.req.XN631772Req;
 import com.cdkj.gchf.dto.req.XN631810Req;
 import com.cdkj.gchf.enums.EGeneratePrefix;
 import com.cdkj.gchf.enums.EUploadStatus;
+import com.cdkj.gchf.exception.BizException;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 
@@ -60,8 +61,7 @@ public class PayRollDetailBOImpl extends PaginableBOImpl<PayRollDetail>
                 .getProjectWorkerByIdCardNumber(
                     xn631770ReqDetail.getIdCardNumber());
             if (workerByIdCardNumber == null) {
-                // 根据证件号找不到项目人员
-                continue;
+                throw new BizException("XN631770", "项目人员不存在");
             }
             payRollDetail.setWorkerName(workerByIdCardNumber.getWorkerName());
             payRollDetail.setIdcardNumber(payRollDetail.getIdcardNumber());

@@ -1,8 +1,5 @@
 package com.cdkj.gchf.dto.req;
 
-import java.math.BigDecimal;
-import java.util.Date;
-
 public class XN631673ReqData {
     // 所属企业统一社会信用代码
     private String corpCode;
@@ -20,16 +17,16 @@ public class XN631673ReqData {
     private String contractPeriodType;
 
     // 开始日期
-    private Date startDate;
+    private String startDate;
 
     // 结束时期
-    private Date endDate;
+    private String endDate;
 
     // 计量单位
-    private Integer unit;
+    private String unit;
 
     // 计量单位
-    private BigDecimal unitPrice;
+    private String unitPrice;
 
     public String getCorpCode() {
         return corpCode;
@@ -71,35 +68,35 @@ public class XN631673ReqData {
         this.contractPeriodType = contractPeriodType;
     }
 
-    public Date getStartDate() {
+    public String getStartDate() {
         return startDate;
     }
 
-    public void setStartDate(Date startDate) {
+    public void setStartDate(String startDate) {
         this.startDate = startDate;
     }
 
-    public Date getEndDate() {
+    public String getEndDate() {
         return endDate;
     }
 
-    public void setEndDate(Date endDate) {
+    public void setEndDate(String endDate) {
         this.endDate = endDate;
     }
 
-    public Integer getUnit() {
+    public String getUnit() {
         return unit;
     }
 
-    public void setUnit(Integer unit) {
+    public void setUnit(String unit) {
         this.unit = unit;
     }
 
-    public BigDecimal getUnitPrice() {
+    public String getUnitPrice() {
         return unitPrice;
     }
 
-    public void setUnitPrice(BigDecimal unitPrice) {
+    public void setUnitPrice(String unitPrice) {
         this.unitPrice = unitPrice;
     }
 

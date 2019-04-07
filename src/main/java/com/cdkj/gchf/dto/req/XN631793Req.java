@@ -27,7 +27,6 @@ public class XN631793Req {
     private String birthday;
 
     // 手机号码
-    @NotBlank
     private String cellPhone;
 
     // 证件类型

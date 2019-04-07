@@ -1,5 +1,6 @@
 package com.cdkj.gchf.ao.impl;
 
+import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
 import java.util.List;
 
@@ -20,6 +21,7 @@ import com.cdkj.gchf.bo.IWorkerContractBO;
 import com.cdkj.gchf.bo.IWorkerInfoBO;
 import com.cdkj.gchf.bo.base.Paginable;
 import com.cdkj.gchf.common.AesUtils;
+import com.cdkj.gchf.common.DateUtil;
 import com.cdkj.gchf.domain.ProjectConfig;
 import com.cdkj.gchf.domain.ProjectCorpInfo;
 import com.cdkj.gchf.domain.ProjectWorker;
@@ -76,6 +78,7 @@ public class WorkerContractAOImpl implements IWorkerContractAO {
         if (StringUtils.isNotBlank(req.getUnit())) {
             EUnitType.checkExists(req.getUnit());
         }
+        // req.getProjectCode();
         ProjectConfig projectConfigByLocal = projectConfigBO
             .getProjectConfigByLocal(req.getProjectCode());
         if (projectConfigByLocal == null) {
@@ -287,6 +290,30 @@ public class WorkerContractAOImpl implements IWorkerContractAO {
             }
             BeanUtils.copyProperties(xn631673ReqData, workerContract);
             BeanUtils.copyProperties(workerInfoByIdCardNumber, workerContract);
+            if (StringUtils.isNotBlank(xn631673ReqData.getUnit())) {
+                workerContract
+                    .setUnit(Integer.parseInt(xn631673ReqData.getUnit()));
+            }
+            if (StringUtils.isNotBlank(xn631673ReqData.getStartDate())) {
+                workerContract.setStartDate(
+                    DateUtil.strToDate(xn631673ReqData.getStartDate(),
+                        DateUtil.FRONT_DATE_FORMAT_STRING));
+            }
+            if (StringUtils.isNotBlank(xn631673ReqData.getEndDate())) {
+                workerContract
+                    .setEndDate(DateUtil.strToDate(xn631673ReqData.getEndDate(),
+                        DateUtil.FRONT_DATE_FORMAT_STRING));
+            }
+            if (StringUtils
+                .isNotBlank(xn631673ReqData.getContractPeriodType())) {
+                workerContract.setContractPeriodType(
+                    Integer.parseInt(xn631673ReqData.getContractPeriodType()));
+            }
+            if (StringUtils
+                .isNotBlank(xn631673ReqData.getContractPeriodType())) {
+                workerContract.setUnitPrice(
+                    new BigDecimal(xn631673ReqData.getUnitPrice()));
+            }
             // 录入数据
             workerContractBO.saveWorkerContract(workerContract);
         }

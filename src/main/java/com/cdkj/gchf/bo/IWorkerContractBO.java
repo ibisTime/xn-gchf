@@ -26,6 +26,8 @@ public interface IWorkerContractBO extends IPaginableBO<WorkerContract> {
 
     public WorkerContract getWorkerContract(String code);
 
+    public void refreshUploadStatus(String code, String status);
+
     /****国家平台接口****/
     public void doUpload(XN631916Req req, ProjectConfig projectConfig);
 

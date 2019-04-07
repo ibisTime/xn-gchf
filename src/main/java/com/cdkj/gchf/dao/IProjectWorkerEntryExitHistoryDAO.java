@@ -10,4 +10,7 @@ public interface IProjectWorkerEntryExitHistoryDAO
 
     int update(ProjectWorkerEntryExitHistory projectWorkerEntryExitHistory);
 
+    int updateProjectWorkerEntryHistoryStatus(
+            ProjectWorkerEntryExitHistory projectWorkerEntryExitHistory);
+
 }

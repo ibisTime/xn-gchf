@@ -40,7 +40,7 @@ public class PayRollDetailBOImpl extends PaginableBOImpl<PayRollDetail>
     private IProjectWorkerBO projectWorkerBO;
 
     @Override
-    public void savePayRollDetail(String projectCode,
+    public void savePayRollDetail(String projectCode, String getPayMonth,
             List<XN631770ReqDetail> data) {
 
         for (XN631770ReqDetail xn631770ReqDetail : data) {
@@ -59,9 +59,16 @@ public class PayRollDetailBOImpl extends PaginableBOImpl<PayRollDetail>
             ProjectWorker workerByIdCardNumber = projectWorkerBO
                 .getProjectWorkerByIdCardNumber(
                     xn631770ReqDetail.getIdCardNumber());
+            if (workerByIdCardNumber == null) {
+                // 根据证件号找不到项目人员
+                continue;
+            }
             payRollDetail.setWorkerName(workerByIdCardNumber.getWorkerName());
             payRollDetail.setIdcardNumber(payRollDetail.getIdcardNumber());
 
+            payRollDetail.setBalanceDate(
+                DateUtil.strToDate(xn631770ReqDetail.getBalanceDate(),
+                    DateUtil.FRONT_DATE_FORMAT_STRING));
             payRollDetail.setActualAmount(
                 new BigDecimal(xn631770ReqDetail.getActualAmount()));
             if (StringUtils.isNotBlank(xn631770ReqDetail.getBalanceDate())) {

@@ -182,4 +182,12 @@ public class WorkerContractBOImpl extends PaginableBOImpl<WorkerContract>
         return code;
     }
 
+    @Override
+    public void refreshUploadStatus(String code, String status) {
+        WorkerContract workerContract = new WorkerContract();
+        workerContract.setCode(code);
+        workerContract.setUploadStatus(status);
+        workerContractDAO.updateWorkerContractStatus(workerContract);
+    }
+
 }

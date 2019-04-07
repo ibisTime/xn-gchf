@@ -105,6 +105,14 @@
 		WHERE code = #{code}
 	</update>
 
+	<update id="update_projectWorkerEntryExitHistory_status"
+		parameterType="projectWorkerEntryExitHistory">
+		UPDATE thf_project_worker_entry_exit_history
+		SET
+		upload_status = #{uploadStatus}
+		WHERE code = #{code}
+	</update>
+
 	<select id="select_projectWorkerEntryExitHistory" parameterType="projectWorkerEntryExitHistory"
 		resultMap="projectWorkerEntryExitHistory_DB_Result">
 		SELECT

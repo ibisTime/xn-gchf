@@ -8,4 +8,6 @@ public interface IWorkerContractDAO extends IBaseDAO<WorkerContract> {
 
     int update(WorkerContract workerContract);
 
+    int updateWorkerContractStatus(WorkerContract workerContract);
+
 }

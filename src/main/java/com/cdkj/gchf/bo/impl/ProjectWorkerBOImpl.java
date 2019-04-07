@@ -391,4 +391,11 @@ public class ProjectWorkerBOImpl extends PaginableBOImpl<ProjectWorker>
         return jsonObject;
     }
 
+    @Override
+    public void refreshUploadStatus(String code, String status) {
+        ProjectWorker projectWorker = new ProjectWorker();
+        projectWorker.setCode(code);
+        projectWorker.setUploadStatus(status);
+        projectWorkerDAO.updateStatus(projectWorker);
+    }
 }

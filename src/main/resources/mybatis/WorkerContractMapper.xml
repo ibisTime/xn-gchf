@@ -131,6 +131,14 @@
 		thf_worker_contract WHERE code = #{code}
 	</delete>
 
+	<update id="delete_workerContract_status" parameterType="workerContract">
+		UPDATE
+		thf_worker_contract
+		SET
+		upload_status = #{uploadStatus}
+		WHERE code = #{code}
+	</update>
+
 	<update id="update_workerContract" parameterType="workerContract">
 		UPDATE
 		thf_worker_contract

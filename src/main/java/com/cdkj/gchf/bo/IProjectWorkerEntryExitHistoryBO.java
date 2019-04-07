@@ -33,6 +33,8 @@ public interface IProjectWorkerEntryExitHistoryBO
     public ProjectWorkerEntryExitHistory getProjectWorkerEntryExitHistory(
             String code);
 
+    public void refreshUploadStatus(String code, String status);
+
     public ProjectWorkerEntryExitHistory getProjectWorkerEntryExitHistoryByIdCardNumber(
             String idCardNumber);
 

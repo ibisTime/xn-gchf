@@ -94,7 +94,7 @@ DROP TABLE IF EXISTS `thf_pay_roll`;
 CREATE TABLE `thf_pay_roll` (
   `code` varchar(32) NOT NULL COMMENT '编号',
   `pay_roll_code` varchar(22) DEFAULT NULL COMMENT '工资单编码',
-  `project_code` varchar(20) DEFAULT NULL COMMENT '项目编码',
+  `project_code` varchar(32) DEFAULT NULL COMMENT '项目编码',
   `corp_code` varchar(18) DEFAULT NULL COMMENT '所属企业统一社会信用代码',
   `corp_name` varchar(200) DEFAULT NULL COMMENT '所属企业名称',
   `team_sys_no` varchar(32) DEFAULT NULL COMMENT '班组编号',
@@ -452,7 +452,7 @@ DROP TABLE IF EXISTS `thf_worker_attendance`;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `thf_worker_attendance` (
   `code` varchar(32) NOT NULL COMMENT '编号',
-  `project_code` varchar(20) DEFAULT NULL COMMENT '项目编码',
+  `project_code` varchar(32) DEFAULT NULL COMMENT '项目编码',
   `project_name` varchar(200) DEFAULT NULL COMMENT '项目名称',
   `team_sys_no` varchar(32) DEFAULT NULL COMMENT '班组编号',
   `team_name` varchar(200) DEFAULT NULL COMMENT '班组名称',

@@ -214,4 +214,13 @@ public class ProjectWorkerEntryExitHistoryBOImpl
         return code;
     }
 
+    @Override
+    public void refreshUploadStatus(String code, String status) {
+        ProjectWorkerEntryExitHistory projectWorkerEntryExitHistory = new ProjectWorkerEntryExitHistory();
+        projectWorkerEntryExitHistory.setCode(code);
+        projectWorkerEntryExitHistory.setUploadStatus(status);
+        projectWorkerEntryExitHistoryDAO.updateProjectWorkerEntryHistoryStatus(
+            projectWorkerEntryExitHistory);
+    }
+
 }

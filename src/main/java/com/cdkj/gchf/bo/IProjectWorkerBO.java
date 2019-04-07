@@ -32,6 +32,8 @@ public interface IProjectWorkerBO extends IPaginableBO<ProjectWorker> {
 
     public ProjectWorker getProjectWorkerByIdCardNumber(String idCardNumber);
 
+    public void refreshUploadStatus(String code, String status);
+
     public JsonObject getProjectWorkerJson(ProjectWorker projectWorker,
             ProjectConfig projectConfig);
 

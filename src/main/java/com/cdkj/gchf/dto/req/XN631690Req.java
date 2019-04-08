@@ -37,7 +37,7 @@ public class XN631690Req {
     private String issueCardDate;
 
     // 办卡采集相片
-    private String issueCardPic;
+    private String issueCardPicUrl;
 
     // 考勤卡号
     private String cardNumber;
@@ -128,12 +128,12 @@ public class XN631690Req {
         this.issueCardDate = issueCardDate;
     }
 
-    public String getIssueCardPic() {
-        return issueCardPic;
+    public String getIssueCardPicUrl() {
+        return issueCardPicUrl;
     }
 
-    public void setIssueCardPic(String issueCardPic) {
-        this.issueCardPic = issueCardPic;
+    public void setIssueCardPicUrl(String issueCardPicUrl) {
+        this.issueCardPicUrl = issueCardPicUrl;
     }
 
     public String getCardNumber() {

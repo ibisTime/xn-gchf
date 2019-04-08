@@ -1,5 +1,6 @@
 package com.cdkj.gchf.bo.impl;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -45,6 +46,7 @@ import com.cdkj.gchf.enums.EPoliticsType;
 import com.cdkj.gchf.enums.EUploadStatus;
 import com.cdkj.gchf.enums.EWorkerRoleType;
 import com.cdkj.gchf.enums.EWorkerType;
+import com.cdkj.gchf.exception.BizException;
 import com.cdkj.gchf.gov.GovConnecter;
 import com.cdkj.gchf.gov.GovUtil;
 import com.cdkj.gchf.gov.SerialHandler;
@@ -164,6 +166,16 @@ public class ProjectWorkerBOImpl extends PaginableBOImpl<ProjectWorker>
             projectWorkerInfo
                 .setHasBuyInsurance(Integer.parseInt(req.getHasBuyInsurance()));
         }
+        if (StringUtils.isNotBlank(req.getIssueCardDate())) {
+            Date issueCardDate = DateUtil.strToDate(req.getIssueCardDate(),
+                DateUtil.FRONT_DATE_FORMAT_STRING);
+            projectWorkerInfo.setIssueCardDate(issueCardDate);
+        }
+        if (StringUtils.isNotBlank(req.getWorkDate())) {
+            Date workDate = DateUtil.strToDate(req.getWorkDate(),
+                DateUtil.FRONT_DATE_FORMAT_STRING);
+            projectWorkerInfo.setJoinDatetime(workDate);
+        }
 
         projectWorkerDAO.update(projectWorkerInfo);
     }
@@ -275,8 +287,9 @@ public class ProjectWorkerBOImpl extends PaginableBOImpl<ProjectWorker>
     @Transactional
     @Override
     public void saveProjectWorkersByImport(XN631693Req req) {
-        String projectcode = req.getProjectcode();
+        String projectcode = req.getProjectCode();
         List<XN631693ReqData> workerList = req.getWorkerList();
+        List<String> errorCode = new ArrayList<>();
         for (XN631693ReqData projectWorkerData : workerList) {
             String code = null;
             // 数据字典检查
@@ -310,12 +323,25 @@ public class ProjectWorkerBOImpl extends PaginableBOImpl<ProjectWorker>
                 BeanUtils.copyProperties(infoByIdCardNumber, projectWorker);
                 projectWorkerDAO.insert(projectWorker);
             } else {
-                WorkerInfo workerInfo = new WorkerInfo();
-                // 插入基本信息到人员实名信息表
-                BeanUtils.copyProperties(projectWorkerData, workerInfo);
-                workerInfoBO.saveWorkerInfo(workerInfo);
+                // WorkerInfo workerInfo = new WorkerInfo();
+                // // 插入基本信息到人员实名信息表
+                // BeanUtils.copyProperties(projectWorkerData, workerInfo);
+                // String workerCode = OrderNoGenerater
+                // .generate(EGeneratePrefix.WorkerInfo.getCode());
+                // workerInfo.setCode(workerCode);
+                // workerInfoBO.saveWorkerInfo(workerInfo);
+                // workerInfo.setName(projectWorkerData.getWorkerName());
+                // BeanUtils.copyProperties(projectWorkerData, projectWorker);
+                // projectWorker
+                // .setUploadStatus(EUploadStatus.TO_UPLOAD.getCode());
+                // projectWorkerDAO.insert(projectWorker);
+                errorCode.add(projectWorkerData.getIdCardNumber());
             }
 
+        }
+        if (CollectionUtils.isNotEmpty(errorCode)) {
+            throw new BizException("XN631693",
+                "人员实名制不存在:" + errorCode.toString());
         }
     }
 

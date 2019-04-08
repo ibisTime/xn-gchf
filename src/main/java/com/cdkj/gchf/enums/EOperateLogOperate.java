@@ -20,15 +20,17 @@ public enum EOperateLogOperate {
 
     UploadTeamMaster("06", "上传项目班组信息"),
 
-    UploadWorkContract("07", "上传劳动合同信息"),
+    EditTeamMaster("07", "修改项目班组信息"),
 
-    UploadWorkAtendance("08", "上传人员考勤信息"),
+    UploadWorkContract("08", "上传劳动合同信息"),
 
-    UploadProjectWorkerEntryExitHistory("09", "上传人员进退场信息"),
+    UploadWorkAtendance("09", "上传人员考勤信息"),
 
-    UploadPayRoll("10", "上传工资单信息"),
+    UploadProjectWorkerEntryExitHistory("10", "上传人员进退场信息"),
 
-    UploadProjectWorker("11", "上传项目人员信息");
+    UploadPayRoll("11", "上传工资单信息"),
+
+    UploadProjectWorker("12", "上传项目人员信息");
 
     EOperateLogOperate(String code, String value) {
         this.code = code;

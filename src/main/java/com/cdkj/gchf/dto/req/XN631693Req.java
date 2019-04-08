@@ -9,29 +9,29 @@ import com.cdkj.gchf.api.impl.XN631693ReqData;
 
 public class XN631693Req {
     @NotBlank
-    private String userId;
+    private String updater;
 
     @NotEmpty
     private List<XN631693ReqData> workerList;
 
     // 项目编号
     @NotBlank
-    private String projectcode;
+    private String projectCode;
 
-    public String getUserId() {
-        return userId;
+    public String getUpdater() {
+        return updater;
     }
 
-    public void setUserId(String userId) {
-        this.userId = userId;
+    public void setUpdater(String updater) {
+        this.updater = updater;
     }
 
-    public String getProjectcode() {
-        return projectcode;
+    public String getProjectCode() {
+        return projectCode;
     }
 
-    public void setProjectcode(String projectcode) {
-        this.projectcode = projectcode;
+    public void setProjectCode(String projectCode) {
+        this.projectCode = projectCode;
     }
 
     public List<XN631693ReqData> getWorkerList() {

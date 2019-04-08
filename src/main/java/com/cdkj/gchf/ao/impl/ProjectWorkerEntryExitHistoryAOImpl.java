@@ -1,5 +1,6 @@
 package com.cdkj.gchf.ao.impl;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -81,12 +82,6 @@ public class ProjectWorkerEntryExitHistoryAOImpl
         if (projectWorker == null) {
             throw new BizException("XN631730", "员工信息不存在");
         }
-        ProjectWorkerEntryExitHistory workerEntryExitHistory = projectWorkerEntryExitHistoryBO
-            .getProjectWorkerEntryExitHistoryByIdCardNumber(
-                projectWorker.getIdcardNumber());
-        if (workerEntryExitHistory != null) {
-            throw new BizException("XN631730", "人员进退场已添加");
-        }
         return projectWorkerEntryExitHistoryBO
             .saveProjectWorkerEntryExitHistory(data);
     }
@@ -108,8 +103,8 @@ public class ProjectWorkerEntryExitHistoryAOImpl
     public void dropProjectWorkerEntryExitHistory(String code) {
         ProjectWorkerEntryExitHistory projectWorkerEntryExitHistory = projectWorkerEntryExitHistoryBO
             .getProjectWorkerEntryExitHistory(code);
-        if (projectWorkerEntryExitHistory.getUploadStatus()
-            .equals(EUploadStatus.UPLOAD_UNEDITABLE.getCode())) {
+        if (!projectWorkerEntryExitHistory.getUploadStatus()
+            .equals(EUploadStatus.TO_UPLOAD.getCode())) {
             throw new BizException("XN631731", "人员进退场已上传，不可删除");
         }
         projectWorkerEntryExitHistoryBO
@@ -239,7 +234,7 @@ public class ProjectWorkerEntryExitHistoryAOImpl
 
             AsyncQueueHolder.addSerial(resString, projectConfigByLocal,
                 "projectWorkerEntryExitHistoryBO", code,
-                EUploadStatus.UPLOAD_UNEDITABLE.getCode(), operateLog);
+                EUploadStatus.UPLOAD_EDITABLE.getCode(), operateLog);
 
         }
     }
@@ -250,7 +245,7 @@ public class ProjectWorkerEntryExitHistoryAOImpl
     @Transactional
     @Override
     public void importProjectWorkerEntryExitHistoryList(XN631733Req req) {
-        User user = userBO.getBriefUser(req.getUserId());
+        User user = userBO.getBriefUser(req.getUpdater());
         String projectCode = req.getProjectCode();
         ProjectConfig configByLocal = projectConfigBO
             .getProjectConfigByLocal(projectCode);
@@ -259,6 +254,7 @@ public class ProjectWorkerEntryExitHistoryAOImpl
         }
 
         List<XN631733ReqData> dateList = req.getDateList();
+        List<String> errorData = new ArrayList<>();
         for (XN631733ReqData xn631733ReqData : dateList) {
             // 校验数据字典类型数据
             EIdCardType.checkExists(xn631733ReqData.getIdcardType());
@@ -269,8 +265,8 @@ public class ProjectWorkerEntryExitHistoryAOImpl
             WorkerInfo infoByIdCardNumber = workerInfoBO
                 .getWorkerInfoByIdCardNumber(xn631733ReqData.getIdcardNumber());
             if (infoByIdCardNumber == null) {
-                throw new BizException("XN631733",
-                    "项目人员未录入" + xn631733ReqData.getIdcardNumber());
+                errorData.add("项目人员未录入:" + xn631733ReqData.getIdcardNumber());
+                continue;
             }
             // 根据idcardnumber和项目名称获取班组信息
             TeamMaster condition = new TeamMaster();
@@ -279,7 +275,8 @@ public class ProjectWorkerEntryExitHistoryAOImpl
             TeamMaster masterByCondition = teamMasterBO
                 .getTeamMasterByCondition(condition);
             if (masterByCondition == null) {
-                throw new BizException("XN631733", "班组信息不存在");
+                errorData.add("班组信息不存在:" + xn631733ReqData.getTeamName());
+                continue;
             }
             entryExitHistory.setCorpCode(masterByCondition.getCorpCode());
             entryExitHistory.setCorpName(masterByCondition.getCorpName());
@@ -297,9 +294,13 @@ public class ProjectWorkerEntryExitHistoryAOImpl
                 .setType(Integer.parseInt(xn631733ReqData.getType()));
             String code = projectWorkerEntryExitHistoryBO
                 .saveProjectWorkerEntryExitHistory(entryExitHistory);
+            entryExitHistory.setUploadStatus(EUploadStatus.TO_UPLOAD.getCode());
             operateLogBO.saveOperateLog(
                 EOperateLogRefType.WorkAttendance.getCode(), code, "导入人员进退场信息",
                 user, null);
+        }
+        if (CollectionUtils.isNotEmpty(errorData)) {
+            throw new BizException("XN631733" + errorData.toString());
         }
     }
 

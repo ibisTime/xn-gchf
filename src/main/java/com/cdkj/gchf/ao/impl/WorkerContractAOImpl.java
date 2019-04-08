@@ -315,6 +315,7 @@ public class WorkerContractAOImpl implements IWorkerContractAO {
                     new BigDecimal(xn631673ReqData.getUnitPrice()));
             }
             // 录入数据
+            workerContract.setUploadStatus(EUploadStatus.TO_UPLOAD.getCode());
             workerContractBO.saveWorkerContract(workerContract);
         }
     }

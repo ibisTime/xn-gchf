@@ -54,7 +54,6 @@ public class PayRollDetailBOImpl extends PaginableBOImpl<PayRollDetail>
                 payRollDetail
                     .setDays(Integer.parseInt(xn631770ReqDetail.getDays()));
             }
-            //
             payRollDetail
                 .setWorkHours(new BigDecimal(xn631770ReqDetail.getWorkHours()));
             ProjectWorker workerByIdCardNumber = projectWorkerBO
@@ -64,8 +63,9 @@ public class PayRollDetailBOImpl extends PaginableBOImpl<PayRollDetail>
                 throw new BizException("XN631770", "项目人员不存在");
             }
             payRollDetail.setWorkerName(workerByIdCardNumber.getWorkerName());
-            payRollDetail.setIdcardNumber(payRollDetail.getIdcardNumber());
-
+            payRollDetail
+                .setIdcardNumber(workerByIdCardNumber.getIdcardNumber());
+            payRollDetail.setIdcardType(workerByIdCardNumber.getIdcardType());
             payRollDetail.setBalanceDate(
                 DateUtil.strToDate(xn631770ReqDetail.getBalanceDate(),
                     DateUtil.FRONT_DATE_FORMAT_STRING));

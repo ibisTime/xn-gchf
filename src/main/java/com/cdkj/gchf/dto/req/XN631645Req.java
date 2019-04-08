@@ -18,7 +18,7 @@ public class XN631645Req extends APageReq {
     // 企业类型
     private String corpType;
 
-    //
+    // 企业登记注册类型
     private String corpCode;
 
     // 上传状态

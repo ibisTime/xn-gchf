@@ -600,6 +600,7 @@ INSERT INTO `tsys_dict` (`type`,`parent_key`,`dkey`,`dvalue`,`updater`,`update_d
 INSERT INTO `tsys_dict` (`type`,`parent_key`,`dkey`,`dvalue`,`updater`,`update_datetime`,`remark`) VALUES ('1','work_type','350','古建筑传统木工','admin','2018-07-27 03:07:37',NULL);
 INSERT INTO `tsys_dict` (`type`,`parent_key`,`dkey`,`dvalue`,`updater`,`update_datetime`,`remark`) VALUES ('1','work_type','360','古建筑传统油工','admin','2018-07-27 03:07:37',NULL);
 INSERT INTO `tsys_dict` (`type`,`parent_key`,`dkey`,`dvalue`,`updater`,`update_datetime`,`remark`) VALUES ('1','work_type','380','金属工','admin','2018-07-27 03:07:37',NULL);
+INSERT INTO `tsys_dict` (`type`,`parent_key`,`dkey`,`dvalue`,`updater`,`update_datetime`,`remark`) VALUES ('1','work_type','900','管理人员','admin','2018-07-27 03:07:37',NULL);
 
 INSERT INTO `tsys_dict` (`type`,`parent_key`,`dkey`,`dvalue`,`updater`,`update_datetime`,`remark`) VALUES ('0',null,'work_role','工人类型','admin','2018-07-27 03:07:37',NULL);
 INSERT INTO `tsys_dict` (`type`,`parent_key`,`dkey`,`dvalue`,`updater`,`update_datetime`,`remark`) VALUES ('1','work_role','10','管理人员','admin','2018-07-27 03:07:37',NULL);

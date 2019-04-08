@@ -231,6 +231,7 @@
 		,pay_roll_top_bank_code = #{payRollTopBankCode}
 		,has_buy_insurance =
 		#{hasBuyInsurance}
+		,join_datetime = #{joinDatetime} 
 		WHERE code = #{code}
 	</update>
 	<select id="select_projectWorker" parameterType="projectWorker"

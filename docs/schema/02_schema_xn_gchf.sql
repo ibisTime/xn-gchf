@@ -341,7 +341,7 @@ CREATE TABLE `thf_project_worker_entry_exit_history` (
   `idcard_number` varchar(50) DEFAULT NULL COMMENT '证件号码',
   `date` datetime DEFAULT NULL COMMENT '时间',
   `type` int(11) DEFAULT NULL COMMENT '类型',
-  `voucher_url` varchar(200) DEFAULT NULL COMMENT '凭证扫描件',
+  `voucher_url` longtext COMMENT '凭证扫描件',
   `upload_status` varchar(4) DEFAULT NULL COMMENT '状态',
   PRIMARY KEY (`code`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='人员进退场';

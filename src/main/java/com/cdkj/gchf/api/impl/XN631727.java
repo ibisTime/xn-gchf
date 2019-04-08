@@ -16,7 +16,7 @@ import com.cdkj.gchf.spring.SpringContextHolder;
 /**
  * 
  * @ClassName:  XN631727   
- * @Description:TODO
+ * @Description:列表查人员考勤
  * @author: Old3
  * @date:   2019年3月21日 下午7:56:51     
  * @Copyright:

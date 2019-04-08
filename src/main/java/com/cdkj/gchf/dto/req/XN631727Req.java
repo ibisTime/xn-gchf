@@ -14,6 +14,7 @@ public class XN631727Req extends AListReq {
     // 企业统一社会信用代码
     private String corpCode;
 
+    // 上传状态
     private String uploadStatus;
 
     // userId

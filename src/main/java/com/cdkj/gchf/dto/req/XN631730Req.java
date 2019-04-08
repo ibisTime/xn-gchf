@@ -19,6 +19,8 @@ public class XN631730Req {
     // 类型
     private Integer type;
 
+    private String voucherUrl;
+
     public String getUserId() {
         return userId;
     }
@@ -49,6 +51,14 @@ public class XN631730Req {
 
     public void setType(Integer type) {
         this.type = type;
+    }
+
+    public String getVoucherUrl() {
+        return voucherUrl;
+    }
+
+    public void setVoucherUrl(String voucherUrl) {
+        this.voucherUrl = voucherUrl;
     }
 
 }

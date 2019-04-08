@@ -165,7 +165,7 @@ public class ProjectWorkerAOImpl implements IProjectWorkerAO {
     @Override
     public void importProjectWorkers(XN631693Req req) {
         ProjectConfig configByLocal = projectConfigBO
-            .getProjectConfigByLocal(req.getProjectcode());
+            .getProjectConfigByLocal(req.getProjectCode());
         if (configByLocal == null) {
             throw new BizException("XN631693", "项目不存在");
         }
@@ -180,7 +180,7 @@ public class ProjectWorkerAOImpl implements IProjectWorkerAO {
             ProjectWorker projectWorker = projectWorkerBO
                 .getProjectWorker(code);
             if (projectWorker.getUploadStatus()
-                .equals(EUploadStatus.UPLOAD_UNEDITABLE.getCode())) {
+                .equals(EUploadStatus.UPLOAD_EDITABLE.getCode())) {
                 continue;
             }
             TeamMaster teamMaster = teamMasterBO
@@ -217,7 +217,7 @@ public class ProjectWorkerAOImpl implements IProjectWorkerAO {
 
             AsyncQueueHolder.addSerial(resString, projectConfig,
                 "projectWorkerBO", code,
-                EUploadStatus.UPLOAD_UNEDITABLE.getValue(), logCode);
+                EUploadStatus.UPLOAD_EDITABLE.getValue(), logCode);
         }
 
     }

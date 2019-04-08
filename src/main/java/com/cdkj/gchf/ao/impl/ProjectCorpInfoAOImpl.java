@@ -176,7 +176,12 @@ public class ProjectCorpInfoAOImpl implements IProjectCorpInfoAO {
         for (XN631633ReqList requestProjectCourpInfo : projectCorpInfos) {
 
             EProjectCorpType.checkExists(requestProjectCourpInfo.getCorpType());
-            EIdCardType.checkExists(requestProjectCourpInfo.getPmIDCardType());
+            if (StringUtils
+                .isNotBlank(requestProjectCourpInfo.getPmIDCardType())) {
+                EIdCardType
+                    .checkExists(requestProjectCourpInfo.getPmIDCardType());
+            }
+
             if (corpBasicinfoBO.getCorpBasicinfoByCorp(
                 requestProjectCourpInfo.getCorpCode()) == null) {
                 throw new BizException("XN631633",
@@ -210,6 +215,7 @@ public class ProjectCorpInfoAOImpl implements IProjectCorpInfoAO {
             code = OrderNoGenerater
                 .generate(EGeneratePrefix.ProjectCorpInfo.getCode());
             projectCorpInfo.setCode(code);
+            projectCorpInfo.setUploadStatus(EUploadStatus.TO_UPLOAD.getCode());
             projectCorpInfoBO.saveProjectCorpInfo(projectCorpInfo);
             operateLogBO.saveOperateLog(
                 EOperateLogRefType.ProjectCorpinfo.getCode(), code,

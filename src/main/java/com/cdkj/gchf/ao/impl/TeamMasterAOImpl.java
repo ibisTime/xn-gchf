@@ -80,8 +80,8 @@ public class TeamMasterAOImpl implements ITeamMasterAO {
     @Override
     public void dropTeamMaster(XN631651Req req) {
         TeamMaster teamMaster = teamMasterBO.getTeamMaster(req.getCode());
-        if (teamMaster.getUploadStatus() != null & teamMaster.getUploadStatus()
-            .equals(EUploadStatus.UPLOAD_UNEDITABLE.getCode())) {
+        if (!teamMaster.getUploadStatus()
+            .equals(EUploadStatus.TO_UPLOAD.getCode())) {
             throw new BizException("XN631651", "班组信息已上传,无法删除");
         }
         teamMasterBO.removeTeamMaster(req.getUserId(), req.getCode());
@@ -97,8 +97,11 @@ public class TeamMasterAOImpl implements ITeamMasterAO {
             throw new BizException("XN631652", "班组信息已上传,不可修改");
         }
         teamMasterBO.refreshTeamMaster(data);
+        teamMasterBO.refreshUploadStatus(data.getCode(),
+            EUploadStatus.TO_UPLOAD.getCode());
         operateLogBO.saveOperateLog(EOperateLogRefType.TeamMaster.getCode(),
-            data.getCode(), "修改项目班组", user, null);
+            data.getCode(), EOperateLogOperate.EditTeamMaster.getValue(), user,
+            null);
     }
 
     @Override
@@ -211,7 +214,6 @@ public class TeamMasterAOImpl implements ITeamMasterAO {
             // .getProjectCorpInfoByCorpCode(xn631653ReqData.getCorpCode());
             ProjectCorpInfo condition = new ProjectCorpInfo();
             condition.setProjectCode(req.getProjectCode());
-            condition.setCorpCode(xn631653ReqData.getCorpCode());
             ProjectCorpInfo projectCorpInfo = projectCorpInfoBO
                 .getProjectCorpInfo(condition);
             if (projectCorpInfo == null) {
@@ -233,6 +235,7 @@ public class TeamMasterAOImpl implements ITeamMasterAO {
             }
             teamMaster.setProjectCode(req.getProjectCode());
             teamMaster.setCorpName(projectCorpInfo.getCorpName());
+            teamMaster.setUploadStatus(EUploadStatus.TO_UPLOAD.getCode());
             String code = teamMasterBO.saveTeamMaster(teamMaster);
             operateLogBO.saveOperateLog(EOperateLogRefType.TeamMaster.getCode(),
                 code, "导入班组信息", user, null);

@@ -19,6 +19,9 @@ public class XN631732Req {
     @NotBlank
     private String type;
 
+    // 凭证扫描件
+    private String voucherUrl;
+
     public String getUserId() {
         return userId;
     }
@@ -49,6 +52,14 @@ public class XN631732Req {
 
     public void setType(String type) {
         this.type = type;
+    }
+
+    public String getVoucherUrl() {
+        return voucherUrl;
+    }
+
+    public void setVoucherUrl(String voucherUrl) {
+        this.voucherUrl = voucherUrl;
     }
 
 }

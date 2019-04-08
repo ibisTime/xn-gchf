@@ -18,6 +18,8 @@ public class XN631647Req extends AListReq {
 
     private String projectName;
 
+    private String corpType;
+
     private String uploadStatus;
 
     @NotBlank
@@ -53,6 +55,14 @@ public class XN631647Req extends AListReq {
 
     public void setUploadStatus(String uploadStatus) {
         this.uploadStatus = uploadStatus;
+    }
+
+    public String getCorpType() {
+        return corpType;
+    }
+
+    public void setCorpType(String corpType) {
+        this.corpType = corpType;
     }
 
 }

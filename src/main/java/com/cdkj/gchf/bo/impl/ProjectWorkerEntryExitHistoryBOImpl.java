@@ -64,11 +64,12 @@ public class ProjectWorkerEntryExitHistoryBOImpl
         data.setCode(code);
         data.setDate(req.getDate());
         data.setType(req.getType());
-        data.setIdcardNumber(projectWorker.getIdcardType());
+        data.setIdcardNumber(projectWorker.getIdcardNumber());
         data.setIdcardType(projectWorker.getIdcardType());
         data.setJoinDatetime(projectWorker.getJoinDatetime());
         data.setLeavingDatetime(projectWorker.getLeavingDatetime());
         data.setUploadStatus(EUploadStatus.TO_UPLOAD.getCode());
+        data.setVoucherUrl(req.getVoucherUrl());
         projectWorkerEntryExitHistoryDAO.insert(data);
         return code;
     }
@@ -84,17 +85,16 @@ public class ProjectWorkerEntryExitHistoryBOImpl
     public void refreshProjectWorkerEntryExitHistory(XN631732Req req) {
         ProjectWorkerEntryExitHistory condition = new ProjectWorkerEntryExitHistory();
         condition.setCode(req.getCode());
-        ProjectWorkerEntryExitHistory select = projectWorkerEntryExitHistoryDAO
-            .select(condition);
-        if (req.getDate() != null) {
+        BeanUtils.copyProperties(req, condition);
+        if (StringUtils.isNotBlank(req.getDate())) {
             Date strToDate = DateUtil.strToDate(req.getDate(),
                 DateUtil.FRONT_DATE_FORMAT_STRING);
-            select.setDate(strToDate);
+            condition.setDate(strToDate);
         }
-        if (req.getType() != null) {
-            select.setType(Integer.parseInt(req.getType()));
+        if (StringUtils.isNotBlank(req.getType())) {
+            condition.setType(Integer.parseInt(req.getType()));
         }
-        projectWorkerEntryExitHistoryDAO.update(select);
+        projectWorkerEntryExitHistoryDAO.update(condition);
     }
 
     @Override

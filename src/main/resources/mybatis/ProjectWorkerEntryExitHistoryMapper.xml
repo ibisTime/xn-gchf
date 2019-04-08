@@ -97,11 +97,10 @@
 	<update id="update_projectWorkerEntryExitHistory" parameterType="projectWorkerEntryExitHistory">
 		UPDATE thf_project_worker_entry_exit_history
 		SET
-		join_datetime =
-		#{joinDatetime}
-		,leaving_datetime = #{joinDatetime}
-		,date = #{date}
-		,type = #{type}
+		date = #{date}
+		,type =
+		#{type}
+		,voucher_url = #{voucherUrl}
 		WHERE code = #{code}
 	</update>
 

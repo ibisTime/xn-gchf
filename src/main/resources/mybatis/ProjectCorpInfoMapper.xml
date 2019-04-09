@@ -20,6 +20,12 @@
 		<result column="upload_status" property="uploadStatus" />
 	</resultMap>
 	
+	<sql id="join_condition">
+		<if test="corpBasicType != null and corpBasicType != '' ">
+			left join tqy_corp_basicinfo tu on t.corp_code = tu.corp_code
+		</if>
+	</sql>
+	
 	<sql id="where_condition">
 		<trim prefix="WHERE" prefixOverrides="AND | OR">
 			<if test="code != null and code != '' ">
@@ -39,6 +45,9 @@
 			</if>
 			<if test="projectName != null and projectName != '' ">
                 AND t.project_name = #{projectName}
+            </if>
+            <if test="corpBasicType != null and corpBasicType != '' ">
+                AND tu.corp_type = #{corpBasicType}
             </if>
 		</trim>
 	</sql>
@@ -62,6 +71,7 @@
 		,t.upload_status
 		FROM
 		thf_project_corp_info t
+		<include refid="join_condition" />
 		<include refid="where_condition" />
 		<trim prefix="ORDER BY ">
 			<if test="order != null and order != '' ">

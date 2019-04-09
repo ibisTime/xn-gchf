@@ -34,8 +34,6 @@
 		<result column="negative_id_card_image_url" property="negativeIdCardImageUrl" />
 		<result column="hand_id_card_image_url" property="handIdCardImageUrl" />
 		<result column="start_date" property="startDate" />
-		<result column="expiry_date" property="expiryDate" />
-		<result column="create_datetime" property="createDatetime" />
 	</resultMap>
 	<sql id="where_condition">
 		<trim prefix="WHERE" prefixOverrides="AND | OR">
@@ -47,6 +45,13 @@
 			</if>
 			<if test="cellPhone != null and cellPhone != '' ">
 				AND t.cell_phone = #{cellPhone}
+			</if>
+			<if test="name != null and name != '' ">
+				AND t.name = #{name}
+			</if>
+			<if test="createDatetimeStart != null and createDatetimeEnd != '' ">
+				AND t.create_datetime between #{createDatetimeStart} AND
+				#{createDatetimeEnd}
 			</if>
 		</trim>
 	</sql>

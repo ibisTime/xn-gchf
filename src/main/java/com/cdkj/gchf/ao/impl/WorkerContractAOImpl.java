@@ -85,9 +85,9 @@ public class WorkerContractAOImpl implements IWorkerContractAO {
         if (projectConfigByLocal == null) {
             throw new BizException("XN631670", "项目未部署");
         }
-        ProjectCorpInfo queryProjectCorpInfoList = projectCorpInfoBO
+        ProjectCorpInfo projectCorpInfo = projectCorpInfoBO
             .getProjectCorpInfoByCorpCode(req.getCorpCode());
-        if (queryProjectCorpInfoList == null) {
+        if (projectCorpInfo == null) {
             throw new BizException("XN631670", "企业信用代码无效");
         }
         ProjectWorker projectWorker = projectWorkerBO

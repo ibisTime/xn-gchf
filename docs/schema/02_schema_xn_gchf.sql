@@ -320,10 +320,6 @@ CREATE TABLE `thf_project_worker` (
 --
 -- Table structure for table `thf_project_worker_entry_exit_history`
 --
-
-DROP TABLE IF EXISTS `thf_project_worker_entry_exit_history`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `thf_project_worker_entry_exit_history` (
   `code` varchar(32) NOT NULL COMMENT '编号',
   `project_code` varchar(32) DEFAULT NULL COMMENT '项目编码',
@@ -332,7 +328,7 @@ CREATE TABLE `thf_project_worker_entry_exit_history` (
   `team_sys_no` varchar(32) DEFAULT NULL COMMENT '班组编号',
   `worker_code` varchar(50) DEFAULT NULL COMMENT '员工编号',
   `worker_name` varchar(50) DEFAULT NULL COMMENT '员工姓名',
-  `position` varchar(2) DEFAULT NULL COMMENT '职位',
+  `position` varchar(32) DEFAULT NULL COMMENT '职位',
   `join_datetime` datetime DEFAULT NULL COMMENT '入职时间',
   `leaving_datetime` datetime DEFAULT NULL COMMENT '离职时间',
   `idcard_type` varchar(2) DEFAULT NULL COMMENT '证件类型',

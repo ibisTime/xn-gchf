@@ -110,4 +110,16 @@ public class ProjectConfigBOImpl extends PaginableBOImpl<ProjectConfig>
         return projectConfigDAO.select(data);
     }
 
+    @Override
+    public String saveLocalProjectConfig(String localProjectCode) {
+        String code = null;
+        ProjectConfig localProjectConfig = new ProjectConfig();
+        code = OrderNoGenerater
+            .generate(EGeneratePrefix.ProjectConfig.getCode());
+        localProjectConfig.setCode(code);
+        localProjectConfig.setLocalProjectCode(localProjectCode);
+        projectConfigDAO.insert(localProjectConfig);
+        return code;
+    }
+
 }

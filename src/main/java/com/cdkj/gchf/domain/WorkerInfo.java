@@ -113,6 +113,12 @@ public class WorkerInfo extends ABaseDO {
     // 建档时间
     private Date createDatetime;
 
+    // 建档开始时间
+    private Date createDatetimeStart;
+
+    // 建档结束时间
+    private Date createDatetimeEnd;
+
     public String getCode() {
         return code;
     }

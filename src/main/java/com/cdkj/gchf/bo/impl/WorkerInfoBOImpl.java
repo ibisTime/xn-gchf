@@ -157,7 +157,7 @@ public class WorkerInfoBOImpl extends PaginableBOImpl<WorkerInfo>
     @Override
     public String saveWorkerInfo(WorkerInfo workerInfo) {
         String code = null;
-        code = OrderNoGenerater.generate(EGeneratePrefix.WorkerInfo.getValue());
+        code = OrderNoGenerater.generate(EGeneratePrefix.WorkerInfo.getCode());
         workerInfo.setCode(code);
         workerInfoDAO.insert(workerInfo);
         return code;

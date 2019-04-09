@@ -6,6 +6,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -208,7 +209,7 @@ public class ProjectWorkerEntryExitHistoryBOImpl
             ProjectWorkerEntryExitHistory entryExitHistory) {
         String code = null;
         code = OrderNoGenerater
-            .generate(EGeneratePrefix.ProjectWorkerEntryExitHistory.getValue());
+            .generate(EGeneratePrefix.ProjectWorkerEntryExitHistory.getCode());
         entryExitHistory.setCode(code);
         projectWorkerEntryExitHistoryDAO.insert(entryExitHistory);
         return code;
@@ -229,6 +230,11 @@ public class ProjectWorkerEntryExitHistoryBOImpl
         ProjectWorkerEntryExitHistory condition = new ProjectWorkerEntryExitHistory();
         condition.setWorkerCode(workerCode);
         condition.setOrder("date", false);
+        List<ProjectWorkerEntryExitHistory> selectList = projectWorkerEntryExitHistoryDAO
+            .selectList(condition);
+        if (CollectionUtils.isEmpty(selectList)) {
+            return null;
+        }
         return projectWorkerEntryExitHistoryDAO.selectList(condition).get(0);
     }
 

@@ -252,7 +252,7 @@ public class TeamMasterBOImpl extends PaginableBOImpl<TeamMaster>
             teamMasterDAO.insert(teamMaster);
 
             code = OrderNoGenerater
-                .generate(EGeneratePrefix.TeamMaster.getValue());
+                .generate(EGeneratePrefix.TeamMaster.getCode());
             operateLogBO.saveOperateLog(EOperateLogRefType.TeamMaster.getCode(),
                 code, EOperateLogOperate.UploadTeamMaster.getValue(), user,
                 "导入班组信息");

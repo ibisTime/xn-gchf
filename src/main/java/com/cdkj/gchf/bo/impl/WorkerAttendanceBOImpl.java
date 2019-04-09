@@ -242,7 +242,7 @@ public class WorkerAttendanceBOImpl extends PaginableBOImpl<WorkerAttendance>
 
         }
         code = OrderNoGenerater
-            .generate(EGeneratePrefix.WorkerAttendance.getValue());
+            .generate(EGeneratePrefix.WorkerAttendance.getCode());
         workerAttendance.setCode(code);
         workerAttendanceDAO.insert(workerAttendance);
         return code;

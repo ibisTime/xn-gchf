@@ -160,13 +160,19 @@ public class WorkerContractBOImpl extends PaginableBOImpl<WorkerContract>
         code = OrderNoGenerater
             .generate(EGeneratePrefix.WorkerContract.getCode());
         WorkerContract workerContract = new WorkerContract();
-        workerContract.setUnit(Integer.parseInt(req.getUnit()));
-        workerContract.setContractPeriodType(
-            Integer.parseInt(req.getContractPeriodType()));
+        if (StringUtils.isNotBlank(req.getUnit())) {
+            workerContract.setUnit(Integer.parseInt(req.getUnit()));
+        }
+        if (StringUtils.isNotBlank(req.getContractPeriodType())) {
+            workerContract.setContractPeriodType(
+                Integer.parseInt(req.getContractPeriodType()));
+        }
+        if (StringUtils.isNotBlank(req.getUnitPrice())) {
+            workerContract.setUnitPrice(new BigDecimal(req.getUnitPrice()));
+        }
+
         BeanUtils.copyProperties(projectWorker, workerContract);
         BeanUtils.copyProperties(req, workerContract);
-        BigDecimal unitPrice = new BigDecimal(req.getUnitPrice());
-        workerContract.setUnitPrice(unitPrice);
         workerContract.setContractPeriodType(
             Integer.parseInt(req.getContractPeriodType()));
         workerContract.setCode(code);
@@ -176,7 +182,6 @@ public class WorkerContractBOImpl extends PaginableBOImpl<WorkerContract>
             DateUtil.FRONT_DATE_FORMAT_STRING);
         workerContract.setStartDate(startDate);
         workerContract.setEndDate(endDate);
-        workerContract.setUnitPrice(new BigDecimal(req.getUnitPrice()));
         workerContract.setUploadStatus(EUploadStatus.TO_UPLOAD.getCode());
         workerContractDAO.insert(workerContract);
         return code;

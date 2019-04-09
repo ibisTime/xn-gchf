@@ -242,4 +242,12 @@ public class PayRollDetailBOImpl extends PaginableBOImpl<PayRollDetail>
         return payRollDetailDAO.update(condition);
     }
 
+    @Override
+    public void refreshUploadStatus(String code, String uploadStatus) {
+        PayRollDetail payRollDetail = new PayRollDetail();
+        payRollDetail.setCode(code);
+        payRollDetail.setUploadStatus(uploadStatus);
+        payRollDetailDAO.updateStatus(payRollDetail);
+    }
+
 }

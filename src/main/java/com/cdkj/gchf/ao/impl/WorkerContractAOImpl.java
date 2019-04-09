@@ -2,6 +2,7 @@ package com.cdkj.gchf.ao.impl;
 
 import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.commons.collections.CollectionUtils;
@@ -261,12 +262,14 @@ public class WorkerContractAOImpl implements IWorkerContractAO {
     @Transactional
     @Override
     public void importWorkContractList(XN631673Req req) {
+        User user = userBO.getBriefUser(req.getUpdater());
         ProjectConfig configByLocal = projectConfigBO
             .getProjectConfigByLocal(req.getProjectCode());
         if (configByLocal == null) {
             throw new BizException("XN631673", "项目不存在");
         }
-        List<XN631673ReqData> workContractList = req.getDataList();
+        List<XN631673ReqData> workContractList = req.getDateList();
+        List<String> errorCode = new ArrayList<>();
         for (XN631673ReqData xn631673ReqData : workContractList) {
 
             // 校验数据字典数据
@@ -278,15 +281,15 @@ public class WorkerContractAOImpl implements IWorkerContractAO {
             ProjectCorpInfo corpInfoByCorpCode = projectCorpInfoBO
                 .getProjectCorpInfoByCorpCode(xn631673ReqData.getCorpCode());
             if (corpInfoByCorpCode == null) {
-                throw new BizException("XN631673",
-                    "参建单位信息不存在" + xn631673ReqData.getCorpCode());
+                errorCode.add("参建单位信息不存在" + xn631673ReqData.getCorpCode());
+                continue;
             }
             // 取得个人信息
             WorkerInfo workerInfoByIdCardNumber = workerInfoBO
                 .getWorkerInfoByIdCardNumber(xn631673ReqData.getIdCardNumber());
             if (workerInfoByIdCardNumber == null) {
-                throw new BizException("XN631673",
-                    "人员信息不存在" + xn631673ReqData.getIdCardNumber());
+                errorCode.add("人员信息不存在" + xn631673ReqData.getIdCardNumber());
+                continue;
             }
             BeanUtils.copyProperties(xn631673ReqData, workerContract);
             BeanUtils.copyProperties(workerInfoByIdCardNumber, workerContract);
@@ -309,14 +312,19 @@ public class WorkerContractAOImpl implements IWorkerContractAO {
                 workerContract.setContractPeriodType(
                     Integer.parseInt(xn631673ReqData.getContractPeriodType()));
             }
-            if (StringUtils
-                .isNotBlank(xn631673ReqData.getContractPeriodType())) {
+            if (StringUtils.isNotBlank(xn631673ReqData.getUnitPrice())) {
                 workerContract.setUnitPrice(
                     new BigDecimal(xn631673ReqData.getUnitPrice()));
             }
             // 录入数据
             workerContract.setUploadStatus(EUploadStatus.TO_UPLOAD.getCode());
-            workerContractBO.saveWorkerContract(workerContract);
+            String code = workerContractBO.saveWorkerContract(workerContract);
+            operateLogBO.saveOperateLog(
+                EOperateLogRefType.WorkContract.getCode(), code, "导入员工合同", user,
+                null);
+        }
+        if (CollectionUtils.isNotEmpty(errorCode)) {
+            throw new BizException("XN631673", errorCode.toString());
         }
     }
 

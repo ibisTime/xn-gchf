@@ -9,6 +9,7 @@ import com.cdkj.gchf.common.JsonUtil;
 import com.cdkj.gchf.core.ObjValidater;
 import com.cdkj.gchf.domain.ProjectCorpInfo;
 import com.cdkj.gchf.dto.req.XN631647Req;
+import com.cdkj.gchf.enums.ECorpType;
 import com.cdkj.gchf.enums.EUploadStatus;
 import com.cdkj.gchf.exception.BizException;
 import com.cdkj.gchf.exception.ParaException;
@@ -39,6 +40,9 @@ public class XN631647 extends AProcessor {
         }
         if (StringUtils.isNotBlank(req.getUploadStatus())) {
             EUploadStatus.checkExists(req.getUploadStatus());
+        }
+        if (StringUtils.isNotBlank(req.getCorpType())) {
+            ECorpType.checkExists(req.getCorpType());
         }
         condition.setOrder(column, condition.getOrder());
         return corpProjectCorpInfoAO.queryProjectCorpInfoList(condition);

@@ -9,8 +9,11 @@ import org.springframework.stereotype.Service;
 
 import com.cdkj.gchf.ao.IBankCardInfoAO;
 import com.cdkj.gchf.bo.IBankCardBankBO;
+import com.cdkj.gchf.bo.IProjectWorkerBO;
+import com.cdkj.gchf.bo.IWorkerInfoBO;
 import com.cdkj.gchf.bo.base.Paginable;
 import com.cdkj.gchf.domain.BankCardInfo;
+import com.cdkj.gchf.domain.WorkerInfo;
 import com.cdkj.gchf.dto.req.XN631750Req;
 import com.cdkj.gchf.dto.req.XN631751Req;
 import com.cdkj.gchf.dto.req.XN631752Req;
@@ -24,6 +27,12 @@ public class BankCardInfoAOImpl implements IBankCardInfoAO {
     @Autowired
     private IBankCardBankBO bankCardBankBO;
 
+    @Autowired
+    private IProjectWorkerBO projectWorkerBO;
+
+    @Autowired
+    private IWorkerInfoBO workerInfoBO;
+
     @Override
     public String addBankCardInfo(XN631750Req req) {
         EBankCardBussinessType.checkExists(req.getBusinessType());
@@ -34,7 +43,19 @@ public class BankCardInfoAOImpl implements IBankCardInfoAO {
     @Override
     public Paginable<BankCardInfo> queryBankCardInfoPage(int start, int limit,
             BankCardInfo condition) {
-        return bankCardBankBO.getPaginable(start, limit, condition);
+        Paginable<BankCardInfo> paginable = bankCardBankBO.getPaginable(start,
+            limit, condition);
+        List<BankCardInfo> list = paginable.getList();
+        for (BankCardInfo bankCardInfo : list) {
+            WorkerInfo workerInfo = workerInfoBO
+                .getWorkerInfo(bankCardInfo.getBusinessSysNo());
+            if (workerInfo == null) {
+                continue;
+            }
+            bankCardInfo.setBusinessName(workerInfo.getName());
+        }
+        paginable.setList(list);
+        return paginable;
     }
 
     @Override

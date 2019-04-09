@@ -209,8 +209,8 @@ public class PayRollAOImpl implements IPayRollAO {
                 projectConfigByLocal.getProjectCode(),
                 projectConfigByLocal.getSecret());
             String log = operateLogBO.saveOperateLog(
-                EOperateLogRefType.PayRollDetail.getCode(),
-                EOperateLogOperate.UploadPayRoll.getValue(), code, user, null);
+                EOperateLogRefType.PayRollDetail.getCode(), code,
+                EOperateLogOperate.UploadPayRoll.getValue(), user, null);
 
             AsyncQueueHolder.addSerial(resString, projectConfigByLocal,
                 "payRollDetailBO", code,
@@ -304,7 +304,8 @@ public class PayRollAOImpl implements IPayRollAO {
     @Transactional
     @Override
     public void importPayRollCodeList(XN631812Req req) {
-        User user = userBO.getBriefUser(req.getUserId());
+        User user = userBO.getBriefUser(req.getUpdater());
+        List<String> errorCode = new ArrayList<>();
         ProjectConfig configByProject = projectConfigBO
             .getProjectConfigByLocal(req.getProjectCode());
 
@@ -320,7 +321,8 @@ public class PayRollAOImpl implements IPayRollAO {
             TeamMaster teamMasterByCondition = teamMasterBO
                 .getTeamMasterByCondition(condition);
             if (teamMasterByCondition == null) {
-                throw new BizException("XN631773", "班组信息不存在");
+                errorCode.add("班组信息不存在" + xn631773ReqData.getTeamName());
+                continue;
             }
             PayRoll payRollcondition = new PayRoll();
             payRollcondition.setCorpCode(xn631773ReqData.getCorpCode());
@@ -372,6 +374,9 @@ public class PayRollAOImpl implements IPayRollAO {
                     EOperateLogRefType.PayRollDetail.getCode(),
                     savePayRollDetailCode, "导入工资单", user, null);
             }
+        }
+        if (CollectionUtils.isNotEmpty(errorCode)) {
+            throw new BizException("XN631812" + errorCode.toString());
         }
     }
 

@@ -35,6 +35,9 @@ public class ProjectWorker extends ABaseDO {
     // 班组名称
     private String teamName;
 
+    // 开始工作时间
+    private Date workDate;
+
     // 员工编号
     private String workerCode;
 
@@ -57,7 +60,7 @@ public class ProjectWorker extends ABaseDO {
     private String workType;
 
     // 工人类型
-    private Integer workerRole;
+    private Integer workRole;
 
     // 类别（直招工人，劳务工人，包工工人，内勤人员）
     private String type;
@@ -180,9 +183,6 @@ public class ProjectWorker extends ABaseDO {
 
     // 紧急联系方式
     private String urgentLinkManPhone;
-
-    // 开始工作日期
-    private String workDate;
 
     // 婚姻状况
     private String maritalStatus;
@@ -320,12 +320,12 @@ public class ProjectWorker extends ABaseDO {
         this.workType = workType;
     }
 
-    public Integer getWorkerRole() {
-        return workerRole;
+    public Integer getWorkRole() {
+        return workRole;
     }
 
-    public void setWorkerRole(Integer workerRole) {
-        this.workerRole = workerRole;
+    public void setWorkRole(Integer workRole) {
+        this.workRole = workRole;
     }
 
     public String getType() {
@@ -648,11 +648,11 @@ public class ProjectWorker extends ABaseDO {
         this.urgentLinkManPhone = urgentLinkManPhone;
     }
 
-    public String getWorkDate() {
+    public Date getWorkDate() {
         return workDate;
     }
 
-    public void setWorkDate(String workDate) {
+    public void setWorkDate(Date workDate) {
         this.workDate = workDate;
     }
 

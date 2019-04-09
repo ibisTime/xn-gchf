@@ -11,7 +11,7 @@ public class XN631730Req {
 
     // 员工编号
     @NotBlank
-    private String projectWorkerCode;
+    private String workerCode;
 
     // 日期
     private Date date;
@@ -29,12 +29,12 @@ public class XN631730Req {
         this.userId = userId;
     }
 
-    public String getProjectWorkerCode() {
-        return projectWorkerCode;
+    public String getWorkerCode() {
+        return workerCode;
     }
 
-    public void setProjectWorkerCode(String projectWorkerCode) {
-        this.projectWorkerCode = projectWorkerCode;
+    public void setWorkerCode(String workerCode) {
+        this.workerCode = workerCode;
     }
 
     public Date getDate() {

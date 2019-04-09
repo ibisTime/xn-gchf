@@ -78,9 +78,20 @@ public class ProjectWorkerEntryExitHistoryAOImpl
     @Override
     public String addProjectWorkerEntryExitHistory(XN631730Req data) {
         ProjectWorker projectWorker = projectWorkerBO
-            .getProjectWorker(data.getProjectWorkerCode());
+            .getProjectWorker(data.getWorkerCode());
         if (projectWorker == null) {
             throw new BizException("XN631730", "员工信息不存在");
+        }
+        if (data.getType() == Integer.parseInt(EEntryExitType.IN.getCode())) {
+            ProjectWorkerEntryExitHistory lastTimeEntryTime = projectWorkerEntryExitHistoryBO
+                .getLastTimeEntryTime(data.getWorkerCode());
+            if (lastTimeEntryTime != null) {
+                if (lastTimeEntryTime.getType() == Integer
+                    .parseInt(EEntryExitType.IN.getCode())) {
+                    throw new BizException("XN631730", "项目人员未退场无法添加进场信息");
+                }
+            }
+
         }
         return projectWorkerEntryExitHistoryBO
             .saveProjectWorkerEntryExitHistory(data);
@@ -300,7 +311,7 @@ public class ProjectWorkerEntryExitHistoryAOImpl
                 user, null);
         }
         if (CollectionUtils.isNotEmpty(errorData)) {
-            throw new BizException("XN631733" + errorData.toString());
+            throw new BizException("XN631733", errorData.toString());
         }
     }
 

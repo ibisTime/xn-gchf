@@ -78,7 +78,7 @@ public class WorkerAttendanceBOImpl extends PaginableBOImpl<WorkerAttendance>
             .getProjectConfigByLocal(data.getProjectCode());
         workerAttendance.setProjectName(projectConfigByLocal.getProjectName());
         ProjectWorker projectWorker = projectWorkerBO
-            .getProjectWorker(data.getProjectWorkerCode());
+            .getProjectWorker(data.getWorkerCode());
         workerAttendance.setWorkerCode(projectWorker.getWorkerCode());
         workerAttendance.setWorkerName(projectWorker.getWorkerName());
         workerAttendance.setIdCardNumber(projectWorker.getIdcardNumber());

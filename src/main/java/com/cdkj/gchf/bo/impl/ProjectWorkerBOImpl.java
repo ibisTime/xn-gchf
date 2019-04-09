@@ -1,6 +1,5 @@
 package com.cdkj.gchf.bo.impl;
 
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -11,10 +10,8 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import org.springframework.transaction.annotation.Transactional;
 
 import com.alibaba.fastjson.JSONObject;
-import com.cdkj.gchf.api.impl.XN631693ReqData;
 import com.cdkj.gchf.bo.ICorpBasicinfoBO;
 import com.cdkj.gchf.bo.IProjectConfigBO;
 import com.cdkj.gchf.bo.IProjectWorkerBO;
@@ -33,20 +30,16 @@ import com.cdkj.gchf.domain.TeamMaster;
 import com.cdkj.gchf.domain.WorkerInfo;
 import com.cdkj.gchf.dto.req.XN631690Req;
 import com.cdkj.gchf.dto.req.XN631692Req;
-import com.cdkj.gchf.dto.req.XN631693Req;
 import com.cdkj.gchf.dto.req.XN631911Req;
 import com.cdkj.gchf.dto.req.XN631911ReqWorker;
 import com.cdkj.gchf.dto.req.XN631912Req;
 import com.cdkj.gchf.dto.req.XN631913Req;
 import com.cdkj.gchf.enums.EBankCardCodeType;
 import com.cdkj.gchf.enums.EGeneratePrefix;
-import com.cdkj.gchf.enums.EIdCardType;
 import com.cdkj.gchf.enums.EIsNotType;
-import com.cdkj.gchf.enums.EPoliticsType;
 import com.cdkj.gchf.enums.EUploadStatus;
 import com.cdkj.gchf.enums.EWorkerRoleType;
 import com.cdkj.gchf.enums.EWorkerType;
-import com.cdkj.gchf.exception.BizException;
 import com.cdkj.gchf.gov.GovConnecter;
 import com.cdkj.gchf.gov.GovUtil;
 import com.cdkj.gchf.gov.SerialHandler;
@@ -109,8 +102,7 @@ public class ProjectWorkerBOImpl extends PaginableBOImpl<ProjectWorker>
         }
         if (StringUtils.isNotBlank(data.getWorkRole())) {
             EWorkerRoleType.checkExists(data.getWorkRole());
-            projectWorkerInfo
-                .setWorkerRole(Integer.parseInt(data.getWorkRole()));
+            projectWorkerInfo.setWorkRole(Integer.parseInt(data.getWorkRole()));
         }
         if (StringUtils.isNotBlank(data.getPayRollTopBankCode())) {
             EBankCardCodeType.checkExists(data.getPayRollTopBankCode());
@@ -159,8 +151,7 @@ public class ProjectWorkerBOImpl extends PaginableBOImpl<ProjectWorker>
                 .setIsTeamLeader(Integer.parseInt(req.getIsTeamLeader()));
         }
         if (StringUtils.isNotBlank(req.getWorkRole())) {
-            projectWorkerInfo
-                .setWorkerRole(Integer.parseInt(req.getWorkRole()));
+            projectWorkerInfo.setWorkRole(Integer.parseInt(req.getWorkRole()));
         }
         if (StringUtils.isNotBlank(req.getHasBuyInsurance())) {
             projectWorkerInfo
@@ -279,72 +270,6 @@ public class ProjectWorkerBOImpl extends PaginableBOImpl<ProjectWorker>
         return projectWorkerDAO.select(condition);
     }
 
-    /**
-     * 
-     * <p>Title: saveProjectWorkersByImport</p>   
-     * <p>Description: 导入班组人员</p>   
-     */
-    @Transactional
-    @Override
-    public void saveProjectWorkersByImport(XN631693Req req) {
-        String projectcode = req.getProjectCode();
-        List<XN631693ReqData> workerList = req.getWorkerList();
-        List<String> errorCode = new ArrayList<>();
-        for (XN631693ReqData projectWorkerData : workerList) {
-            String code = null;
-            // 数据字典检查
-            EIdCardType.checkExists(projectWorkerData.getIdCardType());
-            EIsNotType.checkExists(
-                String.valueOf(projectWorkerData.getIsTeamLeader()));
-            if (projectWorkerData.getHasBadMedicalHistory() != null) {
-                EIsNotType
-                    .checkExists(projectWorkerData.getHasBadMedicalHistory());
-            }
-            EIsNotType.checkExists(projectWorkerData.getHasBuyInsurance());
-            EWorkerRoleType
-                .checkExists(String.valueOf(projectWorkerData.getWorkRole()));
-            EWorkerType.checkExists(projectWorkerData.getWorkType());
-            EPoliticsType.checkExists(projectWorkerData.getPoliticsType());
-            //
-            ProjectWorker projectWorker = new ProjectWorker();
-            code = OrderNoGenerater
-                .generate(EGeneratePrefix.ProjectWorker.getValue());
-            projectWorker.setCode(code);
-            BeanUtils.copyProperties(projectWorkerData, projectWorker);
-            projectWorker.setProjectCode(projectcode);
-            CorpBasicinfo corpBasicinfo = corpBasicinfoBO
-                .getCorpBasicinfoByCorp(projectWorkerData.getCorpCode());
-            projectWorker.setCorpName(corpBasicinfo.getCorpName());
-            // 检查人员实名信息表是否存在员工信息
-            WorkerInfo infoByIdCardNumber = workerInfoBO
-                .getWorkerInfoByIdCardNumber(
-                    projectWorkerData.getIdCardNumber());
-            if (infoByIdCardNumber != null) {
-                BeanUtils.copyProperties(infoByIdCardNumber, projectWorker);
-                projectWorkerDAO.insert(projectWorker);
-            } else {
-                // WorkerInfo workerInfo = new WorkerInfo();
-                // // 插入基本信息到人员实名信息表
-                // BeanUtils.copyProperties(projectWorkerData, workerInfo);
-                // String workerCode = OrderNoGenerater
-                // .generate(EGeneratePrefix.WorkerInfo.getCode());
-                // workerInfo.setCode(workerCode);
-                // workerInfoBO.saveWorkerInfo(workerInfo);
-                // workerInfo.setName(projectWorkerData.getWorkerName());
-                // BeanUtils.copyProperties(projectWorkerData, projectWorker);
-                // projectWorker
-                // .setUploadStatus(EUploadStatus.TO_UPLOAD.getCode());
-                // projectWorkerDAO.insert(projectWorker);
-                errorCode.add(projectWorkerData.getIdCardNumber());
-            }
-
-        }
-        if (CollectionUtils.isNotEmpty(errorCode)) {
-            throw new BizException("XN631693",
-                "人员实名制不存在:" + errorCode.toString());
-        }
-    }
-
     @Override
     public ProjectWorker getProjectWorkerByIdCardNumber(String idCardNumber) {
         ProjectWorker projectWorker = new ProjectWorker();
@@ -363,7 +288,7 @@ public class ProjectWorkerBOImpl extends PaginableBOImpl<ProjectWorker>
         jsonObject.addProperty("idCardNumber", AesUtils.encrypt(
             projectWorker.getIdcardNumber(), projectConfig.getSecret()));
         jsonObject.addProperty("workType", projectWorker.getWorkType());
-        jsonObject.addProperty("workRole", projectWorker.getWorkerRole());
+        jsonObject.addProperty("workRole", projectWorker.getWorkRole());
         jsonObject.addProperty("issueCardDate",
             DateUtil.dateToStr(projectWorker.getIssueCardDate(),
                 DateUtil.FRONT_DATE_FORMAT_STRING));
@@ -379,7 +304,6 @@ public class ProjectWorkerBOImpl extends PaginableBOImpl<ProjectWorker>
             projectWorker.getBankLinkNumber());
         jsonObject.addProperty("payRollTopBankCode",
             projectWorker.getPayRollTopBankCode());
-        //
 
         jsonObject.addProperty("hasBuyInsurance",
             projectWorker.getHasBuyInsurance());
@@ -404,7 +328,12 @@ public class ProjectWorkerBOImpl extends PaginableBOImpl<ProjectWorker>
             infoByIdCardNumber.getUrgentLinkMan());
         jsonObject.addProperty("urgentLinkManPhone",
             infoByIdCardNumber.getUrgentLinkManPhone());
-        jsonObject.addProperty("workDate", projectWorker.getWorkDate());
+        if (projectWorker.getWorkDate() != null) {
+            jsonObject.addProperty("workDate",
+                DateUtil.dateToStr(projectWorker.getWorkDate(),
+                    DateUtil.FRONT_DATE_FORMAT_STRING));
+        }
+
         jsonObject.addProperty("maritalStatus",
             infoByIdCardNumber.getMaritalStatus());
         jsonObject.addProperty("grantOrg", infoByIdCardNumber.getGrantOrg());
@@ -423,5 +352,15 @@ public class ProjectWorkerBOImpl extends PaginableBOImpl<ProjectWorker>
         projectWorker.setCode(code);
         projectWorker.setUploadStatus(status);
         projectWorkerDAO.updateStatus(projectWorker);
+    }
+
+    @Override
+    public String saveProjectWorker(ProjectWorker projectWorker) {
+        String code = null;
+        code = OrderNoGenerater
+            .generate(EGeneratePrefix.ProjectWorker.getCode());
+        projectWorker.setCode(code);
+        projectWorkerDAO.insert(projectWorker);
+        return code;
     }
 }

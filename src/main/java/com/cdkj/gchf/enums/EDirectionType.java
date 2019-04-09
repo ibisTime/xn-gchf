@@ -29,7 +29,7 @@ public enum EDirectionType {
         Map<String, EDirectionType> map = getDirectionTypeMap();
         EDirectionType projectCorpType = map.get(code);
         if (null == projectCorpType) {
-            throw new BizException("xn0000", code + "对应进退场类型不存在");
+            throw new BizException("xn0000", code + "对应考勤方向不存在");
         }
         return projectCorpType;
     }
@@ -38,7 +38,7 @@ public enum EDirectionType {
         Map<String, EDirectionType> map = getDirectionTypeMap();
         EDirectionType projectCorpType = map.get(code);
         if (null == projectCorpType) {
-            throw new BizException("xn0000", code + "对应进退场类型不存在");
+            throw new BizException("xn0000", code + "对应考勤方向不存在");
         }
     }
 

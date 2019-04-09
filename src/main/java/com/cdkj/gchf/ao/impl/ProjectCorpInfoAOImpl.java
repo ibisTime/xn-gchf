@@ -63,6 +63,11 @@ public class ProjectCorpInfoAOImpl implements IProjectCorpInfoAO {
         if (null == corpBasicinfo) {
             throw new BizException("XN631630", "企业信息不存在");
         }
+        ProjectCorpInfo corpInfoByCorpCode = projectCorpInfoBO
+            .getProjectCorpInfoByCorpCode(data.getCorpCode());
+        if (corpInfoByCorpCode != null) {
+            throw new BizException("XN631630", "参见单位已添加");
+        }
 
         return projectCorpInfoBO.saveProjectCorpInfo(data);
     }
@@ -174,14 +179,12 @@ public class ProjectCorpInfoAOImpl implements IProjectCorpInfoAO {
         List<XN631633ReqList> projectCorpInfos = req.getDateList();
 
         for (XN631633ReqList requestProjectCourpInfo : projectCorpInfos) {
-
             EProjectCorpType.checkExists(requestProjectCourpInfo.getCorpType());
             if (StringUtils
                 .isNotBlank(requestProjectCourpInfo.getPmIDCardType())) {
                 EIdCardType
                     .checkExists(requestProjectCourpInfo.getPmIDCardType());
             }
-
             if (corpBasicinfoBO.getCorpBasicinfoByCorp(
                 requestProjectCourpInfo.getCorpCode()) == null) {
                 throw new BizException("XN631633",

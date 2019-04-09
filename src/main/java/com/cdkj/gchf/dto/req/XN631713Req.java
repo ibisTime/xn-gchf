@@ -7,10 +7,10 @@ import org.hibernate.validator.constraints.NotEmpty;
 
 public class XN631713Req {
     @NotBlank(message = "用户id")
-    private String userId;
+    private String updater;
 
     @NotEmpty
-    private List<XN631713ReqData> dataList;
+    private List<XN631713ReqData> dateList;
 
     // 项目编号
     @NotBlank
@@ -19,20 +19,20 @@ public class XN631713Req {
     @NotBlank
     private String teamSysNo;
 
-    public String getUserId() {
-        return userId;
+    public String getUpdater() {
+        return updater;
     }
 
-    public void setUserId(String userId) {
-        this.userId = userId;
+    public void setUpdater(String updater) {
+        this.updater = updater;
     }
 
-    public List<XN631713ReqData> getDataList() {
-        return dataList;
+    public List<XN631713ReqData> getDateList() {
+        return dateList;
     }
 
-    public void setDataList(List<XN631713ReqData> dataList) {
-        this.dataList = dataList;
+    public void setDateList(List<XN631713ReqData> dateList) {
+        this.dateList = dateList;
     }
 
     public String getProjectCode() {

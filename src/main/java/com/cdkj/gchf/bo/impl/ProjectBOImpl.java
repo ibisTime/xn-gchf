@@ -1,5 +1,6 @@
 package com.cdkj.gchf.bo.impl;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 import org.apache.commons.lang3.StringUtils;
@@ -9,6 +10,7 @@ import org.springframework.stereotype.Component;
 
 import com.cdkj.gchf.bo.IProjectBO;
 import com.cdkj.gchf.bo.base.PaginableBOImpl;
+import com.cdkj.gchf.common.DateUtil;
 import com.cdkj.gchf.core.OrderNoGenerater;
 import com.cdkj.gchf.dao.IProjectDAO;
 import com.cdkj.gchf.domain.CorpBasicinfo;
@@ -49,8 +51,20 @@ public class ProjectBOImpl extends PaginableBOImpl<Project>
             .generate(EGeneratePrefix.Project.getCode());
         project.setCode(code);
         project.setContractorCorpName(contractorCorpInfo.getCorpName());
+        project.setInvest(new BigDecimal(req.getInvest()));
+        project.setBuildingArea(new BigDecimal(req.getBuildingArea()));
+        project.setBuildingLength(new BigDecimal(req.getBuildingLength()));
+        if (StringUtils.isNotBlank(req.getStartDate())) {
+            project.setStartDate(DateUtil.strToDate(req.getStartDate(),
+                DateUtil.FRONT_DATE_FORMAT_STRING));
+        }
+        if (StringUtils.isNotBlank(req.getCompleteDate())) {
+            project.setCompleteDate(DateUtil.strToDate(req.getCompleteDate(),
+                DateUtil.FRONT_DATE_FORMAT_STRING));
+        }
+        project.setLat(new BigDecimal(req.getLat()));
+        project.setLng(new BigDecimal(req.getLng()));
         project.setBuildCorpName(buildCorpInfo.getCorpName());
-
         projectDAO.insert(project);
 
         return code;
@@ -63,6 +77,19 @@ public class ProjectBOImpl extends PaginableBOImpl<Project>
         Project project = new Project();
         BeanUtils.copyProperties(req, project);
         project.setContractorCorpName(contractorCorpInfo.getCorpName());
+        project.setInvest(new BigDecimal(req.getInvest()));
+        project.setBuildingArea(new BigDecimal(req.getBuildingArea()));
+        project.setBuildingLength(new BigDecimal(req.getBuildingLength()));
+        if (StringUtils.isNotBlank(req.getStartDate())) {
+            project.setStartDate(DateUtil.strToDate(req.getStartDate(),
+                DateUtil.FRONT_DATE_FORMAT_STRING));
+        }
+        if (StringUtils.isNotBlank(req.getCompleteDate())) {
+            project.setCompleteDate(DateUtil.strToDate(req.getCompleteDate(),
+                DateUtil.FRONT_DATE_FORMAT_STRING));
+        }
+        project.setLat(new BigDecimal(req.getLat()));
+        project.setLng(new BigDecimal(req.getLng()));
         project.setBuildCorpName(buildCorpInfo.getCorpName());
 
         projectDAO.update(project);

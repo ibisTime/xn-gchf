@@ -17,11 +17,11 @@ public class XN631713ReqData {
 
     // 证件类型
     @NotBlank
-    private String idcardType;
+    private String idCardType;
 
     // 证件号码
     @NotBlank
-    private String idcardNumber;
+    private String idCardNumber;
 
     // 刷卡时间
     @NotBlank
@@ -58,20 +58,20 @@ public class XN631713ReqData {
         this.teamName = teamName;
     }
 
-    public String getIdcardType() {
-        return idcardType;
+    public String getIdCardType() {
+        return idCardType;
     }
 
-    public void setIdcardType(String idcardType) {
-        this.idcardType = idcardType;
+    public void setIdCardType(String idCardType) {
+        this.idCardType = idCardType;
     }
 
-    public String getIdcardNumber() {
-        return idcardNumber;
+    public String getIdCardNumber() {
+        return idCardNumber;
     }
 
-    public void setIdcardNumber(String idcardNumber) {
-        this.idcardNumber = idcardNumber;
+    public void setIdCardNumber(String idCardNumber) {
+        this.idCardNumber = idCardNumber;
     }
 
     public String getDate() {

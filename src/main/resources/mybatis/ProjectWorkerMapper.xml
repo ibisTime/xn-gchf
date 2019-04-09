@@ -19,7 +19,7 @@
 		<result column="idcard_type" property="idcardType" />
 		<result column="idcard_number" property="idcardNumber" />
 		<result column="work_type" property="workType" />
-		<result column="worker_role" property="workerRole" />
+		<result column="work_role" property="workRole" />
 		<result column="type" property="type" />
 		<result column="entry_time" property="entryTime" />
 
@@ -44,6 +44,7 @@
 		<result column="cut_amount" property="cutAmount" />
 		<result column="status" property="status" />
 		<result column="salary_status" property="salaryStatus" />
+		<result column="work_date" property="workDate" />
 		<result column="join_datetime" property="joinDatetime" />
 		<result column="leaving_datetime" property="leavingDatetime" />
 
@@ -108,7 +109,7 @@
 		,idcard_type
 		,idcard_number
 		,work_type
-		,worker_role
+		,work_role
 
 		,type
 		,entry_time
@@ -163,7 +164,7 @@
 		,#{idcardNumber}
 
 		,#{workType}
-		,#{workerRole}
+		,#{workRole}
 		,#{type}
 		,#{entryTime}
 		,#{exitTime}
@@ -206,8 +207,10 @@
 		thf_project_worker WHERE code = #{code}
 	</delete>
 	<update id="update_projectWorker_status" parameterType="projectWorker">
-		UPDATE thf_project_worker SET upload_status = #{uploadStatus}
-		WHERE code = #{code}
+		UPDATE
+		thf_project_worker SET upload_status = #{uploadStatus}
+		WHERE code =
+		#{code}
 	</update>
 	<update id="update_projectWorker" parameterType="projectWorker">
 		UPDATE
@@ -216,7 +219,7 @@
 		is_team_leader = #{isTeamLeader}
 		,work_type =
 		#{workType}
-		,worker_role = #{workerRole}
+		,work_role = #{workRole}
 		,issue_card_date =
 		#{issueCardDate}
 		,issue_card_pic_url = #{issueCardPicUrl}
@@ -231,7 +234,7 @@
 		,pay_roll_top_bank_code = #{payRollTopBankCode}
 		,has_buy_insurance =
 		#{hasBuyInsurance}
-		,join_datetime = #{joinDatetime} 
+		,join_datetime = #{joinDatetime}
 		WHERE code = #{code}
 	</update>
 	<select id="select_projectWorker" parameterType="projectWorker"
@@ -253,7 +256,7 @@
 		,t.idcard_type
 		,t.idcard_number
 		,t.work_type
-		,t.worker_role
+		,t.work_role
 
 		,t.type
 		,t.entry_time

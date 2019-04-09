@@ -7,7 +7,7 @@ import org.hibernate.validator.constraints.NotEmpty;
 
 public class XN631812Req {
     @NotBlank
-    private String userId;
+    private String updater;
 
     @NotBlank
     private String projectCode;
@@ -15,14 +15,15 @@ public class XN631812Req {
     @NotEmpty
     private List<XN631812ReqData> dateList;
 
+    @NotBlank
     private String payMonth;
 
-    public String getUserId() {
-        return userId;
+    public String getUpdater() {
+        return updater;
     }
 
-    public void setUserId(String userId) {
-        this.userId = userId;
+    public void setUpdater(String updater) {
+        this.updater = updater;
     }
 
     public String getProjectCode() {

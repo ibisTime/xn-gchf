@@ -52,4 +52,10 @@ public class PayRollDetailDAOImpl extends AMybatisTemplate
             payRollDetail);
     }
 
+    @Override
+    public int updateStatus(PayRollDetail payRollDetail) {
+        return super.update(NAMESPACE.concat("update_PayRollDetail_status"),
+            payRollDetail);
+    }
+
 }

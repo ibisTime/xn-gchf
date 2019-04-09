@@ -33,6 +33,8 @@ public interface IPayRollDetailBO extends IPaginableBO<PayRollDetail> {
 
     public PayRollDetail getPayRollDetail(String code);
 
+    void refreshUploadStatus(String code, String uploadStatus);
+
     public List<PayRollDetail> getPayRollDetailByPayRollCode(
             String payRollCode);
 

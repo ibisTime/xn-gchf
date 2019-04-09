@@ -11,6 +11,8 @@ import com.cdkj.gchf.ao.IProjectAO;
 import com.cdkj.gchf.bo.ICorpBasicinfoBO;
 import com.cdkj.gchf.bo.IProjectBO;
 import com.cdkj.gchf.bo.IProjectBuilderLicenseBO;
+import com.cdkj.gchf.bo.IProjectConfigBO;
+import com.cdkj.gchf.bo.IUserBO;
 import com.cdkj.gchf.bo.base.Paginable;
 import com.cdkj.gchf.domain.CorpBasicinfo;
 import com.cdkj.gchf.domain.Project;
@@ -30,6 +32,12 @@ public class ProjectAOImpl implements IProjectAO {
     @Autowired
     private ICorpBasicinfoBO corpBasicinfoBO;
 
+    @Autowired
+    private IUserBO userBO;
+
+    @Autowired
+    private IProjectConfigBO projectConfigBO;
+
     @Override
     @Transactional
     public String addProject(XN631600Req req) {
@@ -48,9 +56,10 @@ public class ProjectAOImpl implements IProjectAO {
                 throw new BizException("XN631600", "建设单位不存在");
             }
         }
-
         String projectCode = projectBO.saveProject(req, contractorCorpInfo,
             buildCorpInfo);
+
+        userBO.saveProjectAdmin(projectCode, req.getName());
 
         // 添加施工许可证
         projectBuilderLicenseBO.saveProjectBuilderLicense(projectCode,

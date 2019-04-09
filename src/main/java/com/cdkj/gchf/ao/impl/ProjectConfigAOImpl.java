@@ -52,7 +52,7 @@ public class ProjectConfigAOImpl implements IProjectConfigAO {
 
         String projectCode = projectBO.saveProject(req.getProjectName());
 
-        userBO.saveProjectAdmin(projectCode, req.getProjectName());
+        // userBO.saveProjectAdmin(projectCode, req.getProjectName());
 
         return projectConfigBO.saveProjectConfig(projectCode, req);
     }

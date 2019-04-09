@@ -10,7 +10,7 @@ import com.cdkj.gchf.core.ObjValidater;
 import com.cdkj.gchf.core.StringValidater;
 import com.cdkj.gchf.domain.ProjectCorpInfo;
 import com.cdkj.gchf.dto.req.XN631645Req;
-import com.cdkj.gchf.enums.EProjectCorpType;
+import com.cdkj.gchf.enums.ECorpType;
 import com.cdkj.gchf.enums.EUploadStatus;
 import com.cdkj.gchf.exception.BizException;
 import com.cdkj.gchf.exception.ParaException;
@@ -43,7 +43,7 @@ public class XN631645 extends AProcessor {
             EUploadStatus.checkExists(req.getUploadStatus());
         }
         if (StringUtils.isNotBlank(req.getCorpType())) {
-            EProjectCorpType.checkExists(req.getCorpType());
+            ECorpType.checkExists(req.getCorpType());
         }
         condition.setOrder(column, req.getOrderDir());
         int start = StringValidater.toInteger(req.getStart());

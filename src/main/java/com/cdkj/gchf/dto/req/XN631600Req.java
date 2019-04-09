@@ -1,7 +1,5 @@
 package com.cdkj.gchf.dto.req;
 
-import java.math.BigDecimal;
-import java.util.Date;
 import java.util.List;
 
 import org.hibernate.validator.constraints.NotBlank;
@@ -44,19 +42,19 @@ public class XN631600Req {
     private String areaCode;
 
     // 总投资
-    private BigDecimal invest;
+    private String invest;
 
     // 总面积
-    private BigDecimal buildingArea;
+    private String buildingArea;
 
     // 总长度
-    private BigDecimal buildingLength;
+    private String buildingLength;
 
     // 开工日期
-    private Date startDate;
+    private String startDate;
 
     // 竣工日期
-    private Date completeDate;
+    private String completeDate;
 
     // 联系人姓名
     private String linkMan;
@@ -69,10 +67,10 @@ public class XN631600Req {
     private String prjStatus;
 
     // 经度
-    private BigDecimal lng;
+    private String lng;
 
     // 纬度
-    private BigDecimal lat;
+    private String lat;
 
     // 项目地址
     private String address;
@@ -170,46 +168,6 @@ public class XN631600Req {
         this.areaCode = areaCode;
     }
 
-    public BigDecimal getInvest() {
-        return invest;
-    }
-
-    public void setInvest(BigDecimal invest) {
-        this.invest = invest;
-    }
-
-    public BigDecimal getBuildingArea() {
-        return buildingArea;
-    }
-
-    public void setBuildingArea(BigDecimal buildingArea) {
-        this.buildingArea = buildingArea;
-    }
-
-    public BigDecimal getBuildingLength() {
-        return buildingLength;
-    }
-
-    public void setBuildingLength(BigDecimal buildingLength) {
-        this.buildingLength = buildingLength;
-    }
-
-    public Date getStartDate() {
-        return startDate;
-    }
-
-    public void setStartDate(Date startDate) {
-        this.startDate = startDate;
-    }
-
-    public Date getCompleteDate() {
-        return completeDate;
-    }
-
-    public void setCompleteDate(Date completeDate) {
-        this.completeDate = completeDate;
-    }
-
     public String getLinkMan() {
         return linkMan;
     }
@@ -232,22 +190,6 @@ public class XN631600Req {
 
     public void setPrjStatus(String prjStatus) {
         this.prjStatus = prjStatus;
-    }
-
-    public BigDecimal getLng() {
-        return lng;
-    }
-
-    public void setLng(BigDecimal lng) {
-        this.lng = lng;
-    }
-
-    public BigDecimal getLat() {
-        return lat;
-    }
-
-    public void setLat(BigDecimal lat) {
-        this.lat = lat;
     }
 
     public String getAddress() {
@@ -328,6 +270,62 @@ public class XN631600Req {
 
     public void setBuilderLicenses(List<XN631600ReqLicenses> builderLicenses) {
         this.builderLicenses = builderLicenses;
+    }
+
+    public String getInvest() {
+        return invest;
+    }
+
+    public void setInvest(String invest) {
+        this.invest = invest;
+    }
+
+    public String getBuildingArea() {
+        return buildingArea;
+    }
+
+    public void setBuildingArea(String buildingArea) {
+        this.buildingArea = buildingArea;
+    }
+
+    public String getBuildingLength() {
+        return buildingLength;
+    }
+
+    public void setBuildingLength(String buildingLength) {
+        this.buildingLength = buildingLength;
+    }
+
+    public String getStartDate() {
+        return startDate;
+    }
+
+    public void setStartDate(String startDate) {
+        this.startDate = startDate;
+    }
+
+    public String getCompleteDate() {
+        return completeDate;
+    }
+
+    public void setCompleteDate(String completeDate) {
+        this.completeDate = completeDate;
+    }
+
+    public String getLng() {
+        return lng;
+    }
+
+    public void setLng(String lng) {
+        this.lng = lng;
+    }
+
+    public String getLat() {
+        return lat;
+    }
+
+    public void setLat(String lat) {
+        this.lat = lat;
     }
 
 }

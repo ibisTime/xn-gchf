@@ -53,7 +53,7 @@ public class ProjectWorkerEntryExitHistoryBOImpl
     public String saveProjectWorkerEntryExitHistory(XN631730Req req) {
         ProjectWorkerEntryExitHistory data = new ProjectWorkerEntryExitHistory();
         ProjectWorker projectWorker = projectWorkerBO
-            .getProjectWorker(req.getProjectWorkerCode());
+            .getProjectWorker(req.getWorkerCode());
         if (projectWorker == null) {
             throw new BizException("XN631730", "员工信息不存在");
         }
@@ -221,6 +221,15 @@ public class ProjectWorkerEntryExitHistoryBOImpl
         projectWorkerEntryExitHistory.setUploadStatus(status);
         projectWorkerEntryExitHistoryDAO.updateProjectWorkerEntryHistoryStatus(
             projectWorkerEntryExitHistory);
+    }
+
+    @Override
+    public ProjectWorkerEntryExitHistory getLastTimeEntryTime(
+            String workerCode) {
+        ProjectWorkerEntryExitHistory condition = new ProjectWorkerEntryExitHistory();
+        condition.setWorkerCode(workerCode);
+        condition.setOrder("date", false);
+        return projectWorkerEntryExitHistoryDAO.selectList(condition).get(0);
     }
 
 }

@@ -1,12 +1,19 @@
 package com.cdkj.gchf.ao.impl;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.cdkj.gchf.ao.IProjectWorkerAO;
+import com.cdkj.gchf.api.impl.XN631693ReqData;
 import com.cdkj.gchf.bo.ICorpBasicinfoBO;
 import com.cdkj.gchf.bo.IOperateLogBO;
 import com.cdkj.gchf.bo.IProjectConfigBO;
@@ -15,6 +22,8 @@ import com.cdkj.gchf.bo.ITeamMasterBO;
 import com.cdkj.gchf.bo.IUserBO;
 import com.cdkj.gchf.bo.IWorkerInfoBO;
 import com.cdkj.gchf.bo.base.Paginable;
+import com.cdkj.gchf.common.DateUtil;
+import com.cdkj.gchf.core.OrderNoGenerater;
 import com.cdkj.gchf.domain.CorpBasicinfo;
 import com.cdkj.gchf.domain.ProjectConfig;
 import com.cdkj.gchf.domain.ProjectWorker;
@@ -29,9 +38,14 @@ import com.cdkj.gchf.dto.req.XN631694ReqData;
 import com.cdkj.gchf.dto.req.XN631911Req;
 import com.cdkj.gchf.dto.req.XN631912Req;
 import com.cdkj.gchf.dto.req.XN631913Req;
+import com.cdkj.gchf.enums.EGeneratePrefix;
+import com.cdkj.gchf.enums.EIdCardType;
+import com.cdkj.gchf.enums.EIsNotType;
 import com.cdkj.gchf.enums.EOperateLogOperate;
 import com.cdkj.gchf.enums.EOperateLogRefType;
+import com.cdkj.gchf.enums.EPoliticsType;
 import com.cdkj.gchf.enums.EUploadStatus;
+import com.cdkj.gchf.enums.EWorkerRoleType;
 import com.cdkj.gchf.enums.EWorkerType;
 import com.cdkj.gchf.exception.BizException;
 import com.cdkj.gchf.gov.AsyncQueueHolder;
@@ -169,27 +183,107 @@ public class ProjectWorkerAOImpl implements IProjectWorkerAO {
         if (configByLocal == null) {
             throw new BizException("XN631693", "项目不存在");
         }
-        projectWorkerBO.saveProjectWorkersByImport(req);
+        String projectcode = req.getProjectCode();
+        List<XN631693ReqData> workerList = req.getWorkerList();
+        List<String> errorCode = new ArrayList<>();
+        for (XN631693ReqData projectWorkerData : workerList) {
+            String code = null;
+            // 数据字典检查
+            EIsNotType.checkExists(projectWorkerData.getHasBuyInsurance());
+            EWorkerRoleType
+                .checkExists(String.valueOf(projectWorkerData.getWorkRole()));
+            EWorkerType.checkExists(projectWorkerData.getWorkType());
+            EPoliticsType.checkExists(projectWorkerData.getPoliticsType());
+            EIdCardType.checkExists(projectWorkerData.getIdCardType());
+            EIsNotType.checkExists(
+                String.valueOf(projectWorkerData.getIsTeamLeader()));
+            if (StringUtils
+                .isNotBlank(projectWorkerData.getHasBadMedicalHistory())) {
+                EIsNotType
+                    .checkExists(projectWorkerData.getHasBadMedicalHistory());
+            }
+
+            ProjectWorker projectWorker = new ProjectWorker();
+            code = OrderNoGenerater
+                .generate(EGeneratePrefix.ProjectWorker.getValue());
+            projectWorker.setCode(code);
+            BeanUtils.copyProperties(projectWorkerData, projectWorker);
+            projectWorker.setProjectCode(projectcode);
+            CorpBasicinfo corpBasicinfo = corpBasicinfoBO
+                .getCorpBasicinfoByCorp(projectWorkerData.getCorpCode());
+            projectWorker.setCorpName(corpBasicinfo.getCorpName());
+            // 检查人员实名信息表是否存在员工信息
+            WorkerInfo infoByIdCardNumber = workerInfoBO
+                .getWorkerInfoByIdCardNumber(
+                    projectWorkerData.getIdCardNumber());
+            if (infoByIdCardNumber != null) {
+                BeanUtils.copyProperties(infoByIdCardNumber, projectWorker);
+                projectWorkerBO.saveProjectWorker(projectWorker);
+            } else {
+                WorkerInfo workerInfo = new WorkerInfo();
+                // 插入基本信息到人员实名信息表
+                BeanUtils.copyProperties(projectWorkerData, workerInfo);
+                String workerCode = OrderNoGenerater
+                    .generate(EGeneratePrefix.WorkerInfo.getCode());
+                workerInfo.setCode(workerCode);
+                Date tempdate;
+                try {
+                    tempdate = new SimpleDateFormat("yyyyMMdd").parse(
+                        projectWorkerData.getIdCardNumber().substring(6, 14));
+                    String birthday = new SimpleDateFormat("yyyy-MM-dd")
+                        .format(tempdate);
+                    workerInfo.setBirthday(DateUtil.strToDate(birthday,
+                        DateUtil.FRONT_DATE_FORMAT_STRING));
+
+                    workerInfo.setGender(Integer.parseInt(
+                        projectWorkerData.getIdCardNumber().substring(17, 18))
+                            % 2 == 0 ? 0 : 1);
+                    workerInfo.setName(projectWorkerData.getWorkerName());
+                    workerInfo.setBirthPlaceCode(
+                        projectWorkerData.getIdCardNumber().substring(0, 6));
+                    workerInfo.setWorkerType(projectWorkerData.getWorkType());
+                    workerInfoBO.saveWorkerInfo(workerInfo);
+
+                    BeanUtils.copyProperties(projectWorkerData, projectWorker);
+                    projectWorker
+                        .setUploadStatus(EUploadStatus.TO_UPLOAD.getCode());
+                    projectWorker
+                        .setProjectName(configByLocal.getProjectName());
+                    projectWorkerBO.saveProjectWorker(projectWorker);
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
+            }
+
+        }
+        if (CollectionUtils.isNotEmpty(errorCode)) {
+            throw new BizException("XN631693",
+                "人员实名制不存在:" + errorCode.toString());
+        }
     }
 
     @Override
     public void uploadProjectWorker(XN631694Req req) {
         User user = userBO.getBriefUser(req.getUserId());
         List<String> codeList = req.getCodeList();
+        List<String> errorCode = new ArrayList<>();
         for (String code : codeList) {
             ProjectWorker projectWorker = projectWorkerBO
                 .getProjectWorker(code);
             if (projectWorker.getUploadStatus()
                 .equals(EUploadStatus.UPLOAD_EDITABLE.getCode())) {
+                errorCode.add("项目人员已上传" + projectWorker.getIdcardNumber());
                 continue;
             }
             TeamMaster teamMaster = teamMasterBO
                 .getTeamMaster(projectWorker.getTeamSysNo());
+            if (teamMaster == null) {
+                errorCode.add("班组信息不存在 " + projectWorker.getTeamSysNo());
+                continue;
+            }
             projectWorker.setTeamSysNo(teamMaster.getTeamSysNo());
-
             ProjectConfig projectConfig = projectConfigBO
                 .getProjectConfigByLocal(projectWorker.getProjectCode());
-
             projectWorker.setProjectCode(projectConfig.getProjectCode());
             projectWorker.setTeamSysNo(teamMaster.getTeamSysNo());
             XN631694ReqData xn631694ReqData = new XN631694ReqData();

@@ -39,7 +39,7 @@ public class XN631710Req {
     private BigDecimal lat;
 
     // 员工编号
-    private String projectWorkerCode;
+    private String workerCode;
 
     // 出工状态
     private String status;
@@ -134,12 +134,12 @@ public class XN631710Req {
         this.lat = lat;
     }
 
-    public String getProjectWorkerCode() {
-        return projectWorkerCode;
+    public String getWorkerCode() {
+        return workerCode;
     }
 
-    public void setProjectWorkerCode(String projectWorkerCode) {
-        this.projectWorkerCode = projectWorkerCode;
+    public void setWorkerCode(String workerCode) {
+        this.workerCode = workerCode;
     }
 
     public String getStatus() {

@@ -7,28 +7,28 @@ import org.hibernate.validator.constraints.NotEmpty;
 
 public class XN631673Req {
     @NotBlank
-    private String userId;
+    private String updater;
 
     @NotBlank
     private String projectCode;
 
     @NotEmpty
-    private List<XN631673ReqData> dataList;
+    private List<XN631673ReqData> dateList;
 
-    public String getUserId() {
-        return userId;
+    public String getUpdater() {
+        return updater;
     }
 
-    public void setUserId(String userId) {
-        this.userId = userId;
+    public void setUpdater(String updater) {
+        this.updater = updater;
     }
 
-    public List<XN631673ReqData> getDataList() {
-        return dataList;
+    public List<XN631673ReqData> getDateList() {
+        return dateList;
     }
 
-    public void setDataList(List<XN631673ReqData> dataList) {
-        this.dataList = dataList;
+    public void setDateList(List<XN631673ReqData> dateList) {
+        this.dateList = dateList;
     }
 
     public String getProjectCode() {

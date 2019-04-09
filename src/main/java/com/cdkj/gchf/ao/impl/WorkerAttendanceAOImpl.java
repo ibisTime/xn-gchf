@@ -74,7 +74,7 @@ public class WorkerAttendanceAOImpl implements IWorkerAttendanceAO {
             throw new BizException("XN631710", "班组信息不存在");
         }
         ProjectWorker projectWorker = projectWorkerBO
-            .getProjectWorker(data.getProjectWorkerCode());
+            .getProjectWorker(data.getWorkerCode());
         if (projectWorker == null) {
             throw new BizException("XN631710", "项目人员不存在");
         }
@@ -95,8 +95,8 @@ public class WorkerAttendanceAOImpl implements IWorkerAttendanceAO {
     public int dropWorkerAttendance(String code) {
         WorkerAttendance workerAttendance = workerAttendanceBO
             .getWorkerAttendance(code);
-        if (workerAttendance.getUploadStatus()
-            .equals(EUploadStatus.UPLOAD_UNEDITABLE.getCode())) {
+        if (!workerAttendance.getUploadStatus()
+            .equals(EUploadStatus.TO_UPLOAD.getCode())) {
             throw new BizException("XN631711", "人员考勤已上传，不可删除");
         }
         return workerAttendanceBO.removeWorkerAttendance(code);
@@ -192,12 +192,12 @@ public class WorkerAttendanceAOImpl implements IWorkerAttendanceAO {
     @Override
     public void importWorkerAttendanceList(XN631713Req req) {
 
-        User user = userBO.getBriefUser(req.getUserId());
-        List<XN631713ReqData> workerAttendanceList = req.getDataList();
+        User user = userBO.getBriefUser(req.getUpdater());
+        List<XN631713ReqData> workerAttendanceList = req.getDateList();
         for (XN631713ReqData xn631713ReqData : workerAttendanceList) {
             // 校验数据字典数据
             EDirectionType.checkExists(xn631713ReqData.getDirection());
-            EIdCardType.checkExists(xn631713ReqData.getIdcardType());
+            EIdCardType.checkExists(xn631713ReqData.getIdCardType());
 
             // 核实企业信息
             ProjectCorpInfo projectCorpInfo = new ProjectCorpInfo();
@@ -210,7 +210,7 @@ public class WorkerAttendanceAOImpl implements IWorkerAttendanceAO {
                     "企业信息不存在" + xn631713ReqData.getCorpCode());
             }
             // 核实身份信息
-            String idcardNumber = xn631713ReqData.getIdcardNumber();
+            String idcardNumber = xn631713ReqData.getIdCardNumber();
             ProjectWorker workerByIdCardNumber = projectWorkerBO
                 .getProjectWorkerByIdCardNumber(idcardNumber);
             if (workerByIdCardNumber == null) {

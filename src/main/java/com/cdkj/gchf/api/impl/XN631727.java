@@ -35,7 +35,7 @@ public class XN631727 extends AProcessor {
         if (StringUtils.isBlank(column)) {
             column = IWorkerAttendanceAO.DEFAULT_ORDER_COLUMN;
         }
-        condition.setOrder(req.getOrderColumn(), req.getOrderDir());
+        condition.setOrder(column, req.getOrderDir());
         return workerAttendanceAO.queryWorkerAttendanceList(condition);
     }
 

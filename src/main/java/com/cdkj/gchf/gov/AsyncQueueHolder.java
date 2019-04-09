@@ -35,9 +35,14 @@ public class AsyncQueueHolder {
 
         String requestSerialCode = GovUtil.parseRequestSerialCode(resString);
 
-        serialMQHolder.serialMQ.addLast(
-            new QueueBean(requestSerialCode, projectConfig.getProjectCode(),
-                projectConfig.getSecret(), boClass, code, status, logCode));
+        QueueBean queueBean = new QueueBean(requestSerialCode,
+            projectConfig.getProjectCode(), projectConfig.getSecret(), boClass,
+            code, status, logCode);
+
+        if (EGovAsyncStatus.TO_HANDLE.getCode()
+            .equals(handleQueueBean(queueBean))) {
+            serialMQHolder.serialMQ.addLast(queueBean);
+        }
 
     }
 
@@ -46,40 +51,44 @@ public class AsyncQueueHolder {
 
         synchronized (this) {
             for (QueueBean queueBean : serialMQHolder.serialMQ) {
-                AsyncRes asyncRes = GovUtil.queryAsyncHandleResult(
-                    queueBean.getRequestSerialCode(),
-                    queueBean.getProjectCode(), queueBean.getSecret());
-
-                if (EGovAsyncStatus.SUCCESS.getCode()
-                    .equals(asyncRes.getStatus())) {
-
-                    refreshUploadStatus(queueBean.getBoClass(),
-                        queueBean.getCode(), queueBean.getStatus());
-
-                    refreshLogRemark(queueBean.getLogCode(), asyncRes);
-
-                    if ("teamMasterBO".equals(queueBean.getBoClass())) {
-                        syncTeamSysNo(queueBean.getCode(), asyncRes);
-                    }
-                    if ("payRollDetailBO".equals(queueBean.getBoClass())) {
-                        syncPayRollDetailNo(queueBean.getCode(), asyncRes);
-                    }
-                    serialMQHolder.serialMQ.remove(queueBean);
-                }
-
-                if (EGovAsyncStatus.FAIL.getCode()
-                    .equals(asyncRes.getStatus())) {
-
-                    refreshLogRemark(queueBean.getLogCode(), asyncRes);
-
-                    serialMQHolder.serialMQ.remove(queueBean);
-                }
+                handleQueueBean(queueBean);
             }
         }
 
     }
 
-    private void refreshUploadStatus(String boClass, String code,
+    private static String handleQueueBean(QueueBean queueBean) {
+        AsyncRes asyncRes = GovUtil.queryAsyncHandleResult(
+            queueBean.getRequestSerialCode(), queueBean.getProjectCode(),
+            queueBean.getSecret());
+
+        if (EGovAsyncStatus.SUCCESS.getCode().equals(asyncRes.getStatus())) {
+
+            refreshUploadStatus(queueBean.getBoClass(), queueBean.getCode(),
+                queueBean.getStatus());
+
+            refreshLogRemark(queueBean.getLogCode(), asyncRes);
+
+            if ("teamMasterBO".equals(queueBean.getBoClass())) {
+                syncTeamSysNo(queueBean.getCode(), asyncRes);
+            }
+            if ("payRollDetailBO".equals(queueBean.getBoClass())) {
+                syncPayRollDetailNo(queueBean.getCode(), asyncRes);
+            }
+            serialMQHolder.serialMQ.remove(queueBean);
+        }
+
+        if (EGovAsyncStatus.FAIL.getCode().equals(asyncRes.getStatus())) {
+
+            refreshLogRemark(queueBean.getLogCode(), asyncRes);
+
+            serialMQHolder.serialMQ.remove(queueBean);
+        }
+
+        return asyncRes.getStatus();
+    }
+
+    private static void refreshUploadStatus(String boClass, String code,
             String status) {
 
         Object result = null;
@@ -100,7 +109,7 @@ public class AsyncQueueHolder {
 
     }
 
-    private void refreshLogRemark(String code, AsyncRes asyncRes) {
+    private static void refreshLogRemark(String code, AsyncRes asyncRes) {
         Object result = null;
 
         try {
@@ -122,7 +131,7 @@ public class AsyncQueueHolder {
 
     }
 
-    private void syncTeamSysNo(String code, AsyncRes asyncRes) {
+    private static void syncTeamSysNo(String code, AsyncRes asyncRes) {
         JSONObject resultJson = JSONObject.parseObject(asyncRes.getResult());
         String sysTeamNo = resultJson.getString("teamSysNo");
 
@@ -144,7 +153,7 @@ public class AsyncQueueHolder {
 
     }
 
-    private void syncPayRollDetailNo(String code, AsyncRes asyncRes) {
+    private static void syncPayRollDetailNo(String code, AsyncRes asyncRes) {
         JSONObject resultJson = JSONObject.parseObject(asyncRes.getResult());
         String payRollCode = resultJson.getString("payRollCode");
 

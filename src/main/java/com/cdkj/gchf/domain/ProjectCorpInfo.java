@@ -52,6 +52,11 @@ public class ProjectCorpInfo extends ABaseDO {
     // 上传状态
     private String uploadStatus;
 
+    /***DB Properties****/
+
+    // 参建单位企业类型
+    private String corpBasicType;
+
     public void setProjectCode(String projectCode) {
         this.projectCode = projectCode;
     }
@@ -158,6 +163,14 @@ public class ProjectCorpInfo extends ABaseDO {
 
     public void setUploadStatus(String uploadStatus) {
         this.uploadStatus = uploadStatus;
+    }
+
+    public String getCorpBasicType() {
+        return corpBasicType;
+    }
+
+    public void setCorpBasicType(String corpBasicType) {
+        this.corpBasicType = corpBasicType;
     }
 
 }

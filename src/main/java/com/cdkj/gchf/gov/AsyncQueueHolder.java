@@ -154,8 +154,9 @@ public class AsyncQueueHolder {
     }
 
     private static void syncPayRollDetailNo(String code, AsyncRes asyncRes) {
-        JSONObject resultJson = JSONObject.parseObject(asyncRes.getResult());
-        String payRollCode = resultJson.getString("payRollCode");
+        JSONObject resultJson = JSONObject.parseObject(
+            JSONObject.parseArray(asyncRes.getResult()).get(0).toString());
+        String payRollCode = resultJson.getString("payrollCode");
 
         try {
 

@@ -9,10 +9,12 @@ import org.springframework.stereotype.Service;
 
 import com.cdkj.gchf.ao.IBankCardInfoAO;
 import com.cdkj.gchf.bo.IBankCardBankBO;
+import com.cdkj.gchf.bo.IProjectCorpInfoBO;
 import com.cdkj.gchf.bo.IProjectWorkerBO;
 import com.cdkj.gchf.bo.IWorkerInfoBO;
 import com.cdkj.gchf.bo.base.Paginable;
 import com.cdkj.gchf.domain.BankCardInfo;
+import com.cdkj.gchf.domain.ProjectCorpInfo;
 import com.cdkj.gchf.domain.WorkerInfo;
 import com.cdkj.gchf.dto.req.XN631750Req;
 import com.cdkj.gchf.dto.req.XN631751Req;
@@ -31,6 +33,9 @@ public class BankCardInfoAOImpl implements IBankCardInfoAO {
     private IProjectWorkerBO projectWorkerBO;
 
     @Autowired
+    private IProjectCorpInfoBO projectCorpInfoBO;
+
+    @Autowired
     private IWorkerInfoBO workerInfoBO;
 
     @Override
@@ -47,12 +52,21 @@ public class BankCardInfoAOImpl implements IBankCardInfoAO {
             limit, condition);
         List<BankCardInfo> list = paginable.getList();
         for (BankCardInfo bankCardInfo : list) {
-            WorkerInfo workerInfo = workerInfoBO
-                .getWorkerInfo(bankCardInfo.getBusinessSysNo());
-            if (workerInfo == null) {
-                continue;
+            if (bankCardInfo.getBusinessType()
+                .equals(EBankCardBussinessType.USER)) {
+                WorkerInfo workerInfo = workerInfoBO
+                    .getWorkerInfo(bankCardInfo.getBusinessSysNo());
+                if (workerInfo == null) {
+                    continue;
+                }
+                bankCardInfo.setBusinessName(workerInfo.getName());
+            } else if (bankCardInfo.getBusinessType()
+                .equals(EBankCardBussinessType.CORP)) {
+                ProjectCorpInfo projectCorpInfo = projectCorpInfoBO
+                    .getProjectCorpInfo(bankCardInfo.getBusinessSysNo());
+                bankCardInfo.setBusinessName(projectCorpInfo.getCorpName());
             }
-            bankCardInfo.setBusinessName(workerInfo.getName());
+
         }
         paginable.setList(list);
         return paginable;

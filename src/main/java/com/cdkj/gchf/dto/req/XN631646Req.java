@@ -12,27 +12,27 @@ import org.hibernate.validator.constraints.NotEmpty;
  * @Copyright:
  */
 public class XN631646Req {
-	//用户id
-	@NotBlank
-	private String userId;
-	
-	@NotBlank
-	private String code;
+    // 用户id
+    @NotBlank
+    private String userId;
 
-	public String getUserId() {
-		return userId;
-	}
+    @NotBlank
+    private String code;
 
-	public void setUserId(String userId) {
-		this.userId = userId;
-	}
+    public String getUserId() {
+        return userId;
+    }
 
-	public String getCode() {
-		return code;
-	}
+    public void setUserId(String userId) {
+        this.userId = userId;
+    }
 
-	public void setCode(String code) {
-		this.code = code;
-	}
-	
+    public String getCode() {
+        return code;
+    }
+
+    public void setCode(String code) {
+        this.code = code;
+    }
+
 }

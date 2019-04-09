@@ -41,7 +41,6 @@ public class XN631042Req {
         this.name = name;
     }
 
-
     public String getUpdater() {
         return updater;
     }

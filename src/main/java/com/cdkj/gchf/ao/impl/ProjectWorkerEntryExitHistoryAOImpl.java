@@ -27,7 +27,6 @@ import com.cdkj.gchf.domain.ProjectWorker;
 import com.cdkj.gchf.domain.ProjectWorkerEntryExitHistory;
 import com.cdkj.gchf.domain.TeamMaster;
 import com.cdkj.gchf.domain.User;
-import com.cdkj.gchf.domain.WorkerInfo;
 import com.cdkj.gchf.dto.req.XN631730Req;
 import com.cdkj.gchf.dto.req.XN631732Req;
 import com.cdkj.gchf.dto.req.XN631733Req;
@@ -273,8 +272,11 @@ public class ProjectWorkerEntryExitHistoryAOImpl
                 .checkExists(String.valueOf(xn631733ReqData.getType()));
             ProjectWorkerEntryExitHistory entryExitHistory = new ProjectWorkerEntryExitHistory();
             entryExitHistory.setProjectCode(projectCode);
-            WorkerInfo infoByIdCardNumber = workerInfoBO
-                .getWorkerInfoByIdCardNumber(xn631733ReqData.getIdcardNumber());
+            // WorkerInfo infoByIdCardNumber = workerInfoBO
+            // .getWorkerInfoByIdCardNumber(xn631733ReqData.getIdcardNumber());
+            ProjectWorker infoByIdCardNumber = projectWorkerBO
+                .getProjectWorkerByIdCardNumber(
+                    xn631733ReqData.getIdcardNumber());
             if (infoByIdCardNumber == null) {
                 errorData.add("项目人员未录入:" + xn631733ReqData.getIdcardNumber());
                 continue;
@@ -292,8 +294,8 @@ public class ProjectWorkerEntryExitHistoryAOImpl
             entryExitHistory.setCorpCode(masterByCondition.getCorpCode());
             entryExitHistory.setCorpName(masterByCondition.getCorpName());
             entryExitHistory.setWorkerCode(infoByIdCardNumber.getCode());
-            entryExitHistory.setWorkerName(infoByIdCardNumber.getName());
-            entryExitHistory.setPosition(infoByIdCardNumber.getWorkerType());
+            entryExitHistory.setWorkerName(infoByIdCardNumber.getWorkerName());
+            entryExitHistory.setPosition(infoByIdCardNumber.getWorkType());
             entryExitHistory
                 .setJoinDatetime(infoByIdCardNumber.getJoinedTime());
             entryExitHistory.setIdcardType(xn631733ReqData.getIdcardType());
@@ -303,9 +305,10 @@ public class ProjectWorkerEntryExitHistoryAOImpl
             entryExitHistory.setDate(date);
             entryExitHistory
                 .setType(Integer.parseInt(xn631733ReqData.getType()));
+            entryExitHistory.setUploadStatus(EUploadStatus.TO_UPLOAD.getCode());
             String code = projectWorkerEntryExitHistoryBO
                 .saveProjectWorkerEntryExitHistory(entryExitHistory);
-            entryExitHistory.setUploadStatus(EUploadStatus.TO_UPLOAD.getCode());
+
             operateLogBO.saveOperateLog(
                 EOperateLogRefType.WorkAttendance.getCode(), code, "导入人员进退场信息",
                 user, null);

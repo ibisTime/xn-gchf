@@ -23,7 +23,6 @@ import com.cdkj.gchf.bo.IUserBO;
 import com.cdkj.gchf.bo.IWorkerInfoBO;
 import com.cdkj.gchf.bo.base.Paginable;
 import com.cdkj.gchf.common.DateUtil;
-import com.cdkj.gchf.core.OrderNoGenerater;
 import com.cdkj.gchf.domain.CorpBasicinfo;
 import com.cdkj.gchf.domain.ProjectConfig;
 import com.cdkj.gchf.domain.ProjectWorker;
@@ -38,7 +37,6 @@ import com.cdkj.gchf.dto.req.XN631694ReqData;
 import com.cdkj.gchf.dto.req.XN631911Req;
 import com.cdkj.gchf.dto.req.XN631912Req;
 import com.cdkj.gchf.dto.req.XN631913Req;
-import com.cdkj.gchf.enums.EGeneratePrefix;
 import com.cdkj.gchf.enums.EIdCardType;
 import com.cdkj.gchf.enums.EIsNotType;
 import com.cdkj.gchf.enums.EOperateLogOperate;
@@ -187,7 +185,6 @@ public class ProjectWorkerAOImpl implements IProjectWorkerAO {
         List<XN631693ReqData> workerList = req.getWorkerList();
         List<String> errorCode = new ArrayList<>();
         for (XN631693ReqData projectWorkerData : workerList) {
-            String code = null;
             // 数据字典检查
             EIsNotType.checkExists(projectWorkerData.getHasBuyInsurance());
             EWorkerRoleType
@@ -202,30 +199,35 @@ public class ProjectWorkerAOImpl implements IProjectWorkerAO {
                 EIsNotType
                     .checkExists(projectWorkerData.getHasBadMedicalHistory());
             }
-
+            ProjectWorker projectWorkerByIdCardNumber = projectWorkerBO
+                .getProjectWorkerByIdCardNumber(
+                    projectWorkerData.getIdCardNumber());
+            if (projectWorkerByIdCardNumber != null) {
+                continue;
+            }
             ProjectWorker projectWorker = new ProjectWorker();
-            code = OrderNoGenerater
-                .generate(EGeneratePrefix.ProjectWorker.getValue());
-            projectWorker.setCode(code);
             BeanUtils.copyProperties(projectWorkerData, projectWorker);
             projectWorker.setProjectCode(projectcode);
             CorpBasicinfo corpBasicinfo = corpBasicinfoBO
                 .getCorpBasicinfoByCorp(projectWorkerData.getCorpCode());
             projectWorker.setCorpName(corpBasicinfo.getCorpName());
+            projectWorker.setUploadStatus(EUploadStatus.TO_UPLOAD.getCode());
             // 检查人员实名信息表是否存在员工信息
             WorkerInfo infoByIdCardNumber = workerInfoBO
                 .getWorkerInfoByIdCardNumber(
                     projectWorkerData.getIdCardNumber());
             if (infoByIdCardNumber != null) {
                 BeanUtils.copyProperties(infoByIdCardNumber, projectWorker);
+                if (StringUtils
+                    .isNotBlank(projectWorkerData.getHasBuyInsurance())) {
+                    projectWorker.setHasBuyInsurance(Integer
+                        .parseInt(projectWorkerData.getHasBuyInsurance()));
+                }
                 projectWorkerBO.saveProjectWorker(projectWorker);
             } else {
                 WorkerInfo workerInfo = new WorkerInfo();
                 // 插入基本信息到人员实名信息表
                 BeanUtils.copyProperties(projectWorkerData, workerInfo);
-                String workerCode = OrderNoGenerater
-                    .generate(EGeneratePrefix.WorkerInfo.getCode());
-                workerInfo.setCode(workerCode);
                 Date tempdate;
                 try {
                     tempdate = new SimpleDateFormat("yyyyMMdd").parse(
@@ -234,21 +236,24 @@ public class ProjectWorkerAOImpl implements IProjectWorkerAO {
                         .format(tempdate);
                     workerInfo.setBirthday(DateUtil.strToDate(birthday,
                         DateUtil.FRONT_DATE_FORMAT_STRING));
-
                     workerInfo.setGender(Integer.parseInt(
-                        projectWorkerData.getIdCardNumber().substring(17, 18))
+                        projectWorkerData.getIdCardNumber().substring(16, 17))
                             % 2 == 0 ? 0 : 1);
                     workerInfo.setName(projectWorkerData.getWorkerName());
                     workerInfo.setBirthPlaceCode(
                         projectWorkerData.getIdCardNumber().substring(0, 6));
                     workerInfo.setWorkerType(projectWorkerData.getWorkType());
                     workerInfoBO.saveWorkerInfo(workerInfo);
-
                     BeanUtils.copyProperties(projectWorkerData, projectWorker);
                     projectWorker
-                        .setUploadStatus(EUploadStatus.TO_UPLOAD.getCode());
-                    projectWorker
                         .setProjectName(configByLocal.getProjectName());
+                    projectWorker
+                        .setIdcardNumber(projectWorkerData.getIdCardNumber());
+                    if (StringUtils
+                        .isNotBlank(projectWorkerData.getHasBuyInsurance())) {
+                        projectWorker.setHasBuyInsurance(Integer
+                            .parseInt(projectWorkerData.getHasBuyInsurance()));
+                    }
                     projectWorkerBO.saveProjectWorker(projectWorker);
                 } catch (ParseException e) {
                     e.printStackTrace();

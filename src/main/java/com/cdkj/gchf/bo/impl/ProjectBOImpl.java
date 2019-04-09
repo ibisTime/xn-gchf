@@ -62,8 +62,13 @@ public class ProjectBOImpl extends PaginableBOImpl<Project>
             project.setCompleteDate(DateUtil.strToDate(req.getCompleteDate(),
                 DateUtil.FRONT_DATE_FORMAT_STRING));
         }
-        project.setLat(new BigDecimal(req.getLat()));
-        project.setLng(new BigDecimal(req.getLng()));
+        if (StringUtils.isNotBlank(req.getLat())) {
+            project.setLat(new BigDecimal(req.getLat()));
+        }
+        if (StringUtils.isNotBlank(req.getLng())) {
+            project.setLng(new BigDecimal(req.getLng()));
+        }
+
         project.setBuildCorpName(buildCorpInfo.getCorpName());
         projectDAO.insert(project);
 

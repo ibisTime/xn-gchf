@@ -44,5 +44,4 @@ public interface IProjectCorpInfoBO extends IPaginableBO<ProjectCorpInfo> {
     public Paginable<ProjectCorpInfo> doQuery(XN631907Req req,
             ProjectConfig projectConfig);
 
-
 }

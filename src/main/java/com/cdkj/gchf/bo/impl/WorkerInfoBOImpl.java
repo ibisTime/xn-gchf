@@ -157,11 +157,9 @@ public class WorkerInfoBOImpl extends PaginableBOImpl<WorkerInfo>
     @Override
     public String saveWorkerInfo(WorkerInfo workerInfo) {
         String code = null;
-        int insert = workerInfoDAO.insert(workerInfo);
-        if (insert != 1) {
-            throw new BizException("人员实名制基本信息保存失败");
-        }
         code = OrderNoGenerater.generate(EGeneratePrefix.WorkerInfo.getValue());
+        workerInfo.setCode(code);
+        workerInfoDAO.insert(workerInfo);
         return code;
     }
 

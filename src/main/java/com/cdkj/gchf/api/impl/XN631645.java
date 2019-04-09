@@ -19,7 +19,7 @@ import com.cdkj.gchf.spring.SpringContextHolder;
 /**
  * 
  * @ClassName:  XN631645   
- * @Description: 分页查企业基本信息
+ * @Description: 分页查参建单位
  * @author: Old3
  * @date:   2019年3月19日 下午11:02:03     
  * @Copyright:

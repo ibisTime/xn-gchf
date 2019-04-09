@@ -1,5 +1,6 @@
 package com.cdkj.gchf.ao.impl;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -194,6 +195,7 @@ public class WorkerAttendanceAOImpl implements IWorkerAttendanceAO {
 
         User user = userBO.getBriefUser(req.getUpdater());
         List<XN631713ReqData> workerAttendanceList = req.getDateList();
+        List<String> errorCode = new ArrayList<>();
         for (XN631713ReqData xn631713ReqData : workerAttendanceList) {
             // 校验数据字典数据
             EDirectionType.checkExists(xn631713ReqData.getDirection());
@@ -206,15 +208,16 @@ public class WorkerAttendanceAOImpl implements IWorkerAttendanceAO {
             ProjectCorpInfo corpInfoByCorpCode = projectCorpInfoBO
                 .getProjectCorpInfo(projectCorpInfo);
             if (corpInfoByCorpCode == null) {
-                throw new BizException("XN631713",
-                    "企业信息不存在" + xn631713ReqData.getCorpCode());
+                errorCode.add("企业信息不存在" + xn631713ReqData.getCorpCode());
+                continue;
             }
             // 核实身份信息
             String idcardNumber = xn631713ReqData.getIdCardNumber();
             ProjectWorker workerByIdCardNumber = projectWorkerBO
                 .getProjectWorkerByIdCardNumber(idcardNumber);
             if (workerByIdCardNumber == null) {
-                throw new BizException("XN631713", "员工信息不存在" + idcardNumber);
+                errorCode.add("员工信息不存在" + idcardNumber);
+                continue;
             }
             // 录入数据
             WorkerAttendance workerAttendance = new WorkerAttendance();
@@ -238,6 +241,9 @@ public class WorkerAttendanceAOImpl implements IWorkerAttendanceAO {
             operateLogBO.saveOperateLog(
                 EOperateLogRefType.WorkAttendance.getCode(), code, "导入人员考勤",
                 user, null);
+        }
+        if (CollectionUtils.isNotEmpty(errorCode)) {
+            throw new BizException("XN631713", errorCode.toString());
         }
     }
 

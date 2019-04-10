@@ -30,6 +30,11 @@ public interface ITeamMasterBO extends IPaginableBO<TeamMaster> {
 
     public List<TeamMaster> queryTeamMasterList(TeamMaster condition);
 
+    String getTeamMasterNameByTeamMasterSysNo(String teamMasterSysNo);
+
+    TeamMaster getTeamMasterByProjectCodeAndTeamMasterNameAndCorpCode(
+            String ProjectCode, String TeamMasterName, String CorpCode);
+
     public TeamMaster getTeamMaster(String code);
 
     public TeamMaster getTeamMasterByCondition(TeamMaster condition);

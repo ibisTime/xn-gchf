@@ -2,6 +2,7 @@ package com.cdkj.gchf.bo;
 
 import java.util.List;
 
+import com.cdkj.gchf.api.impl.XN631693ReqData;
 import com.cdkj.gchf.bo.base.IPaginableBO;
 import com.cdkj.gchf.bo.base.Paginable;
 import com.cdkj.gchf.domain.ProjectConfig;
@@ -25,11 +26,14 @@ public interface IProjectWorkerBO extends IPaginableBO<ProjectWorker> {
 
     public List<ProjectWorker> queryProjectWorkerList(ProjectWorker condition);
 
+    void checkDicKeyRequest(XN631693ReqData projectWorkerData);
+
     public ProjectWorker getProjectWorker(String code);
 
     public ProjectWorker getProjectWorkerByProjectCode(String code);
 
-    public ProjectWorker getProjectWorkerByIdCardNumber(String idCardNumber);
+    public ProjectWorker getProjectWorkerByIdentity(String idCardType,
+            String idCardNumber);
 
     public void refreshUploadStatus(String code, String status);
 

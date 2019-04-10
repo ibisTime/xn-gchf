@@ -1,5 +1,7 @@
 package com.cdkj.gchf.bo.impl;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -11,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.alibaba.fastjson.JSONObject;
+import com.cdkj.gchf.api.impl.XN631693ReqData;
 import com.cdkj.gchf.bo.IWorkerInfoBO;
 import com.cdkj.gchf.bo.base.Paginable;
 import com.cdkj.gchf.bo.base.PaginableBOImpl;
@@ -212,6 +215,38 @@ public class WorkerInfoBOImpl extends PaginableBOImpl<WorkerInfo>
         }
 
         return workerInfoDAO.updateWorkerInfo(workerInfo);
+    }
+
+    @Override
+    public String saveWorkerInfoByImport(XN631693ReqData data) {
+        WorkerInfo workerInfo = new WorkerInfo();
+        String code = null;
+        // 插入基本信息到人员实名信息表
+        BeanUtils.copyProperties(data, workerInfo);
+        Date tempdate;
+        try {
+            tempdate = new SimpleDateFormat("yyyyMMdd")
+                .parse(data.getIdCardNumber().substring(6, 14));
+            String birthday = new SimpleDateFormat("yyyy-MM-dd")
+                .format(tempdate);
+            workerInfo.setBirthday(DateUtil.strToDate(birthday,
+                DateUtil.FRONT_DATE_FORMAT_STRING));
+            workerInfo.setGender(
+                Integer.parseInt(data.getIdCardNumber().substring(16, 17))
+                        % 2 == 0 ? 0 : 1);
+            workerInfo.setName(data.getWorkerName());
+            workerInfo
+                .setBirthPlaceCode(data.getIdCardNumber().substring(0, 6));
+            workerInfo.setWorkerType(data.getWorkType());
+            code = OrderNoGenerater
+                .generate(EGeneratePrefix.WorkerInfo.getCode());
+            workerInfo.setCode(code);
+            workerInfoDAO.insert(workerInfo);
+
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        return code;
     }
 
 }

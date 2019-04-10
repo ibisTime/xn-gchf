@@ -250,4 +250,18 @@ public class PayRollBOImpl extends PaginableBOImpl<PayRoll>
         payRollDAO.updatePayRollCode(payRoll);
     }
 
+    @Override
+    public PayRoll getPayRollByCorpCodeAndTeamSysNoAndProjectCode(
+            String corpCode, String teamMasterSysNo, String projectCode,
+            String payMonth) {
+        PayRoll payRoll = new PayRoll();
+        payRoll.setTeamSysNo(teamMasterSysNo);
+        payRoll.setCorpCode(corpCode);
+        payRoll.setProjectCode(projectCode);
+        payRoll.setPayMonth(
+            DateUtil.strToDate(payMonth, DateUtil.FRONT_DATE_FORMAT_STRING));
+
+        return payRollDAO.select(payRoll);
+    }
+
 }

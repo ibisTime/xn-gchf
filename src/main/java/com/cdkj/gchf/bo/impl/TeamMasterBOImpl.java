@@ -269,4 +269,28 @@ public class TeamMasterBOImpl extends PaginableBOImpl<TeamMaster>
         return code;
     }
 
+    @Override
+    public TeamMaster getTeamMasterByProjectCodeAndTeamMasterNameAndCorpCode(
+            String ProjectCode, String TeamMasterName, String CorpCode) {
+        TeamMaster condition = new TeamMaster();
+        condition.setProjectCode(ProjectCode);
+        condition.setTeamName(TeamMasterName);
+        condition.setCorpCode(CorpCode);
+        return teamMasterDAO.select(condition);
+
+    }
+
+    @Override
+    public String getTeamMasterNameByTeamMasterSysNo(String teamMasterSysNo) {
+        TeamMaster condition = new TeamMaster();
+        condition.setCode(teamMasterSysNo);
+        // List<TeamMaster> teamMasterList =
+        // teamMasterDAO.selectList(condition);
+        // if (CollectionUtils.isNotEmpty(teamMasterList)) {
+        // return teamMasterList.get(0).getTeamName();
+        // }
+        TeamMaster team = teamMasterDAO.select(condition);
+        return team.getTeamName();
+    }
+
 }

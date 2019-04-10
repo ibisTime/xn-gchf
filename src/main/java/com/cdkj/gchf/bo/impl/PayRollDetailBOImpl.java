@@ -25,7 +25,9 @@ import com.cdkj.gchf.domain.TeamMaster;
 import com.cdkj.gchf.dto.req.XN631770ReqDetail;
 import com.cdkj.gchf.dto.req.XN631772Req;
 import com.cdkj.gchf.dto.req.XN631810Req;
+import com.cdkj.gchf.dto.req.XN631812ReqData;
 import com.cdkj.gchf.enums.EGeneratePrefix;
+import com.cdkj.gchf.enums.EIsNotType;
 import com.cdkj.gchf.enums.EUploadStatus;
 import com.cdkj.gchf.exception.BizException;
 import com.google.gson.JsonArray;
@@ -57,7 +59,7 @@ public class PayRollDetailBOImpl extends PaginableBOImpl<PayRollDetail>
             payRollDetail
                 .setWorkHours(new BigDecimal(xn631770ReqDetail.getWorkHours()));
             ProjectWorker workerByIdCardNumber = projectWorkerBO
-                .getProjectWorkerByIdCardNumber(
+                .getProjectWorkerByIdentity(xn631770ReqDetail.getIdcardType(),
                     xn631770ReqDetail.getIdCardNumber());
             if (workerByIdCardNumber == null) {
                 throw new BizException("XN631770", "项目人员不存在");
@@ -248,6 +250,62 @@ public class PayRollDetailBOImpl extends PaginableBOImpl<PayRollDetail>
         payRollDetail.setCode(code);
         payRollDetail.setUploadStatus(uploadStatus);
         payRollDetailDAO.updateStatus(payRollDetail);
+    }
+
+    @Override
+    public String savePayRollDetail(String payRollcode,
+            XN631812ReqData xn631773ReqData) {
+        String code = null;
+        PayRollDetail payRollDetail = new PayRollDetail();
+        payRollDetail.setPayRollCode(payRollcode);
+        BeanUtils.copyProperties(xn631773ReqData, payRollDetail);
+        if (StringUtils.isNotBlank(xn631773ReqData.getDays())) {
+            payRollDetail.setDays(Integer.parseInt(xn631773ReqData.getDays()));
+        }
+        if (StringUtils.isNotBlank(xn631773ReqData.getWorkHours())) {
+            payRollDetail
+                .setWorkHours(new BigDecimal(xn631773ReqData.getWorkHours()));
+        }
+        if (StringUtils.isNotBlank(xn631773ReqData.getTotalPayAmount())) {
+            payRollDetail.setTotalPayAmount(
+                new BigDecimal(xn631773ReqData.getTotalPayAmount()));
+        }
+        if (StringUtils.isNotBlank(xn631773ReqData.getActualAmount())) {
+            payRollDetail.setActualAmount(
+                new BigDecimal(xn631773ReqData.getActualAmount()));
+        }
+        if (StringUtils.isBlank(xn631773ReqData.getIsBackPay())) {
+            payRollDetail
+                .setIsBackPay(Integer.parseInt(xn631773ReqData.getIsBackPay()));
+            if (StringUtils.isNotBlank(xn631773ReqData.getBackPayMonth())) {
+                payRollDetail.setBalanceDate(
+                    DateUtil.strToDate(xn631773ReqData.getBackPayMonth(),
+                        DateUtil.FRONT_DATE_FORMAT_STRING));
+            }
+        }
+        payRollDetail.setIdcardType(xn631773ReqData.getIdCardType());
+        payRollDetail.setIdcardNumber(xn631773ReqData.getIdCardNumber());
+        ProjectWorker projectWorkerByIdentity = projectWorkerBO
+            .getProjectWorkerByIdentity(xn631773ReqData.getIdCardType(),
+                xn631773ReqData.getIdCardNumber());
+        payRollDetail.setWorkerName(projectWorkerByIdentity.getWorkerName());
+
+        if (StringUtils.isNotBlank(xn631773ReqData.getIsBackPay())) {
+            if (xn631773ReqData.getIsBackPay()
+                .equals(EIsNotType.IS.getCode())) {
+                payRollDetail.setBalanceDate(
+                    DateUtil.strToDate(xn631773ReqData.getBackPayMonth(),
+                        DateUtil.FRONT_DATE_FORMAT_STRING));
+            }
+            payRollDetail
+                .setIsBackPay(Integer.parseInt(xn631773ReqData.getIsBackPay()));
+        }
+        code = OrderNoGenerater
+            .generate(EGeneratePrefix.PayRollDetail.getCode());
+        payRollDetail.setUploadStatus(EUploadStatus.TO_UPLOAD.getCode());
+        payRollDetail.setCode(code);
+        payRollDetailDAO.insert(payRollDetail);
+        return code;
     }
 
 }

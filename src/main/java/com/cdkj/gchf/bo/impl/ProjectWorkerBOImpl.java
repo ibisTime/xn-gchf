@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.alibaba.fastjson.JSONObject;
+import com.cdkj.gchf.api.impl.XN631693ReqData;
 import com.cdkj.gchf.bo.ICorpBasicinfoBO;
 import com.cdkj.gchf.bo.IProjectConfigBO;
 import com.cdkj.gchf.bo.IProjectWorkerBO;
@@ -36,7 +37,9 @@ import com.cdkj.gchf.dto.req.XN631912Req;
 import com.cdkj.gchf.dto.req.XN631913Req;
 import com.cdkj.gchf.enums.EBankCardCodeType;
 import com.cdkj.gchf.enums.EGeneratePrefix;
+import com.cdkj.gchf.enums.EIdCardType;
 import com.cdkj.gchf.enums.EIsNotType;
+import com.cdkj.gchf.enums.EPoliticsType;
 import com.cdkj.gchf.enums.EUploadStatus;
 import com.cdkj.gchf.enums.EWorkerRoleType;
 import com.cdkj.gchf.enums.EWorkerType;
@@ -271,9 +274,11 @@ public class ProjectWorkerBOImpl extends PaginableBOImpl<ProjectWorker>
     }
 
     @Override
-    public ProjectWorker getProjectWorkerByIdCardNumber(String idCardNumber) {
+    public ProjectWorker getProjectWorkerByIdentity(String idCardType,
+            String idCardNumber) {
         ProjectWorker projectWorker = new ProjectWorker();
         projectWorker.setIdcardNumber(idCardNumber);
+        projectWorker.setIdcardType(idCardType);
         ProjectWorker infoByCondition = projectWorkerDAO.select(projectWorker);
         return infoByCondition;
     }
@@ -362,5 +367,28 @@ public class ProjectWorkerBOImpl extends PaginableBOImpl<ProjectWorker>
         projectWorker.setCode(code);
         projectWorkerDAO.insert(projectWorker);
         return code;
+    }
+
+    /**
+     * 
+     * <p>Title: checkDicKeyRequest</p>   
+     * <p>Description: 检查导入的字典值是否有效</p>   
+     */
+    @Override
+    public void checkDicKeyRequest(XN631693ReqData projectWorkerData) {
+
+        EWorkerRoleType
+            .checkExists(String.valueOf(projectWorkerData.getWorkRole()));
+        EWorkerType.checkExists(projectWorkerData.getWorkType());
+        EPoliticsType.checkExists(projectWorkerData.getPoliticsType());
+        EIdCardType.checkExists(projectWorkerData.getIdCardType());
+        EIsNotType.checkExists(projectWorkerData.getIsTeamLeader());
+        if (StringUtils
+            .isNotBlank(projectWorkerData.getHasBadMedicalHistory())) {
+            EIsNotType.checkExists(projectWorkerData.getHasBadMedicalHistory());
+        }
+        if (StringUtils.isNotBlank(projectWorkerData.getHasBuyInsurance())) {
+            EIsNotType.checkExists(projectWorkerData.getHasBuyInsurance());
+        }
     }
 }

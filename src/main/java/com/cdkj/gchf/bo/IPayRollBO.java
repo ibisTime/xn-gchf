@@ -34,6 +34,9 @@ public interface IPayRollBO extends IPaginableBO<PayRoll> {
 
     public PayRoll getPayRollByCondition(PayRoll condition);
 
+    PayRoll getPayRollByCorpCodeAndTeamSysNoAndProjectCode(String corpCode,
+            String teamMasterSysNo, String projectCode, String payMonth);
+
     /****国家平台接口****/
     public void doUpload(XN631920Req req, ProjectConfig projectConfig);
 

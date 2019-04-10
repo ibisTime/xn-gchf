@@ -22,11 +22,18 @@
 			<if test="corpName != null and corpName != '' ">
 				AND t.corp_name = #{corpName}
 			</if>
+			<if test="corpCode != null and corpCode != '' ">
+				AND t.corp_code = #{corpCode}
+			</if>
 			<if test="teamSysNo != null and teamSysNo != '' ">
 				AND t.team_sys_no = #{teamSysNo}
 			</if>
-			<if test="payMonth != null and payMonth != '' ">
-				AND t.pay_month = #{payMonth}
+			<if test="projectCode != null and projectCode != '' ">
+				AND t.project_code = #{projectCode}
+			</if>
+			<if test="payMonth != null ">
+				AND YEAR(t.pay_month) = YEAR(#{payMonth}) AND MONTH(
+				t.pay_month) = MONTH(#{payMonth})
 			</if>
 		</trim>
 	</sql>
@@ -92,7 +99,8 @@
 	</update>
 
 	<update id="update_payRoll_status" parameterType="payRoll">
-		UPDATE thf_pay_roll
+		UPDATE
+		thf_pay_roll
 		SET
 		pay_roll_code = #{payRollCode}
 		WHERE code = #{code}

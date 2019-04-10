@@ -1,6 +1,5 @@
 package com.cdkj.gchf.ao.impl;
 
-import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -18,10 +17,8 @@ import com.cdkj.gchf.bo.IPayRollBO;
 import com.cdkj.gchf.bo.IPayRollDetailBO;
 import com.cdkj.gchf.bo.IProjectConfigBO;
 import com.cdkj.gchf.bo.IProjectCorpInfoBO;
-import com.cdkj.gchf.bo.IProjectWorkerBO;
 import com.cdkj.gchf.bo.ITeamMasterBO;
 import com.cdkj.gchf.bo.IUserBO;
-import com.cdkj.gchf.bo.IWorkerInfoBO;
 import com.cdkj.gchf.bo.base.Paginable;
 import com.cdkj.gchf.common.AesUtils;
 import com.cdkj.gchf.common.DateUtil;
@@ -74,12 +71,6 @@ public class PayRollAOImpl implements IPayRollAO {
 
     @Autowired
     private ICorpBasicinfoBO corpBasicinfoBO;
-
-    @Autowired
-    private IWorkerInfoBO workerInfoBO;
-
-    @Autowired
-    private IProjectWorkerBO projectWorkerBO;
 
     @Transactional
     @Override
@@ -312,68 +303,48 @@ public class PayRollAOImpl implements IPayRollAO {
         if (configByProject == null) {
             throw new BizException("XN631773", "项目未部署");
         }
+        // excel字段中有工资单信息和明细信息 两张表操作
         List<XN631812ReqData> dateList = req.getDateList();
         for (XN631812ReqData xn631773ReqData : dateList) {
-            TeamMaster condition = new TeamMaster();
-            condition.setCorpCode(xn631773ReqData.getCorpCode());
-            condition.setTeamName(xn631773ReqData.getTeamName());
-            condition.setProjectCode(req.getProjectCode());
+
             TeamMaster teamMasterByCondition = teamMasterBO
-                .getTeamMasterByCondition(condition);
+                .getTeamMasterByProjectCodeAndTeamMasterNameAndCorpCode(
+                    req.getProjectCode(), xn631773ReqData.getTeamName(),
+                    xn631773ReqData.getCorpCode());
+
             if (teamMasterByCondition == null) {
                 errorCode.add("班组信息不存在" + xn631773ReqData.getTeamName());
                 continue;
             }
-            PayRoll payRollcondition = new PayRoll();
-            payRollcondition.setCorpCode(xn631773ReqData.getCorpCode());
-            payRollcondition.setTeamSysNo(teamMasterByCondition.getCode());
-            payRollcondition.setProjectCode(req.getProjectCode());
-            PayRoll payRollByCondition = payRollBO
-                .getPayRollByCondition(payRollcondition);
-            if (payRollByCondition == null) {
-                payRollcondition.setPayMonth(DateUtil.strToDate(
-                    req.getPayMonth(), DateUtil.FRONT_DATE_FORMAT_STRING));
-                payRollBO.savePayRoll(payRollcondition);
-            } else {
-                String payRollcode = payRollByCondition.getCode();
-                PayRollDetail payRollDetail = new PayRollDetail();
-                payRollDetail.setPayRollCode(payRollcode);
-                BeanUtils.copyProperties(xn631773ReqData, payRollDetail);
-                if (StringUtils.isNotBlank(xn631773ReqData.getDays())) {
-                    payRollDetail
-                        .setDays(Integer.parseInt(xn631773ReqData.getDays()));
-                }
-                if (StringUtils.isNotBlank(xn631773ReqData.getWorkHours())) {
-                    payRollDetail.setWorkHours(
-                        new BigDecimal(xn631773ReqData.getWorkHours()));
-                }
-                if (StringUtils
-                    .isNotBlank(xn631773ReqData.getTotalPayAmount())) {
-                    payRollDetail.setTotalPayAmount(
-                        new BigDecimal(xn631773ReqData.getTotalPayAmount()));
-                }
-                if (StringUtils.isNotBlank(xn631773ReqData.getActualAmount())) {
-                    payRollDetail.setActualAmount(
-                        new BigDecimal(xn631773ReqData.getActualAmount()));
-                }
-                if (StringUtils.isBlank(xn631773ReqData.getIsBackPay())) {
-                    payRollDetail.setIsBackPay(
-                        Integer.parseInt(xn631773ReqData.getIsBackPay()));
-                    if (StringUtils
-                        .isNotBlank(xn631773ReqData.getBackPayMonth())) {
-                        payRollDetail.setBalanceDate(DateUtil.strToDate(
-                            xn631773ReqData.getBackPayMonth(),
-                            DateUtil.FRONT_DATE_FORMAT_STRING));
-                    }
-                }
-                payRollDetail
-                    .setUploadStatus(EUploadStatus.TO_UPLOAD.getCode());
-                String savePayRollDetailCode = payRollDetailBO
-                    .savePayRollDetail(payRollDetail);
-                operateLogBO.saveOperateLog(
-                    EOperateLogRefType.PayRollDetail.getCode(),
-                    savePayRollDetailCode, "导入工资单", user, null);
+            // 不存在相关工资单时相关联的工资单
+            String payRollCode = null;
+            PayRoll payRoll = payRollBO
+                .getPayRollByCorpCodeAndTeamSysNoAndProjectCode(
+                    xn631773ReqData.getCorpCode(),
+                    teamMasterByCondition.getCode(), req.getProjectCode(),
+                    xn631773ReqData.getPayMonth());
+            if (payRoll == null) {
+
+                PayRoll payRollcondition = new PayRoll();
+                payRollcondition.setCorpCode(xn631773ReqData.getCorpCode());
+                payRollcondition.setTeamSysNo(teamMasterByCondition.getCode());
+                payRollcondition.setProjectCode(req.getProjectCode());
+                payRollcondition.setPayMonth(
+                    DateUtil.strToDate(xn631773ReqData.getPayMonth(),
+                        DateUtil.FRONT_DATE_FORMAT_STRING));
+                String savePayRollCode = payRollBO
+                    .savePayRoll(payRollcondition);
+                payRollCode = savePayRollCode;
+
             }
+            payRollCode = (payRollCode == null ? payRoll.getCode()
+                    : payRollCode);
+            String payRollDetailCode = payRollDetailBO
+                .savePayRollDetail(payRollCode, xn631773ReqData);
+
+            operateLogBO.saveOperateLog(
+                EOperateLogRefType.PayRollDetail.getCode(), payRollDetailCode,
+                EOperateLogOperate.ImportPayRollDetail.getCode(), user, null);
         }
         if (CollectionUtils.isNotEmpty(errorCode)) {
             throw new BizException("XN631812" + errorCode.toString());

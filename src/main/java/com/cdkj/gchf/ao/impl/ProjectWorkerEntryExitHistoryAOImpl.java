@@ -274,7 +274,7 @@ public class ProjectWorkerEntryExitHistoryAOImpl
             // WorkerInfo infoByIdCardNumber = workerInfoBO
             // .getWorkerInfoByIdCardNumber(xn631733ReqData.getIdcardNumber());
             ProjectWorker infoByIdCardNumber = projectWorkerBO
-                .getProjectWorkerByIdCardNumber(
+                .getProjectWorkerByIdentity(xn631733ReqData.getIdcardType(),
                     xn631733ReqData.getIdcardNumber());
             if (infoByIdCardNumber == null) {
                 errorData.add("项目人员未录入:" + xn631733ReqData.getIdcardNumber());

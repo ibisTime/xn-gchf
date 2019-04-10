@@ -62,12 +62,16 @@ public class PayRollDetailAOImpl implements IPayRollDetailAO {
             limit, condition);
         List<PayRollDetail> list = page.getList();
         for (PayRollDetail payRollDetail : list) {
+
             String payRollCode = payRollDetail.getPayRollCode();
             PayRoll payRoll = payRollBO.getPayRoll(payRollCode);
+            if (payRoll == null)
+                continue;
             TeamMaster teamMaster = teamMasterBO
                 .getTeamMaster(payRoll.getTeamSysNo());
             if (teamMaster != null) {
-                String teamName = teamMaster.getTeamName();
+                String teamName = teamMasterBO
+                    .getTeamMasterNameByTeamMasterSysNo(payRoll.getTeamSysNo());
                 payRollDetail.setTeamName(teamName);
             }
 

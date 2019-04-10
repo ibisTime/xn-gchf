@@ -15,9 +15,6 @@ public class XN631812Req {
     @NotEmpty
     private List<XN631812ReqData> dateList;
 
-    @NotBlank
-    private String payMonth;
-
     public String getUpdater() {
         return updater;
     }
@@ -40,14 +37,6 @@ public class XN631812Req {
 
     public void setDateList(List<XN631812ReqData> dateList) {
         this.dateList = dateList;
-    }
-
-    public String getPayMonth() {
-        return payMonth;
-    }
-
-    public void setPayMonth(String payMonth) {
-        this.payMonth = payMonth;
     }
 
 }

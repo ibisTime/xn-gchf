@@ -2,6 +2,7 @@ package com.cdkj.gchf.bo;
 
 import java.util.List;
 
+import com.cdkj.gchf.api.impl.XN631693ReqData;
 import com.cdkj.gchf.bo.base.IPaginableBO;
 import com.cdkj.gchf.bo.base.Paginable;
 import com.cdkj.gchf.domain.ProjectConfig;
@@ -18,6 +19,8 @@ public interface IWorkerInfoBO extends IPaginableBO<WorkerInfo> {
     public String saveWorkerInfo(XN631790Req req);
 
     public String saveWorkerInfo(WorkerInfo workerInfo);
+
+    String saveWorkerInfoByImport(XN631693ReqData data);
 
     public int removeWorkerInfo(String code);
 

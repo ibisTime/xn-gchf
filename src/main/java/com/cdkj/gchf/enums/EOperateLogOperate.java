@@ -30,7 +30,9 @@ public enum EOperateLogOperate {
 
     UploadPayRoll("11", "上传工资单信息"),
 
-    UploadProjectWorker("12", "上传项目人员信息");
+    UploadProjectWorker("12", "上传项目人员信息"),
+
+    ImportPayRollDetail("13", "导入工资单明细信息");
 
     EOperateLogOperate(String code, String value) {
         this.code = code;

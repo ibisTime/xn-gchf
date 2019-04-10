@@ -20,7 +20,7 @@ public class XN631693ReqData {
     private String workerName;
 
     // 是否班组长
-    private Integer isTeamLeader;
+    private String isTeamLeader;
 
     // 证件类型
     @NotBlank
@@ -139,11 +139,11 @@ public class XN631693ReqData {
         this.workerName = workerName;
     }
 
-    public Integer getIsTeamLeader() {
+    public String getIsTeamLeader() {
         return isTeamLeader;
     }
 
-    public void setIsTeamLeader(Integer isTeamLeader) {
+    public void setIsTeamLeader(String isTeamLeader) {
         this.isTeamLeader = isTeamLeader;
     }
 

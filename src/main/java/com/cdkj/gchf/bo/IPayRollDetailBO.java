@@ -10,6 +10,7 @@ import com.cdkj.gchf.domain.TeamMaster;
 import com.cdkj.gchf.dto.req.XN631770ReqDetail;
 import com.cdkj.gchf.dto.req.XN631772Req;
 import com.cdkj.gchf.dto.req.XN631810Req;
+import com.cdkj.gchf.dto.req.XN631812ReqData;
 import com.google.gson.JsonObject;
 
 public interface IPayRollDetailBO extends IPaginableBO<PayRollDetail> {
@@ -18,6 +19,9 @@ public interface IPayRollDetailBO extends IPaginableBO<PayRollDetail> {
             List<XN631770ReqDetail> data);
 
     public String savePayRollDetail(PayRollDetail payRollDetail);
+
+    public String savePayRollDetail(String payRollcode,
+            XN631812ReqData xn631773ReqData);
 
     public int deletePayRollDetailByPayRollCode(String payRollCode);
 

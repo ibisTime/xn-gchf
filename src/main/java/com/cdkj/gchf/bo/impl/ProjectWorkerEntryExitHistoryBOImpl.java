@@ -65,6 +65,7 @@ public class ProjectWorkerEntryExitHistoryBOImpl
         data.setCode(code);
         data.setDate(req.getDate());
         data.setType(req.getType());
+        data.setWorkerCode(projectWorker.getCode());
         data.setIdcardNumber(projectWorker.getIdcardNumber());
         data.setIdcardType(projectWorker.getIdcardType());
         data.setJoinDatetime(projectWorker.getJoinDatetime());

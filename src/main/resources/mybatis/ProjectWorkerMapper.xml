@@ -79,6 +79,9 @@
 			<if test="idcardNumber != null and idcardNumber != '' ">
 				AND t.idcard_number = #{idcardNumber}
 			</if>
+			<if test="idcardType != null and idcardType != '' ">
+				AND t.idcard_type = #{idcardType}
+			</if>
 			<if test="workerName != null and workerName != '' ">
 				AND t.worker_name LIKE CONCAT('%',#{workerName},'%')
 			</if>

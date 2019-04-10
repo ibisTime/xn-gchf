@@ -43,6 +43,7 @@ import com.cdkj.gchf.enums.EPoliticsType;
 import com.cdkj.gchf.enums.EUploadStatus;
 import com.cdkj.gchf.enums.EWorkerRoleType;
 import com.cdkj.gchf.enums.EWorkerType;
+import com.cdkj.gchf.exception.BizException;
 import com.cdkj.gchf.gov.GovConnecter;
 import com.cdkj.gchf.gov.GovUtil;
 import com.cdkj.gchf.gov.SerialHandler;
@@ -286,6 +287,8 @@ public class ProjectWorkerBOImpl extends PaginableBOImpl<ProjectWorker>
     @Override
     public JsonObject getProjectWorkerJson(ProjectWorker projectWorker,
             ProjectConfig projectConfig) {
+        WorkerInfo infoByIdCardNumber = workerInfoBO
+            .getWorkerInfoByIdCardNumber(projectWorker.getIdcardNumber());
         JsonObject jsonObject = new JsonObject();
         jsonObject.addProperty("workerName", projectWorker.getWorkerName());
         jsonObject.addProperty("isTeamLeader", projectWorker.getIsTeamLeader());
@@ -297,6 +300,16 @@ public class ProjectWorkerBOImpl extends PaginableBOImpl<ProjectWorker>
         jsonObject.addProperty("issueCardDate",
             DateUtil.dateToStr(projectWorker.getIssueCardDate(),
                 DateUtil.FRONT_DATE_FORMAT_STRING));
+        if (StringUtils.isBlank(infoByIdCardNumber.getHeadImageUrl())
+                || StringUtils.isBlank(infoByIdCardNumber.getNation())
+                || StringUtils.isBlank(infoByIdCardNumber.getAddress())
+                || StringUtils.isBlank(infoByIdCardNumber.getHeadImageUrl())
+                || StringUtils.isBlank(infoByIdCardNumber.getPoliticsType())
+                || StringUtils.isBlank(infoByIdCardNumber.getCellPhone())
+                || StringUtils.isBlank(infoByIdCardNumber.getCultureLevelType())
+                || StringUtils.isBlank(infoByIdCardNumber.getGrantOrg())) {
+            throw new BizException("XN631694", "人员信息不完整,请重新建档补充信息");
+        }
         jsonObject.addProperty("issueCardPic",
             projectWorker.getIssueCardPicUrl());
         jsonObject.addProperty("cardNumber", projectWorker.getCardNumber());
@@ -312,8 +325,7 @@ public class ProjectWorkerBOImpl extends PaginableBOImpl<ProjectWorker>
 
         jsonObject.addProperty("hasBuyInsurance",
             projectWorker.getHasBuyInsurance());
-        WorkerInfo infoByIdCardNumber = workerInfoBO
-            .getWorkerInfoByIdCardNumber(projectWorker.getIdcardNumber());
+
         jsonObject.addProperty("nation", infoByIdCardNumber.getNation());
         jsonObject.addProperty("address", infoByIdCardNumber.getAddress());
         jsonObject.addProperty("headImage",

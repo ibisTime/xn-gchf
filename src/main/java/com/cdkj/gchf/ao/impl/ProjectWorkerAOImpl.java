@@ -199,10 +199,21 @@ public class ProjectWorkerAOImpl implements IProjectWorkerAO {
                 errorCode.add("企业基本信息未录入");
                 continue;
             }
+            TeamMaster teamMaster = teamMasterBO
+                .getTeamMasterByProjectCodeAndTeamMasterNameAndCorpCode(
+                    projectcode, projectWorkerData.getTeamName(),
+                    projectWorkerData.getCorpCode());
+            if (teamMaster == null) {
+                errorCode.add("项目人员所在班组信息不存在");
+                continue;
+            }
+            projectWorker.setTeamSysNo(teamMaster.getCode());
             projectWorker.setCorpName(corpBasicinfo.getCorpName());
             projectWorker.setUploadStatus(EUploadStatus.TO_UPLOAD.getCode());
             projectWorker.setIsTeamLeader(
                 Integer.parseInt(projectWorkerData.getIsTeamLeader()));
+            projectWorker.setIdcardNumber(projectWorkerData.getIdCardNumber());
+            projectWorker.setIdcardType(projectWorkerData.getIdCardType());
             // 检查人员实名信息表是否存在员工信息
             WorkerInfo infoByIdCardNumber = workerInfoBO
                 .getWorkerInfoByIdCardNumber(
@@ -251,9 +262,11 @@ public class ProjectWorkerAOImpl implements IProjectWorkerAO {
             TeamMaster teamMaster = teamMasterBO
                 .getTeamMaster(projectWorker.getTeamSysNo());
             if (teamMaster == null) {
-                errorCode.add("班组信息不存在 " + projectWorker.getTeamSysNo());
+                errorCode
+                    .add("第" + (codeList.indexOf(code)) + 1 + "行" + "班组信息未上传");
                 continue;
             }
+
             projectWorker.setTeamSysNo(teamMaster.getTeamSysNo());
             ProjectConfig projectConfig = projectConfigBO
                 .getProjectConfigByLocal(projectWorker.getProjectCode());
@@ -285,6 +298,9 @@ public class ProjectWorkerAOImpl implements IProjectWorkerAO {
             AsyncQueueHolder.addSerial(resString, projectConfig,
                 "projectWorkerBO", code,
                 EUploadStatus.UPLOAD_EDITABLE.getValue(), logCode);
+        }
+        if (CollectionUtils.isNotEmpty(errorCode)) {
+            throw new BizException("XN631694", errorCode.toString());
         }
 
     }

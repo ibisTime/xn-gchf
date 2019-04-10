@@ -45,6 +45,9 @@
 			<if test="idCardNumber != null and idCardNumber != '' ">
 				AND t.id_card_number = #{idCardNumber}
 			</if>
+			<if test="idCardType != null and idCardType != '' ">
+				AND t.id_card_type = #{idCardType}
+			</if>
 			<if test="cellPhone != null and cellPhone != '' ">
 				AND t.cell_phone = #{cellPhone}
 			</if>

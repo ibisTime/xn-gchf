@@ -5,12 +5,10 @@ import org.hibernate.validator.constraints.NotBlank;
 public class XN631770ReqDetail {
     // 证件类型
     @NotBlank
-    private String idcardType;
+    private String idCardType;
 
     // 证件号码
     @NotBlank
-    private String idcardNumber;
-
     private String idCardNumber;
 
     // 出勤天数
@@ -63,20 +61,20 @@ public class XN631770ReqDetail {
     @NotBlank
     private String thirdPayRollCode;
 
-    public String getIdcardType() {
-        return idcardType;
+    public String getIdCardType() {
+        return idCardType;
     }
 
-    public void setIdcardType(String idcardType) {
-        this.idcardType = idcardType;
+    public void setIdCardType(String idCardType) {
+        this.idCardType = idCardType;
     }
 
-    public String getIdcardNumber() {
-        return idcardNumber;
+    public String getIdCardNumber() {
+        return idCardNumber;
     }
 
-    public void setIdcardNumber(String idcardNumber) {
-        this.idcardNumber = idcardNumber;
+    public void setIdCardNumber(String idCardNumber) {
+        this.idCardNumber = idCardNumber;
     }
 
     public String getDays() {
@@ -189,14 +187,6 @@ public class XN631770ReqDetail {
 
     public void setThirdPayRollCode(String thirdPayRollCode) {
         this.thirdPayRollCode = thirdPayRollCode;
-    }
-
-    public String getIdCardNumber() {
-        return idCardNumber;
-    }
-
-    public void setIdCardNumber(String idCardNumber) {
-        this.idCardNumber = idCardNumber;
     }
 
 }

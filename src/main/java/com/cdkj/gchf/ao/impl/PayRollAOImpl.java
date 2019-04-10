@@ -344,7 +344,7 @@ public class PayRollAOImpl implements IPayRollAO {
 
             operateLogBO.saveOperateLog(
                 EOperateLogRefType.PayRollDetail.getCode(), payRollDetailCode,
-                EOperateLogOperate.ImportPayRollDetail.getCode(), user, null);
+                EOperateLogOperate.ImportPayRollDetail.getValue(), user, null);
         }
         if (CollectionUtils.isNotEmpty(errorCode)) {
             throw new BizException("XN631812" + errorCode.toString());

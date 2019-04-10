@@ -59,7 +59,7 @@ public class PayRollDetailBOImpl extends PaginableBOImpl<PayRollDetail>
             payRollDetail
                 .setWorkHours(new BigDecimal(xn631770ReqDetail.getWorkHours()));
             ProjectWorker workerByIdCardNumber = projectWorkerBO
-                .getProjectWorkerByIdentity(xn631770ReqDetail.getIdcardType(),
+                .getProjectWorkerByIdentity(xn631770ReqDetail.getIdCardType(),
                     xn631770ReqDetail.getIdCardNumber());
             if (workerByIdCardNumber == null) {
                 throw new BizException("XN631770", "项目人员不存在");

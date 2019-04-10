@@ -66,8 +66,11 @@ public class PayRollDetailAOImpl implements IPayRollDetailAO {
             PayRoll payRoll = payRollBO.getPayRoll(payRollCode);
             TeamMaster teamMaster = teamMasterBO
                 .getTeamMaster(payRoll.getTeamSysNo());
-            String teamName = teamMaster.getTeamName();
-            payRollDetail.setTeamName(teamName);
+            if (teamMaster != null) {
+                String teamName = teamMaster.getTeamName();
+                payRollDetail.setTeamName(teamName);
+            }
+
             ProjectConfig configByProject = projectConfigBO
                 .getProjectConfigByLocal(payRoll.getProjectCode());
             payRollDetail.setProjectName(configByProject.getProjectName());

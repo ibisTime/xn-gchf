@@ -86,7 +86,7 @@ public class WorkerContractBOImpl extends PaginableBOImpl<WorkerContract>
         if (StringUtils.isNotBlank(req.getEndDate())) {
             Date endDate = DateUtil.strToDate(req.getEndDate(),
                 DateUtil.FRONT_DATE_FORMAT_STRING);
-            workerContract.setStartDate(endDate);
+            workerContract.setEndDate(endDate);
         }
         if (StringUtils.isNotBlank(req.getUnit())) {
             workerContract.setUnit(Integer.parseInt(req.getUnit()));

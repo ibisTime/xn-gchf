@@ -8,25 +8,25 @@
 		<result column="project_code" property="projectCode" />
 		<result column="corp_code" property="corpCode" />
 		<result column="corp_name" property="corpName" />
-		
+
 		<result column="team_name" property="teamName" />
 		<result column="team_leader_name" property="teamLeaderName" />
 		<result column="team_leader_phone" property="teamLeaderPhone" />
 		<result column="team_leader_idcard_type" property="teamLeaderIdcardType" />
 		<result column="team_leader_id_number" property="teamLeaderIdNumber" />
-		
+
 		<result column="responsible_person_name" property="responsiblePersonName" />
 		<result column="responsible_person_phone" property="responsiblePersonPhone" />
 		<result column="responsible_person_idcard_type" property="responsiblePersonIdcardType" />
 		<result column="responsible_person_id_number" property="responsiblePersonIdNumber" />
 		<result column="remark" property="remark" />
 		<result column="entry_time" property="entryTime" />
-		
+
 		<result column="exit_time" property="exitTime" />
 		<result column="parent_code" property="parentCode" />
 		<result column="upload_status" property="uploadStatus" />
 	</resultMap>
-	
+
 	<sql id="where_condition">
 		<trim prefix="WHERE" prefixOverrides="AND | OR">
 			<if test="code != null and code != '' ">
@@ -48,12 +48,13 @@
 				AND t.upload_status = #{uploadStatus}
 			</if>
 			<if test="teamSysNo != null and teamSysNo != '' ">
-                AND t.team_sys_no = #{teamSysNo}
-            </if>
+				AND t.team_sys_no = #{teamSysNo}
+			</if>
 		</trim>
 	</sql>
-	
-	<select id="select_teamMaster" parameterType="teamMaster" resultMap="teamMaster_DB_Result">
+
+	<select id="select_teamMaster" parameterType="teamMaster"
+		resultMap="teamMaster_DB_Result">
 		SELECT
 		t.code
 		,t.team_sys_no
@@ -62,19 +63,19 @@
 		,t.corp_name
 		,t.team_name
 		,t.team_leader_name
-		
+
 		,t.team_leader_phone
 		,t.team_leader_idcard_type
 		,t.team_leader_id_number
 		,t.responsible_person_name
 		,t.responsible_person_phone
-		
+
 		,t.responsible_person_idcard_type
 		,t.responsible_person_id_number
 		,t.remark
 		,t.entry_time
 		,t.exit_time
-		
+
 		,t.parent_code
 		,t.upload_status
 		FROM
@@ -102,19 +103,19 @@
 		,corp_code
 		,corp_name
 		,team_name
-		
+
 		,team_leader_name
 		,team_leader_phone
 		,team_leader_idcard_type
 		,team_leader_id_number
 		,responsible_person_name
-		
+
 		,responsible_person_phone
 		,responsible_person_idcard_type
 		,responsible_person_id_number
 		,remark
 		,entry_time
-		
+
 		,exit_time
 		,parent_code
 		,upload_status
@@ -126,19 +127,19 @@
 		,#{corpCode}
 		,#{corpName}
 		,#{teamName}
-		
+
 		,#{teamLeaderName}
 		,#{teamLeaderPhone}
 		,#{teamLeaderIdcardType}
 		,#{teamLeaderIdNumber}
 		,#{responsiblePersonName}
-		
+
 		,#{responsiblePersonPhone}
 		,#{responsiblePersonIdcardType}
 		,#{responsiblePersonIdNumber}
 		,#{remark}
 		,#{entryTime}
-		
+
 		,#{exitTime}
 		,#{parentCode}
 		,#{uploadStatus}
@@ -146,7 +147,8 @@
 	</insert>
 
 	<update id="update_teamMaster" parameterType="teamMaster">
-		UPDATE thf_team_master
+		UPDATE
+		thf_team_master
 		SET
 		team_name = #{teamName}
 		,responsible_person_name = #{responsiblePersonName}
@@ -157,23 +159,26 @@
 		,exit_time = #{exitTime}
 		WHERE code = #{code}
 	</update>
-	
+
 	<update id="update_teamMasterUploadStatus" parameterType="teamMaster">
-		UPDATE thf_team_master
+		UPDATE
+		thf_team_master
 		SET
 		upload_status = #{uploadStatus}
 		WHERE code = #{code}
 	</update>
-	
+
 	<update id="update_teamMasterTeamSysNo" parameterType="teamMaster">
-		UPDATE thf_team_master
+		UPDATE
+		thf_team_master
 		SET
 		team_sys_no = #{teamSysNo}
 		WHERE code = #{code}
 	</update>
-	
+
 	<delete id="delete_teamMaster" parameterType="teamMaster">
-		delete from thf_team_master WHERE code = #{code}
+		delete from
+		thf_team_master WHERE code = #{code}
 	</delete>
 
 

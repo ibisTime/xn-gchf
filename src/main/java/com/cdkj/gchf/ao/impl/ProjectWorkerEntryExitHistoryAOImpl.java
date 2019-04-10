@@ -241,7 +241,6 @@ public class ProjectWorkerEntryExitHistoryAOImpl
                 code, EOperateLogOperate.UploadProjectWorkerEntryExitHistory
                     .getValue(),
                 briefUser, null);
-
             AsyncQueueHolder.addSerial(resString, projectConfigByLocal,
                 "projectWorkerEntryExitHistoryBO", code,
                 EUploadStatus.UPLOAD_EDITABLE.getCode(), operateLog);

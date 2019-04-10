@@ -24,6 +24,8 @@ public class XN631672Req {
 
     private String contentPic;
 
+    private String projectCode;
+
     public String getCode() {
         return code;
     }
@@ -78,6 +80,14 @@ public class XN631672Req {
 
     public void setContentPic(String contentPic) {
         this.contentPic = contentPic;
+    }
+
+    public String getProjectCode() {
+        return projectCode;
+    }
+
+    public void setProjectCode(String projectCode) {
+        this.projectCode = projectCode;
     }
 
 }

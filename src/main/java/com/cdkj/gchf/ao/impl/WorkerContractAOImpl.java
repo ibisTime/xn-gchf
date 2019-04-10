@@ -234,8 +234,13 @@ public class WorkerContractAOImpl implements IWorkerContractAO {
                     .format(workerContract.getStartDate()));
             childJson.addProperty("endDate", new SimpleDateFormat("yyyy-MM-dd")
                 .format(workerContract.getEndDate()));
-            childJson.addProperty("unit", workerContract.getUnit());
-            childJson.addProperty("unitPrice", workerContract.getUnitPrice());
+            if (workerContract.getUnit() != null) {
+                childJson.addProperty("unit", workerContract.getUnit());
+            }
+            if (workerContract.getUnitPrice() != null) {
+                childJson.addProperty("unitPrice",
+                    workerContract.getUnitPrice());
+            }
             JsonArray jsonArray = new JsonArray();
             jsonArray.add(childJson);
             jsonObject.add("contractList", jsonArray);

@@ -24,6 +24,8 @@ public class XN631805Req extends APageReq {
     @NotBlank
     private String userId;
 
+    private String code;
+
     public String getUserId() {
         return userId;
     }
@@ -62,6 +64,14 @@ public class XN631805Req extends APageReq {
 
     public void setCreateDatetimeEnd(String createDatetimeEnd) {
         this.createDatetimeEnd = createDatetimeEnd;
+    }
+
+    public String getCode() {
+        return code;
+    }
+
+    public void setCode(String code) {
+        this.code = code;
     }
 
 }

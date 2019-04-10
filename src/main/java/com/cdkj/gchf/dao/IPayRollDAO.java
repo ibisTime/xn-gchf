@@ -8,4 +8,6 @@ public interface IPayRollDAO extends IBaseDAO<PayRoll> {
 
     int update(PayRoll payRoll);
 
+    int updatePayRollCode(PayRoll payRoll);
+
 }

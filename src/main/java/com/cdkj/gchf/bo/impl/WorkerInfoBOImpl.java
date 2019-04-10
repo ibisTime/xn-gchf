@@ -199,6 +199,18 @@ public class WorkerInfoBOImpl extends PaginableBOImpl<WorkerInfo>
             workerInfo.setJoinedTime(DateUtil.strToDate(req.getJoinedTime(),
                 DateUtil.FRONT_DATE_FORMAT_STRING));
         }
+        if (StringUtils.isNotBlank(req.getStartDate())) {
+            workerInfo.setStartDate(DateUtil.strToDate(req.getStartDate(),
+                DateUtil.FRONT_DATE_FORMAT_STRING));
+        }
+        if (StringUtils.isNotBlank(req.getExpiryDate())) {
+            workerInfo.setExpiryDate(DateUtil.strToDate(req.getExpiryDate(),
+                DateUtil.FRONT_DATE_FORMAT_STRING));
+        }
+        if (StringUtils.isNotBlank(req.getPoliticsType())) {
+            workerInfo.setPoliticsType(req.getPoliticsType());
+        }
+
         return workerInfoDAO.updateWorkerInfo(workerInfo);
     }
 

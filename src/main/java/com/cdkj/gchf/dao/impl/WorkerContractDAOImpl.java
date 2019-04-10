@@ -55,7 +55,7 @@ public class WorkerContractDAOImpl extends AMybatisTemplate
 
     @Override
     public int updateWorkerContractStatus(WorkerContract workerContract) {
-        return super.update(NAMESPACE.concat("update_workerAttendance_status"),
+        return super.update(NAMESPACE.concat("delete_workerContract_status"),
             workerContract);
     }
 

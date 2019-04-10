@@ -143,7 +143,8 @@
 		UPDATE
 		thf_worker_contract
 		SET
-		start_date = #{startDate}
+		project_code = #{projectCode}
+		,start_date = #{startDate}
 		,end_date = #{endDate}
 		,unit = #{unit}
 		,unit_price =

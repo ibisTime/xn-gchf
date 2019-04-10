@@ -248,4 +248,11 @@ public class WorkerAttendanceBOImpl extends PaginableBOImpl<WorkerAttendance>
         return code;
     }
 
+    public void refreshUploadStatus(String code, String status) {
+        WorkerAttendance workerAttendance = new WorkerAttendance();
+        workerAttendance.setCode(code);
+        workerAttendance.setUploadStatus(status);
+        workerAttendanceDAO.updateStatus(workerAttendance);
+    }
+
 }

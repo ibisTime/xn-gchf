@@ -33,6 +33,9 @@
 			<if test="workerName != null and workerName != '' ">
 				AND t.worker_name LIKE CONCAT('%', #{workerName}, '%')
 			</if>
+			<if test=" workerCode != null and workerCode != '' ">
+				AND t.worker_code = #{workerCode}
+			</if>
 			<if test="projectCode != null and projectCode != '' ">
 				AND t.project_code = #{projectCode}
 			</if>

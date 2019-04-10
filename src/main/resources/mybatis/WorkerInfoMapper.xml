@@ -34,6 +34,8 @@
 		<result column="negative_id_card_image_url" property="negativeIdCardImageUrl" />
 		<result column="hand_id_card_image_url" property="handIdCardImageUrl" />
 		<result column="start_date" property="startDate" />
+		<result column="expiry_date" property="expiryDate" />
+		<result column="create_datetime" property="createDatetime" />
 	</resultMap>
 	<sql id="where_condition">
 		<trim prefix="WHERE" prefixOverrides="AND | OR">
@@ -132,32 +134,36 @@
 		,nation =
 		#{nation}
 		,edu_level = #{eduLevel}
-
+		,politics_type = #{politicsType}
 		,degree = #{degree}
 		,worker_type =
 		#{workerType}
 		,birthday = #{birthday}
 		,birth_place_code =
 		#{birthPlaceCode}
-		,address = #{address}
+		,address =
+		#{address}
 		,head_image_url =
 		#{headImageUrl}
-
-		,politics_type = #{politicsType}
 		,is_joined =
 		#{isJoined}
-		,joined_time = #{joinedTime}
+		,joined_time =
+		#{joinedTime}
 		,cell_phone = #{cellPhone}
-		,culture_level_type = #{cultureLevelType}
+		,culture_level_type =
+		#{cultureLevelType}
 		,specialty = #{specialty}
 
-		,has_bad_medical_history = #{hasBadMedicalHistory}
+		,has_bad_medical_history =
+		#{hasBadMedicalHistory}
 		,urgent_link_man =
 		#{urgentLinkMan}
 		,urgent_link_man_phone = #{urgentLinkManPhone}
-		,work_type_code = #{workTypeCode}
+		,work_type_code =
+		#{workTypeCode}
 		,work_corp_name = #{workCorpName}
-		,work_date = #{workDate}
+		,work_date =
+		#{workDate}
 		,marital_status = #{maritalStatus}
 
 		,grant_org =

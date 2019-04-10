@@ -1,8 +1,10 @@
 package com.cdkj.gchf.ao.impl;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -177,7 +179,7 @@ public class ProjectCorpInfoAOImpl implements IProjectCorpInfoAO {
     @Override
     public void importProjectCorpInfo(XN631633Req req) {
         List<XN631633ReqList> projectCorpInfos = req.getDateList();
-
+        List<String> errorCode = new ArrayList<>();
         for (XN631633ReqList requestProjectCourpInfo : projectCorpInfos) {
             EProjectCorpType.checkExists(requestProjectCourpInfo.getCorpType());
             if (StringUtils
@@ -187,8 +189,9 @@ public class ProjectCorpInfoAOImpl implements IProjectCorpInfoAO {
             }
             if (corpBasicinfoBO.getCorpBasicinfoByCorp(
                 requestProjectCourpInfo.getCorpCode()) == null) {
-                throw new BizException("XN631633",
-                    "企业信息不存在" + requestProjectCourpInfo.getCorpCode());
+                errorCode
+                    .add("企业信息不存在" + requestProjectCourpInfo.getCorpCode());
+                continue;
             }
         }
         User user = userBO.getBriefUser(req.getUserId());
@@ -224,6 +227,10 @@ public class ProjectCorpInfoAOImpl implements IProjectCorpInfoAO {
                 EOperateLogRefType.ProjectCorpinfo.getCode(), code,
                 EOperateLogOperate.UploadCorpBasicinfo.getValue(), user,
                 "批量导入参建单位信息" + code);
+        }
+
+        if (CollectionUtils.isNotEmpty(errorCode)) {
+            throw new BizException("XN631600", errorCode.toString());
         }
     }
 

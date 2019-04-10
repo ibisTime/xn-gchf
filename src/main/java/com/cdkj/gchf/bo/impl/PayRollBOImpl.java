@@ -242,4 +242,12 @@ public class PayRollBOImpl extends PaginableBOImpl<PayRoll>
         return payRollDAO.update(payRoll);
     }
 
+    @Override
+    public void refreshPayRollCodeByLocal(String code, String payRollCode) {
+        PayRoll payRoll = new PayRoll();
+        payRoll.setCode(code);
+        payRoll.setPayRollCode(payRollCode);
+        payRollDAO.updatePayRollCode(payRoll);
+    }
+
 }

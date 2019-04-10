@@ -77,6 +77,7 @@ public class WorkerContractBOImpl extends PaginableBOImpl<WorkerContract>
     @Override
     public void refreshWorkerContract(XN631672Req req) {
         WorkerContract workerContract = new WorkerContract();
+        BeanUtils.copyProperties(req, workerContract);
         if (StringUtils.isNotBlank(req.getStartDate())) {
             Date startDate = DateUtil.strToDate(req.getStartDate(),
                 DateUtil.FRONT_DATE_FORMAT_STRING);
@@ -87,9 +88,16 @@ public class WorkerContractBOImpl extends PaginableBOImpl<WorkerContract>
                 DateUtil.FRONT_DATE_FORMAT_STRING);
             workerContract.setStartDate(endDate);
         }
-        workerContract.setUnit(Integer.parseInt(req.getUnit()));
-        workerContract.setUnitPrice(new BigDecimal(req.getUnitPrice()));
-        workerContract.setContentPic(req.getContentPic());
+        if (StringUtils.isNotBlank(req.getUnit())) {
+            workerContract.setUnit(Integer.parseInt(req.getUnit()));
+        }
+        if (StringUtils.isNotBlank(req.getUnitPrice())) {
+            workerContract.setUnitPrice(new BigDecimal(req.getUnitPrice()));
+        }
+        if (StringUtils.isNotBlank(req.getContentPic())) {
+            workerContract.setContentPic(req.getContentPic());
+        }
+
         workerContractDAO.update(workerContract);
     }
 

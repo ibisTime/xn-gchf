@@ -85,12 +85,6 @@ public class WorkerInfoAOImpl implements IWorkerInfoAO {
     @Override
     public int addWorkerInfoIdCardInfo(XN631791Req req) {
         WorkerInfo workerInfo = workerInfoBO.getWorkerInfo(req.getCode());
-        if (StringUtils.isNotBlank(workerInfo.getHandIdCardImageUrl())
-                && StringUtils
-                    .isNotBlank(workerInfo.getPositiveIdCardImageUrl())
-                && StringUtils.isNotBlank(req.getNegativeIdCardImageUrl())) {
-            throw new BizException("XN631791", "照片信息已上传");
-        }
         return workerInfoBO.refreshWorkerInfo(req);
     }
 

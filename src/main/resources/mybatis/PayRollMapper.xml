@@ -17,17 +17,17 @@
 				AND t.code = #{code}
 			</if>
 			<if test="payRollCode != null and payRollCode != '' ">
-                AND t.pay_roll_code = #{payRollCode}
-            </if>
-            <if test="corpName != null and corpName != '' ">
-                AND t.corp_name = #{corpName}
-            </if>
-            <if test="teamSysNo != null and teamSysNo != '' ">
-                AND t.team_sys_no = #{teamSysNo}
-            </if>
-            <if test="payMonth != null and payMonth != '' ">
-                AND t.pay_month = #{payMonth}
-            </if>
+				AND t.pay_roll_code = #{payRollCode}
+			</if>
+			<if test="corpName != null and corpName != '' ">
+				AND t.corp_name = #{corpName}
+			</if>
+			<if test="teamSysNo != null and teamSysNo != '' ">
+				AND t.team_sys_no = #{teamSysNo}
+			</if>
+			<if test="payMonth != null and payMonth != '' ">
+				AND t.pay_month = #{payMonth}
+			</if>
 		</trim>
 	</sql>
 	<select id="select_payRoll" parameterType="payRoll" resultMap="payRoll_DB_Result">
@@ -91,8 +91,16 @@
 		WHERE code = #{code}
 	</update>
 
+	<update id="update_payRoll_status" parameterType="payRoll">
+		UPDATE thf_pay_roll
+		SET
+		pay_roll_code = #{payRollCode}
+		WHERE code = #{code}
+	</update>
+
 	<delete id="delete_payRoll" parameterType="payRoll">
-		DELETE from thf_pay_roll where code = #{code}
+		DELETE from
+		thf_pay_roll where code = #{code}
 	</delete>
 
 

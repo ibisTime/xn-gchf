@@ -121,6 +121,14 @@
 		#{code}
 	</update>
 
+	<update id="update_PayRollDetail_payRollCode" parameterType="payRoll">
+		UPDATE
+		thf_pay_roll_detail
+		SET
+		pay_roll_code = #{payRollCode}
+		WHERE code = #{code}
+	</update>
+
 	<select id="select_PayRollDetail" parameterType="payRollDetail"
 		resultMap="payRollDetail_DB_Result">
 		SELECT

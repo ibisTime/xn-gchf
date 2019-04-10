@@ -26,6 +26,8 @@ public interface IPayRollBO extends IPaginableBO<PayRoll> {
 
     public int updatePayRollDetail(XN631772Req req);
 
+    void refreshPayRollCodeByLocal(String code, String payRollCode);
+
     public List<PayRoll> queryPayRollList(PayRoll condition);
 
     public PayRoll getPayRoll(String code);

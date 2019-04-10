@@ -8,4 +8,6 @@ public interface IWorkerAttendanceDAO extends IBaseDAO<WorkerAttendance> {
 
     int update(WorkerAttendance workerAttendance);
 
+    int updateStatus(WorkerAttendance workerAttendance);
+
 }

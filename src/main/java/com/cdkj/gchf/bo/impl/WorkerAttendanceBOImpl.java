@@ -32,6 +32,7 @@ import com.cdkj.gchf.dto.req.XN631712Req;
 import com.cdkj.gchf.dto.req.XN631918Req;
 import com.cdkj.gchf.dto.req.XN631918ReqData;
 import com.cdkj.gchf.dto.req.XN631919Req;
+import com.cdkj.gchf.enums.EDeleteStatus;
 import com.cdkj.gchf.enums.EGeneratePrefix;
 import com.cdkj.gchf.enums.EOperateLogOperate;
 import com.cdkj.gchf.enums.EOperateLogRefType;
@@ -84,6 +85,7 @@ public class WorkerAttendanceBOImpl extends PaginableBOImpl<WorkerAttendance>
         workerAttendance.setIdCardNumber(projectWorker.getIdcardNumber());
         workerAttendance.setIdCardType(projectWorker.getIdcardType());
         workerAttendance.setUploadStatus(EUploadStatus.TO_UPLOAD.getCode());
+        workerAttendance.setDeleteStatus(EDeleteStatus.NORMAL.getCode());
         code = OrderNoGenerater
             .generate(EGeneratePrefix.WorkerAttendance.getCode());
         workerAttendance.setCode(code);
@@ -113,6 +115,15 @@ public class WorkerAttendanceBOImpl extends PaginableBOImpl<WorkerAttendance>
         workerAttendanceDAO.update(select);
         operateLogBO.saveOperateLog(EOperateLogRefType.WorkAttendance.getCode(),
             data.getCode(), "修改人员考勤", user, null);
+    }
+
+    @Override
+    public int updateWorkerAttendanceDeleteStatus(String code, String status) {
+        WorkerAttendance workerAttendance = new WorkerAttendance();
+        workerAttendance.setCode(code);
+        workerAttendance.setDeleteStatus(EDeleteStatus.DELETED.getCode());
+        return workerAttendanceDAO
+            .updateWorkerAttendanceDeleteStatus(workerAttendance);
     }
 
     @Override

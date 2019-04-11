@@ -37,6 +37,7 @@ import com.cdkj.gchf.dto.req.XN631913Req;
 import com.cdkj.gchf.dto.req.XN631916Req;
 import com.cdkj.gchf.dto.req.XN631917Req;
 import com.cdkj.gchf.enums.EContractPeriodType;
+import com.cdkj.gchf.enums.EDeleteStatus;
 import com.cdkj.gchf.enums.EOperateLogOperate;
 import com.cdkj.gchf.enums.EOperateLogRefType;
 import com.cdkj.gchf.enums.EUnitType;
@@ -79,7 +80,6 @@ public class WorkerContractAOImpl implements IWorkerContractAO {
         if (StringUtils.isNotBlank(req.getUnit())) {
             EUnitType.checkExists(req.getUnit());
         }
-        // req.getProjectCode();
         ProjectConfig projectConfigByLocal = projectConfigBO
             .getProjectConfigByLocal(req.getProjectCode());
         if (projectConfigByLocal == null) {
@@ -128,7 +128,8 @@ public class WorkerContractAOImpl implements IWorkerContractAO {
             .equals(EUploadStatus.UPLOAD_UNEDITABLE.getCode())) {
             throw new BizException("XN631671", "项目已经上传 无法删除");
         }
-        workerContractBO.removeWorkerContract(userId, code);
+        workerContractBO.updateWorkerContractDeleteStatus(code,
+            EDeleteStatus.DELETED.getCode());
 
     }
 
@@ -323,6 +324,7 @@ public class WorkerContractAOImpl implements IWorkerContractAO {
             }
             // 录入数据
             workerContract.setUploadStatus(EUploadStatus.TO_UPLOAD.getCode());
+            workerContract.setDeleteStatus(EDeleteStatus.NORMAL.getCode());
             String code = workerContractBO.saveWorkerContract(workerContract);
             operateLogBO.saveOperateLog(
                 EOperateLogRefType.WorkContract.getCode(), code, "导入员工合同", user,

@@ -30,6 +30,7 @@ import com.cdkj.gchf.dto.req.XN631732Req;
 import com.cdkj.gchf.dto.req.XN631914Req;
 import com.cdkj.gchf.dto.req.XN631914ReqWorker;
 import com.cdkj.gchf.dto.req.XN631915Req;
+import com.cdkj.gchf.enums.EDeleteStatus;
 import com.cdkj.gchf.enums.EGeneratePrefix;
 import com.cdkj.gchf.enums.EUploadStatus;
 import com.cdkj.gchf.exception.BizException;
@@ -71,6 +72,7 @@ public class ProjectWorkerEntryExitHistoryBOImpl
         data.setJoinDatetime(projectWorker.getJoinDatetime());
         data.setLeavingDatetime(projectWorker.getLeavingDatetime());
         data.setUploadStatus(EUploadStatus.TO_UPLOAD.getCode());
+        data.setDeleteStatus(EDeleteStatus.NORMAL.getCode());
         data.setVoucherUrl(req.getVoucherUrl());
         projectWorkerEntryExitHistoryDAO.insert(data);
         return code;
@@ -97,6 +99,17 @@ public class ProjectWorkerEntryExitHistoryBOImpl
             condition.setType(Integer.parseInt(req.getType()));
         }
         projectWorkerEntryExitHistoryDAO.update(condition);
+    }
+
+    @Override
+    public void updateProjectWorkerEntryExitHistoryDeleteStatus(String code,
+            String status) {
+        ProjectWorkerEntryExitHistory projectWorkerEntryExitHistory = new ProjectWorkerEntryExitHistory();
+        projectWorkerEntryExitHistory.setCode(code);
+        projectWorkerEntryExitHistory.setDeleteStatus(status);
+        projectWorkerEntryExitHistoryDAO
+            .updateProjectWorkerEntryHistoryDeleteStatus(
+                projectWorkerEntryExitHistory);
     }
 
     @Override

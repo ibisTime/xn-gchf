@@ -18,7 +18,7 @@ public class XN631630Req {
     private String userId;
 
     // 项目编码
-    @NotBlank
+    @NotBlank(message = "请选择项目")
     private String projectCode;
 
     // 统一社会信用代码

@@ -9,6 +9,7 @@ import com.cdkj.gchf.core.ObjValidater;
 import com.cdkj.gchf.core.StringValidater;
 import com.cdkj.gchf.domain.PayRollDetail;
 import com.cdkj.gchf.dto.req.XN631815Req;
+import com.cdkj.gchf.enums.EDeleteStatus;
 import com.cdkj.gchf.exception.BizException;
 import com.cdkj.gchf.exception.ParaException;
 import com.cdkj.gchf.http.JsonUtils;
@@ -32,6 +33,7 @@ public class XN631815 extends AProcessor {
     public Object doBusiness() throws BizException {
         PayRollDetail payRollDetail = new PayRollDetail();
         BeanUtils.copyProperties(req, payRollDetail);
+        payRollDetail.setDeleteStatus(EDeleteStatus.NORMAL.getCode());
         int limit = StringValidater.toInteger(req.getLimit());
         int start = StringValidater.toInteger(req.getStart());
         String orderColumn = req.getOrderColumn();

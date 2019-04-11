@@ -9,6 +9,7 @@ import com.cdkj.gchf.common.JsonUtil;
 import com.cdkj.gchf.core.ObjValidater;
 import com.cdkj.gchf.domain.TeamMaster;
 import com.cdkj.gchf.dto.req.XN631667Req;
+import com.cdkj.gchf.enums.EDeleteStatus;
 import com.cdkj.gchf.exception.BizException;
 import com.cdkj.gchf.exception.ParaException;
 import com.cdkj.gchf.spring.SpringContextHolder;
@@ -30,6 +31,7 @@ public class XN631667 extends AProcessor {
     @Override
     public Object doBusiness() throws BizException {
         TeamMaster teamMasterInfo = new TeamMaster();
+        teamMasterInfo.setDeleteStatus(EDeleteStatus.NORMAL.getCode());
         BeanUtils.copyProperties(req, teamMasterInfo);
         String column = req.getOrderColumn();
         if (StringUtils.isBlank(column)) {

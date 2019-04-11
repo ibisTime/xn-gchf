@@ -9,6 +9,7 @@ import com.cdkj.gchf.common.JsonUtil;
 import com.cdkj.gchf.core.ObjValidater;
 import com.cdkj.gchf.domain.WorkerContract;
 import com.cdkj.gchf.dto.req.XN631687Req;
+import com.cdkj.gchf.enums.EDeleteStatus;
 import com.cdkj.gchf.exception.BizException;
 import com.cdkj.gchf.exception.ParaException;
 import com.cdkj.gchf.spring.SpringContextHolder;
@@ -31,6 +32,7 @@ public class XN631687 extends AProcessor {
     public Object doBusiness() throws BizException {
         WorkerContract condition = new WorkerContract();
         BeanUtils.copyProperties(req, condition);
+        condition.setDeleteStatus(EDeleteStatus.NORMAL.getCode());
         if (StringUtils.isNotBlank(req.getContractPeriodType())) {
             int contractPeriodType = Integer
                 .parseInt(req.getContractPeriodType());

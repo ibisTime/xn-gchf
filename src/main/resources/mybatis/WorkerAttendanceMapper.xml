@@ -180,6 +180,17 @@
 		code = #{code}
 	</update>
 
+	<update id="update_workerAttendance_delete_status"
+		parameterType="workerAttendance">
+		UPDATE
+		thf_worker_attendance
+		SET
+		delete_status =
+		#{deleteStatus}
+		WHERE
+		code = #{code}
+	</update>
+
 	<select id="select_workerAttendance" parameterType="workerAttendance"
 		resultMap="workerAttendance_DB_Result">
 		SELECT

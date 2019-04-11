@@ -10,4 +10,6 @@ public interface IProjectCorpInfoDAO extends IBaseDAO<ProjectCorpInfo> {
 
     int updateUploadStatus(ProjectCorpInfo projectCorpInfo);
 
+    int updateDeleteStatus(ProjectCorpInfo projectCorpInfo);
+
 }

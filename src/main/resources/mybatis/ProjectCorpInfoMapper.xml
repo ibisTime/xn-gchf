@@ -8,25 +8,26 @@
 		<result column="project_name" property="projectName" />
 		<result column="corp_code" property="corpCode" />
 		<result column="corp_name" property="corpName" />
-		
+
 		<result column="corp_type" property="corpType" />
 		<result column="entry_time" property="entryTime" />
 		<result column="exit_time" property="exitTime" />
 		<result column="pm_name" property="pmName" />
 		<result column="pm_idcard_type" property="pmIDCardType" />
-		
+
 		<result column="pm_idcard_number" property="pmIDCardNumber" />
 		<result column="pm_phone" property="pmPhone" />
 		<result column="upload_status" property="uploadStatus" />
 		<result column="delete_status" property="deleteStatus" />
 	</resultMap>
-	
+
 	<sql id="join_condition">
 		<if test="corpBasicType != null and corpBasicType != '' ">
-			left join tqy_corp_basicinfo tu on t.corp_code = tu.corp_code
+			left join tqy_corp_basicinfo tu on t.corp_code =
+			tu.corp_code
 		</if>
 	</sql>
-	
+
 	<sql id="where_condition">
 		<trim prefix="WHERE" prefixOverrides="AND | OR">
 			<if test="code != null and code != '' ">
@@ -45,28 +46,29 @@
 				AND t.upload_status = #{uploadStatus}
 			</if>
 			<if test="projectName != null and projectName != '' ">
-                AND t.project_name = #{projectName}
-            </if>
-            <if test="corpBasicType != null and corpBasicType != '' ">
-                AND tu.corp_type = #{corpBasicType}
-            </if>
+				AND t.project_name = #{projectName}
+			</if>
+			<if test="corpBasicType != null and corpBasicType != '' ">
+				AND tu.corp_type = #{corpBasicType}
+			</if>
 		</trim>
 	</sql>
-	
-	<select id="select_projectCorpInfo" parameterType="projectCorpInfo" resultMap="projectCorpInfo_DB_Result">
+
+	<select id="select_projectCorpInfo" parameterType="projectCorpInfo"
+		resultMap="projectCorpInfo_DB_Result">
 		SELECT
 		t.code
 		,t.project_code
 		,t.project_name
 		,t.corp_code
 		,t.corp_name
-		
+
 		,t.corp_type
 		,t.entry_time
 		,t.exit_time
 		,t.pm_name
 		,t.pm_idcard_type
-		
+
 		,t.pm_idcard_number
 		,t.pm_phone
 		,t.upload_status
@@ -90,21 +92,22 @@
 	<insert id="insert_projectCorpInfo" parameterType="projectCorpInfo">
 		INSERT INTO
 		thf_project_corp_info(
-		 code
+		code
 		,project_code
 		,project_name
 		,corp_code
 		,corp_name
-		
+
 		,corp_type
 		,entry_time
 		,exit_time
 		,pm_name
 		,pm_idcard_type
-		
+
 		,pm_idcard_number
 		,pm_phone
 		,upload_status
+		,delete_status
 		)
 		VALUES(
 		#{code}
@@ -112,46 +115,59 @@
 		,#{projectName}
 		,#{corpCode}
 		,#{corpName}
-		
+
 		,#{corpType}
 		,#{entryTime}
 		,#{exitTime}
 		,#{pmName}
 		,#{pmIDCardType}
-		
+
 		,#{pmIDCardNumber}
 		,#{pmPhone}
 		,#{uploadStatus}
+		,#{deleteStatus}
 		)
 	</insert>
 
 	<update id="update_projectCorpInfo" parameterType="projectCorpInfo">
-		UPDATE thf_project_corp_info
+		UPDATE
+		thf_project_corp_info
 		SET
 		project_code = #{projectCode}
-		,project_name = #{projectName}
+		,project_name =
+		#{projectName}
 		,corp_code = #{corpCode}
 		,corp_type = #{corpType}
-		
+
 		,entry_time = #{entryTime}
 		,exit_time = #{exitTime}
 		,pm_name = #{pmName}
 		,pm_idcard_type = #{pmIDCardType}
 		,pm_idcard_number = #{pmIDCardNumber}
-		
+
 		,pm_phone = #{pmPhone}
 		WHERE code = #{code}
 	</update>
-	
+
 	<update id="update_projectCorpInfoUploadStatus" parameterType="projectCorpInfo">
 		UPDATE thf_project_corp_info
 		SET
 		upload_status = #{uploadStatus}
-		WHERE code = #{code}
+		WHERE
+		code = #{code}
 	</update>
-	
-	<delete id="delete_projectCorpInfo" parameterType="string" >
-	    DELETE from thf_project_corp_info where code = #{code}
+
+	<update id="update_projectCorpInfoDeleteStatus" parameterType="projectCorpInfo">
+		UPDATE thf_project_corp_info
+		SET
+		delete_status = #{deleteStatus}
+		WHERE
+		code = #{code}
+	</update>
+
+	<delete id="delete_projectCorpInfo" parameterType="string">
+		DELETE from
+		thf_project_corp_info where code = #{code}
 	</delete>
-	
+
 </mapper>

@@ -9,6 +9,7 @@ import com.cdkj.gchf.common.JsonUtil;
 import com.cdkj.gchf.core.ObjValidater;
 import com.cdkj.gchf.domain.WorkerAttendance;
 import com.cdkj.gchf.dto.req.XN631727Req;
+import com.cdkj.gchf.enums.EDeleteStatus;
 import com.cdkj.gchf.exception.BizException;
 import com.cdkj.gchf.exception.ParaException;
 import com.cdkj.gchf.spring.SpringContextHolder;
@@ -31,6 +32,7 @@ public class XN631727 extends AProcessor {
     public Object doBusiness() throws BizException {
         WorkerAttendance condition = new WorkerAttendance();
         BeanUtils.copyProperties(req, condition);
+        condition.setDeleteStatus(EDeleteStatus.NORMAL.getCode());
         String column = req.getOrderColumn();
         if (StringUtils.isBlank(column)) {
             column = IWorkerAttendanceAO.DEFAULT_ORDER_COLUMN;

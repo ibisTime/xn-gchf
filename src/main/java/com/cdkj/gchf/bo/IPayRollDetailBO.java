@@ -31,6 +31,8 @@ public interface IPayRollDetailBO extends IPaginableBO<PayRollDetail> {
 
     public int updatePayRollDetail(XN631810Req data);
 
+    int updatePayRollDetailDeleteStatus(String code, String status);
+
     public List<PayRollDetail> queryList(PayRollDetail condition);
 
     public List<PayRollDetail> queryListByPayRollDetail(String payRollCode);

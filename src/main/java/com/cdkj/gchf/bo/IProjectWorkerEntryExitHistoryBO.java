@@ -28,6 +28,8 @@ public interface IProjectWorkerEntryExitHistoryBO
 
     public void refreshProjectWorkerEntryExitHistory(XN631732Req data);
 
+    void updateProjectWorkerEntryExitHistoryDeleteStatus(String code, String status);
+
     public Object queryProjectWorkerEntryExitHistory(String code);
 
     public List<ProjectWorkerEntryExitHistory> queryProjectWorkerEntryExitHistoryList(

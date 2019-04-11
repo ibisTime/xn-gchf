@@ -32,6 +32,7 @@ import com.cdkj.gchf.dto.req.XN631653ReqData;
 import com.cdkj.gchf.dto.req.XN631908Req;
 import com.cdkj.gchf.dto.req.XN631909Req;
 import com.cdkj.gchf.dto.req.XN631910Req;
+import com.cdkj.gchf.enums.EDeleteStatus;
 import com.cdkj.gchf.enums.EOperateLogOperate;
 import com.cdkj.gchf.enums.EOperateLogRefType;
 import com.cdkj.gchf.enums.EUploadStatus;
@@ -84,7 +85,9 @@ public class TeamMasterAOImpl implements ITeamMasterAO {
             .equals(EUploadStatus.TO_UPLOAD.getCode())) {
             throw new BizException("XN631651", "班组信息已上传,无法删除");
         }
-        teamMasterBO.removeTeamMaster(req.getUserId(), req.getCode());
+        // teamMasterBO.removeTeamMaster(req.getUserId(), req.getCode());
+        teamMasterBO.updateTeamMasterDeleteStatus(req.getCode(),
+            EDeleteStatus.DELETED.getCode());
     }
 
     @Override
@@ -236,6 +239,7 @@ public class TeamMasterAOImpl implements ITeamMasterAO {
             teamMaster.setProjectCode(req.getProjectCode());
             teamMaster.setCorpName(projectCorpInfo.getCorpName());
             teamMaster.setUploadStatus(EUploadStatus.TO_UPLOAD.getCode());
+            teamMaster.setDeleteStatus(EDeleteStatus.NORMAL.getCode());
             String code = teamMasterBO.saveTeamMaster(teamMaster);
             operateLogBO.saveOperateLog(EOperateLogRefType.TeamMaster.getCode(),
                 code, "导入班组信息", user, null);

@@ -216,6 +216,16 @@
 		WHERE code =
 		#{code}
 	</update>
+
+	<update id="update_projectWorker_delete_status" parameterType="projectWorker">
+		UPDATE
+		thf_project_worker
+		SET
+		delete_status = #{deleteStatus}
+		WHERE code =
+		#{code}
+	</update>
+
 	<update id="update_projectWorker" parameterType="projectWorker">
 		UPDATE
 		thf_project_worker

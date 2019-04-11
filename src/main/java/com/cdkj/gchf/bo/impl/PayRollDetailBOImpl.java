@@ -26,6 +26,7 @@ import com.cdkj.gchf.dto.req.XN631770ReqDetail;
 import com.cdkj.gchf.dto.req.XN631772Req;
 import com.cdkj.gchf.dto.req.XN631810Req;
 import com.cdkj.gchf.dto.req.XN631812ReqData;
+import com.cdkj.gchf.enums.EDeleteStatus;
 import com.cdkj.gchf.enums.EGeneratePrefix;
 import com.cdkj.gchf.enums.EIsNotType;
 import com.cdkj.gchf.enums.EUploadStatus;
@@ -98,6 +99,14 @@ public class PayRollDetailBOImpl extends PaginableBOImpl<PayRollDetail>
         PayRollDetail payRollDetail = new PayRollDetail();
         payRollDetail.setPayRollCode(payRollcode);
         return payRollDetailDAO.delete(payRollDetail);
+    }
+
+    @Override
+    public int updatePayRollDetailDeleteStatus(String code, String status) {
+        PayRollDetail payRollDetail = new PayRollDetail();
+        payRollDetail.setCode(code);
+        payRollDetail.setDeleteStatus(EDeleteStatus.NORMAL.getCode());
+        return payRollDetailDAO.updatePayRollDetailDeleteStatus(payRollDetail);
     }
 
     @Override
@@ -210,6 +219,7 @@ public class PayRollDetailBOImpl extends PaginableBOImpl<PayRollDetail>
         code = OrderNoGenerater
             .generate(EGeneratePrefix.PayRollDetail.getCode());
         payRollDetail.setCode(code);
+        payRollDetail.setDeleteStatus(EDeleteStatus.NORMAL.getCode());
         payRollDetailDAO.insert(payRollDetail);
         return code;
     }

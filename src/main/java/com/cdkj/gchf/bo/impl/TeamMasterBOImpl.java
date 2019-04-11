@@ -32,6 +32,7 @@ import com.cdkj.gchf.dto.req.XN631653ReqData;
 import com.cdkj.gchf.dto.req.XN631908Req;
 import com.cdkj.gchf.dto.req.XN631909Req;
 import com.cdkj.gchf.dto.req.XN631910Req;
+import com.cdkj.gchf.enums.EDeleteStatus;
 import com.cdkj.gchf.enums.EGeneratePrefix;
 import com.cdkj.gchf.enums.EIdCardType;
 import com.cdkj.gchf.enums.EOperateLogOperate;
@@ -86,6 +87,7 @@ public class TeamMasterBOImpl extends PaginableBOImpl<TeamMaster>
         teamMasterInfo.setCode(code);
         teamMasterInfo.setCorpName(corpBasicinfo.getCorpName());
         teamMasterInfo.setUploadStatus(EUploadStatus.TO_UPLOAD.getCode());
+        teamMasterInfo.setDeleteStatus(EDeleteStatus.NORMAL.getCode());
         teamMasterDAO.insert(teamMasterInfo);
         return code;
     }
@@ -291,6 +293,14 @@ public class TeamMasterBOImpl extends PaginableBOImpl<TeamMaster>
         // }
         TeamMaster team = teamMasterDAO.select(condition);
         return team.getTeamName();
+    }
+
+    @Override
+    public void updateTeamMasterDeleteStatus(String code, String status) {
+        TeamMaster teamMaster = new TeamMaster();
+        teamMaster.setDeleteStatus(status);
+        teamMaster.setCode(code);
+        teamMasterDAO.updateDeleteStatus(teamMaster);
     }
 
 }

@@ -11,14 +11,12 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.alibaba.fastjson.JSONObject;
 import com.cdkj.gchf.ao.IProjectWorkerEntryExitHistoryAO;
-import com.cdkj.gchf.bo.ICorpBasicinfoBO;
 import com.cdkj.gchf.bo.IOperateLogBO;
 import com.cdkj.gchf.bo.IProjectConfigBO;
 import com.cdkj.gchf.bo.IProjectWorkerBO;
 import com.cdkj.gchf.bo.IProjectWorkerEntryExitHistoryBO;
 import com.cdkj.gchf.bo.ITeamMasterBO;
 import com.cdkj.gchf.bo.IUserBO;
-import com.cdkj.gchf.bo.IWorkerInfoBO;
 import com.cdkj.gchf.bo.base.Paginable;
 import com.cdkj.gchf.common.AesUtils;
 import com.cdkj.gchf.common.DateUtil;
@@ -68,12 +66,6 @@ public class ProjectWorkerEntryExitHistoryAOImpl
 
     @Autowired
     private ITeamMasterBO teamMasterBO;
-
-    @Autowired
-    private ICorpBasicinfoBO corpBasicinfoBO;
-
-    @Autowired
-    private IWorkerInfoBO workerInfoBO;
 
     @Override
     public String addProjectWorkerEntryExitHistory(XN631730Req data) {
@@ -189,8 +181,20 @@ public class ProjectWorkerEntryExitHistoryAOImpl
     @Override
     public Paginable<ProjectWorkerEntryExitHistory> queryProjectWorkerEntryExitHistoryPage(
             int start, int limit, ProjectWorkerEntryExitHistory condition) {
-        return projectWorkerEntryExitHistoryBO.getPaginable(start, limit,
-            condition);
+        Paginable<ProjectWorkerEntryExitHistory> page = projectWorkerEntryExitHistoryBO
+            .getPaginable(start, limit, condition);
+
+        if (null != page && CollectionUtils.isNotEmpty(page.getList())) {
+            for (ProjectWorkerEntryExitHistory projectWorkerEntryExitHistory : page
+                .getList()) {
+                TeamMaster teamMaster = teamMasterBO.getTeamMaster(
+                    projectWorkerEntryExitHistory.getTeamSysNo());
+                projectWorkerEntryExitHistory
+                    .setTeamName(teamMaster.getTeamName());
+            }
+        }
+
+        return page;
     }
 
     @Override
@@ -232,7 +236,6 @@ public class ProjectWorkerEntryExitHistoryAOImpl
             JsonObject requestJson = projectWorkerEntryExitHistoryBO
                 .getRequestJson(teamMaster, projectWorkerEntryExitHistory,
                     projectConfigByLocal);
-            System.out.println(requestJson.toString());
 
             String resString = GovConnecter.getGovData("WorkerEntryExit.Add",
                 requestJson.toString(), projectConfigByLocal.getProjectCode(),

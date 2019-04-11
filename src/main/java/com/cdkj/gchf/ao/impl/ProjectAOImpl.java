@@ -19,7 +19,6 @@ import com.cdkj.gchf.domain.Project;
 import com.cdkj.gchf.domain.ProjectBuilderLicense;
 import com.cdkj.gchf.dto.req.XN631600Req;
 import com.cdkj.gchf.dto.req.XN631602Req;
-import com.cdkj.gchf.dto.res.XN631616Res;
 import com.cdkj.gchf.exception.BizException;
 
 @Service
@@ -47,12 +46,17 @@ public class ProjectAOImpl implements IProjectAO {
             throw new BizException("XN631600", "总承包单位不存在");
         }
 
-        CorpBasicinfo buildCorpInfo = null;
+        Project preProject = projectBO.getProjectByFullName(req.getName());
+        if (null != preProject) {
+            throw new BizException("XN631600", "项目名称已存在，请重新输入");
+        }
+
+        String buildCorpName = null;
         if (StringUtils.isNotBlank(req.getBuildCorpCode())) {
-            buildCorpInfo = corpBasicinfoBO
+            CorpBasicinfo buildCorpInfo = corpBasicinfoBO
                 .getCorpBasicinfoByCorp(req.getBuildCorpCode());
-            if (null == buildCorpInfo) {
-                throw new BizException("XN631600", "建设单位不存在");
+            if (null != buildCorpInfo) {
+                buildCorpName = buildCorpInfo.getCorpName();
             }
         }
 
@@ -83,7 +87,7 @@ public class ProjectAOImpl implements IProjectAO {
 
         // 添加项目
         String projectCode = projectBO.saveProject(req, contractorCorpInfo,
-            buildCorpInfo);
+            buildCorpName);
 
         // 添加项目管理员
         userBO.saveProjectAdmin(projectCode, req.getName());
@@ -103,6 +107,14 @@ public class ProjectAOImpl implements IProjectAO {
             .getCorpBasicinfoByCorp(req.getContractorCorpCode());
         if (null == contractorCorpInfo) {
             throw new BizException("XN631600", "总承包单位不存在");
+        }
+
+        Project project = projectBO.getProject(req.getCode());
+        if (!req.getName().equals(project.getName())) {
+            Project preProject = projectBO.getProjectByFullName(req.getName());
+            if (null != preProject) {
+                throw new BizException("XN631600", "项目名称已存在，请重新输入");
+            }
         }
 
         CorpBasicinfo buildCorpInfo = null;
@@ -138,20 +150,12 @@ public class ProjectAOImpl implements IProjectAO {
     @Override
     public Project getProject(String code) {
         Project project = projectBO.getProject(code);
-        return project;
-    }
 
-    @Override
-    public Object getProjectAndLicense(String code) {
-        Project project = projectBO.getProject(code);
-        ProjectBuilderLicense condition = new ProjectBuilderLicense();
-        condition.setProjectCode(project.getCode());
-        List<ProjectBuilderLicense> queryProjectBuilderLicenseList = projectBuilderLicenseBO
-            .queryProjectBuilderLicenseList(condition);
-        XN631616Res xn631616Res = new XN631616Res();
-        xn631616Res.setProject(project);
-        xn631616Res.setLicense(queryProjectBuilderLicenseList);
-        return xn631616Res;
+        List<ProjectBuilderLicense> projectBuilderLicenseList = projectBuilderLicenseBO
+            .queryProjectBuilderLicenseList(code);
+        project.setProjectBuilderLicenseList(projectBuilderLicenseList);
+
+        return project;
     }
 
 }

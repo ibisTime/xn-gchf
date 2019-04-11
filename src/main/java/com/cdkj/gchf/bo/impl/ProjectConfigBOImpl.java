@@ -40,6 +40,34 @@ public class ProjectConfigBOImpl extends PaginableBOImpl<ProjectConfig>
     }
 
     @Override
+    public String saveLocalProjectConfig(String localProjectCode) {
+        String code = null;
+        ProjectConfig localProjectConfig = new ProjectConfig();
+        code = OrderNoGenerater
+            .generate(EGeneratePrefix.ProjectConfig.getCode());
+        localProjectConfig.setCode(code);
+        localProjectConfig.setLocalProjectCode(localProjectCode);
+        projectConfigDAO.insert(localProjectConfig);
+        return code;
+    }
+
+    @Override
+    public String saveProjectConfig(XN631622Req req) {
+        ProjectConfig localProjectConfig = new ProjectConfig();
+        String code = OrderNoGenerater
+            .generate(EGeneratePrefix.ProjectConfig.getCode());
+
+        localProjectConfig.setCode(code);
+        localProjectConfig.setLocalProjectCode(req.getLocalProjectCode());
+        localProjectConfig.setProjectCode(req.getProjectCode());
+        localProjectConfig.setPassword(req.getPassword());
+        localProjectConfig.setProjectName(req.getProjectName());
+
+        projectConfigDAO.insert(localProjectConfig);
+        return code;
+    }
+
+    @Override
     public int removeProjectConfig(String code) {
         int count = 0;
         if (StringUtils.isNotBlank(code)) {
@@ -108,18 +136,6 @@ public class ProjectConfigBOImpl extends PaginableBOImpl<ProjectConfig>
         data.setProjectCode(projectCode);
 
         return projectConfigDAO.select(data);
-    }
-
-    @Override
-    public String saveLocalProjectConfig(String localProjectCode) {
-        String code = null;
-        ProjectConfig localProjectConfig = new ProjectConfig();
-        code = OrderNoGenerater
-            .generate(EGeneratePrefix.ProjectConfig.getCode());
-        localProjectConfig.setCode(code);
-        localProjectConfig.setLocalProjectCode(localProjectCode);
-        projectConfigDAO.insert(localProjectConfig);
-        return code;
     }
 
 }

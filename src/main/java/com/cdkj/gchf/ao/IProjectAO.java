@@ -24,6 +24,4 @@ public interface IProjectAO {
 
     public Project getProject(String code);
 
-    public Object getProjectAndLicense(String code);
-
 }

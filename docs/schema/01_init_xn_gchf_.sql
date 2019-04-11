@@ -30,6 +30,9 @@ LIMIT 0, 1000
 */
 INSERT INTO `thf_user` (`user_id`,`real_name`,`type`,`login_name`,`mobile`,`login_pwd`,`login_pwd_strength`,`user_refree`,`create_datetime`,`role_code`,`updater`,`update_datetime`,`status`,`remark`)  VALUES ('USYS201800000000001','平台端','P','admin',NULL,'21218cca77804d2ba1922c33e0151105','1',NULL,now(),'RO201800000000000001',NULL,NULL,'0',NULL);
 
+/*INSERT INTO `thf_project_config` (`code`, `local_project_code`, `project_code`, `project_name`, `secret`) VALUES ('online_default_project', 'online_default_project', '3311222019030001', '正式默认项目', 'c1043953304b67b526c1d85701885e36');*/
+/*INSERT INTO `thf_project_config` (`code`, `local_project_code`, `project_code`, `project_name`, `secret`) VALUES ('test_default_project', 'test_default_project', '33112220190310001', '测试环境默认项目', 'ffb92fe3058b1276d872714aae4038d4');*/
+
 /*
 -- Query: SELECT * FROM dev_xn_gchf.tsys_dict
 LIMIT 0, 1000
@@ -887,6 +890,7 @@ INSERT INTO `tsys_dict` (`type`,`parent_key`,`dkey`,`dvalue`,`updater`,`update_d
 INSERT INTO `tsys_dict` (`type`,`parent_key`,`dkey`,`dvalue`,`updater`,`update_datetime`,`remark`) VALUES ('1','certification_status','4','过期','admin','2018-07-27 03:07:37',NULL);
 
 INSERT INTO `tsys_dict` (`type`,`parent_key`,`dkey`,`dvalue`,`updater`,`update_datetime`,`remark`) VALUES ('0',null,'upload_status ','上传状态','admin','2018-07-27 03:07:37',NULL);
+INSERT INTO `tsys_dict` (`type`,`parent_key`,`dkey`,`dvalue`,`updater`,`update_datetime`,`remark`) VALUES ('1','upload_status','-1','上传失败','admin','2018-07-27 03:07:37',NULL);
 INSERT INTO `tsys_dict` (`type`,`parent_key`,`dkey`,`dvalue`,`updater`,`update_datetime`,`remark`) VALUES ('1','upload_status','0','待上传','admin','2018-07-27 03:07:37',NULL);
 INSERT INTO `tsys_dict` (`type`,`parent_key`,`dkey`,`dvalue`,`updater`,`update_datetime`,`remark`) VALUES ('1','upload_status','1','已上传可修改','admin','2018-07-27 03:07:37',NULL);
 INSERT INTO `tsys_dict` (`type`,`parent_key`,`dkey`,`dvalue`,`updater`,`update_datetime`,`remark`) VALUES ('1','upload_status','2','已上传不可修改','admin','2018-07-27 03:07:37',NULL);
@@ -910,6 +914,10 @@ INSERT INTO `tsys_dict` (`type`,`parent_key`,`dkey`,`dvalue`,`updater`,`update_d
 INSERT INTO `tsys_dict` (`type`,`parent_key`,`dkey`,`dvalue`,`updater`,`update_datetime`,`remark`) VALUES ('0',null,'bankcard_status ','银行卡状态','admin','2018-07-27 03:07:37',NULL);
 INSERT INTO `tsys_dict` (`type`,`parent_key`,`dkey`,`dvalue`,`updater`,`update_datetime`,`remark`) VALUES ('1','bankcard_status','0','正常','admin','2018-07-27 03:07:37',NULL);
 INSERT INTO `tsys_dict` (`type`,`parent_key`,`dkey`,`dvalue`,`updater`,`update_datetime`,`remark`) VALUES ('1','bankcard_status','1','冻结','admin','2018-07-27 03:07:37',NULL);
+
+INSERT INTO `tsys_dict` (`type`,`parent_key`,`dkey`,`dvalue`,`updater`,`update_datetime`,`remark`) VALUES ('0',null,'project_secret_status ','项目秘钥状态','admin','2018-07-27 03:07:37',NULL);
+INSERT INTO `tsys_dict` (`type`,`parent_key`,`dkey`,`dvalue`,`updater`,`update_datetime`,`remark`) VALUES ('1','project_secret_status','0','未配置','admin','2018-07-27 03:07:37',NULL);
+INSERT INTO `tsys_dict` (`type`,`parent_key`,`dkey`,`dvalue`,`updater`,`update_datetime`,`remark`) VALUES ('1','project_secret_status','1','已配置','admin','2018-07-27 03:07:37',NULL);
 
 /*
 -- Query: SELECT * FROM dev_xn_gchf.tsys_config

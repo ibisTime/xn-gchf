@@ -12,6 +12,7 @@ import com.cdkj.gchf.bo.IProjectBO;
 import com.cdkj.gchf.bo.IProjectConfigBO;
 import com.cdkj.gchf.bo.IUserBO;
 import com.cdkj.gchf.bo.base.Paginable;
+import com.cdkj.gchf.domain.Project;
 import com.cdkj.gchf.domain.ProjectConfig;
 import com.cdkj.gchf.domain.User;
 import com.cdkj.gchf.dto.req.XN631620Req;
@@ -19,6 +20,7 @@ import com.cdkj.gchf.dto.req.XN631622Req;
 import com.cdkj.gchf.enums.EOperateLogOperate;
 import com.cdkj.gchf.enums.EOperateLogRefType;
 import com.cdkj.gchf.enums.EProjectConfigStatus;
+import com.cdkj.gchf.enums.ESecretStatus;
 import com.cdkj.gchf.exception.BizException;
 
 @Service
@@ -50,16 +52,35 @@ public class ProjectConfigAOImpl implements IProjectConfigAO {
             throw new BizException("XN631620", "该项目已添加配置，无法再次添加");
         }
 
-        String projectCode = projectBO.saveProject(req.getProjectName());
+        Project project = projectBO.getProjectByFullName(req.getProjectName());
+        if (null == project) {
+            throw new BizException("XN631620",
+                "项目【" + req.getProjectName() + "】不存在，无法添加配置");
+        }
 
-        // userBO.saveProjectAdmin(projectCode, req.getProjectName());
+        projectBO.refreshSecretStatus(project.getCode(),
+            ESecretStatus.YES.getCode());
 
-        return projectConfigBO.saveProjectConfig(projectCode, req);
+        return projectConfigBO.saveProjectConfig(project.getCode(), req);
     }
 
     @Override
+    @Transactional
     public void editProjectConfig(XN631622Req req) {
-        projectConfigBO.refreshProjectConfig(req);
+        ProjectConfig projectConfig = projectConfigBO
+            .getProjectConfigByLocal(req.getLocalProjectCode());
+
+        if (null == projectConfig) {
+
+            projectConfigBO.saveProjectConfig(req);
+
+            projectBO.refreshSecretStatus(req.getLocalProjectCode(),
+                ESecretStatus.YES.getCode());
+
+        } else {
+            projectConfigBO.refreshProjectConfig(req);
+        }
+
     }
 
     @Override

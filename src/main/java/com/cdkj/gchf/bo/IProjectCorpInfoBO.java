@@ -35,7 +35,8 @@ public interface IProjectCorpInfoBO extends IPaginableBO<ProjectCorpInfo> {
 
     public ProjectCorpInfo getProjectCorpInfo(ProjectCorpInfo condition);
 
-    public ProjectCorpInfo getProjectCorpInfoByCorpCode(String corpCode);
+    public ProjectCorpInfo getProjectCorpInfo(String projectCode,
+            String corpCode);
 
     public void uploadProjectCorpInfo(String userId, List<String> codes);
 

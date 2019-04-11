@@ -2,6 +2,7 @@ package com.cdkj.gchf.domain;
 
 import java.math.BigDecimal;
 import java.util.Date;
+import java.util.List;
 
 import com.cdkj.gchf.dao.base.ABaseDO;
 
@@ -102,9 +103,18 @@ public class Project extends ABaseDO {
     // 第三方项目编码
     private String thirdPartyProjectCode;
 
+    // 秘钥状态
+    private String secretStatus;
+
     /****DB Properties****/
     // 操作人
     private String userId;
+
+    // 项目许可证
+    private List<ProjectBuilderLicense> projectBuilderLicenseList;
+
+    // 全名
+    private String fullName;
 
     public String getCode() {
         return code;
@@ -344,6 +354,31 @@ public class Project extends ABaseDO {
 
     public void setUserId(String userId) {
         this.userId = userId;
+    }
+
+    public List<ProjectBuilderLicense> getProjectBuilderLicenseList() {
+        return projectBuilderLicenseList;
+    }
+
+    public void setProjectBuilderLicenseList(
+            List<ProjectBuilderLicense> projectBuilderLicenseList) {
+        this.projectBuilderLicenseList = projectBuilderLicenseList;
+    }
+
+    public String getFullName() {
+        return fullName;
+    }
+
+    public void setFullName(String fullName) {
+        this.fullName = fullName;
+    }
+
+    public String getSecretStatus() {
+        return secretStatus;
+    }
+
+    public void setSecretStatus(String secretStatus) {
+        this.secretStatus = secretStatus;
     }
 
 }

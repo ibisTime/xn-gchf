@@ -10,6 +10,7 @@ import org.springframework.util.StringUtils;
 import com.alibaba.fastjson.JSONObject;
 import com.cdkj.gchf.domain.ProjectConfig;
 import com.cdkj.gchf.enums.EGovAsyncStatus;
+import com.cdkj.gchf.enums.EUploadStatus;
 import com.cdkj.gchf.spring.SpringContextHolder;
 
 @Component
@@ -79,6 +80,9 @@ public class AsyncQueueHolder {
         }
 
         if (EGovAsyncStatus.FAIL.getCode().equals(asyncRes.getStatus())) {
+
+            refreshUploadStatus(queueBean.getBoClass(), queueBean.getCode(),
+                EUploadStatus.UPLOAD_FAIL.getCode());
 
             refreshLogRemark(queueBean.getLogCode(), asyncRes);
 

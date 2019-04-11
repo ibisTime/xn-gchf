@@ -13,6 +13,8 @@ public interface IProjectConfigBO extends IPaginableBO<ProjectConfig> {
 
     public String saveLocalProjectConfig(String localProjectCode);
 
+    public String saveProjectConfig(XN631622Req req);
+
     public int removeProjectConfig(String code);
 
     public void refreshProjectConfig(XN631622Req req);

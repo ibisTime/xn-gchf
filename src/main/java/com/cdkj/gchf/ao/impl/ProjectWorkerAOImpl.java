@@ -14,6 +14,7 @@ import com.cdkj.gchf.ao.IProjectWorkerAO;
 import com.cdkj.gchf.api.impl.XN631693ReqData;
 import com.cdkj.gchf.bo.ICorpBasicinfoBO;
 import com.cdkj.gchf.bo.IOperateLogBO;
+import com.cdkj.gchf.bo.IProjectBO;
 import com.cdkj.gchf.bo.IProjectConfigBO;
 import com.cdkj.gchf.bo.IProjectWorkerBO;
 import com.cdkj.gchf.bo.ITeamMasterBO;
@@ -21,6 +22,7 @@ import com.cdkj.gchf.bo.IUserBO;
 import com.cdkj.gchf.bo.IWorkerInfoBO;
 import com.cdkj.gchf.bo.base.Paginable;
 import com.cdkj.gchf.domain.CorpBasicinfo;
+import com.cdkj.gchf.domain.Project;
 import com.cdkj.gchf.domain.ProjectConfig;
 import com.cdkj.gchf.domain.ProjectWorker;
 import com.cdkj.gchf.domain.TeamMaster;
@@ -35,9 +37,13 @@ import com.cdkj.gchf.dto.req.XN631911Req;
 import com.cdkj.gchf.dto.req.XN631912Req;
 import com.cdkj.gchf.dto.req.XN631913Req;
 import com.cdkj.gchf.enums.EDeleteStatus;
+import com.cdkj.gchf.enums.EIdCardType;
+import com.cdkj.gchf.enums.EIsNotType;
 import com.cdkj.gchf.enums.EOperateLogOperate;
 import com.cdkj.gchf.enums.EOperateLogRefType;
+import com.cdkj.gchf.enums.EPoliticsType;
 import com.cdkj.gchf.enums.EUploadStatus;
+import com.cdkj.gchf.enums.EWorkerRoleType;
 import com.cdkj.gchf.enums.EWorkerType;
 import com.cdkj.gchf.exception.BizException;
 import com.cdkj.gchf.gov.AsyncQueueHolder;
@@ -68,6 +74,9 @@ public class ProjectWorkerAOImpl implements IProjectWorkerAO {
 
     @Autowired
     private IUserBO userBO;
+
+    @Autowired
+    private IProjectBO projectBO;
 
     @Override
     public String addProjectWorker(XN631690Req req) {
@@ -140,75 +149,48 @@ public class ProjectWorkerAOImpl implements IProjectWorkerAO {
         projectWorkerBO.doUpdate(req, projectConfig);
     }
 
+    /**
+     * 导入项目人员
+     * 1、根据证件查询人员实名制表信息
+     *  1.1、如果表中没有这个数据 添加到实名制信息表中
+     *  1.2、否则判断是否添加过该员工，没添加再添加
+     */
     @Override
-    public Paginable<ProjectWorker> queryProjectWorker(XN631913Req req) {
-        ProjectConfig projectConfig = projectConfigBO
-            .getProjectConfigByProject(req.getProjectCode());
-
-        if (null == projectConfig) {
-            throw new BizException("XN631913", "该项目未配置，无法查询");
-        }
-
-        return projectWorkerBO.doQuery(req, projectConfig);
-
-    }
-
-    @Override
-    public Paginable<ProjectWorker> queryProjectWorkerPage(int start, int limit,
-            ProjectWorker condition) {
-        return projectWorkerBO.getPaginable(start, limit, condition);
-    }
-
-    @Override
-    public List<ProjectWorker> queryProjectWorkerList(ProjectWorker condition) {
-        return projectWorkerBO.queryProjectWorkerList(condition);
-    }
-
-    @Override
-    public ProjectWorker getProjectWorker(String code) {
-        return projectWorkerBO.getProjectWorker(code);
-    }
-
     @Transactional
-    @Override
     public void importProjectWorkers(XN631693Req req) {
-        ProjectConfig configByLocal = projectConfigBO
-            .getProjectConfigByLocal(req.getProjectCode());
-        if (configByLocal == null) {
-            throw new BizException("XN631693", "项目不存在");
-        }
-        // 导入项目人员 先根据证件查询人员实名制表信息 如果表中没有这个数据 添加到实名制信息表中 否则判断是否添加过该员工 再添加 没添加再添加
-        String projectcode = req.getProjectCode();
-        List<XN631693ReqData> workerList = req.getWorkerList();
-        List<String> errorCode = new ArrayList<>();
-        for (XN631693ReqData projectWorkerData : workerList) {
+
+        Project project = projectBO.getProject(req.getProjectCode());
+
+        for (XN631693ReqData projectWorkerData : req.getWorkerList()) {
             // 数据字典key校验
-            projectWorkerBO.checkDicKeyRequest(projectWorkerData);
-            ProjectWorker projectWorkerByIdCardNumber = projectWorkerBO
-                .getProjectWorkerByIdentity(projectWorkerData.getIdCardType(),
-                    projectWorkerData.getIdCardNumber());
-            // 校验是否添加过该员工
-            if (projectWorkerByIdCardNumber != null) {
-                errorCode.add("员工信息已添加:" + projectWorkerData.getIdCardNumber());
-                continue;
-            }
-            ProjectWorker projectWorker = new ProjectWorker();
-            BeanUtils.copyProperties(projectWorkerData, projectWorker);
-            projectWorker.setProjectCode(projectcode);
+            checkDicKey(projectWorkerData);
+
             CorpBasicinfo corpBasicinfo = corpBasicinfoBO
                 .getCorpBasicinfoByCorp(projectWorkerData.getCorpCode());
             if (corpBasicinfo == null) {
-                errorCode.add("企业基本信息未录入");
-                continue;
+                throw new BizException("XN631793",
+                    "企业【" + projectWorkerData.getCorpCode() + "】不存在");
             }
-            TeamMaster teamMaster = teamMasterBO
-                .getTeamMasterByProjectCodeAndTeamMasterNameAndCorpCode(
-                    projectcode, projectWorkerData.getTeamName(),
-                    projectWorkerData.getCorpCode());
+
+            TeamMaster teamMaster = teamMasterBO.getTeamMasterByProject(
+                project.getCode(), projectWorkerData.getCorpCode(),
+                projectWorkerData.getTeamName());
             if (teamMaster == null) {
-                errorCode.add("项目人员所在班组信息不存在");
+                throw new BizException("XN631793",
+                    "班组【" + projectWorkerData.getTeamName() + "】未录入");
+            }
+
+            ProjectWorker preProjectWorker = projectWorkerBO.getProjectWorker(
+                project.getCode(), projectWorkerData.getCorpCode(),
+                teamMaster.getCode(), projectWorkerData.getIdCardNumber());
+            if (preProjectWorker != null) {
                 continue;
             }
+
+            ProjectWorker projectWorker = new ProjectWorker();
+            BeanUtils.copyProperties(projectWorkerData, projectWorker);
+            projectWorker.setProjectCode(project.getCode());
+
             projectWorker.setTeamSysNo(teamMaster.getCode());
             projectWorker.setCorpName(corpBasicinfo.getCorpName());
             projectWorker.setUploadStatus(EUploadStatus.TO_UPLOAD.getCode());
@@ -231,7 +213,7 @@ public class ProjectWorkerAOImpl implements IProjectWorkerAO {
                 projectWorkerBO.saveProjectWorker(projectWorker);
             } else {
                 workerInfoBO.saveWorkerInfoByImport(projectWorkerData);
-                projectWorker.setProjectName(configByLocal.getProjectName());
+                projectWorker.setProjectName(project.getName());
                 projectWorker
                     .setIdcardNumber(projectWorkerData.getIdCardNumber());
                 if (StringUtils
@@ -243,9 +225,6 @@ public class ProjectWorkerAOImpl implements IProjectWorkerAO {
 
             }
 
-        }
-        if (CollectionUtils.isNotEmpty(errorCode)) {
-            throw new BizException("XN631793", errorCode.toString());
         }
     }
 
@@ -289,7 +268,7 @@ public class ProjectWorkerAOImpl implements IProjectWorkerAO {
                 .getProjectWorkerJson(projectWorker, projectConfig);
             jsonArray.add(projectWorkerJson);
             jsonObject.add("workerList", jsonArray);
-            System.out.println(jsonObject.toString());
+
             String resString = GovConnecter.getGovData("ProjectWorker.Add",
                 jsonObject.toString(), projectConfig.getProjectCode(),
                 projectConfig.getSecret());
@@ -306,6 +285,52 @@ public class ProjectWorkerAOImpl implements IProjectWorkerAO {
             throw new BizException("XN631694", errorCode.toString());
         }
 
+    }
+
+    public void checkDicKey(XN631693ReqData projectWorkerData) {
+
+        EWorkerRoleType
+            .checkExists(String.valueOf(projectWorkerData.getWorkRole()));
+        EWorkerType.checkExists(projectWorkerData.getWorkType());
+        EPoliticsType.checkExists(projectWorkerData.getPoliticsType());
+        EIdCardType.checkExists(projectWorkerData.getIdCardType());
+        EIsNotType.checkExists(projectWorkerData.getIsTeamLeader());
+        if (StringUtils
+            .isNotBlank(projectWorkerData.getHasBadMedicalHistory())) {
+            EIsNotType.checkExists(projectWorkerData.getHasBadMedicalHistory());
+        }
+        if (StringUtils.isNotBlank(projectWorkerData.getHasBuyInsurance())) {
+            EIsNotType.checkExists(projectWorkerData.getHasBuyInsurance());
+        }
+    }
+
+    @Override
+    public Paginable<ProjectWorker> queryProjectWorker(XN631913Req req) {
+        ProjectConfig projectConfig = projectConfigBO
+            .getProjectConfigByProject(req.getProjectCode());
+
+        if (null == projectConfig) {
+            throw new BizException("XN631913", "该项目未配置，无法查询");
+        }
+
+        return projectWorkerBO.doQuery(req, projectConfig);
+
+    }
+
+    @Override
+    public Paginable<ProjectWorker> queryProjectWorkerPage(int start, int limit,
+            ProjectWorker condition) {
+        return projectWorkerBO.getPaginable(start, limit, condition);
+    }
+
+    @Override
+    public List<ProjectWorker> queryProjectWorkerList(ProjectWorker condition) {
+        return projectWorkerBO.queryProjectWorkerList(condition);
+    }
+
+    @Override
+    public ProjectWorker getProjectWorker(String code) {
+        return projectWorkerBO.getProjectWorker(code);
     }
 
 }

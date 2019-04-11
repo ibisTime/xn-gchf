@@ -37,6 +37,7 @@
 		<result column="prj_num" property="prjNum" />
 		<result column="nation_num" property="nationNum" />
 		<result column="third_party_project_code" property="thirdPartyProjectCode" />
+		<result column="secretStatus" property="secret_status" />
 	</resultMap>
 	
 	<sql id="where_condition">
@@ -50,11 +51,17 @@
 			<if test="name != null and name != '' ">
 				AND t.name like '%'#{name}'%'
 			</if>
+			<if test="fullName != null and fullName != '' ">
+				AND t.name = #{fullName}
+			</if>
 			<if test="category != null and category != '' ">
 				AND t.category = #{category}
 			</if>
 			<if test="prjStatus != null and prjStatus != '' ">
 				AND t.prj_status = #{prjStatus}
+			</if>
+			<if test="secretStatus != null and secretStatus != '' ">
+				AND t.secret_status = #{secretStatus}
 			</if>
 		</trim>
 	</sql>
@@ -95,6 +102,7 @@
 		,t.prj_num
 		,t.nation_num
 		,t.third_party_project_code
+		,t.secret_status
 		FROM
 		thf_project t
 		<include refid="where_condition" />
@@ -148,6 +156,7 @@
 		,prj_num
 		,nation_num
 		,third_party_project_code
+		,secret_status
 		)
 		VALUES(
 		#{code}
@@ -184,6 +193,7 @@
 		,#{prjNum}
 		,#{nationNum}
 		,#{thirdPartyProjectCode}
+		,#{secretStatus}
 		)
 	</insert>
 
@@ -223,8 +233,15 @@
 		,prj_num = #{prjNum}
 		,nation_num = #{nationNum}
 		,third_party_project_code = #{thirdPartyProjectCode}
+		,secret_status = #{secretStatus}
 		WHERE code = #{code}
 	</update>
-
+	
+	<update id="update_projectSecretStatus" parameterType="project">
+		UPDATE thf_project
+		SET
+		secret_status = #{secretStatus}
+		WHERE code = #{code}
+	</update>
 
 </mapper>

@@ -70,6 +70,8 @@ public class ProjectWorkerEntryExitHistory extends ABaseDO {
     /****DB Properties****/
     private List<XN631914ReqWorker> workerList;
 
+    private String teamName;
+
     public String getCode() {
         return code;
     }
@@ -212,6 +214,14 @@ public class ProjectWorkerEntryExitHistory extends ABaseDO {
 
     public void setDeleteStatus(String deleteStatus) {
         this.deleteStatus = deleteStatus;
+    }
+
+    public String getTeamName() {
+        return teamName;
+    }
+
+    public void setTeamName(String teamName) {
+        this.teamName = teamName;
     }
 
 }

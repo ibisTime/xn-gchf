@@ -7,6 +7,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.alibaba.fastjson.JSONObject;
 import com.cdkj.gchf.ao.ITeamMasterAO;
@@ -64,15 +65,16 @@ public class TeamMasterAOImpl implements ITeamMasterAO {
     @Override
     public String addTeamMaster(XN631650Req data) {
 
-        ProjectConfig projectConfig = projectConfigBO
-            .getProjectConfigByLocal(data.getProjectCode());
-        if (projectConfig == null) {
-            throw new BizException("XN631650", "项目信息不存在,请检查项目编号");
-        }
         CorpBasicinfo corpBasicinfoByCorp = corpBasicinfoBO
             .getCorpBasicinfoByCorp(data.getCorpCode());
         if (corpBasicinfoByCorp == null) {
             throw new BizException("XN631650", "企业信息不存在");
+        }
+
+        TeamMaster teamMaster = teamMasterBO.getTeamMasterByProject(
+            data.getProjectCode(), data.getCorpCode(), data.getTeamName());
+        if (null != teamMaster) {
+            throw new BizException("XN631650", "班组名称已存在，请重新输入");
         }
 
         return teamMasterBO.saveTeamMaster(data, corpBasicinfoByCorp);
@@ -91,6 +93,7 @@ public class TeamMasterAOImpl implements ITeamMasterAO {
     }
 
     @Override
+    @Transactional
     public void editTeamMaster(XN631652Req data) {
         User user = userBO.getBriefUser(data.getUserId());
 
@@ -99,9 +102,21 @@ public class TeamMasterAOImpl implements ITeamMasterAO {
             .equals(EUploadStatus.UPLOAD_UNEDITABLE.getCode())) {
             throw new BizException("XN631652", "班组信息已上传,不可修改");
         }
+
+        if (!data.getTeamName().equals(teamMaster.getTeamName())) {
+            teamMaster = teamMasterBO.getTeamMasterByProject(
+                teamMaster.getProjectCode(), teamMaster.getCorpCode(),
+                data.getTeamName());
+            if (null != teamMaster) {
+                throw new BizException("XN631650", "班组名称已存在，请重新输入");
+            }
+        }
+
         teamMasterBO.refreshTeamMaster(data);
+
         teamMasterBO.refreshUploadStatus(data.getCode(),
             EUploadStatus.TO_UPLOAD.getCode());
+
         operateLogBO.saveOperateLog(EOperateLogRefType.TeamMaster.getCode(),
             data.getCode(), EOperateLogOperate.EditTeamMaster.getValue(), user,
             null);

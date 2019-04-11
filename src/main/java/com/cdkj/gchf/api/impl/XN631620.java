@@ -3,6 +3,7 @@ package com.cdkj.gchf.api.impl;
 import com.cdkj.gchf.ao.IProjectConfigAO;
 import com.cdkj.gchf.api.AProcessor;
 import com.cdkj.gchf.common.JsonUtil;
+import com.cdkj.gchf.core.ObjValidater;
 import com.cdkj.gchf.dto.req.XN631620Req;
 import com.cdkj.gchf.dto.res.PKCodeRes;
 import com.cdkj.gchf.exception.BizException;
@@ -30,5 +31,6 @@ public class XN631620 extends AProcessor {
     public void doCheck(String inputparams, String operator)
             throws ParaException {
         req = JsonUtil.json2Bean(inputparams, XN631620Req.class);
+        ObjValidater.validateReq(req);
     }
 }

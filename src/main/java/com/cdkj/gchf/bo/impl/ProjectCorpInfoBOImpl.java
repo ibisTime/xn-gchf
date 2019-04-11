@@ -203,7 +203,7 @@ public class ProjectCorpInfoBOImpl extends PaginableBOImpl<ProjectCorpInfo>
         BeanUtils.copyProperties(req, projectCorpInfo);
         projectCorpInfo.setCorpCode(req.getCorpCode());
         projectCorpInfo.setCorpName(req.getCorpName());
-        projectCorpInfo.setProjectCode(projectConfig.getProjectCode());
+        projectCorpInfo.setProjectCode(projectConfig.getLocalProjectCode());
         projectCorpInfo.setProjectName(projectConfig.getProjectName());
         projectCorpInfo.setUploadStatus(EUploadStatus.TO_UPLOAD.getCode());
 
@@ -268,9 +268,14 @@ public class ProjectCorpInfoBOImpl extends PaginableBOImpl<ProjectCorpInfo>
     }
 
     @Override
-    public ProjectCorpInfo getProjectCorpInfoByCorpCode(String corpCode) {
+    public ProjectCorpInfo getProjectCorpInfo(String projectCode,
+            String corpCode) {
         ProjectCorpInfo projectCorpInfo = new ProjectCorpInfo();
+
+        projectCorpInfo.setProjectCode(projectCode);
         projectCorpInfo.setCorpCode(corpCode);
+        projectCorpInfo.setDeleteStatus(EDeleteStatus.NORMAL.getCode());
+
         return getProjectCorpInfo(projectCorpInfo);
     }
 

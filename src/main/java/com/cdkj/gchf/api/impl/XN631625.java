@@ -6,6 +6,7 @@ import org.springframework.beans.BeanUtils;
 import com.cdkj.gchf.ao.IProjectConfigAO;
 import com.cdkj.gchf.api.AProcessor;
 import com.cdkj.gchf.common.JsonUtil;
+import com.cdkj.gchf.core.ObjValidater;
 import com.cdkj.gchf.core.StringValidater;
 import com.cdkj.gchf.domain.ProjectConfig;
 import com.cdkj.gchf.dto.req.XN631625Req;
@@ -45,5 +46,6 @@ public class XN631625 extends AProcessor {
     public void doCheck(String inputparams, String operator)
             throws ParaException {
         req = JsonUtil.json2Bean(inputparams, XN631625Req.class);
+        ObjValidater.validateReq(req);
     }
 }

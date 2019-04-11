@@ -229,8 +229,8 @@ public class PayRollAOImpl implements IPayRollAO {
         jsonObject.addProperty("projectCode",
             projectConfigByLocal.getProjectCode());
         // corpCode corpName
-        ProjectCorpInfo projectCorpInfo = projectCorpInfoBO
-            .getProjectCorpInfoByCorpCode(payRoll.getCorpCode());
+        ProjectCorpInfo projectCorpInfo = projectCorpInfoBO.getProjectCorpInfo(
+            projectconfig.getLocalProjectCode(), payRoll.getCorpCode());
         projectCorpInfo.getCorpCode();
         jsonObject.addProperty("corpCode", projectCorpInfo.getCorpCode());
         jsonObject.addProperty("corpName", projectCorpInfo.getCorpName());
@@ -308,8 +308,8 @@ public class PayRollAOImpl implements IPayRollAO {
         for (XN631812ReqData xn631773ReqData : dateList) {
 
             TeamMaster teamMasterByCondition = teamMasterBO
-                .getTeamMasterByProjectCodeAndTeamMasterNameAndCorpCode(
-                    req.getProjectCode(), xn631773ReqData.getTeamName(),
+                .getTeamMasterByProject(req.getProjectCode(),
+                    xn631773ReqData.getTeamName(),
                     xn631773ReqData.getCorpCode());
 
             if (teamMasterByCondition == null) {

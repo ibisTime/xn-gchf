@@ -15,6 +15,9 @@ public interface IProjectBuilderLicenseBO
     public void removeByProject(String projectCode);
 
     public List<ProjectBuilderLicense> queryProjectBuilderLicenseList(
+            String projectCode);
+
+    public List<ProjectBuilderLicense> queryProjectBuilderLicenseList(
             ProjectBuilderLicense condition);
 
     public ProjectBuilderLicense getProjectBuilderLicense(String code);

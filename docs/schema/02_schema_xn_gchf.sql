@@ -180,6 +180,7 @@ CREATE TABLE `thf_project` (
   `prj_num` varchar(3) DEFAULT NULL COMMENT '工程用途',
   `nation_num` varchar(3) DEFAULT NULL COMMENT '国籍或地区',
   `third_party_project_code` varchar(50) DEFAULT NULL COMMENT '第三方项目编码',
+  `secret_status` varchar(4) DEFAULT NULL COMMENT '项目秘钥状态',
   PRIMARY KEY (`code`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='项目基本信息';
 

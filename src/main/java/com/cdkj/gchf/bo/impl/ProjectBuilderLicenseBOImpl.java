@@ -55,6 +55,16 @@ public class ProjectBuilderLicenseBOImpl
 
     @Override
     public List<ProjectBuilderLicense> queryProjectBuilderLicenseList(
+            String projectCode) {
+        ProjectBuilderLicense condition = new ProjectBuilderLicense();
+
+        condition.setProjectCode(projectCode);
+
+        return projectBuilderLicenseDAO.selectList(condition);
+    }
+
+    @Override
+    public List<ProjectBuilderLicense> queryProjectBuilderLicenseList(
             ProjectBuilderLicense condition) {
         return projectBuilderLicenseDAO.selectList(condition);
     }
@@ -72,4 +82,5 @@ public class ProjectBuilderLicenseBOImpl
         }
         return data;
     }
+
 }

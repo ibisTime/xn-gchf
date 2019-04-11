@@ -59,8 +59,9 @@ public class ProjectCorpInfoAOImpl implements IProjectCorpInfoAO {
         if (null == corpBasicinfo) {
             throw new BizException("XN631630", "企业信息不存在");
         }
+
         ProjectCorpInfo corpInfoByCorpCode = projectCorpInfoBO
-            .getProjectCorpInfoByCorpCode(data.getCorpCode());
+            .getProjectCorpInfo(data.getProjectCode(), data.getCorpCode());
         if (corpInfoByCorpCode != null) {
             throw new BizException("XN631630", "参见单位已添加");
         }
@@ -151,6 +152,14 @@ public class ProjectCorpInfoAOImpl implements IProjectCorpInfoAO {
                 throw new BizException("XN631600",
                     "企业信息不存在" + projectCourpInfoReq.getCorpCode());
             }
+
+            ProjectCorpInfo projectCorpInfo = projectCorpInfoBO
+                .getProjectCorpInfo(req.getProjectCode(),
+                    projectCourpInfoReq.getCorpCode());
+            if (projectCorpInfo != null) {
+                throw new BizException("XN631630",
+                    "参见单位【" + projectCorpInfo.getCorpName() + "】已添加");
+            }
         }
 
         User user = userBO.getBriefUser(req.getUserId());
@@ -165,7 +174,7 @@ public class ProjectCorpInfoAOImpl implements IProjectCorpInfoAO {
             operateLogBO.saveOperateLog(
                 EOperateLogRefType.ProjectCorpinfo.getCode(),
                 projectCorpInfoCode,
-                EOperateLogOperate.UploadCorpBasicinfo.getValue(), user,
+                EOperateLogOperate.ImportProjectCorpInfo.getValue(), user,
                 "批量导入参建单位信息" + projectCorpInfoCode);
         }
 

@@ -12,7 +12,7 @@ public class XN631622Req {
 
     // 编号
     @NotBlank
-    private String code;
+    private String localProjectCode;
 
     // 国家平台项目编码
     @NotBlank
@@ -46,12 +46,12 @@ public class XN631622Req {
         this.secret = secret;
     }
 
-    public String getCode() {
-        return code;
+    public String getLocalProjectCode() {
+        return localProjectCode;
     }
 
-    public void setCode(String code) {
-        this.code = code;
+    public void setLocalProjectCode(String localProjectCode) {
+        this.localProjectCode = localProjectCode;
     }
 
     public String getProjectName() {

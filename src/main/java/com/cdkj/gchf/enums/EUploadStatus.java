@@ -12,6 +12,8 @@ import com.cdkj.gchf.exception.BizException;
  * @history:
  */
 public enum EUploadStatus {
+    UPLOAD_FAIL("-1", "上传失败"),
+
     TO_UPLOAD("0", "待上传"),
 
     UPLOAD_EDITABLE("1", "已上传可修改"),

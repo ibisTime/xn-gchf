@@ -18,6 +18,7 @@ import com.cdkj.gchf.domain.Project;
 import com.cdkj.gchf.dto.req.XN631600Req;
 import com.cdkj.gchf.dto.req.XN631602Req;
 import com.cdkj.gchf.enums.EGeneratePrefix;
+import com.cdkj.gchf.enums.ESecretStatus;
 import com.cdkj.gchf.exception.BizException;
 
 @Component
@@ -35,6 +36,7 @@ public class ProjectBOImpl extends PaginableBOImpl<Project>
             .generate(EGeneratePrefix.Project.getCode());
         project.setCode(code);
         project.setName(name);
+        project.setSecretStatus(ESecretStatus.NO.getCode());
 
         projectDAO.insert(project);
 
@@ -43,7 +45,7 @@ public class ProjectBOImpl extends PaginableBOImpl<Project>
 
     @Override
     public String saveProject(XN631600Req req, CorpBasicinfo contractorCorpInfo,
-            CorpBasicinfo buildCorpInfo) {
+            String buildCorpName) {
         Project project = new Project();
         BeanUtils.copyProperties(req, project);
 
@@ -74,7 +76,7 @@ public class ProjectBOImpl extends PaginableBOImpl<Project>
         if (StringUtils.isNotBlank(req.getLng())) {
             project.setLng(new BigDecimal(req.getLng()));
         }
-        project.setBuildCorpName(buildCorpInfo.getCorpName());
+        project.setBuildCorpName(buildCorpName);
         projectDAO.insert(project);
 
         return code;
@@ -106,6 +108,16 @@ public class ProjectBOImpl extends PaginableBOImpl<Project>
     }
 
     @Override
+    public void refreshSecretStatus(String code, String secretStatus) {
+        Project project = new Project();
+
+        project.setCode(code);
+        project.setSecretStatus(secretStatus);
+
+        projectDAO.updateSecretStatus(project);
+    }
+
+    @Override
     public List<Project> queryProjectList(Project condition) {
         return projectDAO.selectList(condition);
     }
@@ -122,6 +134,15 @@ public class ProjectBOImpl extends PaginableBOImpl<Project>
             }
         }
         return data;
+    }
+
+    @Override
+    public Project getProjectByFullName(String fullName) {
+        Project project = new Project();
+
+        project.setFullName(fullName);
+
+        return projectDAO.select(project);
     }
 
 }

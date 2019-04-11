@@ -13,13 +13,17 @@ public interface IProjectBO extends IPaginableBO<Project> {
     public String saveProject(String name);
 
     public String saveProject(XN631600Req req, CorpBasicinfo contractorCorpInfo,
-            CorpBasicinfo buildCorpInfo);
+            String buildCorpName);
 
     public void refreshProject(XN631602Req req,
             CorpBasicinfo contractorCorpInfo, CorpBasicinfo buildCorpInfo);
 
+    public void refreshSecretStatus(String code, String secretStatus);
+
     public List<Project> queryProjectList(Project condition);
 
     public Project getProject(String code);
+
+    public Project getProjectByFullName(String fullName);
 
 }

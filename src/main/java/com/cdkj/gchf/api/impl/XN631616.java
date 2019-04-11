@@ -22,7 +22,7 @@ public class XN631616 extends AProcessor {
 
     @Override
     public Object doBusiness() throws BizException {
-        return projectAO.getProjectAndLicense(req.getCode());
+        return projectAO.getProject(req.getCode());
     }
 
     @Override

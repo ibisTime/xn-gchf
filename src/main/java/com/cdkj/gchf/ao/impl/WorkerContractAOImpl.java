@@ -86,7 +86,7 @@ public class WorkerContractAOImpl implements IWorkerContractAO {
             throw new BizException("XN631670", "项目未部署");
         }
         ProjectCorpInfo projectCorpInfo = projectCorpInfoBO
-            .getProjectCorpInfoByCorpCode(req.getCorpCode());
+            .getProjectCorpInfo(req.getProjectCode(), req.getCorpCode());
         if (projectCorpInfo == null) {
             throw new BizException("XN631670", "企业信用代码无效");
         }
@@ -285,7 +285,8 @@ public class WorkerContractAOImpl implements IWorkerContractAO {
             WorkerContract workerContract = new WorkerContract();
             // 核实参见单位信息
             ProjectCorpInfo corpInfoByCorpCode = projectCorpInfoBO
-                .getProjectCorpInfoByCorpCode(xn631673ReqData.getCorpCode());
+                .getProjectCorpInfo(req.getProjectCode(),
+                    xn631673ReqData.getCorpCode());
             if (corpInfoByCorpCode == null) {
                 errorCode.add("参建单位信息不存在" + xn631673ReqData.getCorpCode());
                 continue;

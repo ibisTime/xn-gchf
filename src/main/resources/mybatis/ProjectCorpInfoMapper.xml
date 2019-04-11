@@ -18,6 +18,7 @@
 		<result column="pm_idcard_number" property="pmIDCardNumber" />
 		<result column="pm_phone" property="pmPhone" />
 		<result column="upload_status" property="uploadStatus" />
+		<result column="delete_status" property="deleteStatus" />
 	</resultMap>
 	
 	<sql id="join_condition">

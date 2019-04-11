@@ -75,8 +75,11 @@ public class WorkerContract extends ABaseDO {
     // 备注
     private String remark;
 
-    // 状态
+    // 上传状态
     private String uploadStatus;
+
+    // 删除状态
+    private String deleteStatus;
 
     public String getCode() {
         return code;
@@ -244,6 +247,14 @@ public class WorkerContract extends ABaseDO {
 
     public void setUploadStatus(String uploadStatus) {
         this.uploadStatus = uploadStatus;
+    }
+
+    public String getDeleteStatus() {
+        return deleteStatus;
+    }
+
+    public void setDeleteStatus(String deleteStatus) {
+        this.deleteStatus = deleteStatus;
     }
 
 }

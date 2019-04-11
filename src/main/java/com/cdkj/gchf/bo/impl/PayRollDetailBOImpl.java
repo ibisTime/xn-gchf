@@ -288,6 +288,9 @@ public class PayRollDetailBOImpl extends PaginableBOImpl<PayRollDetail>
         ProjectWorker projectWorkerByIdentity = projectWorkerBO
             .getProjectWorkerByIdentity(xn631773ReqData.getIdCardType(),
                 xn631773ReqData.getIdCardNumber());
+        if (projectWorkerByIdentity == null) {
+            throw new BizException("XN631694", "员工信息不存在,请检查信息是否完整");
+        }
         payRollDetail.setWorkerName(projectWorkerByIdentity.getWorkerName());
 
         if (StringUtils.isNotBlank(xn631773ReqData.getIsBackPay())) {

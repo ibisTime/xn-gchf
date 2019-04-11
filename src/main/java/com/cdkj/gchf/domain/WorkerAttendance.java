@@ -87,11 +87,15 @@ public class WorkerAttendance extends ABaseDO {
     // 备注
     private String remark;
 
+    // 上传状态
     private String uploadStatus;
 
     /****DB Properties****/
     // 所在企业
     private String corpName;
+
+    // 删除状态
+    private String deleteStatus;
 
     public String getCode() {
         return code;
@@ -299,6 +303,14 @@ public class WorkerAttendance extends ABaseDO {
 
     public void setCorpName(String corpName) {
         this.corpName = corpName;
+    }
+
+    public String getDeleteStatus() {
+        return deleteStatus;
+    }
+
+    public void setDeleteStatus(String deleteStatus) {
+        this.deleteStatus = deleteStatus;
     }
 
 }

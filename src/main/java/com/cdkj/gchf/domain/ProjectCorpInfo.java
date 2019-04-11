@@ -52,6 +52,8 @@ public class ProjectCorpInfo extends ABaseDO {
     // 上传状态
     private String uploadStatus;
 
+    private String deleteStatus;
+
     /***DB Properties****/
 
     // 参建单位企业类型
@@ -171,6 +173,14 @@ public class ProjectCorpInfo extends ABaseDO {
 
     public void setCorpBasicType(String corpBasicType) {
         this.corpBasicType = corpBasicType;
+    }
+
+    public String getDeleteStatus() {
+        return deleteStatus;
+    }
+
+    public void setDeleteStatus(String deleteStatus) {
+        this.deleteStatus = deleteStatus;
     }
 
 }

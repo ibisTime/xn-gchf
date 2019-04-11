@@ -28,6 +28,7 @@
 		<result column="remark" property="remark" />
 
 		<result column="upload_status" property="uploadStatus" />
+		<result column="delete_status" property="deleteStatus" />
 	</resultMap>
 
 	<sql id="where_condition">
@@ -136,7 +137,8 @@
 		thf_worker_contract
 		SET
 		upload_status = #{uploadStatus}
-		WHERE code = #{code}
+		WHERE code =
+		#{code}
 	</update>
 
 	<update id="update_workerContract" parameterType="workerContract">
@@ -144,7 +146,8 @@
 		thf_worker_contract
 		SET
 		project_code = #{projectCode}
-		,start_date = #{startDate}
+		,start_date =
+		#{startDate}
 		,end_date = #{endDate}
 		,unit = #{unit}
 		,unit_price =

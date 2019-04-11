@@ -57,6 +57,7 @@
 		<result column="update_datetime" property="updateDatetime" />
 		<result column="remark" property="remark" />
 		<result column="upload_status" property="uploadStatus" />
+		<result column="delete_status" property="deleteStatus" />
 	</resultMap>
 
 	<sql id="where_condition">

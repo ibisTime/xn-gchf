@@ -71,6 +71,9 @@ public class TeamMaster extends ABaseDO {
     // 上传状态
     private String uploadStatus;
 
+    // 删除状态
+    private String deleteStatus;
+
     /****DB Properties****/
 
     public String getCode() {
@@ -224,6 +227,14 @@ public class TeamMaster extends ABaseDO {
 
     public void setUploadStatus(String uploadStatus) {
         this.uploadStatus = uploadStatus;
+    }
+
+    public String getDeleteStatus() {
+        return deleteStatus;
+    }
+
+    public void setDeleteStatus(String deleteStatus) {
+        this.deleteStatus = deleteStatus;
     }
 
 }

@@ -64,6 +64,9 @@ public class ProjectWorkerEntryExitHistory extends ABaseDO {
     // 状态
     private String uploadStatus;
 
+    // 删除状态
+    private String deleteStatus;
+
     /****DB Properties****/
     private List<XN631914ReqWorker> workerList;
 
@@ -201,6 +204,14 @@ public class ProjectWorkerEntryExitHistory extends ABaseDO {
 
     public void setUploadStatus(String uploadStatus) {
         this.uploadStatus = uploadStatus;
+    }
+
+    public String getDeleteStatus() {
+        return deleteStatus;
+    }
+
+    public void setDeleteStatus(String deleteStatus) {
+        this.deleteStatus = deleteStatus;
     }
 
 }

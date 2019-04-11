@@ -72,9 +72,6 @@ public class PayRollDetail extends ABaseDO {
     // 第三方工资单编号
     private String thirdPayRollCode;
 
-    // 状态
-    private String uploadStatus;
-
     // 补发日期
     private String backPayMonth;
 
@@ -90,6 +87,11 @@ public class PayRollDetail extends ABaseDO {
 
     // 企业编号
     private String corpCode;
+
+    // 状态
+    private String uploadStatus;
+
+    private String deleteStatus;
 
     public String getCode() {
         return code;
@@ -289,6 +291,14 @@ public class PayRollDetail extends ABaseDO {
 
     public void setCorpCode(String corpCode) {
         this.corpCode = corpCode;
+    }
+
+    public String getDeleteStatus() {
+        return deleteStatus;
+    }
+
+    public void setDeleteStatus(String deleteStatus) {
+        this.deleteStatus = deleteStatus;
     }
 
 }

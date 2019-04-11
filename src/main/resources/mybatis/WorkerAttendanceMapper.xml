@@ -32,6 +32,7 @@
 		<result column="terminal_code" property="terminalCode" />
 		<result column="remark" property="remark" />
 		<result column="upload_status" property="uploadStatus" />
+		<result column="delete_status" property="deleteStatus" />
 	</resultMap>
 
 	<sql id="where_condition">
@@ -146,7 +147,8 @@
 		,idcard_number = #{idCardNumber}
 		,status = #{status}
 
-		,date = #{date}
+		,date
+		= #{date}
 		,direction = #{direction}
 		,image = #{image}
 		,channel =

@@ -208,6 +208,9 @@ public class ProjectWorker extends ABaseDO {
     // 本地班组编号
     private String localTeamSysNo;
 
+    // 删除状态
+    private String deleteStatus;
+
     public String getCode() {
         return code;
     }
@@ -718,6 +721,14 @@ public class ProjectWorker extends ABaseDO {
 
     public void setLocalTeamSysNo(String localTeamSysNo) {
         this.localTeamSysNo = localTeamSysNo;
+    }
+
+    public String getDeleteStatus() {
+        return deleteStatus;
+    }
+
+    public void setDeleteStatus(String deleteStatus) {
+        this.deleteStatus = deleteStatus;
     }
 
 }

@@ -121,7 +121,6 @@ CREATE TABLE `thf_pay_roll_detail` (
   `is_back_pay` tinyint(1) DEFAULT NULL COMMENT '是否是补发',
   `balance_date` datetime DEFAULT NULL COMMENT '发放日期',
   `third_pay_roll_code` varchar(50) DEFAULT NULL COMMENT '第三方工资单编号',
-  `upload_status` varchar(4) DEFAULT NULL COMMENT '状态',
   `employ_code` varchar(50) DEFAULT NULL COMMENT '雇佣编号',
   `project_code` varchar(50) DEFAULT NULL COMMENT '项目编号',
   `project_name` varchar(30) DEFAULT NULL COMMENT '项目名称',
@@ -145,6 +144,8 @@ CREATE TABLE `thf_pay_roll_detail` (
   `approve_note` varchar(50) DEFAULT NULL COMMENT '审核说明',
   `supply_amount` varchar(10) DEFAULT NULL COMMENT '补发工资',
   `late_pay_datetime` datetime DEFAULT NULL COMMENT '最近一次发放时间',
+  `upload_status` varchar(4) DEFAULT NULL COMMENT '状态',
+  `delete_status` varchar(4) DEFAULT NULL COMMENT '删除状态',
   PRIMARY KEY (`code`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='人员工资单明细';
 
@@ -206,6 +207,7 @@ CREATE TABLE `thf_project_corp_info` (
   `pm_idcard_number` varchar(30) DEFAULT NULL COMMENT '项目经理证件号码',
   `pm_phone` varchar(50) DEFAULT NULL COMMENT '项目经理电话',
   `upload_status` varchar(4) DEFAULT NULL COMMENT '状态',
+  `delete_status` varchar(4) DEFAULT NULL COMMENT '删除状态',
   PRIMARY KEY (`code`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='项目参建单位';
 
@@ -258,6 +260,7 @@ CREATE TABLE `thf_project_worker` (
   `remark` text COMMENT '备注',
   `upload_status` varchar(4) DEFAULT NULL COMMENT '状态',
   `local_team_sys_no` varchar(32) DEFAULT NULL COMMENT '本地班组编号',
+  `delete_status` varchar(4) DEFAULT NULL COMMENT '删除状态',
   PRIMARY KEY (`code`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='班组人员';
 
@@ -278,7 +281,8 @@ CREATE TABLE `thf_project_worker_entry_exit_history` (
   `date` datetime DEFAULT NULL COMMENT '时间',
   `type` int(11) DEFAULT NULL COMMENT '类型',
   `voucher_url` longtext COMMENT '凭证扫描件',
-  `upload_status` varchar(4) DEFAULT NULL COMMENT '状态',
+  `upload_status` varchar(4) DEFAULT NULL COMMENT '上传状态',
+  `delete_status` varchar(4) DEFAULT NULL COMMENT '删除状态',
   PRIMARY KEY (`code`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='人员进退场';
 
@@ -326,7 +330,8 @@ CREATE TABLE `thf_team_master` (
   `entry_time` datetime DEFAULT NULL COMMENT '进场日期',
   `exit_time` datetime DEFAULT NULL COMMENT '退场日期',
   `parent_code` varchar(30) DEFAULT NULL COMMENT '上级部门编号',
-  `upload_status` varchar(200) DEFAULT NULL,
+  `upload_status` varchar(200) DEFAULT NULL COMMENT '上传状态',
+  `delete_status` varchar(4) DEFAULT NULL COMMENT '删除状态',
   PRIMARY KEY (`code`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='班组';
 
@@ -376,7 +381,8 @@ CREATE TABLE `thf_worker_attendance` (
   `sim` decimal(4,2) DEFAULT NULL COMMENT '人脸识别准确率',
   `terminal_code` varchar(50) DEFAULT NULL COMMENT '考勤机编号',
   `remark` text COMMENT '备注',
-  `upload_status` varchar(4) DEFAULT NULL,
+  `upload_status` varchar(4) DEFAULT NULL COMMENT '上传状态',
+  `delete_status` varchar(4) DEFAULT NULL COMMENT '删除状态',
   PRIMARY KEY (`code`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='人员考勤';
 
@@ -402,7 +408,8 @@ CREATE TABLE `thf_worker_contract` (
   `updater` varchar(32) DEFAULT NULL COMMENT '更新人',
   `update_datetime` datetime DEFAULT NULL COMMENT '更新时间',
   `remark` text COMMENT '备注',
-  `upload_status` varchar(4) DEFAULT NULL COMMENT '是否上传',
+  `upload_status` varchar(4) DEFAULT NULL COMMENT '上传状态',
+  `delete_status` varchar(4) DEFAULT NULL COMMENT '删除状态',
   PRIMARY KEY (`code`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='劳动合同';
 

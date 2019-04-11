@@ -9,6 +9,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.cdkj.gchf.ao.IWorkerAttendanceAO;
 import com.cdkj.gchf.bo.IOperateLogBO;
@@ -23,7 +24,6 @@ import com.cdkj.gchf.bo.base.Paginable;
 import com.cdkj.gchf.common.AesUtils;
 import com.cdkj.gchf.common.DateUtil;
 import com.cdkj.gchf.domain.ProjectConfig;
-import com.cdkj.gchf.domain.ProjectCorpInfo;
 import com.cdkj.gchf.domain.ProjectWorker;
 import com.cdkj.gchf.domain.TeamMaster;
 import com.cdkj.gchf.domain.User;
@@ -191,6 +191,7 @@ public class WorkerAttendanceAOImpl implements IWorkerAttendanceAO {
     }
 
     @Override
+    @Transactional
     public void importWorkerAttendanceList(XN631713Req req) {
 
         User user = userBO.getBriefUser(req.getUpdater());
@@ -201,16 +202,6 @@ public class WorkerAttendanceAOImpl implements IWorkerAttendanceAO {
             EDirectionType.checkExists(xn631713ReqData.getDirection());
             EIdCardType.checkExists(xn631713ReqData.getIdCardType());
 
-            // 核实企业信息
-            ProjectCorpInfo projectCorpInfo = new ProjectCorpInfo();
-            projectCorpInfo.setCorpCode(xn631713ReqData.getCorpCode());
-            projectCorpInfo.setProjectCode(req.getProjectCode());
-            ProjectCorpInfo corpInfoByCorpCode = projectCorpInfoBO
-                .getProjectCorpInfo(projectCorpInfo);
-            if (corpInfoByCorpCode == null) {
-                errorCode.add("企业信息不存在" + xn631713ReqData.getCorpCode());
-                continue;
-            }
             // 核实身份信息
             String idcardNumber = xn631713ReqData.getIdCardNumber();
             ProjectWorker workerByIdCardNumber = projectWorkerBO

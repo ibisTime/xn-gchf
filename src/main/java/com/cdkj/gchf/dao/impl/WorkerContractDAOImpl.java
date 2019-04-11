@@ -59,4 +59,11 @@ public class WorkerContractDAOImpl extends AMybatisTemplate
             workerContract);
     }
 
+    @Override
+    public int updateWorkerContractDeleteStatus(WorkerContract workerContract) {
+        return super.update(
+            NAMESPACE.concat("update_workerContract_delete_status"),
+            workerContract);
+    }
+
 }

@@ -10,6 +10,7 @@ import com.cdkj.gchf.core.ObjValidater;
 import com.cdkj.gchf.domain.ProjectCorpInfo;
 import com.cdkj.gchf.dto.req.XN631647Req;
 import com.cdkj.gchf.enums.ECorpType;
+import com.cdkj.gchf.enums.EDeleteStatus;
 import com.cdkj.gchf.enums.EUploadStatus;
 import com.cdkj.gchf.exception.BizException;
 import com.cdkj.gchf.exception.ParaException;
@@ -32,6 +33,7 @@ public class XN631647 extends AProcessor {
     @Override
     public Object doBusiness() throws BizException {
         ProjectCorpInfo condition = new ProjectCorpInfo();
+        condition.setDeleteStatus(EDeleteStatus.NORMAL.getCode());
         BeanUtils.copyProperties(req, condition);
 
         String column = req.getOrderColumn();

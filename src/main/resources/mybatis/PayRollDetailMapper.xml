@@ -38,7 +38,7 @@
 			<if test="workerName != null and workerName != '' ">
 				AND t.worker_name = #{workerName}
 			</if>
-			
+
 		</trim>
 	</sql>
 
@@ -122,12 +122,24 @@
 		#{code}
 	</update>
 
+
+	<update id="update_PayRollDetail_delete_status" parameterType="payRoll">
+		UPDATE
+		thf_pay_roll_detail
+		SET
+		delete_status = #{deleteStatus}
+		WHERE code
+		=
+		#{code}
+	</update>
+
 	<update id="update_PayRollDetail_payRollCode" parameterType="payRoll">
 		UPDATE
 		thf_pay_roll_detail
 		SET
 		pay_roll_code = #{payRollCode}
-		WHERE code = #{code}
+		WHERE code =
+		#{code}
 	</update>
 
 	<select id="select_PayRollDetail" parameterType="payRollDetail"

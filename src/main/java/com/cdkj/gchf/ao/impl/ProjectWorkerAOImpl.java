@@ -34,6 +34,7 @@ import com.cdkj.gchf.dto.req.XN631694ReqData;
 import com.cdkj.gchf.dto.req.XN631911Req;
 import com.cdkj.gchf.dto.req.XN631912Req;
 import com.cdkj.gchf.dto.req.XN631913Req;
+import com.cdkj.gchf.enums.EDeleteStatus;
 import com.cdkj.gchf.enums.EOperateLogOperate;
 import com.cdkj.gchf.enums.EOperateLogRefType;
 import com.cdkj.gchf.enums.EUploadStatus;
@@ -111,7 +112,8 @@ public class ProjectWorkerAOImpl implements IProjectWorkerAO {
             .equals(EUploadStatus.UPLOAD_UNEDITABLE.getCode())) {
             throw new BizException("XN631691", "班组人员已上传,无法删除");
         }
-        projectWorkerBO.removeProjectWorker(code);
+        projectWorkerBO.updateProjectWorkerDeleteStatus(code,
+            EDeleteStatus.DELETED.getCode());
     }
 
     @Override
@@ -210,6 +212,7 @@ public class ProjectWorkerAOImpl implements IProjectWorkerAO {
             projectWorker.setTeamSysNo(teamMaster.getCode());
             projectWorker.setCorpName(corpBasicinfo.getCorpName());
             projectWorker.setUploadStatus(EUploadStatus.TO_UPLOAD.getCode());
+            projectWorker.setDeleteStatus(EDeleteStatus.NORMAL.getCode());
             projectWorker.setIsTeamLeader(
                 Integer.parseInt(projectWorkerData.getIsTeamLeader()));
             projectWorker.setIdcardNumber(projectWorkerData.getIdCardNumber());

@@ -22,6 +22,8 @@ public interface IProjectCorpInfoBO extends IPaginableBO<ProjectCorpInfo> {
 
     public void removeProjectCorpInfo(String code);
 
+    void updateProjectCorpInfoDeleteStatus(String code, String status);
+
     public void refreshProjectCorpInfo(XN631632Req req);
 
     public void refreshUploadStatus(String code, String uploadStatus);

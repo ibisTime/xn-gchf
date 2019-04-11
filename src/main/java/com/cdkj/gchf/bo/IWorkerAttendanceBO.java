@@ -23,6 +23,8 @@ public interface IWorkerAttendanceBO extends IPaginableBO<WorkerAttendance> {
 
     public void refreshWorkerAttendance(XN631712Req data);
 
+    int updateWorkerAttendanceDeleteStatus(String code, String status);
+
     public List<WorkerAttendance> queryWorkerAttendanceList(
             WorkerAttendance condition);
 

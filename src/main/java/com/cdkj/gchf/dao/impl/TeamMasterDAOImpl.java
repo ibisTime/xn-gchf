@@ -64,4 +64,10 @@ public class TeamMasterDAOImpl extends AMybatisTemplate
             data);
     }
 
+    @Override
+    public int updateDeleteStatus(TeamMaster data) {
+        return super.update(NAMESPACE.concat("update_teamMasterDeleteStatus"),
+            data);
+    }
+
 }

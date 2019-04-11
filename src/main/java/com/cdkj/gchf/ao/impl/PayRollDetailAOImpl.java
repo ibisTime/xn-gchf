@@ -16,6 +16,7 @@ import com.cdkj.gchf.domain.PayRollDetail;
 import com.cdkj.gchf.domain.ProjectConfig;
 import com.cdkj.gchf.domain.TeamMaster;
 import com.cdkj.gchf.dto.req.XN631810Req;
+import com.cdkj.gchf.enums.EDeleteStatus;
 import com.cdkj.gchf.enums.EUploadStatus;
 import com.cdkj.gchf.exception.BizException;
 
@@ -47,7 +48,8 @@ public class PayRollDetailAOImpl implements IPayRollDetailAO {
             .equals(EUploadStatus.UPLOAD_UNEDITABLE.getCode())) {
             throw new BizException("XN631811");
         }
-        return payRollDetailBO.deletePayRollDetail(code);
+        return payRollDetailBO.updatePayRollDetailDeleteStatus(code,
+            EDeleteStatus.DELETED.getCode());
     }
 
     @Override

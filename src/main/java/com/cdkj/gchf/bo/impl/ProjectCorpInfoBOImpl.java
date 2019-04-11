@@ -32,6 +32,7 @@ import com.cdkj.gchf.dto.req.XN631633ReqList;
 import com.cdkj.gchf.dto.req.XN631905Req;
 import com.cdkj.gchf.dto.req.XN631906Req;
 import com.cdkj.gchf.dto.req.XN631907Req;
+import com.cdkj.gchf.enums.EDeleteStatus;
 import com.cdkj.gchf.enums.EGeneratePrefix;
 import com.cdkj.gchf.enums.EIdCardType;
 import com.cdkj.gchf.enums.EOperateLogOperate;
@@ -78,11 +79,15 @@ public class ProjectCorpInfoBOImpl extends PaginableBOImpl<ProjectCorpInfo>
         }
         ProjectConfig configByLocal = projectConfigBO
             .getProjectConfigByLocal(req.getProjectCode());
+        if (configByLocal == null) {
+            throw new BizException("XN631630", "项目不存在");
+        }
         String code = OrderNoGenerater
             .generate(EGeneratePrefix.ProjectCorpInfo.getCode());
         projectCorpInfo.setCode(code);
         projectCorpInfo.setProjectName(configByLocal.getProjectName());
         projectCorpInfo.setUploadStatus(EUploadStatus.TO_UPLOAD.getCode());
+        projectCorpInfo.setDeleteStatus(EDeleteStatus.NORMAL.getCode());
         projectCorpInfoDAO.insert(projectCorpInfo);
 
         return code;
@@ -267,5 +272,13 @@ public class ProjectCorpInfoBOImpl extends PaginableBOImpl<ProjectCorpInfo>
         ProjectCorpInfo projectCorpInfo = new ProjectCorpInfo();
         projectCorpInfo.setCorpCode(corpCode);
         return getProjectCorpInfo(projectCorpInfo);
+    }
+
+    @Override
+    public void updateProjectCorpInfoDeleteStatus(String code, String status) {
+        ProjectCorpInfo projectCorpInfo = new ProjectCorpInfo();
+        projectCorpInfo.setDeleteStatus(status);
+        projectCorpInfo.setCode(code);
+        projectCorpInfoDAO.updateDeleteStatus(projectCorpInfo);
     }
 }

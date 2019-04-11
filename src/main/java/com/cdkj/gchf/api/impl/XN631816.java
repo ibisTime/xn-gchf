@@ -8,6 +8,7 @@ import com.cdkj.gchf.api.AProcessor;
 import com.cdkj.gchf.core.ObjValidater;
 import com.cdkj.gchf.domain.PayRollDetail;
 import com.cdkj.gchf.dto.req.XN631816Req;
+import com.cdkj.gchf.enums.EDeleteStatus;
 import com.cdkj.gchf.exception.BizException;
 import com.cdkj.gchf.exception.ParaException;
 import com.cdkj.gchf.http.JsonUtils;
@@ -31,6 +32,7 @@ public class XN631816 extends AProcessor {
     public Object doBusiness() throws BizException {
         PayRollDetail payRollDetail = new PayRollDetail();
         BeanUtils.copyProperties(req, payRollDetail);
+        payRollDetail.setDeleteStatus(EDeleteStatus.NORMAL.getCode());
         String orderColumn = req.getOrderColumn();
         if (StringUtils.isBlank(orderColumn)) {
             orderColumn = IPayRollDetailAO.DEFAULT_ORDER_COLUMN;

@@ -31,6 +31,7 @@ import com.cdkj.gchf.dto.req.XN631672Req;
 import com.cdkj.gchf.dto.req.XN631916Req;
 import com.cdkj.gchf.dto.req.XN631916ReqContract;
 import com.cdkj.gchf.dto.req.XN631917Req;
+import com.cdkj.gchf.enums.EDeleteStatus;
 import com.cdkj.gchf.enums.EGeneratePrefix;
 import com.cdkj.gchf.enums.EUploadStatus;
 import com.cdkj.gchf.exception.BizException;
@@ -99,6 +100,14 @@ public class WorkerContractBOImpl extends PaginableBOImpl<WorkerContract>
         }
 
         workerContractDAO.update(workerContract);
+    }
+
+    @Override
+    public void updateWorkerContractDeleteStatus(String code, String status) {
+        WorkerContract workerContract = new WorkerContract();
+        workerContract.setCode(code);
+        workerContract.setDeleteStatus(status);
+        workerContractDAO.updateWorkerContractDeleteStatus(workerContract);
     }
 
     @Override
@@ -191,6 +200,7 @@ public class WorkerContractBOImpl extends PaginableBOImpl<WorkerContract>
         workerContract.setStartDate(startDate);
         workerContract.setEndDate(endDate);
         workerContract.setUploadStatus(EUploadStatus.TO_UPLOAD.getCode());
+        workerContract.setDeleteStatus(EDeleteStatus.NORMAL.getCode());
         workerContractDAO.insert(workerContract);
         return code;
     }

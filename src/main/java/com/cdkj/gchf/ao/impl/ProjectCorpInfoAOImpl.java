@@ -25,6 +25,7 @@ import com.cdkj.gchf.dto.req.XN631633ReqList;
 import com.cdkj.gchf.dto.req.XN631905Req;
 import com.cdkj.gchf.dto.req.XN631906Req;
 import com.cdkj.gchf.dto.req.XN631907Req;
+import com.cdkj.gchf.enums.EDeleteStatus;
 import com.cdkj.gchf.enums.EIdCardType;
 import com.cdkj.gchf.enums.EOperateLogOperate;
 import com.cdkj.gchf.enums.EOperateLogRefType;
@@ -76,8 +77,8 @@ public class ProjectCorpInfoAOImpl implements IProjectCorpInfoAO {
             .equals(projectCorpInfo.getUploadStatus())) {
             throw new BizException("XN631631", "参建单位已上传，无法删除");
         }
-
-        projectCorpInfoBO.removeProjectCorpInfo(code);
+        projectCorpInfoBO.updateProjectCorpInfoDeleteStatus(code,
+            EDeleteStatus.DELETED.getCode());
 
     }
 

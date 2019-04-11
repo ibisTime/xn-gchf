@@ -35,6 +35,7 @@ import com.cdkj.gchf.dto.req.XN631713ReqData;
 import com.cdkj.gchf.dto.req.XN631913Req;
 import com.cdkj.gchf.dto.req.XN631918Req;
 import com.cdkj.gchf.dto.req.XN631919Req;
+import com.cdkj.gchf.enums.EDeleteStatus;
 import com.cdkj.gchf.enums.EDirectionType;
 import com.cdkj.gchf.enums.EIdCardType;
 import com.cdkj.gchf.enums.EOperateLogRefType;
@@ -100,7 +101,8 @@ public class WorkerAttendanceAOImpl implements IWorkerAttendanceAO {
             .equals(EUploadStatus.TO_UPLOAD.getCode())) {
             throw new BizException("XN631711", "人员考勤已上传，不可删除");
         }
-        return workerAttendanceBO.removeWorkerAttendance(code);
+        return workerAttendanceBO.updateWorkerAttendanceDeleteStatus(code,
+            EDeleteStatus.DELETED.getCode());
     }
 
     @Override
@@ -228,6 +230,7 @@ public class WorkerAttendanceAOImpl implements IWorkerAttendanceAO {
             }
 
             workerAttendance.setUploadStatus(EUploadStatus.TO_UPLOAD.getCode());
+            workerAttendance.setDeleteStatus(EDeleteStatus.NORMAL.getCode());
             String code = workerAttendanceBO
                 .saveWorkerAttendance(workerAttendance);
             operateLogBO.saveOperateLog(

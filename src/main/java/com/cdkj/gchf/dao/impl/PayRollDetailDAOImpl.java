@@ -65,4 +65,10 @@ public class PayRollDetailDAOImpl extends AMybatisTemplate
             payRollDetail);
     }
 
+    @Override
+    public int updatePayRollDetailDeleteStatus(PayRollDetail payRollDetail) {
+        return super.update(
+            NAMESPACE.concat("update_PayRollDetail_delete_status"),
+            payRollDetail);
+    }
 }

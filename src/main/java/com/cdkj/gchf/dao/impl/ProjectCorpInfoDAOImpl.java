@@ -60,4 +60,11 @@ public class ProjectCorpInfoDAOImpl extends AMybatisTemplate
             projectCorpInfo);
     }
 
+    @Override
+    public int updateDeleteStatus(ProjectCorpInfo projectCorpInfo) {
+        return super.update(
+            NAMESPACE.concat("update_projectCorpInfoDeleteStatus"),
+            projectCorpInfo);
+    }
+
 }

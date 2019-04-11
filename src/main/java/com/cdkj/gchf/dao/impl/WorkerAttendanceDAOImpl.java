@@ -59,4 +59,12 @@ public class WorkerAttendanceDAOImpl extends AMybatisTemplate
             workerAttendance);
     }
 
+    @Override
+    public int updateWorkerAttendanceDeleteStatus(
+            WorkerAttendance workerAttendance) {
+        return super.update(
+            NAMESPACE.concat("update_workerAttendance_delete_status"),
+            workerAttendance);
+    }
+
 }

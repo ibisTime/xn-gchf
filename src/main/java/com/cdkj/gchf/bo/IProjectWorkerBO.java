@@ -24,6 +24,8 @@ public interface IProjectWorkerBO extends IPaginableBO<ProjectWorker> {
 
     public void refreshProjectWorker(XN631692Req req);
 
+    void updateProjectWorkerDeleteStatus(String code, String status);
+
     public List<ProjectWorker> queryProjectWorkerList(ProjectWorker condition);
 
     void checkDicKeyRequest(XN631693ReqData projectWorkerData);

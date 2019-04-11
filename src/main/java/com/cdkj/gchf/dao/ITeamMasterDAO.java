@@ -11,4 +11,6 @@ public interface ITeamMasterDAO extends IBaseDAO<TeamMaster> {
     int updateUploadStatus(TeamMaster data);
 
     int updateTeamSysNo(TeamMaster data);
+
+    int updateDeleteStatus(TeamMaster data);
 }

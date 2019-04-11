@@ -10,6 +10,7 @@ import com.cdkj.gchf.core.ObjValidater;
 import com.cdkj.gchf.core.StringValidater;
 import com.cdkj.gchf.domain.WorkerAttendance;
 import com.cdkj.gchf.dto.req.XN631725Req;
+import com.cdkj.gchf.enums.EDeleteStatus;
 import com.cdkj.gchf.exception.BizException;
 import com.cdkj.gchf.exception.ParaException;
 import com.cdkj.gchf.spring.SpringContextHolder;
@@ -32,6 +33,7 @@ public class XN631725 extends AProcessor {
     public Object doBusiness() throws BizException {
         WorkerAttendance condition = new WorkerAttendance();
         BeanUtils.copyProperties(req, condition);
+        condition.setDeleteStatus(EDeleteStatus.NORMAL.getCode());
         int start = StringValidater.toInteger(req.getStart());
         int limit = StringValidater.toInteger(req.getLimit());
         String column = req.getOrderColumn();

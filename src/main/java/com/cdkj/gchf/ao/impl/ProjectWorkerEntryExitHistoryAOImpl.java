@@ -35,6 +35,7 @@ import com.cdkj.gchf.dto.req.XN631913Req;
 import com.cdkj.gchf.dto.req.XN631914Req;
 import com.cdkj.gchf.dto.req.XN631914ReqWorker;
 import com.cdkj.gchf.dto.req.XN631915Req;
+import com.cdkj.gchf.enums.EDeleteStatus;
 import com.cdkj.gchf.enums.EEntryExitType;
 import com.cdkj.gchf.enums.EIdCardType;
 import com.cdkj.gchf.enums.EOperateLogOperate;
@@ -118,7 +119,8 @@ public class ProjectWorkerEntryExitHistoryAOImpl
             throw new BizException("XN631731", "人员进退场已上传，不可删除");
         }
         projectWorkerEntryExitHistoryBO
-            .removeProjectWorkerEntryExitHistory(code);
+            .updateProjectWorkerEntryExitHistoryDeleteStatus(code,
+                EDeleteStatus.DELETED.getCode());
     }
 
     @Override
@@ -305,6 +307,7 @@ public class ProjectWorkerEntryExitHistoryAOImpl
             entryExitHistory
                 .setType(Integer.parseInt(xn631733ReqData.getType()));
             entryExitHistory.setUploadStatus(EUploadStatus.TO_UPLOAD.getCode());
+            entryExitHistory.setDeleteStatus(EDeleteStatus.NORMAL.getCode());
             String code = projectWorkerEntryExitHistoryBO
                 .saveProjectWorkerEntryExitHistory(entryExitHistory);
 

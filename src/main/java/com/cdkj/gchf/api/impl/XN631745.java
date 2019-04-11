@@ -10,6 +10,7 @@ import com.cdkj.gchf.core.ObjValidater;
 import com.cdkj.gchf.core.StringValidater;
 import com.cdkj.gchf.domain.ProjectWorkerEntryExitHistory;
 import com.cdkj.gchf.dto.req.XN631745Req;
+import com.cdkj.gchf.enums.EDeleteStatus;
 import com.cdkj.gchf.exception.BizException;
 import com.cdkj.gchf.exception.ParaException;
 import com.cdkj.gchf.spring.SpringContextHolder;
@@ -32,6 +33,7 @@ public class XN631745 extends AProcessor {
     public Object doBusiness() throws BizException {
         ProjectWorkerEntryExitHistory condition = new ProjectWorkerEntryExitHistory();
         BeanUtils.copyProperties(req, condition);
+        condition.setDeleteStatus(EDeleteStatus.NORMAL.getCode());
         String column = req.getOrderColumn();
         if (StringUtils.isBlank(column)) {
             column = IProjectWorkerEntryExitHistoryAO.DEFAULT_ORDER_COLUMN;

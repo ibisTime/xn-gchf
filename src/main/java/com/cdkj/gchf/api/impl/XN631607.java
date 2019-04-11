@@ -9,6 +9,7 @@ import com.cdkj.gchf.common.JsonUtil;
 import com.cdkj.gchf.core.ObjValidater;
 import com.cdkj.gchf.domain.ProjectWorker;
 import com.cdkj.gchf.dto.req.XN631607Req;
+import com.cdkj.gchf.enums.EDeleteStatus;
 import com.cdkj.gchf.exception.BizException;
 import com.cdkj.gchf.exception.ParaException;
 import com.cdkj.gchf.spring.SpringContextHolder;
@@ -31,6 +32,7 @@ public class XN631607 extends AProcessor {
     public Object doBusiness() throws BizException {
         ProjectWorker projectWorker = new ProjectWorker();
         BeanUtils.copyProperties(req, projectWorker);
+        projectWorker.setDeleteStatus(EDeleteStatus.NORMAL.getCode());
         String order = req.getOrderColumn();
         if (StringUtils.isBlank(order)) {
             order = IProjectWorkerAO.DEFAULT_ORDER_COLUMN;

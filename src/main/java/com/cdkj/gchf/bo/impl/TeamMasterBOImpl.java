@@ -286,11 +286,6 @@ public class TeamMasterBOImpl extends PaginableBOImpl<TeamMaster>
     public String getTeamMasterNameByTeamMasterSysNo(String teamMasterSysNo) {
         TeamMaster condition = new TeamMaster();
         condition.setCode(teamMasterSysNo);
-        // List<TeamMaster> teamMasterList =
-        // teamMasterDAO.selectList(condition);
-        // if (CollectionUtils.isNotEmpty(teamMasterList)) {
-        // return teamMasterList.get(0).getTeamName();
-        // }
         TeamMaster team = teamMasterDAO.select(condition);
         return team.getTeamName();
     }
@@ -300,6 +295,16 @@ public class TeamMasterBOImpl extends PaginableBOImpl<TeamMaster>
         TeamMaster teamMaster = new TeamMaster();
         teamMaster.setDeleteStatus(status);
         teamMaster.setCode(code);
+        teamMaster.setUploadStatus(EUploadStatus.TO_UPLOAD.getCode());
+        teamMasterDAO.updateDeleteStatus(teamMaster);
+    }
+
+    @Override
+    public void fakeDeleteTeamMaster(String projectCode, String corpCode) {
+        TeamMaster teamMaster = new TeamMaster();
+        teamMaster.setProjectCode(projectCode);
+        teamMaster.setCorpCode(corpCode);
+        teamMaster.setUploadStatus(EUploadStatus.TO_UPLOAD.getCode());
         teamMasterDAO.updateDeleteStatus(teamMaster);
     }
 

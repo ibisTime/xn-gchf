@@ -10,13 +10,22 @@ import org.springframework.transaction.annotation.Transactional;
 import com.cdkj.gchf.ao.IProjectCorpInfoAO;
 import com.cdkj.gchf.bo.ICorpBasicinfoBO;
 import com.cdkj.gchf.bo.IOperateLogBO;
+import com.cdkj.gchf.bo.IPayRollBO;
+import com.cdkj.gchf.bo.IPayRollDetailBO;
 import com.cdkj.gchf.bo.IProjectConfigBO;
 import com.cdkj.gchf.bo.IProjectCorpInfoBO;
+import com.cdkj.gchf.bo.IProjectWorkerBO;
+import com.cdkj.gchf.bo.IProjectWorkerEntryExitHistoryBO;
+import com.cdkj.gchf.bo.ITeamMasterBO;
 import com.cdkj.gchf.bo.IUserBO;
+import com.cdkj.gchf.bo.IWorkerAttendanceBO;
+import com.cdkj.gchf.bo.IWorkerContractBO;
 import com.cdkj.gchf.bo.base.Paginable;
 import com.cdkj.gchf.domain.CorpBasicinfo;
+import com.cdkj.gchf.domain.PayRoll;
 import com.cdkj.gchf.domain.ProjectConfig;
 import com.cdkj.gchf.domain.ProjectCorpInfo;
+import com.cdkj.gchf.domain.TeamMaster;
 import com.cdkj.gchf.domain.User;
 import com.cdkj.gchf.dto.req.XN631630Req;
 import com.cdkj.gchf.dto.req.XN631632Req;
@@ -51,6 +60,27 @@ public class ProjectCorpInfoAOImpl implements IProjectCorpInfoAO {
     @Autowired
     private IUserBO userBO;
 
+    @Autowired
+    private ITeamMasterBO teamMasterBO;
+
+    @Autowired
+    private IProjectWorkerBO projectWorkerBO;
+
+    @Autowired
+    private IProjectWorkerEntryExitHistoryBO projectWorkerEntryExitHistoryBO;
+
+    @Autowired
+    private IPayRollBO payRollBO;
+
+    @Autowired
+    private IPayRollDetailBO payRollDetailBO;
+
+    @Autowired
+    private IWorkerContractBO workerContractBO;
+
+    @Autowired
+    private IWorkerAttendanceBO workerAttendanceBO;
+
     @Override
     public String addProjectCorpInfo(XN631630Req data) {
 
@@ -68,18 +98,50 @@ public class ProjectCorpInfoAOImpl implements IProjectCorpInfoAO {
         return projectCorpInfoBO.saveProjectCorpInfo(data);
     }
 
+    @Transactional
     @Override
     public void dropProjectCorpInfo(String code) {
 
         ProjectCorpInfo projectCorpInfo = projectCorpInfoBO
             .getProjectCorpInfo(code);
         if (EUploadStatus.UPLOAD_EDITABLE.getCode()
-            .equals(projectCorpInfo.getUploadStatus())) {
+            .equals(projectCorpInfo.getUploadStatus())
+                || EUploadStatus.UPLOAD_UNEDITABLE.getCode()
+                    .equals(projectCorpInfo.getUploadStatus())) {
             throw new BizException("XN631631", "参建单位已上传，无法删除");
         }
+        String corpCode = projectCorpInfo.getCorpCode();
+        String projectCode = projectCorpInfo.getProjectCode();
         projectCorpInfoBO.updateProjectCorpInfoDeleteStatus(code,
             EDeleteStatus.DELETED.getCode());
 
+        TeamMaster condition = new TeamMaster();
+        condition.setCorpCode(corpCode);
+        condition.setProjectCode(projectCode);
+        List<TeamMaster> queryTeamMasterList = teamMasterBO
+            .queryTeamMasterList(condition);
+        for (TeamMaster teamMaster : queryTeamMasterList) {
+            teamMasterBO.fakeDeleteTeamMaster(projectCode, corpCode);
+            projectWorkerBO.fakeDeleteProjectWorker(projectCode,
+                teamMaster.getCode(), corpCode);
+            projectWorkerEntryExitHistoryBO.fakeDeleteProjectWorkerEntryHistory(
+                projectCode, teamMaster.getCode());
+            workerAttendanceBO.fakeDeleteWorkAttendance(teamMaster.getCode());
+            PayRoll payRollCondition = new PayRoll();
+            payRollCondition.setCorpCode(corpCode);
+            payRollCondition.setTeamSysNo(teamMaster.getCode());
+            payRollCondition.setProjectCode(projectCode);
+            List<PayRoll> queryPayRollList = payRollBO
+                .queryPayRollList(payRollCondition);
+            for (PayRoll payRoll : queryPayRollList) {
+                payRollDetailBO
+                    .FakeDeletePayRollDetailByPayRollCode(payRoll.getCode());
+            }
+            payRollBO.updatePayRollDeleteStatus(projectCode,
+                teamMaster.getCode(), corpCode);
+        }
+
+        workerContractBO.fakeDeleteWorkerContractByProjectCode(projectCode);
     }
 
     @Override

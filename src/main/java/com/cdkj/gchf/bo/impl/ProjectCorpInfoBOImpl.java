@@ -281,4 +281,14 @@ public class ProjectCorpInfoBOImpl extends PaginableBOImpl<ProjectCorpInfo>
         projectCorpInfo.setCode(code);
         projectCorpInfoDAO.updateDeleteStatus(projectCorpInfo);
     }
+
+    @Override
+    public void removeProjectCorpInfoDeleteStatus(String projectCode,
+            String corpCode) {
+        ProjectCorpInfo projectCorpInfo = new ProjectCorpInfo();
+        projectCorpInfo.setCorpCode(corpCode);
+        projectCorpInfo.setProjectCode(projectCode);
+        projectCorpInfo.setUploadStatus(EUploadStatus.TO_UPLOAD.getCode());
+        projectCorpInfoDAO.updateDeleteStatus(projectCorpInfo);
+    }
 }

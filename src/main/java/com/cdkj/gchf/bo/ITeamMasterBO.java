@@ -26,6 +26,8 @@ public interface ITeamMasterBO extends IPaginableBO<TeamMaster> {
 
     void updateTeamMasterDeleteStatus(String code, String status);
 
+    void fakeDeleteTeamMaster(String projectCode, String corpCode);
+
     public void refreshUploadStatus(String code, String uploadStatus);
 
     public void refreshTeamSysNoByLocal(String code, String teamSysNo);

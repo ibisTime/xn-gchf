@@ -25,6 +25,11 @@ public interface IPayRollDetailBO extends IPaginableBO<PayRollDetail> {
 
     public int deletePayRollDetailByPayRollCode(String payRollCode);
 
+    int FakeDeletePayRollDetailByPayRollCode(String payRollCode);
+
+    int fakeDeletePayRollDetail(String idCardType, String idCardNumber,
+            String projectCode);
+
     public int deletePayRollDetail(String code);
 
     public int updatePayRollDetail(XN631772Req req);

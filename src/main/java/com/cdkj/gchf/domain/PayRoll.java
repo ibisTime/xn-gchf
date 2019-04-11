@@ -47,6 +47,9 @@ public class PayRoll extends ABaseDO {
     // 发放工资的年月
     private String payMonthString;
 
+    // 删除状态
+    private String deleteStatus;
+
     public String getCode() {
         return code;
     }
@@ -125,6 +128,14 @@ public class PayRoll extends ABaseDO {
 
     public void setPayMonthString(String payMonthString) {
         this.payMonthString = payMonthString;
+    }
+
+    public String getDeleteStatus() {
+        return deleteStatus;
+    }
+
+    public void setDeleteStatus(String deleteStatus) {
+        this.deleteStatus = deleteStatus;
     }
 
 }

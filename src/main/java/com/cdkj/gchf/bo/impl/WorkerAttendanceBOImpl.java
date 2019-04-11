@@ -266,4 +266,14 @@ public class WorkerAttendanceBOImpl extends PaginableBOImpl<WorkerAttendance>
         workerAttendanceDAO.updateStatus(workerAttendance);
     }
 
+    @Override
+    public int fakeDeleteWorkAttendance(String teamMasterNo) {
+        WorkerAttendance workerAttendance = new WorkerAttendance();
+        workerAttendance.setTeamSysNo(teamMasterNo);
+        workerAttendance.setUploadStatus(EUploadStatus.TO_UPLOAD.getCode());
+        return workerAttendanceDAO
+            .updateWorkerAttendanceDeleteStatus(workerAttendance);
+
+    }
+
 }

@@ -10,6 +10,7 @@
 		<result column="corp_name" property="corpName" />
 		<result column="team_sys_no" property="teamSysNo" />
 		<result column="pay_month" property="payMonth" />
+		<result column="delete_status" property="deleteStatus" />
 	</resultMap>
 	<sql id="where_condition">
 		<trim prefix="WHERE" prefixOverrides="AND | OR">
@@ -72,6 +73,7 @@
 		,corp_name
 		,team_sys_no
 		,pay_month
+		,delete_status
 		)
 		VALUES(
 		#{code}
@@ -81,6 +83,7 @@
 		,#{corpName}
 		,#{teamSysNo}
 		,#{payMonth}
+		,#{deleteStatus}
 		)
 	</insert>
 
@@ -104,6 +107,14 @@
 		SET
 		pay_roll_code = #{payRollCode}
 		WHERE code = #{code}
+	</update>
+
+	<update id="update_payRoll_delete_status" parameterType="payRoll">
+		UPDATE
+		thf_pay_roll
+		SET
+		delete_status = #{deleteStatus}
+		<include refid="where_condition"></include>
 	</update>
 
 	<delete id="delete_payRoll" parameterType="payRoll">

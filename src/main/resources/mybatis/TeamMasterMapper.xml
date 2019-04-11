@@ -180,7 +180,7 @@
 		thf_team_master
 		SET
 		delete_status = #{deleteStatus}
-		WHERE code = #{code}
+		<include refid="where_condition"></include>
 	</update>
 	<update id="update_teamMasterTeamSysNo" parameterType="teamMaster">
 		UPDATE

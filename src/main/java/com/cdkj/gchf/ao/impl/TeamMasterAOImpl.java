@@ -7,21 +7,29 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.alibaba.fastjson.JSONObject;
 import com.cdkj.gchf.ao.ITeamMasterAO;
 import com.cdkj.gchf.bo.ICorpBasicinfoBO;
 import com.cdkj.gchf.bo.IOperateLogBO;
+import com.cdkj.gchf.bo.IPayRollBO;
+import com.cdkj.gchf.bo.IPayRollDetailBO;
 import com.cdkj.gchf.bo.IProjectConfigBO;
 import com.cdkj.gchf.bo.IProjectCorpInfoBO;
+import com.cdkj.gchf.bo.IProjectWorkerBO;
+import com.cdkj.gchf.bo.IProjectWorkerEntryExitHistoryBO;
 import com.cdkj.gchf.bo.ITeamMasterBO;
 import com.cdkj.gchf.bo.IUserBO;
+import com.cdkj.gchf.bo.IWorkerAttendanceBO;
+import com.cdkj.gchf.bo.IWorkerContractBO;
 import com.cdkj.gchf.bo.base.Paginable;
 import com.cdkj.gchf.common.AesUtils;
 import com.cdkj.gchf.common.DateUtil;
 import com.cdkj.gchf.domain.CorpBasicinfo;
 import com.cdkj.gchf.domain.ProjectConfig;
 import com.cdkj.gchf.domain.ProjectCorpInfo;
+import com.cdkj.gchf.domain.ProjectWorker;
 import com.cdkj.gchf.domain.TeamMaster;
 import com.cdkj.gchf.domain.User;
 import com.cdkj.gchf.dto.req.XN631650Req;
@@ -61,6 +69,27 @@ public class TeamMasterAOImpl implements ITeamMasterAO {
     @Autowired
     private IProjectCorpInfoBO projectCorpInfoBO;
 
+    @Autowired
+    private IProjectWorkerBO projectWorkerBO;
+
+    @Autowired
+    private IWorkerContractBO workerContractBO;
+
+    @Autowired
+    private IWorkerAttendanceBO workerAttendanceBO;
+
+    @Autowired
+    private IProjectWorkerEntryExitHistoryBO ProjectCorpInfo;
+
+    @Autowired
+    private IPayRollBO payRollBO;
+
+    @Autowired
+    private IPayRollDetailBO payRollDetailBO;
+
+    @Autowired
+    private IProjectWorkerEntryExitHistoryBO projectWorkerEntryExitHistoryBO;
+
     @Override
     public String addTeamMaster(XN631650Req data) {
 
@@ -78,6 +107,7 @@ public class TeamMasterAOImpl implements ITeamMasterAO {
         return teamMasterBO.saveTeamMaster(data, corpBasicinfoByCorp);
     }
 
+    @Transactional
     @Override
     public void dropTeamMaster(XN631651Req req) {
         TeamMaster teamMaster = teamMasterBO.getTeamMaster(req.getCode());
@@ -85,9 +115,29 @@ public class TeamMasterAOImpl implements ITeamMasterAO {
             .equals(EUploadStatus.TO_UPLOAD.getCode())) {
             throw new BizException("XN631651", "班组信息已上传,无法删除");
         }
-        // teamMasterBO.removeTeamMaster(req.getUserId(), req.getCode());
         teamMasterBO.updateTeamMasterDeleteStatus(req.getCode(),
             EDeleteStatus.DELETED.getCode());
+
+        projectWorkerBO.fakeDeleteProjectWorker(teamMaster.getProjectCode(),
+            teamMaster.getCode(), teamMaster.getCorpCode());
+
+        projectWorkerEntryExitHistoryBO.fakeDeleteProjectWorkerEntryHistory(
+            teamMaster.getProjectCode(), req.getCode());
+
+        workerAttendanceBO.fakeDeleteWorkAttendance(req.getCode());
+
+        ProjectWorker condition = new ProjectWorker();
+        condition.setTeamSysNo(req.getCode());
+        List<ProjectWorker> queryProjectWorkerList = projectWorkerBO
+            .queryProjectWorkerList(condition);
+        for (ProjectWorker projectWorker : queryProjectWorkerList) {
+            workerContractBO.fakeDeleteWorkerContract(projectWorker.getCode());
+            payRollDetailBO.fakeDeletePayRollDetail(
+                projectWorker.getIdcardType(), projectWorker.getIdcardNumber(),
+                teamMaster.getProjectCode());
+        }
+        payRollBO.updatePayRollDeleteStatus(teamMaster.getProjectCode(),
+            req.getCode(), teamMaster.getCorpCode());
     }
 
     @Override

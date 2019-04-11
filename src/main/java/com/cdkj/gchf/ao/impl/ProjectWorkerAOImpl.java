@@ -5,22 +5,26 @@ import java.util.List;
 
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
-import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.cdkj.gchf.ao.IProjectWorkerAO;
-import com.cdkj.gchf.api.impl.XN631693ReqData;
 import com.cdkj.gchf.bo.ICorpBasicinfoBO;
 import com.cdkj.gchf.bo.IOperateLogBO;
+import com.cdkj.gchf.bo.IPayRollBO;
+import com.cdkj.gchf.bo.IPayRollDetailBO;
 import com.cdkj.gchf.bo.IProjectConfigBO;
 import com.cdkj.gchf.bo.IProjectWorkerBO;
+import com.cdkj.gchf.bo.IProjectWorkerEntryExitHistoryBO;
 import com.cdkj.gchf.bo.ITeamMasterBO;
 import com.cdkj.gchf.bo.IUserBO;
+import com.cdkj.gchf.bo.IWorkerAttendanceBO;
+import com.cdkj.gchf.bo.IWorkerContractBO;
 import com.cdkj.gchf.bo.IWorkerInfoBO;
 import com.cdkj.gchf.bo.base.Paginable;
 import com.cdkj.gchf.domain.CorpBasicinfo;
+import com.cdkj.gchf.domain.PayRollDetail;
 import com.cdkj.gchf.domain.ProjectConfig;
 import com.cdkj.gchf.domain.ProjectWorker;
 import com.cdkj.gchf.domain.TeamMaster;
@@ -69,6 +73,21 @@ public class ProjectWorkerAOImpl implements IProjectWorkerAO {
     @Autowired
     private IUserBO userBO;
 
+    @Autowired
+    private IPayRollBO payRollBO;
+
+    @Autowired
+    private IPayRollDetailBO payRollDetailBO;
+
+    @Autowired
+    private IWorkerContractBO workerContractBO;
+
+    @Autowired
+    private IWorkerAttendanceBO workerAttendanceBO;
+
+    @Autowired
+    private IProjectWorkerEntryExitHistoryBO projectWorkerEntryExitHistoryBO;
+
     @Override
     public String addProjectWorker(XN631690Req req) {
 
@@ -108,12 +127,36 @@ public class ProjectWorkerAOImpl implements IProjectWorkerAO {
 
     @Override
     public void dropProjectWorker(String code) {
-        if (projectWorkerBO.getProjectWorker(code).getUploadStatus()
+        ProjectWorker projectWorker = projectWorkerBO.getProjectWorker(code);
+        if (projectWorker.getUploadStatus()
             .equals(EUploadStatus.UPLOAD_UNEDITABLE.getCode())) {
             throw new BizException("XN631691", "班组人员已上传,无法删除");
         }
         projectWorkerBO.updateProjectWorkerDeleteStatus(code,
             EDeleteStatus.DELETED.getCode());
+
+        workerContractBO.fakeDeleteWorkerContract(code);
+
+        workerAttendanceBO.updateWorkerAttendanceDeleteStatus(code,
+            EDeleteStatus.DELETED.getCode());
+
+        projectWorkerEntryExitHistoryBO
+            .updateProjectWorkerEntryExitHistoryDeleteStatus(code,
+                EDeleteStatus.DELETED.getCode());
+
+        payRollBO.updatePayRollDeleteStatus(projectWorker.getProjectCode(),
+            projectWorker.getTeamSysNo(), projectWorker.getCorpCode());
+
+        PayRollDetail condition = new PayRollDetail();
+        condition.setIdcardType(projectWorker.getIdcardType());
+        condition.setIdcardNumber(projectWorker.getIdcardNumber());
+        List<PayRollDetail> queryList = payRollDetailBO.queryList(condition);
+        for (PayRollDetail payRollDetail : queryList) {
+            String payRollCode = payRollDetail.getPayRollCode();
+            payRollBO.updatePayRollDeleteStatus(payRollCode);
+        }
+        payRollDetailBO.fakeDeletePayRollDetail(projectWorker.getIdcardType(),
+            projectWorker.getIdcardNumber(), projectWorker.getProjectCode());
     }
 
     @Override
@@ -172,81 +215,82 @@ public class ProjectWorkerAOImpl implements IProjectWorkerAO {
     @Transactional
     @Override
     public void importProjectWorkers(XN631693Req req) {
-        ProjectConfig configByLocal = projectConfigBO
-            .getProjectConfigByLocal(req.getProjectCode());
-        if (configByLocal == null) {
-            throw new BizException("XN631693", "项目不存在");
-        }
-        // 导入项目人员 先根据证件查询人员实名制表信息 如果表中没有这个数据 添加到实名制信息表中 否则判断是否添加过该员工 再添加 没添加再添加
-        String projectcode = req.getProjectCode();
-        List<XN631693ReqData> workerList = req.getWorkerList();
-        List<String> errorCode = new ArrayList<>();
-        for (XN631693ReqData projectWorkerData : workerList) {
-            // 数据字典key校验
-            projectWorkerBO.checkDicKeyRequest(projectWorkerData);
-            ProjectWorker projectWorkerByIdCardNumber = projectWorkerBO
-                .getProjectWorkerByIdentity(projectWorkerData.getIdCardType(),
-                    projectWorkerData.getIdCardNumber());
-            // 校验是否添加过该员工
-            if (projectWorkerByIdCardNumber != null) {
-                errorCode.add("员工信息已添加:" + projectWorkerData.getIdCardNumber());
-                continue;
-            }
-            ProjectWorker projectWorker = new ProjectWorker();
-            BeanUtils.copyProperties(projectWorkerData, projectWorker);
-            projectWorker.setProjectCode(projectcode);
-            CorpBasicinfo corpBasicinfo = corpBasicinfoBO
-                .getCorpBasicinfoByCorp(projectWorkerData.getCorpCode());
-            if (corpBasicinfo == null) {
-                errorCode.add("企业基本信息未录入");
-                continue;
-            }
-            TeamMaster teamMaster = teamMasterBO
-                .getTeamMasterByProjectCodeAndTeamMasterNameAndCorpCode(
-                    projectcode, projectWorkerData.getTeamName(),
-                    projectWorkerData.getCorpCode());
-            if (teamMaster == null) {
-                errorCode.add("项目人员所在班组信息不存在");
-                continue;
-            }
-            projectWorker.setTeamSysNo(teamMaster.getCode());
-            projectWorker.setCorpName(corpBasicinfo.getCorpName());
-            projectWorker.setUploadStatus(EUploadStatus.TO_UPLOAD.getCode());
-            projectWorker.setDeleteStatus(EDeleteStatus.NORMAL.getCode());
-            projectWorker.setIsTeamLeader(
-                Integer.parseInt(projectWorkerData.getIsTeamLeader()));
-            projectWorker.setIdcardNumber(projectWorkerData.getIdCardNumber());
-            projectWorker.setIdcardType(projectWorkerData.getIdCardType());
-            // 检查人员实名信息表是否存在员工信息
-            WorkerInfo infoByIdCardNumber = workerInfoBO
-                .getWorkerInfoByIdCardNumber(
-                    projectWorkerData.getIdCardNumber());
-            if (infoByIdCardNumber != null) {
-                BeanUtils.copyProperties(infoByIdCardNumber, projectWorker);
-                if (StringUtils
-                    .isNotBlank(projectWorkerData.getHasBuyInsurance())) {
-                    projectWorker.setHasBuyInsurance(Integer
-                        .parseInt(projectWorkerData.getHasBuyInsurance()));
-                }
-                projectWorkerBO.saveProjectWorker(projectWorker);
-            } else {
-                workerInfoBO.saveWorkerInfoByImport(projectWorkerData);
-                projectWorker.setProjectName(configByLocal.getProjectName());
-                projectWorker
-                    .setIdcardNumber(projectWorkerData.getIdCardNumber());
-                if (StringUtils
-                    .isNotBlank(projectWorkerData.getHasBuyInsurance())) {
-                    projectWorker.setHasBuyInsurance(Integer
-                        .parseInt(projectWorkerData.getHasBuyInsurance()));
-                }
-                projectWorkerBO.saveProjectWorker(projectWorker);
-
-            }
-
-        }
-        if (CollectionUtils.isNotEmpty(errorCode)) {
-            throw new BizException("XN631793", errorCode.toString());
-        }
+        // ProjectConfig configByLocal = projectConfigBO
+        // .getProjectConfigByLocal(req.getProjectCode());
+        // if (configByLocal == null) {
+        // throw new BizException("XN631693", "项目不存在");
+        // }
+        // // 导入项目人员 先根据证件查询人员实名制表信息 如果表中没有这个数据 添加到实名制信息表中 否则判断是否添加过该员工 再添加
+        // 没添加再添加
+        // String projectcode = req.getProjectCode();
+        // List<XN631693ReqData> workerList = req.getWorkerList();
+        // List<String> errorCode = new ArrayList<>();
+        // for (XN631693ReqData projectWorkerData : workerList) {
+        // // 数据字典key校验
+        // projectWorkerBO.checkDicKeyRequest(projectWorkerData);
+        // ProjectWorker projectWorkerByIdCardNumber = projectWorkerBO
+        // .getProjectWorkerByIdentity(projectWorkerData.getIdCardType(),
+        // projectWorkerData.getIdCardNumber());
+        // // 校验是否添加过该员工
+        // if (projectWorkerByIdCardNumber != null) {
+        // errorCode.add("员工信息已添加:" + projectWorkerData.getIdCardNumber());
+        // continue;
+        // }
+        // ProjectWorker projectWorker = new ProjectWorker();
+        // BeanUtils.copyProperties(projectWorkerData, projectWorker);
+        // projectWorker.setProjectCode(projectcode);
+        // CorpBasicinfo corpBasicinfo = corpBasicinfoBO
+        // .getCorpBasicinfoByCorp(projectWorkerData.getCorpCode());
+        // if (corpBasicinfo == null) {
+        // errorCode.add("企业基本信息未录入");
+        // continue;
+        // }
+        // TeamMaster teamMaster = teamMasterBO
+        // .getTeamMasterByProjectCodeAndTeamMasterNameAndCorpCode(
+        // projectcode, projectWorkerData.getTeamName(),
+        // projectWorkerData.getCorpCode());
+        // if (teamMaster == null) {
+        // errorCode.add("项目人员所在班组信息不存在");
+        // continue;
+        // }
+        // projectWorker.setTeamSysNo(teamMaster.getCode());
+        // projectWorker.setCorpName(corpBasicinfo.getCorpName());
+        // projectWorker.setUploadStatus(EUploadStatus.TO_UPLOAD.getCode());
+        // projectWorker.setDeleteStatus(EDeleteStatus.NORMAL.getCode());
+        // projectWorker.setIsTeamLeader(
+        // Integer.parseInt(projectWorkerData.getIsTeamLeader()));
+        // projectWorker.setIdcardNumber(projectWorkerData.getIdCardNumber());
+        // projectWorker.setIdcardType(projectWorkerData.getIdCardType());
+        // // 检查人员实名信息表是否存在员工信息
+        // WorkerInfo infoByIdCardNumber = workerInfoBO
+        // .getWorkerInfoByIdCardNumber(
+        // projectWorkerData.getIdCardNumber());
+        // if (infoByIdCardNumber != null) {
+        // BeanUtils.copyProperties(infoByIdCardNumber, projectWorker);
+        // if (StringUtils
+        // .isNotBlank(projectWorkerData.getHasBuyInsurance())) {
+        // projectWorker.setHasBuyInsurance(Integer
+        // .parseInt(projectWorkerData.getHasBuyInsurance()));
+        // }
+        // projectWorkerBO.saveProjectWorker(projectWorker);
+        // } else {
+        // workerInfoBO.saveWorkerInfoByImport(projectWorkerData);
+        // projectWorker.setProjectName(configByLocal.getProjectName());
+        // projectWorker
+        // .setIdcardNumber(projectWorkerData.getIdCardNumber());
+        // if (StringUtils
+        // .isNotBlank(projectWorkerData.getHasBuyInsurance())) {
+        // projectWorker.setHasBuyInsurance(Integer
+        // .parseInt(projectWorkerData.getHasBuyInsurance()));
+        // }
+        // projectWorkerBO.saveProjectWorker(projectWorker);
+        //
+        // }
+        //
+        // }
+        // if (CollectionUtils.isNotEmpty(errorCode)) {
+        // throw new BizException("XN631793", errorCode.toString());
+        // }
     }
 
     @Override

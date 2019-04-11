@@ -297,8 +297,11 @@ public class WorkerContractAOImpl implements IWorkerContractAO {
                 errorCode.add("人员信息不存在" + xn631673ReqData.getIdCardNumber());
                 continue;
             }
-            // 查询班组下项目人员是否存在
-            // 还没改
+
+            // projectWorkerBO.getProjectWorkerByIdentity(
+            // xn631673ReqData.getIdCardType(),
+            // xn631673ReqData.getIdCardNumber());
+
             BeanUtils.copyProperties(xn631673ReqData, workerContract);
             BeanUtils.copyProperties(workerInfoByIdCardNumber, workerContract);
             if (StringUtils.isNotBlank(xn631673ReqData.getUnit())) {

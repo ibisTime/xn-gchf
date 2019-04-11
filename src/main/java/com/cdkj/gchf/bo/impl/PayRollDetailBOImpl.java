@@ -20,7 +20,6 @@ import com.cdkj.gchf.dao.impl.PayRollDetailDAOImpl;
 import com.cdkj.gchf.domain.PayRoll;
 import com.cdkj.gchf.domain.PayRollDetail;
 import com.cdkj.gchf.domain.ProjectConfig;
-import com.cdkj.gchf.domain.ProjectWorker;
 import com.cdkj.gchf.domain.TeamMaster;
 import com.cdkj.gchf.dto.req.XN631770ReqDetail;
 import com.cdkj.gchf.dto.req.XN631772Req;
@@ -30,7 +29,6 @@ import com.cdkj.gchf.enums.EDeleteStatus;
 import com.cdkj.gchf.enums.EGeneratePrefix;
 import com.cdkj.gchf.enums.EIsNotType;
 import com.cdkj.gchf.enums.EUploadStatus;
-import com.cdkj.gchf.exception.BizException;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 
@@ -59,16 +57,16 @@ public class PayRollDetailBOImpl extends PaginableBOImpl<PayRollDetail>
             }
             payRollDetail
                 .setWorkHours(new BigDecimal(xn631770ReqDetail.getWorkHours()));
-            ProjectWorker workerByIdCardNumber = projectWorkerBO
-                .getProjectWorkerByIdentity(xn631770ReqDetail.getIdCardType(),
-                    xn631770ReqDetail.getIdCardNumber());
-            if (workerByIdCardNumber == null) {
-                throw new BizException("XN631770", "项目人员不存在");
-            }
-            payRollDetail.setWorkerName(workerByIdCardNumber.getWorkerName());
-            payRollDetail
-                .setIdcardNumber(workerByIdCardNumber.getIdcardNumber());
-            payRollDetail.setIdcardType(workerByIdCardNumber.getIdcardType());
+            // ProjectWorker workerByIdCardNumber = projectWorkerBO
+            // .getProjectWorkerByIdentity(xn631770ReqDetail.gettexn631770ReqDetail.getIdCardType(),
+            // xn631770ReqDetail.getIdCardNumber());
+            // if (workerByIdCardNumber == null) {
+            // throw new BizException("XN631770", "项目人员不存在");
+            // }
+            // payRollDetail.setWorkerName(workerByIdCardNumber.getWorkerName());
+            // payRollDetail
+            // .setIdcardNumber(workerByIdCardNumber.getIdcardNumber());
+            // payRollDetail.setIdcardType(workerByIdCardNumber.getIdcardType());
             payRollDetail.setBalanceDate(
                 DateUtil.strToDate(xn631770ReqDetail.getBalanceDate(),
                     DateUtil.FRONT_DATE_FORMAT_STRING));
@@ -293,15 +291,16 @@ public class PayRollDetailBOImpl extends PaginableBOImpl<PayRollDetail>
                         DateUtil.FRONT_DATE_FORMAT_STRING));
             }
         }
+
         payRollDetail.setIdcardType(xn631773ReqData.getIdCardType());
         payRollDetail.setIdcardNumber(xn631773ReqData.getIdCardNumber());
-        ProjectWorker projectWorkerByIdentity = projectWorkerBO
-            .getProjectWorkerByIdentity(xn631773ReqData.getIdCardType(),
-                xn631773ReqData.getIdCardNumber());
-        if (projectWorkerByIdentity == null) {
-            throw new BizException("XN631694", "员工信息不存在,请检查信息是否完整");
-        }
-        payRollDetail.setWorkerName(projectWorkerByIdentity.getWorkerName());
+        // ProjectWorker projectWorkerByIdentity = projectWorkerBO
+        // .getProjectWorkerByIdentity(xn631773ReqData.getIdCardType(),
+        // xn631773ReqData.getIdCardNumber());
+        // if (projectWorkerByIdentity == null) {
+        // throw new BizException("XN631694", "员工信息不存在,请检查信息是否完整");
+        // }
+        // payRollDetail.setWorkerName(projectWorkerByIdentity.getWorkerName());
 
         if (StringUtils.isNotBlank(xn631773ReqData.getIsBackPay())) {
             if (xn631773ReqData.getIsBackPay()
@@ -319,6 +318,25 @@ public class PayRollDetailBOImpl extends PaginableBOImpl<PayRollDetail>
         payRollDetail.setCode(code);
         payRollDetailDAO.insert(payRollDetail);
         return code;
+    }
+
+    @Override
+    public int fakeDeletePayRollDetail(String idCardType, String idCardNumber,
+            String projectCode) {
+        PayRollDetail payRollDetail = new PayRollDetail();
+        payRollDetail.setProjectCode(projectCode);
+        payRollDetail.setIdcardNumber(idCardNumber);
+        payRollDetail.setIdcardType(idCardType);
+        payRollDetail.setUploadStatus(EUploadStatus.TO_UPLOAD.getCode());
+        return payRollDetailDAO.updatePayRollDetailDeleteStatus(payRollDetail);
+    }
+
+    @Override
+    public int FakeDeletePayRollDetailByPayRollCode(String payRollCode) {
+        PayRollDetail payRollDetail = new PayRollDetail();
+        payRollDetail.setPayRollCode(payRollCode);
+        payRollDetail.setUploadStatus(EUploadStatus.TO_UPLOAD.getCode());
+        return payRollDetailDAO.updatePayRollDetailDeleteStatus(payRollDetail);
     }
 
 }

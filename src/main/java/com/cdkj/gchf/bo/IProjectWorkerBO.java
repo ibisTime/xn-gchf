@@ -26,6 +26,9 @@ public interface IProjectWorkerBO extends IPaginableBO<ProjectWorker> {
 
     void updateProjectWorkerDeleteStatus(String code, String status);
 
+    void fakeDeleteProjectWorker(String projectcode, String teamMasterNo,
+            String corpCode);
+
     public List<ProjectWorker> queryProjectWorkerList(ProjectWorker condition);
 
     void checkDicKeyRequest(XN631693ReqData projectWorkerData);
@@ -34,8 +37,8 @@ public interface IProjectWorkerBO extends IPaginableBO<ProjectWorker> {
 
     public ProjectWorker getProjectWorkerByProjectCode(String code);
 
-    public ProjectWorker getProjectWorkerByIdentity(String idCardType,
-            String idCardNumber);
+    public ProjectWorker getProjectWorkerByIdentity(String teamMasterNo,
+            String idCardType, String idCardNumber);
 
     public void refreshUploadStatus(String code, String status);
 

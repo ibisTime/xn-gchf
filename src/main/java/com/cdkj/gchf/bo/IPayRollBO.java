@@ -18,13 +18,16 @@ public interface IPayRollBO extends IPaginableBO<PayRoll> {
 
     public String savePayRoll(PayRoll payRoll);
 
-    public PayRoll saveAndGetPayRoll(PayRoll payRoll);
-
     public int removePayRoll(String code);
 
     public int refreshPayRoll(PayRoll data);
 
     public int updatePayRollDetail(XN631772Req req);
+
+    int updatePayRollDeleteStatus(String projectCode, String teamMasterNo,
+            String corpCode);
+
+    int updatePayRollDeleteStatus(String payRollCode);
 
     void refreshPayRollCodeByLocal(String code, String payRollCode);
 

@@ -25,6 +25,8 @@ public interface IWorkerAttendanceBO extends IPaginableBO<WorkerAttendance> {
 
     int updateWorkerAttendanceDeleteStatus(String code, String status);
 
+    int fakeDeleteWorkAttendance(String teamMasterNo);
+
     public List<WorkerAttendance> queryWorkerAttendanceList(
             WorkerAttendance condition);
 

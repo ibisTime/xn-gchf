@@ -21,6 +21,7 @@
 		<result column="type" property="type" />
 		<result column="voucher_url" property="voucherUrl" />
 		<result column="upload_status" property="uploadStatus" />
+		<result column="delete_status" property="deleteStatus" />
 	</resultMap>
 	<sql id="where_condition">
 		<trim prefix="WHERE" prefixOverrides="AND | OR">
@@ -70,6 +71,7 @@
 
 		,voucher_url
 		,upload_status
+		,delete_status
 		)
 		VALUES(
 		#{code}
@@ -90,6 +92,7 @@
 		,#{type}
 		,#{voucherUrl}
 		,#{uploadStatus}
+		,#{deleteStatus}
 		)
 	</insert>
 
@@ -111,8 +114,9 @@
 		parameterType="projectWorkerEntryExitHistory">
 		UPDATE thf_project_worker_entry_exit_history
 		SET
-		upload_status = #{uploadStatus}
-		WHERE code = #{code}
+		upload_status =
+		#{uploadStatus}
+		<include refid="where_condition"></include>
 	</update>
 
 	<select id="select_projectWorkerEntryExitHistory" parameterType="projectWorkerEntryExitHistory"

@@ -22,6 +22,7 @@
 		<result column="balance_date" property="balanceDate" />
 		<result column="third_pay_roll_code" property="thirdPayRollCode" />
 		<result column="upload_status" property="uploadStatus" />
+		<result column="delete_status" property="deleteStatus" />
 
 	</resultMap>
 	<sql id="where_condition">
@@ -67,6 +68,7 @@
 		,balance_date
 		,third_pay_roll_code
 		,upload_status
+		,delete_status
 		)
 		VALUES(
 		#{code}
@@ -90,6 +92,7 @@
 		,#{balanceDate}
 		,#{thirdPayRollCode}
 		,#{uploadStatus}
+		,#{deleteStatus}
 		)
 	</insert>
 
@@ -128,9 +131,7 @@
 		thf_pay_roll_detail
 		SET
 		delete_status = #{deleteStatus}
-		WHERE code
-		=
-		#{code}
+		<include refid="where_condition" />
 	</update>
 
 	<update id="update_PayRollDetail_payRollCode" parameterType="payRoll">

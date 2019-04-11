@@ -11,9 +11,9 @@ import com.cdkj.gchf.ao.IProjectAO;
 import com.cdkj.gchf.bo.ICorpBasicinfoBO;
 import com.cdkj.gchf.bo.IProjectBO;
 import com.cdkj.gchf.bo.IProjectBuilderLicenseBO;
-import com.cdkj.gchf.bo.IProjectConfigBO;
 import com.cdkj.gchf.bo.IUserBO;
 import com.cdkj.gchf.bo.base.Paginable;
+import com.cdkj.gchf.common.StringUtil;
 import com.cdkj.gchf.domain.CorpBasicinfo;
 import com.cdkj.gchf.domain.Project;
 import com.cdkj.gchf.domain.ProjectBuilderLicense;
@@ -37,9 +37,6 @@ public class ProjectAOImpl implements IProjectAO {
     @Autowired
     private IUserBO userBO;
 
-    @Autowired
-    private IProjectConfigBO projectConfigBO;
-
     @Override
     @Transactional
     public String addProject(XN631600Req req) {
@@ -58,9 +55,39 @@ public class ProjectAOImpl implements IProjectAO {
                 throw new BizException("XN631600", "建设单位不存在");
             }
         }
+
+        if (StringUtils.isNotBlank(req.getBuildingArea())
+                && !StringUtil.isNumber(req.getBuildingArea())) {
+            throw new BizException("XN631600", "【总面积】为数字类型，请重新填写");
+        }
+
+        if (StringUtils.isNotBlank(req.getBuildingLength())
+                && !StringUtil.isNumber(req.getBuildingLength())) {
+            throw new BizException("XN631600", "【总长度】为数字类型，请重新填写");
+        }
+
+        if (StringUtils.isNotBlank(req.getInvest())
+                && !StringUtil.isNumber(req.getInvest())) {
+            throw new BizException("XN631600", "【总投资】为数字类型，请重新填写");
+        }
+
+        if (StringUtils.isNotBlank(req.getLat())
+                && !StringUtil.isNumber(req.getLat())) {
+            throw new BizException("XN631600", "【经度】为数字类型，请重新填写");
+        }
+
+        if (StringUtils.isNotBlank(req.getLng())
+                && !StringUtil.isNumber(req.getLng())) {
+            throw new BizException("XN631600", "【纬度】为数字类型，请重新填写");
+        }
+
+        // 添加项目
         String projectCode = projectBO.saveProject(req, contractorCorpInfo,
             buildCorpInfo);
+
+        // 添加项目管理员
         userBO.saveProjectAdmin(projectCode, req.getName());
+
         // 添加施工许可证
         projectBuilderLicenseBO.saveProjectBuilderLicense(projectCode,
             req.getBuilderLicenses());

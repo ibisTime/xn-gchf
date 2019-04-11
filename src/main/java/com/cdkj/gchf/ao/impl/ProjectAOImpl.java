@@ -16,8 +16,10 @@ import com.cdkj.gchf.bo.IUserBO;
 import com.cdkj.gchf.bo.base.Paginable;
 import com.cdkj.gchf.domain.CorpBasicinfo;
 import com.cdkj.gchf.domain.Project;
+import com.cdkj.gchf.domain.ProjectBuilderLicense;
 import com.cdkj.gchf.dto.req.XN631600Req;
 import com.cdkj.gchf.dto.req.XN631602Req;
+import com.cdkj.gchf.dto.res.XN631616Res;
 import com.cdkj.gchf.exception.BizException;
 
 @Service
@@ -108,6 +110,21 @@ public class ProjectAOImpl implements IProjectAO {
 
     @Override
     public Project getProject(String code) {
-        return projectBO.getProject(code);
+        Project project = projectBO.getProject(code);
+        return project;
     }
+
+    @Override
+    public Object getProjectAndLicense(String code) {
+        Project project = projectBO.getProject(code);
+        ProjectBuilderLicense condition = new ProjectBuilderLicense();
+        condition.setProjectCode(project.getCode());
+        List<ProjectBuilderLicense> queryProjectBuilderLicenseList = projectBuilderLicenseBO
+            .queryProjectBuilderLicenseList(condition);
+        XN631616Res xn631616Res = new XN631616Res();
+        xn631616Res.setProject(project);
+        xn631616Res.setLicense(queryProjectBuilderLicenseList);
+        return xn631616Res;
+    }
+
 }

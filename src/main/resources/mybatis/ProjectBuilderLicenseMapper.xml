@@ -8,16 +8,21 @@
 		<result column="prj_name" property="prjName" />
 		<result column="builder_license_num" property="builderLicenseNum" />
 	</resultMap>
-	
+
 	<sql id="where_condition">
 		<trim prefix="WHERE" prefixOverrides="AND | OR">
 			<if test="code != null and code != '' ">
 				AND t.code = #{code}
 			</if>
+			<if test="projectCode != null and projectCode != '' ">
+				AND t.project_code = #{projectCode}
+			</if>
 		</trim>
+
 	</sql>
-	
-	<select id="select_projectBuilderLicense" parameterType="projectBuilderLicense" resultMap="projectBuilderLicense_DB_Result">
+
+	<select id="select_projectBuilderLicense" parameterType="projectBuilderLicense"
+		resultMap="projectBuilderLicense_DB_Result">
 		SELECT
 		t.code
 		,t.project_code
@@ -40,7 +45,8 @@
 	</select>
 
 	<insert id="insert_projectBuilderLicense" parameterType="projectBuilderLicense">
-		INSERT INTO
+		INSERT
+		INTO
 		thf_project_builder_license(
 		code
 		,project_code
@@ -56,7 +62,8 @@
 	</insert>
 
 	<delete id="delete_byProject">
-		DELETE FROM thf_project_builder_license WHERE project_code = #{projectCode}
+		DELETE FROM thf_project_builder_license WHERE
+		project_code = #{projectCode}
 	</delete>
-	
+
 </mapper>

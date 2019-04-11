@@ -60,7 +60,7 @@ public class CorpBasicinfo extends ABaseDO {
     private BigDecimal factRegCapital;
 
     // 资本币种
-    private Long capitalCurrencyType;
+    private String capitalCurrencyType;
 
     // 注册日期
     private Date registerDate;
@@ -214,11 +214,11 @@ public class CorpBasicinfo extends ABaseDO {
         this.factRegCapital = factRegCapital;
     }
 
-    public Long getCapitalCurrencyType() {
+    public String getCapitalCurrencyType() {
         return capitalCurrencyType;
     }
 
-    public void setCapitalCurrencyType(Long capitalCurrencyType) {
+    public void setCapitalCurrencyType(String capitalCurrencyType) {
         this.capitalCurrencyType = capitalCurrencyType;
     }
 

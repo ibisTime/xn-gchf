@@ -150,6 +150,7 @@
 		,update_datetime
 		,remark
 		,upload_status
+		,delete_status
 		)
 		VALUES(
 		#{code}
@@ -204,6 +205,7 @@
 		,#{updateDatetime}
 		,#{remark}
 		,#{uploadStatus}
+		,#{deleteStatus}
 		)
 	</insert>
 	<delete id="delete_projectWorker" parameterType="projectWorker">

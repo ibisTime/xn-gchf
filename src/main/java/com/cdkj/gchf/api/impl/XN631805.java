@@ -5,6 +5,7 @@ import org.springframework.beans.BeanUtils;
 
 import com.cdkj.gchf.ao.IWorkerInfoAO;
 import com.cdkj.gchf.api.AProcessor;
+import com.cdkj.gchf.common.DateUtil;
 import com.cdkj.gchf.core.ObjValidater;
 import com.cdkj.gchf.core.StringValidater;
 import com.cdkj.gchf.domain.WorkerInfo;
@@ -32,7 +33,15 @@ public class XN631805 extends AProcessor {
     public Object doBusiness() throws BizException {
         WorkerInfo workerInfo = new WorkerInfo();
         BeanUtils.copyProperties(req, workerInfo);
-
+        if (StringUtils.isNotBlank(req.getCreateDatetimeStart())) {
+            workerInfo.setCreateDatetimeStart(
+                DateUtil.strToDate(req.getCreateDatetimeStart(),
+                    DateUtil.FRONT_DATE_FORMAT_STRING));
+        }
+        if (StringUtils.isNotBlank(req.getCreateDatetimeEnd())) {
+            workerInfo.setCreateDatetimeEnd(DateUtil.strToDate(
+                req.getCreateDatetimeEnd(), DateUtil.FRONT_DATE_FORMAT_STRING));
+        }
         String orderColumn = req.getOrderColumn();
         int start = StringValidater.toInteger(req.getStart());
         int limit = StringValidater.toInteger(req.getLimit());

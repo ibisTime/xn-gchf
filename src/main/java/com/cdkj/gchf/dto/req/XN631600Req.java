@@ -75,6 +75,9 @@ public class XN631600Req {
     // 项目地址
     private String address;
 
+    // 货币币种
+    private String capitalCurrencyType;
+
     // 立项文号
     private String approvalNum;
 
@@ -326,6 +329,14 @@ public class XN631600Req {
 
     public void setLat(String lat) {
         this.lat = lat;
+    }
+
+    public String getCapitalCurrencyType() {
+        return capitalCurrencyType;
+    }
+
+    public void setCapitalCurrencyType(String capitalCurrencyType) {
+        this.capitalCurrencyType = capitalCurrencyType;
     }
 
 }

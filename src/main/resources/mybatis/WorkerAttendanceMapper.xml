@@ -58,6 +58,9 @@
 			<if test="date != null and date != '' ">
 				AND t.date = #{date}
 			</if>
+			<if test="deleteStatus != null and deleteStatus != '' ">
+				AND t.delete_status = #{deleteStatus}
+			</if>
 		</trim>
 	</sql>
 

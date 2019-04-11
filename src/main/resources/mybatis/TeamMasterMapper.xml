@@ -51,6 +51,9 @@
 			<if test="teamSysNo != null and teamSysNo != '' ">
 				AND t.team_sys_no = #{teamSysNo}
 			</if>
+			<if test="deleteStatus != null and deleteStatus != '' ">
+				AND t.delete_status = #{deleteStatus}
+			</if>
 		</trim>
 	</sql>
 
@@ -79,6 +82,7 @@
 
 		,t.parent_code
 		,t.upload_status
+		,t.delete_status
 		FROM
 		thf_team_master t
 		<include refid="where_condition" />
@@ -120,6 +124,7 @@
 		,exit_time
 		,parent_code
 		,upload_status
+		,delete_status
 		)
 		VALUES(
 		#{code}
@@ -144,6 +149,7 @@
 		,#{exitTime}
 		,#{parentCode}
 		,#{uploadStatus}
+		,#{deleteStatus}
 		)
 	</insert>
 
@@ -182,6 +188,7 @@
 		delete_status = #{deleteStatus}
 		<include refid="where_condition"></include>
 	</update>
+	
 	<update id="update_teamMasterTeamSysNo" parameterType="teamMaster">
 		UPDATE
 		thf_team_master

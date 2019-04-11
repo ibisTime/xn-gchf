@@ -89,6 +89,9 @@
 			<if test="uploadStatus != null and uploadStatus != '' ">
 				AND t.upload_status = #{uploadStatus}
 			</if>
+			<if test="deleteStatus != null and deleteStatus != '' ">
+				AND t.delete_status = #{deleteStatus}
+			</if>
 		</trim>
 	</sql>
 
@@ -308,6 +311,7 @@
 		,t.update_datetime
 		,t.remark
 		,t.upload_status
+		,t.delete_status
 		FROM
 		thf_project_worker t
 		<include refid="where_condition" />

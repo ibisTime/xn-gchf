@@ -5,6 +5,8 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
 
+import org.apache.commons.lang3.StringUtils;
+
 import com.cdkj.gchf.exception.BizException;
 
 /**
@@ -57,6 +59,11 @@ public enum EProjectCorpType {
     }
 
     public static void checkExists(String code) {
+
+        if (StringUtils.isBlank(code)) {
+            return;
+        }
+
         Map<String, EProjectCorpType> map = getProjectCorpTypeMap();
         EProjectCorpType projectCorpType = map.get(code);
         if (null == projectCorpType) {

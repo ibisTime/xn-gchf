@@ -1,5 +1,6 @@
 package com.cdkj.gchf.bo.impl;
 
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -18,6 +19,7 @@ import com.cdkj.gchf.bo.IUserBO;
 import com.cdkj.gchf.bo.base.Paginable;
 import com.cdkj.gchf.bo.base.PaginableBOImpl;
 import com.cdkj.gchf.common.AesUtils;
+import com.cdkj.gchf.common.DateUtil;
 import com.cdkj.gchf.core.OrderNoGenerater;
 import com.cdkj.gchf.dao.IProjectCorpInfoDAO;
 import com.cdkj.gchf.domain.CorpBasicinfo;
@@ -26,6 +28,7 @@ import com.cdkj.gchf.domain.ProjectCorpInfo;
 import com.cdkj.gchf.domain.User;
 import com.cdkj.gchf.dto.req.XN631630Req;
 import com.cdkj.gchf.dto.req.XN631632Req;
+import com.cdkj.gchf.dto.req.XN631633ReqList;
 import com.cdkj.gchf.dto.req.XN631905Req;
 import com.cdkj.gchf.dto.req.XN631906Req;
 import com.cdkj.gchf.dto.req.XN631907Req;
@@ -184,8 +187,35 @@ public class ProjectCorpInfoBOImpl extends PaginableBOImpl<ProjectCorpInfo>
     }
 
     @Override
-    public int saveProjectCorpInfo(ProjectCorpInfo projectCorpInfo) {
-        return projectCorpInfoDAO.insert(projectCorpInfo);
+    public String saveProjectCorpInfo(ProjectConfig projectConfig,
+            XN631633ReqList req) {
+        ProjectCorpInfo projectCorpInfo = new ProjectCorpInfo();
+
+        String code = OrderNoGenerater
+            .generate(EGeneratePrefix.ProjectCorpInfo.getCode());
+        projectCorpInfo.setCode(code);
+
+        BeanUtils.copyProperties(req, projectCorpInfo);
+        projectCorpInfo.setCorpCode(req.getCorpCode());
+        projectCorpInfo.setCorpName(req.getCorpName());
+        projectCorpInfo.setProjectCode(projectConfig.getProjectCode());
+        projectCorpInfo.setProjectName(projectConfig.getProjectName());
+        projectCorpInfo.setUploadStatus(EUploadStatus.TO_UPLOAD.getCode());
+
+        if (StringUtils.isNotBlank(req.getEntryTime())) {
+            Date entryTime = DateUtil.strToDate(req.getEntryTime(),
+                DateUtil.FRONT_DATE_FORMAT_STRING);
+            projectCorpInfo.setEntryTime(entryTime);
+        }
+        if (StringUtils.isNotBlank(req.getExitTime())) {
+            Date exitTime = DateUtil.strToDate(req.getExitTime(),
+                DateUtil.FRONT_DATE_FORMAT_STRING);
+            projectCorpInfo.setEntryTime(exitTime);
+        }
+
+        projectCorpInfoDAO.insert(projectCorpInfo);
+
+        return code;
     }
 
     @Override

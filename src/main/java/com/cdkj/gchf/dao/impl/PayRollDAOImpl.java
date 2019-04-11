@@ -55,4 +55,10 @@ public class PayRollDAOImpl extends AMybatisTemplate implements IPayRollDAO {
         return super.update(NAMESPACE.concat("update_payRoll"), payRoll);
     }
 
+    @Override
+    public int updatePayRollDeleteStatus(PayRoll payRoll) {
+        return super.update(NAMESPACE.concat("update_payRoll_delete_status"),
+            payRoll);
+    }
+
 }

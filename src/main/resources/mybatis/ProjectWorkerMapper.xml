@@ -224,8 +224,7 @@
 		thf_project_worker
 		SET
 		delete_status = #{deleteStatus}
-		WHERE code =
-		#{code}
+		<include refid="where_condition" />
 	</update>
 
 	<update id="update_projectWorker" parameterType="projectWorker">

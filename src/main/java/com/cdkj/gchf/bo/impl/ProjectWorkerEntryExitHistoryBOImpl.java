@@ -252,4 +252,17 @@ public class ProjectWorkerEntryExitHistoryBOImpl
         return projectWorkerEntryExitHistoryDAO.selectList(condition).get(0);
     }
 
+    @Override
+    public void fakeDeleteProjectWorkerEntryHistory(String ProjectCode,
+            String teamMasterCode) {
+        ProjectWorkerEntryExitHistory projectWorkerEntryExitHistory = new ProjectWorkerEntryExitHistory();
+        projectWorkerEntryExitHistory.setProjectCode(ProjectCode);
+        projectWorkerEntryExitHistory.setTeamSysNo(teamMasterCode);
+        projectWorkerEntryExitHistory
+            .setUploadStatus(EUploadStatus.TO_UPLOAD.getCode());
+        projectWorkerEntryExitHistoryDAO
+            .updateProjectWorkerEntryHistoryDeleteStatus(
+                projectWorkerEntryExitHistory);
+    }
+
 }

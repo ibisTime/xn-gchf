@@ -213,4 +213,20 @@ public class WorkerContractBOImpl extends PaginableBOImpl<WorkerContract>
         workerContractDAO.updateWorkerContractStatus(workerContract);
     }
 
+    @Override
+    public void fakeDeleteWorkerContract(String workerCode) {
+        WorkerContract workerContract = new WorkerContract();
+        workerContract.setWorkerCode(workerCode);
+        workerContract.setUploadStatus(EUploadStatus.TO_UPLOAD.getCode());
+        workerContractDAO.updateWorkerContractDeleteStatus(workerContract);
+    }
+
+    @Override
+    public void fakeDeleteWorkerContractByProjectCode(String projectCode) {
+        WorkerContract workerContract = new WorkerContract();
+        workerContract.setProjectCode(projectCode);
+        workerContract.setUploadStatus(EUploadStatus.TO_UPLOAD.getCode());
+        workerContractDAO.updateWorkerContractDeleteStatus(workerContract);
+    }
+
 }

@@ -14,14 +14,20 @@ import com.cdkj.gchf.ao.IProjectWorkerAO;
 import com.cdkj.gchf.api.impl.XN631693ReqData;
 import com.cdkj.gchf.bo.ICorpBasicinfoBO;
 import com.cdkj.gchf.bo.IOperateLogBO;
+import com.cdkj.gchf.bo.IPayRollBO;
+import com.cdkj.gchf.bo.IPayRollDetailBO;
 import com.cdkj.gchf.bo.IProjectBO;
 import com.cdkj.gchf.bo.IProjectConfigBO;
 import com.cdkj.gchf.bo.IProjectWorkerBO;
+import com.cdkj.gchf.bo.IProjectWorkerEntryExitHistoryBO;
 import com.cdkj.gchf.bo.ITeamMasterBO;
 import com.cdkj.gchf.bo.IUserBO;
+import com.cdkj.gchf.bo.IWorkerAttendanceBO;
+import com.cdkj.gchf.bo.IWorkerContractBO;
 import com.cdkj.gchf.bo.IWorkerInfoBO;
 import com.cdkj.gchf.bo.base.Paginable;
 import com.cdkj.gchf.domain.CorpBasicinfo;
+import com.cdkj.gchf.domain.PayRollDetail;
 import com.cdkj.gchf.domain.Project;
 import com.cdkj.gchf.domain.ProjectConfig;
 import com.cdkj.gchf.domain.ProjectWorker;
@@ -78,6 +84,21 @@ public class ProjectWorkerAOImpl implements IProjectWorkerAO {
     @Autowired
     private IProjectBO projectBO;
 
+    @Autowired
+    private IPayRollBO payRollBO;
+
+    @Autowired
+    private IPayRollDetailBO payRollDetailBO;
+
+    @Autowired
+    private IWorkerContractBO workerContractBO;
+
+    @Autowired
+    private IWorkerAttendanceBO workerAttendanceBO;
+
+    @Autowired
+    private IProjectWorkerEntryExitHistoryBO projectWorkerEntryExitHistoryBO;
+
     @Override
     public String addProjectWorker(XN631690Req req) {
 
@@ -117,12 +138,36 @@ public class ProjectWorkerAOImpl implements IProjectWorkerAO {
 
     @Override
     public void dropProjectWorker(String code) {
-        if (projectWorkerBO.getProjectWorker(code).getUploadStatus()
+        ProjectWorker projectWorker = projectWorkerBO.getProjectWorker(code);
+        if (projectWorker.getUploadStatus()
             .equals(EUploadStatus.UPLOAD_UNEDITABLE.getCode())) {
             throw new BizException("XN631691", "班组人员已上传,无法删除");
         }
         projectWorkerBO.updateProjectWorkerDeleteStatus(code,
             EDeleteStatus.DELETED.getCode());
+
+        workerContractBO.fakeDeleteWorkerContract(code);
+
+        workerAttendanceBO.updateWorkerAttendanceDeleteStatus(code,
+            EDeleteStatus.DELETED.getCode());
+
+        projectWorkerEntryExitHistoryBO
+            .updateProjectWorkerEntryExitHistoryDeleteStatus(code,
+                EDeleteStatus.DELETED.getCode());
+
+        payRollBO.updatePayRollDeleteStatus(projectWorker.getProjectCode(),
+            projectWorker.getTeamSysNo(), projectWorker.getCorpCode());
+
+        PayRollDetail condition = new PayRollDetail();
+        condition.setIdcardType(projectWorker.getIdcardType());
+        condition.setIdcardNumber(projectWorker.getIdcardNumber());
+        List<PayRollDetail> queryList = payRollDetailBO.queryList(condition);
+        for (PayRollDetail payRollDetail : queryList) {
+            String payRollCode = payRollDetail.getPayRollCode();
+            payRollBO.updatePayRollDeleteStatus(payRollCode);
+        }
+        payRollDetailBO.fakeDeletePayRollDetail(projectWorker.getIdcardType(),
+            projectWorker.getIdcardNumber(), projectWorker.getProjectCode());
     }
 
     @Override

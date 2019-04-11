@@ -162,7 +162,7 @@
 		SET
 		delete_status = #{deleteStatus}
 		WHERE
-		code = #{code}
+		<include refid="where_condition"></include>
 	</update>
 
 	<delete id="delete_projectCorpInfo" parameterType="string">

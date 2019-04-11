@@ -33,6 +33,7 @@ import com.cdkj.gchf.dto.req.XN631910Req;
 import com.cdkj.gchf.dto.req.XN631920Req;
 import com.cdkj.gchf.dto.req.XN631920ReqDateil;
 import com.cdkj.gchf.dto.req.XN631921Req;
+import com.cdkj.gchf.enums.EDeleteStatus;
 import com.cdkj.gchf.enums.EGeneratePrefix;
 import com.cdkj.gchf.exception.BizException;
 import com.cdkj.gchf.gov.GovConnecter;
@@ -222,18 +223,6 @@ public class PayRollBOImpl extends PaginableBOImpl<PayRoll>
     }
 
     @Override
-    public PayRoll saveAndGetPayRoll(PayRoll payRoll) {
-        String code = null;
-        if (payRoll == null) {
-            throw new BizException("工资单信息不能为空");
-        }
-        code = OrderNoGenerater.generate(EGeneratePrefix.PayRoll.getCode());
-        payRoll.setCode(code);
-        payRollDAO.insert(payRoll);
-        return payRoll;
-    }
-
-    @Override
     public int updatePayRollDetail(XN631772Req req) {
         PayRoll condition = new PayRoll();
         condition.setCode(req.getCode());
@@ -262,6 +251,25 @@ public class PayRollBOImpl extends PaginableBOImpl<PayRoll>
             DateUtil.strToDate(payMonth, DateUtil.FRONT_DATE_FORMAT_STRING));
 
         return payRollDAO.select(payRoll);
+    }
+
+    @Override
+    public int updatePayRollDeleteStatus(String projectCode,
+            String teamMasterNo, String corpCode) {
+        PayRoll payRoll = new PayRoll();
+        payRoll.setCorpCode(corpCode);
+        payRoll.setProjectCode(projectCode);
+        payRoll.setCorpCode(corpCode);
+        payRoll.setDeleteStatus(EDeleteStatus.NORMAL.getCode());
+        return payRollDAO.updatePayRollDeleteStatus(payRoll);
+    }
+
+    @Override
+    public int updatePayRollDeleteStatus(String payRollCode) {
+        PayRoll payRoll = new PayRoll();
+        payRoll.setPayRollCode(payRollCode);
+        payRoll.setDeleteStatus(EDeleteStatus.NORMAL.getCode());
+        return payRollDAO.updatePayRollDeleteStatus(payRoll);
     }
 
 }

@@ -23,6 +23,10 @@ public interface IWorkerContractBO extends IPaginableBO<WorkerContract> {
 
     void updateWorkerContractDeleteStatus(String code, String status);
 
+    void fakeDeleteWorkerContract(String workerCode);
+
+    void fakeDeleteWorkerContractByProjectCode(String projectCode);
+
     public List<WorkerContract> queryWorkerContractList(
             WorkerContract condition);
 

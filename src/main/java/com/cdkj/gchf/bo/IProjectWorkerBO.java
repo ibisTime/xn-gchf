@@ -27,6 +27,9 @@ public interface IProjectWorkerBO extends IPaginableBO<ProjectWorker> {
 
     public void refreshUploadStatus(String code, String status);
 
+    void fakeDeleteProjectWorker(String projectcode, String teamMasterNo,
+            String corpCode);
+
     public List<ProjectWorker> queryProjectWorkerList(ProjectWorker condition);
 
     public ProjectWorker getProjectWorker(String code);
@@ -36,8 +39,8 @@ public interface IProjectWorkerBO extends IPaginableBO<ProjectWorker> {
 
     public ProjectWorker getProjectWorkerByProjectCode(String code);
 
-    public ProjectWorker getProjectWorkerByIdentity(String idCardType,
-            String idCardNumber);
+    public ProjectWorker getProjectWorkerByIdentity(String teamMasterNo,
+            String idCardType, String idCardNumber);
 
     public JsonObject getProjectWorkerJson(ProjectWorker projectWorker,
             ProjectConfig projectConfig);

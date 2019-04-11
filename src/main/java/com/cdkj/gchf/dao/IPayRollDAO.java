@@ -10,4 +10,6 @@ public interface IPayRollDAO extends IBaseDAO<PayRoll> {
 
     int updatePayRollCode(PayRoll payRoll);
 
+    int updatePayRollDeleteStatus(PayRoll payRoll);
+
 }

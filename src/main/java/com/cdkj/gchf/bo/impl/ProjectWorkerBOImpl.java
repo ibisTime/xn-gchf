@@ -314,9 +314,10 @@ public class ProjectWorkerBOImpl extends PaginableBOImpl<ProjectWorker>
     }
 
     @Override
-    public ProjectWorker getProjectWorkerByIdentity(String idCardType,
-            String idCardNumber) {
+    public ProjectWorker getProjectWorkerByIdentity(String teamSysNo,
+            String idCardType, String idCardNumber) {
         ProjectWorker projectWorker = new ProjectWorker();
+        projectWorker.setTeamSysNo(teamSysNo);
         projectWorker.setIdcardNumber(idCardNumber);
         projectWorker.setIdcardType(idCardType);
         ProjectWorker infoByCondition = projectWorkerDAO.select(projectWorker);
@@ -402,4 +403,14 @@ public class ProjectWorkerBOImpl extends PaginableBOImpl<ProjectWorker>
         return jsonObject;
     }
 
+    @Override
+    public void fakeDeleteProjectWorker(String projectcode, String teamMasterNo,
+            String corpCode) {
+        ProjectWorker projectWorker = new ProjectWorker();
+        projectWorker.setUploadStatus(EUploadStatus.TO_UPLOAD.getCode());
+        projectWorker.setProjectCode(projectcode);
+        projectWorker.setTeamSysNo(teamMasterNo);
+        projectWorker.setCorpCode(corpCode);
+        projectWorkerDAO.updateProjectWorkerDeleteStatus(projectWorker);
+    }
 }

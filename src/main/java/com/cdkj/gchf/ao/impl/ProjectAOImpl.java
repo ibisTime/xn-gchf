@@ -56,7 +56,6 @@ public class ProjectAOImpl implements IProjectAO {
         if (null != preProject) {
             throw new BizException("XN631600", "项目名称已存在，请重新输入");
         }
-
         String buildCorpName = null;
         if (StringUtils.isNotBlank(req.getBuildCorpCode())) {
             CorpBasicinfo buildCorpInfo = corpBasicinfoBO
@@ -123,13 +122,35 @@ public class ProjectAOImpl implements IProjectAO {
             }
         }
 
+        if (StringUtils.isNotBlank(req.getBuildingArea())
+                && !StringUtil.isNumber(req.getBuildingArea())) {
+            throw new BizException("XN631600", "【总面积】为数字类型，请重新填写");
+        }
+
+        if (StringUtils.isNotBlank(req.getBuildingLength())
+                && !StringUtil.isNumber(req.getBuildingLength())) {
+            throw new BizException("XN631600", "【总长度】为数字类型，请重新填写");
+        }
+
+        if (StringUtils.isNotBlank(req.getInvest())
+                && !StringUtil.isNumber(req.getInvest())) {
+            throw new BizException("XN631600", "【总投资】为数字类型，请重新填写");
+        }
+
+        if (StringUtils.isNotBlank(req.getLat())
+                && !StringUtil.isNumber(req.getLat())) {
+            throw new BizException("XN631600", "【经度】为数字类型，请重新填写");
+        }
+
+        if (StringUtils.isNotBlank(req.getLng())
+                && !StringUtil.isNumber(req.getLng())) {
+            throw new BizException("XN631600", "【纬度】为数字类型，请重新填写");
+        }
+
         CorpBasicinfo buildCorpInfo = null;
         if (StringUtils.isNotBlank(req.getBuildCorpCode())) {
             buildCorpInfo = corpBasicinfoBO
                 .getCorpBasicinfoByCorp(req.getBuildCorpCode());
-            if (null == buildCorpInfo) {
-                throw new BizException("XN631600", "建设单位不存在");
-            }
         }
 
         // 删除旧的施工许可证

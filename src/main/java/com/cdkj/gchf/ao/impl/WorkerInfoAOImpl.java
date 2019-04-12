@@ -92,10 +92,6 @@ public class WorkerInfoAOImpl implements IWorkerInfoAO {
 
     @Override
     public int addWorkerInfoContact(XN631792Req req) {
-        WorkerInfo workerInfo = workerInfoBO.getWorkerInfo(req.getCode());
-        if (workerInfo.getCellPhone() != null) {
-            throw new BizException("XN631792", "手机号已录入");
-        }
         return workerInfoBO.refreshWorkerInfo(req);
     }
 

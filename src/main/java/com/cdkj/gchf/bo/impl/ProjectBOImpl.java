@@ -89,9 +89,6 @@ public class ProjectBOImpl extends PaginableBOImpl<Project>
         Project project = new Project();
         BeanUtils.copyProperties(req, project);
         project.setContractorCorpName(contractorCorpInfo.getCorpName());
-        project.setInvest(new BigDecimal(req.getInvest()));
-        project.setBuildingArea(new BigDecimal(req.getBuildingArea()));
-        project.setBuildingLength(new BigDecimal(req.getBuildingLength()));
         if (StringUtils.isNotBlank(req.getStartDate())) {
             project.setStartDate(DateUtil.strToDate(req.getStartDate(),
                 DateUtil.FRONT_DATE_FORMAT_STRING));
@@ -101,9 +98,26 @@ public class ProjectBOImpl extends PaginableBOImpl<Project>
                 DateUtil.FRONT_DATE_FORMAT_STRING));
         }
         project.setPrjStatus(req.getPrjStatus());
-        project.setLat(new BigDecimal(req.getLat()));
-        project.setLng(new BigDecimal(req.getLng()));
-        project.setBuildCorpName(buildCorpInfo.getCorpName());
+
+        if (StringUtils.isNotBlank(req.getInvest())) {
+            project.setInvest(new BigDecimal(req.getInvest()));
+        }
+        if (StringUtils.isNotBlank(req.getBuildingArea())) {
+            project.setBuildingArea(new BigDecimal(req.getBuildingArea()));
+        }
+        if (StringUtils.isNotBlank(req.getBuildingLength())) {
+            project.setBuildingLength(new BigDecimal(req.getBuildingLength()));
+        }
+        if (StringUtils.isNotBlank(req.getLat())) {
+            project.setLat(new BigDecimal(req.getLat()));
+        }
+        if (StringUtils.isNotBlank(req.getLng())) {
+            project.setLng(new BigDecimal(req.getLng()));
+        }
+
+        if (null != buildCorpInfo) {
+            project.setBuildCorpName(buildCorpInfo.getCorpName());
+        }
 
         projectDAO.update(project);
     }

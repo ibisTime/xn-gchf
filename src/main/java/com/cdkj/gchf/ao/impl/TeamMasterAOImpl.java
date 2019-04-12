@@ -28,7 +28,6 @@ import com.cdkj.gchf.common.AesUtils;
 import com.cdkj.gchf.common.DateUtil;
 import com.cdkj.gchf.domain.CorpBasicinfo;
 import com.cdkj.gchf.domain.ProjectConfig;
-import com.cdkj.gchf.domain.ProjectCorpInfo;
 import com.cdkj.gchf.domain.ProjectWorker;
 import com.cdkj.gchf.domain.TeamMaster;
 import com.cdkj.gchf.domain.User;
@@ -77,9 +76,6 @@ public class TeamMasterAOImpl implements ITeamMasterAO {
 
     @Autowired
     private IWorkerAttendanceBO workerAttendanceBO;
-
-    @Autowired
-    private IProjectWorkerEntryExitHistoryBO ProjectCorpInfo;
 
     @Autowired
     private IPayRollBO payRollBO;
@@ -271,39 +267,39 @@ public class TeamMasterAOImpl implements ITeamMasterAO {
     @Override
     public void importTeamMaster(XN631653Req req) {
         User user = userBO.getBriefUser(req.getUserId());
-        ProjectConfig projectConfigByProject = projectConfigBO
-            .getProjectConfigByLocal(req.getProjectCode());
-        if (projectConfigByProject == null) {
-            throw new BizException("XN631654", "项目不存在" + req.getProjectCode());
-        }
+
         // 根据corpCode获取企业信息
-        List<XN631653ReqData> dateList = req.getDateList();
-        for (XN631653ReqData xn631653ReqData : dateList) {
-            // ProjectCorpInfo projectCorpInfo = projectCorpInfoBO
-            // .getProjectCorpInfoByCorpCode(xn631653ReqData.getCorpCode());
-            ProjectCorpInfo condition = new ProjectCorpInfo();
-            condition.setProjectCode(req.getProjectCode());
-            ProjectCorpInfo projectCorpInfo = projectCorpInfoBO
-                .getProjectCorpInfo(condition);
-            if (projectCorpInfo == null) {
-                continue;
+        for (XN631653ReqData reqData : req.getDateList()) {
+
+            CorpBasicinfo corpBasicinfo = corpBasicinfoBO
+                .getCorpBasicinfoByCorp(reqData.getCorpCode());
+            if (corpBasicinfo == null) {
+                throw new BizException("XN631650",
+                    "企业信息【" + reqData.getCorpName() + "】不存在");
             }
+
+            TeamMaster preTeamMaster = teamMasterBO.getTeamMasterByProject(
+                req.getProjectCode(), reqData.getCorpCode(),
+                reqData.getTeamName());
+            if (null != preTeamMaster) {
+                throw new BizException("XN631650",
+                    "班组名称【" + reqData.getTeamName() + "】已存在，请重新输入");
+            }
+
             TeamMaster teamMaster = new TeamMaster();
-            BeanUtils.copyProperties(xn631653ReqData, teamMaster);
-            if (StringUtils.isNotBlank(xn631653ReqData.getEntryTime())) {
-                Date entryTime = DateUtil.strToDate(
-                    xn631653ReqData.getEntryTime(),
+            BeanUtils.copyProperties(reqData, teamMaster);
+            if (StringUtils.isNotBlank(reqData.getEntryTime())) {
+                Date entryTime = DateUtil.strToDate(reqData.getEntryTime(),
                     DateUtil.FRONT_DATE_FORMAT_STRING);
                 teamMaster.setEntryTime(entryTime);
             }
-            if (StringUtils.isNotBlank(xn631653ReqData.getExitTime())) {
-                Date exitTime = DateUtil.strToDate(
-                    xn631653ReqData.getExitTime(),
+            if (StringUtils.isNotBlank(reqData.getExitTime())) {
+                Date exitTime = DateUtil.strToDate(reqData.getExitTime(),
                     DateUtil.FRONT_DATE_FORMAT_STRING);
                 teamMaster.setEntryTime(exitTime);
             }
             teamMaster.setProjectCode(req.getProjectCode());
-            teamMaster.setCorpName(projectCorpInfo.getCorpName());
+            teamMaster.setCorpName(corpBasicinfo.getCorpName());
             teamMaster.setUploadStatus(EUploadStatus.TO_UPLOAD.getCode());
             teamMaster.setDeleteStatus(EDeleteStatus.NORMAL.getCode());
             String code = teamMasterBO.saveTeamMaster(teamMaster);

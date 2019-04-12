@@ -48,6 +48,7 @@ CREATE TABLE `thf_bank_card_info` (
   `business_sys_no` varchar(32) NOT NULL COMMENT '业务编号',
   `business_name` varchar(50) DEFAULT NULL COMMENT '业务名称',
   `bank_name` varchar(50) NOT NULL COMMENT '银行支行名称',
+  `bank_code` varchar(10) DEFAULT NULL COMMENT '银行卡字典编号',
   `bank_number` varchar(30) NOT NULL COMMENT '银行账户',
   `bank_link_number` varchar(30) NOT NULL COMMENT '银行联号',
   `create_datetime` datetime DEFAULT NULL COMMENT '创建时间',

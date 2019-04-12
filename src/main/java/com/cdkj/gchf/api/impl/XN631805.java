@@ -33,6 +33,7 @@ public class XN631805 extends AProcessor {
     public Object doBusiness() throws BizException {
         WorkerInfo workerInfo = new WorkerInfo();
         BeanUtils.copyProperties(req, workerInfo);
+
         if (StringUtils.isNotBlank(req.getCreateDatetimeStart())) {
             workerInfo.setCreateDatetimeStart(
                 DateUtil.strToDate(req.getCreateDatetimeStart(),

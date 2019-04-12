@@ -49,6 +49,9 @@
 			<if test="type != null ">
 				AND t.type = #{type}
 			</if>
+			<if test="deleteStatus != null and deleteStatus != '' ">
+				AND t.delete_status = #{deleteStatus}
+			</if>
 		</trim>
 	</sql>
 

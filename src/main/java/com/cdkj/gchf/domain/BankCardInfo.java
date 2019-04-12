@@ -26,6 +26,9 @@ public class BankCardInfo extends ABaseDO {
     // 银行支行名称
     private String bankName;
 
+    // 银行卡代码
+    private String bankCode;
+
     // 银行支行名称
     private String bankNumber;
 
@@ -152,6 +155,14 @@ public class BankCardInfo extends ABaseDO {
 
     public void setBusinessName(String businessName) {
         this.businessName = businessName;
+    }
+
+    public String getBankCode() {
+        return bankCode;
+    }
+
+    public void setBankCode(String bankCode) {
+        this.bankCode = bankCode;
     }
 
 }

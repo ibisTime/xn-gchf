@@ -1,10 +1,12 @@
 package com.cdkj.gchf.bo.impl;
 
 import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -29,6 +31,7 @@ import com.cdkj.gchf.domain.User;
 import com.cdkj.gchf.domain.WorkerAttendance;
 import com.cdkj.gchf.dto.req.XN631710Req;
 import com.cdkj.gchf.dto.req.XN631712Req;
+import com.cdkj.gchf.dto.req.XN631713ReqData;
 import com.cdkj.gchf.dto.req.XN631918Req;
 import com.cdkj.gchf.dto.req.XN631918ReqData;
 import com.cdkj.gchf.dto.req.XN631919Req;
@@ -256,6 +259,34 @@ public class WorkerAttendanceBOImpl extends PaginableBOImpl<WorkerAttendance>
             .generate(EGeneratePrefix.WorkerAttendance.getCode());
         workerAttendance.setCode(code);
         workerAttendanceDAO.insert(workerAttendance);
+        return code;
+    }
+
+    @Override
+    public String saveWorkerAttendance(String projectCode, XN631713ReqData data,
+            ProjectWorker projectWorker, WorkerAttendance workerAttendance) {
+        String code = null;
+        // Operate
+        BeanUtils.copyProperties(data, workerAttendance);
+        BeanUtils.copyProperties(projectWorker, workerAttendance);
+
+        TeamMaster condition = new TeamMaster();
+        condition.setCorpCode(data.getCorpCode());
+        condition.setProjectCode(projectCode);
+        condition.setTeamName(data.getTeamName());
+        TeamMaster masterByCondition = teamMasterBO
+            .getTeamMasterByCondition(condition);
+        workerAttendance.setTeamSysNo(masterByCondition.getCode());
+        if (StringUtils.isNotBlank(data.getDate())) {
+            Date date = DateUtil.strToDate(data.getDate(),
+                DateUtil.FRONT_DATE_FORMAT_STRING);
+            workerAttendance.setDate(date);
+        }
+        workerAttendance.setUploadStatus(EUploadStatus.TO_UPLOAD.getCode());
+        workerAttendance.setDeleteStatus(EDeleteStatus.NORMAL.getCode());
+        code = OrderNoGenerater
+            .generate(EGeneratePrefix.WorkerAttendance.getCode());
+        workerAttendance.setCode(code);
         return code;
     }
 

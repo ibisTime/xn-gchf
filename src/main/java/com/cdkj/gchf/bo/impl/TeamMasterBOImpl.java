@@ -275,9 +275,12 @@ public class TeamMasterBOImpl extends PaginableBOImpl<TeamMaster>
     public TeamMaster getTeamMasterByProject(String ProjectCode,
             String corpCode, String TeamMasterName) {
         TeamMaster condition = new TeamMaster();
+
         condition.setProjectCode(ProjectCode);
         condition.setCorpCode(corpCode);
         condition.setTeamName(TeamMasterName);
+        condition.setDeleteStatus(EDeleteStatus.NORMAL.getCode());
+
         return teamMasterDAO.select(condition);
 
     }

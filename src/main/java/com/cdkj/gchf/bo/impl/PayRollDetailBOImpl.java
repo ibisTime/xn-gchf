@@ -20,6 +20,7 @@ import com.cdkj.gchf.dao.impl.PayRollDetailDAOImpl;
 import com.cdkj.gchf.domain.PayRoll;
 import com.cdkj.gchf.domain.PayRollDetail;
 import com.cdkj.gchf.domain.ProjectConfig;
+import com.cdkj.gchf.domain.ProjectWorker;
 import com.cdkj.gchf.domain.TeamMaster;
 import com.cdkj.gchf.dto.req.XN631770ReqDetail;
 import com.cdkj.gchf.dto.req.XN631772Req;
@@ -29,6 +30,7 @@ import com.cdkj.gchf.enums.EDeleteStatus;
 import com.cdkj.gchf.enums.EGeneratePrefix;
 import com.cdkj.gchf.enums.EIsNotType;
 import com.cdkj.gchf.enums.EUploadStatus;
+import com.cdkj.gchf.exception.BizException;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 
@@ -42,8 +44,8 @@ public class PayRollDetailBOImpl extends PaginableBOImpl<PayRollDetail>
     private IProjectWorkerBO projectWorkerBO;
 
     @Override
-    public void savePayRollDetail(String projectCode, String getPayMonth,
-            List<XN631770ReqDetail> data) {
+    public void savePayRollDetail(String teamMasterNo, String projectCode,
+            String getPayMonth, List<XN631770ReqDetail> data) {
 
         for (XN631770ReqDetail xn631770ReqDetail : data) {
             String code = OrderNoGenerater
@@ -57,16 +59,17 @@ public class PayRollDetailBOImpl extends PaginableBOImpl<PayRollDetail>
             }
             payRollDetail
                 .setWorkHours(new BigDecimal(xn631770ReqDetail.getWorkHours()));
-            // ProjectWorker workerByIdCardNumber = projectWorkerBO
-            // .getProjectWorkerByIdentity(xn631770ReqDetail.gettexn631770ReqDetail.getIdCardType(),
-            // xn631770ReqDetail.getIdCardNumber());
-            // if (workerByIdCardNumber == null) {
-            // throw new BizException("XN631770", "项目人员不存在");
-            // }
-            // payRollDetail.setWorkerName(workerByIdCardNumber.getWorkerName());
-            // payRollDetail
-            // .setIdcardNumber(workerByIdCardNumber.getIdcardNumber());
-            // payRollDetail.setIdcardType(workerByIdCardNumber.getIdcardType());
+            List<ProjectWorker> projectWorkerByIdentity = projectWorkerBO
+                .getProjectWorkerByIdentity(teamMasterNo,
+                    xn631770ReqDetail.getIdCardType(),
+                    xn631770ReqDetail.getIdCardNumber());
+            if (org.springframework.util.CollectionUtils
+                .isEmpty(projectWorkerByIdentity)) {
+                throw new BizException("xn0000", "项目人员不存在");
+            }
+            ProjectWorker projectWorker = projectWorkerByIdentity.get(0);
+            payRollDetail.setWorkerName(projectWorker.getWorkerName());
+            payRollDetail.setIdcardNumber(projectWorker.getIdcardNumber());
             payRollDetail.setBalanceDate(
                 DateUtil.strToDate(xn631770ReqDetail.getBalanceDate(),
                     DateUtil.FRONT_DATE_FORMAT_STRING));
@@ -294,6 +297,7 @@ public class PayRollDetailBOImpl extends PaginableBOImpl<PayRollDetail>
 
         payRollDetail.setIdcardType(xn631773ReqData.getIdCardType());
         payRollDetail.setIdcardNumber(xn631773ReqData.getIdCardNumber());
+        projectWorkerBO.getProjectWorker(null, null, null, null);
         // ProjectWorker projectWorkerByIdentity = projectWorkerBO
         // .getProjectWorkerByIdentity(xn631773ReqData.getIdCardType(),
         // xn631773ReqData.getIdCardNumber());

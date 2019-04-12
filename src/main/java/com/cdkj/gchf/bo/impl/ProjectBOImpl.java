@@ -100,6 +100,7 @@ public class ProjectBOImpl extends PaginableBOImpl<Project>
             project.setCompleteDate(DateUtil.strToDate(req.getCompleteDate(),
                 DateUtil.FRONT_DATE_FORMAT_STRING));
         }
+        project.setPrjStatus(req.getPrjStatus());
         project.setLat(new BigDecimal(req.getLat()));
         project.setLng(new BigDecimal(req.getLng()));
         project.setBuildCorpName(buildCorpInfo.getCorpName());
@@ -139,7 +140,6 @@ public class ProjectBOImpl extends PaginableBOImpl<Project>
     @Override
     public Project getProjectByFullName(String fullName) {
         Project project = new Project();
-
         project.setFullName(fullName);
 
         return projectDAO.select(project);

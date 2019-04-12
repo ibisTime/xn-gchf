@@ -75,8 +75,9 @@ public enum EBankCardCodeType {
 
     NANYANGSHANGYE("503", "南洋商业银行"),
 
-    HENGSHENGYINHANG("504", "恒生银行(中国)有限公司"), ZHONGGUOYINHANGXIANGGANG("505",
-            "中国银行（香港）有限公司"),
+    HENGSHENGYINHANG("504", "恒生银行(中国)有限公司"),
+
+    ZHONGGUOYINHANGXIANGGANG("505", "中国银行（香港）有限公司"),
 
     JIYOUYINHANG("506", "集友银行有限公司"),
 
@@ -128,11 +129,40 @@ public enum EBankCardCodeType {
 
     HELANYINHANG("661", "荷兰银行"),
 
-    HELANANZHIYINHANG("662", "荷兰安智银行股份有限公司");
+    HELANANZHIYINHANG("662", "荷兰安智银行股份有限公司"),
+
+    ZHADA("671", "渣打银行"),
+
+    YINGGUOHUANGJIAYINHANG("672", "英国苏格兰皇家银行公众有限公司"),
+
+    FAGUOXINGYEYINHANG("691", "法国兴业银行（中国)有限公司"),
+
+    FAGUODONGFANGHUILIYINHANG("694", "法国东方汇理银行股份有限公司"),
+
+    FAGUOWAIMAOYINHANG("695", "法国外贸银行股份有限公司"),
+
+    DEGUODELEISIDENGYINHANG("711", "德国德累斯登银行股份公司"),
+
+    DENGYIZHIYINHANG("712", "德意志银行（中国）有限公司"),
+
+    DEGUOSHANGYEYINHANGGUFEN("713", "德国商业银行股份有限公司"),
+
+    DEGUOSHANGYEYINHANG("713", "德国商业银行股份有限公司"),
+
+    DEGUOXIDEYINHANGGUFEN("714", "德国西德银行股份有限公司"),
+
+    DEGUOBAFALIYAZHOUYINHANG("715", "德国巴伐利亚州银行"),
+
+    DEGUOBEIDEYIZHIZHOU("716", "德国北德意志州银行"),
+
+    YIDALILIANHESHENGBAOLUOYINHANG("732", "意大利联合圣保罗银行股份有限公司"),
+
+    RUISHIXINDAIYINHANG("741", "瑞士信贷银行股份有限公司");
 
     EBankCardCodeType(String code, String value) {
         this.code = code;
         this.value = value;
+
     }
 
     public static Map<String, EBankCardCodeType> getBankCardCodeMap() {

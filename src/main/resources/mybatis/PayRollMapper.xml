@@ -36,6 +36,9 @@
 				AND YEAR(t.pay_month) = YEAR(#{payMonth}) AND MONTH(
 				t.pay_month) = MONTH(#{payMonth})
 			</if>
+			<if test="deleteStatus != null and deleteStatus != '' ">
+				AND t.delete_status = #{deleteStatus}
+			</if>
 		</trim>
 	</sql>
 	<select id="select_payRoll" parameterType="payRoll" resultMap="payRoll_DB_Result">

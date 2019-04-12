@@ -311,7 +311,7 @@
 		,t.update_datetime
 		,t.remark
 		,t.upload_status
-		,t.deleteStatus
+		,t.delete_status
 		FROM
 		thf_project_worker t
 		<include refid="where_condition" />

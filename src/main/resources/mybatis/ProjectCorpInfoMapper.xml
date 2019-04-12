@@ -51,6 +51,9 @@
 			<if test="corpBasicType != null and corpBasicType != '' ">
 				AND tu.corp_type = #{corpBasicType}
 			</if>
+			<if test="deleteStatus != null and deleteStatus != '' ">
+				AND t.delete_status = #{deleteStatus}
+			</if>
 		</trim>
 	</sql>
 
@@ -72,6 +75,7 @@
 		,t.pm_idcard_number
 		,t.pm_phone
 		,t.upload_status
+		,t.delete_status
 		FROM
 		thf_project_corp_info t
 		<include refid="join_condition" />

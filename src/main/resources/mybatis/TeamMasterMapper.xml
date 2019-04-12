@@ -188,6 +188,7 @@
 		delete_status = #{deleteStatus}
 		<include refid="where_condition"></include>
 	</update>
+	
 	<update id="update_teamMasterTeamSysNo" parameterType="teamMaster">
 		UPDATE
 		thf_team_master

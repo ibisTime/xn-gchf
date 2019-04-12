@@ -21,14 +21,19 @@ import com.cdkj.gchf.common.AesUtils;
 import com.cdkj.gchf.domain.ProjectConfig;
 import com.cdkj.gchf.domain.ProjectWorker;
 import com.cdkj.gchf.domain.TeamMaster;
+import com.cdkj.gchf.domain.User;
 import com.cdkj.gchf.domain.WorkerAttendance;
 import com.cdkj.gchf.dto.req.XN631710Req;
 import com.cdkj.gchf.dto.req.XN631712Req;
 import com.cdkj.gchf.dto.req.XN631713Req;
+import com.cdkj.gchf.dto.req.XN631713ReqData;
 import com.cdkj.gchf.dto.req.XN631913Req;
 import com.cdkj.gchf.dto.req.XN631918Req;
 import com.cdkj.gchf.dto.req.XN631919Req;
 import com.cdkj.gchf.enums.EDeleteStatus;
+import com.cdkj.gchf.enums.EDirectionType;
+import com.cdkj.gchf.enums.EIdCardType;
+import com.cdkj.gchf.enums.EOperateLogRefType;
 import com.cdkj.gchf.enums.EUploadStatus;
 import com.cdkj.gchf.exception.BizException;
 
@@ -188,50 +193,26 @@ public class WorkerAttendanceAOImpl implements IWorkerAttendanceAO {
     @Transactional
     public void importWorkerAttendanceList(XN631713Req req) {
 
-        // User user = userBO.getBriefUser(req.getUpdater());
-        // List<XN631713ReqData> workerAttendanceList = req.getDateList();
-        // List<String> errorCode = new ArrayList<>();
-        // for (XN631713ReqData xn631713ReqData : workerAttendanceList) {
-        // // 校验数据字典数据
-        // EDirectionType.checkExists(xn631713ReqData.getDirection());
-        // EIdCardType.checkExists(xn631713ReqData.getIdCardType());
-        //
-        // // 核实身份信息
-        // String idcardNumber = xn631713ReqData.getIdCardNumber();
-        // ProjectWorker workerByIdCardNumber = projectWorkerBO
-        // .getProjectWorkerByIdentity(xn631713ReqData.getIdCardType(),
-        // idcardNumber);
-        // if (workerByIdCardNumber == null) {
-        // errorCode.add("员工信息不存在" + idcardNumber);
-        // continue;
-        // }
-        // // 录入数据
-        // WorkerAttendance workerAttendance = new WorkerAttendance();
-        // BeanUtils.copyProperties(xn631713ReqData, workerAttendance);
-        // BeanUtils.copyProperties(workerByIdCardNumber, workerAttendance);
-        // TeamMaster condition = new TeamMaster();
-        // condition.setCorpCode(xn631713ReqData.getCorpCode());
-        // condition.setTeamName(xn631713ReqData.getTeamName());
-        // TeamMaster masterByCondition = teamMasterBO
-        // .getTeamMasterByCondition(condition);
-        // workerAttendance.setTeamSysNo(masterByCondition.getCode());
-        // if (StringUtils.isNotBlank(xn631713ReqData.getDate())) {
-        // Date date = DateUtil.strToDate(xn631713ReqData.getDate(),
-        // DateUtil.FRONT_DATE_FORMAT_STRING);
-        // workerAttendance.setDate(date);
-        // }
-        //
-        // workerAttendance.setUploadStatus(EUploadStatus.TO_UPLOAD.getCode());
-        // workerAttendance.setDeleteStatus(EDeleteStatus.NORMAL.getCode());
-        // String code = workerAttendanceBO
-        // .saveWorkerAttendance(workerAttendance);
-        // operateLogBO.saveOperateLog(
-        // EOperateLogRefType.WorkAttendance.getCode(), code, "导入人员考勤",
-        // user, null);
-        // }
-        // if (CollectionUtils.isNotEmpty(errorCode)) {
-        // throw new BizException("XN631713", errorCode.toString());
-        // }
+        User user = userBO.getBriefUser(req.getUpdater());
+        for (XN631713ReqData data : req.getDateList()) {
+            // // 校验数据字典数据
+            EDirectionType.checkExists(data.getDirection());
+            EIdCardType.checkExists(data.getIdCardType());
+
+            // // 核实身份信息
+            List<ProjectWorker> projectWorker = projectWorkerBO
+                .getProjectWorker(req.getProjectCode(), data.getIdCardNumber());
+            // // 录入数据
+            WorkerAttendance workerAttendance = new WorkerAttendance();
+            workerAttendanceBO.saveWorkerAttendance(req.getProjectCode(), data,
+                projectWorker.get(0), workerAttendance);
+
+            String code = workerAttendanceBO
+                .saveWorkerAttendance(workerAttendance);
+            operateLogBO.saveOperateLog(
+                EOperateLogRefType.WorkAttendance.getCode(), code, "导入人员考勤",
+                user, null);
+        }
     }
 
 }

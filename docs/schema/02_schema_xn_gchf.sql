@@ -198,7 +198,7 @@ DROP TABLE IF EXISTS `thf_project_corp_info`;
 CREATE TABLE `thf_project_corp_info` (
   `code` varchar(32) NOT NULL COMMENT '编号',
   `project_code` varchar(32) DEFAULT NULL COMMENT '项目编码',
-  `project_name` varchar(18) DEFAULT NULL COMMENT '项目名称',
+  `project_name` varchar(32) DEFAULT NULL COMMENT '项目名称',
   `corp_code` varchar(30) DEFAULT NULL COMMENT '统一社会信用代码',
   `corp_name` varchar(200) DEFAULT NULL COMMENT '企业名称',
   `corp_type` varchar(3) DEFAULT NULL COMMENT '企业登记注册类型',

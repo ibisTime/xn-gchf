@@ -108,6 +108,8 @@ public class ProjectWorkerEntryExitHistoryBOImpl
         code = OrderNoGenerater
             .generate(EGeneratePrefix.ProjectWorkerEntryExitHistory.getCode());
         entryExitHistory.setCode(code);
+        entryExitHistory.setTeamSysNo(teamMaster.getCode());
+
         projectWorkerEntryExitHistoryDAO.insert(entryExitHistory);
 
         return code;

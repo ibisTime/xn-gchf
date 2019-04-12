@@ -6,6 +6,9 @@ import com.cdkj.gchf.dao.base.ABaseDO;
 
 public class BankCardInfo extends ABaseDO {
 
+    /**   
+     * @Fields serialVersionUID : TODO
+     */
     private static final long serialVersionUID = -5841005973218872505L;
 
     // 编号
@@ -23,10 +26,13 @@ public class BankCardInfo extends ABaseDO {
     // 银行支行名称
     private String bankName;
 
-    // 银行账户
+    // 银行卡代码
+    private String bankCode;
+
+    // 银行支行名称
     private String bankNumber;
 
-    // 银行联号
+    // 银行支行名称
     private String bankLinkNumber;
 
     // 状态
@@ -149,6 +155,14 @@ public class BankCardInfo extends ABaseDO {
 
     public void setBusinessName(String businessName) {
         this.businessName = businessName;
+    }
+
+    public String getBankCode() {
+        return bankCode;
+    }
+
+    public void setBankCode(String bankCode) {
+        this.bankCode = bankCode;
     }
 
 }

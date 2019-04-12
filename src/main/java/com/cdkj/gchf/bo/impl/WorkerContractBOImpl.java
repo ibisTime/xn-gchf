@@ -1,6 +1,7 @@
 package com.cdkj.gchf.bo.impl;
 
 import java.math.BigDecimal;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -25,9 +26,11 @@ import com.cdkj.gchf.dao.IWorkerContractDAO;
 import com.cdkj.gchf.domain.ProjectConfig;
 import com.cdkj.gchf.domain.ProjectWorker;
 import com.cdkj.gchf.domain.WorkerContract;
+import com.cdkj.gchf.domain.WorkerInfo;
 import com.cdkj.gchf.dto.req.SerializeFilterHolder;
 import com.cdkj.gchf.dto.req.XN631670Req;
 import com.cdkj.gchf.dto.req.XN631672Req;
+import com.cdkj.gchf.dto.req.XN631673ReqData;
 import com.cdkj.gchf.dto.req.XN631916Req;
 import com.cdkj.gchf.dto.req.XN631916ReqContract;
 import com.cdkj.gchf.dto.req.XN631917Req;
@@ -38,6 +41,8 @@ import com.cdkj.gchf.exception.BizException;
 import com.cdkj.gchf.gov.GovConnecter;
 import com.cdkj.gchf.gov.GovUtil;
 import com.cdkj.gchf.gov.SerialHandler;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonObject;
 
 @Component
 public class WorkerContractBOImpl extends PaginableBOImpl<WorkerContract>
@@ -58,6 +63,41 @@ public class WorkerContractBOImpl extends PaginableBOImpl<WorkerContract>
         code = OrderNoGenerater
             .generate(EGeneratePrefix.WorkerContract.getCode());
         workerContract.setCode(code);
+        workerContractDAO.insert(workerContract);
+        return code;
+    }
+
+    @Override
+    public String saveWorkerContract(XN631673ReqData data,
+            WorkerInfo workerInfo) {
+        String code = null;
+        WorkerContract workerContract = new WorkerContract();
+        code = OrderNoGenerater
+            .generate(EGeneratePrefix.WorkerContract.getCode());
+        workerContract.setCode(code);
+        BeanUtils.copyProperties(data, workerContract);
+        BeanUtils.copyProperties(workerInfo, workerContract);
+        if (StringUtils.isNotBlank(data.getUnit())) {
+            workerContract.setUnit(Integer.parseInt(data.getUnit()));
+        }
+        if (StringUtils.isNotBlank(data.getStartDate())) {
+            workerContract.setStartDate(DateUtil.strToDate(data.getStartDate(),
+                DateUtil.FRONT_DATE_FORMAT_STRING));
+        }
+        if (StringUtils.isNotBlank(data.getEndDate())) {
+            workerContract.setEndDate(DateUtil.strToDate(data.getEndDate(),
+                DateUtil.FRONT_DATE_FORMAT_STRING));
+        }
+        if (StringUtils.isNotBlank(data.getContractPeriodType())) {
+            workerContract.setContractPeriodType(
+                Integer.parseInt(data.getContractPeriodType()));
+        }
+        if (StringUtils.isNotBlank(data.getUnitPrice())) {
+            workerContract.setUnitPrice(new BigDecimal(data.getUnitPrice()));
+        }
+        // 录入数据
+        workerContract.setUploadStatus(EUploadStatus.TO_UPLOAD.getCode());
+        workerContract.setDeleteStatus(EDeleteStatus.NORMAL.getCode());
         workerContractDAO.insert(workerContract);
         return code;
     }
@@ -227,6 +267,37 @@ public class WorkerContractBOImpl extends PaginableBOImpl<WorkerContract>
         workerContract.setProjectCode(projectCode);
         workerContract.setUploadStatus(EUploadStatus.TO_UPLOAD.getCode());
         workerContractDAO.updateWorkerContractDeleteStatus(workerContract);
+    }
+
+    @Override
+    public JsonObject getRequestJson(WorkerContract workerContract,
+            ProjectConfig projectConfig) {
+        JsonObject jsonObject = new JsonObject();
+        jsonObject.addProperty("projectCode", projectConfig.getProjectCode());
+        JsonObject childJson = new JsonObject();
+        childJson.addProperty("corpCode", workerContract.getCorpCode());
+        childJson.addProperty("corpName", workerContract.getCorpName());
+        childJson.addProperty("idCardType", workerContract.getIdcardType());
+        workerContract.setProjectCode(projectConfig.getProjectCode());
+        String encrypt = AesUtils.encrypt(workerContract.getIdcardNumber(),
+            projectConfig.getSecret());
+        childJson.addProperty("idCardNumber", encrypt);
+        childJson.addProperty("contractPeriodType",
+            workerContract.getContractPeriodType());
+        childJson.addProperty("startDate", new SimpleDateFormat("yyyy-MM-dd")
+            .format(workerContract.getStartDate()));
+        childJson.addProperty("endDate", new SimpleDateFormat("yyyy-MM-dd")
+            .format(workerContract.getEndDate()));
+        if (workerContract.getUnit() != null) {
+            childJson.addProperty("unit", workerContract.getUnit());
+        }
+        if (workerContract.getUnitPrice() != null) {
+            childJson.addProperty("unitPrice", workerContract.getUnitPrice());
+        }
+        JsonArray jsonArray = new JsonArray();
+        jsonArray.add(childJson);
+        jsonObject.add("contractList", jsonArray);
+        return jsonObject;
     }
 
 }

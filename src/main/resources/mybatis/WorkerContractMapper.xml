@@ -67,7 +67,6 @@
 			<if test="uploadStatus != null and uploadStatus != '' ">
 				AND t.upload_status = #{uploadStatus}
 			</if>
-			
 			<if test="deleteStatus != null and deleteStatus != '' ">
 				AND t.delete_status = #{deleteStatus}
 			</if>
@@ -196,6 +195,7 @@
 		,t.update_datetime
 		,t.remark
 		,t.upload_status
+		,t.deleteStatus
 		FROM
 		thf_worker_contract t
 		<include refid="where_condition" />

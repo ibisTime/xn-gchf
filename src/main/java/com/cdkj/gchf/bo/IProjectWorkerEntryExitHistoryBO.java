@@ -5,10 +5,12 @@ import java.util.List;
 import com.cdkj.gchf.bo.base.IPaginableBO;
 import com.cdkj.gchf.bo.base.Paginable;
 import com.cdkj.gchf.domain.ProjectConfig;
+import com.cdkj.gchf.domain.ProjectWorker;
 import com.cdkj.gchf.domain.ProjectWorkerEntryExitHistory;
 import com.cdkj.gchf.domain.TeamMaster;
 import com.cdkj.gchf.dto.req.XN631730Req;
 import com.cdkj.gchf.dto.req.XN631732Req;
+import com.cdkj.gchf.dto.req.XN631733ReqData;
 import com.cdkj.gchf.dto.req.XN631914Req;
 import com.cdkj.gchf.dto.req.XN631915Req;
 import com.google.gson.JsonObject;
@@ -20,6 +22,9 @@ public interface IProjectWorkerEntryExitHistoryBO
 
     public String saveProjectWorkerEntryExitHistory(
             ProjectWorkerEntryExitHistory entryExitHistory);
+
+    String saveProjectWorkerEntryExitHistory(TeamMaster master,
+            ProjectWorker projectWorker, XN631733ReqData datas);
 
     public ProjectWorkerEntryExitHistory getLastTimeEntryTime(
             String workerCode);
@@ -33,6 +38,8 @@ public interface IProjectWorkerEntryExitHistoryBO
 
     void fakeDeleteProjectWorkerEntryHistory(String ProjectCode,
             String teamMasterCode);
+
+    void fakeDeleteProjectWorkerEntryHistory(String workerCode);
 
     public Object queryProjectWorkerEntryExitHistory(String code);
 

@@ -296,9 +296,9 @@ public class PayRollDetailBOImpl extends PaginableBOImpl<PayRollDetail>
                         DateUtil.FRONT_DATE_FORMAT_STRING));
             }
         }
-
         payRollDetail.setIdcardType(xn631773ReqData.getIdCardType());
         payRollDetail.setIdcardNumber(xn631773ReqData.getIdCardNumber());
+        // projectWorkerBO.getProjectWorker(null, null, null, null);
         // ProjectWorker projectWorkerByIdentity = projectWorkerBO
         // .getProjectWorkerByIdentity(xn631773ReqData.getIdCardType(),
         // xn631773ReqData.getIdCardNumber());

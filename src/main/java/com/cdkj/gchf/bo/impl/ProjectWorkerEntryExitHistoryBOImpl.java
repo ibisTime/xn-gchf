@@ -27,6 +27,7 @@ import com.cdkj.gchf.domain.ProjectWorkerEntryExitHistory;
 import com.cdkj.gchf.domain.TeamMaster;
 import com.cdkj.gchf.dto.req.XN631730Req;
 import com.cdkj.gchf.dto.req.XN631732Req;
+import com.cdkj.gchf.dto.req.XN631733ReqData;
 import com.cdkj.gchf.dto.req.XN631914Req;
 import com.cdkj.gchf.dto.req.XN631914ReqWorker;
 import com.cdkj.gchf.dto.req.XN631915Req;
@@ -75,6 +76,40 @@ public class ProjectWorkerEntryExitHistoryBOImpl
         data.setDeleteStatus(EDeleteStatus.NORMAL.getCode());
         data.setVoucherUrl(req.getVoucherUrl());
         projectWorkerEntryExitHistoryDAO.insert(data);
+        return code;
+    }
+
+    @Override
+    public String saveProjectWorkerEntryExitHistory(TeamMaster teamMaster,
+            ProjectWorker projectWorker, XN631733ReqData data) {
+
+        String code = null;
+        ProjectWorkerEntryExitHistory entryExitHistory = new ProjectWorkerEntryExitHistory();
+
+        entryExitHistory.setProjectCode(teamMaster.getProjectCode());
+        entryExitHistory.setCorpCode(teamMaster.getCorpCode());
+        entryExitHistory.setCorpName(teamMaster.getCorpName());
+        entryExitHistory.setWorkerCode(projectWorker.getCode());
+        entryExitHistory.setWorkerName(projectWorker.getWorkerName());
+
+        entryExitHistory.setPosition(projectWorker.getWorkType());
+        entryExitHistory.setJoinDatetime(projectWorker.getJoinedTime());
+        entryExitHistory.setIdcardType(data.getIdcardType());
+        entryExitHistory.setIdcardNumber(data.getIdcardNumber());
+
+        Date date = DateUtil.strToDate(data.getDate(),
+            DateUtil.FRONT_DATE_FORMAT_STRING);
+
+        entryExitHistory.setDate(date);
+        entryExitHistory.setType(Integer.parseInt(data.getType()));
+        entryExitHistory.setUploadStatus(EUploadStatus.TO_UPLOAD.getCode());
+        entryExitHistory.setDeleteStatus(EDeleteStatus.NORMAL.getCode());
+
+        code = OrderNoGenerater
+            .generate(EGeneratePrefix.ProjectWorkerEntryExitHistory.getCode());
+        entryExitHistory.setCode(code);
+        projectWorkerEntryExitHistoryDAO.insert(entryExitHistory);
+
         return code;
     }
 
@@ -258,6 +293,17 @@ public class ProjectWorkerEntryExitHistoryBOImpl
         ProjectWorkerEntryExitHistory projectWorkerEntryExitHistory = new ProjectWorkerEntryExitHistory();
         projectWorkerEntryExitHistory.setProjectCode(ProjectCode);
         projectWorkerEntryExitHistory.setTeamSysNo(teamMasterCode);
+        projectWorkerEntryExitHistory
+            .setUploadStatus(EUploadStatus.TO_UPLOAD.getCode());
+        projectWorkerEntryExitHistoryDAO
+            .updateProjectWorkerEntryHistoryDeleteStatus(
+                projectWorkerEntryExitHistory);
+    }
+
+    @Override
+    public void fakeDeleteProjectWorkerEntryHistory(String workerCode) {
+        ProjectWorkerEntryExitHistory projectWorkerEntryExitHistory = new ProjectWorkerEntryExitHistory();
+        projectWorkerEntryExitHistory.setWorkerCode(workerCode);
         projectWorkerEntryExitHistory
             .setUploadStatus(EUploadStatus.TO_UPLOAD.getCode());
         projectWorkerEntryExitHistoryDAO

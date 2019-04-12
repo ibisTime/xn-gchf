@@ -6,16 +6,22 @@ import com.cdkj.gchf.bo.base.IPaginableBO;
 import com.cdkj.gchf.bo.base.Paginable;
 import com.cdkj.gchf.domain.ProjectConfig;
 import com.cdkj.gchf.domain.WorkerContract;
+import com.cdkj.gchf.domain.WorkerInfo;
 import com.cdkj.gchf.dto.req.XN631670Req;
 import com.cdkj.gchf.dto.req.XN631672Req;
+import com.cdkj.gchf.dto.req.XN631673ReqData;
 import com.cdkj.gchf.dto.req.XN631916Req;
 import com.cdkj.gchf.dto.req.XN631917Req;
+import com.google.gson.JsonObject;
 
 public interface IWorkerContractBO extends IPaginableBO<WorkerContract> {
 
     public String saveWorkerContract(WorkerContract req);
 
     public String saveWorkerContract(XN631670Req req);
+
+    public String saveWorkerContract(XN631673ReqData data,
+            WorkerInfo workerInfo);
 
     public void removeWorkerContract(String userId, String code);
 
@@ -33,6 +39,9 @@ public interface IWorkerContractBO extends IPaginableBO<WorkerContract> {
     public WorkerContract getWorkerContract(String code);
 
     public void refreshUploadStatus(String code, String status);
+
+    JsonObject getRequestJson(WorkerContract workerContract,
+            ProjectConfig projectConfig);
 
     /****国家平台接口****/
     public void doUpload(XN631916Req req, ProjectConfig projectConfig);

@@ -46,6 +46,7 @@ import com.cdkj.gchf.exception.BizException;
 import com.cdkj.gchf.gov.GovConnecter;
 import com.cdkj.gchf.gov.GovUtil;
 import com.cdkj.gchf.gov.SerialHandler;
+import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 
 @Component
@@ -225,6 +226,11 @@ public class ProjectWorkerBOImpl extends PaginableBOImpl<ProjectWorker>
         SerialHandler.handle(resString, projectConfig);
     }
 
+    /**
+     * 
+     * <p>Title: doUpdate</p>   
+     * <p>Description: 国家平台修改接口</p>   
+     */
     @Override
     public void doUpdate(XN631912Req req, ProjectConfig projectConfig) {
 
@@ -325,32 +331,34 @@ public class ProjectWorkerBOImpl extends PaginableBOImpl<ProjectWorker>
     }
 
     @Override
-    public ProjectWorker getProjectWorkerByIdentity(String teamSysNo,
+    public List<ProjectWorker> getProjectWorker(String projectCode,
+            String idCardNumber) {
+        ProjectWorker condition = new ProjectWorker();
+        condition.setProjectCode(projectCode);
+        condition.setIdcardNumber(idCardNumber);
+        return projectWorkerDAO.selectList(condition);
+
+    }
+
+    @Override
+    public List<ProjectWorker> getProjectWorkerByIdentity(String teamSysNo,
             String idCardType, String idCardNumber) {
         ProjectWorker projectWorker = new ProjectWorker();
         projectWorker.setTeamSysNo(teamSysNo);
         projectWorker.setIdcardNumber(idCardNumber);
         projectWorker.setIdcardType(idCardType);
-        ProjectWorker infoByCondition = projectWorkerDAO.select(projectWorker);
+        List<ProjectWorker> infoByCondition = projectWorkerDAO
+            .selectList(projectWorker);
         return infoByCondition;
     }
 
     @Override
-    public JsonObject getProjectWorkerJson(ProjectWorker projectWorker,
-            ProjectConfig projectConfig) {
+    public JsonObject getProjectWorkerJson(TeamMaster teamMaster,
+            ProjectWorker projectWorker, ProjectConfig projectConfig) {
+        JsonObject jsonObject = new JsonObject();
+        JsonArray jsonArray = new JsonArray();
         WorkerInfo infoByIdCardNumber = workerInfoBO
             .getWorkerInfoByIdCardNumber(projectWorker.getIdcardNumber());
-        JsonObject jsonObject = new JsonObject();
-        jsonObject.addProperty("workerName", projectWorker.getWorkerName());
-        jsonObject.addProperty("isTeamLeader", projectWorker.getIsTeamLeader());
-        jsonObject.addProperty("idCardType", projectWorker.getIdcardType());
-        jsonObject.addProperty("idCardNumber", AesUtils.encrypt(
-            projectWorker.getIdcardNumber(), projectConfig.getSecret()));
-        jsonObject.addProperty("workType", projectWorker.getWorkType());
-        jsonObject.addProperty("workRole", projectWorker.getWorkRole());
-        jsonObject.addProperty("issueCardDate",
-            DateUtil.dateToStr(projectWorker.getIssueCardDate(),
-                DateUtil.FRONT_DATE_FORMAT_STRING));
         if (StringUtils.isBlank(infoByIdCardNumber.getHeadImageUrl())
                 || StringUtils.isBlank(infoByIdCardNumber.getNation())
                 || StringUtils.isBlank(infoByIdCardNumber.getAddress())
@@ -361,56 +369,74 @@ public class ProjectWorkerBOImpl extends PaginableBOImpl<ProjectWorker>
                 || StringUtils.isBlank(infoByIdCardNumber.getGrantOrg())) {
             throw new BizException("XN631694", "人员信息不完整,请重新建档补充信息");
         }
-        jsonObject.addProperty("issueCardPic",
+
+        projectWorker.setTeamSysNo(teamMaster.getTeamSysNo());
+        projectWorker.setProjectCode(projectConfig.getProjectCode());
+        jsonObject.addProperty("projectCode", projectWorker.getProjectCode());
+        jsonObject.addProperty("corpCode", projectWorker.getCorpCode());
+        jsonObject.addProperty("corpName", projectWorker.getCorpName());
+        jsonObject.addProperty("teamSysNo", teamMaster.getTeamSysNo());
+        jsonObject.addProperty("teamName", teamMaster.getTeamName());
+        JsonObject workerList = new JsonObject();
+        workerList.addProperty("workerName", projectWorker.getWorkerName());
+        workerList.addProperty("isTeamLeader", projectWorker.getIsTeamLeader());
+        workerList.addProperty("idCardType", projectWorker.getIdcardType());
+        workerList.addProperty("idCardNumber", AesUtils.encrypt(
+            projectWorker.getIdcardNumber(), projectConfig.getSecret()));
+        workerList.addProperty("workType", projectWorker.getWorkType());
+        workerList.addProperty("workRole", projectWorker.getWorkRole());
+        workerList.addProperty("issueCardDate",
+            DateUtil.dateToStr(projectWorker.getIssueCardDate(),
+                DateUtil.FRONT_DATE_FORMAT_STRING));
+        workerList.addProperty("issueCardPic",
             projectWorker.getIssueCardPicUrl());
-        jsonObject.addProperty("cardNumber", projectWorker.getCardNumber());
-        jsonObject.addProperty("payRollBankCardNumber",
+        workerList.addProperty("cardNumber", projectWorker.getCardNumber());
+        workerList.addProperty("payRollBankCardNumber",
             AesUtils.encrypt(projectWorker.getPayRollBankCardNumber(),
                 projectConfig.getSecret()));
-        jsonObject.addProperty("payRollBankName",
+        workerList.addProperty("payRollBankName",
             projectWorker.getPayRollBankName());
-        jsonObject.addProperty("bankLinkNumber",
+        workerList.addProperty("bankLinkNumber",
             projectWorker.getBankLinkNumber());
-        jsonObject.addProperty("payRollTopBankCode",
+        workerList.addProperty("payRollTopBankCode",
             projectWorker.getPayRollTopBankCode());
-
-        jsonObject.addProperty("hasBuyInsurance",
+        workerList.addProperty("hasBuyInsurance",
             projectWorker.getHasBuyInsurance());
-
-        jsonObject.addProperty("nation", infoByIdCardNumber.getNation());
-        jsonObject.addProperty("address", infoByIdCardNumber.getAddress());
-        jsonObject.addProperty("headImage",
+        workerList.addProperty("nation", infoByIdCardNumber.getNation());
+        workerList.addProperty("address", infoByIdCardNumber.getAddress());
+        workerList.addProperty("headImage",
             infoByIdCardNumber.getHeadImageUrl());
-        jsonObject.addProperty("politicsType",
+        workerList.addProperty("politicsType",
             infoByIdCardNumber.getPoliticsType());
-        jsonObject.addProperty("joinedTime",
+        workerList.addProperty("joinedTime",
             DateUtil.dateToStr(projectWorker.getJoinDatetime(),
                 DateUtil.FRONT_DATE_FORMAT_STRING));
-        jsonObject.addProperty("cellPhone", infoByIdCardNumber.getCellPhone());
-        jsonObject.addProperty("cultureLevelType",
+        workerList.addProperty("cellPhone", infoByIdCardNumber.getCellPhone());
+        workerList.addProperty("cultureLevelType",
             infoByIdCardNumber.getCultureLevelType());
-        jsonObject.addProperty("Specialty", infoByIdCardNumber.getSpecialty());
-        jsonObject.addProperty("hasBadMedicalHistory",
+        workerList.addProperty("Specialty", infoByIdCardNumber.getSpecialty());
+        workerList.addProperty("hasBadMedicalHistory",
             projectWorker.getHasBadMedicalHistory());
-        jsonObject.addProperty("urgentLinkMan",
+        workerList.addProperty("urgentLinkMan",
             infoByIdCardNumber.getUrgentLinkMan());
-        jsonObject.addProperty("urgentLinkManPhone",
+        workerList.addProperty("urgentLinkManPhone",
             infoByIdCardNumber.getUrgentLinkManPhone());
         if (projectWorker.getWorkDate() != null) {
-            jsonObject.addProperty("workDate",
+            workerList.addProperty("workDate",
                 DateUtil.dateToStr(projectWorker.getWorkDate(),
                     DateUtil.FRONT_DATE_FORMAT_STRING));
         }
-
-        jsonObject.addProperty("maritalStatus",
+        workerList.addProperty("maritalStatus",
             infoByIdCardNumber.getMaritalStatus());
-        jsonObject.addProperty("grantOrg", infoByIdCardNumber.getGrantOrg());
-        jsonObject.addProperty("positiveIDCardImage",
+        workerList.addProperty("grantOrg", infoByIdCardNumber.getGrantOrg());
+        workerList.addProperty("positiveIDCardImage",
             QiniuUtil.parseUrl(infoByIdCardNumber.getPositiveIdCardImageUrl()));
-        jsonObject.addProperty("negativeIDCardImage",
+        workerList.addProperty("negativeIDCardImage",
             QiniuUtil.parseUrl(infoByIdCardNumber.getNegativeIdCardImageUrl()));
-        jsonObject.addProperty("startDate", projectWorker.getStartDate());
-        jsonObject.addProperty("expiryDate", projectWorker.getExpiryDate());
+        workerList.addProperty("startDate", projectWorker.getStartDate());
+        workerList.addProperty("expiryDate", projectWorker.getExpiryDate());
+        jsonArray.add(workerList);
+        jsonObject.add("workerList", jsonArray);
         return jsonObject;
     }
 

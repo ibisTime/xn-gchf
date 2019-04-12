@@ -1,6 +1,5 @@
 package com.cdkj.gchf.ao.impl;
 
-import java.util.Date;
 import java.util.List;
 
 import org.apache.commons.collections.CollectionUtils;
@@ -19,7 +18,6 @@ import com.cdkj.gchf.bo.ITeamMasterBO;
 import com.cdkj.gchf.bo.IUserBO;
 import com.cdkj.gchf.bo.base.Paginable;
 import com.cdkj.gchf.common.AesUtils;
-import com.cdkj.gchf.common.DateUtil;
 import com.cdkj.gchf.domain.Project;
 import com.cdkj.gchf.domain.ProjectConfig;
 import com.cdkj.gchf.domain.ProjectWorker;
@@ -269,52 +267,28 @@ public class ProjectWorkerEntryExitHistoryAOImpl
     public void importProjectWorkerEntryExitHistoryList(XN631733Req req) {
         User user = userBO.getBriefUser(req.getUpdater());
 
-        for (XN631733ReqData xn631733ReqData : req.getDateList()) {
+        for (XN631733ReqData data : req.getDateList()) {
             // 校验数据字典类型数据
-            EIdCardType.checkExists(xn631733ReqData.getIdcardType());
-            EEntryExitType
-                .checkExists(String.valueOf(xn631733ReqData.getType()));
+            EIdCardType.checkExists(data.getIdcardType());
+            EEntryExitType.checkExists(String.valueOf(data.getType()));
 
             TeamMaster teamMaster = teamMasterBO.getTeamMasterByProject(
-                req.getProjectCode(), xn631733ReqData.getCorpCode(),
-                xn631733ReqData.getTeamName());
+                req.getProjectCode(), data.getCorpCode(), data.getTeamName());
             if (teamMaster == null) {
                 throw new BizException("XN631733",
-                    "项目班组【" + xn631733ReqData.getTeamName() + "】未录入");
+                    "项目班组【" + data.getTeamName() + "】未录入");
             }
 
-            ProjectWorker infoByIdCardNumber = projectWorkerBO
+            List<ProjectWorker> infoByIdCardNumber = projectWorkerBO
                 .getProjectWorkerByIdentity(teamMaster.getCode(),
-                    xn631733ReqData.getIdcardType(),
-                    xn631733ReqData.getIdcardNumber());
+                    data.getIdcardType(), data.getIdcardNumber());
             if (infoByIdCardNumber == null) {
                 throw new BizException("XN631733",
-                    "项目人员【" + xn631733ReqData.getIdcardNumber() + "】未录入");
+                    "项目人员【" + data.getIdcardNumber() + "】未录入");
             }
-
-            ProjectWorkerEntryExitHistory entryExitHistory = new ProjectWorkerEntryExitHistory();
-            entryExitHistory.setProjectCode(req.getProjectCode());
-            entryExitHistory.setCorpCode(teamMaster.getCorpCode());
-            entryExitHistory.setCorpName(teamMaster.getCorpName());
-            entryExitHistory.setWorkerCode(infoByIdCardNumber.getCode());
-            entryExitHistory.setWorkerName(infoByIdCardNumber.getWorkerName());
-
-            entryExitHistory.setPosition(infoByIdCardNumber.getWorkType());
-            entryExitHistory
-                .setJoinDatetime(infoByIdCardNumber.getJoinedTime());
-            entryExitHistory.setIdcardType(xn631733ReqData.getIdcardType());
-            entryExitHistory.setIdcardNumber(xn631733ReqData.getIdcardNumber());
-            Date date = DateUtil.strToDate(xn631733ReqData.getDate(),
-                DateUtil.FRONT_DATE_FORMAT_STRING);
-
-            entryExitHistory.setDate(date);
-            entryExitHistory
-                .setType(Integer.parseInt(xn631733ReqData.getType()));
-            entryExitHistory.setUploadStatus(EUploadStatus.TO_UPLOAD.getCode());
-            entryExitHistory.setDeleteStatus(EDeleteStatus.NORMAL.getCode());
             String code = projectWorkerEntryExitHistoryBO
-                .saveProjectWorkerEntryExitHistory(entryExitHistory);
-
+                .saveProjectWorkerEntryExitHistory(teamMaster,
+                    infoByIdCardNumber.get(0), data);
             operateLogBO.saveOperateLog(
                 EOperateLogRefType.WorkAttendance.getCode(), code, "导入人员进退场信息",
                 user, null);

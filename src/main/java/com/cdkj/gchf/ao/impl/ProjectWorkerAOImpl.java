@@ -1,9 +1,7 @@
 package com.cdkj.gchf.ao.impl;
 
-import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,7 +36,6 @@ import com.cdkj.gchf.dto.req.XN631690Req;
 import com.cdkj.gchf.dto.req.XN631692Req;
 import com.cdkj.gchf.dto.req.XN631693Req;
 import com.cdkj.gchf.dto.req.XN631694Req;
-import com.cdkj.gchf.dto.req.XN631694ReqData;
 import com.cdkj.gchf.dto.req.XN631911Req;
 import com.cdkj.gchf.dto.req.XN631912Req;
 import com.cdkj.gchf.dto.req.XN631913Req;
@@ -54,7 +51,6 @@ import com.cdkj.gchf.enums.EWorkerType;
 import com.cdkj.gchf.exception.BizException;
 import com.cdkj.gchf.gov.AsyncQueueHolder;
 import com.cdkj.gchf.gov.GovConnecter;
-import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 
 @Service
@@ -140,7 +136,9 @@ public class ProjectWorkerAOImpl implements IProjectWorkerAO {
     public void dropProjectWorker(String code) {
         ProjectWorker projectWorker = projectWorkerBO.getProjectWorker(code);
         if (projectWorker.getUploadStatus()
-            .equals(EUploadStatus.UPLOAD_UNEDITABLE.getCode())) {
+            .equals(EUploadStatus.UPLOAD_UNEDITABLE.getCode())
+                || projectWorker.getUploadStatus()
+                    .equals(EUploadStatus.UPLOAD_EDITABLE.getCode())) {
             throw new BizException("XN631691", "班组人员已上传,无法删除");
         }
         projectWorkerBO.updateProjectWorkerDeleteStatus(code,
@@ -148,15 +146,10 @@ public class ProjectWorkerAOImpl implements IProjectWorkerAO {
 
         workerContractBO.fakeDeleteWorkerContract(code);
 
-        workerAttendanceBO.updateWorkerAttendanceDeleteStatus(code,
-            EDeleteStatus.DELETED.getCode());
+        workerAttendanceBO.fakeDeleteWorkAttendanceByWorkerCode(code);
 
         projectWorkerEntryExitHistoryBO
-            .updateProjectWorkerEntryExitHistoryDeleteStatus(code,
-                EDeleteStatus.DELETED.getCode());
-
-        payRollBO.updatePayRollDeleteStatus(projectWorker.getProjectCode(),
-            projectWorker.getTeamSysNo(), projectWorker.getCorpCode());
+            .fakeDeleteProjectWorkerEntryHistory(code);
 
         PayRollDetail condition = new PayRollDetail();
         condition.setIdcardType(projectWorker.getIdcardType());
@@ -277,45 +270,24 @@ public class ProjectWorkerAOImpl implements IProjectWorkerAO {
     public void uploadProjectWorker(XN631694Req req) {
         User user = userBO.getBriefUser(req.getUserId());
         List<String> codeList = req.getCodeList();
-        List<String> errorCode = new ArrayList<>();
         for (String code : codeList) {
             ProjectWorker projectWorker = projectWorkerBO
                 .getProjectWorker(code);
-            if (projectWorker.getUploadStatus()
-                .equals(EUploadStatus.UPLOAD_EDITABLE.getCode())) {
-                errorCode.add("项目人员已上传" + projectWorker.getIdcardNumber());
-                continue;
-            }
+
             TeamMaster teamMaster = teamMasterBO
                 .getTeamMaster(projectWorker.getTeamSysNo());
-            if (teamMaster == null) {
-                errorCode
-                    .add("第" + (codeList.indexOf(code)) + 1 + "行" + "班组信息未上传");
-                continue;
-            }
 
-            projectWorker.setTeamSysNo(teamMaster.getTeamSysNo());
+            if (teamMaster == null) {
+                throw new BizException("XN631690", "班组信息不存在");
+            }
             ProjectConfig projectConfig = projectConfigBO
                 .getProjectConfigByLocal(projectWorker.getProjectCode());
-            projectWorker.setProjectCode(projectConfig.getProjectCode());
-            projectWorker.setTeamSysNo(teamMaster.getTeamSysNo());
-            XN631694ReqData xn631694ReqData = new XN631694ReqData();
-            xn631694ReqData.setTeamMasterCode(teamMaster.getTeamSysNo());
-            JsonObject jsonObject = new JsonObject();
-            jsonObject.addProperty("projectCode",
-                projectWorker.getProjectCode());
-            jsonObject.addProperty("corpCode", projectWorker.getCorpCode());
-            jsonObject.addProperty("corpName", projectWorker.getCorpName());
-            jsonObject.addProperty("teamSysNo", teamMaster.getTeamSysNo());
-            jsonObject.addProperty("teamName", teamMaster.getTeamName());
-            JsonArray jsonArray = new JsonArray();
-            JsonObject projectWorkerJson = projectWorkerBO
-                .getProjectWorkerJson(projectWorker, projectConfig);
-            jsonArray.add(projectWorkerJson);
-            jsonObject.add("workerList", jsonArray);
+
+            JsonObject json = projectWorkerBO.getProjectWorkerJson(teamMaster,
+                projectWorker, projectConfig);
 
             String resString = GovConnecter.getGovData("ProjectWorker.Add",
-                jsonObject.toString(), projectConfig.getProjectCode(),
+                json.toString(), projectConfig.getProjectCode(),
                 projectConfig.getSecret());
 
             String logCode = operateLogBO.saveOperateLog(
@@ -326,10 +298,6 @@ public class ProjectWorkerAOImpl implements IProjectWorkerAO {
                 "projectWorkerBO", code,
                 EUploadStatus.UPLOAD_EDITABLE.getCode(), logCode);
         }
-        if (CollectionUtils.isNotEmpty(errorCode)) {
-            throw new BizException("XN631694", errorCode.toString());
-        }
-
     }
 
     public void checkDicKey(XN631693ReqData projectWorkerData) {

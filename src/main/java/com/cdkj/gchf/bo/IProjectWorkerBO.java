@@ -6,6 +6,7 @@ import com.cdkj.gchf.bo.base.IPaginableBO;
 import com.cdkj.gchf.bo.base.Paginable;
 import com.cdkj.gchf.domain.ProjectConfig;
 import com.cdkj.gchf.domain.ProjectWorker;
+import com.cdkj.gchf.domain.TeamMaster;
 import com.cdkj.gchf.dto.req.XN631690Req;
 import com.cdkj.gchf.dto.req.XN631692Req;
 import com.cdkj.gchf.dto.req.XN631911Req;
@@ -37,16 +38,19 @@ public interface IProjectWorkerBO extends IPaginableBO<ProjectWorker> {
 
     public ProjectWorker getProjectWorker(String code);
 
+    public List<ProjectWorker> getProjectWorker(String projectCode,
+            String idCardNumber);
+
     public ProjectWorker getProjectWorker(String projectCode, String corpCode,
             String teamSysNo, String idcardNumber);
 
     public ProjectWorker getProjectWorkerByProjectCode(String code);
 
-    public ProjectWorker getProjectWorkerByIdentity(String teamMasterNo,
+    public List<ProjectWorker> getProjectWorkerByIdentity(String teamMasterNo,
             String idCardType, String idCardNumber);
 
-    public JsonObject getProjectWorkerJson(ProjectWorker projectWorker,
-            ProjectConfig projectConfig);
+    public JsonObject getProjectWorkerJson(TeamMaster teamMaster,
+            ProjectWorker projectWorker, ProjectConfig projectConfig);
 
     /****国家平台接口****/
     public void doUpload(XN631911Req req, ProjectConfig projectConfig);

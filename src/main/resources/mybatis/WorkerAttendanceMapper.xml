@@ -49,14 +49,14 @@
 			<if test="status != null and status != '' ">
 				AND t.status = #{status}
 			</if>
-			<if test="uploadStatus != null and uploadStatus != '' ">
-				AND t.upload_status = #{uploadStatus}
-			</if>
 			<if test="workerName != null and workerName != '' ">
 				AND t.worker_name = #{workerName}
 			</if>
 			<if test="date != null and date != '' ">
 				AND t.date = #{date}
+			</if>
+			<if test="uploadStatus != null and uploadStatus != '' ">
+				AND t.upload_status = #{uploadStatus}
 			</if>
 			<if test="deleteStatus != null and deleteStatus != '' ">
 				AND t.delete_status = #{deleteStatus}
@@ -190,8 +190,7 @@
 		UPDATE
 		thf_worker_attendance
 		SET
-		delete_status =
-		#{deleteStatus}
+		delete_status = #{deleteStatus}
 		WHERE
 		code = #{code}
 	</update>

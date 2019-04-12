@@ -5,10 +5,12 @@ import java.util.List;
 import com.cdkj.gchf.bo.base.IPaginableBO;
 import com.cdkj.gchf.bo.base.Paginable;
 import com.cdkj.gchf.domain.ProjectConfig;
+import com.cdkj.gchf.domain.ProjectWorker;
 import com.cdkj.gchf.domain.TeamMaster;
 import com.cdkj.gchf.domain.WorkerAttendance;
 import com.cdkj.gchf.dto.req.XN631710Req;
 import com.cdkj.gchf.dto.req.XN631712Req;
+import com.cdkj.gchf.dto.req.XN631713ReqData;
 import com.cdkj.gchf.dto.req.XN631918Req;
 import com.cdkj.gchf.dto.req.XN631919Req;
 import com.google.gson.JsonObject;
@@ -19,6 +21,9 @@ public interface IWorkerAttendanceBO extends IPaginableBO<WorkerAttendance> {
 
     public String saveWorkerAttendance(WorkerAttendance workerAttendance);
 
+    public String saveWorkerAttendance(String projectCode, XN631713ReqData data,
+            ProjectWorker projectWorker, WorkerAttendance workerAttendance);
+
     public int removeWorkerAttendance(String code);
 
     public void refreshWorkerAttendance(XN631712Req data);
@@ -26,6 +31,8 @@ public interface IWorkerAttendanceBO extends IPaginableBO<WorkerAttendance> {
     int updateWorkerAttendanceDeleteStatus(String code, String status);
 
     int fakeDeleteWorkAttendance(String teamMasterNo);
+
+    int fakeDeleteWorkAttendanceByWorkerCode(String workerCode);
 
     public List<WorkerAttendance> queryWorkerAttendanceList(
             WorkerAttendance condition);

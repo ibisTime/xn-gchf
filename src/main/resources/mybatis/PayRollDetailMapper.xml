@@ -115,6 +115,8 @@
 		,is_back_pay = #{isBackPay}
 		,balance_date = #{balanceDate}
 		,third_pay_roll_code = #{thirdPayRollCode}
+		,delete_status =
+		#{deleteStatus}
 		WHERE code =
 		#{code}
 	</update>

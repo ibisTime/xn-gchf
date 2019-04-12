@@ -9,6 +9,7 @@
 		<result column="business_name" property="businessName" />
 
 		<result column="bank_name" property="bankName" />
+		<result column="bank_code" property="bankCode" />
 		<result column="bank_number" property="bankNumber" />
 		<result column="bank_link_number" property="bankLinkNumber" />
 		<result column="create_datetime" property="createDatetime" />
@@ -56,6 +57,7 @@
 		,business_sys_no
 		,business_name
 		,bank_name
+		,bank_code
 		,bank_number
 		,bank_link_number
 		,create_datetime
@@ -69,6 +71,7 @@
 		,#{businessSysNo}
 		,#{businessName}
 		,#{bankName}
+		,#{bankCode}
 		,#{bankNumber}
 		,#{bankLinkNumber}
 		,#{createDatetime}
@@ -88,10 +91,9 @@
 		thf_bank_card_info
 		SET
 		bank_name = #{bankName}
-		,bank_link_number =
-		#{bankLinkNumber}
-		,bank_number =
-		#{bankNumber}
+		bank_code = #{bankCode}
+		,bank_link_number = #{bankLinkNumber}
+		,bank_number = #{bankNumber}
 		WHERE code =
 		#{code}
 	</update>
@@ -101,10 +103,8 @@
 		thf_bank_card_info
 		SET
 		status = #{status}
-		,update_datetime =
-		#{updateDatetime}
-		WHERE code =
-		#{code}
+		,update_datetime = 	#{updateDatetime}
+		WHERE code = #{code}
 	</update>
 
 	<select id="select_bankCardInfo" parameterType="bankCardInfo"
@@ -114,6 +114,7 @@
 		,t.business_type
 		,t.business_sys_no
 		,t.bank_name
+		,t.bank_code
 		,t.bank_number
 		,t.bank_link_number
 		,t.business_name

@@ -84,6 +84,7 @@ public class PayRollAOImpl implements IPayRollAO {
         if (basicinfoByCorp == null) {
             throw new BizException("XN631700", "企业信息不存在");
         }
+
         String code = payRollBO.savePayRoll(data);
         payRollDetailBO.savePayRollDetail(code, data.getProjectCode(),
             data.getPayMonth(), data.getDetailList());

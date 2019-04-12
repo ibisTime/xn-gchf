@@ -20,6 +20,10 @@ public class XN631750Req {
     @NotBlank
     private String bankName;
 
+    // 银行代码
+    @NotBlank
+    private String bankCode;
+
     // 银行账户
     @NotBlank
     private String bankNumber;
@@ -96,6 +100,14 @@ public class XN631750Req {
 
     public void setBusinessName(String businessName) {
         this.businessName = businessName;
+    }
+
+    public String getBankCode() {
+        return bankCode;
+    }
+
+    public void setBankCode(String bankCode) {
+        this.bankCode = bankCode;
     }
 
 }

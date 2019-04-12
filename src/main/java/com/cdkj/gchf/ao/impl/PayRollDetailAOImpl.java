@@ -44,9 +44,10 @@ public class PayRollDetailAOImpl implements IPayRollDetailAO {
         String uploadStatus = payRollDetailBO.getPayRollDetail(code)
             .getUploadStatus();
 
-        if (uploadStatus != null & uploadStatus
-            .equals(EUploadStatus.UPLOAD_UNEDITABLE.getCode())) {
-            throw new BizException("XN631811");
+        if (uploadStatus.equals(EUploadStatus.UPLOAD_EDITABLE.getCode())
+                || uploadStatus
+                    .equals(EUploadStatus.UPLOAD_UNEDITABLE.getCode())) {
+            throw new BizException("XN631811", "工资单已上传,不可删除");
         }
         return payRollDetailBO.updatePayRollDetailDeleteStatus(code,
             EDeleteStatus.DELETED.getCode());

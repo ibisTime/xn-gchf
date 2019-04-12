@@ -90,8 +90,10 @@ public class WorkerAttendanceAOImpl implements IWorkerAttendanceAO {
     public int dropWorkerAttendance(String code) {
         WorkerAttendance workerAttendance = workerAttendanceBO
             .getWorkerAttendance(code);
-        if (!workerAttendance.getUploadStatus()
-            .equals(EUploadStatus.TO_UPLOAD.getCode())) {
+        if (workerAttendance.getUploadStatus()
+            .equals(EUploadStatus.UPLOAD_EDITABLE.getCode())
+                || workerAttendance.getUploadStatus()
+                    .equals(EUploadStatus.UPLOAD_UNEDITABLE.getCode())) {
             throw new BizException("XN631711", "人员考勤已上传，不可删除");
         }
         return workerAttendanceBO.updateWorkerAttendanceDeleteStatus(code,

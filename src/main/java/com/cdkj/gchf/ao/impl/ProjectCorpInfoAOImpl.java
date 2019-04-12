@@ -113,21 +113,22 @@ public class ProjectCorpInfoAOImpl implements IProjectCorpInfoAO {
         }
         String corpCode = projectCorpInfo.getCorpCode();
         String projectCode = projectCorpInfo.getProjectCode();
+
         projectCorpInfoBO.updateProjectCorpInfoDeleteStatus(code,
             EDeleteStatus.DELETED.getCode());
 
         TeamMaster condition = new TeamMaster();
         condition.setCorpCode(corpCode);
         condition.setProjectCode(projectCode);
-        List<TeamMaster> queryTeamMasterList = teamMasterBO
-            .queryTeamMasterList(condition);
-        for (TeamMaster teamMaster : queryTeamMasterList) {
-            teamMasterBO.fakeDeleteTeamMaster(projectCode, corpCode);
+        for (TeamMaster teamMaster : teamMasterBO
+            .queryTeamMasterList(condition)) {
+
             projectWorkerBO.fakeDeleteProjectWorker(projectCode,
                 teamMaster.getCode(), corpCode);
             projectWorkerEntryExitHistoryBO.fakeDeleteProjectWorkerEntryHistory(
                 projectCode, teamMaster.getCode());
             workerAttendanceBO.fakeDeleteWorkAttendance(teamMaster.getCode());
+
             PayRoll payRollCondition = new PayRoll();
             payRollCondition.setCorpCode(corpCode);
             payRollCondition.setTeamSysNo(teamMaster.getCode());
@@ -141,7 +142,7 @@ public class ProjectCorpInfoAOImpl implements IProjectCorpInfoAO {
             payRollBO.updatePayRollDeleteStatus(projectCode,
                 teamMaster.getCode(), corpCode);
         }
-
+        teamMasterBO.fakeDeleteTeamMaster(projectCode, corpCode);
         workerContractBO.fakeDeleteWorkerContractByProjectCode(projectCode);
     }
 

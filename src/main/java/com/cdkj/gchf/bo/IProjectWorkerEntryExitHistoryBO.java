@@ -34,6 +34,8 @@ public interface IProjectWorkerEntryExitHistoryBO
     void fakeDeleteProjectWorkerEntryHistory(String ProjectCode,
             String teamMasterCode);
 
+    void fakeDeleteProjectWorkerEntryHistory(String workerCode);
+
     public Object queryProjectWorkerEntryExitHistory(String code);
 
     public List<ProjectWorkerEntryExitHistory> queryProjectWorkerEntryExitHistoryList(

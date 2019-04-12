@@ -43,6 +43,9 @@
 			<if test="uploadStatus != null and uploadStatus != '' ">
 				AND t.upload_status = #{uploadStatus}
 			</if>
+			<if test="deleteStatus != null and deleteStatus != '' ">
+				AND t.delete_status = #{deleteStatus}
+			</if>
 			<if test="type != null ">
 				AND t.type = #{type}
 			</if>
@@ -140,6 +143,7 @@
 		,t.type
 		,t.voucher_url
 		,t.upload_status
+		,t.deleteStatus
 		FROM
 		thf_project_worker_entry_exit_history t
 		<include refid="where_condition" />

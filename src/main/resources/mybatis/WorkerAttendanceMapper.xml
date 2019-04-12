@@ -58,6 +58,9 @@
 			<if test="date != null and date != '' ">
 				AND t.date = #{date}
 			</if>
+			<if test="deleteStatus != null and deleteStatus != '' ">
+				AND t.delete_status = #{deleteStatus}
+			</if>
 		</trim>
 	</sql>
 
@@ -92,6 +95,7 @@
 		,terminal_code
 		,remark
 		,upload_status
+		,delete_status
 		)
 		VALUES(
 		#{code}
@@ -123,6 +127,7 @@
 		,#{terminalCode}
 		,#{remark}
 		,#{uploadStatus}
+		,#{deleteStatus}
 		)
 	</insert>
 	<delete id="delete_workerAttendance" parameterType="workerAttendance">
@@ -223,6 +228,7 @@
 		,t.terminal_code
 		,t.remark
 		,t.upload_status
+		,t.delete_status
 		FROM
 		thf_worker_attendance t
 		<include refid="where_condition" />

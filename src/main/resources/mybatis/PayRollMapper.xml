@@ -47,6 +47,7 @@
 		,t.corp_name
 		,t.team_sys_no
 		,t.pay_month
+		,t.delete_status
 		FROM
 		thf_pay_roll t
 		<include refid="where_condition" />

@@ -265,4 +265,15 @@ public class ProjectWorkerEntryExitHistoryBOImpl
                 projectWorkerEntryExitHistory);
     }
 
+    @Override
+    public void fakeDeleteProjectWorkerEntryHistory(String workerCode) {
+        ProjectWorkerEntryExitHistory projectWorkerEntryExitHistory = new ProjectWorkerEntryExitHistory();
+        projectWorkerEntryExitHistory.setWorkerCode(workerCode);
+        projectWorkerEntryExitHistory
+            .setUploadStatus(EUploadStatus.TO_UPLOAD.getCode());
+        projectWorkerEntryExitHistoryDAO
+            .updateProjectWorkerEntryHistoryDeleteStatus(
+                projectWorkerEntryExitHistory);
+    }
+
 }

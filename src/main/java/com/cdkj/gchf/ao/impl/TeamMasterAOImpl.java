@@ -112,8 +112,10 @@ public class TeamMasterAOImpl implements ITeamMasterAO {
     @Override
     public void dropTeamMaster(XN631651Req req) {
         TeamMaster teamMaster = teamMasterBO.getTeamMaster(req.getCode());
-        if (!teamMaster.getUploadStatus()
-            .equals(EUploadStatus.TO_UPLOAD.getCode())) {
+        if (teamMaster.getUploadStatus()
+            .equals(EUploadStatus.UPLOAD_EDITABLE.getCode())
+                || teamMaster.getUploadStatus()
+                    .equals(EUploadStatus.UPLOAD_UNEDITABLE.getCode())) {
             throw new BizException("XN631651", "班组信息已上传,无法删除");
         }
         teamMasterBO.updateTeamMasterDeleteStatus(req.getCode(),

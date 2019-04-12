@@ -39,6 +39,9 @@
 			<if test="workerName != null and workerName != '' ">
 				AND t.worker_name = #{workerName}
 			</if>
+			<if test="deleteStatus != null and deleteStatus != '' ">
+				AND t.delete_status = #{deleteStatus}
+			</if>
 
 		</trim>
 	</sql>
@@ -112,6 +115,8 @@
 		,is_back_pay = #{isBackPay}
 		,balance_date = #{balanceDate}
 		,third_pay_roll_code = #{thirdPayRollCode}
+		,delete_status =
+		#{deleteStatus}
 		WHERE code =
 		#{code}
 	</update>

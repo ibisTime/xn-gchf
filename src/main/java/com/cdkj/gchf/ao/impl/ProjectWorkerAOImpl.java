@@ -140,7 +140,9 @@ public class ProjectWorkerAOImpl implements IProjectWorkerAO {
     public void dropProjectWorker(String code) {
         ProjectWorker projectWorker = projectWorkerBO.getProjectWorker(code);
         if (projectWorker.getUploadStatus()
-            .equals(EUploadStatus.UPLOAD_UNEDITABLE.getCode())) {
+            .equals(EUploadStatus.UPLOAD_UNEDITABLE.getCode())
+                || projectWorker.getUploadStatus()
+                    .equals(EUploadStatus.UPLOAD_EDITABLE.getCode())) {
             throw new BizException("XN631691", "班组人员已上传,无法删除");
         }
         projectWorkerBO.updateProjectWorkerDeleteStatus(code,
@@ -148,15 +150,10 @@ public class ProjectWorkerAOImpl implements IProjectWorkerAO {
 
         workerContractBO.fakeDeleteWorkerContract(code);
 
-        workerAttendanceBO.updateWorkerAttendanceDeleteStatus(code,
-            EDeleteStatus.DELETED.getCode());
+        workerAttendanceBO.fakeDeleteWorkAttendanceByWorkerCode(code);
 
         projectWorkerEntryExitHistoryBO
-            .updateProjectWorkerEntryExitHistoryDeleteStatus(code,
-                EDeleteStatus.DELETED.getCode());
-
-        payRollBO.updatePayRollDeleteStatus(projectWorker.getProjectCode(),
-            projectWorker.getTeamSysNo(), projectWorker.getCorpCode());
+            .fakeDeleteProjectWorkerEntryHistory(code);
 
         PayRollDetail condition = new PayRollDetail();
         condition.setIdcardType(projectWorker.getIdcardType());

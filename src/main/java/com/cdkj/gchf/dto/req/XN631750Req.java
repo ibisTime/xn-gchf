@@ -21,7 +21,6 @@ public class XN631750Req {
     private String bankName;
 
     // 银行代码
-    @NotBlank
     private String bankCode;
 
     // 银行账户

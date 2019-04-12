@@ -359,15 +359,8 @@ public class ProjectWorkerBOImpl extends PaginableBOImpl<ProjectWorker>
         JsonArray jsonArray = new JsonArray();
         WorkerInfo infoByIdCardNumber = workerInfoBO
             .getWorkerInfoByIdCardNumber(projectWorker.getIdcardNumber());
-        if (StringUtils.isBlank(infoByIdCardNumber.getHeadImageUrl())
-                || StringUtils.isBlank(infoByIdCardNumber.getNation())
-                || StringUtils.isBlank(infoByIdCardNumber.getAddress())
-                || StringUtils.isBlank(infoByIdCardNumber.getHeadImageUrl())
-                || StringUtils.isBlank(infoByIdCardNumber.getPoliticsType())
-                || StringUtils.isBlank(infoByIdCardNumber.getCellPhone())
-                || StringUtils.isBlank(infoByIdCardNumber.getCultureLevelType())
-                || StringUtils.isBlank(infoByIdCardNumber.getGrantOrg())) {
-            throw new BizException("XN631694", "人员信息不完整,请重新建档补充信息");
+        if (StringUtils.isBlank(infoByIdCardNumber.getCellPhone())) {
+            throw new BizException("XN631694", "人员电话号码不完整，请重新建档补充信息");
         }
 
         projectWorker.setTeamSysNo(teamMaster.getTeamSysNo());
@@ -404,8 +397,8 @@ public class ProjectWorkerBOImpl extends PaginableBOImpl<ProjectWorker>
             projectWorker.getHasBuyInsurance());
         workerList.addProperty("nation", infoByIdCardNumber.getNation());
         workerList.addProperty("address", infoByIdCardNumber.getAddress());
-        workerList.addProperty("headImage",
-            infoByIdCardNumber.getHeadImageUrl());
+        workerList.addProperty("headImage", infoByIdCardNumber.getHeadImageUrl()
+            .replace("data:image/bmp;base64,", "data:image/png;base64,"));
         workerList.addProperty("politicsType",
             infoByIdCardNumber.getPoliticsType());
         workerList.addProperty("joinedTime",

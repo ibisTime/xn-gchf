@@ -87,7 +87,6 @@ public class WorkerInfoAOImpl implements IWorkerInfoAO {
 
     @Override
     public int addWorkerInfoIdCardInfo(XN631791Req req) {
-        WorkerInfo workerInfo = workerInfoBO.getWorkerInfo(req.getCode());
         return workerInfoBO.refreshWorkerInfo(req);
     }
 

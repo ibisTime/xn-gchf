@@ -27,6 +27,7 @@ import com.cdkj.gchf.dto.req.XN631790Req;
 import com.cdkj.gchf.dto.req.XN631791Req;
 import com.cdkj.gchf.dto.req.XN631792Req;
 import com.cdkj.gchf.dto.req.XN631793Req;
+import com.cdkj.gchf.enums.EGender;
 import com.cdkj.gchf.enums.EGeneratePrefix;
 import com.cdkj.gchf.enums.EIsNotType;
 import com.cdkj.gchf.exception.BizException;
@@ -189,7 +190,8 @@ public class WorkerInfoBOImpl extends PaginableBOImpl<WorkerInfo>
         Date birthDay = DateUtil.strToDate(req.getBirthday(),
             DateUtil.FRONT_DATE_FORMAT_STRING);
         workerInfo.setBirthday(birthDay);
-        workerInfo.setGender(Integer.parseInt(req.getGender()));
+        workerInfo
+            .setGender(Integer.parseInt(EGender.checkExists(req.getGender())));
         BeanUtils.copyProperties(req, workerInfo);
         if (StringUtils.isNotBlank(req.getIsJoined())) {
             workerInfo.setIsJoined(Integer.parseInt(req.getIsJoined()));

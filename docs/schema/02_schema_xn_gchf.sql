@@ -162,7 +162,7 @@ CREATE TABLE `thf_project` (
   `build_corp_code` varchar(18) DEFAULT NULL COMMENT '建设单位统一社会信用代码',
   `build_plan_num` varchar(50) DEFAULT NULL COMMENT '建设用地规划许可证编号',
   `prj_plan_num` varchar(50) DEFAULT NULL COMMENT '建设工程规划许可证编号',
-  `area_code` varchar(6) DEFAULT NULL COMMENT '项目所在地',
+  `area_code` varchar(32) DEFAULT NULL COMMENT '项目所在地',
   `invest` decimal(18,6) DEFAULT NULL COMMENT '总投资',
   `building_area` decimal(18,2) DEFAULT NULL COMMENT '总面积',
   `building_length` decimal(18,2) DEFAULT NULL COMMENT '总长度',

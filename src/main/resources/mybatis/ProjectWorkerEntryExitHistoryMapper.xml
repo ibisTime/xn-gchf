@@ -145,7 +145,7 @@
 		,t.type
 		,t.voucher_url
 		,t.upload_status
-		,t.deleteStatus
+		,t.delete_status
 		FROM
 		thf_project_worker_entry_exit_history t
 		<include refid="where_condition" />

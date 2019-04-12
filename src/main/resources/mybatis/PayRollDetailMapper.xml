@@ -173,6 +173,7 @@
 		,t.third_pay_roll_code
 		,t.upload_status
 
+		,t.delete_status
 		FROM
 		thf_pay_roll_detail t
 		<include refid="where_condition" />

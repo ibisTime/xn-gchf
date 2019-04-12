@@ -91,8 +91,9 @@ public class PayRollDetailBOImpl extends PaginableBOImpl<PayRollDetail>
             }
             payRollDetail
                 .setTotalPayAmount(new BigDecimal(detail.getTotalPayAmount()));
-            payRollDetail.setPayRollCode(projectCode);
             payRollDetail.setUploadStatus(EUploadStatus.TO_UPLOAD.getCode());
+            payRollDetail.setDeleteStatus(EDeleteStatus.NORMAL.getCode());
+
             payRollDetailDAO.insert(payRollDetail);
         }
     }

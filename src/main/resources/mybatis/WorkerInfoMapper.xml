@@ -152,16 +152,12 @@
 		#{isJoined}
 		,joined_time =
 		#{joinedTime}
-		,cell_phone = #{cellPhone}
 		,culture_level_type =
 		#{cultureLevelType}
 		,specialty = #{specialty}
 
 		,has_bad_medical_history =
 		#{hasBadMedicalHistory}
-		,urgent_link_man =
-		#{urgentLinkMan}
-		,urgent_link_man_phone = #{urgentLinkManPhone}
 		,work_type_code =
 		#{workTypeCode}
 		,work_corp_name = #{workCorpName}
@@ -171,8 +167,6 @@
 
 		,grant_org =
 		#{grantOrg}
-		,positive_id_card_image_url = #{positiveIdCardImageUrl}
-		,negative_id_card_image_url = #{negativeIdCardImageUrl}
 		,start_date =
 		#{startDate}
 		,expiry_date = #{expiryDate}

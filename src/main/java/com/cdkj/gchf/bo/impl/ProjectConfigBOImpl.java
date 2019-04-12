@@ -62,6 +62,7 @@ public class ProjectConfigBOImpl extends PaginableBOImpl<ProjectConfig>
         localProjectConfig.setProjectCode(req.getProjectCode());
         localProjectConfig.setPassword(req.getPassword());
         localProjectConfig.setProjectName(req.getProjectName());
+        localProjectConfig.setSecret(req.getSecret());
 
         projectConfigDAO.insert(localProjectConfig);
         return code;

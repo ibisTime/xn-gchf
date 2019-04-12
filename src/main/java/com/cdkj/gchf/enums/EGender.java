@@ -27,21 +27,26 @@ public enum EGender {
         return map;
     }
 
-    public static EGender getGender(String code) {
-        Map<String, EGender> map = getGenderMap();
-        EGender projectCorpType = map.get(code);
-        if (null == projectCorpType) {
-            throw new BizException("xn0000", code + "对应性别类型不存在");
+    public static EGender getGender(String value) {
+        Map<String, EGender> genderMap = getGenderMap();
+        Set<Entry<String, EGender>> entrySet = genderMap.entrySet();
+        for (Entry<String, EGender> entry : entrySet) {
+            if (entry.getValue().getStatus().equals(value)) {
+                return entry.getValue();
+            }
         }
-        return projectCorpType;
+        return null;
     }
 
-    public static void checkExists(String code) {
+    public static String checkExists(String code) {
         Map<String, EGender> map = getGenderMap();
-        EGender projectCorpType = map.get(code);
-        if (null == projectCorpType) {
+        EGender eGender = map.get(code) == null ? getGender(code)
+                : map.get(code);
+        if (null == eGender) {
             throw new BizException("xn0000", code + "对应性别类型不存在");
         }
+
+        return eGender.code;
     }
 
     public static String checkDictValue(String value) {

@@ -153,7 +153,7 @@ public class ProjectAOImpl implements IProjectAO {
 
         List<ProjectBuilderLicense> projectBuilderLicenseList = projectBuilderLicenseBO
             .queryProjectBuilderLicenseList(code);
-        project.setProjectBuilderLicenseList(projectBuilderLicenseList);
+        project.setBuilderLicenses(projectBuilderLicenseList);
 
         return project;
     }

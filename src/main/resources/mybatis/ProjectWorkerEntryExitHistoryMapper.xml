@@ -117,9 +117,8 @@
 		parameterType="projectWorkerEntryExitHistory">
 		UPDATE thf_project_worker_entry_exit_history
 		SET
-		upload_status =
-		#{uploadStatus}
-		<include refid="where_condition"></include>
+		upload_status = #{uploadStatus}
+		WHERE code = #{code}
 	</update>
 
 	<select id="select_projectWorkerEntryExitHistory" parameterType="projectWorkerEntryExitHistory"

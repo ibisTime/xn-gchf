@@ -41,13 +41,15 @@ public class WorkerInfoAOImpl implements IWorkerInfoAO {
     public String addWorkerInfo(XN631790Req req) {
         // 数据字典校验
         EPoliticsType.checkExists(req.getPoliticsType());
-        EGender.checkExists(req.getGender());
         ECultureLevelType.checkExists(req.getCultureLevelType());
         EIdCardType.checkExists(req.getIdCardType());
+        req.setGender(EGender.checkExists(req.getGender()));
+
         IdCardChecker idCardChecker = new IdCardChecker(req.getIdCardNumber());
         if (!idCardChecker.validate()) {
             throw new BizException("XN631790", "身份证信息错误");
         }
+
         if (StringUtils.isNotBlank(req.getIdCardNumber())) {
             WorkerInfo workerInfoByIdCardNumber = workerInfoBO
                 .getWorkerInfoByIdCardNumber(req.getIdCardNumber());
@@ -55,6 +57,7 @@ public class WorkerInfoAOImpl implements IWorkerInfoAO {
                 throw new BizException("XN631790", "建档失败,人员实名制信息已存在");
             }
         }
+
         return workerInfoBO.saveWorkerInfo(req);
     }
 

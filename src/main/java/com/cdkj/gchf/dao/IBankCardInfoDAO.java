@@ -14,15 +14,9 @@ import com.cdkj.gchf.domain.BankCardInfo;
 public interface IBankCardInfoDAO extends IBaseDAO<BankCardInfo> {
     String NAMESPACE = IBankCardInfoDAO.class.getName().concat(".");
 
-    /**
-     * 
-     * @Description: TODO
-     * @param: @param 更新银行卡信息
-     * @param: @return      
-     * @return: int      
-     * @throws
-     */
     int updateBankCardInfo(BankCardInfo condition);
 
     int updateBankCardInfoStatus(BankCardInfo condition);
+
+    void updateBankCardInfoStatusByBussiness(BankCardInfo condition);
 }

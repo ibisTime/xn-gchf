@@ -15,11 +15,17 @@ public interface IBankCardBankBO extends IPaginableBO<BankCardInfo> {
 
     public void refreshBankCardInfo(XN631752Req req);
 
+    public int updateBankCardInfoStatus(String code);
+
+    public void refreshStatus(String businessSysNo, String status);
+
+    public List<BankCardInfo> queryBankCardInfoList(String businessSysNo,
+            String status);
+
     public List<BankCardInfo> queryBankCardInfoList(BankCardInfo condition);
 
     public BankCardInfo getBankCardInfo(Long id);
 
-    public int updateBankCardInfoStatus(String code);
-
     public BankCardInfo getBankCardInfo(String bankCode);
+
 }

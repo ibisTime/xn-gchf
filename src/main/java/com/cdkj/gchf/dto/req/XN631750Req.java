@@ -16,9 +16,6 @@ public class XN631750Req {
     // 业务编号
     private String businessSysNo;
 
-    // 业务名称
-    private String businessName;
-
     // 银行支行名称
     @NotBlank
     private String bankName;
@@ -33,6 +30,9 @@ public class XN631750Req {
 
     // 创建时间
     private Date createDatetime;
+
+    /****DB Properties****/
+    private String businessName;
 
     public String getUserId() {
         return userId;

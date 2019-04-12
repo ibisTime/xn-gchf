@@ -111,7 +111,7 @@ public class Project extends ABaseDO {
     private String userId;
 
     // 项目许可证
-    private List<ProjectBuilderLicense> projectBuilderLicenseList;
+    private List<ProjectBuilderLicense> builderLicenses;
 
     // 全名
     private String fullName;
@@ -356,13 +356,13 @@ public class Project extends ABaseDO {
         this.userId = userId;
     }
 
-    public List<ProjectBuilderLicense> getProjectBuilderLicenseList() {
-        return projectBuilderLicenseList;
+    public List<ProjectBuilderLicense> getBuilderLicenses() {
+        return builderLicenses;
     }
 
-    public void setProjectBuilderLicenseList(
-            List<ProjectBuilderLicense> projectBuilderLicenseList) {
-        this.projectBuilderLicenseList = projectBuilderLicenseList;
+    public void setBuilderLicenses(
+            List<ProjectBuilderLicense> builderLicenses) {
+        this.builderLicenses = builderLicenses;
     }
 
     public String getFullName() {

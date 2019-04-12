@@ -15,7 +15,7 @@ import com.google.gson.JsonObject;
 
 public interface IWorkerAttendanceBO extends IPaginableBO<WorkerAttendance> {
 
-    public String saveWorkerAttendance(XN631710Req data);
+    public String saveWorkerAttendance(XN631710Req data, TeamMaster teamMaster);
 
     public String saveWorkerAttendance(WorkerAttendance workerAttendance);
 

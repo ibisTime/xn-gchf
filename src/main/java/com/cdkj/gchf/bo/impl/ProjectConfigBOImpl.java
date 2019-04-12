@@ -79,8 +79,9 @@ public class ProjectConfigBOImpl extends PaginableBOImpl<ProjectConfig>
     }
 
     @Override
-    public void refreshProjectConfig(XN631622Req req) {
+    public void refreshProjectConfig(String code, XN631622Req req) {
         ProjectConfig projectConfig = new ProjectConfig();
+        projectConfig.setCode(code);
         BeanUtils.copyProperties(req, projectConfig);
 
         projectConfigDAO.update(projectConfig);

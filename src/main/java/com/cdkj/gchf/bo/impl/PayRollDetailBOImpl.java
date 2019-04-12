@@ -5,6 +5,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,6 +21,7 @@ import com.cdkj.gchf.dao.impl.PayRollDetailDAOImpl;
 import com.cdkj.gchf.domain.PayRoll;
 import com.cdkj.gchf.domain.PayRollDetail;
 import com.cdkj.gchf.domain.ProjectConfig;
+import com.cdkj.gchf.domain.ProjectWorker;
 import com.cdkj.gchf.domain.TeamMaster;
 import com.cdkj.gchf.dto.req.XN631770ReqDetail;
 import com.cdkj.gchf.dto.req.XN631772Req;
@@ -29,6 +31,7 @@ import com.cdkj.gchf.enums.EDeleteStatus;
 import com.cdkj.gchf.enums.EGeneratePrefix;
 import com.cdkj.gchf.enums.EIsNotType;
 import com.cdkj.gchf.enums.EUploadStatus;
+import com.cdkj.gchf.exception.BizException;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 
@@ -42,50 +45,52 @@ public class PayRollDetailBOImpl extends PaginableBOImpl<PayRollDetail>
     private IProjectWorkerBO projectWorkerBO;
 
     @Override
-    public void savePayRollDetail(String projectCode, String getPayMonth,
-            List<XN631770ReqDetail> data) {
+    public void savePayRollDetail(String payRollCode, String projectCode,
+            String getPayMonth, List<XN631770ReqDetail> data) {
 
-        for (XN631770ReqDetail xn631770ReqDetail : data) {
+        for (XN631770ReqDetail detail : data) {
             String code = OrderNoGenerater
                 .generate(EGeneratePrefix.PayRollDetail.getCode());
             PayRollDetail payRollDetail = new PayRollDetail();
-            BeanUtils.copyProperties(xn631770ReqDetail, payRollDetail);
+            payRollDetail.setPayRollCode(payRollCode);
+            BeanUtils.copyProperties(detail, payRollDetail);
             payRollDetail.setCode(code);
-            if (StringUtils.isNotBlank(xn631770ReqDetail.getDays())) {
-                payRollDetail
-                    .setDays(Integer.parseInt(xn631770ReqDetail.getDays()));
+            if (StringUtils.isNotBlank(detail.getDays())) {
+                payRollDetail.setDays(Integer.parseInt(detail.getDays()));
             }
+
+            if (StringUtils.isNotBlank(detail.getWorkHours())) {
+                payRollDetail
+                    .setWorkHours(new BigDecimal(detail.getWorkHours()));
+            }
+
+            List<ProjectWorker> projectWorkers = projectWorkerBO
+                .queryProjectWorkerList(projectCode, detail.getIdCardNumber());
+            if (CollectionUtils.isEmpty(projectWorkers)) {
+                throw new BizException("XN631770",
+                    "项目人员【" + detail.getIdCardNumber() + "】不存在");
+            }
+            ProjectWorker projectWorker = projectWorkers.get(0);
+
+            payRollDetail.setWorkerName(projectWorker.getWorkerName());
+            payRollDetail.setIdcardNumber(projectWorker.getIdcardNumber());
+            payRollDetail.setIdcardType(projectWorker.getIdcardType());
+
+            payRollDetail.setBalanceDate(DateUtil.strToDate(
+                detail.getBalanceDate(), DateUtil.FRONT_DATE_FORMAT_STRING));
             payRollDetail
-                .setWorkHours(new BigDecimal(xn631770ReqDetail.getWorkHours()));
-            // ProjectWorker workerByIdCardNumber = projectWorkerBO
-            // .getProjectWorkerByIdentity(xn631770ReqDetail.gettexn631770ReqDetail.getIdCardType(),
-            // xn631770ReqDetail.getIdCardNumber());
-            // if (workerByIdCardNumber == null) {
-            // throw new BizException("XN631770", "项目人员不存在");
-            // }
-            // payRollDetail.setWorkerName(workerByIdCardNumber.getWorkerName());
-            // payRollDetail
-            // .setIdcardNumber(workerByIdCardNumber.getIdcardNumber());
-            // payRollDetail.setIdcardType(workerByIdCardNumber.getIdcardType());
-            payRollDetail.setBalanceDate(
-                DateUtil.strToDate(xn631770ReqDetail.getBalanceDate(),
-                    DateUtil.FRONT_DATE_FORMAT_STRING));
-            payRollDetail.setActualAmount(
-                new BigDecimal(xn631770ReqDetail.getActualAmount()));
-            if (StringUtils.isNotBlank(xn631770ReqDetail.getBalanceDate())) {
-                Date balanceDate = DateUtil.strToDate(
-                    xn631770ReqDetail.getBalanceDate(),
+                .setActualAmount(new BigDecimal(detail.getActualAmount()));
+            if (StringUtils.isNotBlank(detail.getBalanceDate())) {
+                Date balanceDate = DateUtil.strToDate(detail.getBalanceDate(),
                     DateUtil.FRONT_DATE_FORMAT_STRING);
                 payRollDetail.setBalanceDate(balanceDate);
             }
-            if (StringUtils.isNotBlank(xn631770ReqDetail.getIsBackPay())) {
-                payRollDetail.setIsBackPay(
-                    Integer.parseInt(xn631770ReqDetail.getIsBackPay()));
+            if (StringUtils.isNotBlank(detail.getIsBackPay())) {
+                payRollDetail
+                    .setIsBackPay(Integer.parseInt(detail.getIsBackPay()));
             }
-            if (StringUtils.isNotBlank(xn631770ReqDetail.getTotalPayAmount())) {
-                payRollDetail.setTotalPayAmount(
-                    new BigDecimal(xn631770ReqDetail.getTotalPayAmount()));
-            }
+            payRollDetail
+                .setTotalPayAmount(new BigDecimal(detail.getTotalPayAmount()));
             payRollDetail.setPayRollCode(projectCode);
             payRollDetail.setUploadStatus(EUploadStatus.TO_UPLOAD.getCode());
             payRollDetailDAO.insert(payRollDetail);

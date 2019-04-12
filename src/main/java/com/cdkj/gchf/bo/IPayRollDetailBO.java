@@ -15,8 +15,8 @@ import com.google.gson.JsonObject;
 
 public interface IPayRollDetailBO extends IPaginableBO<PayRollDetail> {
 
-    public void savePayRollDetail(String projectCode, String getPayMonth,
-            List<XN631770ReqDetail> data);
+    public void savePayRollDetail(String payRollCode, String projectCode,
+            String getPayMonth, List<XN631770ReqDetail> data);
 
     public String savePayRollDetail(PayRollDetail payRollDetail);
 

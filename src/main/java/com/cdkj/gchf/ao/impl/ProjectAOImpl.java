@@ -2,6 +2,7 @@ package com.cdkj.gchf.ao.impl;
 
 import java.util.List;
 
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -11,12 +12,14 @@ import com.cdkj.gchf.ao.IProjectAO;
 import com.cdkj.gchf.bo.ICorpBasicinfoBO;
 import com.cdkj.gchf.bo.IProjectBO;
 import com.cdkj.gchf.bo.IProjectBuilderLicenseBO;
+import com.cdkj.gchf.bo.IProjectConfigBO;
 import com.cdkj.gchf.bo.IUserBO;
 import com.cdkj.gchf.bo.base.Paginable;
 import com.cdkj.gchf.common.StringUtil;
 import com.cdkj.gchf.domain.CorpBasicinfo;
 import com.cdkj.gchf.domain.Project;
 import com.cdkj.gchf.domain.ProjectBuilderLicense;
+import com.cdkj.gchf.domain.ProjectConfig;
 import com.cdkj.gchf.dto.req.XN631600Req;
 import com.cdkj.gchf.dto.req.XN631602Req;
 import com.cdkj.gchf.exception.BizException;
@@ -35,6 +38,9 @@ public class ProjectAOImpl implements IProjectAO {
 
     @Autowired
     private IUserBO userBO;
+
+    @Autowired
+    private IProjectConfigBO projectConfigBO;
 
     @Override
     @Transactional
@@ -139,7 +145,18 @@ public class ProjectAOImpl implements IProjectAO {
     @Override
     public Paginable<Project> queryProjectPage(int start, int limit,
             Project condition) {
-        return projectBO.getPaginable(start, limit, condition);
+        Paginable<Project> page = projectBO.getPaginable(start, limit,
+            condition);
+
+        if (null != page && CollectionUtils.isNotEmpty(page.getList())) {
+            for (Project project : page.getList()) {
+                ProjectConfig projectConfig = projectConfigBO
+                    .getProjectConfigByLocal(project.getCode());
+                project.setProjectConfig(projectConfig);
+            }
+        }
+
+        return page;
     }
 
     @Override
@@ -154,6 +171,10 @@ public class ProjectAOImpl implements IProjectAO {
         List<ProjectBuilderLicense> projectBuilderLicenseList = projectBuilderLicenseBO
             .queryProjectBuilderLicenseList(code);
         project.setBuilderLicenses(projectBuilderLicenseList);
+
+        ProjectConfig projectConfig = projectConfigBO
+            .getProjectConfigByLocal(project.getCode());
+        project.setProjectConfig(projectConfig);
 
         return project;
     }

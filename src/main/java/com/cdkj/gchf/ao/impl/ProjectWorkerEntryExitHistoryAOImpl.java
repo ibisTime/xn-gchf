@@ -11,6 +11,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.alibaba.fastjson.JSONObject;
 import com.cdkj.gchf.ao.IProjectWorkerEntryExitHistoryAO;
 import com.cdkj.gchf.bo.IOperateLogBO;
+import com.cdkj.gchf.bo.IProjectBO;
 import com.cdkj.gchf.bo.IProjectConfigBO;
 import com.cdkj.gchf.bo.IProjectWorkerBO;
 import com.cdkj.gchf.bo.IProjectWorkerEntryExitHistoryBO;
@@ -19,6 +20,7 @@ import com.cdkj.gchf.bo.IUserBO;
 import com.cdkj.gchf.bo.base.Paginable;
 import com.cdkj.gchf.common.AesUtils;
 import com.cdkj.gchf.common.DateUtil;
+import com.cdkj.gchf.domain.Project;
 import com.cdkj.gchf.domain.ProjectConfig;
 import com.cdkj.gchf.domain.ProjectWorker;
 import com.cdkj.gchf.domain.ProjectWorkerEntryExitHistory;
@@ -65,6 +67,9 @@ public class ProjectWorkerEntryExitHistoryAOImpl
 
     @Autowired
     private ITeamMasterBO teamMasterBO;
+
+    @Autowired
+    private IProjectBO projectBO;
 
     @Override
     public String addProjectWorkerEntryExitHistory(XN631730Req data) {
@@ -190,6 +195,10 @@ public class ProjectWorkerEntryExitHistoryAOImpl
                     projectWorkerEntryExitHistory.getTeamSysNo());
                 projectWorkerEntryExitHistory
                     .setTeamName(teamMaster.getTeamName());
+
+                Project project = projectBO
+                    .getProject(teamMaster.getProjectCode());
+                projectWorkerEntryExitHistory.setProjectName(project.getName());
             }
         }
 

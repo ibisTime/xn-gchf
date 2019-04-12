@@ -71,7 +71,8 @@ public class WorkerAttendanceBOImpl extends PaginableBOImpl<WorkerAttendance>
     private IProjectWorkerBO projectWorkerBO;
 
     @Override
-    public String saveWorkerAttendance(XN631710Req data) {
+    public String saveWorkerAttendance(XN631710Req data,
+            TeamMaster teamMaster) {
         String code = null;
         WorkerAttendance workerAttendance = new WorkerAttendance();
         BeanUtils.copyProperties(data, workerAttendance);
@@ -80,15 +81,19 @@ public class WorkerAttendanceBOImpl extends PaginableBOImpl<WorkerAttendance>
         workerAttendance.setProjectName(projectConfigByLocal.getProjectName());
         ProjectWorker projectWorker = projectWorkerBO
             .getProjectWorker(data.getWorkerCode());
+
         workerAttendance.setWorkerCode(projectWorker.getWorkerCode());
         workerAttendance.setWorkerName(projectWorker.getWorkerName());
         workerAttendance.setIdCardNumber(projectWorker.getIdcardNumber());
         workerAttendance.setIdCardType(projectWorker.getIdcardType());
         workerAttendance.setUploadStatus(EUploadStatus.TO_UPLOAD.getCode());
+
         workerAttendance.setDeleteStatus(EDeleteStatus.NORMAL.getCode());
         code = OrderNoGenerater
             .generate(EGeneratePrefix.WorkerAttendance.getCode());
         workerAttendance.setCode(code);
+        workerAttendance.setTeamName(teamMaster.getTeamName());
+
         workerAttendanceDAO.insert(workerAttendance);
         return code;
     }

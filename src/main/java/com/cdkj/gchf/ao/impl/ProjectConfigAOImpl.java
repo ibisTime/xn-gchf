@@ -78,7 +78,7 @@ public class ProjectConfigAOImpl implements IProjectConfigAO {
                 ESecretStatus.YES.getCode());
 
         } else {
-            projectConfigBO.refreshProjectConfig(req);
+            projectConfigBO.refreshProjectConfig(projectConfig.getCode(), req);
         }
 
     }

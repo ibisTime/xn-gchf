@@ -116,6 +116,8 @@ public class Project extends ABaseDO {
     // 全名
     private String fullName;
 
+    private ProjectConfig projectConfig;
+
     public String getCode() {
         return code;
     }
@@ -379,6 +381,14 @@ public class Project extends ABaseDO {
 
     public void setSecretStatus(String secretStatus) {
         this.secretStatus = secretStatus;
+    }
+
+    public ProjectConfig getProjectConfig() {
+        return projectConfig;
+    }
+
+    public void setProjectConfig(ProjectConfig projectConfig) {
+        this.projectConfig = projectConfig;
     }
 
 }

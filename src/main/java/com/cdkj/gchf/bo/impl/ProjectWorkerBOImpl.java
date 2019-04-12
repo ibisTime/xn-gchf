@@ -283,6 +283,17 @@ public class ProjectWorkerBOImpl extends PaginableBOImpl<ProjectWorker>
     }
 
     @Override
+    public List<ProjectWorker> queryProjectWorkerList(String projectCode,
+            String idcardNumber) {
+        ProjectWorker condition = new ProjectWorker();
+
+        condition.setProjectCode(projectCode);
+        condition.setIdcardNumber(idcardNumber);
+
+        return projectWorkerDAO.selectList(condition);
+    }
+
+    @Override
     public ProjectWorker getProjectWorker(String code) {
         ProjectWorker data = null;
         if (StringUtils.isNotBlank(code)) {
@@ -413,4 +424,5 @@ public class ProjectWorkerBOImpl extends PaginableBOImpl<ProjectWorker>
         projectWorker.setCorpCode(corpCode);
         projectWorkerDAO.updateProjectWorkerDeleteStatus(projectWorker);
     }
+
 }

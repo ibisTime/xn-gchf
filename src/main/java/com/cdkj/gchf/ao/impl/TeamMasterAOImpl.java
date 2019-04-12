@@ -3,6 +3,7 @@ package com.cdkj.gchf.ao.impl;
 import java.util.Date;
 import java.util.List;
 
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,8 +16,8 @@ import com.cdkj.gchf.bo.ICorpBasicinfoBO;
 import com.cdkj.gchf.bo.IOperateLogBO;
 import com.cdkj.gchf.bo.IPayRollBO;
 import com.cdkj.gchf.bo.IPayRollDetailBO;
+import com.cdkj.gchf.bo.IProjectBO;
 import com.cdkj.gchf.bo.IProjectConfigBO;
-import com.cdkj.gchf.bo.IProjectCorpInfoBO;
 import com.cdkj.gchf.bo.IProjectWorkerBO;
 import com.cdkj.gchf.bo.IProjectWorkerEntryExitHistoryBO;
 import com.cdkj.gchf.bo.ITeamMasterBO;
@@ -27,6 +28,7 @@ import com.cdkj.gchf.bo.base.Paginable;
 import com.cdkj.gchf.common.AesUtils;
 import com.cdkj.gchf.common.DateUtil;
 import com.cdkj.gchf.domain.CorpBasicinfo;
+import com.cdkj.gchf.domain.Project;
 import com.cdkj.gchf.domain.ProjectConfig;
 import com.cdkj.gchf.domain.ProjectWorker;
 import com.cdkj.gchf.domain.TeamMaster;
@@ -66,9 +68,6 @@ public class TeamMasterAOImpl implements ITeamMasterAO {
     private ICorpBasicinfoBO corpBasicinfoBO;
 
     @Autowired
-    private IProjectCorpInfoBO projectCorpInfoBO;
-
-    @Autowired
     private IProjectWorkerBO projectWorkerBO;
 
     @Autowired
@@ -85,6 +84,9 @@ public class TeamMasterAOImpl implements ITeamMasterAO {
 
     @Autowired
     private IProjectWorkerEntryExitHistoryBO projectWorkerEntryExitHistoryBO;
+
+    @Autowired
+    private IProjectBO projectBO;
 
     @Override
     public String addTeamMaster(XN631650Req data) {
@@ -249,7 +251,18 @@ public class TeamMasterAOImpl implements ITeamMasterAO {
     @Override
     public Paginable<TeamMaster> queryTeamMasterPage(int start, int limit,
             TeamMaster condition) {
-        return teamMasterBO.getPaginable(start, limit, condition);
+        Paginable<TeamMaster> page = teamMasterBO.getPaginable(start, limit,
+            condition);
+
+        if (null != page && CollectionUtils.isNotEmpty(page.getList())) {
+            for (TeamMaster teamMaster : page.getList()) {
+                Project project = projectBO
+                    .getProject(teamMaster.getProjectCode());
+                teamMaster.setProjectName(project.getName());
+            }
+        }
+
+        return page;
     }
 
     @Override

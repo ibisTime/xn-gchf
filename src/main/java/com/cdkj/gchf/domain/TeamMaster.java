@@ -76,6 +76,8 @@ public class TeamMaster extends ABaseDO {
 
     /****DB Properties****/
 
+    private String projectName;
+
     public String getCode() {
         return code;
     }
@@ -235,6 +237,14 @@ public class TeamMaster extends ABaseDO {
 
     public void setDeleteStatus(String deleteStatus) {
         this.deleteStatus = deleteStatus;
+    }
+
+    public String getProjectName() {
+        return projectName;
+    }
+
+    public void setProjectName(String projectName) {
+        this.projectName = projectName;
     }
 
 }

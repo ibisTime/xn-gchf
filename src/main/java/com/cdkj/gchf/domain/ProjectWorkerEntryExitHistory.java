@@ -72,6 +72,8 @@ public class ProjectWorkerEntryExitHistory extends ABaseDO {
 
     private String teamName;
 
+    private String projectName;
+
     public String getCode() {
         return code;
     }
@@ -222,6 +224,14 @@ public class ProjectWorkerEntryExitHistory extends ABaseDO {
 
     public void setTeamName(String teamName) {
         this.teamName = teamName;
+    }
+
+    public String getProjectName() {
+        return projectName;
+    }
+
+    public void setProjectName(String projectName) {
+        this.projectName = projectName;
     }
 
 }

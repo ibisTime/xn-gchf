@@ -296,7 +296,7 @@ public class ProjectWorkerAOImpl implements IProjectWorkerAO {
 
             AsyncQueueHolder.addSerial(resString, projectConfig,
                 "projectWorkerBO", code,
-                EUploadStatus.UPLOAD_EDITABLE.getValue(), logCode);
+                EUploadStatus.UPLOAD_EDITABLE.getCode(), logCode);
         }
     }
 

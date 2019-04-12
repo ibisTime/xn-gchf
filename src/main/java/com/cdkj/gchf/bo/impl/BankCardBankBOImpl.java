@@ -67,8 +67,29 @@ public class BankCardBankBOImpl extends PaginableBOImpl<BankCardInfo>
     }
 
     @Override
+    public void refreshStatus(String businessSysNo, String status) {
+        BankCardInfo bankCardInfo = new BankCardInfo();
+
+        bankCardInfo.setBusinessSysNo(businessSysNo);
+        bankCardInfo.setStatus(status);
+
+        bankCardInfoDAO.updateBankCardInfoStatusByBussiness(bankCardInfo);
+    }
+
+    @Override
     public List<BankCardInfo> queryBankCardInfoList(BankCardInfo condition) {
         return bankCardInfoDAO.selectList(condition);
+    }
+
+    @Override
+    public List<BankCardInfo> queryBankCardInfoList(String businessSysNo,
+            String status) {
+        BankCardInfo bankCardInfo = new BankCardInfo();
+
+        bankCardInfo.setBusinessSysNo(businessSysNo);
+        bankCardInfo.setStatus(status);
+
+        return bankCardInfoDAO.selectList(bankCardInfo);
     }
 
     @Override

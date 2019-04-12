@@ -439,4 +439,15 @@ public class ProjectWorkerBOImpl extends PaginableBOImpl<ProjectWorker>
         projectWorker.setCorpCode(corpCode);
         projectWorkerDAO.updateProjectWorkerDeleteStatus(projectWorker);
     }
+
+    @Override
+    public ProjectWorker getProjectWorker(String projectCode, String idCardType,
+            String idCardNumber) {
+        ProjectWorker projectWorker = new ProjectWorker();
+        projectWorker.setProjectCode(projectCode);
+        projectWorker.setIdcardType(idCardType);
+        projectWorker.setIdcardNumber(idCardNumber);
+
+        return projectWorkerDAO.select(projectWorker);
+    }
 }

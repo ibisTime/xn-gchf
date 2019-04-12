@@ -86,8 +86,9 @@ public class PayRollAOImpl implements IPayRollAO {
         }
 
         String code = payRollBO.savePayRoll(data);
-        payRollDetailBO.savePayRollDetail(data.getTeamSysNo(), code,
-            data.getPayMonth(), data.getDetailList());
+        payRollDetailBO.savePayRollDetail(data.getTeamSysNo(),
+            data.getProjectCode(), code, data.getPayMonth(),
+            data.getDetailList());
 
         User briefUser = userBO.getBriefUser(data.getUserId());
         operateLogBO.saveOperateLog(EOperateLogRefType.PayRoll.getCode(), code,

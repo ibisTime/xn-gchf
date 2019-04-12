@@ -142,16 +142,15 @@
 		thf_worker_contract
 		SET
 		upload_status = #{uploadStatus}
-		<include refid="where_condition"></include>
+		WHERE code = #{code}
 	</update>
+	
 	<update id="update_workerContract_delete_status" parameterType="workerContract">
 		UPDATE
 		thf_worker_contract
 		SET
 		delete_status = #{deleteStatus}
-		WHERE code
-		=
-		#{code}
+		WHERE code = #{code}
 	</update>
 
 	<update id="update_workerContract" parameterType="workerContract">

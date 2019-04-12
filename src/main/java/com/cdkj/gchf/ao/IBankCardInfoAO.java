@@ -17,7 +17,9 @@ public interface IBankCardInfoAO {
 
     public String addBankCardInfo(XN631750Req req);
 
-    public void dropBankCardInfo(String code);
+    public void changeBankCardStatus(XN631751Req req);
+
+    public void editBankCardInfo(XN631752Req req);
 
     public void queryBankCardInfoDetail(String code);
 
@@ -26,9 +28,6 @@ public interface IBankCardInfoAO {
 
     public List<BankCardInfo> queryBankCardInfoList(XN631767Req req);
 
-    public void changeBankCardStatus(XN631751Req req);
-
     public BankCardInfo getBankCardInfo(String code);
 
-    public void editBankCardInfo(XN631752Req req);
 }

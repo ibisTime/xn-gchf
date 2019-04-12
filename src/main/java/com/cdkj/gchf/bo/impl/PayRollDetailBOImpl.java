@@ -45,7 +45,8 @@ public class PayRollDetailBOImpl extends PaginableBOImpl<PayRollDetail>
 
     @Override
     public void savePayRollDetail(String teamMasterNo, String projectCode,
-            String getPayMonth, List<XN631770ReqDetail> data) {
+            String payRollCode, String getPayMonth,
+            List<XN631770ReqDetail> data) {
 
         for (XN631770ReqDetail xn631770ReqDetail : data) {
             String code = OrderNoGenerater
@@ -294,10 +295,9 @@ public class PayRollDetailBOImpl extends PaginableBOImpl<PayRollDetail>
                         DateUtil.FRONT_DATE_FORMAT_STRING));
             }
         }
-
         payRollDetail.setIdcardType(xn631773ReqData.getIdCardType());
         payRollDetail.setIdcardNumber(xn631773ReqData.getIdCardNumber());
-        projectWorkerBO.getProjectWorker(null, null, null, null);
+        // projectWorkerBO.getProjectWorker(null, null, null, null);
         // ProjectWorker projectWorkerByIdentity = projectWorkerBO
         // .getProjectWorkerByIdentity(xn631773ReqData.getIdCardType(),
         // xn631773ReqData.getIdCardNumber());

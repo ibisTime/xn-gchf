@@ -139,4 +139,11 @@
 		<include refid="where_condition" />
 	</select>
 
+	<update id="update_bankCardInfoStatusByBussiness" parameterType="bankCardInfo">
+		UPDATE
+		thf_bank_card_info
+		SET
+		status = #{status}
+		WHERE business_sys_no = #{businessSysNo}
+	</update>
 </mapper>

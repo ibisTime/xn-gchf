@@ -16,12 +16,13 @@ public class XN631750Req {
     // 业务编号
     private String businessSysNo;
 
-    // 业务名称
-    private String businessName;
-
     // 银行支行名称
     @NotBlank
     private String bankName;
+
+    // 银行代码
+    @NotBlank
+    private String bankCode;
 
     // 银行账户
     @NotBlank
@@ -33,6 +34,9 @@ public class XN631750Req {
 
     // 创建时间
     private Date createDatetime;
+
+    /****DB Properties****/
+    private String businessName;
 
     public String getUserId() {
         return userId;
@@ -96,6 +100,14 @@ public class XN631750Req {
 
     public void setBusinessName(String businessName) {
         this.businessName = businessName;
+    }
+
+    public String getBankCode() {
+        return bankCode;
+    }
+
+    public void setBankCode(String bankCode) {
+        this.bankCode = bankCode;
     }
 
 }

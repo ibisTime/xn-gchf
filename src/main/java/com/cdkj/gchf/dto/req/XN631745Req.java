@@ -23,6 +23,9 @@ public class XN631745Req extends APageReq {
     // 工人姓名
     private String workerName;
 
+    @NotBlank
+    private String userId;
+
     public String getProjectCode() {
         return projectCode;
     }
@@ -38,9 +41,6 @@ public class XN631745Req extends APageReq {
     public void setCorpCode(String corpCode) {
         this.corpCode = corpCode;
     }
-
-    @NotBlank
-    private String userId;
 
     public String getType() {
         return type;

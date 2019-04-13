@@ -37,6 +37,7 @@ import com.cdkj.gchf.enums.EDirectionType;
 import com.cdkj.gchf.enums.EIdCardType;
 import com.cdkj.gchf.enums.EOperateLogRefType;
 import com.cdkj.gchf.enums.EUploadStatus;
+import com.cdkj.gchf.enums.EUserKind;
 import com.cdkj.gchf.exception.BizException;
 
 @Service
@@ -158,6 +159,12 @@ public class WorkerAttendanceAOImpl implements IWorkerAttendanceAO {
     @Override
     public Paginable<WorkerAttendance> queryWorkerAttendancePage(int start,
             int limit, WorkerAttendance condition) {
+
+        User user = userBO.getBriefUser(condition.getUserId());
+        if (EUserKind.Plat.getCode().equals(user.getType())) {
+            condition.setProjectCode(user.getOrganizationCode());
+        }
+
         Paginable<WorkerAttendance> page = workerAttendanceBO
             .getPaginable(start, limit, condition);
 

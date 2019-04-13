@@ -78,6 +78,8 @@ public class TeamMaster extends ABaseDO {
 
     private String projectName;
 
+    private String userId;
+
     public String getCode() {
         return code;
     }
@@ -245,6 +247,14 @@ public class TeamMaster extends ABaseDO {
 
     public void setProjectName(String projectName) {
         this.projectName = projectName;
+    }
+
+    public String getUserId() {
+        return userId;
+    }
+
+    public void setUserId(String userId) {
+        this.userId = userId;
     }
 
 }

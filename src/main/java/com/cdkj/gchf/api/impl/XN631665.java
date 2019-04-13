@@ -35,6 +35,7 @@ public class XN631665 extends AProcessor {
         TeamMaster condition = new TeamMaster();
         condition.setDeleteStatus(EDeleteStatus.NORMAL.getCode());
         BeanUtils.copyProperties(req, condition);
+
         String column = req.getOrderColumn();
         if (StringUtils.isBlank(column)) {
             column = ITeamMasterAO.DEFAULT_ORDER_COLUMN;
@@ -42,6 +43,7 @@ public class XN631665 extends AProcessor {
         condition.setOrder(column, req.getOrderDir());
         int start = StringValidater.toInteger(req.getStart());
         int limit = StringValidater.toInteger(req.getLimit());
+
         return teamMasterAO.queryTeamMasterPage(start, limit, condition);
     }
 

@@ -211,6 +211,8 @@ public class ProjectWorker extends ABaseDO {
     // 删除状态
     private String deleteStatus;
 
+    private String userId;
+
     public String getCode() {
         return code;
     }
@@ -729,6 +731,14 @@ public class ProjectWorker extends ABaseDO {
 
     public void setDeleteStatus(String deleteStatus) {
         this.deleteStatus = deleteStatus;
+    }
+
+    public String getUserId() {
+        return userId;
+    }
+
+    public void setUserId(String userId) {
+        this.userId = userId;
     }
 
 }

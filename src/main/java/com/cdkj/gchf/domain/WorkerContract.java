@@ -81,6 +81,9 @@ public class WorkerContract extends ABaseDO {
     // 删除状态
     private String deleteStatus;
 
+    /****DB Properties****/
+    private String userId;
+
     public String getCode() {
         return code;
     }
@@ -255,6 +258,14 @@ public class WorkerContract extends ABaseDO {
 
     public void setDeleteStatus(String deleteStatus) {
         this.deleteStatus = deleteStatus;
+    }
+
+    public String getUserId() {
+        return userId;
+    }
+
+    public void setUserId(String userId) {
+        this.userId = userId;
     }
 
 }

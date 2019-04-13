@@ -35,6 +35,7 @@ public class XN631605 extends AProcessor {
         ProjectWorker projectWorkerInfo = new ProjectWorker();
         BeanUtils.copyProperties(req, projectWorkerInfo);
         projectWorkerInfo.setDeleteStatus(EDeleteStatus.NORMAL.getCode());
+
         String column = req.getOrderColumn();
         if (StringUtils.isBlank(column)) {
             column = IProjectWorkerAO.DEFAULT_ORDER_COLUMN;
@@ -42,6 +43,7 @@ public class XN631605 extends AProcessor {
         int start = StringValidater.toInteger(req.getStart());
         int limit = StringValidater.toInteger(req.getLimit());
         projectWorkerInfo.setOrder(column, req.getOrderDir());
+
         return projectWorkerAO.queryProjectWorkerPage(start, limit,
             projectWorkerInfo);
     }

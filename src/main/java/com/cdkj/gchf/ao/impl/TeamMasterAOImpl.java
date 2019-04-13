@@ -45,6 +45,7 @@ import com.cdkj.gchf.enums.EDeleteStatus;
 import com.cdkj.gchf.enums.EOperateLogOperate;
 import com.cdkj.gchf.enums.EOperateLogRefType;
 import com.cdkj.gchf.enums.EUploadStatus;
+import com.cdkj.gchf.enums.EUserKind;
 import com.cdkj.gchf.exception.BizException;
 import com.cdkj.gchf.gov.AsyncQueueHolder;
 import com.cdkj.gchf.gov.GovConnecter;
@@ -253,6 +254,12 @@ public class TeamMasterAOImpl implements ITeamMasterAO {
     @Override
     public Paginable<TeamMaster> queryTeamMasterPage(int start, int limit,
             TeamMaster condition) {
+
+        User user = userBO.getBriefUser(condition.getUserId());
+        if (EUserKind.Plat.getCode().equals(user.getType())) {
+            condition.setProjectCode(user.getOrganizationCode());
+        }
+
         Paginable<TeamMaster> page = teamMasterBO.getPaginable(start, limit,
             condition);
 

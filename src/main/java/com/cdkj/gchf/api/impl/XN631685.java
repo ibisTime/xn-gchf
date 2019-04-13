@@ -36,6 +36,7 @@ public class XN631685 extends AProcessor {
         WorkerContract condition = new WorkerContract();
         BeanUtils.copyProperties(req, condition);
         condition.setDeleteStatus(EDeleteStatus.NORMAL.getCode());
+
         String column = req.getOrderColumn();
         if (req.getContractPeriodType() != null) {
             EContractPeriodType.checkExists(req.getContractPeriodType());
@@ -48,6 +49,7 @@ public class XN631685 extends AProcessor {
         condition.setOrder(column, req.getOrderDir());
         int start = StringValidater.toInteger(req.getStart());
         int limit = StringValidater.toInteger(req.getLimit());
+
         return workerContractAO.queryWorkerContractPage(start, limit,
             condition);
     }

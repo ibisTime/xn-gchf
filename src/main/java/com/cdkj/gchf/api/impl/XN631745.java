@@ -34,6 +34,7 @@ public class XN631745 extends AProcessor {
         ProjectWorkerEntryExitHistory condition = new ProjectWorkerEntryExitHistory();
         BeanUtils.copyProperties(req, condition);
         condition.setDeleteStatus(EDeleteStatus.NORMAL.getCode());
+
         String column = req.getOrderColumn();
         if (StringUtils.isBlank(column)) {
             column = IProjectWorkerEntryExitHistoryAO.DEFAULT_ORDER_COLUMN;

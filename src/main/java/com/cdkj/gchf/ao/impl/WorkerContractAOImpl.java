@@ -37,6 +37,7 @@ import com.cdkj.gchf.enums.EOperateLogOperate;
 import com.cdkj.gchf.enums.EOperateLogRefType;
 import com.cdkj.gchf.enums.EUnitType;
 import com.cdkj.gchf.enums.EUploadStatus;
+import com.cdkj.gchf.enums.EUserKind;
 import com.cdkj.gchf.exception.BizException;
 import com.cdkj.gchf.gov.AsyncQueueHolder;
 import com.cdkj.gchf.gov.GovConnecter;
@@ -182,6 +183,12 @@ public class WorkerContractAOImpl implements IWorkerContractAO {
     @Override
     public Paginable<WorkerContract> queryWorkerContractPage(int start,
             int limit, WorkerContract condition) {
+
+        User user = userBO.getBriefUser(condition.getUserId());
+        if (EUserKind.Plat.getCode().equals(user.getType())) {
+            condition.setProjectCode(user.getOrganizationCode());
+        }
+
         return workerContractBO.getPaginable(start, limit, condition);
     }
 

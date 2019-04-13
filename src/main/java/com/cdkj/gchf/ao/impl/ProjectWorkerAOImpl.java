@@ -46,6 +46,7 @@ import com.cdkj.gchf.enums.EOperateLogOperate;
 import com.cdkj.gchf.enums.EOperateLogRefType;
 import com.cdkj.gchf.enums.EPoliticsType;
 import com.cdkj.gchf.enums.EUploadStatus;
+import com.cdkj.gchf.enums.EUserKind;
 import com.cdkj.gchf.enums.EWorkerRoleType;
 import com.cdkj.gchf.enums.EWorkerType;
 import com.cdkj.gchf.exception.BizException;
@@ -333,6 +334,12 @@ public class ProjectWorkerAOImpl implements IProjectWorkerAO {
     @Override
     public Paginable<ProjectWorker> queryProjectWorkerPage(int start, int limit,
             ProjectWorker condition) {
+
+        User user = userBO.getBriefUser(condition.getUserId());
+        if (EUserKind.Plat.getCode().equals(user.getType())) {
+            condition.setProjectCode(user.getOrganizationCode());
+        }
+
         return projectWorkerBO.getPaginable(start, limit, condition);
     }
 

@@ -10,14 +10,17 @@ import com.cdkj.gchf.bo.IPayRollBO;
 import com.cdkj.gchf.bo.IPayRollDetailBO;
 import com.cdkj.gchf.bo.IProjectConfigBO;
 import com.cdkj.gchf.bo.ITeamMasterBO;
+import com.cdkj.gchf.bo.IUserBO;
 import com.cdkj.gchf.bo.base.Paginable;
 import com.cdkj.gchf.domain.PayRoll;
 import com.cdkj.gchf.domain.PayRollDetail;
 import com.cdkj.gchf.domain.ProjectConfig;
 import com.cdkj.gchf.domain.TeamMaster;
+import com.cdkj.gchf.domain.User;
 import com.cdkj.gchf.dto.req.XN631810Req;
 import com.cdkj.gchf.enums.EDeleteStatus;
 import com.cdkj.gchf.enums.EUploadStatus;
+import com.cdkj.gchf.enums.EUserKind;
 import com.cdkj.gchf.exception.BizException;
 
 @Service
@@ -33,6 +36,9 @@ public class PayRollDetailAOImpl implements IPayRollDetailAO {
 
     @Autowired
     private IProjectConfigBO projectConfigBO;
+
+    @Autowired
+    private IUserBO userBO;
 
     @Override
     public String addPayRollDetail(PayRollDetail data) {
@@ -61,6 +67,12 @@ public class PayRollDetailAOImpl implements IPayRollDetailAO {
     @Override
     public Paginable<PayRollDetail> queryPayRollDetailPage(int start, int limit,
             PayRollDetail condition) {
+
+        User user = userBO.getBriefUser(condition.getUserId());
+        if (EUserKind.Plat.getCode().equals(user.getType())) {
+            condition.setProjectCode(user.getOrganizationCode());
+        }
+
         Paginable<PayRollDetail> page = payRollDetailBO.getPaginable(start,
             limit, condition);
         List<PayRollDetail> list = page.getList();

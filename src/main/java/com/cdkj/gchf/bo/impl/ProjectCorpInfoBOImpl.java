@@ -206,6 +206,7 @@ public class ProjectCorpInfoBOImpl extends PaginableBOImpl<ProjectCorpInfo>
         projectCorpInfo.setProjectCode(projectConfig.getLocalProjectCode());
         projectCorpInfo.setProjectName(projectConfig.getProjectName());
         projectCorpInfo.setUploadStatus(EUploadStatus.TO_UPLOAD.getCode());
+        projectCorpInfo.setDeleteStatus(EDeleteStatus.NORMAL.getCode());
 
         if (StringUtils.isNotBlank(req.getEntryTime())) {
             Date entryTime = DateUtil.strToDate(req.getEntryTime(),

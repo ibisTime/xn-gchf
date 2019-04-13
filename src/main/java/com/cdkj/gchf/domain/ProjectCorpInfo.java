@@ -59,6 +59,8 @@ public class ProjectCorpInfo extends ABaseDO {
     // 参建单位企业类型
     private String corpBasicType;
 
+    private String userId;
+
     public void setProjectCode(String projectCode) {
         this.projectCode = projectCode;
     }
@@ -181,6 +183,14 @@ public class ProjectCorpInfo extends ABaseDO {
 
     public void setDeleteStatus(String deleteStatus) {
         this.deleteStatus = deleteStatus;
+    }
+
+    public String getUserId() {
+        return userId;
+    }
+
+    public void setUserId(String userId) {
+        this.userId = userId;
     }
 
 }

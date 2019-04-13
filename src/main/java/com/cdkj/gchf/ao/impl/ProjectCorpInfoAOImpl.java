@@ -263,12 +263,12 @@ public class ProjectCorpInfoAOImpl implements IProjectCorpInfoAO {
     @Override
     public Paginable<ProjectCorpInfo> queryProjectCorpInfoPage(int start,
             int limit, ProjectCorpInfo condition) {
-        
+
         User user = userBO.getBriefUser(condition.getUserId());
-        if(EUserKind.Plat.getCode().equals(user.getType())) {
+        if (EUserKind.Owner.getCode().equals(user.getType())) {
             condition.setProjectCode(user.getOrganizationCode());
         }
-        
+
         return projectCorpInfoBO.getPaginable(start, limit, condition);
     }
 

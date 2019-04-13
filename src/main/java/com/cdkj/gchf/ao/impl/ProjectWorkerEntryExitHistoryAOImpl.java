@@ -186,7 +186,7 @@ public class ProjectWorkerEntryExitHistoryAOImpl
             int start, int limit, ProjectWorkerEntryExitHistory condition) {
 
         User user = userBO.getBriefUser(condition.getUserId());
-        if (EUserKind.Plat.getCode().equals(user.getType())) {
+        if (EUserKind.Owner.getCode().equals(user.getType())) {
             condition.setProjectCode(user.getOrganizationCode());
         }
 

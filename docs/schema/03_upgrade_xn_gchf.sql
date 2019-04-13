@@ -1,4 +1,4 @@
-
+##
 DROP TABLE IF EXISTS `thf_bank_card_info`;
 CREATE TABLE `thf_bank_card_info` (
   `code` varchar(32) NOT NULL COMMENT '编号',
@@ -472,3 +472,18 @@ CREATE TABLE `tsys_role` (
   `remark` varchar(765) DEFAULT NULL,
   PRIMARY KEY (`code`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+##
+ALTER TABLE `thf_project` 
+ADD COLUMN `attendance_starttime` VARCHAR(32) NULL COMMENT '上班时间' AFTER `nation_num`,
+ADD COLUMN `attendance_endtime` VARCHAR(32) NULL COMMENT '下班时间' AFTER `attendance_starttime`,
+ADD COLUMN `pay_roll_create_datetime` VARCHAR(32) NULL COMMENT '工资条形成时间' AFTER `attendance_endtime`,
+ADD COLUMN `pay_roll_datetime` VARCHAR(32) NULL COMMENT '薪资发放时间' AFTER `pay_roll_create_datetime`,
+ADD COLUMN `pay_roll_delay_days` INT NULL COMMENT '薪资发放可延迟天数（监管端填写）' AFTER `pay_roll_datetime`,
+ADD COLUMN `charge_email` VARCHAR(128) NULL COMMENT '项目实名制负责人邮箱地址' AFTER `pay_roll_delay_days`;
+
+ALTER TABLE `thf_project` 
+CHANGE COLUMN `nation_num` `nation_num` VARCHAR(32) NULL DEFAULT NULL COMMENT '国籍或地区' ;
+
+ALTER TABLE `thf_project` 
+CHANGE COLUMN `prj_status` `prj_status` VARCHAR(32) NULL DEFAULT '0' COMMENT '项目状态' ;

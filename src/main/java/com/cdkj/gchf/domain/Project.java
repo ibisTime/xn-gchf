@@ -100,6 +100,24 @@ public class Project extends ABaseDO {
     // 国籍或地区
     private String nationNum;
 
+    // 上班时间
+    private String attendanceStarttime;
+
+    // 下班时间
+    private String attendanceEndtime;
+
+    // 工资条形成时间
+    private String payRollCreateDatetime;
+
+    // 薪资发放时间
+    private String payRollDatetime;
+
+    // 薪资发放可延迟天数
+    private Integer payRollDelayDays;
+
+    // 项目实名制负责人邮箱地址
+    private String chargeEmail;
+
     // 第三方项目编码
     private String thirdPartyProjectCode;
 
@@ -389,6 +407,54 @@ public class Project extends ABaseDO {
 
     public void setProjectConfig(ProjectConfig projectConfig) {
         this.projectConfig = projectConfig;
+    }
+
+    public String getAttendanceStarttime() {
+        return attendanceStarttime;
+    }
+
+    public void setAttendanceStarttime(String attendanceStarttime) {
+        this.attendanceStarttime = attendanceStarttime;
+    }
+
+    public String getAttendanceEndtime() {
+        return attendanceEndtime;
+    }
+
+    public void setAttendanceEndtime(String attendanceEndtime) {
+        this.attendanceEndtime = attendanceEndtime;
+    }
+
+    public String getPayRollCreateDatetime() {
+        return payRollCreateDatetime;
+    }
+
+    public void setPayRollCreateDatetime(String payRollCreateDatetime) {
+        this.payRollCreateDatetime = payRollCreateDatetime;
+    }
+
+    public String getPayRollDatetime() {
+        return payRollDatetime;
+    }
+
+    public void setPayRollDatetime(String payRollDatetime) {
+        this.payRollDatetime = payRollDatetime;
+    }
+
+    public Integer getPayRollDelayDays() {
+        return payRollDelayDays;
+    }
+
+    public void setPayRollDelayDays(Integer payRollDelayDays) {
+        this.payRollDelayDays = payRollDelayDays;
+    }
+
+    public String getChargeEmail() {
+        return chargeEmail;
+    }
+
+    public void setChargeEmail(String chargeEmail) {
+        this.chargeEmail = chargeEmail;
     }
 
 }

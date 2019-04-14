@@ -80,10 +80,8 @@ public class WorkerAttendanceAOImpl implements IWorkerAttendanceAO {
     @Override
     public void editWorkerAttendance(XN631712Req data) {
         if (workerAttendanceBO.getWorkerAttendance(data.getCode())
-            .getUploadStatus().equals(EUploadStatus.UPLOAD_UNEDITABLE.getCode())
-                || workerAttendanceBO.getWorkerAttendance(data.getCode())
-                    .getUploadStatus()
-                    .equals(EUploadStatus.UPLOAD_EDITABLE.getCode())) {
+            .getUploadStatus()
+            .equals(EUploadStatus.UPLOAD_UNEDITABLE.getCode())) {
             throw new BizException("XN631712", "人员考勤已上传,无法修改");
         }
         workerAttendanceBO.refreshWorkerAttendance(data);
@@ -163,7 +161,7 @@ public class WorkerAttendanceAOImpl implements IWorkerAttendanceAO {
             int limit, WorkerAttendance condition) {
 
         User user = userBO.getBriefUser(condition.getUserId());
-        if (EUserKind.Plat.getCode().equals(user.getType())) {
+        if (EUserKind.Owner.getCode().equals(user.getType())) {
             condition.setProjectCode(user.getOrganizationCode());
         }
 

@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.cdkj.gchf.bo.base.IPaginableBO;
 import com.cdkj.gchf.bo.base.Paginable;
+import com.cdkj.gchf.domain.Project;
 import com.cdkj.gchf.domain.ProjectConfig;
 import com.cdkj.gchf.domain.ProjectWorker;
 import com.cdkj.gchf.domain.TeamMaster;
@@ -19,6 +20,9 @@ public interface IProjectWorkerBO extends IPaginableBO<ProjectWorker> {
     public String saveProjectWorker(XN631690Req req);
 
     public String saveProjectWorker(ProjectWorker projectWorker);
+
+    public String saveProjectWorker(String workerCode, String workerName,
+            String idcardNumber, Project project);
 
     public void removeProjectWorker(String code);
 

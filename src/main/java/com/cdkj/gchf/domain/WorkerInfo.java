@@ -113,6 +113,8 @@ public class WorkerInfo extends ABaseDO {
     // 建档时间
     private Date createDatetime;
 
+    /****DB Properties****/
+
     // 建档开始时间
     private Date createDatetimeStart;
 

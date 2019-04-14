@@ -21,6 +21,9 @@ public class XN631602Req {
     @NotBlank
     private String contractorCorpCode;
 
+    // 总承包单位名称
+    private String contractorCorpName;
+
     // 项目名称
     @NotBlank
     private String name;
@@ -34,6 +37,9 @@ public class XN631602Req {
 
     // 建设单位统一社会信用代码
     private String buildCorpCode;
+
+    // 建设单位名称
+    private String buildCorpName;
 
     // 建设用地规划许可证编号
     private String buildPlanNum;
@@ -99,6 +105,21 @@ public class XN631602Req {
 
     // 第三方项目编码
     private String thirdPartyProjectCode;
+
+    // 上班时间
+    private String attendanceStarttime;
+
+    // 下班时间
+    private String attendanceEndtime;
+
+    // 工资条形成时间
+    private String payRollCreateDatetime;
+
+    // 薪资发放时间
+    private String payRollDatetime;
+
+    // 项目实名制负责人邮箱地址
+    private String chargeEmail;
 
     // 操作用户
     @NotBlank
@@ -338,6 +359,62 @@ public class XN631602Req {
 
     public void setLat(String lat) {
         this.lat = lat;
+    }
+
+    public String getContractorCorpName() {
+        return contractorCorpName;
+    }
+
+    public void setContractorCorpName(String contractorCorpName) {
+        this.contractorCorpName = contractorCorpName;
+    }
+
+    public String getBuildCorpName() {
+        return buildCorpName;
+    }
+
+    public void setBuildCorpName(String buildCorpName) {
+        this.buildCorpName = buildCorpName;
+    }
+
+    public String getAttendanceStarttime() {
+        return attendanceStarttime;
+    }
+
+    public void setAttendanceStarttime(String attendanceStarttime) {
+        this.attendanceStarttime = attendanceStarttime;
+    }
+
+    public String getAttendanceEndtime() {
+        return attendanceEndtime;
+    }
+
+    public void setAttendanceEndtime(String attendanceEndtime) {
+        this.attendanceEndtime = attendanceEndtime;
+    }
+
+    public String getPayRollCreateDatetime() {
+        return payRollCreateDatetime;
+    }
+
+    public void setPayRollCreateDatetime(String payRollCreateDatetime) {
+        this.payRollCreateDatetime = payRollCreateDatetime;
+    }
+
+    public String getPayRollDatetime() {
+        return payRollDatetime;
+    }
+
+    public void setPayRollDatetime(String payRollDatetime) {
+        this.payRollDatetime = payRollDatetime;
+    }
+
+    public String getChargeEmail() {
+        return chargeEmail;
+    }
+
+    public void setChargeEmail(String chargeEmail) {
+        this.chargeEmail = chargeEmail;
     }
 
 }

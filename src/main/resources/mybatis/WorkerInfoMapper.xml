@@ -246,15 +246,22 @@
 		</trim>
 	</select>
 
+	<select id="select_BrifeWorkerInfo" parameterType="workerInfo"
+		resultMap="WorkerInfo_DB_Result">
+		SELECT
+		t.code
+		,t.name
+		,t.id_card_number
+		,t.create_datetime
+		FROM
+		thf_worker_info t
+		<include refid="where_condition" />
+	</select>
+
 	<select id="select_WorkerInfo_count" parameterType="workerInfo"
 		resultType="java.lang.Long">
 		SELECT count(1) FROM thf_worker_info t
 		<include refid="where_condition" />
 	</select>
-
-
-
-
-
 
 </mapper>

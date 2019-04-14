@@ -36,6 +36,13 @@
 		<result column="property_num" property="propertyNum" />
 		<result column="prj_num" property="prjNum" />
 		<result column="nation_num" property="nationNum" />
+		<result column="attendance_starttime" property="attendanceStarttime" />
+		<result column="attendance_endtime" property="attendanceEndtime" />
+		
+		<result column="pay_roll_create_datetime" property="payRollCreateDatetime" />
+		<result column="pay_roll_datetime" property="payRollDatetime" />
+		<result column="pay_roll_delay_days" property="payRollDelayDays" />
+		<result column="charge_email" property="chargeEmail" />
 		<result column="third_party_project_code" property="thirdPartyProjectCode" />
 		<result column="secretStatus" property="secret_status" />
 	</resultMap>
@@ -101,6 +108,13 @@
 		,t.property_num
 		,t.prj_num
 		,t.nation_num
+		,t.attendance_starttime
+		,t.attendance_endtime
+		
+		,t.pay_roll_create_datetime
+		,t.pay_roll_datetime
+		,t.pay_roll_delay_days
+		,t.charge_email
 		,t.third_party_project_code
 		,t.secret_status
 		FROM
@@ -155,6 +169,13 @@
 		,property_num
 		,prj_num
 		,nation_num
+		,attendance_starttime
+		,attendance_endtime
+		
+		,pay_roll_create_datetime
+		,pay_roll_datetime
+		,pay_roll_delay_days
+		,charge_email
 		,third_party_project_code
 		,secret_status
 		)
@@ -192,6 +213,13 @@
 		,#{propertyNum}
 		,#{prjNum}
 		,#{nationNum}
+		,#{attendanceStarttime}
+		,#{attendanceEndtime}
+		
+		,#{payRollCreateDatetime}
+		,#{payRollDatetime}
+		,#{payRollDelayDays}
+		,#{chargeEmail}
 		,#{thirdPartyProjectCode}
 		,#{secretStatus}
 		)
@@ -232,6 +260,13 @@
 		
 		,prj_num = #{prjNum}
 		,nation_num = #{nationNum}
+		,attendance_starttime = #{attendanceStarttime}
+		,attendance_endtime = #{attendanceEndtime}
+		
+		,pay_roll_create_datetime = #{payRollCreateDatetime}
+		,pay_roll_datetime = #{payRollDatetime}
+		,pay_roll_delay_days = #{payRollDelayDays}
+		,charge_email = #{chargeEmail}
 		,third_party_project_code = #{thirdPartyProjectCode}
 		,secret_status = #{secretStatus}
 		WHERE code = #{code}

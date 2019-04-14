@@ -413,7 +413,6 @@ INSERT INTO `tsys_dict` (`type`,`parent_key`,`dkey`,`dvalue`,`updater`,`update_d
 INSERT INTO `tsys_dict` (`type`,`parent_key`,`dkey`,`dvalue`,`updater`,`update_datetime`,`remark`) VALUES ('1','prj_status','003','在建','admin','2018-07-27 03:07:37',NULL);
 INSERT INTO `tsys_dict` (`type`,`parent_key`,`dkey`,`dvalue`,`updater`,`update_datetime`,`remark`) VALUES ('1','prj_status','004','完工','admin','2018-07-27 03:07:37',NULL);
 INSERT INTO `tsys_dict` (`type`,`parent_key`,`dkey`,`dvalue`,`updater`,`update_datetime`,`remark`) VALUES ('1','prj_status','005','停工','admin','2018-07-27 03:07:37',NULL);
-INSERT INTO `tsys_dict` (`type`,`parent_key`,`dkey`,`dvalue`,`updater`,`update_datetime`,`remark`) VALUES ('1','prj_status','005','停工','admin','2018-07-27 03:07:37',NULL);
 
 INSERT INTO `tsys_dict` (`type`,`parent_key`,`dkey`,`dvalue`,`updater`,`update_datetime`,`remark`) VALUES ('0',null,'approval_level_num','立项级别','admin','2018-07-27 03:07:37',NULL);
 INSERT INTO `tsys_dict` (`type`,`parent_key`,`dkey`,`dvalue`,`updater`,`update_datetime`,`remark`) VALUES ('1','approval_level_num','001','部级','admin','2018-07-27 03:07:37',NULL);
@@ -918,6 +917,19 @@ INSERT INTO `tsys_dict` (`type`,`parent_key`,`dkey`,`dvalue`,`updater`,`update_d
 INSERT INTO `tsys_dict` (`type`,`parent_key`,`dkey`,`dvalue`,`updater`,`update_datetime`,`remark`) VALUES ('0',null,'project_secret_status ','项目秘钥状态','admin','2018-07-27 03:07:37',NULL);
 INSERT INTO `tsys_dict` (`type`,`parent_key`,`dkey`,`dvalue`,`updater`,`update_datetime`,`remark`) VALUES ('1','project_secret_status','0','未配置','admin','2018-07-27 03:07:37',NULL);
 INSERT INTO `tsys_dict` (`type`,`parent_key`,`dkey`,`dvalue`,`updater`,`update_datetime`,`remark`) VALUES ('1','project_secret_status','1','已配置','admin','2018-07-27 03:07:37',NULL);
+
+INSERT INTO `tsys_dict` (`type`,`parent_key`,`dkey`,`dvalue`,`updater`,`update_datetime`,`remark`) VALUES ('0',null,'project_approval_level','立项级别','admin','2018-07-27 03:07:37',NULL);
+INSERT INTO `tsys_dict` (`type`,`parent_key`,`dkey`,`dvalue`,`updater`,`update_datetime`,`remark`) VALUES ('1','project_approval_level','001','部级','admin','2018-07-27 03:07:37',NULL);
+INSERT INTO `tsys_dict` (`type`,`parent_key`,`dkey`,`dvalue`,`updater`,`update_datetime`,`remark`) VALUES ('1','project_approval_level','002','省级','admin','2018-07-27 03:07:37',NULL);
+INSERT INTO `tsys_dict` (`type`,`parent_key`,`dkey`,`dvalue`,`updater`,`update_datetime`,`remark`) VALUES ('1','project_approval_level','003','地市级','admin','2018-07-27 03:07:37',NULL);
+INSERT INTO `tsys_dict` (`type`,`parent_key`,`dkey`,`dvalue`,`updater`,`update_datetime`,`remark`) VALUES ('1','project_approval_level','004','区县级','admin','2018-07-27 03:07:37',NULL);
+INSERT INTO `tsys_dict` (`type`,`parent_key`,`dkey`,`dvalue`,`updater`,`update_datetime`,`remark`) VALUES ('1','project_approval_level','005','国家级','admin','2018-07-27 03:07:37',NULL);
+INSERT INTO `tsys_dict` (`type`,`parent_key`,`dkey`,`dvalue`,`updater`,`update_datetime`,`remark`) VALUES ('1','project_approval_level','006','其他','admin','2018-07-27 03:07:37',NULL);
+
+INSERT INTO `tsys_dict` (`type`,`parent_key`,`dkey`,`dvalue`,`updater`,`update_datetime`,`remark`) VALUES ('0',null,'project_size ','建设规模','admin','2018-07-27 03:07:37',NULL);
+INSERT INTO `tsys_dict` (`type`,`parent_key`,`dkey`,`dvalue`,`updater`,`update_datetime`,`remark`) VALUES ('1','project_size','01','大型','admin','2018-07-27 03:07:37',NULL);
+INSERT INTO `tsys_dict` (`type`,`parent_key`,`dkey`,`dvalue`,`updater`,`update_datetime`,`remark`) VALUES ('1','project_size','02','中型','admin','2018-07-27 03:07:37',NULL);
+INSERT INTO `tsys_dict` (`type`,`parent_key`,`dkey`,`dvalue`,`updater`,`update_datetime`,`remark`) VALUES ('1','project_size','03','小型','admin','2018-07-27 03:07:37',NULL);
 
 /*
 -- Query: SELECT * FROM dev_xn_gchf.tsys_config

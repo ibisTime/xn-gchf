@@ -25,6 +25,7 @@ import com.cdkj.gchf.common.QiniuUtil;
 import com.cdkj.gchf.core.OrderNoGenerater;
 import com.cdkj.gchf.dao.IProjectWorkerDAO;
 import com.cdkj.gchf.domain.CorpBasicinfo;
+import com.cdkj.gchf.domain.Project;
 import com.cdkj.gchf.domain.ProjectConfig;
 import com.cdkj.gchf.domain.ProjectWorker;
 import com.cdkj.gchf.domain.TeamMaster;
@@ -38,6 +39,7 @@ import com.cdkj.gchf.dto.req.XN631913Req;
 import com.cdkj.gchf.enums.EBankCardCodeType;
 import com.cdkj.gchf.enums.EDeleteStatus;
 import com.cdkj.gchf.enums.EGeneratePrefix;
+import com.cdkj.gchf.enums.EIdCardType;
 import com.cdkj.gchf.enums.EIsNotType;
 import com.cdkj.gchf.enums.EUploadStatus;
 import com.cdkj.gchf.enums.EWorkerRoleType;
@@ -91,6 +93,8 @@ public class ProjectWorkerBOImpl extends PaginableBOImpl<ProjectWorker>
         projectWorkerInfo.setWorkerMobile(workerInfo.getCellPhone());
         projectWorkerInfo.setIdcardType(workerInfo.getIdCardType());
         projectWorkerInfo.setIdcardNumber(workerInfo.getIdCardNumber());
+
+        projectWorkerInfo.setWorkerCode(data.getWorkerCode());
         projectWorkerInfo.setWorkerName(workerInfo.getName());
         projectWorkerInfo.setUploadStatus(EUploadStatus.TO_UPLOAD.getCode());
         projectWorkerInfo.setDeleteStatus(EDeleteStatus.NORMAL.getCode());
@@ -145,6 +149,29 @@ public class ProjectWorkerBOImpl extends PaginableBOImpl<ProjectWorker>
             .generate(EGeneratePrefix.ProjectWorker.getCode());
         projectWorker.setCode(code);
         projectWorkerDAO.insert(projectWorker);
+        return code;
+    }
+
+    @Override
+    public String saveProjectWorker(String workerCode, String workerName,
+            String idcardNumber, Project project) {
+
+        ProjectWorker projectWorker = new ProjectWorker();
+
+        String code = OrderNoGenerater
+            .generate(EGeneratePrefix.ProjectWorker.getCode());
+        projectWorker.setCode(code);
+        projectWorker.setProjectCode(project.getCode());
+        projectWorker.setProjectName(project.getName());
+        projectWorker.setWorkerCode(workerCode);
+
+        projectWorker.setWorkerName(workerName);
+        projectWorker.setIdcardType(EIdCardType.JUMIN.getCode());
+        projectWorker.setIdcardNumber(idcardNumber);
+        projectWorker.setUploadStatus(EUploadStatus.TO_UPLOAD.getCode());
+        projectWorker.setDeleteStatus(EDeleteStatus.NORMAL.getCode());
+        projectWorkerDAO.insert(projectWorker);
+
         return code;
     }
 

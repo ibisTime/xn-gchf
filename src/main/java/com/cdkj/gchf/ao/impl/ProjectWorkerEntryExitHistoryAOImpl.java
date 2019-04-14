@@ -186,7 +186,7 @@ public class ProjectWorkerEntryExitHistoryAOImpl
             int start, int limit, ProjectWorkerEntryExitHistory condition) {
 
         User user = userBO.getBriefUser(condition.getUserId());
-        if (EUserKind.Plat.getCode().equals(user.getType())) {
+        if (EUserKind.Owner.getCode().equals(user.getType())) {
             condition.setProjectCode(user.getOrganizationCode());
         }
 
@@ -261,7 +261,7 @@ public class ProjectWorkerEntryExitHistoryAOImpl
                 briefUser, null);
             AsyncQueueHolder.addSerial(resString, projectConfigByLocal,
                 "projectWorkerEntryExitHistoryBO", code,
-                EUploadStatus.UPLOAD_EDITABLE.getCode(), operateLog);
+                EUploadStatus.UPLOAD_UNEDITABLE.getCode(), operateLog);
 
         }
     }
@@ -289,7 +289,7 @@ public class ProjectWorkerEntryExitHistoryAOImpl
             List<ProjectWorker> infoByIdCardNumber = projectWorkerBO
                 .getProjectWorkerByIdentity(teamMaster.getCode(),
                     data.getIdcardType(), data.getIdcardNumber());
-            if (CollectionUtils.isEmpty(infoByIdCardNumber)) {
+            if (infoByIdCardNumber == null) {
                 throw new BizException("XN631733",
                     "项目人员【" + data.getIdcardNumber() + "】未录入");
             }

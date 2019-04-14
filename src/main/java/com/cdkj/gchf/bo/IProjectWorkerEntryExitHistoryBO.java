@@ -36,10 +36,11 @@ public interface IProjectWorkerEntryExitHistoryBO
     void updateProjectWorkerEntryExitHistoryDeleteStatus(String code,
             String status);
 
-    void fakeDeleteProjectWorkerEntryHistory(String ProjectCode,
-            String teamMasterCode);
+    void fakeDeleteProjectWorkerEntryHistoryByProject(String ProjectCode);
 
     void fakeDeleteProjectWorkerEntryHistory(String workerCode);
+
+    void fakeDeleteProjectWorkerEntryHistoryByTeamMaster(String teamMasterNo);
 
     public Object queryProjectWorkerEntryExitHistory(String code);
 

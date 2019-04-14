@@ -229,6 +229,7 @@ public class ProjectWorkerAOImpl implements IProjectWorkerAO {
             ProjectWorker projectWorker = new ProjectWorker();
             BeanUtils.copyProperties(projectWorkerData, projectWorker);
             projectWorker.setProjectCode(project.getCode());
+            projectWorker.setProjectName(project.getName());
 
             projectWorker.setTeamSysNo(teamMaster.getCode());
             projectWorker.setCorpName(corpBasicinfo.getCorpName());

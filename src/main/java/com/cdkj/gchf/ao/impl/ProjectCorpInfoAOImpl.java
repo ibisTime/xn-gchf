@@ -124,16 +124,18 @@ public class ProjectCorpInfoAOImpl implements IProjectCorpInfoAO {
         for (TeamMaster teamMaster : teamMasterBO
             .queryTeamMasterList(condition)) {
 
-            projectWorkerBO.fakeDeleteProjectWorker(projectCode,
-                teamMaster.getCode(), corpCode);
-            projectWorkerEntryExitHistoryBO.fakeDeleteProjectWorkerEntryHistory(
-                projectCode, teamMaster.getCode());
-            workerAttendanceBO.fakeDeleteWorkAttendance(teamMaster.getCode());
+            projectWorkerBO.fakeDeleteProjectWorker(projectCode);
+
+            projectWorkerEntryExitHistoryBO
+                .fakeDeleteProjectWorkerEntryHistory(projectCode);
+
+            workerAttendanceBO.fakeDeleteWorkAttendanceByProject(projectCode);
 
             PayRoll payRollCondition = new PayRoll();
             payRollCondition.setCorpCode(corpCode);
             payRollCondition.setTeamSysNo(teamMaster.getCode());
             payRollCondition.setProjectCode(projectCode);
+
             List<PayRoll> queryPayRollList = payRollBO
                 .queryPayRollList(payRollCondition);
             for (PayRoll payRoll : queryPayRollList) {
@@ -263,12 +265,12 @@ public class ProjectCorpInfoAOImpl implements IProjectCorpInfoAO {
     @Override
     public Paginable<ProjectCorpInfo> queryProjectCorpInfoPage(int start,
             int limit, ProjectCorpInfo condition) {
-        
+
         User user = userBO.getBriefUser(condition.getUserId());
-        if(EUserKind.Plat.getCode().equals(user.getType())) {
+        if (EUserKind.Plat.getCode().equals(user.getType())) {
             condition.setProjectCode(user.getOrganizationCode());
         }
-        
+
         return projectCorpInfoBO.getPaginable(start, limit, condition);
     }
 

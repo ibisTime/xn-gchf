@@ -188,11 +188,20 @@
 	<update id="update_workerAttendance_delete_status"
 		parameterType="workerAttendance">
 		UPDATE
-		thf_worker_attendance
+		thf_worker_attendance t
 		SET
 		delete_status = #{deleteStatus}
-		WHERE
-		code = #{code}
+		<trim prefix="WHERE" prefixOverrides="AND|OR">
+			<if test="code != null and code != '' ">
+				AND code = #{code}
+			</if>
+			<if test="uploadStatus != null and uploadStatus != '' ">
+				AND upload_status = #{uploadStatus}
+			</if>
+			<if test="projectCode != null and projectCode != '' ">
+				AND project_code = #{projectCode}
+			</if>
+		</trim>
 	</update>
 
 	<select id="select_workerAttendance" parameterType="workerAttendance"

@@ -290,11 +290,10 @@ public class ProjectWorkerEntryExitHistoryBOImpl
     }
 
     @Override
-    public void fakeDeleteProjectWorkerEntryHistory(String ProjectCode,
-            String teamMasterCode) {
+    public void fakeDeleteProjectWorkerEntryHistoryByProject(
+            String ProjectCode) {
         ProjectWorkerEntryExitHistory projectWorkerEntryExitHistory = new ProjectWorkerEntryExitHistory();
         projectWorkerEntryExitHistory.setProjectCode(ProjectCode);
-        projectWorkerEntryExitHistory.setTeamSysNo(teamMasterCode);
         projectWorkerEntryExitHistory
             .setUploadStatus(EUploadStatus.TO_UPLOAD.getCode());
         projectWorkerEntryExitHistoryDAO
@@ -306,6 +305,20 @@ public class ProjectWorkerEntryExitHistoryBOImpl
     public void fakeDeleteProjectWorkerEntryHistory(String workerCode) {
         ProjectWorkerEntryExitHistory projectWorkerEntryExitHistory = new ProjectWorkerEntryExitHistory();
         projectWorkerEntryExitHistory.setWorkerCode(workerCode);
+        projectWorkerEntryExitHistory
+            .setDeleteStatus(EDeleteStatus.DELETED.getCode());
+        projectWorkerEntryExitHistory
+            .setUploadStatus(EUploadStatus.TO_UPLOAD.getCode());
+        projectWorkerEntryExitHistoryDAO
+            .updateProjectWorkerEntryHistoryDeleteStatus(
+                projectWorkerEntryExitHistory);
+    }
+
+    @Override
+    public void fakeDeleteProjectWorkerEntryHistoryByTeamMaster(
+            String teamMasterNo) {
+        ProjectWorkerEntryExitHistory projectWorkerEntryExitHistory = new ProjectWorkerEntryExitHistory();
+        projectWorkerEntryExitHistory.setTeamSysNo(teamMasterNo);
         projectWorkerEntryExitHistory
             .setUploadStatus(EUploadStatus.TO_UPLOAD.getCode());
         projectWorkerEntryExitHistoryDAO

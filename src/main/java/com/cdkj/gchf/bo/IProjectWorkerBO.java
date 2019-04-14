@@ -28,8 +28,10 @@ public interface IProjectWorkerBO extends IPaginableBO<ProjectWorker> {
 
     public void refreshUploadStatus(String code, String status);
 
-    void fakeDeleteProjectWorker(String projectcode, String teamMasterNo,
-            String corpCode);
+    void fakeDeleteProjectWorker(String projectcode);
+
+    void fakeDeleteProjectWorkerByTeamNo(String projectCode,
+            String teamMasterNo);
 
     public List<ProjectWorker> queryProjectWorkerList(ProjectWorker condition);
 

@@ -96,7 +96,6 @@
 	</sql>
 
 
-
 	<insert id="insert_projectWorker" parameterType="projectWorker">
 		INSERT INTO
 		thf_project_worker(
@@ -217,17 +216,29 @@
 	</delete>
 	<update id="update_projectWorker_status" parameterType="projectWorker">
 		UPDATE
-		thf_project_worker SET upload_status = #{uploadStatus}
+		thf_project_worker
+		SET upload_status = #{uploadStatus}
 		WHERE code =
 		#{code}
 	</update>
 
 	<update id="update_projectWorker_delete_status" parameterType="projectWorker">
 		UPDATE
-		thf_project_worker
+		thf_project_worker t
 		SET
 		delete_status = #{deleteStatus}
-		<include refid="where_condition" />
+		<trim prefix="WHERE" prefixOverrides="AND | OR">
+			<if test="code != null and code != '' ">
+				AND t.code = #{code }
+			</if>
+			<if test="uploadStatus != null and uploadStatus != '' ">
+				AND t.upload_status = #{uploadStatus }
+			</if>
+			<if test="projectCode != null and projectCode != '' ">
+				AND t.project_code = #{projectCode }
+			</if>
+		</trim>
+
 	</update>
 
 	<update id="update_projectWorker" parameterType="projectWorker">

@@ -115,7 +115,7 @@
 
 	<update id="update_payRoll_delete_status" parameterType="payRoll">
 		UPDATE
-		thf_pay_roll
+		thf_pay_roll t
 		SET
 		delete_status = #{deleteStatus}
 		<include refid="where_condition"></include>

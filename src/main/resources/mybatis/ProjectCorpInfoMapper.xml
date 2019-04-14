@@ -36,20 +36,21 @@
 			<if test="projectCode != null and projectCode != '' ">
 				AND t.project_code = #{projectCode}
 			</if>
+			<if test="projectName != null and projectName != '' ">
+				AND t.project_name = #{projectName}
+			</if>
+
 			<if test="corpCode != null and corpCode != '' ">
 				AND t.corp_code = #{corpCode}
 			</if>
 			<if test="corpType != null and corpType != '' ">
 				AND t.corp_type = #{corpType}
 			</if>
-			<if test="uploadStatus != null and uploadStatus != '' ">
-				AND t.upload_status = #{uploadStatus}
-			</if>
-			<if test="projectName != null and projectName != '' ">
-				AND t.project_name = #{projectName}
-			</if>
 			<if test="corpBasicType != null and corpBasicType != '' ">
 				AND tu.corp_type = #{corpBasicType}
+			</if>
+			<if test="uploadStatus != null and uploadStatus != '' ">
+				AND t.upload_status = #{uploadStatus}
 			</if>
 			<if test="deleteStatus != null and deleteStatus != '' ">
 				AND t.delete_status = #{deleteStatus}
@@ -154,19 +155,19 @@
 	</update>
 
 	<update id="update_projectCorpInfoUploadStatus" parameterType="projectCorpInfo">
-		UPDATE thf_project_corp_info
+		UPDATE thf_project_corp_info 
 		SET
-		upload_status = #{uploadStatus}
+		t.upload_status = #{uploadStatus}
 		WHERE
 		code = #{code}
 	</update>
 
 	<update id="update_projectCorpInfoDeleteStatus" parameterType="projectCorpInfo">
-		UPDATE thf_project_corp_info
+		UPDATE thf_project_corp_info t
 		SET
 		delete_status = #{deleteStatus}
-		WHERE
-		<include refid="where_condition"></include>
+		WHERE 
+		t.code = #{code}
 	</update>
 
 	<delete id="delete_projectCorpInfo" parameterType="string">

@@ -97,7 +97,7 @@ public enum EWorkerType {
         Map<String, EWorkerType> map = getWorkerTypeMap();
         EWorkerType projectCorpType = map.get(code);
         if (null == projectCorpType) {
-            throw new BizException("xn0000", code + "对应证件类型类型不存在");
+            throw new BizException("xn0000", code + "对应工种类型不存在");
         }
         return projectCorpType;
     }
@@ -106,7 +106,7 @@ public enum EWorkerType {
         Map<String, EWorkerType> map = getWorkerTypeMap();
         EWorkerType projectCorpType = map.get(code);
         if (null == projectCorpType) {
-            throw new BizException("xn0000", code + "对应证件类型类型不存在");
+            throw new BizException("xn0000", code + "对应工种类型不存在");
         }
     }
 

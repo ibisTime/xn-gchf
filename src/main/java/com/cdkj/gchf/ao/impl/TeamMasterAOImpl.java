@@ -120,13 +120,15 @@ public class TeamMasterAOImpl implements ITeamMasterAO {
         teamMasterBO.updateTeamMasterDeleteStatus(req.getCode(),
             EDeleteStatus.DELETED.getCode());
 
-        projectWorkerBO.fakeDeleteProjectWorker(teamMaster.getProjectCode(),
-            teamMaster.getCode(), teamMaster.getCorpCode());
+        projectWorkerBO.fakeDeleteProjectWorkerByTeamNo(
+            teamMaster.getProjectCode(), teamMaster.getCode());
 
-        projectWorkerEntryExitHistoryBO.fakeDeleteProjectWorkerEntryHistory(
-            teamMaster.getProjectCode(), req.getCode());
+        projectWorkerEntryExitHistoryBO
+            .fakeDeleteProjectWorkerEntryHistoryByTeamMaster(
+                teamMaster.getCode());
 
-        workerAttendanceBO.fakeDeleteWorkAttendance(req.getCode());
+        workerAttendanceBO
+            .fakeDeleteWorkAttendanceByTeamMaster(teamMaster.getCode());
 
         ProjectWorker condition = new ProjectWorker();
         condition.setTeamSysNo(req.getCode());

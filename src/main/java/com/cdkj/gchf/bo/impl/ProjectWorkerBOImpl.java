@@ -434,14 +434,22 @@ public class ProjectWorkerBOImpl extends PaginableBOImpl<ProjectWorker>
     }
 
     @Override
-    public void fakeDeleteProjectWorker(String projectcode, String teamMasterNo,
-            String corpCode) {
+    public void fakeDeleteProjectWorker(String projectcode) {
         ProjectWorker projectWorker = new ProjectWorker();
         projectWorker.setUploadStatus(EUploadStatus.TO_UPLOAD.getCode());
         projectWorker.setProjectCode(projectcode);
-        projectWorker.setTeamSysNo(teamMasterNo);
-        projectWorker.setCorpCode(corpCode);
+        projectWorker.setDeleteStatus(EDeleteStatus.DELETED.getCode());
         projectWorkerDAO.updateProjectWorkerDeleteStatus(projectWorker);
+    }
+
+    @Override
+    public void fakeDeleteProjectWorkerByTeamNo(String projectCode,
+            String teamMasterNo) {
+        ProjectWorker projectWorker = new ProjectWorker();
+        projectWorker.setProjectCode(projectCode);
+        projectWorker.setTeamSysNo(teamMasterNo);
+        projectWorker.setUploadStatus(EUploadStatus.TO_UPLOAD.getCode());
+        projectWorkerDAO.updateStatus(projectWorker);
     }
 
 }

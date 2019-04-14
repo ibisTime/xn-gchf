@@ -183,12 +183,25 @@
 
 	<update id="update_teamMasterDeleteStatus" parameterType="teamMaster">
 		UPDATE
-		thf_team_master
+		thf_team_master t
 		SET
 		delete_status = #{deleteStatus}
-		<include refid="where_condition"></include>
+		<trim prefix="WHERE" prefixOverrides="AND|OR">
+			<if test="code != null and code != '' ">
+				AND code = #{code }
+			</if>
+			<if test="uploadStatus != null and uploadStatus != '' ">
+				AND upload_status = #{uploadStatus }
+			</if>
+			<if test="projectCode != null and projectCode != '' ">
+				AND project_code = #{projectCode }
+			</if>
+			<if test="corpCode != null and corpCode != '' ">
+				AND corp_code = #{corpCode }
+			</if>
+		</trim>
 	</update>
-	
+
 	<update id="update_teamMasterTeamSysNo" parameterType="teamMaster">
 		UPDATE
 		thf_team_master

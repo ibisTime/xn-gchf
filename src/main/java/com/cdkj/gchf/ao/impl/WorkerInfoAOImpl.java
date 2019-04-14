@@ -8,10 +8,13 @@ import org.springframework.stereotype.Service;
 
 import com.cdkj.gchf.ao.IWorkerInfoAO;
 import com.cdkj.gchf.bo.IOperateLogBO;
+import com.cdkj.gchf.bo.IProjectBO;
+import com.cdkj.gchf.bo.IProjectWorkerBO;
 import com.cdkj.gchf.bo.IUserBO;
 import com.cdkj.gchf.bo.IWorkerInfoBO;
 import com.cdkj.gchf.bo.base.Paginable;
 import com.cdkj.gchf.common.IdCardChecker;
+import com.cdkj.gchf.domain.Project;
 import com.cdkj.gchf.domain.User;
 import com.cdkj.gchf.domain.WorkerInfo;
 import com.cdkj.gchf.dto.req.XN631790Req;
@@ -37,6 +40,12 @@ public class WorkerInfoAOImpl implements IWorkerInfoAO {
     @Autowired
     private IOperateLogBO operateLogBO;
 
+    @Autowired
+    private IProjectWorkerBO projectWorkerBO;
+
+    @Autowired
+    private IProjectBO projectBO;
+
     @Override
     public String addWorkerInfo(XN631790Req req) {
         // 数据字典校验
@@ -54,11 +63,19 @@ public class WorkerInfoAOImpl implements IWorkerInfoAO {
             WorkerInfo workerInfoByIdCardNumber = workerInfoBO
                 .getWorkerInfoByIdCardNumber(req.getIdCardNumber());
             if (workerInfoByIdCardNumber != null) {
-                throw new BizException("XN631790", "建档失败,人员实名制信息已存在");
+                return workerInfoByIdCardNumber.getCode();
             }
         }
 
-        return workerInfoBO.saveWorkerInfo(req);
+        String workerCode = workerInfoBO.saveWorkerInfo(req);
+
+        if (StringUtils.isNotBlank(req.getProjectCode())) {
+            Project project = projectBO.getProject(req.getProjectCode());
+            projectWorkerBO.saveProjectWorker(workerCode, req.getName(),
+                req.getIdCardNumber(), project);
+        }
+
+        return workerCode;
     }
 
     @Override

@@ -34,6 +34,8 @@ public interface IWorkerInfoBO extends IPaginableBO<WorkerInfo> {
 
     public WorkerInfo getWorkerInfo(String code);
 
+    public WorkerInfo getBriefWorkerInfo(String code);
+
     public WorkerInfo getWorkerInfoByCondition(WorkerInfo workerInfo);
 
     public WorkerInfo getWorkerInfoByIdCardNumber(String idCardNumber);

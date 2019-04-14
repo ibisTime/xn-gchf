@@ -2,6 +2,7 @@ package com.cdkj.gchf.ao.impl;
 
 import java.util.List;
 
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -340,7 +341,21 @@ public class ProjectWorkerAOImpl implements IProjectWorkerAO {
             condition.setProjectCode(user.getOrganizationCode());
         }
 
-        return projectWorkerBO.getPaginable(start, limit, condition);
+        Paginable<ProjectWorker> page = projectWorkerBO.getPaginable(start,
+            limit, condition);
+
+        if (null != page && CollectionUtils.isNotEmpty(page.getList())) {
+            for (ProjectWorker projectWorker : page.getList()) {
+                WorkerInfo workerInfo = workerInfoBO
+                    .getBriefWorkerInfo(projectWorker.getWorkerCode());
+                if (null != workerInfo) {
+                    projectWorker
+                        .setArchiveDatetime(workerInfo.getCreateDatetime());
+                }
+            }
+        }
+
+        return page;
     }
 
     @Override

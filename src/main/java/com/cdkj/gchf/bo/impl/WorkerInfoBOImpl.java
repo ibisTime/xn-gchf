@@ -152,6 +152,13 @@ public class WorkerInfoBOImpl extends PaginableBOImpl<WorkerInfo>
     }
 
     @Override
+    public WorkerInfo getBriefWorkerInfo(String code) {
+        WorkerInfo workerInfo = new WorkerInfo();
+        workerInfo.setCode(code);
+        return workerInfoDAO.selectBriefWorkerInfo(workerInfo);
+    }
+
+    @Override
     public WorkerInfo getWorkerInfoByIdCardNumber(String idCardNumber) {
         WorkerInfo workerInfo = new WorkerInfo();
         workerInfo.setIdCardNumber(idCardNumber);

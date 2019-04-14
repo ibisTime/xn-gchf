@@ -12,4 +12,7 @@ public interface IWorkerInfoDAO extends IBaseDAO<WorkerInfo> {
     int updateWorkerInfoAboutIdcard(WorkerInfo condition);
 
     int updateWorkerInfoAboutPhone(WorkerInfo condition);
+
+    WorkerInfo selectBriefWorkerInfo(WorkerInfo condition);
+
 }

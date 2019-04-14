@@ -329,6 +329,9 @@ public class UserAOImpl implements IUserAO {
     @Override
     public User getUser(String userId) {
         User data = userBO.getUser(userId);
+
+        initUser(data);
+
         return data;
     }
 

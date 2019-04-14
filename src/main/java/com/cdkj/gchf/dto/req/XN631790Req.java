@@ -73,6 +73,8 @@ public class XN631790Req {
 
     private String maritalStatus;
 
+    private String projectCode;
+
     public String getUserId() {
         return userId;
     }
@@ -223,6 +225,14 @@ public class XN631790Req {
 
     public String getExpiryDate() {
         return expiryDate;
+    }
+
+    public String getProjectCode() {
+        return projectCode;
+    }
+
+    public void setProjectCode(String projectCode) {
+        this.projectCode = projectCode;
     }
 
 }

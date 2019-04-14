@@ -213,6 +213,9 @@ public class ProjectWorker extends ABaseDO {
 
     private String userId;
 
+    // 建档时间
+    private Date archiveDatetime;
+
     public String getCode() {
         return code;
     }
@@ -739,6 +742,14 @@ public class ProjectWorker extends ABaseDO {
 
     public void setUserId(String userId) {
         this.userId = userId;
+    }
+
+    public Date getArchiveDatetime() {
+        return archiveDatetime;
+    }
+
+    public void setArchiveDatetime(Date archiveDatetime) {
+        this.archiveDatetime = archiveDatetime;
     }
 
 }

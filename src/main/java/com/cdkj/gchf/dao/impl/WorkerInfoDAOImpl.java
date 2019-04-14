@@ -64,4 +64,10 @@ public class WorkerInfoDAOImpl extends AMybatisTemplate
             condition);
     }
 
+    @Override
+    public WorkerInfo selectBriefWorkerInfo(WorkerInfo condition) {
+        return super.select(NAMESPACE.concat("select_BrifeWorkerInfo"),
+            condition, WorkerInfo.class);
+    }
+
 }

@@ -261,7 +261,7 @@ public class ProjectWorkerEntryExitHistoryAOImpl
                 briefUser, null);
             AsyncQueueHolder.addSerial(resString, projectConfigByLocal,
                 "projectWorkerEntryExitHistoryBO", code,
-                EUploadStatus.UPLOAD_EDITABLE.getCode(), operateLog);
+                EUploadStatus.UPLOAD_UNEDITABLE.getCode(), operateLog);
 
         }
     }

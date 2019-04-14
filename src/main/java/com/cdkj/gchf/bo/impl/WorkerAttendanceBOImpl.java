@@ -24,6 +24,7 @@ import com.cdkj.gchf.common.AesUtils;
 import com.cdkj.gchf.common.DateUtil;
 import com.cdkj.gchf.core.OrderNoGenerater;
 import com.cdkj.gchf.dao.IWorkerAttendanceDAO;
+import com.cdkj.gchf.domain.Project;
 import com.cdkj.gchf.domain.ProjectConfig;
 import com.cdkj.gchf.domain.ProjectWorker;
 import com.cdkj.gchf.domain.TeamMaster;
@@ -98,6 +99,33 @@ public class WorkerAttendanceBOImpl extends PaginableBOImpl<WorkerAttendance>
         workerAttendance.setTeamName(teamMaster.getTeamName());
 
         workerAttendanceDAO.insert(workerAttendance);
+        return code;
+    }
+
+    @Override
+    public String saveWorkerAttendance(Project project, TeamMaster teamMaster,
+            ProjectWorker projectWorker, Date date, String direction) {
+        WorkerAttendance workerAttendance = new WorkerAttendance();
+
+        String code = OrderNoGenerater
+            .generate(EGeneratePrefix.WorkerAttendance.getCode());
+        workerAttendance.setCode(code);
+        workerAttendance.setProjectCode(project.getCode());
+        workerAttendance.setProjectName(project.getName());
+        workerAttendance.setTeamSysNo(teamMaster.getCode());
+
+        workerAttendance.setTeamName(teamMaster.getTeamName());
+        workerAttendance.setWorkerCode(projectWorker.getWorkerCode());
+        workerAttendance.setWorkerName(projectWorker.getWorkerName());
+        workerAttendance.setIdCardType(projectWorker.getIdcardType());
+        workerAttendance.setIdCardNumber(projectWorker.getIdcardNumber());
+
+        workerAttendance.setDate(date);
+        workerAttendance.setDirection(direction);
+        workerAttendance.setDeleteStatus(EDeleteStatus.NORMAL.getCode());
+        workerAttendance.setUploadStatus(EUploadStatus.TO_UPLOAD.getCode());
+        workerAttendanceDAO.insert(workerAttendance);
+
         return code;
     }
 

@@ -12,6 +12,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.cdkj.gchf.ao.IWorkerAttendanceAO;
 import com.cdkj.gchf.bo.IOperateLogBO;
+import com.cdkj.gchf.bo.IProjectBO;
 import com.cdkj.gchf.bo.IProjectConfigBO;
 import com.cdkj.gchf.bo.IProjectWorkerBO;
 import com.cdkj.gchf.bo.ITeamMasterBO;
@@ -20,6 +21,7 @@ import com.cdkj.gchf.bo.IWorkerAttendanceBO;
 import com.cdkj.gchf.bo.base.Paginable;
 import com.cdkj.gchf.common.AesUtils;
 import com.cdkj.gchf.common.DateUtil;
+import com.cdkj.gchf.domain.Project;
 import com.cdkj.gchf.domain.ProjectConfig;
 import com.cdkj.gchf.domain.ProjectWorker;
 import com.cdkj.gchf.domain.TeamMaster;
@@ -61,6 +63,9 @@ public class WorkerAttendanceAOImpl implements IWorkerAttendanceAO {
     @Autowired
     private IUserBO userBO;
 
+    @Autowired
+    private IProjectBO projectBO;
+
     @Override
     public String addWorkerAttendance(XN631710Req data) {
         TeamMaster teamMaster = teamMasterBO.getTeamMaster(data.getTeamSysNo());
@@ -99,6 +104,31 @@ public class WorkerAttendanceAOImpl implements IWorkerAttendanceAO {
         }
         return workerAttendanceBO.updateWorkerAttendanceDeleteStatus(code,
             EDeleteStatus.DELETED.getCode());
+    }
+
+    @Override
+    public void batchCreateAttandance(String projectCode, String direction,
+            Date startDatetime, Date endDatetime) {
+
+        Project project = projectBO.getProject(projectCode);
+
+        List<TeamMaster> teamMasters = teamMasterBO
+            .queryTeamMasterList(projectCode);
+
+        if (CollectionUtils.isNotEmpty(teamMasters)) {
+            for (TeamMaster teamMaster : teamMasters) {
+                List<ProjectWorker> projectWorkers = projectWorkerBO
+                    .queryProjectWorkerList(teamMaster.getCode());
+
+                if (CollectionUtils.isNotEmpty(projectWorkers)) {
+                    for (ProjectWorker projectWorker : projectWorkers) {
+                        Date date = new Date();
+                        workerAttendanceBO.saveWorkerAttendance(project,
+                            teamMaster, projectWorker, date, direction);
+                    }
+                }
+            }
+        }
     }
 
     @Override

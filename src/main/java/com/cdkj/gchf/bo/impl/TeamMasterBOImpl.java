@@ -218,6 +218,16 @@ public class TeamMasterBOImpl extends PaginableBOImpl<TeamMaster>
     }
 
     @Override
+    public List<TeamMaster> queryTeamMasterList(String projectCode) {
+        TeamMaster condition = new TeamMaster();
+
+        condition.setProjectCode(projectCode);
+        condition.setDeleteStatus(EDeleteStatus.NORMAL.getCode());
+
+        return teamMasterDAO.selectList(condition);
+    }
+
+    @Override
     public TeamMaster getTeamMaster(String code) {
         TeamMaster data = null;
         if (StringUtils.isNotBlank(code)) {

@@ -1,5 +1,6 @@
 package com.cdkj.gchf.ao;
 
+import java.util.Date;
 import java.util.List;
 
 import org.springframework.stereotype.Component;
@@ -21,6 +22,9 @@ public interface IWorkerAttendanceAO {
     public int dropWorkerAttendance(String code);
 
     public void editWorkerAttendance(XN631712Req data);
+
+    public void batchCreateAttandance(String projectCode, String direction,
+            Date startDatetime, Date endDatetime);
 
     public Paginable<WorkerAttendance> queryWorkerAttendancePage(int start,
             int limit, WorkerAttendance condition);

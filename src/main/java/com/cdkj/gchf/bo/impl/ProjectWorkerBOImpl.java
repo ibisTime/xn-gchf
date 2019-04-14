@@ -316,6 +316,15 @@ public class ProjectWorkerBOImpl extends PaginableBOImpl<ProjectWorker>
     }
 
     @Override
+    public List<ProjectWorker> queryProjectWorkerList(String teamMasterNo) {
+        ProjectWorker projectWorker = new ProjectWorker();
+
+        projectWorker.setTeamSysNo(teamMasterNo);
+
+        return projectWorkerDAO.selectList(projectWorker);
+    }
+
+    @Override
     public List<ProjectWorker> queryProjectWorkerList(String projectCode,
             String idcardNumber) {
         ProjectWorker condition = new ProjectWorker();

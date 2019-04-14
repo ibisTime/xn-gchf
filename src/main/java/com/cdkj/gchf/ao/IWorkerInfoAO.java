@@ -32,4 +32,6 @@ public interface IWorkerInfoAO {
 
     public WorkerInfo getWorkerInfo(String code);
 
+    public WorkerInfo getWorkerInfoByIdCardNumber(String idCardNumber);
+
 }

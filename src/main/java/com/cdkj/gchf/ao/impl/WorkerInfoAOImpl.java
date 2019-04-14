@@ -103,6 +103,11 @@ public class WorkerInfoAOImpl implements IWorkerInfoAO {
     }
 
     @Override
+    public WorkerInfo getWorkerInfoByIdCardNumber(String idCardNumber) {
+        return workerInfoBO.getWorkerInfoByIdCardNumber(idCardNumber);
+    }
+
+    @Override
     public int addWorkerInfoIdCardInfo(XN631791Req req) {
         return workerInfoBO.refreshWorkerInfo(req);
     }

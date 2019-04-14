@@ -1,9 +1,11 @@
 package com.cdkj.gchf.bo;
 
+import java.util.Date;
 import java.util.List;
 
 import com.cdkj.gchf.bo.base.IPaginableBO;
 import com.cdkj.gchf.bo.base.Paginable;
+import com.cdkj.gchf.domain.Project;
 import com.cdkj.gchf.domain.ProjectConfig;
 import com.cdkj.gchf.domain.ProjectWorker;
 import com.cdkj.gchf.domain.TeamMaster;
@@ -23,6 +25,9 @@ public interface IWorkerAttendanceBO extends IPaginableBO<WorkerAttendance> {
 
     public String saveWorkerAttendance(String projectCode, XN631713ReqData data,
             ProjectWorker projectWorker, WorkerAttendance workerAttendance);
+
+    public String saveWorkerAttendance(Project project, TeamMaster teamMaster,
+            ProjectWorker projectWorker, Date date, String direction);
 
     public int removeWorkerAttendance(String code);
 

@@ -134,7 +134,7 @@ public class WorkerInfoBOImpl extends PaginableBOImpl<WorkerInfo>
         condition.setCode(code);
         data = workerInfoDAO.select(condition);
         if (data == null) {
-            throw new BizException("XN631806", "信息不存在");
+            throw new BizException("XN631806", "人员实名制信息不存在");
         }
         return data;
     }

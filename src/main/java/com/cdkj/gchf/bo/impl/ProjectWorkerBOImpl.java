@@ -410,8 +410,12 @@ public class ProjectWorkerBOImpl extends PaginableBOImpl<ProjectWorker>
         workerList.addProperty("workerName", projectWorker.getWorkerName());
         workerList.addProperty("isTeamLeader", projectWorker.getIsTeamLeader());
         workerList.addProperty("idCardType", projectWorker.getIdcardType());
-        workerList.addProperty("idCardNumber", AesUtils.encrypt(
-            projectWorker.getIdcardNumber(), projectConfig.getSecret()));
+
+        if (StringUtils.isNotBlank(projectWorker.getIdcardNumber())) {
+            workerList.addProperty("idCardNumber", AesUtils.encrypt(
+                projectWorker.getIdcardNumber(), projectConfig.getSecret()));
+        }
+
         workerList.addProperty("workType", projectWorker.getWorkType());
         workerList.addProperty("workRole", projectWorker.getWorkRole());
         workerList.addProperty("issueCardDate",
@@ -420,9 +424,13 @@ public class ProjectWorkerBOImpl extends PaginableBOImpl<ProjectWorker>
         workerList.addProperty("issueCardPic",
             projectWorker.getIssueCardPicUrl());
         workerList.addProperty("cardNumber", projectWorker.getCardNumber());
-        workerList.addProperty("payRollBankCardNumber",
-            AesUtils.encrypt(projectWorker.getPayRollBankCardNumber(),
-                projectConfig.getSecret()));
+
+        if (StringUtils.isNotBlank(projectWorker.getPayRollBankCardNumber())) {
+            workerList.addProperty("payRollBankCardNumber",
+                AesUtils.encrypt(projectWorker.getPayRollBankCardNumber(),
+                    projectConfig.getSecret()));
+        }
+
         workerList.addProperty("payRollBankName",
             projectWorker.getPayRollBankName());
         workerList.addProperty("bankLinkNumber",
@@ -433,8 +441,13 @@ public class ProjectWorkerBOImpl extends PaginableBOImpl<ProjectWorker>
             projectWorker.getHasBuyInsurance());
         workerList.addProperty("nation", infoByIdCardNumber.getNation());
         workerList.addProperty("address", infoByIdCardNumber.getAddress());
-        workerList.addProperty("headImage", infoByIdCardNumber.getHeadImageUrl()
-            .replace("data:image/bmp;base64,", "data:image/png;base64,"));
+
+        if (StringUtils.isNotBlank(infoByIdCardNumber.getHeadImageUrl())) {
+            workerList.addProperty("headImage",
+                infoByIdCardNumber.getHeadImageUrl().replace(
+                    "data:image/bmp;base64,", "data:image/png;base64,"));
+        }
+
         workerList.addProperty("politicsType",
             infoByIdCardNumber.getPoliticsType());
         workerList.addProperty("joinedTime",

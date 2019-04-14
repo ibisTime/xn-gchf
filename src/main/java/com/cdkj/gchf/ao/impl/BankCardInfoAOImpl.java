@@ -12,11 +12,12 @@ import org.springframework.transaction.annotation.Transactional;
 import com.cdkj.gchf.ao.IBankCardInfoAO;
 import com.cdkj.gchf.bo.IBankCardBankBO;
 import com.cdkj.gchf.bo.IProjectCorpInfoBO;
+import com.cdkj.gchf.bo.IProjectWorkerBO;
 import com.cdkj.gchf.bo.IWorkerInfoBO;
 import com.cdkj.gchf.bo.base.Paginable;
 import com.cdkj.gchf.domain.BankCardInfo;
 import com.cdkj.gchf.domain.ProjectCorpInfo;
-import com.cdkj.gchf.domain.WorkerInfo;
+import com.cdkj.gchf.domain.ProjectWorker;
 import com.cdkj.gchf.dto.req.XN631750Req;
 import com.cdkj.gchf.dto.req.XN631751Req;
 import com.cdkj.gchf.dto.req.XN631752Req;
@@ -36,6 +37,9 @@ public class BankCardInfoAOImpl implements IBankCardInfoAO {
 
     @Autowired
     private IWorkerInfoBO workerInfoBO;
+
+    @Autowired
+    private IProjectWorkerBO projectWorkerBO;
 
     @Override
     public String addBankCardInfo(XN631750Req req) {
@@ -59,9 +63,10 @@ public class BankCardInfoAOImpl implements IBankCardInfoAO {
 
         if (EBankCardBussinessType.USER.getCode()
             .equals(req.getBusinessType())) {
-            WorkerInfo workerInfo = workerInfoBO
-                .getWorkerInfo(req.getBusinessSysNo());
-            req.setBusinessName(workerInfo.getName());
+            ProjectWorker projectWorker = projectWorkerBO
+                .getProjectWorker(req.getBusinessSysNo());
+
+            req.setBusinessName(projectWorker.getWorkerName());
         }
 
         return bankCardBankBO.saveBankCardInfo(req);

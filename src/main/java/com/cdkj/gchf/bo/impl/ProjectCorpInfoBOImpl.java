@@ -244,9 +244,14 @@ public class ProjectCorpInfoBOImpl extends PaginableBOImpl<ProjectCorpInfo>
             if (null == projectConfig) {
                 throw new BizException("XN631634", "不存在已配置的项目，无法上传");
             }
-            String encrypt = AesUtils.encrypt(
-                projectCorpInfo.getPmIDCardNumber(), projectConfig.getSecret());
-            projectCorpInfo.setPmIDCardNumber(encrypt);
+
+            if (StringUtils.isNotBlank(projectCorpInfo.getPmIDCardNumber())) {
+                String pmIDCardNumber = AesUtils.encrypt(
+                    projectCorpInfo.getPmIDCardNumber(),
+                    projectConfig.getSecret());
+                projectCorpInfo.setPmIDCardNumber(pmIDCardNumber);
+            }
+
             projectCorpInfo.setProjectCode(projectConfig.getProjectCode());
             String json = JSONObject.toJSONStringWithDateFormat(projectCorpInfo,
                 "yyyy-MM-dd HH:mm:ss").toString();

@@ -489,3 +489,6 @@ ALTER TABLE `thf_project`
 CHANGE COLUMN `prj_status` `prj_status` VARCHAR(32) NULL DEFAULT '0' COMMENT '项目状态' ;
 
 update thf_project_worker set worker_code = (select code from thf_worker_info where thf_project_worker.idcard_number = id_card_number);
+
+ALTER TABLE `tsys_operate_log` 
+CHANGE COLUMN `operator_name` `operator_name` VARCHAR(255) NULL DEFAULT NULL COMMENT '操作人名称' ;

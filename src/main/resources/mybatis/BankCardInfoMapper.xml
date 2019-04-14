@@ -91,7 +91,7 @@
 		thf_bank_card_info
 		SET
 		bank_name = #{bankName}
-		bank_code = #{bankCode}
+		,bank_code = #{bankCode}
 		,bank_link_number = #{bankLinkNumber}
 		,bank_number = #{bankNumber}
 		WHERE code =

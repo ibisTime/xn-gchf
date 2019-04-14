@@ -107,6 +107,7 @@ public class WorkerAttendanceAOImpl implements IWorkerAttendanceAO {
     }
 
     @Override
+    @Transactional
     public void batchCreateAttandance(String projectCode, String direction,
             Date startDatetime, Date endDatetime) {
 
@@ -122,7 +123,9 @@ public class WorkerAttendanceAOImpl implements IWorkerAttendanceAO {
 
                 if (CollectionUtils.isNotEmpty(projectWorkers)) {
                     for (ProjectWorker projectWorker : projectWorkers) {
-                        Date date = new Date();
+                        Date date = new Date(random(startDatetime.getTime(),
+                            endDatetime.getTime()));
+
                         workerAttendanceBO.saveWorkerAttendance(project,
                             teamMaster, projectWorker, date, direction);
                     }
@@ -282,4 +285,12 @@ public class WorkerAttendanceAOImpl implements IWorkerAttendanceAO {
         }
     }
 
+    private static long random(long begin, long end) {
+        long rtn = begin + (long) (Math.random() * (end - begin));
+        // 如果返回的是开始时间和结束时间，则递归调用本函数查找随机值
+        if (rtn == begin || rtn == end) {
+            return random(begin, end);
+        }
+        return rtn;
+    }
 }

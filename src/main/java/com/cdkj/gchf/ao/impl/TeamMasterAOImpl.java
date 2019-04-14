@@ -258,7 +258,7 @@ public class TeamMasterAOImpl implements ITeamMasterAO {
             TeamMaster condition) {
 
         User user = userBO.getBriefUser(condition.getUserId());
-        if (EUserKind.Plat.getCode().equals(user.getType())) {
+        if (EUserKind.Owner.getCode().equals(user.getType())) {
             condition.setProjectCode(user.getOrganizationCode());
         }
 

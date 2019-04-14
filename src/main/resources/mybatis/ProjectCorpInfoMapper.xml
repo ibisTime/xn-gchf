@@ -157,7 +157,7 @@
 	<update id="update_projectCorpInfoUploadStatus" parameterType="projectCorpInfo">
 		UPDATE thf_project_corp_info 
 		SET
-		t.upload_status = #{uploadStatus}
+		upload_status = #{uploadStatus}
 		WHERE
 		code = #{code}
 	</update>

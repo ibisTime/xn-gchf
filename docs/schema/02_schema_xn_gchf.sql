@@ -517,7 +517,7 @@ CREATE TABLE `tsys_operate_log` (
   `ref_code` varchar(32) DEFAULT NULL COMMENT '关联编号',
   `operate` varchar(32) DEFAULT NULL COMMENT '操作名称',
   `operator` varchar(32) DEFAULT NULL COMMENT '操作人编号',
-  `operator_name` varchar(32) DEFAULT NULL COMMENT '操作人名称',
+  `operator_name` varchar(255) DEFAULT NULL COMMENT '操作人名称',
   `operate_datetime` datetime DEFAULT NULL COMMENT '操作时间',
   `remark` text COMMENT '备注',
   PRIMARY KEY (`code`)

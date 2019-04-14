@@ -56,7 +56,7 @@
 				AND t.contractor_corp_code = #{contractorCorpCode}
 			</if>
 			<if test="name != null and name != '' ">
-				AND t.name like '%'#{name}'%'
+				AND t.name like "%"#{name}"%"
 			</if>
 			<if test="fullName != null and fullName != '' ">
 				AND t.name = #{fullName}

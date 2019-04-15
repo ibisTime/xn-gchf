@@ -114,11 +114,14 @@ public class TeamMasterBOImpl extends PaginableBOImpl<TeamMaster>
                 DateUtil.FRONT_DATE_FORMAT_STRING);
             teamMaster.setExitTime(exitTime);
         }
-        if (StringUtils.isNotBlank(data.getResponsiblePersonIDCardType())) {
-            String responsibleIdCardType = EIdCardType
-                .getIdCardDictValue(data.getResponsiblePersonIDCardType());
-            teamMaster.setResponsiblePersonIdcardType(responsibleIdCardType);
+        if (StringUtils.isNotBlank(data.getResponsiblePersonIdcardType())) {
+            EIdCardType.checkExists(data.getResponsiblePersonIdcardType());
+            teamMaster.setResponsiblePersonIdcardType(
+                data.getResponsiblePersonIdcardType());
         }
+        teamMaster.setRemark(data.getRemark());
+        teamMaster
+            .setResponsiblePersonIdNumber(data.getResponsiblePersonIdNumber());
 
         teamMasterDAO.update(teamMaster);
     }
@@ -318,6 +321,7 @@ public class TeamMasterBOImpl extends PaginableBOImpl<TeamMaster>
         teamMaster.setProjectCode(projectCode);
         teamMaster.setCorpCode(corpCode);
         teamMaster.setUploadStatus(EUploadStatus.TO_UPLOAD.getCode());
+        teamMaster.setDeleteStatus(EDeleteStatus.DELETED.getCode());
         teamMasterDAO.updateDeleteStatus(teamMaster);
     }
 

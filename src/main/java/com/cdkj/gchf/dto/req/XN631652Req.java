@@ -21,10 +21,10 @@ public class XN631652Req {
     private String responsiblePersonPhone;
 
     // 责任人证件类型
-    private String responsiblePersonIDCardType;
+    private String responsiblePersonIdcardType;
 
     // 责任人证件号码
-    private String responsiblePersonIDNumber;
+    private String responsiblePersonIdNumber;
 
     // 进场日期
     private String entryTime;
@@ -75,21 +75,21 @@ public class XN631652Req {
         this.responsiblePersonPhone = responsiblePersonPhone;
     }
 
-    public String getResponsiblePersonIDCardType() {
-        return responsiblePersonIDCardType;
+    public String getResponsiblePersonIdcardType() {
+        return responsiblePersonIdcardType;
     }
 
-    public void setResponsiblePersonIDCardType(
-            String responsiblePersonIDCardType) {
-        this.responsiblePersonIDCardType = responsiblePersonIDCardType;
+    public void setResponsiblePersonIdcardType(
+            String responsiblePersonIdcardType) {
+        this.responsiblePersonIdcardType = responsiblePersonIdcardType;
     }
 
-    public String getResponsiblePersonIDNumber() {
-        return responsiblePersonIDNumber;
+    public String getResponsiblePersonIdNumber() {
+        return responsiblePersonIdNumber;
     }
 
-    public void setResponsiblePersonIDNumber(String responsiblePersonIDNumber) {
-        this.responsiblePersonIDNumber = responsiblePersonIDNumber;
+    public void setResponsiblePersonIdNumber(String responsiblePersonIdNumber) {
+        this.responsiblePersonIdNumber = responsiblePersonIdNumber;
     }
 
     public String getRemark() {

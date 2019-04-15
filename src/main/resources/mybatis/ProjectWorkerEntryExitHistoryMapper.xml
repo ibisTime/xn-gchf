@@ -124,20 +124,26 @@
 		WHERE code = #{code}
 	</update>
 
-	<update id="update_projectWorker_delete_status" parameterType="projectWorkerEntryExitHistory">
-		UPDATE thf_project_worker_entry_exit_history
+	<update id="update_projectWorker_EntryExitHistory_delete_status"
+		parameterType="projectWorkerEntryExitHistory">
+		UPDATE thf_project_worker_entry_exit_history t
 		SET
 		delete_status = #{deleteStatus}
+		
 		<trim prefix="WHERE" prefixOverrides="AND|OR">
+		
 			<if test="code != null and code != '' ">
-				AND code = #{code}
+				AND t.code = #{code}
 			</if>
-			<if test="projectCode != null projectCode != '' ">
-				AND project_code = #{projectCode}
+			
+			<if test=" projectCode != null and projectCode !='' ">
+				AND t.project_code = #{projectCode}
 			</if>
-			<if test="uploadStatus != null uploadStatus != '' ">
-				AND upload_status = #{uploadStatus}
+			
+			<if test="uploadStatus != null and uploadStatus != '' ">
+				AND t.upload_status = #{uploadStatus}
 			</if>
+			
 		</trim>
 	</update>
 	<select id="select_projectWorkerEntryExitHistory" parameterType="projectWorkerEntryExitHistory"

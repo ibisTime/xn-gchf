@@ -296,6 +296,8 @@ public class ProjectWorkerEntryExitHistoryBOImpl
         projectWorkerEntryExitHistory.setProjectCode(ProjectCode);
         projectWorkerEntryExitHistory
             .setUploadStatus(EUploadStatus.TO_UPLOAD.getCode());
+        projectWorkerEntryExitHistory
+            .setDeleteStatus(EDeleteStatus.DELETED.getCode());
         projectWorkerEntryExitHistoryDAO
             .updateProjectWorkerEntryHistoryDeleteStatus(
                 projectWorkerEntryExitHistory);
@@ -321,6 +323,8 @@ public class ProjectWorkerEntryExitHistoryBOImpl
         projectWorkerEntryExitHistory.setTeamSysNo(teamMasterNo);
         projectWorkerEntryExitHistory
             .setUploadStatus(EUploadStatus.TO_UPLOAD.getCode());
+        projectWorkerEntryExitHistory
+            .setDeleteStatus(EDeleteStatus.DELETED.getCode());
         projectWorkerEntryExitHistoryDAO
             .updateProjectWorkerEntryHistoryDeleteStatus(
                 projectWorkerEntryExitHistory);

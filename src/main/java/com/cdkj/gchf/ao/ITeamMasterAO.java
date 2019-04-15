@@ -10,6 +10,7 @@ import com.cdkj.gchf.dto.req.XN631650Req;
 import com.cdkj.gchf.dto.req.XN631651Req;
 import com.cdkj.gchf.dto.req.XN631652Req;
 import com.cdkj.gchf.dto.req.XN631653Req;
+import com.cdkj.gchf.dto.req.XN631655Req;
 import com.cdkj.gchf.dto.req.XN631908Req;
 import com.cdkj.gchf.dto.req.XN631909Req;
 import com.cdkj.gchf.dto.req.XN631910Req;
@@ -25,6 +26,8 @@ public interface ITeamMasterAO {
     public void editTeamMaster(XN631652Req data);
 
     public void uploadTeamMaster(List<String> codeList, String userId);
+
+    void updatePlantformTeamMaster(XN631655Req req);
 
     public Paginable<TeamMaster> queryTeamMasterPage(int start, int limit,
             TeamMaster condition);

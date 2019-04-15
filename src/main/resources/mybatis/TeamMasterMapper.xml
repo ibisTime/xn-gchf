@@ -158,17 +158,13 @@
 		thf_team_master
 		SET
 		team_name = #{teamName}
-		,responsible_person_name =
-		#{responsiblePersonName}
-		,responsible_person_phone =
-		#{responsiblePersonPhone}
-		,responsible_person_idcard_type =
-		#{responsiblePersonIdcardType}
-		,responsible_person_id_number =
-		#{responsiblePersonIdNumber}
+		,responsible_person_name = #{responsiblePersonName}
+		,responsible_person_phone = #{responsiblePersonPhone}
+		,responsible_person_idcard_type = #{responsiblePersonIdcardType}
+		,responsible_person_id_number = #{responsiblePersonIdNumber}
 		,entry_time = #{entryTime}
-		,exit_time =
-		#{exitTime}
+		,exit_time = #{exitTime}
+		,remark = #{remark}
 		WHERE code = #{code}
 	</update>
 

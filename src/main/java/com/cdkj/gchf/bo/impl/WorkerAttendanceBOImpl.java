@@ -148,6 +148,8 @@ public class WorkerAttendanceBOImpl extends PaginableBOImpl<WorkerAttendance>
             .select(tempWorkerAttendance);
         select.setDate(data.getDate());
         select.setDirection(data.getDirection());
+        select.setDeleteStatus(EDeleteStatus.NORMAL.getCode());
+        select.setUploadStatus(EUploadStatus.TO_UPLOAD.getCode());
         workerAttendanceDAO.update(select);
         operateLogBO.saveOperateLog(EOperateLogRefType.WorkAttendance.getCode(),
             data.getCode(), "修改人员考勤", user, null);
@@ -335,6 +337,7 @@ public class WorkerAttendanceBOImpl extends PaginableBOImpl<WorkerAttendance>
         WorkerAttendance workerAttendance = new WorkerAttendance();
         workerAttendance.setProjectCode(projectCode);
         workerAttendance.setUploadStatus(EUploadStatus.TO_UPLOAD.getCode());
+        workerAttendance.setDeleteStatus(EDeleteStatus.DELETED.getCode());
         return workerAttendanceDAO
             .updateWorkerAttendanceDeleteStatus(workerAttendance);
     }

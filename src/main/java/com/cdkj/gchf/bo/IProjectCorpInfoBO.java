@@ -15,7 +15,7 @@ import com.cdkj.gchf.dto.req.XN631907Req;
 
 public interface IProjectCorpInfoBO extends IPaginableBO<ProjectCorpInfo> {
 
-    public String saveProjectCorpInfo(XN631630Req req);
+    public String saveProjectCorpInfo(XN631630Req req, String projectName);
 
     public String saveProjectCorpInfo(ProjectConfig projectConfig,
             XN631633ReqList req);
@@ -26,7 +26,7 @@ public interface IProjectCorpInfoBO extends IPaginableBO<ProjectCorpInfo> {
 
     void removeProjectCorpInfoDeleteStatus(String projectCode, String corpCode);
 
-    public void refreshProjectCorpInfo(XN631632Req req);
+    public void refreshProjectCorpInfo(XN631632Req req, String projectName);
 
     public void refreshUploadStatus(String code, String uploadStatus);
 

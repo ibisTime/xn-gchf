@@ -38,6 +38,7 @@ import com.cdkj.gchf.dto.req.XN631651Req;
 import com.cdkj.gchf.dto.req.XN631652Req;
 import com.cdkj.gchf.dto.req.XN631653Req;
 import com.cdkj.gchf.dto.req.XN631653ReqData;
+import com.cdkj.gchf.dto.req.XN631655Req;
 import com.cdkj.gchf.dto.req.XN631908Req;
 import com.cdkj.gchf.dto.req.XN631909Req;
 import com.cdkj.gchf.dto.req.XN631910Req;
@@ -214,6 +215,32 @@ public class TeamMasterAOImpl implements ITeamMasterAO {
             AsyncQueueHolder.addSerial(resString, projectConfig, "teamMasterBO",
                 code, EUploadStatus.UPLOAD_EDITABLE.getCode(), logCode);
         }
+    }
+
+    /**
+     * 
+     * <p>Title: updatePlantformTeamMaster</p>   
+     * <p>Description: 修改国家平台班组信息接口</p>   
+     */
+    @Override
+    public void updatePlantformTeamMaster(XN631655Req req) {
+        ProjectConfig configByLocal = projectConfigBO
+            .getProjectConfigByLocal(req.getProjectCode());
+        if (null == configByLocal) {
+            throw new BizException("XN631655", "项目未配置");
+        }
+        TeamMaster teamMaster = teamMasterBO.getTeamMaster(req.getCode());
+        if (teamMaster.getUploadStatus()
+            .equals(EUploadStatus.TO_UPLOAD.getCode())) {
+            throw new BizException("XN631655", "班组信息未上传,无法修改");
+        }
+        XN631909Req xn631909Req = new XN631909Req();
+        BeanUtils.copyProperties(req, xn631909Req);
+        teamMasterBO.doUpdate(xn631909Req, configByLocal);
+        // 更新本地班组状态
+        teamMasterBO.refreshUploadStatus(req.getCode(),
+            EUploadStatus.UPLOAD_EDITABLE.getCode());
+
     }
 
     @Override

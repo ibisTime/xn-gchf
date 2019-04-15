@@ -53,6 +53,9 @@ public class XN631650Req {
     // 班组长证件号码
     private String teamLeaderIdNumber;
 
+    // 备注
+    private String remark;
+
     public String getCode() {
         return code;
     }
@@ -172,6 +175,14 @@ public class XN631650Req {
 
     public void setResponsiblePersonIdNumber(String responsiblePersonIdNumber) {
         this.responsiblePersonIdNumber = responsiblePersonIdNumber;
+    }
+
+    public String getRemark() {
+        return remark;
+    }
+
+    public void setRemark(String remark) {
+        this.remark = remark;
     }
 
 }

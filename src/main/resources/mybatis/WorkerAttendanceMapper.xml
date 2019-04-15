@@ -190,16 +190,16 @@
 		UPDATE
 		thf_worker_attendance t
 		SET
-		delete_status = #{deleteStatus}
+		t.delete_status = #{deleteStatus}
 		<trim prefix="WHERE" prefixOverrides="AND|OR">
 			<if test="code != null and code != '' ">
-				AND code = #{code}
+				AND t.code = #{code}
 			</if>
 			<if test="uploadStatus != null and uploadStatus != '' ">
-				AND upload_status = #{uploadStatus}
+				AND t.upload_status = #{uploadStatus}
 			</if>
 			<if test="projectCode != null and projectCode != '' ">
-				AND project_code = #{projectCode}
+				AND t.project_code = #{projectCode}
 			</if>
 		</trim>
 	</update>

@@ -250,9 +250,12 @@ public class ProjectWorkerAOImpl implements IProjectWorkerAO {
                     projectWorker.setHasBuyInsurance(Integer
                         .parseInt(projectWorkerData.getHasBuyInsurance()));
                 }
+                projectWorker.setWorkerCode(infoByIdCardNumber.getCode());
                 projectWorkerBO.saveProjectWorker(projectWorker);
             } else {
-                workerInfoBO.saveWorkerInfoByImport(projectWorkerData);
+                String workerCode = workerInfoBO
+                    .saveWorkerInfoByImport(projectWorkerData);
+                projectWorker.setWorkerCode(workerCode);
                 projectWorker.setProjectName(project.getName());
                 projectWorker
                     .setIdcardNumber(projectWorkerData.getIdCardNumber());

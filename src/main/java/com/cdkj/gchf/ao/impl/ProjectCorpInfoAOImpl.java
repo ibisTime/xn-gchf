@@ -3,6 +3,7 @@ package com.cdkj.gchf.ao.impl;
 import java.util.List;
 
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -12,6 +13,7 @@ import com.cdkj.gchf.bo.ICorpBasicinfoBO;
 import com.cdkj.gchf.bo.IOperateLogBO;
 import com.cdkj.gchf.bo.IPayRollBO;
 import com.cdkj.gchf.bo.IPayRollDetailBO;
+import com.cdkj.gchf.bo.IProjectBO;
 import com.cdkj.gchf.bo.IProjectConfigBO;
 import com.cdkj.gchf.bo.IProjectCorpInfoBO;
 import com.cdkj.gchf.bo.IProjectWorkerBO;
@@ -23,6 +25,7 @@ import com.cdkj.gchf.bo.IWorkerContractBO;
 import com.cdkj.gchf.bo.base.Paginable;
 import com.cdkj.gchf.domain.CorpBasicinfo;
 import com.cdkj.gchf.domain.PayRoll;
+import com.cdkj.gchf.domain.Project;
 import com.cdkj.gchf.domain.ProjectConfig;
 import com.cdkj.gchf.domain.ProjectCorpInfo;
 import com.cdkj.gchf.domain.TeamMaster;
@@ -31,6 +34,7 @@ import com.cdkj.gchf.dto.req.XN631630Req;
 import com.cdkj.gchf.dto.req.XN631632Req;
 import com.cdkj.gchf.dto.req.XN631633Req;
 import com.cdkj.gchf.dto.req.XN631633ReqList;
+import com.cdkj.gchf.dto.req.XN631635Req;
 import com.cdkj.gchf.dto.req.XN631905Req;
 import com.cdkj.gchf.dto.req.XN631906Req;
 import com.cdkj.gchf.dto.req.XN631907Req;
@@ -82,6 +86,9 @@ public class ProjectCorpInfoAOImpl implements IProjectCorpInfoAO {
     @Autowired
     private IWorkerAttendanceBO workerAttendanceBO;
 
+    @Autowired
+    private IProjectBO projectBO;
+
     @Override
     public String addProjectCorpInfo(XN631630Req data) {
 
@@ -96,8 +103,9 @@ public class ProjectCorpInfoAOImpl implements IProjectCorpInfoAO {
         if (corpInfoByCorpCode != null) {
             throw new BizException("XN631630", "参见单位已添加");
         }
+        Project project = projectBO.getProject(data.getProjectCode());
 
-        return projectCorpInfoBO.saveProjectCorpInfo(data);
+        return projectCorpInfoBO.saveProjectCorpInfo(data, project.getName());
     }
 
     @Transactional
@@ -118,18 +126,18 @@ public class ProjectCorpInfoAOImpl implements IProjectCorpInfoAO {
         projectCorpInfoBO.updateProjectCorpInfoDeleteStatus(code,
             EDeleteStatus.DELETED.getCode());
 
+        projectWorkerBO.fakeDeleteProjectWorker(projectCode);
+
+        projectWorkerEntryExitHistoryBO
+            .fakeDeleteProjectWorkerEntryHistoryByProject(projectCode);
+
+        workerAttendanceBO.fakeDeleteWorkAttendanceByProject(projectCode);
+
         TeamMaster condition = new TeamMaster();
         condition.setCorpCode(corpCode);
         condition.setProjectCode(projectCode);
         for (TeamMaster teamMaster : teamMasterBO
             .queryTeamMasterList(condition)) {
-
-            projectWorkerBO.fakeDeleteProjectWorker(projectCode);
-
-            projectWorkerEntryExitHistoryBO
-                .fakeDeleteProjectWorkerEntryHistory(projectCode);
-
-            workerAttendanceBO.fakeDeleteWorkAttendanceByProject(projectCode);
 
             PayRoll payRollCondition = new PayRoll();
             payRollCondition.setCorpCode(corpCode);
@@ -162,7 +170,9 @@ public class ProjectCorpInfoAOImpl implements IProjectCorpInfoAO {
         if (StringUtils.isNotBlank(req.getPmIDCardType())) {
             EIdCardType.checkExists(req.getPmIDCardType());
         }
-        projectCorpInfoBO.refreshProjectCorpInfo(req);
+        Project project = projectBO.getProject(req.getProjectCode());
+
+        projectCorpInfoBO.refreshProjectCorpInfo(req, project.getName());
 
         projectCorpInfoBO.refreshUploadStatus(req.getCode(),
             EUploadStatus.TO_UPLOAD.getCode());
@@ -179,6 +189,34 @@ public class ProjectCorpInfoAOImpl implements IProjectCorpInfoAO {
     @Transactional
     public void uploadProjectCorpInfo(String userId, List<String> codes) {
         projectCorpInfoBO.uploadProjectCorpInfo(userId, codes);
+    }
+
+    @Override
+    public void updatePlantformProjectCorpInfo(XN631635Req req) {
+        ProjectCorpInfo projectCorpInfo = projectCorpInfoBO
+            .getProjectCorpInfo(req.getCode());
+        if (projectCorpInfo.getUploadStatus()
+            .equals(EUploadStatus.TO_UPLOAD.getCode())) {
+            throw new BizException("XN631635", "参建单位未上传,无法修改");
+        }
+        ProjectConfig configByLocal = projectConfigBO
+            .getProjectConfigByLocal(req.getProjectCode());
+        if (configByLocal == null) {
+            throw new BizException("XN631635", "项目未配置");
+        }
+        CorpBasicinfo corpBasicinfoByCorp = corpBasicinfoBO
+            .getCorpBasicinfoByCorp(req.getCorpCode());
+        if (corpBasicinfoByCorp == null) {
+            throw new BizException("XN631635", "企业信息不存在");
+        }
+        EProjectCorpType.checkExists(req.getCorpType());
+        // 请求国家平台刷新接口
+        XN631906Req xn631906Req = new XN631906Req();
+        BeanUtils.copyProperties(req, xn631906Req);
+        projectCorpInfoBO.doUpdate(xn631906Req, configByLocal);
+        // 更新本地上传状态
+        projectCorpInfoBO.refreshUploadStatus(req.getCode(),
+            EUploadStatus.UPLOAD_EDITABLE.getCode());
     }
 
     @Override

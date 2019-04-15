@@ -138,6 +138,8 @@ public class WorkerContractBOImpl extends PaginableBOImpl<WorkerContract>
         if (StringUtils.isNotBlank(req.getContentPic())) {
             workerContract.setContentPic(req.getContentPic());
         }
+        workerContract.setDeleteStatus(EDeleteStatus.NORMAL.getCode());
+        workerContract.setUploadStatus(EUploadStatus.TO_UPLOAD.getCode());
 
         workerContractDAO.update(workerContract);
     }
@@ -227,7 +229,6 @@ public class WorkerContractBOImpl extends PaginableBOImpl<WorkerContract>
         if (StringUtils.isNotBlank(req.getUnitPrice())) {
             workerContract.setUnitPrice(new BigDecimal(req.getUnitPrice()));
         }
-
         BeanUtils.copyProperties(projectWorker, workerContract);
         BeanUtils.copyProperties(req, workerContract);
         workerContract.setContractPeriodType(
@@ -266,6 +267,7 @@ public class WorkerContractBOImpl extends PaginableBOImpl<WorkerContract>
         WorkerContract workerContract = new WorkerContract();
         workerContract.setProjectCode(projectCode);
         workerContract.setUploadStatus(EUploadStatus.TO_UPLOAD.getCode());
+        workerContract.setDeleteStatus(EDeleteStatus.DELETED.getCode());
         workerContractDAO.updateWorkerContractDeleteStatus(workerContract);
     }
 

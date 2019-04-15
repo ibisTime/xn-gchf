@@ -67,7 +67,7 @@ public class ProjectCorpInfoBOImpl extends PaginableBOImpl<ProjectCorpInfo>
     private IProjectCorpInfoBO projectCorpInfoBO;
 
     @Override
-    public String saveProjectCorpInfo(XN631630Req req) {
+    public String saveProjectCorpInfo(XN631630Req req, String projectName) {
         ProjectCorpInfo projectCorpInfo = new ProjectCorpInfo();
         EProjectCorpType.checkExists(req.getCorpType());
         BeanUtils.copyProperties(req, projectCorpInfo);
@@ -77,15 +77,15 @@ public class ProjectCorpInfoBOImpl extends PaginableBOImpl<ProjectCorpInfo>
         if (StringUtils.isNotBlank(req.getPmIDCardType())) {
             EIdCardType.checkExists(req.getPmIDCardType());
         }
-        ProjectConfig configByLocal = projectConfigBO
-            .getProjectConfigByLocal(req.getProjectCode());
-        if (configByLocal == null) {
-            throw new BizException("XN631630", "项目不存在");
-        }
+        // ProjectConfig configByLocal = projectConfigBO
+        // .getProjectConfigByLocal(req.getProjectCode());
+        // if (configByLocal == null) {
+        // throw new BizException("XN631630", "项目不存在");
+        // }
         String code = OrderNoGenerater
             .generate(EGeneratePrefix.ProjectCorpInfo.getCode());
         projectCorpInfo.setCode(code);
-        projectCorpInfo.setProjectName(configByLocal.getProjectName());
+        projectCorpInfo.setProjectName(projectName);
         projectCorpInfo.setUploadStatus(EUploadStatus.TO_UPLOAD.getCode());
         projectCorpInfo.setDeleteStatus(EDeleteStatus.NORMAL.getCode());
         projectCorpInfoDAO.insert(projectCorpInfo);
@@ -103,10 +103,11 @@ public class ProjectCorpInfoBOImpl extends PaginableBOImpl<ProjectCorpInfo>
     }
 
     @Override
-    public void refreshProjectCorpInfo(XN631632Req req) {
+    public void refreshProjectCorpInfo(XN631632Req req, String projectName) {
         ProjectCorpInfo condition = new ProjectCorpInfo();
         condition.setCode(req.getCode());
         BeanUtils.copyProperties(req, condition);
+        condition.setProjectName(projectName);
         projectCorpInfoDAO.update(condition);
     }
 

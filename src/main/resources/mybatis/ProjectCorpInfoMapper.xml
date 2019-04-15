@@ -139,8 +139,7 @@
 		thf_project_corp_info
 		SET
 		project_code = #{projectCode}
-		,project_name =
-		#{projectName}
+		,project_name = #{projectName}
 		,corp_code = #{corpCode}
 		,corp_type = #{corpType}
 

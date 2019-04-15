@@ -260,7 +260,7 @@ public class PayRollBOImpl extends PaginableBOImpl<PayRoll>
         payRoll.setCorpCode(corpCode);
         payRoll.setProjectCode(projectCode);
         payRoll.setCorpCode(corpCode);
-        payRoll.setDeleteStatus(EDeleteStatus.NORMAL.getCode());
+        payRoll.setDeleteStatus(EDeleteStatus.DELETED.getCode());
         return payRollDAO.updatePayRollDeleteStatus(payRoll);
     }
 

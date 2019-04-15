@@ -342,6 +342,7 @@ public class PayRollDetailBOImpl extends PaginableBOImpl<PayRollDetail>
         PayRollDetail payRollDetail = new PayRollDetail();
         payRollDetail.setPayRollCode(payRollCode);
         payRollDetail.setUploadStatus(EUploadStatus.TO_UPLOAD.getCode());
+        payRollDetail.setDeleteStatus(EDeleteStatus.DELETED.getCode());
         return payRollDetailDAO.updatePayRollDetailDeleteStatus(payRollDetail);
     }
 

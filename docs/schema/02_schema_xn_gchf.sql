@@ -99,6 +99,7 @@ CREATE TABLE `thf_pay_roll` (
   `corp_name` varchar(200) DEFAULT NULL COMMENT '所属企业名称',
   `team_sys_no` varchar(32) DEFAULT NULL COMMENT '班组编号',
   `pay_month` datetime DEFAULT NULL COMMENT '发放工资的年月',
+  `delete_status` varchar(4) DEFAULT NULL COMMENT '删除状态',
   PRIMARY KEY (`code`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='人员工资单';
 

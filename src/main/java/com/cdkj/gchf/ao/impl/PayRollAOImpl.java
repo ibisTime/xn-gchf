@@ -11,22 +11,28 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.cdkj.gchf.ao.IPayRollAO;
+import com.cdkj.gchf.bo.IBankCardBankBO;
 import com.cdkj.gchf.bo.ICorpBasicinfoBO;
 import com.cdkj.gchf.bo.IOperateLogBO;
 import com.cdkj.gchf.bo.IPayRollBO;
 import com.cdkj.gchf.bo.IPayRollDetailBO;
+import com.cdkj.gchf.bo.IProjectBO;
 import com.cdkj.gchf.bo.IProjectConfigBO;
 import com.cdkj.gchf.bo.IProjectCorpInfoBO;
+import com.cdkj.gchf.bo.IProjectWorkerBO;
 import com.cdkj.gchf.bo.ITeamMasterBO;
 import com.cdkj.gchf.bo.IUserBO;
 import com.cdkj.gchf.bo.base.Paginable;
 import com.cdkj.gchf.common.AesUtils;
 import com.cdkj.gchf.common.DateUtil;
+import com.cdkj.gchf.domain.BankCardInfo;
 import com.cdkj.gchf.domain.CorpBasicinfo;
 import com.cdkj.gchf.domain.PayRoll;
 import com.cdkj.gchf.domain.PayRollDetail;
+import com.cdkj.gchf.domain.Project;
 import com.cdkj.gchf.domain.ProjectConfig;
 import com.cdkj.gchf.domain.ProjectCorpInfo;
+import com.cdkj.gchf.domain.ProjectWorker;
 import com.cdkj.gchf.domain.TeamMaster;
 import com.cdkj.gchf.domain.User;
 import com.cdkj.gchf.dto.req.XN631770Req;
@@ -71,6 +77,15 @@ public class PayRollAOImpl implements IPayRollAO {
 
     @Autowired
     private ICorpBasicinfoBO corpBasicinfoBO;
+
+    @Autowired
+    private IProjectBO projectBO;
+
+    @Autowired
+    private IBankCardBankBO bankCardBankBO;
+
+    @Autowired
+    private IProjectWorkerBO projectWorkerBO;
 
     @Transactional
     @Override
@@ -297,11 +312,11 @@ public class PayRollAOImpl implements IPayRollAO {
     @Override
     public void importPayRollCodeList(XN631812Req req) {
         User user = userBO.getBriefUser(req.getUpdater());
-        List<String> errorCode = new ArrayList<>();
-        ProjectConfig configByProject = projectConfigBO
-            .getProjectConfigByLocal(req.getProjectCode());
+        // ProjectConfig configByProject = projectConfigBO
+        // .getProjectConfigByLocal(req.getProjectCode());
+        Project project = projectBO.getProject(req.getProjectCode());
 
-        if (configByProject == null) {
+        if (project == null) {
             throw new BizException("XN631773", "项目未部署");
         }
         // excel字段中有工资单信息和明细信息 两张表操作
@@ -310,13 +325,22 @@ public class PayRollAOImpl implements IPayRollAO {
 
             TeamMaster teamMasterByCondition = teamMasterBO
                 .getTeamMasterByProject(req.getProjectCode(),
-                    xn631773ReqData.getTeamName(),
-                    xn631773ReqData.getCorpCode());
+                    xn631773ReqData.getCorpCode(),
+                    xn631773ReqData.getTeamName());
 
             if (teamMasterByCondition == null) {
-                errorCode.add("班组信息不存在" + xn631773ReqData.getTeamName());
-                continue;
+                throw new BizException("XN631812",
+                    "班组信息不存在【" + xn631773ReqData.getTeamName() + "】");
             }
+            BankCardInfo bankCardInfoByNum = bankCardBankBO
+                .getBankCardInfoByNum(
+                    xn631773ReqData.getPayRollBankCardNumber());
+            if (bankCardInfoByNum == null) {
+                throw new BizException("XN631812",
+                    "项目人员未绑定银行卡【" + xn631773ReqData.getPayBankCode() + "】");
+            }
+            ProjectWorker projectWorker = projectWorkerBO
+                .getProjectWorker(bankCardInfoByNum.getBusinessSysNo());
             // 不存在相关工资单时相关联的工资单
             String payRollCode = null;
             PayRoll payRoll = payRollBO
@@ -340,15 +364,13 @@ public class PayRollAOImpl implements IPayRollAO {
             }
             payRollCode = (payRollCode == null ? payRoll.getCode()
                     : payRollCode);
+
             String payRollDetailCode = payRollDetailBO
-                .savePayRollDetail(payRollCode, xn631773ReqData);
+                .savePayRollDetail(projectWorker, payRollCode, xn631773ReqData);
 
             operateLogBO.saveOperateLog(
                 EOperateLogRefType.PayRollDetail.getCode(), payRollDetailCode,
                 EOperateLogOperate.ImportPayRollDetail.getValue(), user, null);
-        }
-        if (CollectionUtils.isNotEmpty(errorCode)) {
-            throw new BizException("XN631812" + errorCode.toString());
         }
     }
 

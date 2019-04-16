@@ -26,6 +26,8 @@ public class XN631672Req {
 
     private String projectCode;
 
+    private String contractCode;
+
     public String getCode() {
         return code;
     }
@@ -88,6 +90,14 @@ public class XN631672Req {
 
     public void setProjectCode(String projectCode) {
         this.projectCode = projectCode;
+    }
+
+    public String getContractCode() {
+        return contractCode;
+    }
+
+    public void setContractCode(String contractCode) {
+        this.contractCode = contractCode;
     }
 
 }

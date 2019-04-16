@@ -254,14 +254,14 @@ public class TeamMasterBOImpl extends PaginableBOImpl<TeamMaster>
         User user = userBO.getBriefUser(req.getUserId());
         for (XN631653ReqData xn631654ReqData : req.getDateList()) {
 
-            EIdCardType
-                .checkExists(xn631654ReqData.getResponsiblePersonIdcardType());
+            // EIdCardType
+            // .checkExists(xn631654ReqData.getResponsiblePersonIdcardType());
             String code = null;
             TeamMaster teamMaster = new TeamMaster();
             teamMaster.setCorpCode(xn631654ReqData.getCorpCode());
-            String responsidCardType = EIdCardType.getIdCardDictValue(
-                xn631654ReqData.getResponsiblePersonIdcardType());
-            teamMaster.setResponsiblePersonIdcardType(responsidCardType);
+            // String responsidCardType = EIdCardType.getIdCardDictValue(
+            // xn631654ReqData.getResponsiblePersonIdcardType());
+            teamMaster.setResponsiblePersonIdcardType("01");
             teamMaster.setProjectCode(req.getProjectCode());
             BeanUtils.copyProperties(xn631654ReqData, teamMaster);
             teamMasterDAO.insert(teamMaster);
@@ -285,13 +285,13 @@ public class TeamMasterBOImpl extends PaginableBOImpl<TeamMaster>
     }
 
     @Override
-    public TeamMaster getTeamMasterByProject(String ProjectCode,
-            String corpCode, String TeamMasterName) {
+    public TeamMaster getTeamMasterByProject(String projectCode,
+            String corpCode, String teamMasterName) {
         TeamMaster condition = new TeamMaster();
 
-        condition.setProjectCode(ProjectCode);
+        condition.setProjectCode(projectCode);
         condition.setCorpCode(corpCode);
-        condition.setTeamName(TeamMasterName);
+        condition.setRealTeamName(teamMasterName);
         condition.setDeleteStatus(EDeleteStatus.NORMAL.getCode());
 
         return teamMasterDAO.select(condition);

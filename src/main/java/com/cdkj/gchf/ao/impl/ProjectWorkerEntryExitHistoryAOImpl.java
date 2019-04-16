@@ -34,7 +34,6 @@ import com.cdkj.gchf.dto.req.XN631914ReqWorker;
 import com.cdkj.gchf.dto.req.XN631915Req;
 import com.cdkj.gchf.enums.EDeleteStatus;
 import com.cdkj.gchf.enums.EEntryExitType;
-import com.cdkj.gchf.enums.EIdCardType;
 import com.cdkj.gchf.enums.EOperateLogOperate;
 import com.cdkj.gchf.enums.EOperateLogRefType;
 import com.cdkj.gchf.enums.EUploadStatus;
@@ -276,7 +275,6 @@ public class ProjectWorkerEntryExitHistoryAOImpl
 
         for (XN631733ReqData data : req.getDateList()) {
             // 校验数据字典类型数据
-            EIdCardType.checkExists(data.getIdcardType());
             EEntryExitType.checkExists(String.valueOf(data.getType()));
 
             TeamMaster teamMaster = teamMasterBO.getTeamMasterByProject(
@@ -288,8 +286,8 @@ public class ProjectWorkerEntryExitHistoryAOImpl
 
             List<ProjectWorker> infoByIdCardNumber = projectWorkerBO
                 .getProjectWorkerByIdentity(teamMaster.getCode(),
-                    data.getIdcardType(), data.getIdcardNumber());
-            if (infoByIdCardNumber == null) {
+                    data.getIdcardNumber());
+            if (CollectionUtils.isEmpty(infoByIdCardNumber)) {
                 throw new BizException("XN631733",
                     "项目人员【" + data.getIdcardNumber() + "】未录入");
             }

@@ -274,17 +274,17 @@ public class ProjectCorpInfoAOImpl implements IProjectCorpInfoAO {
                     projectCourpInfoReq.getCorpCode());
             if (projectCorpInfo != null) {
                 throw new BizException("XN631630",
-                    "参见单位【" + projectCorpInfo.getCorpName() + "】已添加");
+                    "参建单位【" + projectCorpInfo.getCorpName() + "】已添加");
             }
         }
 
         User user = userBO.getBriefUser(req.getUserId());
         for (XN631633ReqList data : req.getDateList()) {
-            ProjectConfig projectConfig = projectConfigBO
-                .getProjectConfigByLocal(req.getProjectCode());
-
+            // ProjectConfig projectConfig = projectConfigBO
+            // .getProjectConfigByLocal(req.getProjectCode());
+            Project project = projectBO.getProject(req.getProjectCode());
             String projectCorpInfoCode = projectCorpInfoBO
-                .saveProjectCorpInfo(projectConfig, data);
+                .saveProjectCorpInfo(project, data);
 
             // 操作日志
             operateLogBO.saveOperateLog(

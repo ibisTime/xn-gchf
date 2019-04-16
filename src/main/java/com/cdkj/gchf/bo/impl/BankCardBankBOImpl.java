@@ -14,6 +14,7 @@ import com.cdkj.gchf.dao.IBankCardInfoDAO;
 import com.cdkj.gchf.domain.BankCardInfo;
 import com.cdkj.gchf.dto.req.XN631750Req;
 import com.cdkj.gchf.dto.req.XN631752Req;
+import com.cdkj.gchf.enums.EBankCardBussinessType;
 import com.cdkj.gchf.enums.EBankCardStatus;
 import com.cdkj.gchf.enums.EGeneratePrefix;
 import com.cdkj.gchf.enums.EUploadStatus;
@@ -36,6 +37,7 @@ public class BankCardBankBOImpl extends PaginableBOImpl<BankCardInfo>
         bankCardInfo.setUploadStatus(EUploadStatus.TO_UPLOAD.getCode());
         bankCardInfo.setUpdateDatetime(new Date(System.currentTimeMillis()));
         bankCardInfo.setStatus(EBankCardStatus.Normal.getCode());
+        bankCardInfo.setBankCode(req.getBankCode());
         bankCardInfo.setCreateDatetime(new Date(System.currentTimeMillis()));
         bankCardInfoDAO.insert(bankCardInfo);
         return code;
@@ -74,6 +76,15 @@ public class BankCardBankBOImpl extends PaginableBOImpl<BankCardInfo>
         bankCardInfo.setStatus(status);
 
         bankCardInfoDAO.updateBankCardInfoStatusByBussiness(bankCardInfo);
+    }
+
+    @Override
+    public BankCardInfo getBankCardInfoByNum(String payRollBankCardNumber) {
+        BankCardInfo bankCardInfo = new BankCardInfo();
+        bankCardInfo.setBankNumber(payRollBankCardNumber);
+        bankCardInfo.setStatus(EBankCardStatus.Normal.getCode());
+        bankCardInfo.setBusinessType(EBankCardBussinessType.USER.getCode());
+        return bankCardInfoDAO.select(bankCardInfo);
     }
 
     @Override

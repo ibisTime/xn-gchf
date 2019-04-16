@@ -23,6 +23,7 @@ import com.cdkj.gchf.common.DateUtil;
 import com.cdkj.gchf.core.OrderNoGenerater;
 import com.cdkj.gchf.dao.IProjectCorpInfoDAO;
 import com.cdkj.gchf.domain.CorpBasicinfo;
+import com.cdkj.gchf.domain.Project;
 import com.cdkj.gchf.domain.ProjectConfig;
 import com.cdkj.gchf.domain.ProjectCorpInfo;
 import com.cdkj.gchf.domain.User;
@@ -193,8 +194,7 @@ public class ProjectCorpInfoBOImpl extends PaginableBOImpl<ProjectCorpInfo>
     }
 
     @Override
-    public String saveProjectCorpInfo(ProjectConfig projectConfig,
-            XN631633ReqList req) {
+    public String saveProjectCorpInfo(Project project, XN631633ReqList req) {
         ProjectCorpInfo projectCorpInfo = new ProjectCorpInfo();
 
         String code = OrderNoGenerater
@@ -204,9 +204,10 @@ public class ProjectCorpInfoBOImpl extends PaginableBOImpl<ProjectCorpInfo>
         BeanUtils.copyProperties(req, projectCorpInfo);
         projectCorpInfo.setCorpCode(req.getCorpCode());
         projectCorpInfo.setCorpName(req.getCorpName());
-        projectCorpInfo.setProjectCode(projectConfig.getLocalProjectCode());
-        projectCorpInfo.setProjectName(projectConfig.getProjectName());
+        projectCorpInfo.setProjectCode(project.getCode());
+        projectCorpInfo.setProjectName(project.getName());
         projectCorpInfo.setUploadStatus(EUploadStatus.TO_UPLOAD.getCode());
+        projectCorpInfo.setPmIDCardType("01");
         projectCorpInfo.setDeleteStatus(EDeleteStatus.NORMAL.getCode());
 
         if (StringUtils.isNotBlank(req.getEntryTime())) {

@@ -94,7 +94,7 @@ public class ProjectWorkerEntryExitHistoryBOImpl
 
         entryExitHistory.setPosition(projectWorker.getWorkType());
         entryExitHistory.setJoinDatetime(projectWorker.getJoinedTime());
-        entryExitHistory.setIdcardType(data.getIdcardType());
+        entryExitHistory.setIdcardType("01");
         entryExitHistory.setIdcardNumber(data.getIdcardNumber());
 
         Date date = DateUtil.strToDate(data.getDate(),
@@ -280,7 +280,7 @@ public class ProjectWorkerEntryExitHistoryBOImpl
             String workerCode) {
         ProjectWorkerEntryExitHistory condition = new ProjectWorkerEntryExitHistory();
         condition.setWorkerCode(workerCode);
-        condition.setOrder("date", false);
+        condition.setOrder("code", false);
         List<ProjectWorkerEntryExitHistory> selectList = projectWorkerEntryExitHistoryDAO
             .selectList(condition);
         if (CollectionUtils.isEmpty(selectList)) {

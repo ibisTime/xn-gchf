@@ -93,7 +93,7 @@ public class ProjectWorkerBOImpl extends PaginableBOImpl<ProjectWorker>
         projectWorkerInfo.setWorkerMobile(workerInfo.getCellPhone());
         projectWorkerInfo.setIdcardType(workerInfo.getIdCardType());
         projectWorkerInfo.setIdcardNumber(workerInfo.getIdCardNumber());
-
+        projectWorkerInfo.setIdcardType(workerInfo.getIdCardType());
         projectWorkerInfo.setWorkerCode(data.getWorkerCode());
         projectWorkerInfo.setWorkerName(workerInfo.getName());
         projectWorkerInfo.setUploadStatus(EUploadStatus.TO_UPLOAD.getCode());
@@ -136,7 +136,6 @@ public class ProjectWorkerBOImpl extends PaginableBOImpl<ProjectWorker>
         String code = OrderNoGenerater
             .generate(EGeneratePrefix.ProjectWorker.getCode());
         projectWorkerInfo.setCode(code);
-        // 回写workerinfo
 
         projectWorkerDAO.insert(projectWorkerInfo);
         return code;
@@ -378,11 +377,11 @@ public class ProjectWorkerBOImpl extends PaginableBOImpl<ProjectWorker>
 
     @Override
     public List<ProjectWorker> getProjectWorkerByIdentity(String teamSysNo,
-            String idCardType, String idCardNumber) {
+            String idCardNumber) {
         ProjectWorker projectWorker = new ProjectWorker();
         projectWorker.setTeamSysNo(teamSysNo);
+        projectWorker.setIdcardType("01");
         projectWorker.setIdcardNumber(idCardNumber);
-        projectWorker.setIdcardType(idCardType);
         List<ProjectWorker> infoByCondition = projectWorkerDAO
             .selectList(projectWorker);
         return infoByCondition;

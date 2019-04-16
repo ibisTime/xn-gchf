@@ -41,7 +41,6 @@ import com.cdkj.gchf.dto.req.XN631911Req;
 import com.cdkj.gchf.dto.req.XN631912Req;
 import com.cdkj.gchf.dto.req.XN631913Req;
 import com.cdkj.gchf.enums.EDeleteStatus;
-import com.cdkj.gchf.enums.EIdCardType;
 import com.cdkj.gchf.enums.EIsNotType;
 import com.cdkj.gchf.enums.EOperateLogOperate;
 import com.cdkj.gchf.enums.EOperateLogRefType;
@@ -115,8 +114,8 @@ public class ProjectWorkerAOImpl implements IProjectWorkerAO {
         }
         List<ProjectWorker> projectWorkerByIdentity = projectWorkerBO
             .getProjectWorkerByIdentity(req.getTeamSysNo(),
-                workerInfo.getIdCardType(), workerInfo.getIdCardNumber());
-        if (projectWorkerByIdentity.size() > 1) {
+                workerInfo.getIdCardNumber());
+        if (projectWorkerByIdentity.size() == 1) {
             throw new BizException("XN631690", "班组成员已添加");
         }
         return projectWorkerBO.saveProjectWorker(req);
@@ -234,9 +233,8 @@ public class ProjectWorkerAOImpl implements IProjectWorkerAO {
             // 校验班组中是否已存在该成员
             List<ProjectWorker> projectWorkerByIdentity = projectWorkerBO
                 .getProjectWorkerByIdentity(teamMaster.getCode(),
-                    projectWorkerData.getIdCardType(),
                     projectWorkerData.getIdCardNumber());
-            if (projectWorkerByIdentity.size() > 1) {
+            if (projectWorkerByIdentity.size() == 1) {
                 throw new BizException("XN631690",
                     "项目人员中已存在该成员【" + projectWorkerData.getIdCardNumber() + "】");
             }
@@ -244,6 +242,7 @@ public class ProjectWorkerAOImpl implements IProjectWorkerAO {
             ProjectWorker projectWorker = new ProjectWorker();
             BeanUtils.copyProperties(projectWorkerData, projectWorker);
             projectWorker.setProjectCode(project.getCode());
+            projectWorker.setProjectName(project.getName());
 
             projectWorker.setTeamSysNo(teamMaster.getCode());
             projectWorker.setCorpName(corpBasicinfo.getCorpName());
@@ -252,7 +251,7 @@ public class ProjectWorkerAOImpl implements IProjectWorkerAO {
             projectWorker.setIsTeamLeader(
                 Integer.parseInt(projectWorkerData.getIsTeamLeader()));
             projectWorker.setIdcardNumber(projectWorkerData.getIdCardNumber());
-            projectWorker.setIdcardType(projectWorkerData.getIdCardType());
+            projectWorker.setIdcardType("01");
             // 检查人员实名信息表是否存在员工信息
             WorkerInfo infoByIdCardNumber = workerInfoBO
                 .getWorkerInfoByIdCardNumber(
@@ -325,7 +324,7 @@ public class ProjectWorkerAOImpl implements IProjectWorkerAO {
             .checkExists(String.valueOf(projectWorkerData.getWorkRole()));
         EWorkerType.checkExists(projectWorkerData.getWorkType());
         EPoliticsType.checkExists(projectWorkerData.getPoliticsType());
-        EIdCardType.checkExists(projectWorkerData.getIdCardType());
+        // EIdCardType.checkExists(projectWorkerData.getIdCardType());
         EIsNotType.checkExists(projectWorkerData.getIsTeamLeader());
         if (StringUtils
             .isNotBlank(projectWorkerData.getHasBadMedicalHistory())) {

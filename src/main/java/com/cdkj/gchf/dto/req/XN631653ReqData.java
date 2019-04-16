@@ -2,14 +2,14 @@ package com.cdkj.gchf.dto.req;
 
 public class XN631653ReqData {
 
-    // 班组名称
-    private String teamName;
-
     // 企业名称
     private String corpName;
 
     // 所在企业统一社会信用代码
     private String corpCode;
+
+    // 班组名称
+    private String teamName;
 
     // 责任人姓名
     private String responsiblePersonName;
@@ -17,20 +17,17 @@ public class XN631653ReqData {
     // 责任人联系电话
     private String responsiblePersonPhone;
 
-    // 责任人证件类型
-    private String responsiblePersonIdcardType;
-
     // 责任人证件号码
     private String responsiblePersonIdNumber;
+
+    // 备注
+    private String remark;
 
     // 进场日期
     private String entryTime;
 
     // 退场日期
     private String exitTime;
-
-    // 备注
-    private String remark;
 
     public String getTeamName() {
         return teamName;
@@ -62,15 +59,6 @@ public class XN631653ReqData {
 
     public void setResponsiblePersonPhone(String responsiblePersonPhone) {
         this.responsiblePersonPhone = responsiblePersonPhone;
-    }
-
-    public String getResponsiblePersonIdcardType() {
-        return responsiblePersonIdcardType;
-    }
-
-    public void setResponsiblePersonIdcardType(
-            String responsiblePersonIdcardType) {
-        this.responsiblePersonIdcardType = responsiblePersonIdcardType;
     }
 
     public String getResponsiblePersonIdNumber() {

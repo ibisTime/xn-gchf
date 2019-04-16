@@ -42,6 +42,10 @@
 			<if test="deleteStatus != null and deleteStatus != '' ">
 				AND t.delete_status = #{deleteStatus}
 			</if>
+			<if test="balanceDate != null ">
+				AND year(t.balance_date) = year(#{balanceDate})
+				AND Month(t.balance_date) = Month(#{balanceDate})
+			</if>
 
 		</trim>
 	</sql>

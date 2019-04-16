@@ -29,8 +29,11 @@ public class TeamMaster extends ABaseDO {
     // 班组所在企业名称
     private String corpName;
 
-    // 班组名称
+    // 模糊查班组名称
     private String teamName;
+
+    // 准确查班组名称
+    private String realTeamName;
 
     // 班组长姓名
     private String teamLeaderName;
@@ -118,6 +121,14 @@ public class TeamMaster extends ABaseDO {
 
     public void setCorpName(String corpName) {
         this.corpName = corpName;
+    }
+
+    public String getRealTeamName() {
+        return realTeamName;
+    }
+
+    public void setRealTeamName(String realTeamName) {
+        this.realTeamName = realTeamName;
     }
 
     public String getTeamName() {

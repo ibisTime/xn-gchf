@@ -5,12 +5,12 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
-import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.cdkj.gchf.bo.IBankCardBankBO;
 import com.cdkj.gchf.bo.IPayRollDetailBO;
 import com.cdkj.gchf.bo.IProjectWorkerBO;
 import com.cdkj.gchf.bo.base.PaginableBOImpl;
@@ -18,6 +18,7 @@ import com.cdkj.gchf.common.AesUtils;
 import com.cdkj.gchf.common.DateUtil;
 import com.cdkj.gchf.core.OrderNoGenerater;
 import com.cdkj.gchf.dao.impl.PayRollDetailDAOImpl;
+import com.cdkj.gchf.domain.BankCardInfo;
 import com.cdkj.gchf.domain.PayRoll;
 import com.cdkj.gchf.domain.PayRollDetail;
 import com.cdkj.gchf.domain.ProjectConfig;
@@ -44,6 +45,9 @@ public class PayRollDetailBOImpl extends PaginableBOImpl<PayRollDetail>
     @Autowired
     private IProjectWorkerBO projectWorkerBO;
 
+    @Autowired
+    private IBankCardBankBO bankCardBankBO;
+
     @Override
     public void savePayRollDetail(String payRollCode, String projectCode,
             String getPayMonth, List<XN631770ReqDetail> data) {
@@ -63,18 +67,30 @@ public class PayRollDetailBOImpl extends PaginableBOImpl<PayRollDetail>
                 payRollDetail
                     .setWorkHours(new BigDecimal(detail.getWorkHours()));
             }
-
-            List<ProjectWorker> projectWorkers = projectWorkerBO
-                .queryProjectWorkerList(projectCode, detail.getIdCardNumber());
-            if (CollectionUtils.isEmpty(projectWorkers)) {
+            String payRollBankCode = detail.getPayBankCardNumber();
+            BankCardInfo bankCardInfoByNum = bankCardBankBO
+                .getBankCardInfoByNum(detail.getPayBankCardNumber());
+            if (bankCardInfoByNum == null) {
                 throw new BizException("XN631770",
-                    "项目人员【" + detail.getIdCardNumber() + "】不存在");
+                    "员工银行卡未绑定【" + payRollBankCode + "】");
             }
-            ProjectWorker projectWorker = projectWorkers.get(0);
-
-            payRollDetail.setWorkerName(projectWorker.getWorkerName());
-            payRollDetail.setIdcardNumber(projectWorker.getIdcardNumber());
-            payRollDetail.setIdcardType(projectWorker.getIdcardType());
+            String workerCode = bankCardInfoByNum.getBusinessSysNo();
+            ProjectWorker workerByBankCard = projectWorkerBO
+                .getProjectWorker(workerCode);
+            // List<ProjectWorker> projectWorkers = projectWorkerBO
+            // .queryProjectWorkerList(projectCode, detail.getIdCardNumber());
+            // if (CollectionUtils.isEmpty(projectWorkers)) {
+            // throw new BizException("XN631770",
+            // "项目人员【" + detail.getIdCardNumber() + "】不存在");
+            // }
+            // ProjectWorker projectWorker = projectWorkers.get(0);
+            if (null == workerByBankCard) {
+                throw new BizException("XN631733", "项目人员银行卡信息未绑定【"
+                        + bankCardInfoByNum.getBusinessSysNo() + "】");
+            }
+            payRollDetail.setWorkerName(workerByBankCard.getWorkerName());
+            payRollDetail.setIdcardNumber(workerByBankCard.getIdcardNumber());
+            payRollDetail.setIdcardType("01");
 
             payRollDetail.setBalanceDate(DateUtil.strToDate(
                 detail.getBalanceDate(), DateUtil.FRONT_DATE_FORMAT_STRING));
@@ -255,6 +271,8 @@ public class PayRollDetailBOImpl extends PaginableBOImpl<PayRollDetail>
         if (StringUtils.isNotBlank(data.getTotalPayAmount())) {
             condition.setDays(Integer.parseInt(data.getDays()));
         }
+        condition.setDeleteStatus(EDeleteStatus.NORMAL.getCode());
+        condition.setUploadStatus(EUploadStatus.TO_UPLOAD.getCode());
         return payRollDetailDAO.update(condition);
     }
 
@@ -267,8 +285,8 @@ public class PayRollDetailBOImpl extends PaginableBOImpl<PayRollDetail>
     }
 
     @Override
-    public String savePayRollDetail(String payRollcode,
-            XN631812ReqData xn631773ReqData) {
+    public String savePayRollDetail(ProjectWorker projectWorker,
+            String payRollcode, XN631812ReqData xn631773ReqData) {
         String code = null;
         PayRollDetail payRollDetail = new PayRollDetail();
         payRollDetail.setPayRollCode(payRollcode);
@@ -281,12 +299,12 @@ public class PayRollDetailBOImpl extends PaginableBOImpl<PayRollDetail>
                 .setWorkHours(new BigDecimal(xn631773ReqData.getWorkHours()));
         }
         if (StringUtils.isNotBlank(xn631773ReqData.getTotalPayAmount())) {
-            payRollDetail.setTotalPayAmount(
-                new BigDecimal(xn631773ReqData.getTotalPayAmount()));
+            payRollDetail.setTotalPayAmount(new BigDecimal(
+                Integer.parseInt(xn631773ReqData.getTotalPayAmount())));
         }
         if (StringUtils.isNotBlank(xn631773ReqData.getActualAmount())) {
-            payRollDetail.setActualAmount(
-                new BigDecimal(xn631773ReqData.getActualAmount()));
+            payRollDetail.setActualAmount(new BigDecimal(
+                Integer.parseInt(xn631773ReqData.getActualAmount())));
         }
         if (StringUtils.isBlank(xn631773ReqData.getIsBackPay())) {
             payRollDetail
@@ -297,16 +315,15 @@ public class PayRollDetailBOImpl extends PaginableBOImpl<PayRollDetail>
                         DateUtil.FRONT_DATE_FORMAT_STRING));
             }
         }
-        payRollDetail.setIdcardType(xn631773ReqData.getIdCardType());
-        payRollDetail.setIdcardNumber(xn631773ReqData.getIdCardNumber());
-        // projectWorkerBO.getProjectWorker(null, null, null, null);
-        // ProjectWorker projectWorkerByIdentity = projectWorkerBO
-        // .getProjectWorkerByIdentity(xn631773ReqData.getIdCardType(),
-        // xn631773ReqData.getIdCardNumber());
-        // if (projectWorkerByIdentity == null) {
-        // throw new BizException("XN631694", "员工信息不存在,请检查信息是否完整");
-        // }
-        // payRollDetail.setWorkerName(projectWorkerByIdentity.getWorkerName());
+        if (StringUtils.isNotBlank(xn631773ReqData.getDays())) {
+            payRollDetail.setDays(Integer.parseInt(xn631773ReqData.getDays()));
+        }
+        payRollDetail.setBalanceDate(
+            DateUtil.strToDate(xn631773ReqData.getPayMonth(), "yyyy-MM"));
+
+        payRollDetail.setIdcardType("01");
+        payRollDetail.setWorkerName(projectWorker.getWorkerName());
+        payRollDetail.setIdcardNumber(projectWorker.getIdcardNumber());
 
         if (StringUtils.isNotBlank(xn631773ReqData.getIsBackPay())) {
             if (xn631773ReqData.getIsBackPay()
@@ -321,6 +338,7 @@ public class PayRollDetailBOImpl extends PaginableBOImpl<PayRollDetail>
         code = OrderNoGenerater
             .generate(EGeneratePrefix.PayRollDetail.getCode());
         payRollDetail.setUploadStatus(EUploadStatus.TO_UPLOAD.getCode());
+        payRollDetail.setDeleteStatus(EDeleteStatus.NORMAL.getCode());
         payRollDetail.setCode(code);
         payRollDetailDAO.insert(payRollDetail);
         return code;

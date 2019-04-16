@@ -32,6 +32,18 @@ public class XN631652Req {
     // 退场日期
     private String exitTime;
 
+    // 班组长名称
+    private String teamLeaderName;
+
+    // 班组长手机
+    private String teamLeaderPhone;
+
+    // 班组长证件类型
+    private String teamLeaderIdcardType;
+
+    // 班组长证件号码
+    private String teamLeaderIdNumber;
+
     // 备注
     private String remark;
 
@@ -114,6 +126,38 @@ public class XN631652Req {
 
     public void setExitTime(String exitTime) {
         this.exitTime = exitTime;
+    }
+
+    public String getTeamLeaderName() {
+        return teamLeaderName;
+    }
+
+    public void setTeamLeaderName(String teamLeaderName) {
+        this.teamLeaderName = teamLeaderName;
+    }
+
+    public String getTeamLeaderPhone() {
+        return teamLeaderPhone;
+    }
+
+    public void setTeamLeaderPhone(String teamLeaderPhone) {
+        this.teamLeaderPhone = teamLeaderPhone;
+    }
+
+    public String getTeamLeaderIdcardType() {
+        return teamLeaderIdcardType;
+    }
+
+    public void setTeamLeaderIdcardType(String teamLeaderIdcardType) {
+        this.teamLeaderIdcardType = teamLeaderIdcardType;
+    }
+
+    public String getTeamLeaderIdNumber() {
+        return teamLeaderIdNumber;
+    }
+
+    public void setTeamLeaderIdNumber(String teamLeaderIdNumber) {
+        this.teamLeaderIdNumber = teamLeaderIdNumber;
     }
 
 }

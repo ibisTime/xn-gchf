@@ -8,37 +8,40 @@
 		<result column="contractor_corp_name" property="contractorCorpName" />
 		<result column="name" property="name" />
 		<result column="description" property="description" />
-		
+
 		<result column="category" property="category" />
 		<result column="build_corp_name" property="buildCorpName" />
 		<result column="build_corp_code" property="buildCorpCode" />
 		<result column="build_plan_num" property="buildPlanNum" />
 		<result column="prj_plan_num" property="prjPlanNum" />
-		
+
 		<result column="area_code" property="areaCode" />
 		<result column="invest" property="invest" />
 		<result column="building_area" property="buildingArea" />
 		<result column="building_length" property="buildingLength" />
 		<result column="start_date" property="startDate" />
-		
+
 		<result column="complete_date" property="completeDate" />
 		<result column="link_man" property="linkMan" />
 		<result column="link_phone" property="linkPhone" />
 		<result column="prj_status" property="prjStatus" />
 		<result column="lng" property="lng" />
-		
+
 		<result column="lat" property="lat" />
+		<result column="province" property="province" />
+		<result column="city" property="city" />
+		<result column="area" property="area" />
 		<result column="address" property="address" />
 		<result column="approval_num" property="approvalNum" />
 		<result column="approval_level_num" property="approvalLevelNum" />
 		<result column="prj_size" property="prjSize" />
-		
+
 		<result column="property_num" property="propertyNum" />
 		<result column="prj_num" property="prjNum" />
 		<result column="nation_num" property="nationNum" />
 		<result column="attendance_starttime" property="attendanceStarttime" />
 		<result column="attendance_endtime" property="attendanceEndtime" />
-		
+
 		<result column="pay_roll_create_datetime" property="payRollCreateDatetime" />
 		<result column="pay_roll_datetime" property="payRollDatetime" />
 		<result column="pay_roll_delay_days" property="payRollDelayDays" />
@@ -46,7 +49,7 @@
 		<result column="third_party_project_code" property="thirdPartyProjectCode" />
 		<result column="secretStatus" property="secret_status" />
 	</resultMap>
-	
+
 	<sql id="where_condition">
 		<trim prefix="WHERE" prefixOverrides="AND | OR">
 			<if test="code != null and code != '' ">
@@ -72,7 +75,7 @@
 			</if>
 		</trim>
 	</sql>
-	
+
 	<select id="select_project" parameterType="project" resultMap="project_DB_Result">
 		SELECT
 		t.code
@@ -80,37 +83,37 @@
 		,t.contractor_corp_name
 		,t.name
 		,t.description
-		
+
 		,t.category
 		,t.build_corp_name
 		,t.build_corp_code
 		,t.build_plan_num
 		,t.prj_plan_num
-		
+
 		,t.area_code
 		,t.invest
 		,t.building_area
 		,t.building_length
 		,t.start_date
-		
+
 		,t.complete_date
 		,t.link_man
 		,t.link_phone
 		,t.prj_status
 		,t.lng
-		
+
 		,t.lat
 		,t.address
 		,t.approval_num
 		,t.approval_level_num
 		,t.prj_size
-		
+
 		,t.property_num
 		,t.prj_num
 		,t.nation_num
 		,t.attendance_starttime
 		,t.attendance_endtime
-		
+
 		,t.pay_roll_create_datetime
 		,t.pay_roll_datetime
 		,t.pay_roll_delay_days
@@ -141,37 +144,37 @@
 		,contractor_corp_name
 		,name
 		,description
-		
+
 		,category
 		,build_corp_name
 		,build_corp_code
 		,build_plan_num
 		,prj_plan_num
-		
+
 		,area_code
 		,invest
 		,building_area
 		,building_length
 		,start_date
-		
+
 		,complete_date
 		,link_man
 		,link_phone
 		,prj_status
 		,lng
-		
+
 		,lat
 		,address
 		,approval_num
 		,approval_level_num
 		,prj_size
-		
+
 		,property_num
 		,prj_num
 		,nation_num
 		,attendance_starttime
 		,attendance_endtime
-		
+
 		,pay_roll_create_datetime
 		,pay_roll_datetime
 		,pay_roll_delay_days
@@ -185,37 +188,37 @@
 		,#{contractorCorpName}
 		,#{name}
 		,#{description}
-		
+
 		,#{category}
 		,#{buildCorpName}
 		,#{buildCorpCode}
 		,#{buildPlanNum}
 		,#{prjPlanNum}
-		
+
 		,#{areaCode}
 		,#{invest}
 		,#{buildingArea}
 		,#{buildingLength}
 		,#{startDate}
-		
+
 		,#{completeDate}
 		,#{linkMan}
 		,#{linkPhone}
 		,#{prjStatus}
 		,#{lng}
-		
+
 		,#{lat}
 		,#{address}
 		,#{approvalNum}
 		,#{approvalLevelNum}
 		,#{prjSize}
-		
+
 		,#{propertyNum}
 		,#{prjNum}
 		,#{nationNum}
 		,#{attendanceStarttime}
 		,#{attendanceEndtime}
-		
+
 		,#{payRollCreateDatetime}
 		,#{payRollDatetime}
 		,#{payRollDelayDays}
@@ -229,51 +232,62 @@
 		UPDATE thf_project
 		SET
 		contractor_corp_code = #{contractorCorpCode}
-		,contractor_corp_name = #{contractorCorpName}
+		,contractor_corp_name =
+		#{contractorCorpName}
 		,name = #{name}
 		,description = #{description}
 		,category = #{category}
-		
+
 		,build_corp_name = #{buildCorpName}
 		,build_corp_code = #{buildCorpCode}
-		,build_plan_num = #{buildPlanNum}
+		,build_plan_num
+		= #{buildPlanNum}
 		,prj_plan_num = #{prjPlanNum}
 		,area_code = #{areaCode}
-		
+
 		,invest = #{invest}
 		,building_area = #{buildingArea}
-		,building_length = #{buildingLength}
+		,building_length =
+		#{buildingLength}
 		,start_date = #{startDate}
-		,complete_date = #{completeDate}
-		
+		,complete_date =
+		#{completeDate}
+
 		,link_man = #{linkMan}
 		,link_phone = #{linkPhone}
 		,prj_status = #{prjStatus}
-		,lng = #{lng}
+		,lng
+		= #{lng}
 		,lat = #{lat}
-		
+
 		,address = #{address}
 		,approval_num = #{approvalNum}
-		,approval_level_num = #{approvalLevelNum}
+		,approval_level_num =
+		#{approvalLevelNum}
 		,prj_size = #{prjSize}
-		,property_num = #{propertyNum}
-		
+		,property_num =
+		#{propertyNum}
+
 		,prj_num = #{prjNum}
 		,nation_num = #{nationNum}
-		,attendance_starttime = #{attendanceStarttime}
+		,attendance_starttime =
+		#{attendanceStarttime}
 		,attendance_endtime = #{attendanceEndtime}
-		
+
 		,pay_roll_create_datetime = #{payRollCreateDatetime}
 		,pay_roll_datetime = #{payRollDatetime}
-		,pay_roll_delay_days = #{payRollDelayDays}
+		,pay_roll_delay_days =
+		#{payRollDelayDays}
 		,charge_email = #{chargeEmail}
 		,third_party_project_code = #{thirdPartyProjectCode}
-		,secret_status = #{secretStatus}
+		,secret_status =
+		#{secretStatus}
 		WHERE code = #{code}
 	</update>
-	
+
 	<update id="update_projectSecretStatus" parameterType="project">
-		UPDATE thf_project
+		UPDATE
+		thf_project
 		SET
 		secret_status = #{secretStatus}
 		WHERE code = #{code}

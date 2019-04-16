@@ -15,9 +15,9 @@ public class XN631733ReqData {
     @NotBlank
     private String teamName;
 
-    // 证件类型
+    // 工人名称
     @NotBlank
-    private String idcardType;
+    private String workerName;
 
     // 证件编号
     @NotBlank
@@ -53,14 +53,6 @@ public class XN631733ReqData {
         this.teamName = teamName;
     }
 
-    public String getIdcardType() {
-        return idcardType;
-    }
-
-    public void setIdcardType(String idcardType) {
-        this.idcardType = idcardType;
-    }
-
     public String getIdcardNumber() {
         return idcardNumber;
     }
@@ -83,6 +75,14 @@ public class XN631733ReqData {
 
     public void setDate(String date) {
         this.date = date;
+    }
+
+    public String getWorkerName() {
+        return workerName;
+    }
+
+    public void setWorkerName(String workerName) {
+        this.workerName = workerName;
     }
 
 }

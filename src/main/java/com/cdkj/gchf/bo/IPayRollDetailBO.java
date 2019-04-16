@@ -6,6 +6,7 @@ import com.cdkj.gchf.bo.base.IPaginableBO;
 import com.cdkj.gchf.domain.PayRoll;
 import com.cdkj.gchf.domain.PayRollDetail;
 import com.cdkj.gchf.domain.ProjectConfig;
+import com.cdkj.gchf.domain.ProjectWorker;
 import com.cdkj.gchf.domain.TeamMaster;
 import com.cdkj.gchf.dto.req.XN631770ReqDetail;
 import com.cdkj.gchf.dto.req.XN631772Req;
@@ -20,8 +21,8 @@ public interface IPayRollDetailBO extends IPaginableBO<PayRollDetail> {
 
     public String savePayRollDetail(PayRollDetail payRollDetail);
 
-    public String savePayRollDetail(String payRollcode,
-            XN631812ReqData xn631773ReqData);
+    public String savePayRollDetail(ProjectWorker projectWorker,
+            String payRollcode, XN631812ReqData xn631773ReqData);
 
     public int deletePayRollDetailByPayRollCode(String payRollCode);
 

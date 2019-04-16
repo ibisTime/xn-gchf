@@ -5,6 +5,7 @@ import org.springframework.beans.BeanUtils;
 
 import com.cdkj.gchf.ao.IPayRollDetailAO;
 import com.cdkj.gchf.api.AProcessor;
+import com.cdkj.gchf.common.DateUtil;
 import com.cdkj.gchf.core.ObjValidater;
 import com.cdkj.gchf.core.StringValidater;
 import com.cdkj.gchf.domain.PayRollDetail;
@@ -39,6 +40,10 @@ public class XN631815 extends AProcessor {
         String orderColumn = req.getOrderColumn();
         if (StringUtils.isBlank(orderColumn)) {
             orderColumn = IPayRollDetailAO.DEFAULT_ORDER_COLUMN;
+        }
+        if (StringUtils.isNotBlank(req.getPayMonth())) {
+            payRollDetail.setBalanceDate(
+                DateUtil.strToDate(req.getPayMonth(), "yyyy-MM"));
         }
         payRollDetail.setOrder(orderColumn, req.getOrderDir());
         return payRollDetailAO.queryPayRollDetailPage(start, limit,

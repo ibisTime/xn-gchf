@@ -380,6 +380,7 @@ public class TeamMasterAOImpl implements ITeamMasterAO {
             }
             teamMaster.setProjectCode(req.getProjectCode());
             teamMaster.setCorpName(corpBasicinfo.getCorpName());
+            teamMaster.setResponsiblePersonIdcardType("01");
             teamMaster.setUploadStatus(EUploadStatus.TO_UPLOAD.getCode());
             teamMaster.setDeleteStatus(EDeleteStatus.NORMAL.getCode());
             String code = teamMasterBO.saveTeamMaster(teamMaster);

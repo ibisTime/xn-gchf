@@ -36,7 +36,6 @@ import com.cdkj.gchf.dto.req.XN631918Req;
 import com.cdkj.gchf.dto.req.XN631919Req;
 import com.cdkj.gchf.enums.EDeleteStatus;
 import com.cdkj.gchf.enums.EDirectionType;
-import com.cdkj.gchf.enums.EIdCardType;
 import com.cdkj.gchf.enums.EOperateLogRefType;
 import com.cdkj.gchf.enums.EUploadStatus;
 import com.cdkj.gchf.enums.EUserKind;
@@ -247,7 +246,6 @@ public class WorkerAttendanceAOImpl implements IWorkerAttendanceAO {
         for (XN631713ReqData dateReq : req.getDateList()) {
             // 校验数据字典数据
             EDirectionType.checkExists(dateReq.getDirection());
-            EIdCardType.checkExists(dateReq.getIdCardType());
 
             // 核实身份信息
             String idcardNumber = dateReq.getIdCardNumber();
@@ -274,7 +272,8 @@ public class WorkerAttendanceAOImpl implements IWorkerAttendanceAO {
                     DateUtil.FRONT_DATE_FORMAT_STRING);
                 workerAttendance.setDate(date);
             }
-
+            workerAttendance.setIdCardType("01");
+            workerAttendance.setWorkerName(dateReq.getWorkerName());
             workerAttendance.setUploadStatus(EUploadStatus.TO_UPLOAD.getCode());
             workerAttendance.setDeleteStatus(EDeleteStatus.NORMAL.getCode());
             String code = workerAttendanceBO

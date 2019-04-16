@@ -7,10 +7,6 @@ public class XN631770ReqDetail {
     @NotBlank
     private String idCardType;
 
-    // 证件号码
-    @NotBlank
-    private String idCardNumber;
-
     // 出勤天数
     private String days;
 
@@ -67,14 +63,6 @@ public class XN631770ReqDetail {
 
     public void setIdCardType(String idCardType) {
         this.idCardType = idCardType;
-    }
-
-    public String getIdCardNumber() {
-        return idCardNumber;
-    }
-
-    public void setIdCardNumber(String idCardNumber) {
-        this.idCardNumber = idCardNumber;
     }
 
     public String getDays() {

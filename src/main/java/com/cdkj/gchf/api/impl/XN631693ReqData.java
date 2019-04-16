@@ -22,10 +22,6 @@ public class XN631693ReqData {
     // 是否班组长
     private String isTeamLeader;
 
-    // 证件类型
-    @NotBlank
-    private String idCardType;
-
     // 证件号码
     @NotBlank
     private String idCardNumber;
@@ -145,14 +141,6 @@ public class XN631693ReqData {
 
     public void setIsTeamLeader(String isTeamLeader) {
         this.isTeamLeader = isTeamLeader;
-    }
-
-    public String getIdCardType() {
-        return idCardType;
-    }
-
-    public void setIdCardType(String idCardType) {
-        this.idCardType = idCardType;
     }
 
     public String getIdCardNumber() {

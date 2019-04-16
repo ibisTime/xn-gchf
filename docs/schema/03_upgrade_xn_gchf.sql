@@ -504,3 +504,19 @@ ADD COLUMN `supervise_code` VARCHAR(32) NULL COMMENT '监管单位编号' AFTER 
 
 ALTER TABLE `thf_bank_card_info` 
 ADD COLUMN `subranch` VARCHAR(128) NULL COMMENT '支行名称' AFTER `bank_name`;
+
+ALTER TABLE `thf_pay_roll_detail` 
+MODIFY COLUMN `project_name` varchar(512) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '项目名称';
+ALTER TABLE `thf_project` 
+MODIFY COLUMN `name` varchar(512) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '项目名称';
+ALTER TABLE `thf_project_config` 
+MODIFY COLUMN `project_name` varchar(512) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '项目名称';
+ALTER TABLE `thf_project_corp_info` 
+MODIFY COLUMN `project_name` varchar(512) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '项目名称';
+ALTER TABLE `thf_project_worker` 
+MODIFY COLUMN `project_name` varchar(512) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '项目名称';
+ALTER TABLE `thf_worker_attendance` 
+MODIFY COLUMN `project_name` varchar(512) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '项目编号';
+ALTER TABLE `thf_worker_contract` 
+MODIFY COLUMN `project_name` varchar(512) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '项目编号';
+

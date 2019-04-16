@@ -77,6 +77,8 @@ public class WorkerContractBOImpl extends PaginableBOImpl<WorkerContract>
         workerContract.setCode(code);
         BeanUtils.copyProperties(data, workerContract);
         BeanUtils.copyProperties(workerInfo, workerContract);
+        workerContract.setIdcardType("01");
+        workerContract.setWorkerName(data.getWorkerName());
         if (StringUtils.isNotBlank(data.getUnit())) {
             workerContract.setUnit(Integer.parseInt(data.getUnit()));
         }
@@ -137,6 +139,9 @@ public class WorkerContractBOImpl extends PaginableBOImpl<WorkerContract>
         }
         if (StringUtils.isNotBlank(req.getContentPic())) {
             workerContract.setContentPic(req.getContentPic());
+        }
+        if (StringUtils.isNotBlank(req.getContractCode())) {
+            workerContract.setContractCode(req.getContractCode());
         }
         workerContract.setDeleteStatus(EDeleteStatus.NORMAL.getCode());
         workerContract.setUploadStatus(EUploadStatus.TO_UPLOAD.getCode());

@@ -7,8 +7,8 @@ public class XN631673ReqData {
     // 所属企业名称
     private String corpName;
 
-    // 证件类型
-    private String idCardType;
+    // 工人名称
+    private String workerName;
 
     // 证件号码
     private String idCardNumber;
@@ -44,12 +44,12 @@ public class XN631673ReqData {
         this.corpName = corpName;
     }
 
-    public String getIdCardType() {
-        return idCardType;
+    public String getWorkerName() {
+        return workerName;
     }
 
-    public void setIdCardType(String idCardType) {
-        this.idCardType = idCardType;
+    public void setWorkerName(String workerName) {
+        this.workerName = workerName;
     }
 
     public String getIdCardNumber() {

@@ -19,6 +19,8 @@ public interface IBankCardBankBO extends IPaginableBO<BankCardInfo> {
 
     public void refreshStatus(String businessSysNo, String status);
 
+    BankCardInfo getBankCardInfoByNum(String payRollBankCardNumber);
+
     public List<BankCardInfo> queryBankCardInfoList(String businessSysNo,
             String status);
 

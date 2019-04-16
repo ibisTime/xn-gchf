@@ -25,6 +25,9 @@ public class XN631815Req extends APageReq {
     @NotBlank
     private String userId;
 
+    // 工资发放月份
+    private String payMonth;
+
     public String getUserId() {
         return userId;
     }
@@ -63,6 +66,14 @@ public class XN631815Req extends APageReq {
 
     public void setCorpCode(String corpCode) {
         this.corpCode = corpCode;
+    }
+
+    public String getPayMonth() {
+        return payMonth;
+    }
+
+    public void setPayMonth(String payMonth) {
+        this.payMonth = payMonth;
     }
 
 }

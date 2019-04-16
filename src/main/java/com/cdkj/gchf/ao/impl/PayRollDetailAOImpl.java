@@ -6,15 +6,18 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.cdkj.gchf.ao.IPayRollDetailAO;
+import com.cdkj.gchf.bo.ICorpBasicinfoBO;
 import com.cdkj.gchf.bo.IPayRollBO;
 import com.cdkj.gchf.bo.IPayRollDetailBO;
+import com.cdkj.gchf.bo.IProjectBO;
 import com.cdkj.gchf.bo.IProjectConfigBO;
 import com.cdkj.gchf.bo.ITeamMasterBO;
 import com.cdkj.gchf.bo.IUserBO;
 import com.cdkj.gchf.bo.base.Paginable;
+import com.cdkj.gchf.domain.CorpBasicinfo;
 import com.cdkj.gchf.domain.PayRoll;
 import com.cdkj.gchf.domain.PayRollDetail;
-import com.cdkj.gchf.domain.ProjectConfig;
+import com.cdkj.gchf.domain.Project;
 import com.cdkj.gchf.domain.TeamMaster;
 import com.cdkj.gchf.domain.User;
 import com.cdkj.gchf.dto.req.XN631810Req;
@@ -38,7 +41,13 @@ public class PayRollDetailAOImpl implements IPayRollDetailAO {
     private IProjectConfigBO projectConfigBO;
 
     @Autowired
+    private IProjectBO projectBO;
+
+    @Autowired
     private IUserBO userBO;
+
+    @Autowired
+    private ICorpBasicinfoBO corpBasicinfoBO;
 
     @Override
     public String addPayRollDetail(PayRollDetail data) {
@@ -85,14 +94,18 @@ public class PayRollDetailAOImpl implements IPayRollDetailAO {
             TeamMaster teamMaster = teamMasterBO
                 .getTeamMaster(payRoll.getTeamSysNo());
             if (teamMaster != null) {
-                String teamName = teamMasterBO
-                    .getTeamMasterNameByTeamMasterSysNo(payRoll.getTeamSysNo());
-                payRollDetail.setTeamName(teamName);
+                // String teamName = teamMasterBO
+                // .getTeamMasterNameByTeamMasterSysNo(payRoll.getTeamSysNo());
+                payRollDetail.setTeamName(teamMaster.getTeamName());
             }
 
-            ProjectConfig configByProject = projectConfigBO
-                .getProjectConfigByLocal(payRoll.getProjectCode());
-            payRollDetail.setProjectName(configByProject.getProjectName());
+            // ProjectConfig configByProject = projectConfigBO
+            // .getProjectConfigByLocal(payRoll.getProjectCode());
+            Project project = projectBO.getProject(payRoll.getProjectCode());
+            payRollDetail.setProjectName(project.getName());
+            CorpBasicinfo corpBasicinfoByCorp = corpBasicinfoBO
+                .getCorpBasicinfoByCorp(payRoll.getCorpCode());
+            payRollDetail.setCorpName(corpBasicinfoByCorp.getCorpName());
         }
         page.setList(list);
         return page;

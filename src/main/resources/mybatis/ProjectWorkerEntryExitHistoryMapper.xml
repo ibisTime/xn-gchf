@@ -28,13 +28,16 @@
 			<if test="code != null and code != '' ">
 				AND t.code = #{code}
 			</if>
+			<if test="corpCode != null and corpCode != '' ">
+				AND t.corp_code = #{corpCode}
+			</if>
 			<if test="idcardNumber != null and idcardNumber != '' ">
 				AND t.idcard_number = #{idcardNumber}
 			</if>
 			<if test="workerName != null and workerName != '' ">
 				AND t.worker_name LIKE CONCAT('%', #{workerName}, '%')
 			</if>
-			<if test=" workerCode != null and workerCode != '' ">
+			<if test="workerCode != null and workerCode != '' ">
 				AND t.worker_code = #{workerCode}
 			</if>
 			<if test="projectCode != null and projectCode != '' ">
@@ -43,9 +46,6 @@
 			<if test="uploadStatus != null and uploadStatus != '' ">
 				AND t.upload_status = #{uploadStatus}
 			</if>
-			<if test="deleteStatus != null and deleteStatus != '' ">
-				AND t.delete_status = #{deleteStatus}
-			</if>
 			<if test="type != null ">
 				AND t.type = #{type}
 			</if>
@@ -53,6 +53,12 @@
 				AND t.delete_status = #{deleteStatus}
 			</if>
 		</trim>
+	</sql>
+	<sql id="join_condition">
+		<if test="corpBasicType != null and corpBasicType != '' ">
+			left join tqy_corp_basicinfo tu on t.corp_code =
+			tu.corp_code
+		</if>
 	</sql>
 
 
@@ -128,22 +134,23 @@
 		parameterType="projectWorkerEntryExitHistory">
 		UPDATE thf_project_worker_entry_exit_history t
 		SET
-		delete_status = #{deleteStatus}
-		
+		delete_status =
+		#{deleteStatus}
+
 		<trim prefix="WHERE" prefixOverrides="AND|OR">
-		
+
 			<if test="code != null and code != '' ">
 				AND t.code = #{code}
 			</if>
-			
+
 			<if test=" projectCode != null and projectCode !='' ">
 				AND t.project_code = #{projectCode}
 			</if>
-			
+
 			<if test="uploadStatus != null and uploadStatus != '' ">
 				AND t.upload_status = #{uploadStatus}
 			</if>
-			
+
 		</trim>
 	</update>
 	<select id="select_projectWorkerEntryExitHistory" parameterType="projectWorkerEntryExitHistory"

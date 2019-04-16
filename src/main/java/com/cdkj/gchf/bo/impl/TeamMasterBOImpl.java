@@ -178,7 +178,7 @@ public class TeamMasterBOImpl extends PaginableBOImpl<TeamMaster>
 
         String data = JSONObject.toJSONStringWithDateFormat(req, "yyyy-MM-dd")
             .toString();
-
+        System.out.println("===" + data);
         String resString = GovConnecter.getGovData("Team.Update", data,
             projectConfig.getProjectCode(), projectConfig.getSecret());
 

@@ -146,7 +146,7 @@ public class ProjectCorpInfoBOImpl extends PaginableBOImpl<ProjectCorpInfo>
 
         String data = JSONObject
             .toJSONStringWithDateFormat(req, "yyyy-MM-dd HH:mm:ss").toString();
-
+        System.out.println("===" + data);
         GovConnecter.getGovData("ProjectSubContractor.Update", data,
             projectConfig.getProjectCode(), projectConfig.getSecret());
     }

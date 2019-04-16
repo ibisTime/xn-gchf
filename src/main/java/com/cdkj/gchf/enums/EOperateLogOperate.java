@@ -34,7 +34,11 @@ public enum EOperateLogOperate {
 
     ImportPayRollDetail("13", "导入工资单明细信息"),
 
-    ImportProjectCorpInfo("14", "导入项目参建单位");
+    ImportProjectCorpInfo("14", "导入项目参建单位"),
+
+    UpdateProjectCorpInfo("15", "更新国家平台参建单位信息"),
+
+    UpdateTeamMaster("16", "更新国家平台参建单位信息");
 
     EOperateLogOperate(String code, String value) {
         this.code = code;

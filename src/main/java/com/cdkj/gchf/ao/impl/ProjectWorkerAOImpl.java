@@ -113,7 +113,12 @@ public class ProjectWorkerAOImpl implements IProjectWorkerAO {
         if (corpBasicinfo == null) {
             throw new BizException("xn631690", "企业信息不存在");
         }
-
+        List<ProjectWorker> projectWorkerByIdentity = projectWorkerBO
+            .getProjectWorkerByIdentity(req.getTeamSysNo(),
+                workerInfo.getIdCardType(), workerInfo.getIdCardNumber());
+        if (projectWorkerByIdentity.size() > 1) {
+            throw new BizException("XN631690", "班组成员已添加");
+        }
         return projectWorkerBO.saveProjectWorker(req);
     }
 
@@ -225,6 +230,15 @@ public class ProjectWorkerAOImpl implements IProjectWorkerAO {
                 teamMaster.getCode(), projectWorkerData.getIdCardNumber());
             if (preProjectWorker != null) {
                 continue;
+            }
+            // 校验班组中是否已存在该成员
+            List<ProjectWorker> projectWorkerByIdentity = projectWorkerBO
+                .getProjectWorkerByIdentity(teamMaster.getCode(),
+                    projectWorkerData.getIdCardType(),
+                    projectWorkerData.getIdCardNumber());
+            if (projectWorkerByIdentity.size() > 1) {
+                throw new BizException("XN631690",
+                    "项目人员中已存在该成员【" + projectWorkerData.getIdCardNumber() + "】");
             }
 
             ProjectWorker projectWorker = new ProjectWorker();

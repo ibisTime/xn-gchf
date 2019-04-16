@@ -492,3 +492,15 @@ update thf_project_worker set worker_code = (select code from thf_worker_info wh
 
 ALTER TABLE `tsys_operate_log` 
 CHANGE COLUMN `operator_name` `operator_name` VARCHAR(255) NULL DEFAULT NULL COMMENT '操作人名称' ;
+
+##V210 3hd
+ALTER TABLE `thf_worker_info` 
+ADD COLUMN `feat` TEXT NULL COMMENT '特征值' AFTER `expiry_date`,
+ADD COLUMN `feat_status` VARCHAR(4) NULL COMMENT '特征值状态(0无效/1有效)' AFTER `feat`,
+ADD COLUMN `head_image_status` VARCHAR(4) NULL COMMENT '免冠照状态(0未拍摄/1已拍摄)' AFTER `feat_status`;
+
+ALTER TABLE `thf_project` 
+ADD COLUMN `supervise_code` VARCHAR(32) NULL COMMENT '监管单位编号' AFTER `code`;
+
+ALTER TABLE `thf_bank_card_info` 
+ADD COLUMN `subranch` VARCHAR(128) NULL COMMENT '支行名称' AFTER `bank_name`;

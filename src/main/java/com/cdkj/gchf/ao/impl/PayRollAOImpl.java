@@ -254,7 +254,7 @@ public class PayRollAOImpl implements IPayRollAO {
         TeamMaster teamMaster = teamMasterBO
             .getTeamMaster(payRoll.getTeamSysNo());
         if (StringUtils.isBlank(teamMaster.getTeamSysNo())) {
-            throw new BizException("班组信息未上传");
+            throw new BizException("XN631813", "班组信息未上传");
         }
         jsonObject.addProperty("teamSysNo", teamMaster.getTeamSysNo());
         // PayMonth

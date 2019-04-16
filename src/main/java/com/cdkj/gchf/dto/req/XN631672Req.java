@@ -20,12 +20,19 @@ public class XN631672Req {
     // 计量单位
     private String unit;
 
+    // 计量单价
     private String unitPrice;
 
+    // 合同类型
+    private String contractPeriodType;
+
+    // 合同照片
     private String contentPic;
 
+    // 项目编号
     private String projectCode;
 
+    // 合同编号
     private String contractCode;
 
     public String getCode() {
@@ -98,6 +105,14 @@ public class XN631672Req {
 
     public void setContractCode(String contractCode) {
         this.contractCode = contractCode;
+    }
+
+    public String getContractPeriodType() {
+        return contractPeriodType;
+    }
+
+    public void setContractPeriodType(String contractPeriodType) {
+        this.contractPeriodType = contractPeriodType;
     }
 
 }

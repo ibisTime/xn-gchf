@@ -34,6 +34,7 @@
 		<result column="pay_roll_bank_name" property="payRollBankName" />
 		<result column="pay_roll_top_bank_name" property="payRollTopBankName" />
 		<result column="bank_link_number" property="bankLinkNumber" />
+		<result column="bank_name" property="bankName" />
 
 		<result column="pay_roll_top_bank_code" property="payRollTopBankCode" />
 		<result column="has_contract" property="hasContract" />
@@ -130,6 +131,7 @@
 		,pay_roll_bank_name
 
 		,pay_roll_top_bank_name
+		,bank_name
 		,bank_link_number
 		,pay_roll_top_bank_code
 		,has_contract
@@ -185,6 +187,7 @@
 
 		,#{payRollBankName}
 		,#{payRollTopBankName}
+		,#{bankName}
 		,#{bankLinkNumber}
 		,#{payRollTopBankCode}
 		,#{hasContract}
@@ -246,24 +249,22 @@
 		thf_project_worker
 		SET
 		is_team_leader = #{isTeamLeader}
-		,work_type =
-		#{workType}
+		,work_type = #{workType}
 		,work_role = #{workRole}
-		,issue_card_date =
-		#{issueCardDate}
+		,issue_card_date = #{issueCardDate}
 		,issue_card_pic_url = #{issueCardPicUrl}
-		,card_number =
-		#{cardNumber}
+		,card_number = #{cardNumber}
 		,pay_roll_bank_card_number = #{payRollBankCardNumber}
 
 		,pay_roll_bank_name = #{payRollBankName}
-		,pay_roll_top_bank_name =
-		#{payRollTopBankName}
+		,pay_roll_top_bank_name = #{payRollTopBankName}
 		,bank_link_number = #{bankLinkNumber}
 		,pay_roll_top_bank_code = #{payRollTopBankCode}
-		,has_buy_insurance =
-		#{hasBuyInsurance}
+		,has_buy_insurance = #{hasBuyInsurance}
+
+
 		,join_datetime = #{joinDatetime}
+		,bank_name = #{bankName}
 		WHERE code = #{code}
 	</update>
 	<select id="select_projectWorker" parameterType="projectWorker"

@@ -108,8 +108,8 @@ public class ProjectWorkerEntryExitHistoryAOImpl
     public void dropProjectWorkerEntryExitHistory(String code) {
         ProjectWorkerEntryExitHistory projectWorkerEntryExitHistory = projectWorkerEntryExitHistoryBO
             .getProjectWorkerEntryExitHistory(code);
-        if (!projectWorkerEntryExitHistory.getUploadStatus()
-            .equals(EUploadStatus.TO_UPLOAD.getCode())) {
+        if (projectWorkerEntryExitHistory.getUploadStatus()
+            .equals(EUploadStatus.UPLOAD_UNEDITABLE.getCode())) {
             throw new BizException("XN631731", "人员进退场已上传，不可删除");
         }
         projectWorkerEntryExitHistoryBO

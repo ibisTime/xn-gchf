@@ -13,6 +13,7 @@ import org.springframework.stereotype.Component;
 
 import com.alibaba.fastjson.JSONObject;
 import com.cdkj.gchf.bo.ICorpBasicinfoBO;
+import com.cdkj.gchf.bo.IProjectBO;
 import com.cdkj.gchf.bo.IProjectConfigBO;
 import com.cdkj.gchf.bo.IProjectWorkerBO;
 import com.cdkj.gchf.bo.ITeamMasterBO;
@@ -70,12 +71,18 @@ public class ProjectWorkerBOImpl extends PaginableBOImpl<ProjectWorker>
     @Autowired
     private IWorkerInfoBO workerInfoBO;
 
+    @Autowired
+    private IProjectBO projectBO;
+
     @Override
     public String saveProjectWorker(XN631690Req data) {
         ProjectWorker projectWorkerInfo = new ProjectWorker();
         CorpBasicinfo corpBasicinfo = corpBasicinfoBO
             .getCorpBasicinfoByCorp(data.getCorpCode());
-        projectWorkerInfo.setProjectName(corpBasicinfo.getCorpName());
+
+        Project project = projectBO.getProject(data.getProjectCode());
+
+        projectWorkerInfo.setProjectName(project.getName());
         BeanUtils.copyProperties(data, projectWorkerInfo);
 
         ProjectConfig configByLocal = projectConfigBO
@@ -93,9 +100,9 @@ public class ProjectWorkerBOImpl extends PaginableBOImpl<ProjectWorker>
         projectWorkerInfo.setWorkerMobile(workerInfo.getCellPhone());
         projectWorkerInfo.setIdcardType(workerInfo.getIdCardType());
         projectWorkerInfo.setIdcardNumber(workerInfo.getIdCardNumber());
-        projectWorkerInfo.setIdcardType(workerInfo.getIdCardType());
         projectWorkerInfo.setWorkerCode(data.getWorkerCode());
         projectWorkerInfo.setWorkerName(workerInfo.getName());
+        projectWorkerInfo.setBankName(data.getBankName());
         projectWorkerInfo.setUploadStatus(EUploadStatus.TO_UPLOAD.getCode());
         projectWorkerInfo.setDeleteStatus(EDeleteStatus.NORMAL.getCode());
         projectWorkerInfo.setLocalTeamSysNo(teamMaster.getCode());
@@ -205,6 +212,9 @@ public class ProjectWorkerBOImpl extends PaginableBOImpl<ProjectWorker>
         if (StringUtils.isNotBlank(req.getHasBuyInsurance())) {
             projectWorkerInfo
                 .setHasBuyInsurance(Integer.parseInt(req.getHasBuyInsurance()));
+        }
+        if (StringUtils.isNotBlank(req.getBankName())) {
+            projectWorkerInfo.setBankName(req.getBankName());
         }
         if (StringUtils.isNotBlank(req.getIssueCardDate())) {
             Date issueCardDate = DateUtil.strToDate(req.getIssueCardDate(),

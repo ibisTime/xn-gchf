@@ -13,8 +13,10 @@ import com.cdkj.gchf.bo.ICorpBasicinfoBO;
 import com.cdkj.gchf.bo.IProjectBO;
 import com.cdkj.gchf.bo.IProjectBuilderLicenseBO;
 import com.cdkj.gchf.bo.IProjectConfigBO;
+import com.cdkj.gchf.bo.ISmsOutBO;
 import com.cdkj.gchf.bo.IUserBO;
 import com.cdkj.gchf.bo.base.Paginable;
+import com.cdkj.gchf.common.PhoneUtil;
 import com.cdkj.gchf.common.StringUtil;
 import com.cdkj.gchf.domain.CorpBasicinfo;
 import com.cdkj.gchf.domain.Project;
@@ -41,6 +43,9 @@ public class ProjectAOImpl implements IProjectAO {
 
     @Autowired
     private IProjectConfigBO projectConfigBO;
+
+    @Autowired
+    private ISmsOutBO smsOutBO;
 
     @Override
     @Transactional
@@ -96,6 +101,14 @@ public class ProjectAOImpl implements IProjectAO {
 
         // 添加项目管理员
         userBO.saveProjectAdmin(projectCode, req.getName(), req.getLinkPhone());
+
+        // 发送短信
+        smsOutBO.sendSmsOut(req.getLinkPhone(),
+            "尊敬的" + PhoneUtil.hideMobile(req.getLinkPhone()) + "，"
+                    + req.getName() + "项目管理员账户已开设，登录名："
+                    + req.getName().concat("管理员") + "，密码：888888"
+                    + "，请登录鲸目项目端查看。",
+            "804080");
 
         // 添加施工许可证
         projectBuilderLicenseBO.saveProjectBuilderLicense(projectCode,

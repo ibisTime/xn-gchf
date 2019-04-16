@@ -37,6 +37,7 @@ import com.cdkj.gchf.dto.req.XN631690Req;
 import com.cdkj.gchf.dto.req.XN631692Req;
 import com.cdkj.gchf.dto.req.XN631693Req;
 import com.cdkj.gchf.dto.req.XN631694Req;
+import com.cdkj.gchf.dto.req.XN631695Req;
 import com.cdkj.gchf.dto.req.XN631911Req;
 import com.cdkj.gchf.dto.req.XN631912Req;
 import com.cdkj.gchf.dto.req.XN631913Req;
@@ -125,8 +126,12 @@ public class ProjectWorkerAOImpl implements IProjectWorkerAO {
     public void editProjectWorker(XN631692Req req) {
 
         User user = userBO.getBriefUser(req.getUserId());
-        if (projectWorkerBO.getProjectWorker(req.getCode()).getUploadStatus()
-            .equals(EUploadStatus.UPLOAD_UNEDITABLE.getCode())) {
+        ProjectWorker projectWorker = projectWorkerBO
+            .getProjectWorker(req.getCode());
+        if (projectWorker.getUploadStatus()
+            .equals(EUploadStatus.UPLOAD_EDITABLE.getCode())
+                || projectWorker.getUploadStatus()
+                    .equals(EUploadStatus.UPLOAD_UNEDITABLE.getCode())) {
             throw new BizException("XN631692", "班组人员已上传,无法删除");
         }
         if (StringUtils.isNotBlank(req.getWorkType())) {
@@ -316,6 +321,33 @@ public class ProjectWorkerAOImpl implements IProjectWorkerAO {
                 "projectWorkerBO", code,
                 EUploadStatus.UPLOAD_EDITABLE.getCode(), logCode);
         }
+    }
+
+    /**
+     * 
+     * <p>Title: updatePlantformProjectWorker</p>   
+     * <p>Description: 更新国家平台班组成员信息</p>   
+     */
+    @Override
+    public void updatePlantformProjectWorker(XN631695Req req) {
+        User user = userBO.getBriefUser(req.getUesrId());
+
+        ProjectWorker projectWorker = projectWorkerBO
+            .getProjectWorker(req.getCode());
+        ProjectConfig configByLocal = projectConfigBO
+            .getProjectConfigByLocal(projectWorker.getProjectCode());
+        if (configByLocal == null) {
+            throw new BizException("XN631695", "项目未配置,请先上传");
+        }
+        if (projectWorker.getUploadStatus()
+            .equals(EUploadStatus.TO_UPLOAD.getCode())) {
+            throw new BizException("XN631695", "项目人员未上传,无法修改");
+        }
+        XN631912Req xn631612Req = new XN631912Req();
+        BeanUtils.copyProperties(projectWorker, xn631612Req);
+        projectWorkerBO.doUpdate(xn631612Req, configByLocal);
+        operateLogBO.saveOperateLog(EOperateLogRefType.ProjectWorker.getCode(),
+            req.getCode(), "修改国家平台项目人员信息", user, null);
     }
 
     public void checkDicKey(XN631693ReqData projectWorkerData) {

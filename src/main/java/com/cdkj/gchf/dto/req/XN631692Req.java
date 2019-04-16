@@ -34,6 +34,9 @@ public class XN631692Req {
     // 发放工资银行名称
     private String payRollBankName;
 
+    // 银行卡支行名称
+    private String bankName;
+
     // 工资卡银行联号
     private String bankLinkNumber;
 
@@ -156,6 +159,14 @@ public class XN631692Req {
 
     public void setHasBuyInsurance(String hasBuyInsurance) {
         this.hasBuyInsurance = hasBuyInsurance;
+    }
+
+    public String getBankName() {
+        return bankName;
+    }
+
+    public void setBankName(String bankName) {
+        this.bankName = bankName;
     }
 
 }

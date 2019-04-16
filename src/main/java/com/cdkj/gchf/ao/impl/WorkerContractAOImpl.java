@@ -90,6 +90,7 @@ public class WorkerContractAOImpl implements IWorkerContractAO {
         if (projectWorker == null) {
             throw new BizException("XN631670", "员工信息不存在");
         }
+
         return workerContractBO.saveWorkerContract(req);
     }
 
@@ -107,6 +108,10 @@ public class WorkerContractAOImpl implements IWorkerContractAO {
         if (StringUtils.isNotBlank(req.getUnit())) {
             EUnitType.checkExists(req.getUnit());
         }
+        if (StringUtils.isNotBlank(req.getContractPeriodType())) {
+            EContractPeriodType.checkExists(req.getContractPeriodType());
+        }
+
         workerContractBO.refreshWorkerContract(req);
 
     }
@@ -200,7 +205,19 @@ public class WorkerContractAOImpl implements IWorkerContractAO {
 
     @Override
     public WorkerContract getWorkerContract(String code) {
-        return workerContractBO.getWorkerContract(code);
+        WorkerContract workerContract = workerContractBO
+            .getWorkerContract(code);
+        String workerCode = workerContract.getWorkerCode();
+        ProjectWorker projectWorker = projectWorkerBO
+            .getProjectWorker(workerCode);
+        projectWorker.getTeamName();
+        projectWorker.getIdcardNumber();
+        projectWorker.getWorkerName();
+        workerContract.getProjectName();
+        workerContract.setTeamName(projectWorker.getWorkerName());
+        workerContract.setIdcardNumber(projectWorker.getIdcardNumber());
+        workerContract.setProjectName(projectWorker.getProjectName());
+        return workerContract;
     }
 
     @Transactional

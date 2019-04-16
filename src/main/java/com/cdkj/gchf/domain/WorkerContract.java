@@ -81,6 +81,9 @@ public class WorkerContract extends ABaseDO {
     // 删除状态
     private String deleteStatus;
 
+    // 班组名称
+    private String teamName;
+
     /****DB Properties****/
     private String userId;
 
@@ -266,6 +269,14 @@ public class WorkerContract extends ABaseDO {
 
     public void setUserId(String userId) {
         this.userId = userId;
+    }
+
+    public String getTeamName() {
+        return teamName;
+    }
+
+    public void setTeamName(String teamName) {
+        this.teamName = teamName;
     }
 
 }

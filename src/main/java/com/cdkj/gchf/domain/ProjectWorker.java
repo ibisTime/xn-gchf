@@ -101,6 +101,9 @@ public class ProjectWorker extends ABaseDO {
     // 工资卡银行代码
     private String payRollTopBankCode;
 
+    // 发放银行卡支行名称
+    private String bankName;
+
     // 是否有劳动合同
     private Integer hasContract;
 
@@ -750,6 +753,14 @@ public class ProjectWorker extends ABaseDO {
 
     public void setArchiveDatetime(Date archiveDatetime) {
         this.archiveDatetime = archiveDatetime;
+    }
+
+    public String getBankName() {
+        return bankName;
+    }
+
+    public void setBankName(String bankName) {
+        this.bankName = bankName;
     }
 
 }

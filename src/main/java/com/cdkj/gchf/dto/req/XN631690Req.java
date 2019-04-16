@@ -45,8 +45,8 @@ public class XN631690Req {
     // 发放工资银行卡号
     private String payRollBankCardNumber;
 
-    // 发放工资银行名称
-    private String payRollBankName;
+    // 发放工资支行
+    private String bankName;
 
     // 工资卡银行联号
     private String bankLinkNumber;
@@ -152,12 +152,12 @@ public class XN631690Req {
         this.payRollBankCardNumber = payRollBankCardNumber;
     }
 
-    public String getPayRollBankName() {
-        return payRollBankName;
+    public String getBankName() {
+        return bankName;
     }
 
-    public void setPayRollBankName(String payRollBankName) {
-        this.payRollBankName = payRollBankName;
+    public void setBankName(String bankName) {
+        this.bankName = bankName;
     }
 
     public String getBankLinkNumber() {

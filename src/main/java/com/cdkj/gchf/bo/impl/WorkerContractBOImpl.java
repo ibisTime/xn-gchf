@@ -62,6 +62,7 @@ public class WorkerContractBOImpl extends PaginableBOImpl<WorkerContract>
         String code = null;
         code = OrderNoGenerater
             .generate(EGeneratePrefix.WorkerContract.getCode());
+        workerContract.setDeleteStatus(EDeleteStatus.NORMAL.getCode());
         workerContract.setCode(code);
         workerContractDAO.insert(workerContract);
         return code;
@@ -142,6 +143,10 @@ public class WorkerContractBOImpl extends PaginableBOImpl<WorkerContract>
         }
         if (StringUtils.isNotBlank(req.getContractCode())) {
             workerContract.setContractCode(req.getContractCode());
+        }
+        if (StringUtils.isNotBlank(req.getContractPeriodType())) {
+            workerContract.setContractPeriodType(
+                Integer.parseInt(req.getContractPeriodType()));
         }
         workerContract.setDeleteStatus(EDeleteStatus.NORMAL.getCode());
         workerContract.setUploadStatus(EUploadStatus.TO_UPLOAD.getCode());
@@ -236,6 +241,7 @@ public class WorkerContractBOImpl extends PaginableBOImpl<WorkerContract>
         }
         BeanUtils.copyProperties(projectWorker, workerContract);
         BeanUtils.copyProperties(req, workerContract);
+        workerContract.setTeamName(projectWorker.getTeamName());
         workerContract.setContractPeriodType(
             Integer.parseInt(req.getContractPeriodType()));
         workerContract.setCode(code);

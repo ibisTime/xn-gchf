@@ -67,12 +67,12 @@ public class PayRollDetailBOImpl extends PaginableBOImpl<PayRollDetail>
                 payRollDetail
                     .setWorkHours(new BigDecimal(detail.getWorkHours()));
             }
-            String payRollBankCode = detail.getPayBankCardNumber();
+            String payRollBankCardNumber = detail.getPayRollBankCardNumber();
             BankCardInfo bankCardInfoByNum = bankCardBankBO
                 .getBankCardInfoByNum(detail.getPayBankCardNumber());
             if (bankCardInfoByNum == null) {
                 throw new BizException("XN631770",
-                    "员工银行卡未绑定【" + payRollBankCode + "】");
+                    "员工银行卡未绑定【" + payRollBankCardNumber + "】");
             }
             String workerCode = bankCardInfoByNum.getBusinessSysNo();
             ProjectWorker workerByBankCard = projectWorkerBO

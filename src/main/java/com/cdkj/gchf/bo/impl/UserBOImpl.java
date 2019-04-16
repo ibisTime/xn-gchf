@@ -130,7 +130,8 @@ public class UserBOImpl extends PaginableBOImpl<User> implements IUserBO {
     }
 
     @Override
-    public void saveProjectAdmin(String projectCode, String projectName) {
+    public void saveProjectAdmin(String projectCode, String projectName,
+            String mobile) {
         User user = new User();
         String userId = OrderNoGenerater.generate("U");
         user.setUserId(userId);
@@ -138,6 +139,7 @@ public class UserBOImpl extends PaginableBOImpl<User> implements IUserBO {
         user.setType(EUserKind.Owner.getCode());
         user.setRealName(projectName.concat("管理员"));
         user.setLoginName(projectName.concat("管理员"));
+        user.setMobile(mobile);
 
         user.setLoginPwd(MD5Util.md5("888888"));
         user.setLoginPwdStrength(PwdUtil.calculateSecurityLevel("888888"));

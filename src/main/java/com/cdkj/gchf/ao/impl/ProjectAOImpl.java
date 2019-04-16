@@ -95,7 +95,7 @@ public class ProjectAOImpl implements IProjectAO {
             buildCorpName);
 
         // 添加项目管理员
-        userBO.saveProjectAdmin(projectCode, req.getName());
+        userBO.saveProjectAdmin(projectCode, req.getName(), req.getLinkPhone());
 
         // 添加施工许可证
         projectBuilderLicenseBO.saveProjectBuilderLicense(projectCode,

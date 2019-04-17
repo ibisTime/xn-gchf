@@ -126,8 +126,15 @@ public class ProjectWorkerAOImpl implements IProjectWorkerAO {
                 EUploadStatus.TO_UPLOAD.getCode());
             return projectWorkerByIdentity.get(0).getCode();
         }
+
         if (projectWorkerByIdentity.size() == 1) {
             throw new BizException("XN631690", "班组成员已添加");
+        }
+        List<ProjectWorker> projectWorker = projectWorkerBO.getProjectWorker(
+            req.getProjectCode(), workerInfo.getIdCardNumber());
+        if (projectWorker.size() == 1) {
+            throw new BizException("XN631690", "项目人员中已存在该成员");
+
         }
         return projectWorkerBO.saveProjectWorker(req);
     }

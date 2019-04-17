@@ -526,3 +526,12 @@ ALTER TABLE `thf_worker_contract`
 MODIFY COLUMN `project_name` varchar(512) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '项目编号';
 ALTER TABLE `thf_project_worker` 
 ADD COLUMN `bank_name` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '银行卡支行名称';
+
+ALTER TABLE `thf_project` 
+ADD COLUMN `province` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '省';
+ALTER TABLE `thf_project` 
+ADD COLUMN `city` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '市';
+ALTER TABLE `thf_project` 
+ADD COLUMN `area` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '区';
+
+

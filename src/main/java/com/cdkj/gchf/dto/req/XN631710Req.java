@@ -15,12 +15,12 @@ public class XN631710Req {
     @NotBlank
     private String projectCode;
 
-    // 平台生成的班组编号
+    // 本地人员考勤
     @NotBlank
     private String teamSysNo;
 
     // 刷卡时间
-    private Date date;
+    private String date;
 
     // 刷卡进出方向
     @NotBlank
@@ -86,11 +86,11 @@ public class XN631710Req {
         this.teamSysNo = teamSysNo;
     }
 
-    public Date getDate() {
+    public String getDate() {
         return date;
     }
 
-    public void setDate(Date date) {
+    public void setDate(String date) {
         this.date = date;
     }
 

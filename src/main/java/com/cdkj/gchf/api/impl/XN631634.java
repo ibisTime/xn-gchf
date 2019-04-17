@@ -12,7 +12,7 @@ import com.cdkj.gchf.spring.SpringContextHolder;
 /**
  * 
  * @ClassName:  XN631634   
- * @Description:上传参见单位
+ * @Description:上传参建设单位
  * @author: Old3
  * @date:   2019年3月25日 上午10:01:05     
  * @Copyright:

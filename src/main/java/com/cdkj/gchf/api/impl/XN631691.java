@@ -26,7 +26,7 @@ public class XN631691 extends AProcessor {
 
     @Override
     public Object doBusiness() throws BizException {
-        projectWorkerAO.dropProjectWorker(req.getCode());
+        projectWorkerAO.dropProjectWorker(req.getCodeList());
         return new BooleanRes(true);
     }
 

@@ -14,7 +14,7 @@ public interface IPayRollDetailAO {
 
     public String addPayRollDetail(PayRollDetail data);
 
-    public int dropPayRollDetail(String code);
+    public void dropPayRollDetail(List<String> codeList);
 
     public int editPayRollDetail(XN631810Req req);
 

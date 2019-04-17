@@ -116,8 +116,7 @@
 		UPDATE thf_project_worker_entry_exit_history
 		SET
 		date = #{date}
-		,type =
-		#{type}
+		,type = #{type}
 		,voucher_url = #{voucherUrl}
 		WHERE code = #{code}
 	</update>
@@ -134,8 +133,7 @@
 		parameterType="projectWorkerEntryExitHistory">
 		UPDATE thf_project_worker_entry_exit_history t
 		SET
-		delete_status =
-		#{deleteStatus}
+		delete_status = #{deleteStatus}
 
 		<trim prefix="WHERE" prefixOverrides="AND|OR">
 
@@ -150,6 +148,9 @@
 			<if test="uploadStatus != null and uploadStatus != '' ">
 				AND t.upload_status = #{uploadStatus}
 			</if>
+			<if test="teamSysNo != null and teamSysNo != '' ">
+                AND t.team_sys_no = #{teamSysNo}
+            </if>
 
 		</trim>
 	</update>

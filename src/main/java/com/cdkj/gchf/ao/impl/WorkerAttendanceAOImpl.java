@@ -92,17 +92,19 @@ public class WorkerAttendanceAOImpl implements IWorkerAttendanceAO {
     }
 
     @Override
-    public int dropWorkerAttendance(String code) {
-        WorkerAttendance workerAttendance = workerAttendanceBO
-            .getWorkerAttendance(code);
-        if (workerAttendance.getUploadStatus()
-            .equals(EUploadStatus.UPLOAD_EDITABLE.getCode())
-                || workerAttendance.getUploadStatus()
-                    .equals(EUploadStatus.UPLOAD_UNEDITABLE.getCode())) {
-            throw new BizException("XN631711", "人员考勤已上传，不可删除");
+    public void dropWorkerAttendance(List<String> codeList) {
+        for (String code : codeList) {
+            WorkerAttendance workerAttendance = workerAttendanceBO
+                .getWorkerAttendance(code);
+            if (workerAttendance.getUploadStatus()
+                .equals(EUploadStatus.UPLOAD_EDITABLE.getCode())
+                    || workerAttendance.getUploadStatus()
+                        .equals(EUploadStatus.UPLOAD_UNEDITABLE.getCode())) {
+                throw new BizException("XN631711", "人员考勤已上传，不可删除");
+            }
+            workerAttendanceBO.updateWorkerAttendanceDeleteStatus(code,
+                EDeleteStatus.DELETED.getCode());
         }
-        return workerAttendanceBO.updateWorkerAttendanceDeleteStatus(code,
-            EDeleteStatus.DELETED.getCode());
     }
 
     @Override
@@ -263,7 +265,7 @@ public class WorkerAttendanceAOImpl implements IWorkerAttendanceAO {
             BeanUtils.copyProperties(workerByIdCardNumber, workerAttendance);
             TeamMaster condition = new TeamMaster();
             condition.setCorpCode(dateReq.getCorpCode());
-            condition.setTeamName(dateReq.getTeamName());
+            condition.setRealTeamName(dateReq.getTeamName());
             TeamMaster masterByCondition = teamMasterBO
                 .getTeamMasterByCondition(condition);
             workerAttendance.setTeamSysNo(masterByCondition.getCode());

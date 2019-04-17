@@ -116,6 +116,16 @@ public class ProjectWorkerAOImpl implements IProjectWorkerAO {
         List<ProjectWorker> projectWorkerByIdentity = projectWorkerBO
             .getProjectWorkerByIdentity(req.getTeamSysNo(),
                 workerInfo.getIdCardNumber());
+        if (projectWorkerByIdentity.size() == 1 && projectWorkerByIdentity
+            .get(0).getDeleteStatus().equals(EDeleteStatus.DELETED.getCode())) {
+            projectWorkerBO.updateProjectWorkerDeleteStatus(
+                projectWorkerByIdentity.get(0).getCode(),
+                EDeleteStatus.NORMAL.getCode());
+            projectWorkerBO.updateProjectWorkerStatus(
+                projectWorkerByIdentity.get(0).getCode(),
+                EUploadStatus.TO_UPLOAD.getCode());
+            return projectWorkerByIdentity.get(0).getCode();
+        }
         if (projectWorkerByIdentity.size() == 1) {
             throw new BizException("XN631690", "班组成员已添加");
         }
@@ -144,34 +154,41 @@ public class ProjectWorkerAOImpl implements IProjectWorkerAO {
     }
 
     @Override
-    public void dropProjectWorker(String code) {
-        ProjectWorker projectWorker = projectWorkerBO.getProjectWorker(code);
-        if (projectWorker.getUploadStatus()
-            .equals(EUploadStatus.UPLOAD_UNEDITABLE.getCode())
-                || projectWorker.getUploadStatus()
-                    .equals(EUploadStatus.UPLOAD_EDITABLE.getCode())) {
-            throw new BizException("XN631691", "班组人员已上传,无法删除");
+    public void dropProjectWorker(List<String> codeList) {
+        for (String code : codeList) {
+            ProjectWorker projectWorker = projectWorkerBO
+                .getProjectWorker(code);
+            if (projectWorker.getUploadStatus()
+                .equals(EUploadStatus.UPLOAD_UNEDITABLE.getCode())
+                    || projectWorker.getUploadStatus()
+                        .equals(EUploadStatus.UPLOAD_EDITABLE.getCode())) {
+                throw new BizException("XN631691", "班组人员已上传,无法删除");
+            }
+            projectWorkerBO.updateProjectWorkerDeleteStatus(code,
+                EDeleteStatus.DELETED.getCode());
+
+            workerContractBO.fakeDeleteWorkerContract(code);
+
+            workerAttendanceBO.fakeDeleteWorkAttendanceByWorkerCode(code);
+
+            projectWorkerEntryExitHistoryBO
+                .fakeDeleteProjectWorkerEntryHistory(code);
+
+            PayRollDetail condition = new PayRollDetail();
+            condition.setIdcardType(projectWorker.getIdcardType());
+            condition.setIdcardNumber(projectWorker.getIdcardNumber());
+            List<PayRollDetail> queryList = payRollDetailBO
+                .queryList(condition);
+            for (PayRollDetail payRollDetail : queryList) {
+                String payRollCode = payRollDetail.getPayRollCode();
+                payRollBO.updatePayRollDeleteStatus(payRollCode);
+            }
+            payRollDetailBO.fakeDeletePayRollDetail(
+                projectWorker.getIdcardType(), projectWorker.getIdcardNumber(),
+                projectWorker.getProjectCode());
+
         }
-        projectWorkerBO.updateProjectWorkerDeleteStatus(code,
-            EDeleteStatus.DELETED.getCode());
 
-        workerContractBO.fakeDeleteWorkerContract(code);
-
-        workerAttendanceBO.fakeDeleteWorkAttendanceByWorkerCode(code);
-
-        projectWorkerEntryExitHistoryBO
-            .fakeDeleteProjectWorkerEntryHistory(code);
-
-        PayRollDetail condition = new PayRollDetail();
-        condition.setIdcardType(projectWorker.getIdcardType());
-        condition.setIdcardNumber(projectWorker.getIdcardNumber());
-        List<PayRollDetail> queryList = payRollDetailBO.queryList(condition);
-        for (PayRollDetail payRollDetail : queryList) {
-            String payRollCode = payRollDetail.getPayRollCode();
-            payRollBO.updatePayRollDeleteStatus(payRollCode);
-        }
-        payRollDetailBO.fakeDeletePayRollDetail(projectWorker.getIdcardType(),
-            projectWorker.getIdcardNumber(), projectWorker.getProjectCode());
     }
 
     @Override

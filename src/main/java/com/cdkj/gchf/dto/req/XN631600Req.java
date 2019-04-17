@@ -78,6 +78,15 @@ public class XN631600Req {
     // 纬度
     private String lat;
 
+    // 省
+    private String province;
+
+    // 市
+    private String city;
+
+    // 区/县
+    private String area;
+
     // 项目地址
     private String address;
 
@@ -414,6 +423,30 @@ public class XN631600Req {
 
     public void setChargeEmail(String chargeEmail) {
         this.chargeEmail = chargeEmail;
+    }
+
+    public String getProvince() {
+        return province;
+    }
+
+    public void setProvince(String province) {
+        this.province = province;
+    }
+
+    public String getCity() {
+        return city;
+    }
+
+    public void setCity(String city) {
+        this.city = city;
+    }
+
+    public String getArea() {
+        return area;
+    }
+
+    public void setArea(String area) {
+        this.area = area;
     }
 
 }

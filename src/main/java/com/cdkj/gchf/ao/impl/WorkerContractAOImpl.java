@@ -10,6 +10,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.cdkj.gchf.ao.IWorkerContractAO;
 import com.cdkj.gchf.bo.IOperateLogBO;
+import com.cdkj.gchf.bo.IProjectBO;
 import com.cdkj.gchf.bo.IProjectConfigBO;
 import com.cdkj.gchf.bo.IProjectCorpInfoBO;
 import com.cdkj.gchf.bo.IProjectWorkerBO;
@@ -18,12 +19,11 @@ import com.cdkj.gchf.bo.IWorkerContractBO;
 import com.cdkj.gchf.bo.IWorkerInfoBO;
 import com.cdkj.gchf.bo.base.Paginable;
 import com.cdkj.gchf.common.AesUtils;
+import com.cdkj.gchf.domain.Project;
 import com.cdkj.gchf.domain.ProjectConfig;
-import com.cdkj.gchf.domain.ProjectCorpInfo;
 import com.cdkj.gchf.domain.ProjectWorker;
 import com.cdkj.gchf.domain.User;
 import com.cdkj.gchf.domain.WorkerContract;
-import com.cdkj.gchf.domain.WorkerInfo;
 import com.cdkj.gchf.dto.req.XN631670Req;
 import com.cdkj.gchf.dto.req.XN631672Req;
 import com.cdkj.gchf.dto.req.XN631673Req;
@@ -61,6 +61,9 @@ public class WorkerContractAOImpl implements IWorkerContractAO {
     private IWorkerInfoBO workerInfoBO;
 
     @Autowired
+    private IProjectBO projectBO;
+
+    @Autowired
     private IUserBO userBO;
 
     @Autowired
@@ -75,15 +78,9 @@ public class WorkerContractAOImpl implements IWorkerContractAO {
         if (StringUtils.isNotBlank(req.getUnit())) {
             EUnitType.checkExists(req.getUnit());
         }
-        ProjectConfig projectConfigByLocal = projectConfigBO
-            .getProjectConfigByLocal(req.getProjectCode());
-        if (projectConfigByLocal == null) {
-            throw new BizException("XN631670", "项目未部署");
-        }
-        ProjectCorpInfo projectCorpInfo = projectCorpInfoBO
-            .getProjectCorpInfo(req.getProjectCode(), req.getCorpCode());
-        if (projectCorpInfo == null) {
-            throw new BizException("XN631670", "企业信用代码无效");
+        Project project = projectBO.getProject(req.getProjectCode());
+        if (project == null) {
+            throw new BizException("XN631670", "请选择项目");
         }
         ProjectWorker projectWorker = projectWorkerBO
             .getProjectWorker(req.getWorkerCode());
@@ -117,20 +114,20 @@ public class WorkerContractAOImpl implements IWorkerContractAO {
     }
 
     @Override
-    public void dropWorkerContract(String userId, String code) {
-
-        WorkerContract workerContract = workerContractBO
-            .getWorkerContract(code);
-        if (workerContract == null) {
-            throw new BizException("XN631671", "项目合同不存在");
+    public void dropWorkerContract(String userId, List<String> codeList) {
+        for (String code : codeList) {
+            WorkerContract workerContract = workerContractBO
+                .getWorkerContract(code);
+            if (workerContract == null) {
+                throw new BizException("XN631671", "项目合同不存在");
+            }
+            if (workerContract.getUploadStatus()
+                .equals(EUploadStatus.UPLOAD_UNEDITABLE.getCode())) {
+                throw new BizException("XN631671", "项目已经上传 无法删除");
+            }
+            workerContractBO.updateWorkerContractDeleteStatus(code,
+                EDeleteStatus.DELETED.getCode());
         }
-        if (workerContract.getUploadStatus()
-            .equals(EUploadStatus.UPLOAD_UNEDITABLE.getCode())) {
-            throw new BizException("XN631671", "项目已经上传 无法删除");
-        }
-        workerContractBO.updateWorkerContractDeleteStatus(code,
-            EDeleteStatus.DELETED.getCode());
-
     }
 
     @Override
@@ -274,14 +271,16 @@ public class WorkerContractAOImpl implements IWorkerContractAO {
                 .checkExists(xn631673ReqData.getContractPeriodType());
 
             // 取得个人信息
-            WorkerInfo workerInfoByIdCardNumber = workerInfoBO
-                .getWorkerInfoByIdCardNumber(xn631673ReqData.getIdCardNumber());
-            if (workerInfoByIdCardNumber == null) {
-                throw new BizException("XN631670",
-                    "员工信息【" + xn631673ReqData.getIdCardNumber() + "】不存在");
+            List<ProjectWorker> projectWorker = projectWorkerBO
+                .getProjectWorker(req.getProjectCode(),
+                    xn631673ReqData.getIdCardNumber());
+            if (CollectionUtils.isEmpty(projectWorker)) {
+                throw new BizException("XN631673",
+                    "项目人员不存在【" + xn631673ReqData.getIdCardNumber() + "】");
+
             }
             String code = workerContractBO.saveWorkerContract(xn631673ReqData,
-                workerInfoByIdCardNumber);
+                projectWorker.get(0));
 
             operateLogBO.saveOperateLog(
                 EOperateLogRefType.WorkContract.getCode(), code, "导入员工合同", user,

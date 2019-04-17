@@ -18,7 +18,7 @@ public interface IWorkerContractAO {
 
     public String addWorkerContract(XN631670Req req);
 
-    public void dropWorkerContract(String userId, String code);
+    public void dropWorkerContract(String userId, List<String> codeList);
 
     public void editWorkerContract(XN631672Req data);
 

@@ -291,9 +291,9 @@ public class ProjectWorkerEntryExitHistoryBOImpl
 
     @Override
     public void fakeDeleteProjectWorkerEntryHistoryByProject(
-            String ProjectCode) {
+            String projectCode) {
         ProjectWorkerEntryExitHistory projectWorkerEntryExitHistory = new ProjectWorkerEntryExitHistory();
-        projectWorkerEntryExitHistory.setProjectCode(ProjectCode);
+        projectWorkerEntryExitHistory.setProjectCode(projectCode);
         projectWorkerEntryExitHistory
             .setUploadStatus(EUploadStatus.TO_UPLOAD.getCode());
         projectWorkerEntryExitHistory

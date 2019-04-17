@@ -111,38 +111,42 @@ public class TeamMasterAOImpl implements ITeamMasterAO {
     @Transactional
     @Override
     public void dropTeamMaster(XN631651Req req) {
-        TeamMaster teamMaster = teamMasterBO.getTeamMaster(req.getCode());
-        if (teamMaster.getUploadStatus()
-            .equals(EUploadStatus.UPLOAD_EDITABLE.getCode())
-                || teamMaster.getUploadStatus()
-                    .equals(EUploadStatus.UPLOAD_UNEDITABLE.getCode())) {
-            throw new BizException("XN631651", "班组信息已上传,无法删除");
+        List<String> codeList = req.getCodeList();
+        for (String code : codeList) {
+            TeamMaster teamMaster = teamMasterBO.getTeamMaster(code);
+            if (teamMaster.getUploadStatus()
+                .equals(EUploadStatus.UPLOAD_EDITABLE.getCode())) {
+                throw new BizException("XN631651", "班组信息已上传,无法删除");
+            }
+            teamMasterBO.updateTeamMasterDeleteStatus(code,
+                EDeleteStatus.DELETED.getCode());
+
+            projectWorkerBO.fakeDeleteProjectWorkerByTeamNo(
+                teamMaster.getProjectCode(), teamMaster.getCode());
+
+            projectWorkerEntryExitHistoryBO
+                .fakeDeleteProjectWorkerEntryHistoryByTeamMaster(
+                    teamMaster.getCode());
+
+            workerAttendanceBO
+                .fakeDeleteWorkAttendanceByTeamMaster(teamMaster.getCode());
+
+            ProjectWorker condition = new ProjectWorker();
+            condition.setTeamSysNo(code);
+            List<ProjectWorker> queryProjectWorkerList = projectWorkerBO
+                .queryProjectWorkerList(condition);
+            for (ProjectWorker projectWorker : queryProjectWorkerList) {
+                workerContractBO
+                    .fakeDeleteWorkerContract(projectWorker.getCode());
+                payRollDetailBO.fakeDeletePayRollDetail(
+                    projectWorker.getIdcardType(),
+                    projectWorker.getIdcardNumber(),
+                    teamMaster.getProjectCode());
+            }
+            payRollBO.updatePayRollDeleteStatus(teamMaster.getProjectCode(),
+                code, teamMaster.getCorpCode());
         }
-        teamMasterBO.updateTeamMasterDeleteStatus(req.getCode(),
-            EDeleteStatus.DELETED.getCode());
 
-        projectWorkerBO.fakeDeleteProjectWorkerByTeamNo(
-            teamMaster.getProjectCode(), teamMaster.getCode());
-
-        projectWorkerEntryExitHistoryBO
-            .fakeDeleteProjectWorkerEntryHistoryByTeamMaster(
-                teamMaster.getCode());
-
-        workerAttendanceBO
-            .fakeDeleteWorkAttendanceByTeamMaster(teamMaster.getCode());
-
-        ProjectWorker condition = new ProjectWorker();
-        condition.setTeamSysNo(req.getCode());
-        List<ProjectWorker> queryProjectWorkerList = projectWorkerBO
-            .queryProjectWorkerList(condition);
-        for (ProjectWorker projectWorker : queryProjectWorkerList) {
-            workerContractBO.fakeDeleteWorkerContract(projectWorker.getCode());
-            payRollDetailBO.fakeDeletePayRollDetail(
-                projectWorker.getIdcardType(), projectWorker.getIdcardNumber(),
-                teamMaster.getProjectCode());
-        }
-        payRollBO.updatePayRollDeleteStatus(teamMaster.getProjectCode(),
-            req.getCode(), teamMaster.getCorpCode());
     }
 
     @Override

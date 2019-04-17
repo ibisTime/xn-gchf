@@ -67,8 +67,11 @@ public class XN631812ReqData {
     // 是否为补发
     private String isBackPay;
 
-    // 发放日期
+    // 补发日期
     private String backPayMonth;
+
+    // 发放日期
+    private String balanceDate;
 
     // 第三方工资单编号
     @NotBlank
@@ -224,6 +227,14 @@ public class XN631812ReqData {
 
     public void setThirdPayRollCode(String thirdPayRollCode) {
         this.thirdPayRollCode = thirdPayRollCode;
+    }
+
+    public String getBalanceDate() {
+        return balanceDate;
+    }
+
+    public void setBalanceDate(String balanceDate) {
+        this.balanceDate = balanceDate;
     }
 
 }

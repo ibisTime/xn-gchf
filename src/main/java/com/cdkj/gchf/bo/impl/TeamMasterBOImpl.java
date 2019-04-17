@@ -313,6 +313,8 @@ public class TeamMasterBOImpl extends PaginableBOImpl<TeamMaster>
         teamMaster.setCode(code);
         teamMaster.setUploadStatus(EUploadStatus.TO_UPLOAD.getCode());
         teamMasterDAO.updateDeleteStatus(teamMaster);
+        teamMaster.setUploadStatus(EUploadStatus.UPLOAD_FAIL.getCode());
+        teamMasterDAO.updateDeleteStatus(teamMaster);
     }
 
     @Override

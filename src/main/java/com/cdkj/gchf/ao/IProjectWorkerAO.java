@@ -21,7 +21,7 @@ public interface IProjectWorkerAO {
 
     public String addProjectWorker(XN631690Req req);
 
-    public void dropProjectWorker(String code);
+    public void dropProjectWorker(List<String> codeList);
 
     public void editProjectWorker(XN631692Req req);
 

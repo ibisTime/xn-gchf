@@ -1,6 +1,5 @@
 package com.cdkj.gchf.api.impl;
 
-import com.cdkj.gchf.ao.IChannelBankAO;
 import com.cdkj.gchf.ao.IProjectCorpInfoAO;
 import com.cdkj.gchf.api.AProcessor;
 import com.cdkj.gchf.common.JsonUtil;
@@ -27,7 +26,7 @@ public class XN631631 extends AProcessor {
 
     @Override
     public Object doBusiness() throws BizException {
-        projectCorpInfoAO.dropProjectCorpInfo(req.getCode());
+        projectCorpInfoAO.dropProjectCorpInfo(req.getCodeList());
         return new BooleanRes(true);
     }
 

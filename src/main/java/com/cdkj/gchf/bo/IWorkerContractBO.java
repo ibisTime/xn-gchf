@@ -5,8 +5,8 @@ import java.util.List;
 import com.cdkj.gchf.bo.base.IPaginableBO;
 import com.cdkj.gchf.bo.base.Paginable;
 import com.cdkj.gchf.domain.ProjectConfig;
+import com.cdkj.gchf.domain.ProjectWorker;
 import com.cdkj.gchf.domain.WorkerContract;
-import com.cdkj.gchf.domain.WorkerInfo;
 import com.cdkj.gchf.dto.req.XN631670Req;
 import com.cdkj.gchf.dto.req.XN631672Req;
 import com.cdkj.gchf.dto.req.XN631673ReqData;
@@ -21,7 +21,7 @@ public interface IWorkerContractBO extends IPaginableBO<WorkerContract> {
     public String saveWorkerContract(XN631670Req req);
 
     public String saveWorkerContract(XN631673ReqData data,
-            WorkerInfo workerInfo);
+            ProjectWorker projectWorker);
 
     public void removeWorkerContract(String userId, String code);
 

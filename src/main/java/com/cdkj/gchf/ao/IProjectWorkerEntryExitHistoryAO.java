@@ -18,7 +18,7 @@ public interface IProjectWorkerEntryExitHistoryAO {
 
     public String addProjectWorkerEntryExitHistory(XN631730Req data);
 
-    public void dropProjectWorkerEntryExitHistory(String code);
+    public void dropProjectWorkerEntryExitHistory(List<String> codeList);
 
     public void editProjectWorkerEntryExitHistory(XN631732Req data);
 

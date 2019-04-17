@@ -219,6 +219,11 @@ public class ProjectWorker extends ABaseDO {
     // 建档时间
     private Date archiveDatetime;
 
+    /**
+     * DB properties
+     */
+    private String realTeamMasterName;
+
     public String getCode() {
         return code;
     }
@@ -761,6 +766,14 @@ public class ProjectWorker extends ABaseDO {
 
     public void setBankName(String bankName) {
         this.bankName = bankName;
+    }
+
+    public String getRealTeamMasterName() {
+        return realTeamMasterName;
+    }
+
+    public void setRealTeamMasterName(String realTeamMasterName) {
+        this.realTeamMasterName = realTeamMasterName;
     }
 
 }

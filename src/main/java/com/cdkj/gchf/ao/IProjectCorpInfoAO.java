@@ -20,7 +20,7 @@ public interface IProjectCorpInfoAO {
 
     public String addProjectCorpInfo(XN631630Req data);
 
-    public void dropProjectCorpInfo(String code);
+    public void dropProjectCorpInfo(List<String> codeList);
 
     public void editProjectCorpInfo(XN631632Req req);
 

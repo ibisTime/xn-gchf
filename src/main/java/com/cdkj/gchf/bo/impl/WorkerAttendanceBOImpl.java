@@ -13,6 +13,7 @@ import org.springframework.stereotype.Component;
 
 import com.alibaba.fastjson.JSONObject;
 import com.cdkj.gchf.bo.IOperateLogBO;
+import com.cdkj.gchf.bo.IProjectBO;
 import com.cdkj.gchf.bo.IProjectConfigBO;
 import com.cdkj.gchf.bo.IProjectWorkerBO;
 import com.cdkj.gchf.bo.ITeamMasterBO;
@@ -74,18 +75,24 @@ public class WorkerAttendanceBOImpl extends PaginableBOImpl<WorkerAttendance>
     @Autowired
     private IProjectWorkerBO projectWorkerBO;
 
+    @Autowired
+    private IProjectBO projectBO;
+
     @Override
     public String saveWorkerAttendance(XN631710Req data,
             TeamMaster teamMaster) {
         String code = null;
         WorkerAttendance workerAttendance = new WorkerAttendance();
         BeanUtils.copyProperties(data, workerAttendance);
-        ProjectConfig projectConfigByLocal = projectConfigBO
-            .getProjectConfigByLocal(data.getProjectCode());
-        workerAttendance.setProjectName(projectConfigByLocal.getProjectName());
+
+        Project project = projectBO.getProject(data.getProjectCode());
+        workerAttendance.setProjectName(project.getName());
         ProjectWorker projectWorker = projectWorkerBO
             .getProjectWorker(data.getWorkerCode());
-
+        if (StringUtils.isNotBlank(data.getDate())) {
+            workerAttendance.setDate(DateUtil.strToDate(data.getDate(),
+                DateUtil.FRONT_DATE_FORMAT_STRING));
+        }
         workerAttendance.setWorkerCode(projectWorker.getCode());
         workerAttendance.setWorkerName(projectWorker.getWorkerName());
         workerAttendance.setIdCardNumber(projectWorker.getIdcardNumber());
@@ -159,7 +166,7 @@ public class WorkerAttendanceBOImpl extends PaginableBOImpl<WorkerAttendance>
     public int updateWorkerAttendanceDeleteStatus(String code, String status) {
         WorkerAttendance workerAttendance = new WorkerAttendance();
         workerAttendance.setCode(code);
-        workerAttendance.setDeleteStatus(EDeleteStatus.DELETED.getCode());
+        workerAttendance.setDeleteStatus(status);
         return workerAttendanceDAO
             .updateWorkerAttendanceDeleteStatus(workerAttendance);
     }
@@ -347,6 +354,7 @@ public class WorkerAttendanceBOImpl extends PaginableBOImpl<WorkerAttendance>
         WorkerAttendance workerAttendance = new WorkerAttendance();
         workerAttendance.setTeamSysNo(teamMasterNo);
         workerAttendance.setUploadStatus(EUploadStatus.TO_UPLOAD.getCode());
+        workerAttendance.setDeleteStatus(EDeleteStatus.DELETED.getCode());
         return workerAttendanceDAO
             .updateWorkerAttendanceDeleteStatus(workerAttendance);
     }
@@ -356,6 +364,7 @@ public class WorkerAttendanceBOImpl extends PaginableBOImpl<WorkerAttendance>
         WorkerAttendance workerAttendance = new WorkerAttendance();
         workerAttendance.setWorkerCode(workerCode);
         workerAttendance.setUploadStatus(EUploadStatus.TO_UPLOAD.getCode());
+        workerAttendance.setDeleteStatus(EDeleteStatus.DELETED.getCode());
         return workerAttendanceDAO
             .updateWorkerAttendanceDeleteStatus(workerAttendance);
     }

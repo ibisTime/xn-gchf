@@ -259,7 +259,7 @@ public class PayRollBOImpl extends PaginableBOImpl<PayRoll>
         PayRoll payRoll = new PayRoll();
         payRoll.setCorpCode(corpCode);
         payRoll.setProjectCode(projectCode);
-        payRoll.setCorpCode(corpCode);
+        payRoll.setTeamSysNo(teamMasterNo);
         payRoll.setDeleteStatus(EDeleteStatus.DELETED.getCode());
         return payRollDAO.updatePayRollDeleteStatus(payRoll);
     }
@@ -267,7 +267,7 @@ public class PayRollBOImpl extends PaginableBOImpl<PayRoll>
     @Override
     public int updatePayRollDeleteStatus(String payRollCode) {
         PayRoll payRoll = new PayRoll();
-        payRoll.setPayRollCode(payRollCode);
+        payRoll.setCode(payRollCode);
         payRoll.setDeleteStatus(EDeleteStatus.NORMAL.getCode());
         return payRollDAO.updatePayRollDeleteStatus(payRoll);
     }

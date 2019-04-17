@@ -25,7 +25,7 @@ public class XN631711 extends AProcessor {
 
     @Override
     public Object doBusiness() throws BizException {
-        workerAttendanceAO.dropWorkerAttendance(req.getCode());
+        workerAttendanceAO.dropWorkerAttendance(req.getCodeList());
         return new Boolean(true);
     }
 

@@ -376,6 +376,14 @@ public class ProjectWorkerBOImpl extends PaginableBOImpl<ProjectWorker>
     }
 
     @Override
+    public int updateProjectWorkerStatus(String code, String status) {
+        ProjectWorker projectWorker = new ProjectWorker();
+        projectWorker.setCode(code);
+        projectWorker.setUploadStatus(status);
+        return projectWorkerDAO.updateProjectWorkerUploadStatus(projectWorker);
+    }
+
+    @Override
     public List<ProjectWorker> getProjectWorker(String projectCode,
             String idCardNumber) {
         ProjectWorker condition = new ProjectWorker();

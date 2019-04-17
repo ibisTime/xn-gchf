@@ -55,17 +55,20 @@ public class PayRollDetailAOImpl implements IPayRollDetailAO {
     }
 
     @Override
-    public int dropPayRollDetail(String code) {
-        String uploadStatus = payRollDetailBO.getPayRollDetail(code)
-            .getUploadStatus();
+    public void dropPayRollDetail(List<String> codeList) {
+        for (String code : codeList) {
+            String uploadStatus = payRollDetailBO.getPayRollDetail(code)
+                .getUploadStatus();
 
-        if (uploadStatus.equals(EUploadStatus.UPLOAD_EDITABLE.getCode())
-                || uploadStatus
-                    .equals(EUploadStatus.UPLOAD_UNEDITABLE.getCode())) {
-            throw new BizException("XN631811", "工资单已上传,不可删除");
+            if (uploadStatus
+                .equals(EUploadStatus.UPLOAD_UNEDITABLE.getCode())) {
+                throw new BizException("XN631811", "工资单已上传,不可删除");
+            }
+            payRollDetailBO.updatePayRollDetailDeleteStatus(code,
+                EDeleteStatus.DELETED.getCode());
+
         }
-        return payRollDetailBO.updatePayRollDetailDeleteStatus(code,
-            EDeleteStatus.DELETED.getCode());
+
     }
 
     @Override
@@ -121,9 +124,8 @@ public class PayRollDetailAOImpl implements IPayRollDetailAO {
         PayRollDetail payRollDetail = payRollDetailBO
             .getPayRollDetail(req.getCode());
 
-        if (payRollDetail.getUploadStatus() != null
-                & payRollDetail.getUploadStatus()
-                    .equals(EUploadStatus.UPLOAD_UNEDITABLE.getCode())) {
+        if (payRollDetail.getUploadStatus()
+            .equals(EUploadStatus.UPLOAD_UNEDITABLE.getCode())) {
             throw new BizException("XN631810", "工资单已上传,不可修改");
         }
         return payRollDetailBO.updatePayRollDetail(req);

@@ -31,7 +31,6 @@ import com.cdkj.gchf.domain.PayRoll;
 import com.cdkj.gchf.domain.PayRollDetail;
 import com.cdkj.gchf.domain.Project;
 import com.cdkj.gchf.domain.ProjectConfig;
-import com.cdkj.gchf.domain.ProjectCorpInfo;
 import com.cdkj.gchf.domain.ProjectWorker;
 import com.cdkj.gchf.domain.TeamMaster;
 import com.cdkj.gchf.domain.User;
@@ -245,11 +244,10 @@ public class PayRollAOImpl implements IPayRollAO {
         jsonObject.addProperty("projectCode",
             projectConfigByLocal.getProjectCode());
         // corpCode corpName
-        ProjectCorpInfo projectCorpInfo = projectCorpInfoBO.getProjectCorpInfo(
-            projectconfig.getLocalProjectCode(), payRoll.getCorpCode());
-        projectCorpInfo.getCorpCode();
-        jsonObject.addProperty("corpCode", projectCorpInfo.getCorpCode());
-        jsonObject.addProperty("corpName", projectCorpInfo.getCorpName());
+        CorpBasicinfo corpBasicinfoByCorp = corpBasicinfoBO
+            .getCorpBasicinfoByCorp(payRoll.getCorpCode());
+        jsonObject.addProperty("corpCode", corpBasicinfoByCorp.getCorpCode());
+        jsonObject.addProperty("corpName", corpBasicinfoByCorp.getCorpName());
         // teamMasterNo
         TeamMaster teamMaster = teamMasterBO
             .getTeamMaster(payRoll.getTeamSysNo());
@@ -312,12 +310,10 @@ public class PayRollAOImpl implements IPayRollAO {
     @Override
     public void importPayRollCodeList(XN631812Req req) {
         User user = userBO.getBriefUser(req.getUpdater());
-        // ProjectConfig configByProject = projectConfigBO
-        // .getProjectConfigByLocal(req.getProjectCode());
         Project project = projectBO.getProject(req.getProjectCode());
 
         if (project == null) {
-            throw new BizException("XN631773", "项目未部署");
+            throw new BizException("XN631773", "项目不存在");
         }
         // excel字段中有工资单信息和明细信息 两张表操作
         List<XN631812ReqData> dateList = req.getDateList();

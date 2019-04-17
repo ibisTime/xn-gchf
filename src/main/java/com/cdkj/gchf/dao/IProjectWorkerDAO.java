@@ -14,4 +14,6 @@ public interface IProjectWorkerDAO extends IBaseDAO<ProjectWorker> {
 
     int updateProjectWorkerDeleteStatus(ProjectWorker projectWorker);
 
+    int updateProjectWorkerUploadStatus(ProjectWorker projectWorker);
+
 }

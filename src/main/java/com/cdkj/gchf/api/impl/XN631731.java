@@ -27,7 +27,7 @@ public class XN631731 extends AProcessor {
     @Override
     public Object doBusiness() throws BizException {
         projectWorkerEntryExitHistoryAO
-            .dropProjectWorkerEntryExitHistory(req.getCode());
+            .dropProjectWorkerEntryExitHistory(req.getCodeList());
         return new BooleanRes(true);
     }
 

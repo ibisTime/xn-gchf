@@ -19,7 +19,7 @@ public interface IWorkerAttendanceAO {
 
     public String addWorkerAttendance(XN631710Req data);
 
-    public int dropWorkerAttendance(String code);
+    public void dropWorkerAttendance(List<String> codeList);
 
     public void editWorkerAttendance(XN631712Req data);
 

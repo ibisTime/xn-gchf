@@ -103,18 +103,22 @@
 		,t.lng
 
 		,t.lat
+		,t.province
+		,t.city
+		,t.area
+
 		,t.address
 		,t.approval_num
 		,t.approval_level_num
 		,t.prj_size
-
 		,t.property_num
+
 		,t.prj_num
 		,t.nation_num
 		,t.attendance_starttime
 		,t.attendance_endtime
-
 		,t.pay_roll_create_datetime
+
 		,t.pay_roll_datetime
 		,t.pay_roll_delay_days
 		,t.charge_email
@@ -162,22 +166,26 @@
 		,link_phone
 		,prj_status
 		,lng
-
 		,lat
+
+		,province
+		,city
+		,area
 		,address
 		,approval_num
+
 		,approval_level_num
 		,prj_size
-
 		,property_num
 		,prj_num
 		,nation_num
+
 		,attendance_starttime
 		,attendance_endtime
-
 		,pay_roll_create_datetime
 		,pay_roll_datetime
 		,pay_roll_delay_days
+
 		,charge_email
 		,third_party_project_code
 		,secret_status
@@ -206,13 +214,16 @@
 		,#{linkPhone}
 		,#{prjStatus}
 		,#{lng}
-
 		,#{lat}
+
+		,#{province}
+		,#{city}
+		,#{area}
 		,#{address}
 		,#{approvalNum}
 		,#{approvalLevelNum}
-		,#{prjSize}
 
+		,#{prjSize}
 		,#{propertyNum}
 		,#{prjNum}
 		,#{nationNum}
@@ -232,56 +243,49 @@
 		UPDATE thf_project
 		SET
 		contractor_corp_code = #{contractorCorpCode}
-		,contractor_corp_name =
-		#{contractorCorpName}
+		,contractor_corp_name = #{contractorCorpName}
 		,name = #{name}
 		,description = #{description}
 		,category = #{category}
 
 		,build_corp_name = #{buildCorpName}
 		,build_corp_code = #{buildCorpCode}
-		,build_plan_num
-		= #{buildPlanNum}
+		,build_plan_num = #{buildPlanNum}
 		,prj_plan_num = #{prjPlanNum}
 		,area_code = #{areaCode}
 
 		,invest = #{invest}
 		,building_area = #{buildingArea}
-		,building_length =
-		#{buildingLength}
+		,building_length = #{buildingLength}
 		,start_date = #{startDate}
-		,complete_date =
-		#{completeDate}
+		,complete_date = #{completeDate}
 
 		,link_man = #{linkMan}
 		,link_phone = #{linkPhone}
 		,prj_status = #{prjStatus}
-		,lng
-		= #{lng}
+		,lng = #{lng}
 		,lat = #{lat}
+		,province = #{province}
+		,city = #{city}
+		,area = #{area}
 
 		,address = #{address}
 		,approval_num = #{approvalNum}
-		,approval_level_num =
-		#{approvalLevelNum}
+		,approval_level_num = 	#{approvalLevelNum}
 		,prj_size = #{prjSize}
-		,property_num =
-		#{propertyNum}
+		,property_num = #{propertyNum}
 
 		,prj_num = #{prjNum}
 		,nation_num = #{nationNum}
-		,attendance_starttime =
-		#{attendanceStarttime}
+		,attendance_starttime = #{attendanceStarttime}
 		,attendance_endtime = #{attendanceEndtime}
 
 		,pay_roll_create_datetime = #{payRollCreateDatetime}
 		,pay_roll_datetime = #{payRollDatetime}
-		,pay_roll_delay_days =
-		#{payRollDelayDays}
+		,pay_roll_delay_days = #{payRollDelayDays}
 		,charge_email = #{chargeEmail}
 		,third_party_project_code = #{thirdPartyProjectCode}
-		,secret_status =
-		#{secretStatus}
+		,secret_status = #{secretStatus}
 		WHERE code = #{code}
 	</update>
 

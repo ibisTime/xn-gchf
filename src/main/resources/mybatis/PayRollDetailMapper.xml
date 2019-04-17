@@ -5,6 +5,7 @@
 	<resultMap id="payRollDetail_DB_Result" type="payRollDetail">
 		<result column="code" property="code" />
 		<result column="pay_roll_code" property="payRollCode" />
+		<result column="project_code" property="projectCode" />
 		<result column="worker_name" property="workerName" />
 		<result column="idcard_type" property="idcardType" />
 		<result column="idcard_number" property="idcardNumber" />
@@ -140,7 +141,18 @@
 		thf_pay_roll_detail t
 		SET
 		delete_status = #{deleteStatus}
-		<include refid="where_condition" />
+		  <trim prefix="WHERE" prefixOverrides="AND | OR">
+            <if test="code != null and code != '' ">
+                AND t.code = #{code}
+            </if>
+            <if test="uploadStatus != null and uploadStatus != '' ">
+                AND t.upload_status = #{uploadStatus}
+            </if>
+            <if test="projectCode != null and projectCode != '' ">
+                AND t.project_code = #{projectCode}
+            </if>
+        </trim>
+
 	</update>
 
 	<update id="update_PayRollDetail_payRollCode" parameterType="payRoll">

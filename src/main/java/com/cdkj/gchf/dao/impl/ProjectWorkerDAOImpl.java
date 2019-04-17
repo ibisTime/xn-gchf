@@ -72,4 +72,11 @@ public class ProjectWorkerDAOImpl extends AMybatisTemplate
             projectWorker);
     }
 
+    @Override
+    public int updateProjectWorkerUploadStatus(ProjectWorker projectWorker) {
+        return super.update(
+            NAMESPACE.concat("update_projectWorker_upload_status"),
+            projectWorker);
+    }
+
 }

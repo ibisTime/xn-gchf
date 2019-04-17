@@ -105,16 +105,19 @@ public class ProjectWorkerEntryExitHistoryAOImpl
     }
 
     @Override
-    public void dropProjectWorkerEntryExitHistory(String code) {
-        ProjectWorkerEntryExitHistory projectWorkerEntryExitHistory = projectWorkerEntryExitHistoryBO
-            .getProjectWorkerEntryExitHistory(code);
-        if (projectWorkerEntryExitHistory.getUploadStatus()
-            .equals(EUploadStatus.UPLOAD_UNEDITABLE.getCode())) {
-            throw new BizException("XN631731", "人员进退场已上传，不可删除");
+    public void dropProjectWorkerEntryExitHistory(List<String> codeList) {
+        for (String code : codeList) {
+            ProjectWorkerEntryExitHistory projectWorkerEntryExitHistory = projectWorkerEntryExitHistoryBO
+                .getProjectWorkerEntryExitHistory(code);
+            if (projectWorkerEntryExitHistory.getUploadStatus()
+                .equals(EUploadStatus.UPLOAD_UNEDITABLE.getCode())) {
+                throw new BizException("XN631731", "人员进退场已上传，不可删除");
+            }
+            projectWorkerEntryExitHistoryBO
+                .updateProjectWorkerEntryExitHistoryDeleteStatus(code,
+                    EDeleteStatus.DELETED.getCode());
         }
-        projectWorkerEntryExitHistoryBO
-            .updateProjectWorkerEntryExitHistoryDeleteStatus(code,
-                EDeleteStatus.DELETED.getCode());
+
     }
 
     @Override
@@ -197,9 +200,10 @@ public class ProjectWorkerEntryExitHistoryAOImpl
                 .getList()) {
                 TeamMaster teamMaster = teamMasterBO.getTeamMaster(
                     projectWorkerEntryExitHistory.getTeamSysNo());
-                projectWorkerEntryExitHistory
-                    .setTeamName(teamMaster.getTeamName());
-
+                if (teamMaster != null) {
+                    projectWorkerEntryExitHistory
+                        .setTeamName(teamMaster.getTeamName());
+                }
                 Project project = projectBO
                     .getProject(teamMaster.getProjectCode());
                 projectWorkerEntryExitHistory.setProjectName(project.getName());

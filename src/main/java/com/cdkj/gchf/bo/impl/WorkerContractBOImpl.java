@@ -26,7 +26,6 @@ import com.cdkj.gchf.dao.IWorkerContractDAO;
 import com.cdkj.gchf.domain.ProjectConfig;
 import com.cdkj.gchf.domain.ProjectWorker;
 import com.cdkj.gchf.domain.WorkerContract;
-import com.cdkj.gchf.domain.WorkerInfo;
 import com.cdkj.gchf.dto.req.SerializeFilterHolder;
 import com.cdkj.gchf.dto.req.XN631670Req;
 import com.cdkj.gchf.dto.req.XN631672Req;
@@ -70,16 +69,17 @@ public class WorkerContractBOImpl extends PaginableBOImpl<WorkerContract>
 
     @Override
     public String saveWorkerContract(XN631673ReqData data,
-            WorkerInfo workerInfo) {
+            ProjectWorker projectWorker) {
         String code = null;
         WorkerContract workerContract = new WorkerContract();
-        code = OrderNoGenerater
-            .generate(EGeneratePrefix.WorkerContract.getCode());
+
         workerContract.setCode(code);
         BeanUtils.copyProperties(data, workerContract);
-        BeanUtils.copyProperties(workerInfo, workerContract);
+        BeanUtils.copyProperties(projectWorker, workerContract);
+        workerContract.setWorkerCode(projectWorker.getCode());
         workerContract.setIdcardType("01");
         workerContract.setWorkerName(data.getWorkerName());
+        workerContract.setWorkerCode(projectWorker.getCode());
         if (StringUtils.isNotBlank(data.getUnit())) {
             workerContract.setUnit(Integer.parseInt(data.getUnit()));
         }
@@ -98,6 +98,10 @@ public class WorkerContractBOImpl extends PaginableBOImpl<WorkerContract>
         if (StringUtils.isNotBlank(data.getUnitPrice())) {
             workerContract.setUnitPrice(new BigDecimal(data.getUnitPrice()));
         }
+        code = OrderNoGenerater
+            .generate(EGeneratePrefix.WorkerContract.getCode());
+        workerContract.setCode(code);
+
         // 录入数据
         workerContract.setUploadStatus(EUploadStatus.TO_UPLOAD.getCode());
         workerContract.setDeleteStatus(EDeleteStatus.NORMAL.getCode());
@@ -226,8 +230,6 @@ public class WorkerContractBOImpl extends PaginableBOImpl<WorkerContract>
         ProjectWorker projectWorker = projectWorkerBO
             .getProjectWorker(req.getWorkerCode());
         String code = null;
-        code = OrderNoGenerater
-            .generate(EGeneratePrefix.WorkerContract.getCode());
         WorkerContract workerContract = new WorkerContract();
         if (StringUtils.isNotBlank(req.getUnit())) {
             workerContract.setUnit(Integer.parseInt(req.getUnit()));
@@ -249,6 +251,9 @@ public class WorkerContractBOImpl extends PaginableBOImpl<WorkerContract>
             DateUtil.FRONT_DATE_FORMAT_STRING);
         Date endDate = DateUtil.strToDate(req.getEndDate(),
             DateUtil.FRONT_DATE_FORMAT_STRING);
+        code = OrderNoGenerater
+            .generate(EGeneratePrefix.WorkerContract.getCode());
+        workerContract.setCode(code);
         workerContract.setStartDate(startDate);
         workerContract.setEndDate(endDate);
         workerContract.setUploadStatus(EUploadStatus.TO_UPLOAD.getCode());
@@ -270,6 +275,7 @@ public class WorkerContractBOImpl extends PaginableBOImpl<WorkerContract>
         WorkerContract workerContract = new WorkerContract();
         workerContract.setWorkerCode(workerCode);
         workerContract.setUploadStatus(EUploadStatus.TO_UPLOAD.getCode());
+        workerContract.setDeleteStatus(EDeleteStatus.DELETED.getCode());
         workerContractDAO.updateWorkerContractDeleteStatus(workerContract);
     }
 

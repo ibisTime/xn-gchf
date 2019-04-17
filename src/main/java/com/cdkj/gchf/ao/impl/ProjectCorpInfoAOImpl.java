@@ -110,51 +110,53 @@ public class ProjectCorpInfoAOImpl implements IProjectCorpInfoAO {
 
     @Transactional
     @Override
-    public void dropProjectCorpInfo(String code) {
+    public void dropProjectCorpInfo(List<String> codeList) {
+        for (String code : codeList) {
 
-        ProjectCorpInfo projectCorpInfo = projectCorpInfoBO
-            .getProjectCorpInfo(code);
-        if (EUploadStatus.UPLOAD_EDITABLE.getCode()
-            .equals(projectCorpInfo.getUploadStatus())
-                || EUploadStatus.UPLOAD_UNEDITABLE.getCode()
-                    .equals(projectCorpInfo.getUploadStatus())) {
-            throw new BizException("XN631631", "参建单位已上传，无法删除");
-        }
-        String corpCode = projectCorpInfo.getCorpCode();
-        String projectCode = projectCorpInfo.getProjectCode();
-
-        projectCorpInfoBO.updateProjectCorpInfoDeleteStatus(code,
-            EDeleteStatus.DELETED.getCode());
-
-        projectWorkerBO.fakeDeleteProjectWorker(projectCode);
-
-        projectWorkerEntryExitHistoryBO
-            .fakeDeleteProjectWorkerEntryHistoryByProject(projectCode);
-
-        workerAttendanceBO.fakeDeleteWorkAttendanceByProject(projectCode);
-
-        TeamMaster condition = new TeamMaster();
-        condition.setCorpCode(corpCode);
-        condition.setProjectCode(projectCode);
-        for (TeamMaster teamMaster : teamMasterBO
-            .queryTeamMasterList(condition)) {
-
-            PayRoll payRollCondition = new PayRoll();
-            payRollCondition.setCorpCode(corpCode);
-            payRollCondition.setTeamSysNo(teamMaster.getCode());
-            payRollCondition.setProjectCode(projectCode);
-
-            List<PayRoll> queryPayRollList = payRollBO
-                .queryPayRollList(payRollCondition);
-            for (PayRoll payRoll : queryPayRollList) {
-                payRollDetailBO
-                    .FakeDeletePayRollDetailByPayRollCode(payRoll.getCode());
+            ProjectCorpInfo projectCorpInfo = projectCorpInfoBO
+                .getProjectCorpInfo(code);
+            if (EUploadStatus.UPLOAD_EDITABLE.getCode()
+                .equals(projectCorpInfo.getUploadStatus())) {
+                throw new BizException("XN631631", "参建单位已上传，无法删除");
             }
-            payRollBO.updatePayRollDeleteStatus(projectCode,
-                teamMaster.getCode(), corpCode);
+            String corpCode = projectCorpInfo.getCorpCode();
+            String projectCode = projectCorpInfo.getProjectCode();
+
+            projectCorpInfoBO.updateProjectCorpInfoDeleteStatus(code,
+                EDeleteStatus.DELETED.getCode());
+
+            projectWorkerBO.fakeDeleteProjectWorker(projectCode);
+
+            projectWorkerEntryExitHistoryBO
+                .fakeDeleteProjectWorkerEntryHistoryByProject(projectCode);
+
+            workerAttendanceBO.fakeDeleteWorkAttendanceByProject(projectCode);
+
+            TeamMaster condition = new TeamMaster();
+            condition.setCorpCode(corpCode);
+            condition.setProjectCode(projectCode);
+            for (TeamMaster teamMaster : teamMasterBO
+                .queryTeamMasterList(condition)) {
+
+                PayRoll payRollCondition = new PayRoll();
+                payRollCondition.setCorpCode(corpCode);
+                payRollCondition.setTeamSysNo(teamMaster.getCode());
+                payRollCondition.setProjectCode(projectCode);
+
+                List<PayRoll> queryPayRollList = payRollBO
+                    .queryPayRollList(payRollCondition);
+                for (PayRoll payRoll : queryPayRollList) {
+                    payRollDetailBO.FakeDeletePayRollDetailByPayRollCode(
+                        payRoll.getCode());
+                }
+                payRollBO.updatePayRollDeleteStatus(projectCode,
+                    teamMaster.getCode(), corpCode);
+            }
+            teamMasterBO.fakeDeleteTeamMaster(projectCode, corpCode);
+            workerContractBO.fakeDeleteWorkerContractByProjectCode(projectCode);
+
         }
-        teamMasterBO.fakeDeleteTeamMaster(projectCode, corpCode);
-        workerContractBO.fakeDeleteWorkerContractByProjectCode(projectCode);
+
     }
 
     @Override

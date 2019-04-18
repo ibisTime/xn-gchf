@@ -92,26 +92,22 @@ public class PayRollDetailBOImpl extends PaginableBOImpl<PayRollDetail>
             payRollDetail.setIdcardNumber(workerByBankCard.getIdcardNumber());
             payRollDetail.setIdcardType("01");
 
-            Date strToDate = DateUtil.strToDate(detail.getBalanceDate(),
-                "yyyy/mm/dd");
-            //
-            String format = new SimpleDateFormat("yyyy-MM-dd")
-                .format(strToDate);
-            Date toDate = DateUtil.strToDate(format, "yyyy-MM-dd");
+            Date toDate;
+            try {
+                toDate = DateUtil.strToDate(detail.getBalanceDate(),
+                    "yyyy-MM-dd");
 
-            // payRollDetail.setBalanceDate(DateUtil.strToDate(
-            // detail.getBalanceDate(), DateUtil.FRONT_DATE_FORMAT_STRING));
+            } catch (Exception e) {
+                Date strToDate = DateUtil.strToDate(detail.getBalanceDate(),
+                    "yyyy/mm/dd");
+                String format = new SimpleDateFormat("yyyy-MM-dd")
+                    .format(strToDate);
+                toDate = DateUtil.strToDate(format, "yyyy-MM-dd");
+            }
             payRollDetail.setBalanceDate(toDate);
 
             payRollDetail
                 .setActualAmount(new BigDecimal(detail.getActualAmount()));
-            // if (StringUtils.isNotBlank(detail.getBalanceDate())) {
-            //
-            // Date balanceDate = DateUtil.strToDate(detail.getBalanceDate(),
-            // DateUtil.FRONT_DATE_FORMAT_STRING);
-            // payRollDetail.setBalanceDate(balanceDate);
-            //
-            // }
             if (StringUtils.isNotBlank(detail.getIsBackPay())) {
                 payRollDetail
                     .setIsBackPay(Integer.parseInt(detail.getIsBackPay()));

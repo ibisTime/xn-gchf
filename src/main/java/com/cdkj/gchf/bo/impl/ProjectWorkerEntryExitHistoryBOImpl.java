@@ -97,13 +97,23 @@ public class ProjectWorkerEntryExitHistoryBOImpl
         entryExitHistory.setIdcardType("01");
         entryExitHistory.setIdcardNumber(data.getIdcardNumber());
 
+        // try {
+        // Date strToDate = DateUtil.strToDate(data.getDate(), "yyyy/mm/dd");
+        // //
+        // String format = new SimpleDateFormat("yyyy-MM-dd")
+        // .format(strToDate);
+        // Date toDate = DateUtil.strToDate(format, "yyyy-MM-dd");
         // Date date = DateUtil.strToDate(data.getDate(),
         // DateUtil.FRONT_DATE_FORMAT_STRING);
-        Date strToDate = DateUtil.strToDate(data.getDate(), "yyyy/mm/dd");
-        //
-        String format = new SimpleDateFormat("yyyy-MM-dd").format(strToDate);
-        Date toDate = DateUtil.strToDate(format, "yyyy-MM-dd");
-        entryExitHistory.setDate(toDate);
+        // if (date != null) {
+        // entryExitHistory.setDate(date);
+        // } else if (toDate != null) {
+        // entryExitHistory.setDate(toDate);
+        // }
+        // } catch (Exception e) {
+        // }
+        entryExitHistory.setDate(DateUtil.strToDate(data.getDate(),
+            DateUtil.FRONT_DATE_FORMAT_STRING));
         entryExitHistory.setType(Integer.parseInt(data.getType()));
         entryExitHistory.setUploadStatus(EUploadStatus.TO_UPLOAD.getCode());
         entryExitHistory.setDeleteStatus(EDeleteStatus.NORMAL.getCode());

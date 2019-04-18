@@ -1,6 +1,5 @@
 package com.cdkj.gchf.ao.impl;
 
-import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
@@ -78,7 +77,6 @@ public class WorkerAttendanceAOImpl implements IWorkerAttendanceAO {
         if (projectWorker == null) {
             throw new BizException("XN631710", "项目人员不存在");
         }
-
         return workerAttendanceBO.saveWorkerAttendance(data, teamMaster);
     }
 
@@ -264,6 +262,8 @@ public class WorkerAttendanceAOImpl implements IWorkerAttendanceAO {
             WorkerAttendance workerAttendance = new WorkerAttendance();
             BeanUtils.copyProperties(dateReq, workerAttendance);
             BeanUtils.copyProperties(workerByIdCardNumber, workerAttendance);
+            workerAttendance.setWorkerCode(workerByIdCardNumber.getCode());
+
             TeamMaster condition = new TeamMaster();
             condition.setCorpCode(dateReq.getCorpCode());
             condition.setRealTeamName(dateReq.getTeamName());
@@ -271,15 +271,15 @@ public class WorkerAttendanceAOImpl implements IWorkerAttendanceAO {
                 .getTeamMasterByCondition(condition);
             workerAttendance.setTeamSysNo(masterByCondition.getCode());
             if (StringUtils.isNotBlank(dateReq.getDate())) {
-                // Date date = DateUtil.strToDate(dateReq.getDate(),
-                // DateUtil.FRONT_DATE_FORMAT_STRING);
-                Date strToDate = DateUtil.strToDate(dateReq.getDate(),
-                    "yyyy/mm/dd");
-                //
-                String format = new SimpleDateFormat("yyyy-MM-dd")
-                    .format(strToDate);
-                Date toDate = DateUtil.strToDate(format, "yyyy-MM-dd");
-                workerAttendance.setDate(toDate);
+                Date date = DateUtil.strToDate(dateReq.getDate(),
+                    DateUtil.FRONT_DATE_FORMAT_STRING);
+                // Date strToDate = DateUtil.strToDate(dateReq.getDate(),
+                // "yyyy/mm/dd");
+                // //
+                // String format = new SimpleDateFormat("yyyy-MM-dd")
+                // .format(strToDate);
+                // Date toDate = DateUtil.strToDate(format, "yyyy-MM-dd");
+                workerAttendance.setDate(date);
             }
             workerAttendance.setIdCardType("01");
             workerAttendance.setWorkerName(dateReq.getWorkerName());

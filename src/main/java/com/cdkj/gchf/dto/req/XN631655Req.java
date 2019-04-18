@@ -3,15 +3,16 @@ package com.cdkj.gchf.dto.req;
 import java.util.List;
 
 import org.hibernate.validator.constraints.NotBlank;
+import org.hibernate.validator.constraints.NotEmpty;
 
 public class XN631655Req {
     // 用户id
     @NotBlank
     private String userId;
 
-    @NotBlank
+    @NotEmpty
     // 班组编号
-    private String code;
+    private List<String> codeList;
 
     // 进场附件列表
     private List<XN631655ReqEntryAttachments> entryAttachments;
@@ -19,12 +20,12 @@ public class XN631655Req {
     // 退场附件列表
     private List<XN631655ReqExitAttachments> exitAttachments;
 
-    public String getCode() {
-        return code;
+    public List<String> getCodeList() {
+        return codeList;
     }
 
-    public void setCode(String code) {
-        this.code = code;
+    public void setCodeList(List<String> codeList) {
+        this.codeList = codeList;
     }
 
     public List<XN631655ReqEntryAttachments> getEntryAttachments() {

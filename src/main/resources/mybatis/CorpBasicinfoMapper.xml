@@ -51,6 +51,7 @@
 			<if test="uploadStatus != null and uploadStatus != '' ">
 				AND t.upload_status = #{uploadStatus}
 			</if>
+			
 		</trim>
 	</sql>
 	

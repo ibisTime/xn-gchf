@@ -83,28 +83,27 @@ public class WorkerContractBOImpl extends PaginableBOImpl<WorkerContract>
         if (StringUtils.isNotBlank(data.getUnit())) {
             workerContract.setUnit(Integer.parseInt(data.getUnit()));
         }
-        if (StringUtils.isNotBlank(data.getStartDate())) {
-            // workerContract.setStartDate(DateUtil.strToDate(data.getStartDate(),
-            // DateUtil.FRONT_DATE_FORMAT_STRING));
-            Date strToDate = DateUtil.strToDate(data.getStartDate(),
-                "yyyy/mm/dd");
-            //
-            String format = new SimpleDateFormat("yyyy-MM-dd")
-                .format(strToDate);
-            Date toDate = DateUtil.strToDate(format, "yyyy-MM-dd");
-            workerContract.setStartDate(toDate);
 
+        if (StringUtils.isNotBlank(data.getStartDate())) {
+            workerContract.setStartDate(DateUtil.strToDate(data.getStartDate(),
+                DateUtil.FRONT_DATE_FORMAT_STRING));
+                // Date strToDate = DateUtil.strToDate(data.getStartDate(),
+                // "yyyy/mm/dd");
+
+            // String format = new SimpleDateFormat("yyyy-MM-dd")
+            // .format(strToDate);
+            // Date toDate = DateUtil.strToDate(format, "yyyy-MM-dd");
+            // workerContract.setStartDate());
         }
         if (StringUtils.isNotBlank(data.getEndDate())) {
-            // workerContract.setEndDate(DateUtil.strToDate(data.getEndDate(),
-            // DateUtil.FRONT_DATE_FORMAT_STRING));
-            Date strToDate = DateUtil.strToDate(data.getStartDate(),
-                "yyyy/mm/dd");
-            //
-            String format = new SimpleDateFormat("yyyy-MM-dd")
-                .format(strToDate);
-            Date toDate = DateUtil.strToDate(format, "yyyy-MM-dd");
-            workerContract.setEndDate(toDate);
+            workerContract.setEndDate(DateUtil.strToDate(data.getEndDate(),
+                DateUtil.FRONT_DATE_FORMAT_STRING));
+            // Date strToDate = DateUtil.strToDate(data.getStartDate(),
+            // "yyyy/mm/dd");
+            // String format = new SimpleDateFormat("yyyy-MM-dd")
+            // .format(strToDate);
+            // Date toDate = DateUtil.strToDate(format, "yyyy-MM-dd");
+            // workerContract.setEndDate(toDate);
         }
         if (StringUtils.isNotBlank(data.getContractPeriodType())) {
             workerContract.setContractPeriodType(

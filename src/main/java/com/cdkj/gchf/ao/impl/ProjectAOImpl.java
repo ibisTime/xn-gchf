@@ -100,7 +100,8 @@ public class ProjectAOImpl implements IProjectAO {
             buildCorpName);
 
         // 添加项目管理员
-        userBO.saveProjectAdmin(projectCode, req.getName(), req.getLinkPhone());
+        userBO.saveProjectAdmin(projectCode, req.getName(), req.getLinkMan(),
+            req.getLinkPhone());
 
         // 发送短信
         smsOutBO.sendSmsOut(req.getLinkPhone(),

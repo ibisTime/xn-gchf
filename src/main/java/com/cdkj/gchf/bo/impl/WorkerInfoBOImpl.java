@@ -242,7 +242,7 @@ public class WorkerInfoBOImpl extends PaginableBOImpl<WorkerInfo>
                 DateUtil.FRONT_DATE_FORMAT_STRING));
             workerInfo.setGender(
                 Integer.parseInt(data.getIdCardNumber().substring(16, 17))
-                        % 2 == 0 ? 0 : 1);
+                        % 2 == 0 ? 1 : 0);
             workerInfo.setName(data.getWorkerName());
             workerInfo
                 .setBirthPlaceCode(data.getIdCardNumber().substring(0, 6));
@@ -250,6 +250,24 @@ public class WorkerInfoBOImpl extends PaginableBOImpl<WorkerInfo>
             code = OrderNoGenerater
                 .generate(EGeneratePrefix.WorkerInfo.getCode());
             workerInfo.setCode(code);
+            if (StringUtils.isNotBlank(data.getStartDate())) {
+                Date strToDate = DateUtil.strToDate(data.getStartDate(),
+                    "yyyy/mm/dd");
+                //
+                String format = new SimpleDateFormat("yyyy-MM-dd")
+                    .format(strToDate);
+                Date toDate = DateUtil.strToDate(format, "yyyy-MM-dd");
+                workerInfo.setStartDate(toDate);
+            }
+            if (StringUtils.isNotBlank(data.getExpiryDate())) {
+                Date strToDate = DateUtil.strToDate(data.getExpiryDate(),
+                    "yyyy/mm/dd");
+                //
+                String format = new SimpleDateFormat("yyyy-MM-dd")
+                    .format(strToDate);
+                Date toDate = DateUtil.strToDate(format, "yyyy-MM-dd");
+                workerInfo.setExpiryDate(toDate);
+            }
             workerInfoDAO.insert(workerInfo);
 
         } catch (ParseException e) {

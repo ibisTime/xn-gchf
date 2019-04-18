@@ -113,23 +113,41 @@ public class ProjectWorkerAOImpl implements IProjectWorkerAO {
         if (corpBasicinfo == null) {
             throw new BizException("xn631690", "企业信息不存在");
         }
-        List<ProjectWorker> projectWorkerByIdentity = projectWorkerBO
-            .getProjectWorkerByIdentity(req.getTeamSysNo(),
-                workerInfo.getIdCardNumber());
-        if (projectWorkerByIdentity.size() == 1 && projectWorkerByIdentity
-            .get(0).getDeleteStatus().equals(EDeleteStatus.DELETED.getCode())) {
-            projectWorkerBO.updateProjectWorkerDeleteStatus(
-                projectWorkerByIdentity.get(0).getCode(),
-                EDeleteStatus.NORMAL.getCode());
-            projectWorkerBO.updateProjectWorkerStatus(
-                projectWorkerByIdentity.get(0).getCode(),
-                EUploadStatus.TO_UPLOAD.getCode());
-            return projectWorkerByIdentity.get(0).getCode();
+        ProjectWorker preProjectWorker = projectWorkerBO.getProjectWorker(
+            req.getProjectCode(), req.getCorpCode(), teamMaster.getCode(),
+            workerInfo.getIdCardNumber());
+        if (preProjectWorker != null) {
+            if (preProjectWorker.getDeleteStatus()
+                .equals(EDeleteStatus.DELETED.getCode())) {
+                // 已存在 并且之前假删除了
+                projectWorkerBO.updateProjectWorkerDeleteStatus(
+                    preProjectWorker.getCode(), EDeleteStatus.NORMAL.getCode());
+                projectWorkerBO.updateProjectWorkerStatus(
+                    preProjectWorker.getCode(),
+                    EUploadStatus.TO_UPLOAD.getCode());
+                return preProjectWorker.getCode();
+            } else {
+                throw new BizException("XN631690",
+                    "项目中已存在【" + workerInfo.getName() + "】的人员");
+            }
         }
+        // List<ProjectWorker> projectWorkerByIdentity = projectWorkerBO
+        // .getProjectWorkerByIdentity(req.getTeamSysNo(),
+        // workerInfo.getIdCardNumber());
+        // if (projectWorkerByIdentity.size() == 1 && projectWorkerByIdentity
+        // .get(0).getDeleteStatus().equals(EDeleteStatus.DELETED.getCode())) {
+        // projectWorkerBO.updateProjectWorkerDeleteStatus(
+        // projectWorkerByIdentity.get(0).getCode(),
+        // EDeleteStatus.NORMAL.getCode());
+        // projectWorkerBO.updateProjectWorkerStatus(
+        // projectWorkerByIdentity.get(0).getCode(),
+        // EUploadStatus.TO_UPLOAD.getCode());
+        // return projectWorkerByIdentity.get(0).getCode();
+        // }
 
-        if (projectWorkerByIdentity.size() == 1) {
-            throw new BizException("XN631690", "班组成员已添加");
-        }
+        // if (projectWorkerByIdentity.size() == 1) {
+        // throw new BizException("XN631690", "班组成员已添加");
+        // }
         List<ProjectWorker> projectWorker = projectWorkerBO.getProjectWorker(
             req.getProjectCode(), workerInfo.getIdCardNumber());
         if (projectWorker.size() == 1) {
@@ -292,6 +310,7 @@ public class ProjectWorkerAOImpl implements IProjectWorkerAO {
                     projectWorker.setHasBuyInsurance(Integer
                         .parseInt(projectWorkerData.getHasBuyInsurance()));
                 }
+
                 projectWorker.setWorkerCode(infoByIdCardNumber.getCode());
                 projectWorkerBO.saveProjectWorker(projectWorker);
             } else {
@@ -306,6 +325,7 @@ public class ProjectWorkerAOImpl implements IProjectWorkerAO {
                     projectWorker.setHasBuyInsurance(Integer
                         .parseInt(projectWorkerData.getHasBuyInsurance()));
                 }
+
                 projectWorkerBO.saveProjectWorker(projectWorker);
 
             }
@@ -355,23 +375,27 @@ public class ProjectWorkerAOImpl implements IProjectWorkerAO {
     @Override
     public void updatePlantformProjectWorker(XN631695Req req) {
         User user = userBO.getBriefUser(req.getUesrId());
+        List<String> codeList = req.getCodeList();
+        for (String code : codeList) {
+            ProjectWorker projectWorker = projectWorkerBO
+                .getProjectWorker(code);
+            ProjectConfig configByLocal = projectConfigBO
+                .getProjectConfigByLocal(projectWorker.getProjectCode());
+            if (configByLocal == null) {
+                throw new BizException("XN631695", "项目未配置,请先上传");
+            }
+            if (projectWorker.getUploadStatus()
+                .equals(EUploadStatus.TO_UPLOAD.getCode())) {
+                throw new BizException("XN631695", "项目人员未上传,无法修改");
+            }
+            XN631912Req xn631612Req = new XN631912Req();
+            BeanUtils.copyProperties(projectWorker, xn631612Req);
+            projectWorkerBO.doUpdate(xn631612Req, configByLocal);
+            operateLogBO.saveOperateLog(
+                EOperateLogRefType.ProjectWorker.getCode(), code,
+                "修改国家平台项目人员信息", user, null);
+        }
 
-        ProjectWorker projectWorker = projectWorkerBO
-            .getProjectWorker(req.getCode());
-        ProjectConfig configByLocal = projectConfigBO
-            .getProjectConfigByLocal(projectWorker.getProjectCode());
-        if (configByLocal == null) {
-            throw new BizException("XN631695", "项目未配置,请先上传");
-        }
-        if (projectWorker.getUploadStatus()
-            .equals(EUploadStatus.TO_UPLOAD.getCode())) {
-            throw new BizException("XN631695", "项目人员未上传,无法修改");
-        }
-        XN631912Req xn631612Req = new XN631912Req();
-        BeanUtils.copyProperties(projectWorker, xn631612Req);
-        projectWorkerBO.doUpdate(xn631612Req, configByLocal);
-        operateLogBO.saveOperateLog(EOperateLogRefType.ProjectWorker.getCode(),
-            req.getCode(), "修改国家平台项目人员信息", user, null);
     }
 
     public void checkDicKey(XN631693ReqData projectWorkerData) {

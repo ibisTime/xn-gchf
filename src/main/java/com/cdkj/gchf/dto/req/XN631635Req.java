@@ -3,24 +3,25 @@ package com.cdkj.gchf.dto.req;
 import java.util.List;
 
 import org.hibernate.validator.constraints.NotBlank;
+import org.hibernate.validator.constraints.NotEmpty;
 
 public class XN631635Req {
     @NotBlank
     private String userId;
 
-    @NotBlank
+    @NotEmpty
     // 参建单位编码
-    private String code;
+    private List<String> codeList;
 
     // 发放工资的银行
     private List<XN631635ReqBankInfos> bankInfos;
 
-    public String getCode() {
-        return code;
+    public List<String> getCodeList() {
+        return codeList;
     }
 
-    public void setCode(String code) {
-        this.code = code;
+    public void setCodeList(List<String> codeList) {
+        this.codeList = codeList;
     }
 
     public String getUserId() {

@@ -229,53 +229,60 @@ public class TeamMasterAOImpl implements ITeamMasterAO {
     @Override
     public void updatePlantformTeamMaster(XN631655Req req) {
         User user = userBO.getBriefUser(req.getUserId());
-        TeamMaster teamMaster = teamMasterBO.getTeamMaster(req.getCode());
-        ProjectConfig configByLocal = projectConfigBO
-            .getProjectConfigByLocal(teamMaster.getProjectCode());
-        if (null == configByLocal) {
-            throw new BizException("XN631655", "项目未配置");
-        }
-        if (teamMaster.getUploadStatus()
-            .equals(EUploadStatus.TO_UPLOAD.getCode())) {
-            throw new BizException("XN631655", "班组信息未上传,无法修改国家平台班组信息");
-        }
-        XN631909Req xn631909Req = new XN631909Req();
-        xn631909Req.setTeamName(teamMaster.getTeamName());
-        xn631909Req.setTeamSysNo(Integer.parseInt(teamMaster.getTeamSysNo()));
-        if (teamMaster.getEntryTime() != null) {
-            xn631909Req.setEntryTime(teamMaster.getEntryTime());
-        }
-        if (teamMaster.getExitTime() != null) {
-            xn631909Req.setExitTime(teamMaster.getExitTime());
-        }
-        if (StringUtils
-            .isNotBlank(teamMaster.getResponsiblePersonIdcardType())) {
-            xn631909Req.setResponsiblePersonIdcardType(
-                teamMaster.getResponsiblePersonIdcardType());
-        }
-        if (StringUtils.isNotBlank(teamMaster.getResponsiblePersonIdNumber())) {
-            xn631909Req.setResponsiblePersonIdNumber(
-                teamMaster.getResponsiblePersonIdNumber());
-        }
-        if (StringUtils.isNotBlank(teamMaster.getResponsiblePersonName())) {
-            xn631909Req.setResponsiblePersonName(
-                teamMaster.getResponsiblePersonName());
-        }
-        if (StringUtils.isNotBlank(teamMaster.getResponsiblePersonPhone())) {
-            xn631909Req.setResponsiblePersonPhone(
-                teamMaster.getResponsiblePersonPhone());
-        }
-        if (StringUtils.isNotBlank(teamMaster.getRemark())) {
-            xn631909Req.setRemark(teamMaster.getRemark());
+        List<String> codeList = req.getCodeList();
+        for (String code : codeList) {
+            TeamMaster teamMaster = teamMasterBO.getTeamMaster(code);
+            ProjectConfig configByLocal = projectConfigBO
+                .getProjectConfigByLocal(teamMaster.getProjectCode());
+            if (null == configByLocal) {
+                throw new BizException("XN631655", "项目未配置");
+            }
+            if (teamMaster.getUploadStatus()
+                .equals(EUploadStatus.TO_UPLOAD.getCode())) {
+                throw new BizException("XN631655", "班组信息未上传,无法修改国家平台班组信息");
+            }
+            XN631909Req xn631909Req = new XN631909Req();
+            xn631909Req.setTeamName(teamMaster.getTeamName());
+            xn631909Req
+                .setTeamSysNo(Integer.parseInt(teamMaster.getTeamSysNo()));
+            if (teamMaster.getEntryTime() != null) {
+                xn631909Req.setEntryTime(teamMaster.getEntryTime());
+            }
+            if (teamMaster.getExitTime() != null) {
+                xn631909Req.setExitTime(teamMaster.getExitTime());
+            }
+            if (StringUtils
+                .isNotBlank(teamMaster.getResponsiblePersonIdcardType())) {
+                xn631909Req.setResponsiblePersonIdcardType(
+                    teamMaster.getResponsiblePersonIdcardType());
+            }
+            if (StringUtils
+                .isNotBlank(teamMaster.getResponsiblePersonIdNumber())) {
+                xn631909Req.setResponsiblePersonIdNumber(
+                    teamMaster.getResponsiblePersonIdNumber());
+            }
+            if (StringUtils.isNotBlank(teamMaster.getResponsiblePersonName())) {
+                xn631909Req.setResponsiblePersonName(
+                    teamMaster.getResponsiblePersonName());
+            }
+            if (StringUtils
+                .isNotBlank(teamMaster.getResponsiblePersonPhone())) {
+                xn631909Req.setResponsiblePersonPhone(
+                    teamMaster.getResponsiblePersonPhone());
+            }
+            if (StringUtils.isNotBlank(teamMaster.getRemark())) {
+                xn631909Req.setRemark(teamMaster.getRemark());
+            }
+
+            teamMasterBO.doUpdate(xn631909Req, configByLocal);
+            // 更新本地班组状态
+            teamMasterBO.refreshUploadStatus(code,
+                EUploadStatus.UPLOAD_EDITABLE.getCode());
+            operateLogBO.saveOperateLog(EOperateLogRefType.TeamMaster.getCode(),
+                code, EOperateLogOperate.UpdateTeamMaster.getValue(), user,
+                null);
         }
 
-        teamMasterBO.doUpdate(xn631909Req, configByLocal);
-        // 更新本地班组状态
-        teamMasterBO.refreshUploadStatus(req.getCode(),
-            EUploadStatus.UPLOAD_EDITABLE.getCode());
-        operateLogBO.saveOperateLog(EOperateLogRefType.TeamMaster.getCode(),
-            req.getCode(), EOperateLogOperate.UpdateTeamMaster.getValue(), user,
-            null);
     }
 
     @Override
@@ -373,14 +380,19 @@ public class TeamMasterAOImpl implements ITeamMasterAO {
             TeamMaster teamMaster = new TeamMaster();
             BeanUtils.copyProperties(reqData, teamMaster);
             if (StringUtils.isNotBlank(reqData.getEntryTime())) {
-                Date entryTime = DateUtil.strToDate(reqData.getEntryTime(),
+                // Date strToDate = DateUtil.strToDate(reqData.getEntryTime(),
+                // "yyyy/mm/dd");
+                // String format = new SimpleDateFormat("yyyy-MM-dd")
+                // .format(strToDate);
+                // Date toDate = DateUtil.strToDate(format, "yyyy-MM-dd");
+                Date strToDate = DateUtil.strToDate(reqData.getEntryTime(),
                     DateUtil.FRONT_DATE_FORMAT_STRING);
-                teamMaster.setEntryTime(entryTime);
+                teamMaster.setEntryTime(strToDate);
             }
             if (StringUtils.isNotBlank(reqData.getExitTime())) {
-                Date exitTime = DateUtil.strToDate(reqData.getExitTime(),
+                Date strToDate = DateUtil.strToDate(reqData.getExitTime(),
                     DateUtil.FRONT_DATE_FORMAT_STRING);
-                teamMaster.setEntryTime(exitTime);
+                teamMaster.setExitTime(strToDate);
             }
             teamMaster.setProjectCode(req.getProjectCode());
             teamMaster.setCorpName(corpBasicinfo.getCorpName());

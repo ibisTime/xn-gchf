@@ -27,7 +27,7 @@ public interface IUserBO extends IPaginableBO<User> {
 
     // 添加业主端管理员
     public void saveProjectAdmin(String projectCode, String projectName,
-            String mobile);
+            String linkManName, String mobile);
 
     public List<User> queryUserList(User condition);
 

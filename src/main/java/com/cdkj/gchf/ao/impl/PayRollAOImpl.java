@@ -351,17 +351,20 @@ public class PayRollAOImpl implements IPayRollAO {
                 PayRoll payRollcondition = new PayRoll();
                 payRollcondition.setCorpCode(xn631773ReqData.getCorpCode());
                 payRollcondition.setTeamSysNo(teamMasterByCondition.getCode());
-                Date strToDate = DateUtil
-                    .strToDate(xn631773ReqData.getPayMonth(), "yyyy/mm/dd");
-                //
-                String format = new SimpleDateFormat("yyyy-MM-dd")
-                    .format(strToDate);
-                Date toDate = DateUtil.strToDate(format, "yyyy-MM-dd");
+                Date toDate;
+                try {
+                    toDate = DateUtil.strToDate(xn631773ReqData.getPayMonth(),
+                        DateUtil.FRONT_DATE_FORMAT_STRING);
 
+                } catch (Exception e) {
+                    Date strToDate = DateUtil
+                        .strToDate(xn631773ReqData.getPayMonth(), "yyyy/mm/dd");
+                    //
+                    String format = new SimpleDateFormat("yyyy-MM-dd")
+                        .format(strToDate);
+                    toDate = DateUtil.strToDate(format, "yyyy-MM-dd");
+                }
                 payRollcondition.setProjectCode(req.getProjectCode());
-                // payRollcondition.setPayMonth(
-                // DateUtil.strToDate(xn631773ReqData.getPayMonth(),
-                // DateUtil.FRONT_DATE_FORMAT_STRING));
                 payRollcondition.setPayMonth(toDate);
                 String savePayRollCode = payRollBO
                     .savePayRoll(payRollcondition);

@@ -39,8 +39,10 @@ public class XN631085 extends AProcessor {
             DateUtil.getFrontDate(req.getDateStart(), false));
         condition.setCreateDatetimeEnd(
             DateUtil.getFrontDate(req.getDateEnd(), true));
-
-        condition.setProjectCode(req.getProjectCode());
+        if (StringUtils.isNotBlank(req.getProjectCode())) {
+            condition.setProjectCode(req.getProjectCode());
+        }
+        // condition.setProjectCode(req.getProjectCode());
         condition.setProvince(req.getProvince());
         condition.setCity(req.getCity());
         condition.setArea(req.getArea());

@@ -1,5 +1,6 @@
 package com.cdkj.gchf.bo.impl;
 
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -211,14 +212,20 @@ public class ProjectCorpInfoBOImpl extends PaginableBOImpl<ProjectCorpInfo>
         projectCorpInfo.setDeleteStatus(EDeleteStatus.NORMAL.getCode());
 
         if (StringUtils.isNotBlank(req.getEntryTime())) {
-            Date entryTime = DateUtil.strToDate(req.getEntryTime(),
-                DateUtil.FRONT_DATE_FORMAT_STRING);
-            projectCorpInfo.setEntryTime(entryTime);
+            Date strToDate = DateUtil.strToDate(req.getEntryTime(),
+                "yyyy/mm/dd");
+            String format = new SimpleDateFormat("yyyy-MM-dd")
+                .format(strToDate);
+            Date toDate = DateUtil.strToDate(format, "yyyy-MM-dd");
+            projectCorpInfo.setEntryTime(toDate);
         }
         if (StringUtils.isNotBlank(req.getExitTime())) {
-            Date exitTime = DateUtil.strToDate(req.getExitTime(),
-                DateUtil.FRONT_DATE_FORMAT_STRING);
-            projectCorpInfo.setEntryTime(exitTime);
+            Date strToDate = DateUtil.strToDate(req.getExitTime(),
+                "yyyy/mm/dd");
+            String format = new SimpleDateFormat("yyyy-MM-dd")
+                .format(strToDate);
+            Date toDate = DateUtil.strToDate(format, "yyyy-MM-dd");
+            projectCorpInfo.setExitTime(toDate);
         }
 
         projectCorpInfoDAO.insert(projectCorpInfo);

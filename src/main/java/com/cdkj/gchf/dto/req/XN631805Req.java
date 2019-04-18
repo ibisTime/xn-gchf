@@ -19,6 +19,9 @@ public class XN631805Req extends APageReq {
     // 建档结束时间
     private String createDatetimeEnd;
 
+    // 身份证号码
+    private String idCardNumber;
+
     private static final long serialVersionUID = 5231161309327246211L;
 
     @NotBlank
@@ -72,6 +75,14 @@ public class XN631805Req extends APageReq {
 
     public void setCode(String code) {
         this.code = code;
+    }
+
+    public String getIdCardNumber() {
+        return idCardNumber;
+    }
+
+    public void setIdCardNumber(String idCardNumber) {
+        this.idCardNumber = idCardNumber;
     }
 
 }

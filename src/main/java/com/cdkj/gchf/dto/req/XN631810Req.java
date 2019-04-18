@@ -9,18 +9,25 @@ public class XN631810Req {
     @NotBlank
     private String code;
 
+    // 出勤天数
     private String days;
 
+    // 总工时
     private String workHours;
 
+    // 应发金额
     private String totalPayAmount;
 
+    // 实发金额
     private String actualAmount;
 
+    // 是否为补发
     private String isBackPay;
 
+    // 发放日期
     private String balanceDate;
 
+    // 第三方工资单编号
     private String thirdPayRollCode;
 
     public String getUserId() {

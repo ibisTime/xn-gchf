@@ -119,6 +119,8 @@ public class GovConnecter {
 
             JSONObject resJson = JSONObject.parseObject(res);
             if (0 != Integer.parseInt(resJson.getString("code"))) {
+                String rawMessage = resJson.getString("message");
+                // 待补充 04-18
                 throw new BizException("XN000000",
                     resJson.getString("message"));
             }

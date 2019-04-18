@@ -2,6 +2,7 @@ package com.cdkj.gchf.ao.impl;
 
 import java.util.List;
 
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -14,6 +15,7 @@ import com.cdkj.gchf.bo.IProjectConfigBO;
 import com.cdkj.gchf.bo.ITeamMasterBO;
 import com.cdkj.gchf.bo.IUserBO;
 import com.cdkj.gchf.bo.base.Paginable;
+import com.cdkj.gchf.common.StringUtil;
 import com.cdkj.gchf.domain.CorpBasicinfo;
 import com.cdkj.gchf.domain.PayRoll;
 import com.cdkj.gchf.domain.PayRollDetail;
@@ -128,6 +130,16 @@ public class PayRollDetailAOImpl implements IPayRollDetailAO {
             .equals(EUploadStatus.UPLOAD_UNEDITABLE.getCode())) {
             throw new BizException("XN631810", "工资单已上传,不可修改");
         }
+        // 入参校验
+        if (StringUtils.isNotEmpty(req.getTotalPayAmount())
+                && !StringUtil.isNumber(req.getTotalPayAmount())) {
+            throw new BizException("XN631810", "【应发金额】为数字类型,请重新填写");
+        }
+        if (StringUtils.isNotEmpty(req.getActualAmount())
+                && !StringUtil.isNumber(req.getActualAmount())) {
+            throw new BizException("XN631810", "【实发金额】为数字类型,请重新填写");
+        }
+
         return payRollDetailBO.updatePayRollDetail(req);
     }
 

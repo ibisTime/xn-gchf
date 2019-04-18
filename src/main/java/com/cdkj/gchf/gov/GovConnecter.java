@@ -8,6 +8,7 @@ import java.util.UUID;
 
 import com.alibaba.fastjson.JSONObject;
 import com.cdkj.gchf.common.PropertiesUtil;
+import com.cdkj.gchf.enums.EGovErrorMessage;
 import com.cdkj.gchf.exception.BizException;
 
 public class GovConnecter {
@@ -120,7 +121,11 @@ public class GovConnecter {
             JSONObject resJson = JSONObject.parseObject(res);
             if (0 != Integer.parseInt(resJson.getString("code"))) {
                 String rawMessage = resJson.getString("message");
-                // 待补充 04-18
+                String localMessageValue = EGovErrorMessage
+                    .getLocalMessageValue(rawMessage);
+                if (localMessageValue != null) {
+                    throw new BizException("XN000000", localMessageValue);
+                }
                 throw new BizException("XN000000",
                     resJson.getString("message"));
             }

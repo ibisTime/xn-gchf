@@ -1,6 +1,8 @@
 package com.cdkj.gchf.ao.impl;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import org.apache.commons.collections.CollectionUtils;
@@ -349,10 +351,18 @@ public class PayRollAOImpl implements IPayRollAO {
                 PayRoll payRollcondition = new PayRoll();
                 payRollcondition.setCorpCode(xn631773ReqData.getCorpCode());
                 payRollcondition.setTeamSysNo(teamMasterByCondition.getCode());
+                Date strToDate = DateUtil
+                    .strToDate(xn631773ReqData.getPayMonth(), "yyyy/mm/dd");
+                //
+                String format = new SimpleDateFormat("yyyy-MM-dd")
+                    .format(strToDate);
+                Date toDate = DateUtil.strToDate(format, "yyyy-MM-dd");
+
                 payRollcondition.setProjectCode(req.getProjectCode());
-                payRollcondition.setPayMonth(
-                    DateUtil.strToDate(xn631773ReqData.getPayMonth(),
-                        DateUtil.FRONT_DATE_FORMAT_STRING));
+                // payRollcondition.setPayMonth(
+                // DateUtil.strToDate(xn631773ReqData.getPayMonth(),
+                // DateUtil.FRONT_DATE_FORMAT_STRING));
+                payRollcondition.setPayMonth(toDate);
                 String savePayRollCode = payRollBO
                     .savePayRoll(payRollcondition);
                 payRollCode = savePayRollCode;

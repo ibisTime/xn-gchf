@@ -320,9 +320,14 @@ public class WorkerAttendanceBOImpl extends PaginableBOImpl<WorkerAttendance>
             .getTeamMasterByCondition(condition);
         workerAttendance.setTeamSysNo(masterByCondition.getCode());
         if (StringUtils.isNotBlank(data.getDate())) {
-            Date date = DateUtil.strToDate(data.getDate(),
-                DateUtil.FRONT_DATE_FORMAT_STRING);
-            workerAttendance.setDate(date);
+            // Date date = DateUtil.strToDate(data.getDate(),
+            // DateUtil.FRONT_DATE_FORMAT_STRING);
+            Date strToDate = DateUtil.strToDate(data.getDate(), "yyyy/mm/dd");
+            //
+            String format = new SimpleDateFormat("yyyy-MM-dd")
+                .format(strToDate);
+            Date toDate = DateUtil.strToDate(format, "yyyy-MM-dd");
+            workerAttendance.setDate(toDate);
         }
         workerAttendance.setUploadStatus(EUploadStatus.TO_UPLOAD.getCode());
         workerAttendance.setDeleteStatus(EDeleteStatus.NORMAL.getCode());

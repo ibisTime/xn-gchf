@@ -1,5 +1,6 @@
 package com.cdkj.gchf.ao.impl;
 
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
@@ -270,9 +271,15 @@ public class WorkerAttendanceAOImpl implements IWorkerAttendanceAO {
                 .getTeamMasterByCondition(condition);
             workerAttendance.setTeamSysNo(masterByCondition.getCode());
             if (StringUtils.isNotBlank(dateReq.getDate())) {
-                Date date = DateUtil.strToDate(dateReq.getDate(),
-                    DateUtil.FRONT_DATE_FORMAT_STRING);
-                workerAttendance.setDate(date);
+                // Date date = DateUtil.strToDate(dateReq.getDate(),
+                // DateUtil.FRONT_DATE_FORMAT_STRING);
+                Date strToDate = DateUtil.strToDate(dateReq.getDate(),
+                    "yyyy/mm/dd");
+                //
+                String format = new SimpleDateFormat("yyyy-MM-dd")
+                    .format(strToDate);
+                Date toDate = DateUtil.strToDate(format, "yyyy-MM-dd");
+                workerAttendance.setDate(toDate);
             }
             workerAttendance.setIdCardType("01");
             workerAttendance.setWorkerName(dateReq.getWorkerName());

@@ -10,8 +10,8 @@ import com.cdkj.gchf.dao.base.IBaseDAO;
  * @author joe.chen
  * 
  */
-public abstract class PaginableBOImpl<T extends ABaseDO> implements
-        IPaginableBO<T> {
+public abstract class PaginableBOImpl<T extends ABaseDO>
+        implements IPaginableBO<T> {
 
     private IBaseDAO<T> paginableDAO;
 
@@ -29,7 +29,6 @@ public abstract class PaginableBOImpl<T extends ABaseDO> implements
     @Override
     public Paginable<T> getPaginable(int start, int pageSize, T condition) {
         prepare(condition);
-
         long totalCount = paginableDAO.selectTotalCount(condition);
 
         Paginable<T> page = new Page<T>(start, pageSize, totalCount);

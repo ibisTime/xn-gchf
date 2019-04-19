@@ -265,26 +265,22 @@
 		thf_project_worker
 		SET
 		is_team_leader = #{isTeamLeader}
-		,work_type =
-		#{workType}
+		,work_type = #{workType}
 		,work_role = #{workRole}
 		,issue_card_date = #{issueCardDate}
 		,issue_card_pic_url = #{issueCardPicUrl}
+		
 		,card_number = #{cardNumber}
 		,pay_roll_bank_card_number = #{payRollBankCardNumber}
-
 		,pay_roll_bank_name = #{payRollBankName}
-		,pay_roll_top_bank_name =
-		#{payRollTopBankName}
+		,pay_roll_top_bank_name = #{payRollTopBankName}
 		,bank_link_number = #{bankLinkNumber}
 		,pay_roll_top_bank_code = #{payRollTopBankCode}
-		,has_buy_insurance =
-		#{hasBuyInsurance}
+		,has_buy_insurance = #{hasBuyInsurance}
 
-
+        ,work_date = #{workDate}
 		,join_datetime = #{joinDatetime}
-		,bank_name =
-		#{bankName}
+		,bank_name = #{bankName}
 		WHERE code = #{code}
 	</update>
 	<select id="select_projectWorker" parameterType="projectWorker"
@@ -344,6 +340,8 @@
 		,t.remark
 		,t.upload_status
 		,t.delete_status
+		,t.work_date
+		,t.bank_name
 		FROM
 		thf_project_worker t
 		<include refid="where_condition" />

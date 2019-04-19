@@ -24,6 +24,9 @@
 		<result column="third_pay_roll_code" property="thirdPayRollCode" />
 		<result column="upload_status" property="uploadStatus" />
 		<result column="delete_status" property="deleteStatus" />
+		<result column="pay_month" property="payMonth" />
+		
+		<result column="corpCode" property="corpCode" />
 
 	</resultMap>
 	<sql id="where_condition">
@@ -47,10 +50,25 @@
 				AND year(t.balance_date) = year(#{balanceDate})
 				AND Month(t.balance_date) = Month(#{balanceDate})
 			</if>
-
+			<if test="payMonth != null ">
+                AND year(t.pay_month) = year(#{payMonth})
+                AND Month(t.pay_month) = Month(#{payMonth})
+            </if>
+                        
+            <if test="corpCode != null and corpCode != '' ">
+                AND pr.corp_code = #{corpCode} 
+            </if>
+            <if test="projectCode != null  and projectCode != ''">
+                AND pr.project_code = #{projectCode}
+            </if>
+            
 		</trim>
 	</sql>
-
+	
+	<sql id="join_condition">
+	 left join thf_pay_roll pr
+	 on pr.code = t.pay_roll_code
+	</sql>
 
 	<insert id="insert_PayRollDetail" parameterType="payRollDetail">
 		INSERT INTO
@@ -118,12 +136,18 @@
 		,total_pay_amount = #{totalPayAmount}
 		,actual_amount = #{actualAmount}
 		,is_back_pay = #{isBackPay}
+		
 		,balance_date = #{balanceDate}
+		,pay_roll_bank_card_number = #{payRollBankCardNumber}
+		,pay_roll_bank_code = #{payRollBankCode}
+		,pay_roll_bank_name = #{payRollBankName}
+		
+		,pay_bank_card_number = #{payBankCardNumber}
+		,pay_bank_code = #{payBankCode}
+		,pay_bank_name = #{payBankName}
 		,third_pay_roll_code = #{thirdPayRollCode}
-		,delete_status =
-		#{deleteStatus}
-		WHERE code =
-		#{code}
+        ,delete_status = #{deleteStatus}
+		WHERE code = #{code}
 	</update>
 
 	<update id="update_PayRollDetail_status" parameterType="payRoll">
@@ -192,6 +216,7 @@
 		,t.delete_status
 		FROM
 		thf_pay_roll_detail t
+		<include refid="join_condition"/>
 		<include refid="where_condition" />
 		<trim prefix="ORDER BY ">
 			<if test="order != null and order != '' ">

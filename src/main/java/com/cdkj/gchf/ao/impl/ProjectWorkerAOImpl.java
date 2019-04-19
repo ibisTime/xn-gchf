@@ -161,14 +161,8 @@ public class ProjectWorkerAOImpl implements IProjectWorkerAO {
     public void editProjectWorker(XN631692Req req) {
 
         User user = userBO.getBriefUser(req.getUserId());
-        ProjectWorker projectWorker = projectWorkerBO
-            .getProjectWorker(req.getCode());
-        if (projectWorker.getUploadStatus()
-            .equals(EUploadStatus.UPLOAD_EDITABLE.getCode())
-                || projectWorker.getUploadStatus()
-                    .equals(EUploadStatus.UPLOAD_UNEDITABLE.getCode())) {
-            throw new BizException("XN631692", "班组人员已上传,无法删除");
-        }
+        // ProjectWorker projectWorker = projectWorkerBO
+        // .getProjectWorker(req.getCode());
         if (StringUtils.isNotBlank(req.getWorkType())) {
             EWorkerType.checkExists(req.getWorkType());
         }
@@ -275,6 +269,12 @@ public class ProjectWorkerAOImpl implements IProjectWorkerAO {
                 project.getCode(), projectWorkerData.getCorpCode(),
                 teamMaster.getCode(), projectWorkerData.getIdCardNumber());
             if (preProjectWorker != null) {
+                if (preProjectWorker.getDeleteStatus()
+                    .equals(EDeleteStatus.DELETED.getCode())) {
+                    projectWorkerBO.updateProjectWorkerDeleteStatus(
+                        preProjectWorker.getCode(),
+                        EDeleteStatus.NORMAL.getCode());
+                }
                 continue;
             }
             // 校验班组中是否已存在该成员
@@ -374,7 +374,7 @@ public class ProjectWorkerAOImpl implements IProjectWorkerAO {
      */
     @Override
     public void updatePlantformProjectWorker(XN631695Req req) {
-        User user = userBO.getBriefUser(req.getUesrId());
+        User user = userBO.getBriefUser(req.getUserId());
         List<String> codeList = req.getCodeList();
         for (String code : codeList) {
             ProjectWorker projectWorker = projectWorkerBO
@@ -389,7 +389,22 @@ public class ProjectWorkerAOImpl implements IProjectWorkerAO {
                 throw new BizException("XN631695", "项目人员未上传,无法修改");
             }
             XN631912Req xn631612Req = new XN631912Req();
+            WorkerInfo workerInfoByIdCardNumber = workerInfoBO
+                .getWorkerInfoByIdCardNumber(projectWorker.getIdcardNumber());
             BeanUtils.copyProperties(projectWorker, xn631612Req);
+            BeanUtils.copyProperties(workerInfoByIdCardNumber, xn631612Req);
+            ProjectConfig projectConfigByLocal = projectConfigBO
+                .getProjectConfigByLocal(projectWorker.getProjectCode());
+            xn631612Req
+                .setHeadImage(workerInfoByIdCardNumber.getHeadImageUrl());
+            xn631612Req.setPositiveIdCardImageUrl(
+                workerInfoByIdCardNumber.getPositiveIdCardImageUrl());
+            xn631612Req.setNegativeIdCardImageUrl(
+                workerInfoByIdCardNumber.getNegativeIdCardImageUrl());
+            xn631612Req.setProjectCode(projectConfigByLocal.getProjectCode());
+            xn631612Req.setTeamSysNo(Integer.parseInt(teamMasterBO
+                .getTeamMaster(projectWorker.getTeamSysNo()).getTeamSysNo()));
+
             projectWorkerBO.doUpdate(xn631612Req, configByLocal);
             operateLogBO.saveOperateLog(
                 EOperateLogRefType.ProjectWorker.getCode(), code,

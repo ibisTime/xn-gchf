@@ -11,7 +11,6 @@ import com.cdkj.gchf.core.StringValidater;
 import com.cdkj.gchf.domain.BankCardInfo;
 import com.cdkj.gchf.dto.req.XN631765Req;
 import com.cdkj.gchf.enums.EBankCardStatus;
-import com.cdkj.gchf.enums.EUploadStatus;
 import com.cdkj.gchf.exception.BizException;
 import com.cdkj.gchf.exception.ParaException;
 import com.cdkj.gchf.spring.SpringContextHolder;
@@ -34,8 +33,12 @@ public class XN631765 extends AProcessor {
     public Object doBusiness() throws BizException {
         BankCardInfo condition = new BankCardInfo();
         BeanUtils.copyProperties(req, condition);
-        condition.setBusinessSysNo(req.getBusinessSysNo());
-
+        if (StringUtils.isNotBlank(req.getBusinessSysNo())) {
+            condition.setBusinessSysNo(req.getBusinessSysNo());
+        }
+        if (StringUtils.isNotEmpty(req.getBusinessType())) {
+            condition.setBusinessType(req.getBusinessType());
+        }
         int start = StringValidater.toInteger(req.getStart());
         int limit = StringValidater.toInteger(req.getLimit());
         String column = req.getOrderColumn();
@@ -44,9 +47,6 @@ public class XN631765 extends AProcessor {
         }
         if (StringUtils.isNotBlank(req.getStatus())) {
             EBankCardStatus.checkExists(req.getStatus());
-        }
-        if (StringUtils.isNotBlank(req.getUploadStatus())) {
-            EUploadStatus.checkExists(req.getUploadStatus());
         }
         condition.setOrder(column, req.getOrderDir());
         return bankCardInfoAO.queryBankCardInfoPage(start, limit, condition);

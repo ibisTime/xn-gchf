@@ -42,6 +42,7 @@ import com.cdkj.gchf.dto.req.XN631812Req;
 import com.cdkj.gchf.dto.req.XN631812ReqData;
 import com.cdkj.gchf.dto.req.XN631920Req;
 import com.cdkj.gchf.dto.req.XN631921Req;
+import com.cdkj.gchf.enums.EDeleteStatus;
 import com.cdkj.gchf.enums.EOperateLogOperate;
 import com.cdkj.gchf.enums.EOperateLogRefType;
 import com.cdkj.gchf.enums.EUploadStatus;
@@ -262,6 +263,21 @@ public class PayRollAOImpl implements IPayRollAO {
         jsonObject.addProperty("PayMonth", payMonth);
         // payRoll data
         JsonObject payRollData = new JsonObject();
+        if (StringUtils.isBlank(payRollDetail.getPayRollBankCode())) {
+            throw new BizException("XN00000", "导入信息不全,请修改后上传");
+        }
+        if (StringUtils.isBlank(payRollDetail.getPayBankName())) {
+            throw new BizException("XN00000", "导入信息不全,请修改后上传");
+        }
+        if (StringUtils.isBlank(payRollDetail.getPayRollBankName())) {
+            throw new BizException("XN00000", "导入信息不全,请修改后上传");
+        }
+        if (StringUtils.isBlank(payRollDetail.getPayBankCode())) {
+            throw new BizException("XN00000", "导入信息不全,请修改后上传");
+        }
+        if (StringUtils.isBlank(payRollDetail.getPayBankName())) {
+            throw new BizException("XN00000", "导入信息不全,请修改后上传");
+        }
         BeanUtils.copyProperties(payRollDetail, payRollData);
         payRollData.addProperty("payBankName", payRollDetail.getPayBankName());
         payRollData.addProperty("totalPayAmount",
@@ -278,16 +294,20 @@ public class PayRollAOImpl implements IPayRollAO {
         payRollData.addProperty("idCardType", payRollDetail.getIdcardType());
         payRollData.addProperty("idCardNumber", AesUtils.encrypt(
             payRollDetail.getIdcardNumber(), projectconfig.getSecret()));
+        payRollData.addProperty("payBankCardNumber", AesUtils.encrypt(
+            payRollDetail.getPayBankCardNumber(), projectconfig.getSecret()));
         payRollData.addProperty("payBankCode", payRollDetail.getPayBankCode());
-        payRollData.addProperty("payRollBankCode",
-            payRollDetail.getPayRollBankCode());
-        payRollData.addProperty("payRollBankName",
-            payRollDetail.getPayRollBankName());
         payRollData.addProperty("payRollBankCardNumber",
             AesUtils.encrypt(payRollDetail.getPayRollBankCardNumber(),
                 projectconfig.getSecret()));
-        payRollData.addProperty("payBankCardNumber", AesUtils.encrypt(
-            payRollDetail.getPayBankCardNumber(), projectconfig.getSecret()));
+        payRollData.addProperty("payRollBankName",
+            payRollDetail.getPayBankName());
+        payRollData.addProperty("payRollBankCode",
+            payRollDetail.getPayRollBankCode());
+        // payRollData.addProperty("payRollBankCardNumber",
+        // AesUtils.encrypt(payRollDetail.getPayRollBankCardNumber(),
+        // projectconfig.getSecret()));
+
         jsonArray.add(payRollData);
         jsonObject.add("detailList", jsonArray);
         System.out.println(jsonObject.toString());
@@ -334,8 +354,7 @@ public class PayRollAOImpl implements IPayRollAO {
                 .getBankCardInfoByNum(
                     xn631773ReqData.getPayRollBankCardNumber());
             if (bankCardInfoByNum == null) {
-                throw new BizException("XN631812",
-                    "项目人员未绑定银行卡【" + xn631773ReqData.getPayBankCode() + "】");
+                throw new BizException("XN631812", "项目人员未绑定银行卡信息,银行卡账号必填");
             }
             ProjectWorker projectWorker = projectWorkerBO
                 .getProjectWorker(bankCardInfoByNum.getBusinessSysNo());
@@ -354,17 +373,19 @@ public class PayRollAOImpl implements IPayRollAO {
                 Date toDate;
                 try {
                     toDate = DateUtil.strToDate(xn631773ReqData.getPayMonth(),
-                        DateUtil.FRONT_DATE_FORMAT_STRING);
+                        "yyyy-MM");
 
                 } catch (Exception e) {
                     Date strToDate = DateUtil
-                        .strToDate(xn631773ReqData.getPayMonth(), "yyyy/mm/dd");
+                        .strToDate(xn631773ReqData.getPayMonth(), "yyyy/mm");
                     //
-                    String format = new SimpleDateFormat("yyyy-MM-dd")
+                    String format = new SimpleDateFormat("yyyy-MM")
                         .format(strToDate);
-                    toDate = DateUtil.strToDate(format, "yyyy-MM-dd");
+                    toDate = DateUtil.strToDate(format, "yyyy-MM");
                 }
                 payRollcondition.setProjectCode(req.getProjectCode());
+                payRollcondition
+                    .setDeleteStatus(EDeleteStatus.NORMAL.getCode());
                 payRollcondition.setPayMonth(toDate);
                 String savePayRollCode = payRollBO
                     .savePayRoll(payRollcondition);

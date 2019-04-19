@@ -222,6 +222,7 @@ public class WorkerInfoBOImpl extends PaginableBOImpl<WorkerInfo>
         if (StringUtils.isNotBlank(req.getPoliticsType())) {
             workerInfo.setPoliticsType(req.getPoliticsType());
         }
+        workerInfo.setCreateDatetime(new Date(System.currentTimeMillis()));
 
         return workerInfoDAO.updateWorkerInfo(workerInfo);
     }

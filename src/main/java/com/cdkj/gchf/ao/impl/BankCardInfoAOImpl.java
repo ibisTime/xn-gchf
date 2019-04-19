@@ -123,6 +123,7 @@ public class BankCardInfoAOImpl implements IBankCardInfoAO {
             EBankCardBussinessType.checkExists(req.getBusinessType());
         }
         condition.setOrder(orderColumn, req.getOrderDir());
+
         return bankCardBankBO.queryBankCardInfoList(condition);
     }
 

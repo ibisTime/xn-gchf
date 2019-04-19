@@ -34,8 +34,11 @@ public class PayRoll extends ABaseDO {
     // 班组编号
     private String teamSysNo;
 
-    // 发放工资的年月
+    // 查询条件
     private Date payMonth;
+
+    // 工资年月
+    private Date realPayMonth;
 
     /****DB Properties****/
     // 明细列表
@@ -136,6 +139,14 @@ public class PayRoll extends ABaseDO {
 
     public void setDeleteStatus(String deleteStatus) {
         this.deleteStatus = deleteStatus;
+    }
+
+    public Date getRealPayMonth() {
+        return realPayMonth;
+    }
+
+    public void setRealPayMonth(Date realPayMonth) {
+        this.realPayMonth = realPayMonth;
     }
 
 }

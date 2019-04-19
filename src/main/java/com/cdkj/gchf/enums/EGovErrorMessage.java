@@ -40,6 +40,10 @@ public enum EGovErrorMessage {
             "([negativeIDCardImage]格式无效,目前仅支持:jpg,jpeg,png,jpeg",
             "身份证反面照图片格式无效,目前仅支持:jpg,jpeg,png,jpeg"),
 
+    TeamMasterNo("[teamSysNo]值超出范围或无效!", "班组信息未上传,请先上传班组信息"),
+
+    AreaCode("[areaCode]参数值不正确,请参见行政区划字典表!", "注册地区编码无效,请修改"),
+
     JoinExitTimeUnValid("[date]不能小于历史进退场时间!", "进退场日期不能小于历史进退场信息");
 
     EGovErrorMessage(String govMessage, String localMessage) {

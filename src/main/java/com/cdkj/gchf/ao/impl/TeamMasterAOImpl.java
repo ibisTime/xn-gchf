@@ -171,9 +171,6 @@ public class TeamMasterAOImpl implements ITeamMasterAO {
 
         teamMasterBO.refreshTeamMaster(data);
 
-        teamMasterBO.refreshUploadStatus(data.getCode(),
-            EUploadStatus.TO_UPLOAD.getCode());
-
         operateLogBO.saveOperateLog(EOperateLogRefType.TeamMaster.getCode(),
             data.getCode(), EOperateLogOperate.EditTeamMaster.getValue(), user,
             null);

@@ -95,6 +95,9 @@ public class PayRollDetail extends ABaseDO {
 
     private String userId;
 
+    // 发放月份
+    private Date payMonth;
+
     public String getCode() {
         return code;
     }
@@ -309,6 +312,14 @@ public class PayRollDetail extends ABaseDO {
 
     public void setUserId(String userId) {
         this.userId = userId;
+    }
+
+    public Date getPayMonth() {
+        return payMonth;
+    }
+
+    public void setPayMonth(Date payMonth) {
+        this.payMonth = payMonth;
     }
 
 }

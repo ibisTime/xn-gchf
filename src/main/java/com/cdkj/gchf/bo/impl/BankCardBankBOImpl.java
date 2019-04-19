@@ -99,7 +99,6 @@ public class BankCardBankBOImpl extends PaginableBOImpl<BankCardInfo>
 
         bankCardInfo.setBusinessSysNo(businessSysNo);
         bankCardInfo.setStatus(status);
-
         return bankCardInfoDAO.selectList(bankCardInfo);
     }
 

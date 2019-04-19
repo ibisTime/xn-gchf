@@ -41,6 +41,10 @@ public class XN631815 extends AProcessor {
         if (StringUtils.isBlank(orderColumn)) {
             orderColumn = IPayRollDetailAO.DEFAULT_ORDER_COLUMN;
         }
+        if (StringUtils.isNotBlank(req.getBalanceDate())) {
+            payRollDetail.setBalanceDate(DateUtil.strToDate(
+                req.getBalanceDate(), DateUtil.FRONT_DATE_FORMAT_STRING));
+        }
         if (StringUtils.isNotBlank(req.getPayMonth())) {
             payRollDetail.setBalanceDate(
                 DateUtil.strToDate(req.getPayMonth(), "yyyy-MM"));

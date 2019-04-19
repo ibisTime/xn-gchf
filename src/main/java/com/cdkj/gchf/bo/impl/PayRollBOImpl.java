@@ -59,8 +59,7 @@ public class PayRollBOImpl extends PaginableBOImpl<PayRoll>
             .generate(EGeneratePrefix.PayRoll.getCode());
         payRoll.setCode(code);
         if (StringUtils.isNotBlank(data.getPayMonth())) {
-            Date payMonth = DateUtil.strToDate(data.getPayMonth(),
-                "yyyy-MM-dd");
+            Date payMonth = DateUtil.strToDate(data.getPayMonth(), "yyyy-MM");
             payRoll.setPayMonth(payMonth);
         }
         payRollDAO.insert(payRoll);
@@ -248,8 +247,7 @@ public class PayRollBOImpl extends PaginableBOImpl<PayRoll>
         payRoll.setTeamSysNo(teamMasterSysNo);
         payRoll.setCorpCode(corpCode);
         payRoll.setProjectCode(projectCode);
-        payRoll.setPayMonth(
-            DateUtil.strToDate(payMonth, DateUtil.FRONT_DATE_FORMAT_STRING));
+        payRoll.setPayMonth(DateUtil.strToDate(payMonth, "yyyy-MM"));
 
         return payRollDAO.select(payRoll);
     }

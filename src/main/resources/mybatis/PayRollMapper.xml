@@ -15,44 +15,44 @@
 	<sql id="where_condition">
 		<trim prefix="WHERE" prefixOverrides="AND | OR">
 			<if test="code != null and code != '' ">
-				AND t.code = #{code}
+				AND tr.code = #{code}
 			</if>
 			<if test="payRollCode != null and payRollCode != '' ">
-				AND t.pay_roll_code = #{payRollCode}
+				AND tr.pay_roll_code = #{payRollCode}
 			</if>
 			<if test="corpName != null and corpName != '' ">
-				AND t.corp_name = #{corpName}
+				AND tr.corp_name = #{corpName}
 			</if>
 			<if test="corpCode != null and corpCode != '' ">
-				AND t.corp_code = #{corpCode}
+				AND tr.corp_code = #{corpCode}
 			</if>
 			<if test="teamSysNo != null and teamSysNo != '' ">
-				AND t.team_sys_no = #{teamSysNo}
+				AND tr.team_sys_no = #{teamSysNo}
 			</if>
 			<if test="projectCode != null and projectCode != '' ">
-				AND t.project_code = #{projectCode}
+				AND tr.project_code = #{projectCode}
 			</if>
 			<if test="payMonth != null ">
-				AND YEAR(t.pay_month) = YEAR(#{payMonth}) AND MONTH(
-				t.pay_month) = MONTH(#{payMonth})
+				AND YEAR(tr.pay_month) = YEAR(#{payMonth}) AND MONTH(
+				tr.pay_month) = MONTH(#{payMonth})
 			</if>
 			<if test="deleteStatus != null and deleteStatus != '' ">
-				AND t.delete_status = #{deleteStatus}
+				AND tr.delete_status = #{deleteStatus}
 			</if>
 		</trim>
 	</sql>
 	<select id="select_payRoll" parameterType="payRoll" resultMap="payRoll_DB_Result">
 		SELECT
-		t.code
-		,t.pay_roll_code
-		,t.project_code
-		,t.corp_code
-		,t.corp_name
-		,t.team_sys_no
-		,t.pay_month
-		,t.delete_status
+		tr.code
+		,tr.pay_roll_code
+		,tr.project_code
+		,tr.corp_code
+		,tr.corp_name
+		,tr.team_sys_no
+		,tr.pay_month
+		,tr.delete_status
 		FROM
-		thf_pay_roll t
+		thf_pay_roll tr
 		<include refid="where_condition" />
 		<trim prefix="ORDER BY ">
 			<if test="order != null and order != '' ">
@@ -118,7 +118,17 @@
 		thf_pay_roll t
 		SET
 		delete_status = #{deleteStatus}
-		<include refid="where_condition"></include>
+		  <trim prefix="WHERE" prefixOverrides="AND | OR">
+            <if test="code != null and code != '' ">
+                AND t.code = #{code}
+            </if>
+            <if test="projectCode != null and projectCode != '' ">
+                AND t.project_code = #{projectCode}
+            </if>
+            <if test="teamSysNo != null and teamSysNo != '' ">
+                AND t.team_sys_no = #{teamSysNo}
+            </if>
+        </trim>
 	</update>
 
 	<delete id="delete_payRoll" parameterType="payRoll">

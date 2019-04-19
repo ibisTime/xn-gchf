@@ -30,7 +30,6 @@ import com.cdkj.gchf.dto.req.XN631810Req;
 import com.cdkj.gchf.dto.req.XN631812ReqData;
 import com.cdkj.gchf.enums.EDeleteStatus;
 import com.cdkj.gchf.enums.EGeneratePrefix;
-import com.cdkj.gchf.enums.EIsNotType;
 import com.cdkj.gchf.enums.EUploadStatus;
 import com.cdkj.gchf.exception.BizException;
 import com.google.gson.JsonArray;
@@ -70,6 +69,9 @@ public class PayRollDetailBOImpl extends PaginableBOImpl<PayRollDetail>
             String payRollBankCardNumber = detail.getPayRollBankCardNumber();
             BankCardInfo bankCardInfoByNum = bankCardBankBO
                 .getBankCardInfoByNum(detail.getPayRollBankCardNumber());
+            if (payRollBankCardNumber == null) {
+                throw new BizException("XN631770", "项目银行卡号不能为空");
+            }
             if (bankCardInfoByNum == null) {
                 throw new BizException("XN631770",
                     "员工银行卡未绑定【" + payRollBankCardNumber + "】");
@@ -312,12 +314,9 @@ public class PayRollDetailBOImpl extends PaginableBOImpl<PayRollDetail>
             payRollDetail
                 .setActualAmount(new BigDecimal(data.getActualAmount()));
         }
-        if (StringUtils.isBlank(data.getIsBackPay())) {
+        if (StringUtils.isNotBlank(data.getIsBackPay())) {
             payRollDetail.setIsBackPay(Integer.parseInt(data.getIsBackPay()));
-            if (StringUtils.isNotBlank(data.getBackPayMonth())) {
-                payRollDetail.setBalanceDate(DateUtil.strToDate(
-                    data.getBackPayMonth(), DateUtil.FRONT_DATE_FORMAT_STRING));
-            }
+
         }
         if (StringUtils.isNotBlank(data.getDays())) {
             payRollDetail.setDays(Integer.parseInt(data.getDays()));
@@ -329,13 +328,6 @@ public class PayRollDetailBOImpl extends PaginableBOImpl<PayRollDetail>
         payRollDetail.setWorkerName(projectWorker.getWorkerName());
         payRollDetail.setIdcardNumber(projectWorker.getIdcardNumber());
 
-        if (StringUtils.isNotBlank(data.getIsBackPay())) {
-            if (data.getIsBackPay().equals(EIsNotType.IS.getCode())) {
-                payRollDetail.setBalanceDate(DateUtil.strToDate(
-                    data.getBackPayMonth(), DateUtil.FRONT_DATE_FORMAT_STRING));
-            }
-            payRollDetail.setIsBackPay(Integer.parseInt(data.getIsBackPay()));
-        }
         code = OrderNoGenerater
             .generate(EGeneratePrefix.PayRollDetail.getCode());
         payRollDetail.setUploadStatus(EUploadStatus.TO_UPLOAD.getCode());

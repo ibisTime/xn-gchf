@@ -3,6 +3,7 @@ package com.cdkj.gchf.ao.impl;
 import java.util.List;
 
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -63,6 +64,15 @@ public class WorkerInfoAOImpl implements IWorkerInfoAO {
             WorkerInfo workerInfoByIdCardNumber = workerInfoBO
                 .getWorkerInfoByIdCardNumber(req.getIdCardNumber());
             if (workerInfoByIdCardNumber != null) {
+                XN631793Req xn631791Req = new XN631793Req();
+                xn631791Req.setCode(workerInfoByIdCardNumber.getCode());
+                BeanUtils.copyProperties(req, xn631791Req);
+                User user = userBO.getBriefUser(req.getUserId());
+                workerInfoBO.refreshWorkerInfo(xn631791Req);
+                operateLogBO.saveOperateLog(
+                    EOperateLogRefType.WorkerInfo.getCode(),
+                    workerInfoByIdCardNumber.getCode(), "重新建档人员实名制信息", user,
+                    null);
                 return workerInfoByIdCardNumber.getCode();
             }
         }

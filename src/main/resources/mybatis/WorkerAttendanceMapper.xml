@@ -64,6 +64,13 @@
 		</trim>
 	</sql>
 
+    <sql id="join_condition">
+        <if test="corpCode != null and corpCode != '' ">
+        left join thf_project_corp_info pi
+        on pi.project_code = t.project_code 
+        </if>
+    </sql>
+
 	<insert id="insert_workerAttendance" parameterType="workerAttendance">
 		INSERT INTO
 		thf_worker_attendance(
@@ -202,8 +209,8 @@
 				AND t.project_code = #{projectCode}
 			</if>
 			<if test="teamSysNo != null and teamSysNo != '' ">
-                AND t.team_sys_no = #{teamSysNo}
-            </if>
+				AND t.team_sys_no = #{teamSysNo}
+			</if>
 		</trim>
 	</update>
 
@@ -242,7 +249,11 @@
 		,t.delete_status
 		FROM
 		thf_worker_attendance t
+		<include refid="join_condition"/>
 		<include refid="where_condition" />
+		<if test="corpCode != null and corpCode != '' ">
+            AND pi.corp_code = #{corpCode}
+        </if>
 		<trim prefix="ORDER BY ">
 			<if test="order != null and order != '' ">
 				t.${order}

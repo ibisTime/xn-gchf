@@ -10,7 +10,7 @@ public class XN631695Req {
     private List<String> codeList;
 
     @NotBlank
-    private String uesrId;
+    private String userId;
 
     public List<String> getCodeList() {
         return codeList;
@@ -20,12 +20,12 @@ public class XN631695Req {
         this.codeList = codeList;
     }
 
-    public String getUesrId() {
-        return uesrId;
+    public String getUserId() {
+        return userId;
     }
 
-    public void setUesrId(String uesrId) {
-        this.uesrId = uesrId;
+    public void setUserId(String userId) {
+        this.userId = userId;
     }
 
 }

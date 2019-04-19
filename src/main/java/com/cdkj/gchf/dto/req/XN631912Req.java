@@ -85,6 +85,10 @@ public class XN631912Req {
     // 有无购买工伤或意外伤害保险
     private Integer hasBuyInsurance;
 
+    private String positiveIdCardImageUrl;
+
+    private String negativeIdCardImageUrl;
+
     // 民族
     @NotBlank
     private String nation;
@@ -447,6 +451,22 @@ public class XN631912Req {
 
     public void setExpiryDate(String expiryDate) {
         this.expiryDate = expiryDate;
+    }
+
+    public String getPositiveIdCardImageUrl() {
+        return positiveIdCardImageUrl;
+    }
+
+    public void setPositiveIdCardImageUrl(String positiveIdCardImageUrl) {
+        this.positiveIdCardImageUrl = positiveIdCardImageUrl;
+    }
+
+    public String getNegativeIdCardImageUrl() {
+        return negativeIdCardImageUrl;
+    }
+
+    public void setNegativeIdCardImageUrl(String negativeIdCardImageUrl) {
+        this.negativeIdCardImageUrl = negativeIdCardImageUrl;
     }
 
 }

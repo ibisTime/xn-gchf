@@ -22,10 +22,24 @@ public class XN631810Req {
     private String actualAmount;
 
     // 是否为补发
+    @NotBlank(message = "是否补发必填")
     private String isBackPay;
 
     // 发放日期
+    @NotBlank(message = "发放日期必填")
     private String balanceDate;
+
+    private String payRollBankCardNumber;
+
+    private String payRollBankCode;
+
+    private String payRollBankName;
+
+    private String payBankCardNumber;
+
+    private String payBankCode;
+
+    private String payBankName;
 
     // 第三方工资单编号
     private String thirdPayRollCode;
@@ -100,6 +114,54 @@ public class XN631810Req {
 
     public void setThirdPayRollCode(String thirdPayRollCode) {
         this.thirdPayRollCode = thirdPayRollCode;
+    }
+
+    public String getPayRollBankCardNumber() {
+        return payRollBankCardNumber;
+    }
+
+    public void setPayRollBankCardNumber(String payRollBankCardNumber) {
+        this.payRollBankCardNumber = payRollBankCardNumber;
+    }
+
+    public String getPayRollBankCode() {
+        return payRollBankCode;
+    }
+
+    public void setPayRollBankCode(String payRollBankCode) {
+        this.payRollBankCode = payRollBankCode;
+    }
+
+    public String getPayRollBankName() {
+        return payRollBankName;
+    }
+
+    public void setPayRollBankName(String payRollBankName) {
+        this.payRollBankName = payRollBankName;
+    }
+
+    public String getPayBankCardNumber() {
+        return payBankCardNumber;
+    }
+
+    public void setPayBankCardNumber(String payBankCardNumber) {
+        this.payBankCardNumber = payBankCardNumber;
+    }
+
+    public String getPayBankCode() {
+        return payBankCode;
+    }
+
+    public void setPayBankCode(String payBankCode) {
+        this.payBankCode = payBankCode;
+    }
+
+    public String getPayBankName() {
+        return payBankName;
+    }
+
+    public void setPayBankName(String payBankName) {
+        this.payBankName = payBankName;
     }
 
 }

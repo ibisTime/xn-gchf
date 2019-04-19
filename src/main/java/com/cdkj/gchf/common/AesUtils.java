@@ -31,7 +31,7 @@ public class AesUtils {
         String encryptedData = encrypt(data, sessionKey);
         System.out.println(encryptedData);
 
-        // System.out.println(decrypt(encryptedData, sessionKey));
+        System.out.println(decrypt(encryptedData, sessionKey));
         System.out.println(decrypt(encryptedData, sessionKey));
     }
 

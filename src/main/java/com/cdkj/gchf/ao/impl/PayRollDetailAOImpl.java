@@ -111,6 +111,11 @@ public class PayRollDetailAOImpl implements IPayRollDetailAO {
             CorpBasicinfo corpBasicinfoByCorp = corpBasicinfoBO
                 .getCorpBasicinfoByCorp(payRoll.getCorpCode());
             payRollDetail.setCorpName(corpBasicinfoByCorp.getCorpName());
+
+            // PayRoll payRollgetPayMonth = payRollBO
+            // .getPayRoll(payRollDetail.getPayRollCode());
+            // payRollDetail.setPayMonth(payRollgetPayMonth.getPayMonth());
+
         }
         page.setList(list);
         return page;
@@ -118,7 +123,13 @@ public class PayRollDetailAOImpl implements IPayRollDetailAO {
 
     @Override
     public List<PayRollDetail> queryPayRollDetailList(PayRollDetail condition) {
-        return payRollDetailBO.queryList(condition);
+        List<PayRollDetail> queryList = payRollDetailBO.queryList(condition);
+        for (PayRollDetail payRollDetail : queryList) {
+            PayRoll payRoll = payRollBO
+                .getPayRoll(payRollDetail.getPayRollCode());
+            payRoll.setPayMonth(payRoll.getPayMonth());
+        }
+        return queryList;
     }
 
     @Override

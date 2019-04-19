@@ -176,9 +176,6 @@ public class ProjectCorpInfoAOImpl implements IProjectCorpInfoAO {
 
         projectCorpInfoBO.refreshProjectCorpInfo(req, project.getName());
 
-        projectCorpInfoBO.refreshUploadStatus(req.getCode(),
-            EUploadStatus.TO_UPLOAD.getCode());
-
         User briefUser = userBO.getBriefUser(req.getUserId());
         operateLogBO.saveOperateLog(
             EOperateLogRefType.ProjectCorpinfo.getCode(), req.getCode(),

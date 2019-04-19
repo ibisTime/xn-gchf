@@ -94,6 +94,8 @@ public class WorkerAttendance extends ABaseDO {
     // 所在企业
     private String corpName;
 
+    private String corpCode;
+
     // 删除状态
     private String deleteStatus;
 
@@ -321,6 +323,14 @@ public class WorkerAttendance extends ABaseDO {
 
     public void setUserId(String userId) {
         this.userId = userId;
+    }
+
+    public String getCorpCode() {
+        return corpCode;
+    }
+
+    public void setCorpCode(String corpCode) {
+        this.corpCode = corpCode;
     }
 
 }

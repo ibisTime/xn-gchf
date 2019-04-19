@@ -104,12 +104,20 @@ public class ProjectAOImpl implements IProjectAO {
             req.getLinkPhone());
 
         // 发送短信
-        smsOutBO.sendSmsOut(req.getLinkPhone(),
-            "尊敬的" + PhoneUtil.hideMobile(req.getLinkPhone()) + "，"
-                    + req.getName() + "项目管理员账户已开设，登录名："
-                    + req.getName().concat("管理员") + "，密码：888888"
-                    + "，请登录鲸目项目端查看。",
-            "804080");
+        final XN631600Req tempReq = req;
+        new Thread(new Runnable() {
+
+            @Override
+            public void run() {
+                smsOutBO.sendSmsOut(tempReq.getLinkPhone(),
+                    "尊敬的" + PhoneUtil.hideMobile(tempReq.getLinkPhone()) + "，"
+                            + tempReq.getName() + "项目管理员账户已开设，登录名："
+                            + tempReq.getName().concat("管理员") + "，密码：888888"
+                            + "，请登录鲸目项目端查看。",
+                    "804080");
+            }
+        }).start();
+        ;
 
         // 添加施工许可证
         projectBuilderLicenseBO.saveProjectBuilderLicense(projectCode,

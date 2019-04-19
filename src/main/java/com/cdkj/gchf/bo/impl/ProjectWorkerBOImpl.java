@@ -224,7 +224,7 @@ public class ProjectWorkerBOImpl extends PaginableBOImpl<ProjectWorker>
         if (StringUtils.isNotBlank(req.getWorkDate())) {
             Date workDate = DateUtil.strToDate(req.getWorkDate(),
                 DateUtil.FRONT_DATE_FORMAT_STRING);
-            projectWorkerInfo.setJoinDatetime(workDate);
+            projectWorkerInfo.setWorkDate(workDate);
         }
 
         projectWorkerDAO.update(projectWorkerInfo);

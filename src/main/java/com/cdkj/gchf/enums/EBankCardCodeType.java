@@ -2,6 +2,8 @@ package com.cdkj.gchf.enums;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Map.Entry;
+import java.util.Set;
 
 import com.cdkj.gchf.exception.BizException;
 
@@ -180,6 +182,18 @@ public enum EBankCardCodeType {
             throw new BizException("xn0000", code + "对应银行卡类型不存在");
         }
         return projectCorpType;
+    }
+
+    public static String getDictVaule(String value) {
+        Map<String, EBankCardCodeType> bankCardCodeMap = getBankCardCodeMap();
+        Set<Entry<String, EBankCardCodeType>> entrySet = bankCardCodeMap
+            .entrySet();
+        for (Entry<String, EBankCardCodeType> entry : entrySet) {
+            if (entry.getValue().equals(value)) {
+                return entry.getKey();
+            }
+        }
+        return null;
     }
 
     public static void checkExists(String code) {

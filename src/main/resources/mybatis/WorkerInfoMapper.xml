@@ -134,26 +134,19 @@
 		,id_card_type = #{idCardType}
 		,id_card_number = #{idCardNumber}
 		,gender = #{gender}
-		,nation =
-		#{nation}
+		,nation = #{nation}
 		,edu_level = #{eduLevel}
 		,politics_type = #{politicsType}
 		,degree = #{degree}
-		,worker_type =
-		#{workerType}
+		,worker_type = #{workerType}
+		
 		,birthday = #{birthday}
-		,birth_place_code =
-		#{birthPlaceCode}
-		,address =
-		#{address}
-		,head_image_url =
-		#{headImageUrl}
-		,is_joined =
-		#{isJoined}
-		,joined_time =
-		#{joinedTime}
-		,culture_level_type =
-		#{cultureLevelType}
+		,birth_place_code = #{birthPlaceCode}
+		,address = #{address}
+		,head_image_url = #{headImageUrl}
+		,is_joined = #{isJoined}
+		,joined_time = #{joinedTime}
+		,culture_level_type = #{cultureLevelType}
 		,specialty = #{specialty}
 
 		,has_bad_medical_history =

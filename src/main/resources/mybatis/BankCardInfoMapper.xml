@@ -45,6 +45,9 @@
 			<if test="businessType != null and businessType != '' ">
 				AND t.business_type = #{businessType}
 			</if>
+			<if test="businessName != null and businessName != '' ">
+				AND t.business_name like "%"#{businessName}"%"
+			</if>
 
 		</trim>
 	</sql>

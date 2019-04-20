@@ -23,6 +23,9 @@ public class XN631765Req extends APageReq {
     // 业务编号
     private String businessSysNo;
 
+    //
+    private String businessName;
+
     public String getUserId() {
         return userId;
     }
@@ -61,6 +64,14 @@ public class XN631765Req extends APageReq {
 
     public void setBusinessSysNo(String businessSysNo) {
         this.businessSysNo = businessSysNo;
+    }
+
+    public String getBusinessName() {
+        return businessName;
+    }
+
+    public void setBusinessName(String businessName) {
+        this.businessName = businessName;
     }
 
 }

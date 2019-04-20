@@ -11,11 +11,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.cdkj.gchf.ao.IWorkerAttendanceAO;
-import com.cdkj.gchf.bo.ICorpBasicinfoBO;
 import com.cdkj.gchf.bo.IOperateLogBO;
 import com.cdkj.gchf.bo.IProjectBO;
 import com.cdkj.gchf.bo.IProjectConfigBO;
-import com.cdkj.gchf.bo.IProjectCorpInfoBO;
 import com.cdkj.gchf.bo.IProjectWorkerBO;
 import com.cdkj.gchf.bo.ITeamMasterBO;
 import com.cdkj.gchf.bo.IUserBO;
@@ -23,7 +21,6 @@ import com.cdkj.gchf.bo.IWorkerAttendanceBO;
 import com.cdkj.gchf.bo.base.Paginable;
 import com.cdkj.gchf.common.AesUtils;
 import com.cdkj.gchf.common.DateUtil;
-import com.cdkj.gchf.domain.CorpBasicinfo;
 import com.cdkj.gchf.domain.Project;
 import com.cdkj.gchf.domain.ProjectConfig;
 import com.cdkj.gchf.domain.ProjectWorker;
@@ -67,12 +64,6 @@ public class WorkerAttendanceAOImpl implements IWorkerAttendanceAO {
 
     @Autowired
     private IProjectBO projectBO;
-
-    @Autowired
-    private IProjectCorpInfoBO projectCorpInfoBO;
-
-    @Autowired
-    private ICorpBasicinfoBO corpBasicinfoBO;
 
     @Override
     public String addWorkerAttendance(XN631710Req data) {
@@ -211,25 +202,11 @@ public class WorkerAttendanceAOImpl implements IWorkerAttendanceAO {
             .getPaginable(start, limit, condition);
 
         if (null != page && CollectionUtils.isNotEmpty(page.getList())) {
-            if (StringUtils.isNotBlank(condition.getCorpCode())) {
-                String corpCode = condition.getCorpCode();
-                CorpBasicinfo corpBasicinfoByCorp = corpBasicinfoBO
-                    .getCorpBasicinfoByCorp(corpCode);
-                for (WorkerAttendance workerAttendance : page.getList()) {
-                    workerAttendance
-                        .setCorpName(corpBasicinfoByCorp.getCorpName());
-
-                }
-
-            } else {
-                for (WorkerAttendance workerAttendance : page.getList()) {
-                    TeamMaster teamMaster = teamMasterBO
-                        .getTeamMaster(workerAttendance.getTeamSysNo());
-                    // corpBasicinfoBO.getc
-                    workerAttendance.setCorpName(teamMaster.getCorpName());
-                }
+            for (WorkerAttendance workerAttendance : page.getList()) {
+                TeamMaster teamMaster = teamMasterBO
+                    .getTeamMaster(workerAttendance.getTeamSysNo());
+                workerAttendance.setCorpName(teamMaster.getCorpName());
             }
-
         }
         page.setList(page.getList());
         return page;

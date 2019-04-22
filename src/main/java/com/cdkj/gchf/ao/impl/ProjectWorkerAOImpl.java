@@ -161,12 +161,14 @@ public class ProjectWorkerAOImpl implements IProjectWorkerAO {
     public void editProjectWorker(XN631692Req req) {
 
         User user = userBO.getBriefUser(req.getUserId());
-        // ProjectWorker projectWorker = projectWorkerBO
-        // .getProjectWorker(req.getCode());
         if (StringUtils.isNotBlank(req.getWorkType())) {
             EWorkerType.checkExists(req.getWorkType());
         }
-        projectWorkerBO.refreshProjectWorker(req);
+
+        TeamMaster teamMaster = teamMasterBO.getTeamMaster(req.getTeamSysNo());
+
+        projectWorkerBO.refreshProjectWorker(req, teamMaster);
+
         operateLogBO.saveOperateLog(EOperateLogRefType.ProjectWorker.getCode(),
             req.getCode(), "修改项目人员信息", user, null);
 

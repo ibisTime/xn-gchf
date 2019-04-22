@@ -19,6 +19,8 @@ public class XN631692Req {
     // 工人类型
     private String workRole;
 
+    private String teamSysNo;
+
     // 发卡时间
     private String issueCardDate;
 
@@ -167,6 +169,14 @@ public class XN631692Req {
 
     public void setBankName(String bankName) {
         this.bankName = bankName;
+    }
+
+    public String getTeamSysNo() {
+        return teamSysNo;
+    }
+
+    public void setTeamSysNo(String teamSysNo) {
+        this.teamSysNo = teamSysNo;
     }
 
 }

@@ -26,7 +26,7 @@ public interface IProjectWorkerBO extends IPaginableBO<ProjectWorker> {
 
     public void removeProjectWorker(String code);
 
-    public void refreshProjectWorker(XN631692Req req);
+    public void refreshProjectWorker(XN631692Req req, TeamMaster teamMaster);
 
     void updateProjectWorkerDeleteStatus(String code, String status);
 

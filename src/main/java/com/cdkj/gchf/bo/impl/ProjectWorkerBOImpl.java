@@ -199,9 +199,11 @@ public class ProjectWorkerBOImpl extends PaginableBOImpl<ProjectWorker>
     }
 
     @Override
-    public void refreshProjectWorker(XN631692Req req) {
+    public void refreshProjectWorker(XN631692Req req, TeamMaster teamMaster) {
         ProjectWorker projectWorkerInfo = new ProjectWorker();
         BeanUtils.copyProperties(req, projectWorkerInfo);
+        projectWorkerInfo.setTeamName(teamMaster.getTeamName());
+
         if (StringUtils.isNotBlank(req.getIsTeamLeader())) {
             projectWorkerInfo
                 .setIsTeamLeader(Integer.parseInt(req.getIsTeamLeader()));

@@ -7,6 +7,7 @@ import java.util.Properties;
 public class PropertiesUtil {
 
     private static Properties props;
+
     static {
         props = new Properties();
         try {

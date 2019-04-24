@@ -14,7 +14,8 @@ public class JsonUtils {
             Gson gson = new Gson();
             t = (T) gson.fromJson(json, clazz);
         } catch (Exception e) {
-            throw new ValidException("830xxx", "json2Bean不正确:" + e.getMessage());
+            throw new ValidException("830xxx",
+                "json2Bean不正确:" + e.getMessage());
         }
         return t;
     }

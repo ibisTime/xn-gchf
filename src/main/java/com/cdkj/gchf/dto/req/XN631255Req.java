@@ -15,9 +15,12 @@ public class XN631255Req extends APageReq {
     // 统一社会信用代码
     private String corpCode;
 
+    // 项目编号
+    private String projectCode;
+
     // 用户编号
     @NotBlank
-    private String userId;
+    private String token;
 
     // 企业名称
     private String corpName;
@@ -28,6 +31,9 @@ public class XN631255Req extends APageReq {
     // 上传状态
     private String uploadStatus;
 
+    // 用户id
+    private String userId;
+
     public String getCorpCode() {
         return corpCode;
     }
@@ -36,12 +42,12 @@ public class XN631255Req extends APageReq {
         this.corpCode = corpCode;
     }
 
-    public String getUserId() {
-        return userId;
+    public String getToken() {
+        return token;
     }
 
-    public void setUserId(String userId) {
-        this.userId = userId;
+    public void setToken(String token) {
+        this.token = token;
     }
 
     public String getCorpName() {
@@ -60,12 +66,28 @@ public class XN631255Req extends APageReq {
         this.corpType = corpType;
     }
 
+    public String getProjectCode() {
+        return projectCode;
+    }
+
+    public void setProjectCode(String projectCode) {
+        this.projectCode = projectCode;
+    }
+
     public String getUploadStatus() {
         return uploadStatus;
     }
 
     public void setUploadStatus(String uploadStatus) {
         this.uploadStatus = uploadStatus;
+    }
+
+    public String getUserId() {
+        return userId;
+    }
+
+    public void setUserId(String userId) {
+        this.userId = userId;
     }
 
 }

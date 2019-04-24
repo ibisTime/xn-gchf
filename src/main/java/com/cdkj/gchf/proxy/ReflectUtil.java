@@ -13,8 +13,8 @@ public class ReflectUtil {
                 result = cls.newInstance();// 被代理对象
             }
         } catch (Exception e) {
-            throw new BizException(EBizErrorCode.DEFAULT.getCode(), "找不到类"
-                    + classname);
+            throw new BizException(EBizErrorCode.DEFAULT.getCode(),
+                "找不到类" + classname);
         }
         return result;
     }

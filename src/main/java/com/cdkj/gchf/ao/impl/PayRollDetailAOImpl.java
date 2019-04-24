@@ -94,28 +94,22 @@ public class PayRollDetailAOImpl implements IPayRollDetailAO {
 
             String payRollCode = payRollDetail.getPayRollCode();
             PayRoll payRoll = payRollBO.getPayRoll(payRollCode);
-            if (payRoll == null)
+            if (payRoll == null) {
                 continue;
-            TeamMaster teamMaster = teamMasterBO
-                .getTeamMaster(payRoll.getTeamSysNo());
-            if (teamMaster != null) {
-                // String teamName = teamMasterBO
-                // .getTeamMasterNameByTeamMasterSysNo(payRoll.getTeamSysNo());
-                payRollDetail.setTeamName(teamMaster.getTeamName());
+            }
+            if (payRoll.getTeamSysNo() != null) {
+                TeamMaster teamMaster = teamMasterBO
+                    .getTeamMaster(payRoll.getTeamSysNo());
+                if (teamMaster != null) {
+                    payRollDetail.setTeamName(teamMaster.getTeamName());
+                }
             }
 
-            // ProjectConfig configByProject = projectConfigBO
-            // .getProjectConfigByLocal(payRoll.getProjectCode());
             Project project = projectBO.getProject(payRoll.getProjectCode());
             payRollDetail.setProjectName(project.getName());
             CorpBasicinfo corpBasicinfoByCorp = corpBasicinfoBO
                 .getCorpBasicinfoByCorp(payRoll.getCorpCode());
             payRollDetail.setCorpName(corpBasicinfoByCorp.getCorpName());
-
-            // PayRoll payRollgetPayMonth = payRollBO
-            // .getPayRoll(payRollDetail.getPayRollCode());
-            // payRollDetail.setPayMonth(payRollgetPayMonth.getPayMonth());
-
         }
         page.setList(list);
         return page;

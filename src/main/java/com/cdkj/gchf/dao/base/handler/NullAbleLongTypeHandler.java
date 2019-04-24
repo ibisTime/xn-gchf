@@ -46,8 +46,8 @@ public class NullAbleLongTypeHandler extends BaseTypeHandler<Long> {
     }
 
     @Override
-    public void setNonNullParameter(PreparedStatement ps, int i,
-            Long parameter, JdbcType jdbcType) throws SQLException {
+    public void setNonNullParameter(PreparedStatement ps, int i, Long parameter,
+            JdbcType jdbcType) throws SQLException {
         ps.setLong(i, parameter);
     }
 

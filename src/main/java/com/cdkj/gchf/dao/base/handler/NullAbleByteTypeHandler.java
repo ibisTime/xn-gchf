@@ -46,8 +46,8 @@ public class NullAbleByteTypeHandler extends BaseTypeHandler<Byte> {
     }
 
     @Override
-    public void setNonNullParameter(PreparedStatement ps, int i,
-            Byte parameter, JdbcType jdbcType) throws SQLException {
+    public void setNonNullParameter(PreparedStatement ps, int i, Byte parameter,
+            JdbcType jdbcType) throws SQLException {
         ps.setByte(i, parameter);
     }
 

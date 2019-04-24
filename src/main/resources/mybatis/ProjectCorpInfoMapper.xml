@@ -43,12 +43,7 @@
 			<if test="corpCode != null and corpCode != '' ">
 				AND t.corp_code = #{corpCode}
 			</if>
-			<if test="corpType != null and corpType != '' ">
-				AND t.corp_type = #{corpType}
-			</if>
-			<if test="corpBasicType != null and corpBasicType != '' ">
-				AND tu.corp_type = #{corpBasicType}
-			</if>
+
 			<if test="uploadStatus != null and uploadStatus != '' ">
 				AND t.upload_status = #{uploadStatus}
 			</if>
@@ -81,6 +76,9 @@
 		thf_project_corp_info t
 		<include refid="join_condition" />
 		<include refid="where_condition" />
+		<if test="corpBasicType != null and corpBasicType != '' ">
+			AND tu.corp_type = #{corpBasicType}
+		</if>
 		<trim prefix="ORDER BY ">
 			<if test="order != null and order != '' ">
 				t.${order}
@@ -139,7 +137,8 @@
 		thf_project_corp_info
 		SET
 		project_code = #{projectCode}
-		,project_name = #{projectName}
+		,project_name =
+		#{projectName}
 		,corp_code = #{corpCode}
 		,corp_type = #{corpType}
 
@@ -154,7 +153,7 @@
 	</update>
 
 	<update id="update_projectCorpInfoUploadStatus" parameterType="projectCorpInfo">
-		UPDATE thf_project_corp_info 
+		UPDATE thf_project_corp_info
 		SET
 		upload_status = #{uploadStatus}
 		WHERE
@@ -165,7 +164,7 @@
 		UPDATE thf_project_corp_info t
 		SET
 		delete_status = #{deleteStatus}
-		WHERE 
+		WHERE
 		t.code = #{code}
 	</update>
 

@@ -39,14 +39,21 @@ public class CorpBasicinfoBOImpl extends PaginableBOImpl<CorpBasicinfo>
 
     @Override
     public String saveCorpBasicinfo(XN631250Req req) {
-
+        CorpBasicinfo corpBasicinfo = new CorpBasicinfo();
         String code = OrderNoGenerater
             .generate(EGeneratePrefix.CorpBasicinfo.getCode());
 
-        CorpBasicinfo corpBasicinfo = new CorpBasicinfo();
+        // User briefUser = userBO.getBriefUser(req.getUserId());
+        // if (briefUser.getType().equals(EUserKind.Owner.getCode())) {
+        // // 项目端添加添加项目编号和名称
+        // Project project = projectBO
+        // .getProject(briefUser.getOrganizationCode());
+        // corpBasicinfo.setProjectCode(briefUser.getOrganizationCode());
+        // corpBasicinfo.setProjectName(project.getName());
+        // }
+
         BeanUtils.copyProperties(req, corpBasicinfo);
         corpBasicinfo.setCode(code);
-
         if (StringUtils.isNotBlank(req.getRegCapital())) {
             corpBasicinfo.setRegCapital(new BigDecimal(req.getRegCapital()));
         }
@@ -67,6 +74,15 @@ public class CorpBasicinfoBOImpl extends PaginableBOImpl<CorpBasicinfo>
 
         corpBasicinfoDAO.insert(corpBasicinfo);
 
+        return code;
+    }
+
+    @Override
+    public String insertCorpBasicinfo(CorpBasicinfo corpBasicinfo) {
+        String code = OrderNoGenerater
+            .generate(EGeneratePrefix.CorpBasicinfo.getCode());
+        corpBasicinfo.setCode(code);
+        corpBasicinfoDAO.insert(corpBasicinfo);
         return code;
     }
 

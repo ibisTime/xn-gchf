@@ -31,7 +31,7 @@ public class XN631715 extends AProcessor {
         Date endDatetime = DateUtil.strToDate(req.getEndDatetime(),
             DateUtil.DATA_TIME_PATTERN_1);
         workerAttendanceAO.batchCreateAttandance(req.getProjectCode(),
-            req.getDirection(), startDatetime, endDatetime);
+            req.getTeamSysNo(), req.getDirection(), startDatetime, endDatetime);
         return new Boolean(true);
     }
 

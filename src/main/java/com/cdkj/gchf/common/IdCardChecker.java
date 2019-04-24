@@ -65,9 +65,8 @@ public class IdCardChecker {
                 result = result && ch >= '0' && ch <= '9';
             }
             // 身份证号的第18位校验正确
-            result = result
-                    && (calculateVerifyCode(cardNumber) == cardNumber
-                        .charAt(NEW_CARD_NUMBER_LENGTH - 1));
+            result = result && (calculateVerifyCode(cardNumber) == cardNumber
+                .charAt(NEW_CARD_NUMBER_LENGTH - 1));
             // 出生日期不能晚于当前时间，并且不能早于1900年
             try {
                 Date birthDate = this.getBirthDate();
@@ -79,8 +78,8 @@ public class IdCardChecker {
                  * 月份和日期相符合
                  */
                 String birthdayPart = this.getBirthDayPart();
-                String realBirthdayPart = this.createBirthDateParser().format(
-                    birthDate);
+                String realBirthdayPart = this.createBirthDateParser()
+                    .format(birthDate);
                 result = result && (birthdayPart.equals(realBirthdayPart));
             } catch (Exception e) {
                 e.printStackTrace();
@@ -116,8 +115,8 @@ public class IdCardChecker {
     public Date getBirthDate() {
         if (null == this.cacheBirthDate) {
             try {
-                this.cacheBirthDate = this.createBirthDateParser().parse(
-                    this.getBirthDayPart());
+                this.cacheBirthDate = this.createBirthDateParser()
+                    .parse(this.getBirthDayPart());
             } catch (Exception e) {
                 throw new RuntimeException("身份证的出生日期无效");
             }

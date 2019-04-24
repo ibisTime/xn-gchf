@@ -101,8 +101,9 @@ public class ProjectCorpInfoAOImpl implements IProjectCorpInfoAO {
         ProjectCorpInfo corpInfoByCorpCode = projectCorpInfoBO
             .getProjectCorpInfo(data.getProjectCode(), data.getCorpCode());
         if (corpInfoByCorpCode != null) {
-            throw new BizException("XN631630", "参见单位已添加");
+            throw new BizException("XN631630", "参建单位已添加");
         }
+
         Project project = projectBO.getProject(data.getProjectCode());
 
         return projectCorpInfoBO.saveProjectCorpInfo(data, project.getName());
@@ -284,8 +285,6 @@ public class ProjectCorpInfoAOImpl implements IProjectCorpInfoAO {
 
         User user = userBO.getBriefUser(req.getUserId());
         for (XN631633ReqList data : req.getDateList()) {
-            // ProjectConfig projectConfig = projectConfigBO
-            // .getProjectConfigByLocal(req.getProjectCode());
             Project project = projectBO.getProject(req.getProjectCode());
             String projectCorpInfoCode = projectCorpInfoBO
                 .saveProjectCorpInfo(project, data);

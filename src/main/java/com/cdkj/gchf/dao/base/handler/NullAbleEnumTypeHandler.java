@@ -26,8 +26,8 @@ import org.apache.ibatis.type.MappedTypes;
  * @since  [产品/模块版本]
  */
 @MappedTypes({ Enum.class })
-public class NullAbleEnumTypeHandler<E extends Enum<E>> extends
-        BaseTypeHandler<Enum<E>> {
+public class NullAbleEnumTypeHandler<E extends Enum<E>>
+        extends BaseTypeHandler<Enum<E>> {
 
     private Class<E> type;
 

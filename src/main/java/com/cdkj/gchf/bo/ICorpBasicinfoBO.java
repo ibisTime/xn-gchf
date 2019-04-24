@@ -15,6 +15,8 @@ public interface ICorpBasicinfoBO extends IPaginableBO<CorpBasicinfo> {
 
     public String saveCorpBasicinfo(XN631250Req req);
 
+    String insertCorpBasicinfo(CorpBasicinfo corpBasicinfo);
+
     public int removeCorpBasicinfo(String code);
 
     public void refreshCorpBasicinfo(XN631251Req data);

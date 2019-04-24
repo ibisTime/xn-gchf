@@ -30,4 +30,7 @@ public interface IBankCardBankBO extends IPaginableBO<BankCardInfo> {
 
     public BankCardInfo getBankCardInfo(String bankCode);
 
+    List<BankCardInfo> queryBankCardInfoListByIdcardNumber(
+            List<String> idCardNumbers);
+
 }

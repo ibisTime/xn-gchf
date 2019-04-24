@@ -15,6 +15,9 @@ public class XN631257Req extends AListReq {
     // 统一社会信用代码
     private String corpCode;
 
+    // 项目编号
+    private String projectCode;
+
     // 用户编号
     @NotBlank
     private String userId;
@@ -36,6 +39,14 @@ public class XN631257Req extends AListReq {
 
     public void setUserId(String userId) {
         this.userId = userId;
+    }
+
+    public String getProjectCode() {
+        return projectCode;
+    }
+
+    public void setProjectCode(String projectCode) {
+        this.projectCode = projectCode;
     }
 
     public String getUploadStatus() {

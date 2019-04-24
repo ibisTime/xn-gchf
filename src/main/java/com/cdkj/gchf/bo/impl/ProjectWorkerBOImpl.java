@@ -40,6 +40,7 @@ import com.cdkj.gchf.dto.req.XN631913Req;
 import com.cdkj.gchf.enums.EBankCardCodeType;
 import com.cdkj.gchf.enums.EDeleteStatus;
 import com.cdkj.gchf.enums.EGeneratePrefix;
+import com.cdkj.gchf.enums.EGovErrorMessage;
 import com.cdkj.gchf.enums.EIdCardType;
 import com.cdkj.gchf.enums.EIsNotType;
 import com.cdkj.gchf.enums.EUploadStatus;
@@ -132,7 +133,7 @@ public class ProjectWorkerBOImpl extends PaginableBOImpl<ProjectWorker>
         }
         if (StringUtils.isNotBlank(data.getIssueCardDate())) {
             Date issueCardDate = DateUtil.strToDate(data.getIssueCardDate(),
-                DateUtil.FRONT_DATE_FORMAT_STRING);
+                DateUtil.DATA_TIME_PATTERN_1);
             projectWorkerInfo.setIssueCardDate(issueCardDate);
         }
         if (StringUtils.isNotBlank(data.getWorkDate())) {
@@ -416,6 +417,18 @@ public class ProjectWorkerBOImpl extends PaginableBOImpl<ProjectWorker>
             .getWorkerInfoByIdCardNumber(projectWorker.getIdcardNumber());
         if (StringUtils.isBlank(infoByIdCardNumber.getCellPhone())) {
             throw new BizException("XN631694", "人员电话号码不完整，请重新建档补充信息");
+        }
+        if (StringUtils.isBlank(infoByIdCardNumber.getHeadImageUrl())) {
+            throw new BizException("xn631694",
+                EGovErrorMessage.WorkerList.getLocalMessage());
+        }
+        if (StringUtils
+            .isBlank(infoByIdCardNumber.getPositiveIdCardImageUrl())) {
+            throw new BizException("xn631694", "员工身份证正面照信息无效,请重新建档补充信息");
+        }
+        if (StringUtils
+            .isBlank(infoByIdCardNumber.getNegativeIdCardImageUrl())) {
+            throw new BizException("xn631694", "员工身份证反面照信息无效,请重新建档补充信息");
         }
 
         projectWorker.setTeamSysNo(teamMaster.getTeamSysNo());

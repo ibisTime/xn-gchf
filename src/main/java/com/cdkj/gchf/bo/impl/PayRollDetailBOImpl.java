@@ -73,19 +73,15 @@ public class PayRollDetailBOImpl extends PaginableBOImpl<PayRollDetail>
                 throw new BizException("XN631770", "项目银行卡号不能为空");
             }
             if (bankCardInfoByNum == null) {
+                ProjectWorker projectWorker = projectWorkerBO
+                    .getProjectWorker(payRollBankCardNumber);
+
                 throw new BizException("XN631770",
-                    "员工银行卡未绑定【" + payRollBankCardNumber + "】");
+                    "员工银行卡未绑定【" + projectWorker.getWorkerName() + "】");
             }
             String workerCode = bankCardInfoByNum.getBusinessSysNo();
             ProjectWorker workerByBankCard = projectWorkerBO
                 .getProjectWorker(workerCode);
-            // List<ProjectWorker> projectWorkers = projectWorkerBO
-            // .queryProjectWorkerList(projectCode, detail.getIdCardNumber());
-            // if (CollectionUtils.isEmpty(projectWorkers)) {
-            // throw new BizException("XN631770",
-            // "项目人员【" + detail.getIdCardNumber() + "】不存在");
-            // }
-            // ProjectWorker projectWorker = projectWorkers.get(0);
             if (null == workerByBankCard) {
                 throw new BizException("XN631733", "项目人员银行卡信息未绑定【"
                         + bankCardInfoByNum.getBusinessSysNo() + "】");
@@ -263,8 +259,12 @@ public class PayRollDetailBOImpl extends PaginableBOImpl<PayRollDetail>
         PayRollDetail condition = new PayRollDetail();
         condition.setCode(data.getCode());
         BeanUtils.copyProperties(data, condition);
-        condition.setActualAmount(new BigDecimal(data.getActualAmount()));
-        condition.setWorkHours(new BigDecimal(data.getWorkHours()));
+        if (StringUtils.isNotBlank(data.getActualAmount())) {
+            condition.setActualAmount(new BigDecimal(data.getActualAmount()));
+        }
+        if (StringUtils.isNotEmpty(data.getWorkHours())) {
+            condition.setWorkHours(new BigDecimal(data.getWorkHours()));
+        }
         if (StringUtils.isNotBlank(data.getBalanceDate())) {
             Date balanceDate = DateUtil.strToDate(data.getBalanceDate(),
                 DateUtil.FRONT_DATE_FORMAT_STRING);

@@ -54,7 +54,8 @@ public class ProjectBOImpl extends PaginableBOImpl<Project>
         project.setCode(code);
         project.setContractorCorpName(contractorCorpInfo.getCorpName());
         if (StringUtils.isNotBlank(req.getInvest())) {
-            project.setInvest(new BigDecimal(req.getInvest()));
+            project.setInvest(
+                new BigDecimal(Integer.parseInt(req.getInvest()) * 10000));
         }
         if (StringUtils.isNotBlank(req.getBuildingArea())) {
             project.setBuildingArea(new BigDecimal(req.getBuildingArea()));

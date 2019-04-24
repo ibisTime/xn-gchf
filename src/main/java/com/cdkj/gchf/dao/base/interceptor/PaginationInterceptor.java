@@ -26,7 +26,9 @@ import com.cdkj.gchf.dao.base.dialect.ADialect;
  * @author joe.chen
  * 
  */
-@Intercepts({ @Signature(type = StatementHandler.class, method = "prepare", args = { Connection.class }) })
+@Intercepts({
+        @Signature(type = StatementHandler.class, method = "prepare", args = {
+                Connection.class }) })
 public final class PaginationInterceptor implements Interceptor {
 
     private final static Logger log = LoggerFactory
@@ -46,9 +48,8 @@ public final class PaginationInterceptor implements Interceptor {
 
         BoundSql boundSql = statementHandler.getBoundSql();
 
-        MetaObject metaStatementHandler = MetaObject.forObject(
-            statementHandler, new DefaultObjectFactory(),
-            new DefaultObjectWrapperFactory());
+        MetaObject metaStatementHandler = MetaObject.forObject(statementHandler,
+            new DefaultObjectFactory(), new DefaultObjectWrapperFactory());
 
         RowBounds rowBounds = (RowBounds) metaStatementHandler
             .getValue("delegate.rowBounds".intern());
@@ -62,8 +63,8 @@ public final class PaginationInterceptor implements Interceptor {
         String originalSql = (String) metaStatementHandler
             .getValue("delegate.boundSql.sql".intern());
 
-        metaStatementHandler.setValue("delegate.boundSql.sql".intern(), dialect
-            .getLimitString(originalSql, rowBounds.getOffset(),
+        metaStatementHandler.setValue("delegate.boundSql.sql".intern(),
+            dialect.getLimitString(originalSql, rowBounds.getOffset(),
                 rowBounds.getLimit()));
 
         metaStatementHandler.setValue("delegate.rowBounds.offset".intern(),

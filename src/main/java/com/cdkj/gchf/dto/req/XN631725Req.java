@@ -17,6 +17,9 @@ public class XN631725Req extends APageReq {
     // 企业唯一信用编码
     private String corpCode;
 
+    // 班组编号（本地）
+    private String teamSysNo;
+
     // 上传状态
     private String uploadStatus;
 
@@ -57,6 +60,14 @@ public class XN631725Req extends APageReq {
 
     public void setCorpCode(String corpCode) {
         this.corpCode = corpCode;
+    }
+
+    public String getTeamSysNo() {
+        return teamSysNo;
+    }
+
+    public void setTeamSysNo(String teamSysNo) {
+        this.teamSysNo = teamSysNo;
     }
 
     public String getUploadStatus() {

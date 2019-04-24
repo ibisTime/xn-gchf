@@ -1,6 +1,5 @@
 package com.cdkj.gchf.bo.impl;
 
-import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -8,12 +7,14 @@ import java.util.Map;
 
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;
+import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.alibaba.fastjson.JSONObject;
 import com.cdkj.gchf.bo.ICorpBasicinfoBO;
 import com.cdkj.gchf.bo.IOperateLogBO;
+import com.cdkj.gchf.bo.IProjectBO;
 import com.cdkj.gchf.bo.IProjectConfigBO;
 import com.cdkj.gchf.bo.IProjectCorpInfoBO;
 import com.cdkj.gchf.bo.IUserBO;
@@ -21,6 +22,7 @@ import com.cdkj.gchf.bo.base.Paginable;
 import com.cdkj.gchf.bo.base.PaginableBOImpl;
 import com.cdkj.gchf.common.AesUtils;
 import com.cdkj.gchf.common.DateUtil;
+import com.cdkj.gchf.common.IdCardChecker;
 import com.cdkj.gchf.core.OrderNoGenerater;
 import com.cdkj.gchf.dao.IProjectCorpInfoDAO;
 import com.cdkj.gchf.domain.CorpBasicinfo;
@@ -68,6 +70,9 @@ public class ProjectCorpInfoBOImpl extends PaginableBOImpl<ProjectCorpInfo>
     @Autowired
     private IProjectCorpInfoBO projectCorpInfoBO;
 
+    @Autowired
+    private IProjectBO projectBO;
+
     @Override
     public String saveProjectCorpInfo(XN631630Req req, String projectName) {
         ProjectCorpInfo projectCorpInfo = new ProjectCorpInfo();
@@ -75,15 +80,16 @@ public class ProjectCorpInfoBOImpl extends PaginableBOImpl<ProjectCorpInfo>
         BeanUtils.copyProperties(req, projectCorpInfo);
         CorpBasicinfo corpBasicinfo = corpBasicinfoBO
             .getCorpBasicinfoByCorp(req.getCorpCode());
+        if (corpBasicinfo == null) {
+            throw new BizException("XN0000", "企业信用编码无效,请检查");
+        }
         projectCorpInfo.setCorpName(corpBasicinfo.getCorpName());
         if (StringUtils.isNotBlank(req.getPmIDCardType())) {
             EIdCardType.checkExists(req.getPmIDCardType());
         }
-        // ProjectConfig configByLocal = projectConfigBO
-        // .getProjectConfigByLocal(req.getProjectCode());
-        // if (configByLocal == null) {
-        // throw new BizException("XN631630", "项目不存在");
-        // }
+        if (null == projectBO.getProject(req.getProjectCode())) {
+            throw new BizException("XN0000", "请选择项目");
+        }
         String code = OrderNoGenerater
             .generate(EGeneratePrefix.ProjectCorpInfo.getCode());
         projectCorpInfo.setCode(code);
@@ -196,41 +202,58 @@ public class ProjectCorpInfoBOImpl extends PaginableBOImpl<ProjectCorpInfo>
 
     @Override
     public String saveProjectCorpInfo(Project project, XN631633ReqList req) {
-        ProjectCorpInfo projectCorpInfo = new ProjectCorpInfo();
+        String code;
+        Date entryDate = null;
+        Date exitDate = null;
+        try {
+            ProjectCorpInfo projectCorpInfo = new ProjectCorpInfo();
 
-        String code = OrderNoGenerater
-            .generate(EGeneratePrefix.ProjectCorpInfo.getCode());
-        projectCorpInfo.setCode(code);
+            code = OrderNoGenerater
+                .generate(EGeneratePrefix.ProjectCorpInfo.getCode());
+            projectCorpInfo.setCode(code);
 
-        BeanUtils.copyProperties(req, projectCorpInfo);
-        projectCorpInfo.setCorpCode(req.getCorpCode());
-        projectCorpInfo.setCorpName(req.getCorpName());
-        projectCorpInfo.setProjectCode(project.getCode());
-        projectCorpInfo.setProjectName(project.getName());
-        projectCorpInfo.setUploadStatus(EUploadStatus.TO_UPLOAD.getCode());
-        projectCorpInfo.setPmIDCardType("01");
-        projectCorpInfo.setDeleteStatus(EDeleteStatus.NORMAL.getCode());
+            BeanUtils.copyProperties(req, projectCorpInfo);
+            projectCorpInfo.setCorpCode(req.getCorpCode());
+            projectCorpInfo.setCorpName(req.getCorpName());
+            projectCorpInfo.setProjectCode(project.getCode());
+            projectCorpInfo.setProjectName(project.getName());
+            projectCorpInfo.setUploadStatus(EUploadStatus.TO_UPLOAD.getCode());
+            projectCorpInfo.setPmIDCardType("01");
+            projectCorpInfo.setDeleteStatus(EDeleteStatus.NORMAL.getCode());
+            IdCardChecker idCardChecker = new IdCardChecker(
+                req.getPmIDCardNumber());
+            if (!idCardChecker.validate()) {
+                throw new BizException("XN631633",
+                    "项目经理证件信息不正确" + req.getPmIDCardNumber());
+            }
+            if (StringUtils.isNotBlank(req.getEntryTime())) {
+                // Date strToDate = DateUtil.strToDate(req.getEntryTime(),
+                // "yyyy/mm/dd");
+                // String format = new SimpleDateFormat("yyyy-MM-dd")
+                // .format(strToDate);
+                // Date toDate = DateUtil.strToDate(format, "yyyy-MM-dd");
+                entryDate = DateUtil.strToDate(req.getEntryTime(),
+                    DateUtil.FRONT_DATE_FORMAT_STRING);
+                projectCorpInfo.setEntryTime(entryDate);
+            }
+            if (StringUtils.isNotBlank(req.getExitTime())) {
 
-        if (StringUtils.isNotBlank(req.getEntryTime())) {
-            Date strToDate = DateUtil.strToDate(req.getEntryTime(),
-                "yyyy/mm/dd");
-            String format = new SimpleDateFormat("yyyy-MM-dd")
-                .format(strToDate);
-            Date toDate = DateUtil.strToDate(format, "yyyy-MM-dd");
-            projectCorpInfo.setEntryTime(toDate);
+                exitDate = DateUtil.strToDate(req.getExitTime(),
+                    DateUtil.FRONT_DATE_FORMAT_STRING);
+                projectCorpInfo.setExitTime(exitDate);
+            }
+
+            projectCorpInfoDAO.insert(projectCorpInfo);
+            return code;
+        } catch (BeansException e) {
+            e.printStackTrace();
+            if (entryDate == null || exitDate == null) {
+                throw new BizException("XN631805", "请检查excel进退场日期数据格式");
+            }
+
         }
-        if (StringUtils.isNotBlank(req.getExitTime())) {
-            Date strToDate = DateUtil.strToDate(req.getExitTime(),
-                "yyyy/mm/dd");
-            String format = new SimpleDateFormat("yyyy-MM-dd")
-                .format(strToDate);
-            Date toDate = DateUtil.strToDate(format, "yyyy-MM-dd");
-            projectCorpInfo.setExitTime(toDate);
-        }
+        return null;
 
-        projectCorpInfoDAO.insert(projectCorpInfo);
-
-        return code;
     }
 
     @Override

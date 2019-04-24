@@ -49,7 +49,8 @@ public class XN631765 extends AProcessor {
             EBankCardStatus.checkExists(req.getStatus());
         }
         condition.setOrder(column, req.getOrderDir());
-        return bankCardInfoAO.queryBankCardInfoPage(start, limit, condition);
+        return bankCardInfoAO.queryBankCardInfoPage(req.getUserId(), start,
+            limit, condition);
     }
 
     @Override

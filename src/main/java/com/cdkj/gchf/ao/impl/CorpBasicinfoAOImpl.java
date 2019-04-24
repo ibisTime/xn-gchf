@@ -9,6 +9,7 @@ import com.alibaba.fastjson.JSONObject;
 import com.cdkj.gchf.ao.ICorpBasicinfoAO;
 import com.cdkj.gchf.bo.ICorpBasicinfoBO;
 import com.cdkj.gchf.bo.IOperateLogBO;
+import com.cdkj.gchf.bo.IProjectBO;
 import com.cdkj.gchf.bo.IProjectConfigBO;
 import com.cdkj.gchf.bo.IUserBO;
 import com.cdkj.gchf.bo.base.Paginable;
@@ -42,11 +43,39 @@ public class CorpBasicinfoAOImpl implements ICorpBasicinfoAO {
     @Autowired
     private IUserBO userBO;
 
+    @Autowired
+    private IProjectBO projectBO;
+
     @Override
     public String addCorpBasicinfo(XN631250Req req) {
 
+        String userId = req.getUserId();
+        User briefUser = userBO.getBriefUser(userId);
+        // if (briefUser.getType().equals(EUserKind.Owner.getCode())) {
+        // CorpBasicinfo corpBasicInfoByCorpProject = corpBasicinfoBO
+        // .getCorpBasicInfoByCorpProject(briefUser.getOrganizationCode(),
+        // req.getCorpCode());
+        //
+        // if (corpBasicInfoByCorpProject == null) {
+        // CorpBasicinfo corpBasicinfoByCorp = corpBasicinfoBO
+        // .getCorpBasicinfoByCorp(req.getCorpCode());
+        // corpBasicinfoByCorp
+        // .setProjectCode(briefUser.getOrganizationCode());
+        // String code = OrderNoGenerater
+        // .generate(EGeneratePrefix.CorpBasicinfo.getCode());
+        // corpBasicinfoByCorp.setCode(code);
+        // Project project = projectBO
+        // .getProject(briefUser.getOrganizationCode());
+        // corpBasicinfoByCorp.setProjectName(project.getName());
+        // corpBasicinfoBO.insertCorpBasicinfo(corpBasicinfoByCorp);
+        // return code;
+        // } else {
+        // throw new BizException("XN631250", "企业基本信息已存在，请勿重复添加");
+        // }
+        //
+        // }
         if (null != corpBasicinfoBO.getCorpBasicinfoByCorp(req.getCorpCode())) {
-            throw new BizException("XN631250", "统一社会信用代码已存在，请勿重复添加");
+            throw new BizException("XN631250", "企业基本信息已存在，请勿重复添加");
         }
 
         String code = corpBasicinfoBO.saveCorpBasicinfo(req);
@@ -156,8 +185,19 @@ public class CorpBasicinfoAOImpl implements ICorpBasicinfoAO {
     }
 
     @Override
-    public Paginable<CorpBasicinfo> queryCorpBasicinfoPage(int start, int limit,
-            CorpBasicinfo condition) {
+    public Paginable<CorpBasicinfo> queryCorpBasicinfoPage(String userId,
+            int start, int limit, CorpBasicinfo condition) {
+        // User briefUser = userBO.getBriefUser(userId);
+        // if (briefUser != null) {
+        // if (briefUser.getType().equals(EUserKind.Owner.getCode())) {
+        // // 业主端
+        // String organizationCode = briefUser.getOrganizationCode();
+        // condition.setProjectCode(organizationCode);
+        // condition.setGroupBycorpcode(null);
+        // }
+        //
+        // }
+
         return corpBasicinfoBO.getPaginable(start, limit, condition);
     }
 
@@ -171,4 +211,23 @@ public class CorpBasicinfoAOImpl implements ICorpBasicinfoAO {
         return corpBasicinfoBO.getCorpBasicinfo(code);
     }
 
+    // @Override
+    // public void bindingProject(XN631254Req req) {
+    // CorpBasicinfo corpBasicinfo = corpBasicinfoBO
+    // .getCorpBasicinfo(req.getCode());
+    // List<String> projectCode = req.getProjectCodeList();
+    // for (String projectcode : projectCode) {
+    // if (corpBasicinfo.getProjectCode() != null
+    // && corpBasicinfo.getProjectCode().equals(projectcode)) {
+    // continue;
+    // }
+    // CorpBasicinfo copyCorpBasicinfo = corpBasicinfo;
+    // copyCorpBasicinfo.setCode(OrderNoGenerater
+    // .generate(EGeneratePrefix.CorpBasicinfo.getCode()));
+    // copyCorpBasicinfo.setProjectCode(projectcode);
+    // Project project = projectBO.getProject(projectcode);
+    // copyCorpBasicinfo.setProjectName(project.getName());
+    // corpBasicinfoBO.insertCorpBasicinfo(copyCorpBasicinfo);
+    // }
+    // }
 }

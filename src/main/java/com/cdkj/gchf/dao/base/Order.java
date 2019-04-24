@@ -67,8 +67,8 @@ public class Order {
         }
         // String upcaseColumnNamesString = columnNames.toUpperCase();
         String upcaseColumnNamesString = columnNames;
-        String columns[] = StringUtils.splitPreserveAllTokens(
-            upcaseColumnNamesString, ",");
+        String columns[] = StringUtils
+            .splitPreserveAllTokens(upcaseColumnNamesString, ",");
         StringBuilder sb = new StringBuilder(128);
         for (String columnTemp : columns) {
             columnTemp = columnTemp.trim();

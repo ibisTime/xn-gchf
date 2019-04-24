@@ -23,12 +23,14 @@ public interface ICorpBasicinfoAO {
 
     void uploadCorpBasicinfo(List<String> codeList, String userId);
 
-    public Paginable<CorpBasicinfo> queryCorpBasicinfoPage(int start, int limit,
-            CorpBasicinfo condition);
+    public Paginable<CorpBasicinfo> queryCorpBasicinfoPage(String userId,
+            int start, int limit, CorpBasicinfo condition);
 
     public List<CorpBasicinfo> queryCorpBasicinfoList(CorpBasicinfo condition);
 
     public CorpBasicinfo getCorpBasicinfo(String code);
+
+    // void bindingProject(XN631254Req req);
 
     /****国家平台接口****/
     public void uploadCorpBasicinfo(XN631900Req data);

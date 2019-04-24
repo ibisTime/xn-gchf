@@ -3,7 +3,6 @@ package com.cdkj.gchf.dto.req;
 import java.util.List;
 
 import org.hibernate.validator.constraints.NotBlank;
-import org.hibernate.validator.constraints.NotEmpty;
 
 /**
  * 新增项目基本信息
@@ -134,7 +133,6 @@ public class XN631600Req {
     private String userId;
 
     // 施工许可证
-    @NotEmpty
     private List<XN631600ReqLicenses> builderLicenses;
 
     public String getContractorCorpCode() {

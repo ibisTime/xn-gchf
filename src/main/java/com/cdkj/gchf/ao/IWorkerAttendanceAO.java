@@ -23,8 +23,8 @@ public interface IWorkerAttendanceAO {
 
     public void editWorkerAttendance(XN631712Req data);
 
-    public void batchCreateAttandance(String projectCode, String direction,
-            Date startDatetime, Date endDatetime);
+    public void batchCreateAttandance(String projectCode, String teamMasterNo,
+            String direction, Date startDatetime, Date endDatetime);
 
     public Paginable<WorkerAttendance> queryWorkerAttendancePage(int start,
             int limit, WorkerAttendance condition);

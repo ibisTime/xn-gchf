@@ -253,20 +253,13 @@ public class WorkerInfoBOImpl extends PaginableBOImpl<WorkerInfo>
             workerInfo.setCode(code);
             if (StringUtils.isNotBlank(data.getStartDate())) {
                 Date strToDate = DateUtil.strToDate(data.getStartDate(),
-                    "yyyy/mm/dd");
+                    "yyyy-MM-dd");
                 //
-                String format = new SimpleDateFormat("yyyy-MM-dd")
-                    .format(strToDate);
-                Date toDate = DateUtil.strToDate(format, "yyyy-MM-dd");
-                workerInfo.setStartDate(toDate);
+                workerInfo.setStartDate(strToDate);
             }
             if (StringUtils.isNotBlank(data.getExpiryDate())) {
-                Date strToDate = DateUtil.strToDate(data.getExpiryDate(),
-                    "yyyy/mm/dd");
-                //
-                String format = new SimpleDateFormat("yyyy-MM-dd")
-                    .format(strToDate);
-                Date toDate = DateUtil.strToDate(format, "yyyy-MM-dd");
+                Date toDate = DateUtil.strToDate(data.getStartDate(),
+                    "yyyy-MM-dd");
                 workerInfo.setExpiryDate(toDate);
             }
             workerInfoDAO.insert(workerInfo);

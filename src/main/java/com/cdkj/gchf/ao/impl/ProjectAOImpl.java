@@ -188,6 +188,7 @@ public class ProjectAOImpl implements IProjectAO {
     @Override
     public Paginable<Project> queryProjectPage(int start, int limit,
             Project condition) {
+
         Paginable<Project> page = projectBO.getPaginable(start, limit,
             condition);
 

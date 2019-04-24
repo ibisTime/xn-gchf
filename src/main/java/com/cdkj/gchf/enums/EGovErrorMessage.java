@@ -13,13 +13,17 @@ import java.util.Set;
  * @Copyright:
  */
 public enum EGovErrorMessage {
-    WorkerList("[headImage]不能为空!", "项目人员头像信息未上传,请重新建档补充信息后再上传"),
+    WorkerList("[0][headImage]不能为空!", "项目人员头像信息未上传,请重新建档补充信息后再上传"),
+
+    Error("请求参数无效:appid无效!", "项目配置错误"),
 
     WebSite("[webSite]格式不正确!", "企业基本信息中网站格式不正确,请检查修改后再上传"),
 
     PayMonthUnValid("[payMonth]不能大于今天!", "发放工资的年月不能大于今天,请删除重新添加"),
 
     DateUnValid("[date]不能大于当天!", "进退场日期不能大于今天"),
+
+    BadDate("[workerList][0][date]不能大于当天!", "进退场日期不能大于今天"),
 
     HeadImageSize("[headImage]大小超过限制50KB!", "头像图片大小超过限制,请保持图片大小在50KB以内"),
 
@@ -43,6 +47,8 @@ public enum EGovErrorMessage {
     TeamMasterNo("[teamSysNo]值超出范围或无效!", "班组信息未上传,请先上传班组信息"),
 
     AreaCode("[areaCode]参数值不正确,请参见行政区划字典表!", "注册地区编码无效,请修改"),
+
+    NoWorkerToPay("的工人信息,不允许上传该工人的工资发放信息!", "工人信息未上传,无法上传员工工资单信息"),
 
     JoinExitTimeUnValid("[date]不能小于历史进退场时间!", "进退场日期不能小于历史进退场信息");
 

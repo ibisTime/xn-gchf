@@ -99,7 +99,7 @@ public class ProjectWorkerAOImpl implements IProjectWorkerAO {
 
     @Override
     public String addProjectWorker(XN631690Req req) {
-
+        User user = userBO.getBriefUser(req.getUserId());
         WorkerInfo workerInfo = workerInfoBO.getWorkerInfo(req.getWorkerCode());
         if (workerInfo == null) {
             throw new BizException("XN631690", "人员编号无效,项目人员不存在");
@@ -113,9 +113,13 @@ public class ProjectWorkerAOImpl implements IProjectWorkerAO {
         if (corpBasicinfo == null) {
             throw new BizException("xn631690", "企业信息不存在");
         }
+        if (StringUtils.isBlank(req.getProjectCode())) {
+            req.setProjectCode(user.getOrganizationCode());
+        }
         ProjectWorker preProjectWorker = projectWorkerBO.getProjectWorker(
             req.getProjectCode(), req.getCorpCode(), teamMaster.getCode(),
             workerInfo.getIdCardNumber());
+
         if (preProjectWorker != null) {
             if (preProjectWorker.getDeleteStatus()
                 .equals(EDeleteStatus.DELETED.getCode())) {
@@ -335,6 +339,11 @@ public class ProjectWorkerAOImpl implements IProjectWorkerAO {
         }
     }
 
+    /**
+     * 
+     * <p>Title: uploadProjectWorker</p>   
+     * <p>Description:上传数据到国家平台</p>   
+     */
     @Override
     public void uploadProjectWorker(XN631694Req req) {
         User user = userBO.getBriefUser(req.getUserId());
@@ -351,7 +360,9 @@ public class ProjectWorkerAOImpl implements IProjectWorkerAO {
             }
             ProjectConfig projectConfig = projectConfigBO
                 .getProjectConfigByLocal(projectWorker.getProjectCode());
-
+            if (projectConfig == null) {
+                throw new BizException("XN631690", "项目未配置,请检查项目配置");
+            }
             JsonObject json = projectWorkerBO.getProjectWorkerJson(teamMaster,
                 projectWorker, projectConfig);
 

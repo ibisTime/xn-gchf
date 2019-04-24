@@ -106,30 +106,29 @@ public class WorkerAttendanceAOImpl implements IWorkerAttendanceAO {
         }
     }
 
+    /**
+     * 
+     * @Description: 批量生成班组考勤信息
+     * @throws
+     */
     @Override
     @Transactional
-    public void batchCreateAttandance(String projectCode, String direction,
-            Date startDatetime, Date endDatetime) {
+    public void batchCreateAttandance(String projectCode, String teamMasterNo,
+            String direction, Date startDatetime, Date endDatetime) {
 
         Project project = projectBO.getProject(projectCode);
+        TeamMaster teamMaster = teamMasterBO.getTeamMaster(teamMasterNo);
 
-        List<TeamMaster> teamMasters = teamMasterBO
-            .queryTeamMasterList(projectCode);
+        List<ProjectWorker> projectWorkers = projectWorkerBO
+            .queryProjectWorkerList(teamMaster.getCode());
 
-        if (CollectionUtils.isNotEmpty(teamMasters)) {
-            for (TeamMaster teamMaster : teamMasters) {
-                List<ProjectWorker> projectWorkers = projectWorkerBO
-                    .queryProjectWorkerList(teamMaster.getCode());
+        if (CollectionUtils.isNotEmpty(projectWorkers)) {
+            for (ProjectWorker projectWorker : projectWorkers) {
+                Date date = new Date(
+                    random(startDatetime.getTime(), endDatetime.getTime()));
 
-                if (CollectionUtils.isNotEmpty(projectWorkers)) {
-                    for (ProjectWorker projectWorker : projectWorkers) {
-                        Date date = new Date(random(startDatetime.getTime(),
-                            endDatetime.getTime()));
-
-                        workerAttendanceBO.saveWorkerAttendance(project,
-                            teamMaster, projectWorker, date, direction);
-                    }
-                }
+                workerAttendanceBO.saveWorkerAttendance(project, teamMaster,
+                    projectWorker, date, direction);
             }
         }
     }
@@ -272,7 +271,7 @@ public class WorkerAttendanceAOImpl implements IWorkerAttendanceAO {
             workerAttendance.setTeamSysNo(masterByCondition.getCode());
             if (StringUtils.isNotBlank(dateReq.getDate())) {
                 Date date = DateUtil.strToDate(dateReq.getDate(),
-                    DateUtil.FRONT_DATE_FORMAT_STRING);
+                    DateUtil.DATA_TIME_PATTERN_1);
                 // Date strToDate = DateUtil.strToDate(dateReq.getDate(),
                 // "yyyy/mm/dd");
                 // //

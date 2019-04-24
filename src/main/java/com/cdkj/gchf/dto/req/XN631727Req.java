@@ -14,6 +14,9 @@ public class XN631727Req extends AListReq {
     // 企业统一社会信用代码
     private String corpCode;
 
+    // 班组编号
+    private String teamSysNo;
+
     // 上传状态
     private String uploadStatus;
 
@@ -43,6 +46,14 @@ public class XN631727Req extends AListReq {
 
     public void setCorpCode(String corpCode) {
         this.corpCode = corpCode;
+    }
+
+    public String getTeamSysNo() {
+        return teamSysNo;
+    }
+
+    public void setTeamSysNo(String teamSysNo) {
+        this.teamSysNo = teamSysNo;
     }
 
     public String getUploadStatus() {

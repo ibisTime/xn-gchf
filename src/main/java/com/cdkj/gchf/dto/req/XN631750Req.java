@@ -17,7 +17,6 @@ public class XN631750Req {
     private String businessSysNo;
 
     // 银行支行名称
-    @NotBlank
     private String bankName;
 
     // 银行代码
@@ -26,6 +25,9 @@ public class XN631750Req {
     // 银行账户
     @NotBlank
     private String bankNumber;
+
+    // 支行名称
+    private String subranch;
 
     // 银行联号
     @NotBlank
@@ -107,6 +109,14 @@ public class XN631750Req {
 
     public void setBankCode(String bankCode) {
         this.bankCode = bankCode;
+    }
+
+    public String getSubranch() {
+        return subranch;
+    }
+
+    public void setSubranch(String subranch) {
+        this.subranch = subranch;
     }
 
 }

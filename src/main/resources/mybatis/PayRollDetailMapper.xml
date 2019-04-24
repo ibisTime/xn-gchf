@@ -47,8 +47,7 @@
 				AND t.delete_status = #{deleteStatus}
 			</if>
 			<if test="balanceDate != null ">
-				AND year(t.balance_date) = year(#{balanceDate})
-				AND Month(t.balance_date) = Month(#{balanceDate})
+				AND t.balance_date = #{balanceDate}
 			</if>
 			<if test="payMonth != null ">
                 AND year(t.pay_month) = year(#{payMonth})

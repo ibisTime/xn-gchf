@@ -146,7 +146,7 @@ public class PostSimulater {
      */
     public static String requestPostForm(String urlString,
             Properties formProperties, Properties requestProperties)
-            throws Exception {
+                    throws Exception {
         requestProperties.setProperty(CONTENT_TYPE,
             "application/x-www-form-urlencoded");
 
@@ -173,7 +173,7 @@ public class PostSimulater {
 
     private static String requestPostFeat(String urlString,
             String formProperties, Properties requestProperties)
-            throws Exception {
+                    throws Exception {
         requestProperties.setProperty(CONTENT_TYPE,
             "application/x-www-form-urlencoded");
         return requestPost(urlString,

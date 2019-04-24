@@ -11,6 +11,7 @@
 		<result column="bank_name" property="bankName" />
 		<result column="bank_code" property="bankCode" />
 		<result column="bank_number" property="bankNumber" />
+		<result column="subranch" property="subranch" />
 		<result column="bank_link_number" property="bankLinkNumber" />
 		<result column="create_datetime" property="createDatetime" />
 		<result column="updater" property="updater" />
@@ -60,6 +61,7 @@
 		,business_sys_no
 		,business_name
 		,bank_name
+		,subranch
 		,bank_code
 		,bank_number
 		,bank_link_number
@@ -74,6 +76,7 @@
 		,#{businessSysNo}
 		,#{businessName}
 		,#{bankName}
+		,#{subranch}
 		,#{bankCode}
 		,#{bankNumber}
 		,#{bankLinkNumber}
@@ -96,9 +99,9 @@
 		bank_name = #{bankName}
 		,bank_code = #{bankCode}
 		,bank_link_number = #{bankLinkNumber}
+		,subranch = #{subranch}
 		,bank_number = #{bankNumber}
-		WHERE code =
-		#{code}
+		WHERE code = #{code}
 	</update>
 
 	<update id="update_bankCardInfoStatus" parameterType="bankCardInfo">
@@ -106,9 +109,10 @@
 		thf_bank_card_info
 		SET
 		status = #{status}
-		,update_datetime = 	#{updateDatetime}
+		,update_datetime = #{updateDatetime}
 		WHERE code = #{code}
 	</update>
+
 
 	<select id="select_bankCardInfo" parameterType="bankCardInfo"
 		resultMap="bankCardinfo_DB_Result">
@@ -119,6 +123,7 @@
 		,t.bank_name
 		,t.bank_code
 		,t.bank_number
+		,t.subranch
 		,t.bank_link_number
 		,t.business_name
 		,t.create_datetime
@@ -142,11 +147,13 @@
 		<include refid="where_condition" />
 	</select>
 
+
 	<update id="update_bankCardInfoStatusByBussiness" parameterType="bankCardInfo">
 		UPDATE
 		thf_bank_card_info
 		SET
 		status = #{status}
-		WHERE business_sys_no = #{businessSysNo}
+		WHERE business_sys_no =
+		#{businessSysNo}
 	</update>
 </mapper>

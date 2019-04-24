@@ -1,5 +1,7 @@
 package com.cdkj.gchf.dao;
 
+import java.util.List;
+
 import com.cdkj.gchf.dao.base.IBaseDAO;
 import com.cdkj.gchf.domain.BankCardInfo;
 
@@ -19,4 +21,6 @@ public interface IBankCardInfoDAO extends IBaseDAO<BankCardInfo> {
     int updateBankCardInfoStatus(BankCardInfo condition);
 
     void updateBankCardInfoStatusByBussiness(BankCardInfo condition);
+
+    List<BankCardInfo> selectBankCardByIdcard(List<String> idcards);
 }

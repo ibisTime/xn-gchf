@@ -18,8 +18,8 @@ public class ConfigLoader {
         DESUtil des = new DESUtil();
         // 解密获取配置文件路径
 
-        InputStream is = ConfigLoader.class.getResourceAsStream(des
-            .decrypt("00CA312C2F85A60D69262E77D19884D3"));
+        InputStream is = ConfigLoader.class.getResourceAsStream(
+            des.decrypt("00CA312C2F85A60D69262E77D19884D3"));
 
         /*
          * FileInputStream fo = new FileInputStream(new File(

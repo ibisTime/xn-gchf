@@ -23,8 +23,8 @@ public interface IBankCardInfoAO {
 
     public void queryBankCardInfoDetail(String code);
 
-    public Paginable<BankCardInfo> queryBankCardInfoPage(int start, int limit,
-            BankCardInfo condition);
+    public Paginable<BankCardInfo> queryBankCardInfoPage(String userId,
+            int start, int limit, BankCardInfo condition);
 
     public List<BankCardInfo> queryBankCardInfoList(XN631767Req req);
 

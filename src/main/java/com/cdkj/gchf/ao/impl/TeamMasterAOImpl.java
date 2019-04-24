@@ -173,7 +173,7 @@ public class TeamMasterAOImpl implements ITeamMasterAO {
 
         operateLogBO.saveOperateLog(EOperateLogRefType.TeamMaster.getCode(),
             data.getCode(), EOperateLogOperate.EditTeamMaster.getValue(), user,
-            null);
+            "修改班组信息");
     }
 
     @Override

@@ -117,8 +117,8 @@ public class HttpUtil {
                 out.close();
             }
             StringBuffer resposne = new StringBuffer();
-            BufferedReader reader = new BufferedReader(new InputStreamReader(
-                con.getInputStream()));
+            BufferedReader reader = new BufferedReader(
+                new InputStreamReader(con.getInputStream()));
             String responseMessage = "";
             while ((responseMessage = reader.readLine()) != null) {
                 resposne.append(responseMessage);

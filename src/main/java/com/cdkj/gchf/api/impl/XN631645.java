@@ -46,6 +46,7 @@ public class XN631645 extends AProcessor {
         }
         if (StringUtils.isNotBlank(req.getCorpType())) {
             ECorpType.checkExists(req.getCorpType());
+            condition.setCorpBasicType(req.getCorpType());
         }
         condition.setOrder(column, req.getOrderDir());
         int start = StringValidater.toInteger(req.getStart());

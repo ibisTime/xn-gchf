@@ -56,8 +56,8 @@ public class NullAbleDateTypeHandler extends BaseTypeHandler<Date> {
     }
 
     @Override
-    public void setNonNullParameter(PreparedStatement ps, int i,
-            Date parameter, JdbcType jdbcType) throws SQLException {
+    public void setNonNullParameter(PreparedStatement ps, int i, Date parameter,
+            JdbcType jdbcType) throws SQLException {
         ps.setTimestamp(i, new Timestamp((parameter).getTime()));
     }
 

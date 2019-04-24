@@ -5,6 +5,7 @@ import org.springframework.beans.BeanUtils;
 
 import com.cdkj.gchf.ao.ICorpBasicinfoAO;
 import com.cdkj.gchf.api.AProcessor;
+import com.cdkj.gchf.bo.IUserBO;
 import com.cdkj.gchf.common.JsonUtil;
 import com.cdkj.gchf.domain.CorpBasicinfo;
 import com.cdkj.gchf.dto.req.XN631257Req;
@@ -21,6 +22,8 @@ import com.cdkj.gchf.spring.SpringContextHolder;
 public class XN631257 extends AProcessor {
     private ICorpBasicinfoAO corpBasicinfoAO = SpringContextHolder
         .getBean(ICorpBasicinfoAO.class);
+
+    private IUserBO userBo = SpringContextHolder.getBean(IUserBO.class);
 
     private XN631257Req req = null;
 

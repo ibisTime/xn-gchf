@@ -120,8 +120,7 @@ public class AsyncQueueHolder {
             result = SpringContextHolder.getBean("operateLogBO");
 
             String remark = StringUtils.isEmpty(asyncRes.getResult())
-                    ? asyncRes.getMessage()
-                    : asyncRes.getResult();
+                    ? asyncRes.getMessage() : asyncRes.getResult();
             String[] arges = new String[] { code, remark };
 
             Method method = result.getClass().getMethod("refreshRemark",

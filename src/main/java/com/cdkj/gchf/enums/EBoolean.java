@@ -8,7 +8,6 @@
  */
 package com.cdkj.gchf.enums;
 
-
 /** 
  * @author: miyb 
  * @since: 2015-2-26 下午2:58:54 

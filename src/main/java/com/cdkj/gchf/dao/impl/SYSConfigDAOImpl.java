@@ -22,7 +22,8 @@ import com.cdkj.gchf.domain.SYSConfig;
  * @history:
  */
 @Repository("sysConfigDAOImpl")
-public class SYSConfigDAOImpl extends AMybatisTemplate implements ISYSConfigDAO {
+public class SYSConfigDAOImpl extends AMybatisTemplate
+        implements ISYSConfigDAO {
 
     /** 
      * @see com.cdkj.gchf.dao.base.IBaseDAO#insert(java.lang.Object)
@@ -64,15 +65,16 @@ public class SYSConfigDAOImpl extends AMybatisTemplate implements ISYSConfigDAO 
      */
     @Override
     public List<SYSConfig> selectList(SYSConfig condition) {
-        return super.selectList(NAMESPACE.concat("select_sysConfig"),
-            condition, SYSConfig.class);
+        return super.selectList(NAMESPACE.concat("select_sysConfig"), condition,
+            SYSConfig.class);
     }
 
     /** 
      * @see com.cdkj.gchf.dao.base.IBaseDAO#selectList(java.lang.Object, int, int)
      */
     @Override
-    public List<SYSConfig> selectList(SYSConfig condition, int start, int count) {
+    public List<SYSConfig> selectList(SYSConfig condition, int start,
+            int count) {
         return super.selectList(NAMESPACE.concat("select_sysConfig"), start,
             count, condition, SYSConfig.class);
     }

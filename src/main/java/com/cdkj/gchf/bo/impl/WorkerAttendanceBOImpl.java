@@ -91,7 +91,7 @@ public class WorkerAttendanceBOImpl extends PaginableBOImpl<WorkerAttendance>
             .getProjectWorker(data.getWorkerCode());
         if (StringUtils.isNotBlank(data.getDate())) {
             workerAttendance.setDate(DateUtil.strToDate(data.getDate(),
-                DateUtil.FRONT_DATE_FORMAT_STRING));
+                DateUtil.DATA_TIME_PATTERN_1));
         }
         workerAttendance.setWorkerCode(projectWorker.getCode());
         workerAttendance.setWorkerName(projectWorker.getWorkerName());
@@ -159,7 +159,7 @@ public class WorkerAttendanceBOImpl extends PaginableBOImpl<WorkerAttendance>
         select.setUploadStatus(EUploadStatus.TO_UPLOAD.getCode());
         workerAttendanceDAO.update(select);
         operateLogBO.saveOperateLog(EOperateLogRefType.WorkAttendance.getCode(),
-            data.getCode(), "修改人员考勤", user, null);
+            data.getCode(), "修改人员考勤", user, "修改人员考勤");
     }
 
     @Override

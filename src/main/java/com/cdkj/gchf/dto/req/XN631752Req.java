@@ -18,8 +18,14 @@ public class XN631752Req {
     // 业务编号
     private String businessSysNo;
 
+    // 银行代码
+    private String bankCode;
+
     // 银行支行名称
     private String bankName;
+
+    // 支行名称
+    private String subranch;
 
     // 银行账户
     private String bankNumber;
@@ -55,6 +61,14 @@ public class XN631752Req {
 
     public void setBusinessType(String businessType) {
         this.businessType = businessType;
+    }
+
+    public String getBankCode() {
+        return bankCode;
+    }
+
+    public void setBankCode(String bankCode) {
+        this.bankCode = bankCode;
     }
 
     public String getBusinessSysNo() {
@@ -103,6 +117,14 @@ public class XN631752Req {
 
     public void setUpdateDatetime(Date updateDatetime) {
         this.updateDatetime = updateDatetime;
+    }
+
+    public String getSubranch() {
+        return subranch;
+    }
+
+    public void setSubranch(String subranch) {
+        this.subranch = subranch;
     }
 
 }

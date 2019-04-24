@@ -10,8 +10,8 @@ import com.cdkj.gchf.domain.SYSMenu;
 import com.cdkj.gchf.domain.SYSMenuRole;
 
 @Repository("sysMenuRoleDAOImpl")
-public class SYSMenuRoleDAOImpl extends AMybatisTemplate implements
-        ISYSMenuRoleDAO {
+public class SYSMenuRoleDAOImpl extends AMybatisTemplate
+        implements ISYSMenuRoleDAO {
 
     @Override
     public int insert(SYSMenuRole data) {

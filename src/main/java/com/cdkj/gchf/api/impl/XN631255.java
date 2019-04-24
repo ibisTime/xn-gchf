@@ -38,7 +38,8 @@ public class XN631255 extends AProcessor {
         int start = StringValidater.toInteger(req.getStart());
         int limit = StringValidater.toInteger(req.getLimit());
 
-        return corpBasicinfoAO.queryCorpBasicinfoPage(start, limit, condition);
+        return corpBasicinfoAO.queryCorpBasicinfoPage(req.getUserId(), start,
+            limit, condition);
     }
 
     @Override

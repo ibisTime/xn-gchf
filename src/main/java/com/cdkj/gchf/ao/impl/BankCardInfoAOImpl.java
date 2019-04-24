@@ -13,11 +13,13 @@ import com.cdkj.gchf.ao.IBankCardInfoAO;
 import com.cdkj.gchf.bo.IBankCardBankBO;
 import com.cdkj.gchf.bo.IProjectCorpInfoBO;
 import com.cdkj.gchf.bo.IProjectWorkerBO;
+import com.cdkj.gchf.bo.IUserBO;
 import com.cdkj.gchf.bo.IWorkerInfoBO;
 import com.cdkj.gchf.bo.base.Paginable;
 import com.cdkj.gchf.domain.BankCardInfo;
 import com.cdkj.gchf.domain.ProjectCorpInfo;
 import com.cdkj.gchf.domain.ProjectWorker;
+import com.cdkj.gchf.domain.User;
 import com.cdkj.gchf.dto.req.XN631750Req;
 import com.cdkj.gchf.dto.req.XN631751Req;
 import com.cdkj.gchf.dto.req.XN631752Req;
@@ -41,6 +43,9 @@ public class BankCardInfoAOImpl implements IBankCardInfoAO {
     @Autowired
     private IProjectWorkerBO projectWorkerBO;
 
+    @Autowired
+    private IUserBO userBO;
+
     @Override
     public String addBankCardInfo(XN631750Req req) {
 
@@ -55,6 +60,11 @@ public class BankCardInfoAOImpl implements IBankCardInfoAO {
                 throw new BizException("631750", "该参建单位已存在银行卡【"
                         + bankCardInfos.get(0).getBankNumber() + "】");
             }
+            BankCardInfo bankCardInfoByNum = bankCardBankBO
+                .getBankCardInfoByNum(req.getBankNumber());
+            if (bankCardInfoByNum != null) {
+                throw new BizException("XN631750", "请输入正确的银行卡号");
+            }
 
             ProjectCorpInfo projectCorpInfo = projectCorpInfoBO
                 .getProjectCorpInfo(req.getBusinessSysNo());
@@ -65,7 +75,6 @@ public class BankCardInfoAOImpl implements IBankCardInfoAO {
             .equals(req.getBusinessType())) {
             ProjectWorker projectWorker = projectWorkerBO
                 .getProjectWorker(req.getBusinessSysNo());
-
             req.setBusinessName(projectWorker.getWorkerName());
         }
 
@@ -103,8 +112,24 @@ public class BankCardInfoAOImpl implements IBankCardInfoAO {
     }
 
     @Override
-    public Paginable<BankCardInfo> queryBankCardInfoPage(int start, int limit,
-            BankCardInfo condition) {
+    public Paginable<BankCardInfo> queryBankCardInfoPage(String userId,
+            int start, int limit, BankCardInfo condition) {
+        User briefUser = userBO.getBriefUser(userId);
+        // if (briefUser.getType().equals(EUserKind.Owner.getCode())) {
+        // // 项目端查询自己项目下的银行卡信息
+        // String organizationCode = briefUser.getOrganizationCode();
+        // ProjectWorker projectWorker = new ProjectWorker();
+        // projectWorker.setProjectCode(organizationCode);
+        // List<ProjectWorker> queryProjectWorkerList = projectWorkerBO
+        // .queryProjectWorkerList(projectWorker);
+        // List<String> idcardNumbers = new ArrayList<>();
+        // for (ProjectWorker tempProjectWorker : queryProjectWorkerList) {
+        // idcardNumbers.add(tempProjectWorker.getIdcardNumber());
+        // }
+        // return bankCardBankBO
+        // .queryBankCardInfoListByIdcardNumber(idcardNumbers);
+        //
+        // }
         Paginable<BankCardInfo> paginable = bankCardBankBO.getPaginable(start,
             limit, condition);
         return paginable;
@@ -129,6 +154,17 @@ public class BankCardInfoAOImpl implements IBankCardInfoAO {
 
     @Override
     public BankCardInfo getBankCardInfo(String code) {
+        BankCardInfo bankCardInfo = bankCardBankBO.getBankCardInfo(code);
+
+        if (bankCardInfo.getBusinessType()
+            .equals(EBankCardBussinessType.USER.getCode())) {
+            String businessSysNo = bankCardInfo.getBusinessSysNo();
+            ProjectWorker projectWorker = projectWorkerBO
+                .getProjectWorker(businessSysNo);
+            bankCardInfo.setTeamName(projectWorker.getTeamName());
+            bankCardInfo.setIdCardNumber(projectWorker.getIdcardNumber());
+            bankCardInfo.setProjectName(projectWorker.getProjectName());
+        }
         return bankCardBankBO.getBankCardInfo(code);
     }
 

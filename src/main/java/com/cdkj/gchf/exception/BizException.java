@@ -57,7 +57,8 @@ public class BizException extends RuntimeException {
         this.errorCode = errorCode;
     }
 
-    public BizException(Throwable cause, String errorCode, Object[] errorParams) {
+    public BizException(Throwable cause, String errorCode,
+            Object[] errorParams) {
         super(cause);
         this.errorCode = errorCode;
         this.errorParams = errorParams;

@@ -23,8 +23,11 @@ public class BankCardInfo extends ABaseDO {
     // 业务名称
     private String businessName;
 
-    // 银行支行名称
+    // 银行名称
     private String bankName;
+
+    // 银行支行名称
+    private String subranch;
 
     // 银行卡代码
     private String bankCode;
@@ -52,6 +55,15 @@ public class BankCardInfo extends ABaseDO {
 
     // 备注
     private String remark;
+
+    /**
+     * 响应
+     */
+    private String projectName;
+
+    private String TeamName;
+
+    private String idCardNumber;
 
     public String getCode() {
         return code;
@@ -163,6 +175,38 @@ public class BankCardInfo extends ABaseDO {
 
     public void setBankCode(String bankCode) {
         this.bankCode = bankCode;
+    }
+
+    public String getProjectName() {
+        return projectName;
+    }
+
+    public void setProjectName(String projectName) {
+        this.projectName = projectName;
+    }
+
+    public String getTeamName() {
+        return TeamName;
+    }
+
+    public void setTeamName(String teamName) {
+        TeamName = teamName;
+    }
+
+    public String getIdCardNumber() {
+        return idCardNumber;
+    }
+
+    public void setIdCardNumber(String idCardNumber) {
+        this.idCardNumber = idCardNumber;
+    }
+
+    public String getSubranch() {
+        return subranch;
+    }
+
+    public void setSubranch(String subranch) {
+        this.subranch = subranch;
     }
 
 }

@@ -18,6 +18,7 @@ import com.cdkj.gchf.exception.BizException;
 public class ObjValidater {
 
     static private Validator validator;
+
     static {
 
         //

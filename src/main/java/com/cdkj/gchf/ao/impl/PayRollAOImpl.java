@@ -210,6 +210,9 @@ public class PayRollAOImpl implements IPayRollAO {
             ProjectConfig projectConfigByLocal = projectConfigBO
                 .getProjectConfigByLocal(payRoll.getProjectCode());
             if (projectConfigByLocal == null) {
+                operateLogBO.saveOperateLog(
+                    EOperateLogRefType.PayRollDetail.getCode(), code, "项目未配置",
+                    user, null);
                 continue;
             }
             String json = getRequestJsonToPlantform(payRoll, payRollDetail,

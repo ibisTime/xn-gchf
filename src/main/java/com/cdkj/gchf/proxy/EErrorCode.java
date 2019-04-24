@@ -14,8 +14,8 @@ package com.cdkj.gchf.proxy;
  * @history:
  */
 public enum EErrorCode {
-    SUCCESS("0", "成功"), AUTH_ERR("1", "权限错误"), PARA_ERR("2", "参数错误"), BIZ_ERR(
-            "3", "业务错误"), OTHER_ERR("9", "未知错误");
+    SUCCESS("0", "成功"), AUTH_ERR("1", "权限错误"), PARA_ERR("2",
+            "参数错误"), BIZ_ERR("3", "业务错误"), OTHER_ERR("9", "未知错误");
     EErrorCode(String code, String value) {
         this.code = code;
         this.value = value;

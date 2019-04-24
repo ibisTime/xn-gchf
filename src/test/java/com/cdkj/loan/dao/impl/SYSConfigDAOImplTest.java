@@ -15,7 +15,8 @@ import java.util.List;
  * Created by tianlei on 2017/十二月/05.
  */
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations = {"classpath*:spring/applicationContext.xml"})
+@ContextConfiguration(locations = {
+        "classpath*:spring/applicationContext.xml" })
 public class SYSConfigDAOImplTest {
 
     @Autowired

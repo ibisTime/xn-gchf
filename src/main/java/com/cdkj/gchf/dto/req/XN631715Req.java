@@ -14,6 +14,9 @@ public class XN631715Req {
     @NotBlank
     private String direction;
 
+    @NotBlank(message = "请选择班组")
+    private String teamSysNo;
+
     // 开始时间
     @NotBlank
     private String startDatetime;
@@ -44,6 +47,14 @@ public class XN631715Req {
 
     public void setDirection(String direction) {
         this.direction = direction;
+    }
+
+    public String getTeamSysNo() {
+        return teamSysNo;
+    }
+
+    public void setTeamSysNo(String teamSysNo) {
+        this.teamSysNo = teamSysNo;
     }
 
     public String getStartDatetime() {

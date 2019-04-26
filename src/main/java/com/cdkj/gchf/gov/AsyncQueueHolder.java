@@ -1,6 +1,7 @@
 package com.cdkj.gchf.gov;
 
 import java.lang.reflect.Method;
+import java.util.Iterator;
 import java.util.LinkedList;
 
 import org.springframework.scheduling.annotation.Scheduled;
@@ -50,9 +51,13 @@ public class AsyncQueueHolder {
     @Scheduled(cron = "0/30 * * * * ? ")
     private void syncSerial() {
 
-        synchronized (this) {
-            for (QueueBean queueBean : serialMQHolder.serialMQ) {
-                handleQueueBean(queueBean);
+        synchronized (serialMQHolder.serialMQ) {
+            Iterator<QueueBean> iterator = serialMQHolder.serialMQ.iterator();
+            while (iterator.hasNext()) {
+                if (!EGovAsyncStatus.TO_HANDLE.getCode()
+                    .equals(handleQueueBean(iterator.next()))) {
+                    iterator.remove();
+                }
             }
         }
 
@@ -76,7 +81,6 @@ public class AsyncQueueHolder {
             if ("payRollDetailBO".equals(queueBean.getBoClass())) {
                 syncPayRollDetailNo(queueBean.getCode(), asyncRes);
             }
-            serialMQHolder.serialMQ.remove(queueBean);
         }
 
         if (EGovAsyncStatus.FAIL.getCode().equals(asyncRes.getStatus())) {
@@ -85,8 +89,6 @@ public class AsyncQueueHolder {
                 EUploadStatus.UPLOAD_FAIL.getCode());
 
             refreshLogRemark(queueBean.getLogCode(), asyncRes);
-
-            serialMQHolder.serialMQ.remove(queueBean);
         }
 
         return asyncRes.getStatus();
@@ -120,7 +122,8 @@ public class AsyncQueueHolder {
             result = SpringContextHolder.getBean("operateLogBO");
 
             String remark = StringUtils.isEmpty(asyncRes.getResult())
-                    ? asyncRes.getMessage() : asyncRes.getResult();
+                    ? asyncRes.getMessage()
+                    : asyncRes.getResult();
             String[] arges = new String[] { code, remark };
 
             Method method = result.getClass().getMethod("refreshRemark",

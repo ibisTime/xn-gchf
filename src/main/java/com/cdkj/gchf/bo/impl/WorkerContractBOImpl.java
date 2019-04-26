@@ -181,6 +181,17 @@ public class WorkerContractBOImpl extends PaginableBOImpl<WorkerContract>
     }
 
     @Override
+    public WorkerContract getWorkerContract(String projectCode,
+            String workerCode) {
+        WorkerContract workerContract = new WorkerContract();
+        workerContract.setProjectCode(projectCode);
+        workerContract.setWorkerCode(workerCode);
+        workerContract.setDeleteStatus(EDeleteStatus.NORMAL.getCode());
+        WorkerContract select = workerContractDAO.select(workerContract);
+        return select;
+    }
+
+    @Override
     public void doUpload(XN631916Req req, ProjectConfig projectConfig) {
 
         List<XN631916ReqContract> contractList = req.getContractList();
@@ -223,6 +234,17 @@ public class WorkerContractBOImpl extends PaginableBOImpl<WorkerContract>
     public List<WorkerContract> queryWorkerContractList(
             WorkerContract condition) {
         return workerContractDAO.selectList(condition);
+    }
+
+    @Override
+    public List<WorkerContract> queryWorkerContract(String projectCode,
+            String workerCode) {
+        WorkerContract workerContract = new WorkerContract();
+        workerContract.setProjectCode(projectCode);
+        workerContract.setWorkerCode(workerCode);
+        workerContract.setDeleteStatus(EDeleteStatus.NORMAL.getCode());
+        return workerContractDAO.selectList(workerContract);
+
     }
 
     @Override

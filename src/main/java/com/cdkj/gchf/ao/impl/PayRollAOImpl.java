@@ -92,19 +92,22 @@ public class PayRollAOImpl implements IPayRollAO {
     @Transactional
     @Override
     public String addPayRoll(XN631770Req data) {
-        TeamMaster teamMaster = teamMasterBO.getTeamMaster(data.getTeamSysNo());
-        if (teamMaster == null) {
-            throw new BizException("XN631700", "所在班组不存在");
+
+        if (projectBO.getProject(data.getProjectCode()) == null) {
+            throw new BizException("XN631700", "请选择项目");
         }
-        CorpBasicinfo basicinfoByCorp = corpBasicinfoBO
-            .getCorpBasicinfoByCorp(data.getCorpCode());
-        if (basicinfoByCorp == null) {
+        if (teamMasterBO.getTeamMaster(data.getTeamSysNo()) == null) {
+            throw new BizException("XN631700", "请选择班组");
+        }
+        if (corpBasicinfoBO
+            .getCorpBasicinfoByCorp(data.getCorpCode()) == null) {
             throw new BizException("XN631700", "企业信息不存在");
         }
-
+        // 保存工资单信息
         String code = payRollBO.savePayRoll(data);
-        payRollDetailBO.savePayRollDetail(code, data.getProjectCode(),
-            data.getPayMonth(), data.getDetailList());
+        // 保存明细信息
+        payRollDetailBO.savePayRollDetail(code, data.getTeamSysNo(),
+            data.getProjectCode(), data.getPayMonth(), data.getDetailList());
 
         User briefUser = userBO.getBriefUser(data.getUserId());
         operateLogBO.saveOperateLog(EOperateLogRefType.PayRoll.getCode(), code,
@@ -357,7 +360,22 @@ public class PayRollAOImpl implements IPayRollAO {
                 .getBankCardInfoByNum(
                     xn631773ReqData.getPayRollBankCardNumber());
             if (bankCardInfoByNum == null) {
-                throw new BizException("XN631812", "项目人员未绑定银行卡信息,银行卡账号必填");
+                // 如果没绑定银行卡，给他绑定银行卡。
+                // BankCardInfo bankCardInfo = new BankCardInfo();
+                // bankCardInfo.setBankCode(xn631773ReqData.getPayBankCode());
+                // bankCardInfo
+                // .setBusinessType(EBankCardBussinessType.USER.getCode());
+                // projectWorkerBO.getProjectWorkerByIdentity(xn631773ReqData.ge,
+                // idCardNumber)
+                // bankCardInfo.setBusinessSysNo();
+                // bankCardInfo
+                // .setBankNumber(xn631773ReqData.getPayBankCardNumber());
+                // bankCardInfo.setBankName(EBankCardCodeType
+                // .getBankCardType(xn631773ReqData.getPayBankCode())
+                // .getValue());
+                // bankCardBankBO.saveBankCardInfo(bankCardInfo);
+                throw new BizException("XN631812",
+                    "项目人员银行卡未绑定[" + xn631773ReqData.getWorkerName() + "]");
             }
             ProjectWorker projectWorker = projectWorkerBO
                 .getProjectWorker(bankCardInfoByNum.getBusinessSysNo());

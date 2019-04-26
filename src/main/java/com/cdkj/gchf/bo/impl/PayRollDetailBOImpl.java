@@ -48,8 +48,9 @@ public class PayRollDetailBOImpl extends PaginableBOImpl<PayRollDetail>
     private IBankCardBankBO bankCardBankBO;
 
     @Override
-    public void savePayRollDetail(String payRollCode, String projectCode,
-            String getPayMonth, List<XN631770ReqDetail> data) {
+    public void savePayRollDetail(String payRollCode, String teamSysNo,
+            String projectCode, String getPayMonth,
+            List<XN631770ReqDetail> data) {
 
         for (XN631770ReqDetail detail : data) {
             String code = OrderNoGenerater
@@ -73,18 +74,31 @@ public class PayRollDetailBOImpl extends PaginableBOImpl<PayRollDetail>
                 throw new BizException("XN631770", "项目银行卡号不能为空");
             }
             if (bankCardInfoByNum == null) {
-                ProjectWorker projectWorker = projectWorkerBO
-                    .getProjectWorker(payRollBankCardNumber);
-
-                throw new BizException("XN631770",
-                    "员工银行卡未绑定【" + projectWorker.getWorkerName() + "】");
+                // BankCardInfo bankCardInfo = new BankCardInfo();
+                // bankCardInfo.setBankCode(detail.getPayBankCode());
+                // List<ProjectWorker> workerByIdentity = projectWorkerBO
+                // .getProjectWorkerByIdentity(teamSysNo,
+                // detail.getIdCardNumber());
+                // bankCardInfo.setBankNumber(detail.getPayBankCardNumber());
+                // bankCardInfo
+                // .setBusinessSysNo(workerByIdentity.get(0).getWorkerCode());
+                // bankCardInfo
+                // .setBusinessType(EBankCardBussinessType.USER.getCode());
+                // bankCardInfo.setBankName(EBankCardCodeType
+                // .getBankCardType(detail.getPayBankCode()).getValue());
+                // bankCardBankBO.saveBankCardInfo(bankCardInfo);
+                List<ProjectWorker> projectWorkerByIdentity = projectWorkerBO
+                    .getProjectWorkerByIdentity(teamSysNo,
+                        detail.getIdCardNumber());
+                throw new BizException("XN631770", "项目人员银行卡未绑定"
+                        + projectWorkerByIdentity.get(0).getWorkerName());
             }
             String workerCode = bankCardInfoByNum.getBusinessSysNo();
             ProjectWorker workerByBankCard = projectWorkerBO
                 .getProjectWorker(workerCode);
             if (null == workerByBankCard) {
-                throw new BizException("XN631733", "项目人员银行卡信息未绑定【"
-                        + bankCardInfoByNum.getBusinessSysNo() + "】");
+                throw new BizException("XN631733", "项目人员【"
+                        + bankCardInfoByNum.getBusinessSysNo() + "银行卡信息未绑定");
             }
             payRollDetail.setWorkerName(workerByBankCard.getWorkerName());
             payRollDetail.setIdcardNumber(workerByBankCard.getIdcardNumber());

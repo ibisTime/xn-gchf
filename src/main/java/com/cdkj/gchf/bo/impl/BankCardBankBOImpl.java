@@ -48,6 +48,15 @@ public class BankCardBankBOImpl extends PaginableBOImpl<BankCardInfo>
     }
 
     @Override
+    public String saveBankCardInfo(BankCardInfo bankCardInfo) {
+        String code = OrderNoGenerater
+            .generate(EGeneratePrefix.BankCardInfo.getCode());
+        bankCardInfo.setCode(code);
+        bankCardInfoDAO.insert(bankCardInfo);
+        return code;
+    }
+
+    @Override
     public void removeBankCardInfo(String code) {
         BankCardInfo bankCardInfo = new BankCardInfo();
         bankCardInfo.setCode(code);
@@ -92,6 +101,21 @@ public class BankCardBankBOImpl extends PaginableBOImpl<BankCardInfo>
         bankCardInfo.setBankNumber(payRollBankCardNumber);
         bankCardInfo.setStatus(EBankCardStatus.Normal.getCode());
         bankCardInfo.setBusinessType(EBankCardBussinessType.USER.getCode());
+        return bankCardInfoDAO.select(bankCardInfo);
+    }
+
+    @Override
+    public BankCardInfo getOwnerBankCardInfo(String workerName, String status,
+            String bussinessNo) {
+        BankCardInfo bankCardInfo = new BankCardInfo();
+        if (StringUtils.isNotBlank(workerName)) {
+            bankCardInfo.setBusinessName(workerName);
+        }
+        if (StringUtils.isNotEmpty(status)) {
+            bankCardInfo.setStatus(status);
+        }
+
+        bankCardInfo.setBusinessSysNo(bussinessNo);
         return bankCardInfoDAO.select(bankCardInfo);
     }
 

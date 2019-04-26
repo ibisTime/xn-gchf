@@ -12,11 +12,9 @@ import com.cdkj.gchf.ao.IWorkerContractAO;
 import com.cdkj.gchf.bo.IOperateLogBO;
 import com.cdkj.gchf.bo.IProjectBO;
 import com.cdkj.gchf.bo.IProjectConfigBO;
-import com.cdkj.gchf.bo.IProjectCorpInfoBO;
 import com.cdkj.gchf.bo.IProjectWorkerBO;
 import com.cdkj.gchf.bo.IUserBO;
 import com.cdkj.gchf.bo.IWorkerContractBO;
-import com.cdkj.gchf.bo.IWorkerInfoBO;
 import com.cdkj.gchf.bo.base.Paginable;
 import com.cdkj.gchf.common.AesUtils;
 import com.cdkj.gchf.domain.Project;
@@ -55,12 +53,6 @@ public class WorkerContractAOImpl implements IWorkerContractAO {
     private IProjectWorkerBO projectWorkerBO;
 
     @Autowired
-    private IProjectCorpInfoBO projectCorpInfoBO;
-
-    @Autowired
-    private IWorkerInfoBO workerInfoBO;
-
-    @Autowired
     private IProjectBO projectBO;
 
     @Autowired
@@ -71,7 +63,13 @@ public class WorkerContractAOImpl implements IWorkerContractAO {
 
     @Override
     public String addWorkerContract(XN631670Req req) {
+        // 如果是项目端 更改项目编号
+        User user = userBO.getBriefUser(req.getUserId());
+        if (user.getType().equals(EUserKind.Owner.getCode())) {
+            req.setProjectCode(user.getOrganizationCode());
+        }
 
+        // 数据校验
         if (StringUtils.isNotBlank(req.getContractPeriodType())) {
             EContractPeriodType.checkExists(req.getContractPeriodType());
         }
@@ -85,7 +83,14 @@ public class WorkerContractAOImpl implements IWorkerContractAO {
         ProjectWorker projectWorker = projectWorkerBO
             .getProjectWorker(req.getWorkerCode());
         if (projectWorker == null) {
-            throw new BizException("XN631670", "员工信息不存在");
+            throw new BizException("XN631670", "请选择员工");
+        }
+        // 国家平台上传会报已存在 、一个人员只能上传一个劳动合同
+        WorkerContract workerContract = workerContractBO
+            .getWorkerContract(req.getProjectCode(), req.getWorkerCode());
+        if (workerContract != null) {
+            throw new BizException("Xn631670",
+                "项目人员【" + projectWorker.getWorkerName() + "】合同已添加");
         }
 
         return workerContractBO.saveWorkerContract(req);
@@ -93,6 +98,7 @@ public class WorkerContractAOImpl implements IWorkerContractAO {
 
     @Override
     public void editWorkerContract(XN631672Req req) {
+        User user = userBO.getBriefUser(req.getUserId());
         WorkerContract workerContract = workerContractBO
             .getWorkerContract(req.getCode());
         if (workerContract == null) {
@@ -108,9 +114,18 @@ public class WorkerContractAOImpl implements IWorkerContractAO {
         if (StringUtils.isNotBlank(req.getContractPeriodType())) {
             EContractPeriodType.checkExists(req.getContractPeriodType());
         }
+        if (user.getType().equals(EUserKind.Owner.getCode())) {
+            req.setProjectCode(user.getOrganizationCode());
+        }
 
-        workerContractBO.refreshWorkerContract(req);
-
+        WorkerContract tempContract = workerContractBO
+            .getWorkerContract(req.getProjectCode(), req.getWorkerCode());
+        if (tempContract == null) {
+            workerContractBO.refreshWorkerContract(req);
+        } else {
+            throw new BizException("Xn631670",
+                "项目人员【" + tempContract.getWorkerName() + "】合同已添加");
+        }
     }
 
     @Override
@@ -258,9 +273,8 @@ public class WorkerContractAOImpl implements IWorkerContractAO {
     @Override
     public void importWorkContractList(XN631673Req req) {
         User user = userBO.getBriefUser(req.getUpdater());
-        ProjectConfig configByLocal = projectConfigBO
-            .getProjectConfigByLocal(req.getProjectCode());
-        if (configByLocal == null) {
+        Project project = projectBO.getProject(req.getProjectCode());
+        if (project == null) {
             throw new BizException("XN631673", "请选择项目");
         }
         List<XN631673ReqData> workContractList = req.getDateList();

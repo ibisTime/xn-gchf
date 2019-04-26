@@ -121,6 +121,9 @@ public class WorkerInfo extends ABaseDO {
     // 建档结束时间
     private Date createDatetimeEnd;
 
+    // 项目端人员身份证号
+    private String businessIdCardNumber;
+
     public String getCode() {
         return code;
     }
@@ -399,6 +402,14 @@ public class WorkerInfo extends ABaseDO {
 
     public void setCreateDatetimeEnd(Date createDatetimeEnd) {
         this.createDatetimeEnd = createDatetimeEnd;
+    }
+
+    public String getBusinessIdCardNumber() {
+        return businessIdCardNumber;
+    }
+
+    public void setBusinessIdCardNumber(String businessIdCardNumber) {
+        this.businessIdCardNumber = businessIdCardNumber;
     }
 
 }

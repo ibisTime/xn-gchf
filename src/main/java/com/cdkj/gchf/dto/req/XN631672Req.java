@@ -11,6 +11,9 @@ public class XN631672Req {
     @NotBlank
     private String code;
 
+    // 人员编号
+    private String workerCode;
+
     // 开始时间
     private String startDate;
 
@@ -45,6 +48,14 @@ public class XN631672Req {
 
     public String getUserId() {
         return userId;
+    }
+
+    public String getWorkerCode() {
+        return workerCode;
+    }
+
+    public void setWorkerCode(String workerCode) {
+        this.workerCode = workerCode;
     }
 
     public void setUserId(String userId) {

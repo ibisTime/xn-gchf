@@ -36,6 +36,8 @@
 		<result column="start_date" property="startDate" />
 		<result column="expiry_date" property="expiryDate" />
 		<result column="create_datetime" property="createDatetime" />
+		
+		<result column="id_card_number" property="businessIdCardNumber" />
 	</resultMap>
 	<sql id="where_condition">
 		<trim prefix="WHERE" prefixOverrides="AND | OR">
@@ -43,10 +45,14 @@
 				AND t.code = #{code}
 			</if>
 			<if test="idCardNumber != null and idCardNumber != '' ">
-				AND t.id_card_number = #{idCardNumber}
+				AND t.id_card_number like "%"#{idCardNumber}"%"
 			</if>
 			<if test="idCardType != null and idCardType != '' ">
 				AND t.id_card_type = #{idCardType}
+			</if>
+			
+			<if test="businessIdCardNumber != null and businessIdCardNumber != '' ">
+				AND t.id_card_number = #{businessIdCardNumber}
 			</if>
 			<if test="cellPhone != null and cellPhone != '' ">
 				AND t.cell_phone = #{cellPhone}
@@ -149,22 +155,16 @@
 		,culture_level_type = #{cultureLevelType}
 		,specialty = #{specialty}
 
-		,has_bad_medical_history =
-		#{hasBadMedicalHistory}
-		,work_type_code =
-		#{workTypeCode}
+		,has_bad_medical_history = #{hasBadMedicalHistory}
+		,work_type_code = #{workTypeCode}
 		,work_corp_name = #{workCorpName}
-		,work_date =
-		#{workDate}
+		,work_date = #{workDate}
 		,marital_status = #{maritalStatus}
 
-		,grant_org =
-		#{grantOrg}
-		,start_date =
-		#{startDate}
+		,grant_org = #{grantOrg}
+		,start_date = #{startDate}
 		,expiry_date = #{expiryDate}
-		,create_datetime =
-		#{createDatetime}
+		,create_datetime = #{createDatetime}
 		WHERE code = #{code}
 	</update>
 
@@ -185,8 +185,7 @@
 		SET
 
 		cell_phone = #{cellPhone}
-		,urgent_link_man =
-		#{urgentLinkMan}
+		,urgent_link_man = #{urgentLinkMan}
 		,urgent_link_man_phone = #{urgentLinkManPhone}
 
 		WHERE

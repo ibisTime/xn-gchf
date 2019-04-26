@@ -11,6 +11,8 @@ public interface IBankCardBankBO extends IPaginableBO<BankCardInfo> {
 
     public String saveBankCardInfo(XN631750Req req);
 
+    String saveBankCardInfo(BankCardInfo bankCardInfo);
+
     public void removeBankCardInfo(String code);
 
     public void refreshBankCardInfo(XN631752Req req);
@@ -20,6 +22,9 @@ public interface IBankCardBankBO extends IPaginableBO<BankCardInfo> {
     public void refreshStatus(String businessSysNo, String status);
 
     BankCardInfo getBankCardInfoByNum(String payRollBankCardNumber);
+
+    BankCardInfo getOwnerBankCardInfo(String workerName, String status,
+            String bussinessNo);
 
     public List<BankCardInfo> queryBankCardInfoList(String businessSysNo,
             String status);

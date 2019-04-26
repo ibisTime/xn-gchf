@@ -17,6 +17,9 @@
 			<if test="code != null and code != '' ">
 				AND t.code = #{code}
 			</if>
+			<if test="title != null and title != '' ">
+                AND t.title like "%"#{title}"%"
+            </if>
 			<if test="systemCode != null and systemCode != '' ">
 				AND t.system_code = #{systemCode}
 			</if>

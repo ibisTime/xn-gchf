@@ -61,9 +61,11 @@ public class BankCardInfo extends ABaseDO {
      */
     private String projectName;
 
-    private String TeamName;
+    private String teamName;
 
-    private String idCardNumber;
+    private String workerName;
+
+    private String idcardNumber;
 
     public String getCode() {
         return code;
@@ -186,19 +188,27 @@ public class BankCardInfo extends ABaseDO {
     }
 
     public String getTeamName() {
-        return TeamName;
+        return teamName;
     }
 
     public void setTeamName(String teamName) {
-        TeamName = teamName;
+        this.teamName = teamName;
     }
 
-    public String getIdCardNumber() {
-        return idCardNumber;
+    public String getWorkerName() {
+        return workerName;
     }
 
-    public void setIdCardNumber(String idCardNumber) {
-        this.idCardNumber = idCardNumber;
+    public void setWorkerName(String workerName) {
+        this.workerName = workerName;
+    }
+
+    public String getIdcardNumber() {
+        return idcardNumber;
+    }
+
+    public void setIdcardNumber(String idcardNumber) {
+        this.idcardNumber = idcardNumber;
     }
 
     public String getSubranch() {

@@ -27,6 +27,7 @@ import com.cdkj.gchf.enums.EGender;
 import com.cdkj.gchf.enums.EIdCardType;
 import com.cdkj.gchf.enums.EOperateLogRefType;
 import com.cdkj.gchf.enums.EPoliticsType;
+import com.cdkj.gchf.enums.EUserKind;
 import com.cdkj.gchf.exception.BizException;
 
 @Service
@@ -49,6 +50,7 @@ public class WorkerInfoAOImpl implements IWorkerInfoAO {
 
     @Override
     public String addWorkerInfo(XN631790Req req) {
+        User user = userBO.getBriefUser(req.getUserId());
         // 数据字典校验
         EPoliticsType.checkExists(req.getPoliticsType());
         ECultureLevelType.checkExists(req.getCultureLevelType());
@@ -67,7 +69,6 @@ public class WorkerInfoAOImpl implements IWorkerInfoAO {
                 XN631793Req xn631791Req = new XN631793Req();
                 xn631791Req.setCode(workerInfoByIdCardNumber.getCode());
                 BeanUtils.copyProperties(req, xn631791Req);
-                User user = userBO.getBriefUser(req.getUserId());
                 workerInfoBO.refreshWorkerInfo(xn631791Req);
                 operateLogBO.saveOperateLog(
                     EOperateLogRefType.WorkerInfo.getCode(),
@@ -97,8 +98,13 @@ public class WorkerInfoAOImpl implements IWorkerInfoAO {
     }
 
     @Override
-    public Paginable<WorkerInfo> queryWorkerInfoPage(int start, int limit,
-            WorkerInfo condition) {
+    public Paginable<WorkerInfo> queryWorkerInfoPage(String userId, int start,
+            int limit, WorkerInfo condition) {
+        User user = userBO.getBriefUser(userId);
+        if (user.getType().equals(EUserKind.Owner.getCode())) {
+            condition.setBusinessIdCardNumber(condition.getIdCardNumber());
+            condition.setIdCardNumber(null);
+        }
         return workerInfoBO.getPaginable(start, limit, condition);
     }
 

@@ -1,5 +1,6 @@
 package com.cdkj.gchf.ao.impl;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.commons.collections.CollectionUtils;
@@ -11,12 +12,15 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.cdkj.gchf.ao.IBankCardInfoAO;
 import com.cdkj.gchf.bo.IBankCardBankBO;
+import com.cdkj.gchf.bo.IProjectBO;
 import com.cdkj.gchf.bo.IProjectCorpInfoBO;
 import com.cdkj.gchf.bo.IProjectWorkerBO;
 import com.cdkj.gchf.bo.IUserBO;
 import com.cdkj.gchf.bo.IWorkerInfoBO;
+import com.cdkj.gchf.bo.base.Page;
 import com.cdkj.gchf.bo.base.Paginable;
 import com.cdkj.gchf.domain.BankCardInfo;
+import com.cdkj.gchf.domain.Project;
 import com.cdkj.gchf.domain.ProjectCorpInfo;
 import com.cdkj.gchf.domain.ProjectWorker;
 import com.cdkj.gchf.domain.User;
@@ -27,6 +31,7 @@ import com.cdkj.gchf.dto.req.XN631767Req;
 import com.cdkj.gchf.enums.EBankCardBussinessType;
 import com.cdkj.gchf.enums.EBankCardStatus;
 import com.cdkj.gchf.enums.EUploadStatus;
+import com.cdkj.gchf.enums.EUserKind;
 import com.cdkj.gchf.exception.BizException;
 
 @Service(value = "bankCardInfoAOImpl")
@@ -46,6 +51,9 @@ public class BankCardInfoAOImpl implements IBankCardInfoAO {
     @Autowired
     private IUserBO userBO;
 
+    @Autowired
+    private IProjectBO projectBO;
+
     @Override
     public String addBankCardInfo(XN631750Req req) {
 
@@ -63,7 +71,7 @@ public class BankCardInfoAOImpl implements IBankCardInfoAO {
             BankCardInfo bankCardInfoByNum = bankCardBankBO
                 .getBankCardInfoByNum(req.getBankNumber());
             if (bankCardInfoByNum != null) {
-                throw new BizException("XN631750", "请输入正确的银行卡号");
+                throw new BizException("XN631750", "银行卡信息已存在,请重新填写");
             }
 
             ProjectCorpInfo projectCorpInfo = projectCorpInfoBO
@@ -82,20 +90,7 @@ public class BankCardInfoAOImpl implements IBankCardInfoAO {
     }
 
     @Override
-    @Transactional
     public void changeBankCardStatus(XN631751Req req) {
-        BankCardInfo bankCardInfo = bankCardBankBO
-            .getBankCardInfo(req.getCode());
-        if (bankCardInfo.getUploadStatus()
-            .equals(EUploadStatus.UPLOAD_UNEDITABLE.getCode())) {
-            throw new BizException("XN631751", "银行卡信息已上传,无法更新");
-        }
-
-        if (EBankCardBussinessType.CORP.getCode()
-            .equals(bankCardInfo.getBusinessType())) {
-            bankCardBankBO.refreshStatus(bankCardInfo.getBusinessSysNo(),
-                EBankCardStatus.Freeze.getCode());
-        }
 
         bankCardBankBO.updateBankCardInfoStatus(req.getCode());
     }
@@ -111,27 +106,52 @@ public class BankCardInfoAOImpl implements IBankCardInfoAO {
         bankCardBankBO.refreshBankCardInfo(req);
     }
 
+    @Transactional
     @Override
     public Paginable<BankCardInfo> queryBankCardInfoPage(String userId,
             int start, int limit, BankCardInfo condition) {
         User briefUser = userBO.getBriefUser(userId);
-        // if (briefUser.getType().equals(EUserKind.Owner.getCode())) {
-        // // 项目端查询自己项目下的银行卡信息
-        // String organizationCode = briefUser.getOrganizationCode();
-        // ProjectWorker projectWorker = new ProjectWorker();
-        // projectWorker.setProjectCode(organizationCode);
-        // List<ProjectWorker> queryProjectWorkerList = projectWorkerBO
-        // .queryProjectWorkerList(projectWorker);
-        // List<String> idcardNumbers = new ArrayList<>();
-        // for (ProjectWorker tempProjectWorker : queryProjectWorkerList) {
-        // idcardNumbers.add(tempProjectWorker.getIdcardNumber());
-        // }
-        // return bankCardBankBO
-        // .queryBankCardInfoListByIdcardNumber(idcardNumbers);
-        //
-        // }
+        // 根据用户类型进行查询
+        // 项目端查询
+        if (briefUser.getType().equals(EUserKind.Owner.getCode())) {
+            // 查询项目端项目人员的银行卡信息
+            Project project = projectBO
+                .getProject(briefUser.getOrganizationCode());
+            List<ProjectWorker> projectWorkerList = projectWorkerBO
+                .queryProjectWorkerListByProject(project.getCode());
+            List<BankCardInfo> workerBankCard = new ArrayList<>();
+            for (ProjectWorker projectWorker : projectWorkerList) {
+                BankCardInfo bankCardInfo = bankCardBankBO.getOwnerBankCardInfo(
+                    condition.getBusinessName(), condition.getStatus(),
+                    projectWorker.getCode());
+                if (bankCardInfo == null) {
+                    continue;
+                }
+                bankCardInfo.setProjectName(projectWorker.getProjectName());
+                bankCardInfo.setTeamName(projectWorker.getTeamName());
+                bankCardInfo.setWorkerName(projectWorker.getWorkerName());
+                bankCardInfo.setIdcardNumber(projectWorker.getIdcardNumber());
+                workerBankCard.add(bankCardInfo);
+            }
+            Page<BankCardInfo> page = new Page<BankCardInfo>();
+            page.setList(workerBankCard);
+            return page;
+        }
+
+        // 平台端查询
         Paginable<BankCardInfo> paginable = bankCardBankBO.getPaginable(start,
             limit, condition);
+        List<BankCardInfo> list = paginable.getList();
+        for (BankCardInfo bankCardInfo : list) {
+            String businessSysNo = bankCardInfo.getBusinessSysNo();
+            ProjectWorker projectWorker = projectWorkerBO
+                .getProjectWorker(businessSysNo);
+            bankCardInfo.setProjectName(projectWorker.getProjectName());
+            bankCardInfo.setTeamName(projectWorker.getTeamName());
+            bankCardInfo.setWorkerName(projectWorker.getWorkerName());
+            bankCardInfo.setIdcardNumber(projectWorker.getIdcardNumber());
+        }
+        paginable.setList(list);
         return paginable;
     }
 
@@ -155,17 +175,17 @@ public class BankCardInfoAOImpl implements IBankCardInfoAO {
     @Override
     public BankCardInfo getBankCardInfo(String code) {
         BankCardInfo bankCardInfo = bankCardBankBO.getBankCardInfo(code);
-
+        // 人员
         if (bankCardInfo.getBusinessType()
             .equals(EBankCardBussinessType.USER.getCode())) {
             String businessSysNo = bankCardInfo.getBusinessSysNo();
             ProjectWorker projectWorker = projectWorkerBO
                 .getProjectWorker(businessSysNo);
             bankCardInfo.setTeamName(projectWorker.getTeamName());
-            bankCardInfo.setIdCardNumber(projectWorker.getIdcardNumber());
+            bankCardInfo.setIdcardNumber(projectWorker.getIdcardNumber());
             bankCardInfo.setProjectName(projectWorker.getProjectName());
         }
-        return bankCardBankBO.getBankCardInfo(code);
+        return bankCardInfo;
     }
 
     @Override

@@ -267,7 +267,7 @@ public class ProjectCorpInfoBOImpl extends PaginableBOImpl<ProjectCorpInfo>
         for (String code : codes) {
             ProjectCorpInfo projectCorpInfo = projectCorpInfoBO
                 .getProjectCorpInfo(code);
-            if (EUploadStatus.UPLOAD_EDITABLE.getCode()
+            if (EUploadStatus.UPLOAD_UPDATE.getCode()
                 .equals(projectCorpInfo.getUploadStatus()))
                 continue;
             // 调用国家平台上传数据
@@ -301,8 +301,17 @@ public class ProjectCorpInfoBOImpl extends PaginableBOImpl<ProjectCorpInfo>
             // 状态消息队列更新数据库状态
             AsyncQueueHolder.addSerial(resString, projectConfig,
                 "projectCorpInfoBO", code,
-                EUploadStatus.UPLOAD_EDITABLE.getCode(), saveOperateLog);
+                EUploadStatus.UPLOAD_UPDATE.getCode(), saveOperateLog);
         }
+    }
+
+    @Override
+    public List<ProjectCorpInfo> getProjectCorpInfoList(String projectCode) {
+        ProjectCorpInfo projectCorpInfo = new ProjectCorpInfo();
+        projectCorpInfo.setProjectCode(projectCode);
+        projectCorpInfo.setDeleteStatus(EDeleteStatus.NORMAL.getCode());
+        return projectCorpInfoDAO.selectList(projectCorpInfo);
+
     }
 
     @Override

@@ -17,7 +17,6 @@
 		<result column="updater" property="updater" />
 		<result column="status" property="status" />
 
-		<result column="upload_status" property="uploadStatus" />
 	</resultMap>
 
 	<sql id="where_condition">
@@ -36,9 +35,6 @@
 			</if>
 			<if test="bankNumber != null and bankNumber != '' ">
 				AND t.bank_number = #{bankNumber}
-			</if>
-			<if test="uploadStatus != null and uploadStatus != '' ">
-				AND t.upload_status = #{uploadStatus}
 			</if>
 			<if test="status != null and status != '' ">
 				AND t.status = #{status}
@@ -68,7 +64,6 @@
 		,create_datetime
 		,update_datetime
 		,status
-		,upload_status
 		)
 		VALUES(
 		#{code}
@@ -83,7 +78,6 @@
 		,#{createDatetime}
 		,#{updateDatetime}
 		,#{status}
-		,#{uploadStatus}
 		)
 	</insert>
 
@@ -130,7 +124,6 @@
 		,t.updater
 		,t.update_datetime
 		,t.status
-		,t.upload_status
 		FROM
 		thf_bank_card_info t
 		<include refid="where_condition" />
@@ -153,7 +146,6 @@
 		thf_bank_card_info
 		SET
 		status = #{status}
-		WHERE business_sys_no =
-		#{businessSysNo}
+		WHERE business_sys_no = #{businessSysNo}
 	</update>
 </mapper>

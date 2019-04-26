@@ -92,6 +92,9 @@ public class ProjectCorpInfoAOImpl implements IProjectCorpInfoAO {
     @Override
     public String addProjectCorpInfo(XN631630Req data) {
 
+        if (projectBO.getProject(data.getProjectCode()) == null) {
+            throw new BizException("XN631630", "请选择项目");
+        }
         CorpBasicinfo corpBasicinfo = corpBasicinfoBO
             .getCorpBasicinfoByCorp(data.getCorpCode());
         if (null == corpBasicinfo) {
@@ -105,6 +108,9 @@ public class ProjectCorpInfoAOImpl implements IProjectCorpInfoAO {
         }
 
         Project project = projectBO.getProject(data.getProjectCode());
+        if (project == null) {
+            throw new BizException("XN631630", "请选择项目");
+        }
 
         return projectCorpInfoBO.saveProjectCorpInfo(data, project.getName());
     }
@@ -116,10 +122,13 @@ public class ProjectCorpInfoAOImpl implements IProjectCorpInfoAO {
 
             ProjectCorpInfo projectCorpInfo = projectCorpInfoBO
                 .getProjectCorpInfo(code);
-            if (EUploadStatus.UPLOAD_EDITABLE.getCode()
-                .equals(projectCorpInfo.getUploadStatus())) {
+            if (EUploadStatus.UPLOAD_UPDATE.getCode()
+                .equals(projectCorpInfo.getUploadStatus())
+                    || EUploadStatus.UPLOAD_UNUPDATE.getCode()
+                        .equals(projectCorpInfo.getUploadStatus())) {
                 throw new BizException("XN631631", "参建单位已上传，无法删除");
             }
+
             String corpCode = projectCorpInfo.getCorpCode();
             String projectCode = projectCorpInfo.getProjectCode();
 
@@ -163,7 +172,9 @@ public class ProjectCorpInfoAOImpl implements IProjectCorpInfoAO {
     @Override
     @Transactional
     public void editProjectCorpInfo(XN631632Req req) {
-
+        if (projectBO.getProject(req.getProjectCode()) == null) {
+            throw new BizException("XN631630", "请选择项目");
+        }
         CorpBasicinfo corpBasicinfo = corpBasicinfoBO
             .getCorpBasicinfoByCorp(req.getCorpCode());
         if (null == corpBasicinfo) {
@@ -175,8 +186,20 @@ public class ProjectCorpInfoAOImpl implements IProjectCorpInfoAO {
         }
         Project project = projectBO.getProject(req.getProjectCode());
 
+        // 项目中不存在 要修改的参建单位
+        List<ProjectCorpInfo> projectCorpInfoList = projectCorpInfoBO
+            .getProjectCorpInfoList(req.getProjectCode());
+        for (ProjectCorpInfo projectCorpInfo : projectCorpInfoList) {
+            if (projectCorpInfo.getCode().equals(req.getCode())) {
+                continue;
+            }
+            if (projectCorpInfo.getCorpCode().equals(req.getCorpCode())) {
+                throw new BizException("XN631630", "该项目下已存在该参建单位");
+            }
+        }
+        // 修改
         projectCorpInfoBO.refreshProjectCorpInfo(req, project.getName());
-
+        // 保存日志
         User briefUser = userBO.getBriefUser(req.getUserId());
         operateLogBO.saveOperateLog(
             EOperateLogRefType.ProjectCorpinfo.getCode(), req.getCode(),
@@ -226,7 +249,7 @@ public class ProjectCorpInfoAOImpl implements IProjectCorpInfoAO {
             projectCorpInfoBO.doUpdate(xn631906Req, configByLocal);
             // 更新本地上传状态
             projectCorpInfoBO.refreshUploadStatus(code,
-                EUploadStatus.UPLOAD_EDITABLE.getCode());
+                EUploadStatus.UPLOAD_UPDATE.getCode());
             // 更新操作日志
             operateLogBO.saveOperateLog(
                 EOperateLogRefType.ProjectCorpinfo.getCode(), code,
@@ -262,7 +285,9 @@ public class ProjectCorpInfoAOImpl implements IProjectCorpInfoAO {
     @Transactional
     public void importProjectCorpInfo(XN631633Req req) {
         List<XN631633ReqList> dateList = req.getDateList();
-
+        if (projectBO.getProject(req.getProjectCode()) == null) {
+            throw new BizException("XN631600", "请选择项目");
+        }
         for (XN631633ReqList projectCourpInfoReq : dateList) {
 
             EProjectCorpType.checkExists(projectCourpInfoReq.getCorpType());

@@ -23,8 +23,8 @@ public interface IWorkerInfoAO {
 
     public int dropWorkerInfo(String code);
 
-    public Paginable<WorkerInfo> queryWorkerInfoPage(int start, int limit,
-            WorkerInfo condition);
+    public Paginable<WorkerInfo> queryWorkerInfoPage(String userId, int start,
+            int limit, WorkerInfo condition);
 
     public void readdWorkerInfo(XN631793Req req);
 

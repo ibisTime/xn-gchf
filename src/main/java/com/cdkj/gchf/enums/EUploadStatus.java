@@ -16,9 +16,15 @@ public enum EUploadStatus {
 
     TO_UPLOAD("0", "待上传"),
 
-    UPLOAD_EDITABLE("1", "已上传可修改"),
+    // UPLOAD_EDITABLE("1", "已上传可修改"),
 
-    UPLOAD_UNEDITABLE("2", "已上传不可修改");
+    // UPLOAD_UNEDITABLE("2", "已上传不可修改");
+
+    UPLOAD_UPDATE("1", "已上传已同步"),
+
+    UPLOAD_UNUPDATE("2", "已上传未同步"),
+
+    UPLOAD_UNEDITABLE("3", "已上传不可修改");
 
     EUploadStatus(String code, String value) {
         this.code = code;

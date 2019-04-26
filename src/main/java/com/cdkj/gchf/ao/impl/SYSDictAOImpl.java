@@ -49,7 +49,7 @@ public class SYSDictAOImpl implements ISYSDictAO {
         sysDict.setDkey(key);
         sysDict.setDvalue(req.getDvalue());
 
-        sysDict.setUpdater(req.getUpdater());
+        sysDict.setUpdater(getName(req.getUpdater()));
         sysDict.setUpdateDatetime(new Date());
         sysDict.setRemark(req.getRemark());
 
@@ -64,7 +64,7 @@ public class SYSDictAOImpl implements ISYSDictAO {
     @Override
     public void editSYSDict(Long id, String value, String updater,
             String remark) {
-        sysDictBO.refreshSYSDict(id, value, updater, remark);
+        sysDictBO.refreshSYSDict(id, value, getName(updater), remark);
     }
 
     @Override
@@ -100,7 +100,8 @@ public class SYSDictAOImpl implements ISYSDictAO {
         if (user != null) {
             name = EUser.ADMIN.getCode();
             if (!EUser.ADMIN.getCode().equals(user.getLoginName())) {
-                name = user.getRealName();
+                // name = user.getRealName();
+                name = user.getLoginName();
             }
         }
         return name;

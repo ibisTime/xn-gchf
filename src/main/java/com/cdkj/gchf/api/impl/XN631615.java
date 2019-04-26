@@ -35,6 +35,7 @@ public class XN631615 extends AProcessor {
         if (StringUtils.isBlank(column)) {
             column = IProjectAO.DEFAULT_ORDER_COLUMN;
         }
+        condition.setOrder(column, req.getOrderDir());
         int start = StringValidater.toInteger(req.getStart());
         int limit = StringValidater.toInteger(req.getLimit());
 

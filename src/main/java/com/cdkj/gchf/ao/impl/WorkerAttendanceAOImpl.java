@@ -71,7 +71,9 @@ public class WorkerAttendanceAOImpl implements IWorkerAttendanceAO {
         if (teamMaster == null) {
             throw new BizException("XN631710", "班组信息不存在");
         }
-
+        if (projectBO.getProject(data.getProjectCode()) == null) {
+            throw new BizException("XN631710", "请选择项目");
+        }
         ProjectWorker projectWorker = projectWorkerBO
             .getProjectWorker(data.getWorkerCode());
         if (projectWorker == null) {
@@ -96,9 +98,7 @@ public class WorkerAttendanceAOImpl implements IWorkerAttendanceAO {
             WorkerAttendance workerAttendance = workerAttendanceBO
                 .getWorkerAttendance(code);
             if (workerAttendance.getUploadStatus()
-                .equals(EUploadStatus.UPLOAD_EDITABLE.getCode())
-                    || workerAttendance.getUploadStatus()
-                        .equals(EUploadStatus.UPLOAD_UNEDITABLE.getCode())) {
+                .equals(EUploadStatus.UPLOAD_UNEDITABLE.getCode())) {
                 throw new BizException("XN631711", "人员考勤已上传，不可删除");
             }
             workerAttendanceBO.updateWorkerAttendanceDeleteStatus(code,
@@ -242,7 +242,12 @@ public class WorkerAttendanceAOImpl implements IWorkerAttendanceAO {
     public void importWorkerAttendanceList(XN631713Req req) {
 
         User user = userBO.getBriefUser(req.getUpdater());
-
+        if (projectBO.getProject(req.getProjectCode()) == null) {
+            throw new BizException("xn631713", "请选择项目");
+        }
+        if (teamMasterBO.getTeamMaster(req.getTeamSysNo()) == null) {
+            throw new BizException("xn631713", "请选择班组");
+        }
         for (XN631713ReqData dateReq : req.getDateList()) {
             // 校验数据字典数据
             EDirectionType.checkExists(dateReq.getDirection());
@@ -272,12 +277,6 @@ public class WorkerAttendanceAOImpl implements IWorkerAttendanceAO {
             if (StringUtils.isNotBlank(dateReq.getDate())) {
                 Date date = DateUtil.strToDate(dateReq.getDate(),
                     DateUtil.DATA_TIME_PATTERN_1);
-                // Date strToDate = DateUtil.strToDate(dateReq.getDate(),
-                // "yyyy/mm/dd");
-                // //
-                // String format = new SimpleDateFormat("yyyy-MM-dd")
-                // .format(strToDate);
-                // Date toDate = DateUtil.strToDate(format, "yyyy-MM-dd");
                 workerAttendance.setDate(date);
             }
             workerAttendance.setIdCardType("01");

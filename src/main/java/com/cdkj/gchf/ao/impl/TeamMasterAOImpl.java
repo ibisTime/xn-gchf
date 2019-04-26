@@ -92,7 +92,10 @@ public class TeamMasterAOImpl implements ITeamMasterAO {
 
     @Override
     public String addTeamMaster(XN631650Req data) {
-
+        Project project = projectBO.getProject(data.getProjectCode());
+        if (project == null) {
+            throw new BizException("XN631650", "请选择项目");
+        }
         CorpBasicinfo corpBasicinfoByCorp = corpBasicinfoBO
             .getCorpBasicinfoByCorp(data.getCorpCode());
         if (corpBasicinfoByCorp == null) {
@@ -115,7 +118,9 @@ public class TeamMasterAOImpl implements ITeamMasterAO {
         for (String code : codeList) {
             TeamMaster teamMaster = teamMasterBO.getTeamMaster(code);
             if (teamMaster.getUploadStatus()
-                .equals(EUploadStatus.UPLOAD_EDITABLE.getCode())) {
+                .equals(EUploadStatus.UPLOAD_UPDATE.getCode())
+                    || teamMaster.getUploadStatus()
+                        .equals(EUploadStatus.UPLOAD_UNUPDATE.getCode())) {
                 throw new BizException("XN631651", "班组信息已上传,无法删除");
             }
             teamMasterBO.updateTeamMasterDeleteStatus(code,
@@ -153,7 +158,6 @@ public class TeamMasterAOImpl implements ITeamMasterAO {
     @Transactional
     public void editTeamMaster(XN631652Req data) {
         User user = userBO.getBriefUser(data.getUserId());
-
         TeamMaster teamMaster = teamMasterBO.getTeamMaster(data.getCode());
         if (teamMaster.getUploadStatus() != null & teamMaster.getUploadStatus()
             .equals(EUploadStatus.UPLOAD_UNEDITABLE.getCode())) {
@@ -181,7 +185,7 @@ public class TeamMasterAOImpl implements ITeamMasterAO {
         User operator = userBO.getBriefUser(userId);
         for (String code : codeList) {
             TeamMaster teamMaster = getTeamMaster(code);
-            if (EUploadStatus.UPLOAD_EDITABLE.getCode()
+            if (EUploadStatus.UPLOAD_UPDATE.getCode()
                 .equals(teamMaster.getUploadStatus())) {
                 continue;
             }
@@ -214,7 +218,7 @@ public class TeamMasterAOImpl implements ITeamMasterAO {
 
             // 添加到上传状态更新队列
             AsyncQueueHolder.addSerial(resString, projectConfig, "teamMasterBO",
-                code, EUploadStatus.UPLOAD_EDITABLE.getCode(), logCode);
+                code, EUploadStatus.UPLOAD_UPDATE.getCode(), logCode);
         }
     }
 
@@ -274,7 +278,7 @@ public class TeamMasterAOImpl implements ITeamMasterAO {
             teamMasterBO.doUpdate(xn631909Req, configByLocal);
             // 更新本地班组状态
             teamMasterBO.refreshUploadStatus(code,
-                EUploadStatus.UPLOAD_EDITABLE.getCode());
+                EUploadStatus.UPLOAD_UPDATE.getCode());
             operateLogBO.saveOperateLog(EOperateLogRefType.TeamMaster.getCode(),
                 code, EOperateLogOperate.UpdateTeamMaster.getValue(), user,
                 null);
@@ -352,11 +356,18 @@ public class TeamMasterAOImpl implements ITeamMasterAO {
         return teamMasterBO.getTeamMaster(code);
     }
 
+    /**
+     * 
+     * <p>Title: importTeamMaster</p>   
+     * <p>Description: 导入班组信息</p>   
+     */
     @Override
     public void importTeamMaster(XN631653Req req) {
         User user = userBO.getBriefUser(req.getUserId());
+        if (projectBO.getProject(req.getProjectCode()) == null) {
+            throw new BizException("XN631650", "请选择项目");
+        }
 
-        // 根据corpCode获取企业信息
         for (XN631653ReqData reqData : req.getDateList()) {
 
             CorpBasicinfo corpBasicinfo = corpBasicinfoBO
@@ -377,11 +388,6 @@ public class TeamMasterAOImpl implements ITeamMasterAO {
             TeamMaster teamMaster = new TeamMaster();
             BeanUtils.copyProperties(reqData, teamMaster);
             if (StringUtils.isNotBlank(reqData.getEntryTime())) {
-                // Date strToDate = DateUtil.strToDate(reqData.getEntryTime(),
-                // "yyyy/mm/dd");
-                // String format = new SimpleDateFormat("yyyy-MM-dd")
-                // .format(strToDate);
-                // Date toDate = DateUtil.strToDate(format, "yyyy-MM-dd");
                 Date strToDate = DateUtil.strToDate(reqData.getEntryTime(),
                     DateUtil.FRONT_DATE_FORMAT_STRING);
                 teamMaster.setEntryTime(strToDate);

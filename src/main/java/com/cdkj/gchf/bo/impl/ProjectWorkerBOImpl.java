@@ -162,6 +162,7 @@ public class ProjectWorkerBOImpl extends PaginableBOImpl<ProjectWorker>
     @Override
     public String saveProjectWorker(String workerCode, String workerName,
             String idcardNumber, Project project) {
+        WorkerInfo workerInfo = workerInfoBO.getWorkerInfo(workerCode);
 
         ProjectWorker projectWorker = new ProjectWorker();
 
@@ -175,6 +176,7 @@ public class ProjectWorkerBOImpl extends PaginableBOImpl<ProjectWorker>
         projectWorker.setWorkerName(workerName);
         projectWorker.setIdcardType(EIdCardType.JUMIN.getCode());
         projectWorker.setIdcardNumber(idcardNumber);
+        projectWorker.setCellPhone(workerInfo.getCellPhone());
         projectWorker.setUploadStatus(EUploadStatus.TO_UPLOAD.getCode());
         projectWorker.setDeleteStatus(EDeleteStatus.NORMAL.getCode());
         projectWorkerDAO.insert(projectWorker);
@@ -204,7 +206,8 @@ public class ProjectWorkerBOImpl extends PaginableBOImpl<ProjectWorker>
         ProjectWorker projectWorkerInfo = new ProjectWorker();
         BeanUtils.copyProperties(req, projectWorkerInfo);
         projectWorkerInfo.setTeamName(teamMaster.getTeamName());
-
+        projectWorkerInfo.setCorpCode(teamMaster.getCorpCode());
+        projectWorkerInfo.setCorpName(teamMaster.getCorpName());
         if (StringUtils.isNotBlank(req.getIsTeamLeader())) {
             projectWorkerInfo
                 .setIsTeamLeader(Integer.parseInt(req.getIsTeamLeader()));
@@ -221,7 +224,7 @@ public class ProjectWorkerBOImpl extends PaginableBOImpl<ProjectWorker>
         }
         if (StringUtils.isNotBlank(req.getIssueCardDate())) {
             Date issueCardDate = DateUtil.strToDate(req.getIssueCardDate(),
-                DateUtil.FRONT_DATE_FORMAT_STRING);
+                DateUtil.DATA_TIME_PATTERN_1);
             projectWorkerInfo.setIssueCardDate(issueCardDate);
         }
         if (StringUtils.isNotBlank(req.getWorkDate())) {
@@ -337,6 +340,14 @@ public class ProjectWorkerBOImpl extends PaginableBOImpl<ProjectWorker>
     }
 
     @Override
+    public List<ProjectWorker> queryProjectWorkerListByProject(
+            String projectCode) {
+        ProjectWorker projectWorker = new ProjectWorker();
+        projectWorker.setProjectCode(projectCode);
+        return projectWorkerDAO.selectList(projectWorker);
+    }
+
+    @Override
     public List<ProjectWorker> queryProjectWorkerList(String projectCode,
             String idcardNumber) {
         ProjectWorker condition = new ProjectWorker();
@@ -374,6 +385,7 @@ public class ProjectWorkerBOImpl extends PaginableBOImpl<ProjectWorker>
         condition.setCorpCode(corpCode);
         condition.setTeamSysNo(teamSysNo);
         condition.setIdcardNumber(idcardNumber);
+        condition.setDeleteStatus(EDeleteStatus.NORMAL.getCode());
 
         return projectWorkerDAO.select(condition);
     }

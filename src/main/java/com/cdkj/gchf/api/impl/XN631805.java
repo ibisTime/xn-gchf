@@ -51,7 +51,8 @@ public class XN631805 extends AProcessor {
         }
         workerInfo.setOrder(orderColumn, req.getOrderDir());
 
-        return workerInfoAO.queryWorkerInfoPage(start, limit, workerInfo);
+        return workerInfoAO.queryWorkerInfoPage(req.getUserId(), start, limit,
+            workerInfo);
     }
 
     @Override

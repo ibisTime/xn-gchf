@@ -38,6 +38,8 @@ public interface IProjectCorpInfoBO extends IPaginableBO<ProjectCorpInfo> {
 
     public ProjectCorpInfo getProjectCorpInfo(ProjectCorpInfo condition);
 
+    List<ProjectCorpInfo> getProjectCorpInfoList(String projectCode);
+
     public ProjectCorpInfo getProjectCorpInfo(String projectCode,
             String corpCode);
 

@@ -113,6 +113,9 @@ public class ProjectWorkerAOImpl implements IProjectWorkerAO {
         if (corpBasicinfo == null) {
             throw new BizException("xn631690", "企业信息不存在");
         }
+        if (projectBO.getProject(req.getProjectCode()) == null) {
+            throw new BizException("XN631690", "请选择项目");
+        }
         if (StringUtils.isBlank(req.getProjectCode())) {
             req.setProjectCode(user.getOrganizationCode());
         }
@@ -120,45 +123,14 @@ public class ProjectWorkerAOImpl implements IProjectWorkerAO {
             req.getProjectCode(), req.getCorpCode(), teamMaster.getCode(),
             workerInfo.getIdCardNumber());
 
-        if (preProjectWorker != null) {
-            if (preProjectWorker.getDeleteStatus()
-                .equals(EDeleteStatus.DELETED.getCode())) {
-                // 已存在 并且之前假删除了
-                projectWorkerBO.updateProjectWorkerDeleteStatus(
-                    preProjectWorker.getCode(), EDeleteStatus.NORMAL.getCode());
-                projectWorkerBO.updateProjectWorkerStatus(
-                    preProjectWorker.getCode(),
-                    EUploadStatus.TO_UPLOAD.getCode());
-                return preProjectWorker.getCode();
-            } else {
-                throw new BizException("XN631690",
-                    "项目中已存在【" + workerInfo.getName() + "】的人员");
-            }
+        if (preProjectWorker != null && preProjectWorker.getDeleteStatus()
+            .equals(EDeleteStatus.NORMAL.getCode())) {
+            throw new BizException("XN631690",
+                "项目中已存在【" + workerInfo.getName() + "】的人员");
         }
-        // List<ProjectWorker> projectWorkerByIdentity = projectWorkerBO
-        // .getProjectWorkerByIdentity(req.getTeamSysNo(),
-        // workerInfo.getIdCardNumber());
-        // if (projectWorkerByIdentity.size() == 1 && projectWorkerByIdentity
-        // .get(0).getDeleteStatus().equals(EDeleteStatus.DELETED.getCode())) {
-        // projectWorkerBO.updateProjectWorkerDeleteStatus(
-        // projectWorkerByIdentity.get(0).getCode(),
-        // EDeleteStatus.NORMAL.getCode());
-        // projectWorkerBO.updateProjectWorkerStatus(
-        // projectWorkerByIdentity.get(0).getCode(),
-        // EUploadStatus.TO_UPLOAD.getCode());
-        // return projectWorkerByIdentity.get(0).getCode();
-        // }
 
-        // if (projectWorkerByIdentity.size() == 1) {
-        // throw new BizException("XN631690", "班组成员已添加");
-        // }
-        List<ProjectWorker> projectWorker = projectWorkerBO.getProjectWorker(
-            req.getProjectCode(), workerInfo.getIdCardNumber());
-        if (projectWorker.size() == 1) {
-            throw new BizException("XN631690", "项目人员中已存在该成员");
-
-        }
         return projectWorkerBO.saveProjectWorker(req);
+
     }
 
     @Override
@@ -186,7 +158,7 @@ public class ProjectWorkerAOImpl implements IProjectWorkerAO {
             if (projectWorker.getUploadStatus()
                 .equals(EUploadStatus.UPLOAD_UNEDITABLE.getCode())
                     || projectWorker.getUploadStatus()
-                        .equals(EUploadStatus.UPLOAD_EDITABLE.getCode())) {
+                        .equals(EUploadStatus.UPLOAD_UPDATE.getCode())) {
                 throw new BizException("XN631691", "班组人员已上传,无法删除");
             }
             projectWorkerBO.updateProjectWorkerDeleteStatus(code,
@@ -251,7 +223,9 @@ public class ProjectWorkerAOImpl implements IProjectWorkerAO {
     public void importProjectWorkers(XN631693Req req) {
 
         Project project = projectBO.getProject(req.getProjectCode());
-
+        if (project == null) {
+            throw new BizException("XN631793", "项目不存在");
+        }
         for (XN631693ReqData projectWorkerData : req.getWorkerList()) {
             // 数据字典key校验
             checkDicKey(projectWorkerData);
@@ -375,8 +349,8 @@ public class ProjectWorkerAOImpl implements IProjectWorkerAO {
                 EOperateLogOperate.UploadProjectWorker.getValue(), user, null);
 
             AsyncQueueHolder.addSerial(resString, projectConfig,
-                "projectWorkerBO", code,
-                EUploadStatus.UPLOAD_EDITABLE.getCode(), logCode);
+                "projectWorkerBO", code, EUploadStatus.UPLOAD_UPDATE.getCode(),
+                logCode);
         }
     }
 

@@ -264,7 +264,9 @@
 		UPDATE
 		thf_project_worker
 		SET
-		is_team_leader = #{isTeamLeader}
+		corp_code = #{corpCode}
+		,corp_name = #{corpName}
+		,is_team_leader = #{isTeamLeader}
 		,work_type = #{workType}
 		,work_role = #{workRole}
 		,issue_card_date = #{issueCardDate}

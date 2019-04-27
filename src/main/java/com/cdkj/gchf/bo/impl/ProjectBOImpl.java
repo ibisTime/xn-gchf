@@ -19,7 +19,6 @@ import com.cdkj.gchf.dto.req.XN631600Req;
 import com.cdkj.gchf.dto.req.XN631602Req;
 import com.cdkj.gchf.enums.EGeneratePrefix;
 import com.cdkj.gchf.enums.ESecretStatus;
-import com.cdkj.gchf.exception.BizException;
 
 @Component
 public class ProjectBOImpl extends PaginableBOImpl<Project>
@@ -145,9 +144,6 @@ public class ProjectBOImpl extends PaginableBOImpl<Project>
             Project condition = new Project();
             condition.setCode(code);
             data = projectDAO.select(condition);
-            if (data == null) {
-                throw new BizException("xn0000", "项目编号不存在");
-            }
         }
         return data;
     }

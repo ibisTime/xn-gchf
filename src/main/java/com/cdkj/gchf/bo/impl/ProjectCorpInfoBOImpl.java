@@ -39,7 +39,6 @@ import com.cdkj.gchf.dto.req.XN631907Req;
 import com.cdkj.gchf.enums.EDeleteStatus;
 import com.cdkj.gchf.enums.EGeneratePrefix;
 import com.cdkj.gchf.enums.EIdCardType;
-import com.cdkj.gchf.enums.EOperateLogOperate;
 import com.cdkj.gchf.enums.EOperateLogRefType;
 import com.cdkj.gchf.enums.EProjectCorpType;
 import com.cdkj.gchf.enums.EUploadStatus;
@@ -146,7 +145,7 @@ public class ProjectCorpInfoBOImpl extends PaginableBOImpl<ProjectCorpInfo>
 
     @Override
     public void doUpdate(XN631906Req req, ProjectConfig projectConfig) {
-
+        User user = userBO.getBriefUser(req.getUserId());
         if (StringUtils.isNotBlank(req.getPmIdcardNumber())) {
             req.setPmIdcardNumber(AesUtils.encrypt(req.getPmIdcardNumber(),
                 projectConfig.getSecret()));
@@ -155,8 +154,16 @@ public class ProjectCorpInfoBOImpl extends PaginableBOImpl<ProjectCorpInfo>
         String data = JSONObject
             .toJSONStringWithDateFormat(req, "yyyy-MM-dd HH:mm:ss").toString();
         System.out.println("===" + data);
-        GovConnecter.getGovData("ProjectSubContractor.Update", data,
-            projectConfig.getProjectCode(), projectConfig.getSecret());
+
+        String resString = GovConnecter.getGovData(
+            "ProjectSubContractor.Update", data, projectConfig.getProjectCode(),
+            projectConfig.getSecret());
+        String operateLog = operateLogBO.saveOperateLog(
+            EOperateLogRefType.ProjectCorpinfo.getCode(), req.getCode(),
+            "修改平台参建单位信息", user, "修改平台信息");
+        AsyncQueueHolder.addSerial(resString, projectConfig,
+            "projectCorpInfoBO", req.getCode(),
+            EUploadStatus.UPLOAD_UPDATE.getCode(), operateLog, req.getUserId());
     }
 
     @Override
@@ -259,50 +266,6 @@ public class ProjectCorpInfoBOImpl extends PaginableBOImpl<ProjectCorpInfo>
     @Override
     public ProjectCorpInfo getProjectCorpInfo(ProjectCorpInfo condition) {
         return projectCorpInfoDAO.select(condition);
-    }
-
-    @Override
-    public void uploadProjectCorpInfo(String userId, List<String> codes) {
-        User briefUser = userBO.getBriefUser(userId);
-        for (String code : codes) {
-            ProjectCorpInfo projectCorpInfo = projectCorpInfoBO
-                .getProjectCorpInfo(code);
-            if (EUploadStatus.UPLOAD_UPDATE.getCode()
-                .equals(projectCorpInfo.getUploadStatus()))
-                continue;
-            // 调用国家平台上传数据
-            ProjectConfig projectConfig = projectConfigBO
-                .getProjectConfigByLocal(projectCorpInfo.getProjectCode());
-            if (null == projectConfig) {
-                throw new BizException("XN631634", "不存在已配置的项目，无法上传");
-            }
-
-            if (StringUtils.isNotBlank(projectCorpInfo.getPmIDCardNumber())) {
-                String pmIDCardNumber = AesUtils.encrypt(
-                    projectCorpInfo.getPmIDCardNumber(),
-                    projectConfig.getSecret());
-                projectCorpInfo.setPmIDCardNumber(pmIDCardNumber);
-            }
-
-            projectCorpInfo.setProjectCode(projectConfig.getProjectCode());
-            String json = JSONObject.toJSONStringWithDateFormat(projectCorpInfo,
-                "yyyy-MM-dd HH:mm:ss").toString();
-
-            String resString = GovConnecter.getGovData(
-                "ProjectSubContractor.Add", json,
-                projectConfig.getProjectCode(), projectConfig.getSecret());
-
-            // 保存操作日志
-            String saveOperateLog = operateLogBO.saveOperateLog(
-                EOperateLogRefType.ProjectCorpinfo.getCode(), code,
-                EOperateLogOperate.UploadProjectCorpinfo.getValue(), briefUser,
-                null);
-
-            // 状态消息队列更新数据库状态
-            AsyncQueueHolder.addSerial(resString, projectConfig,
-                "projectCorpInfoBO", code,
-                EUploadStatus.UPLOAD_UPDATE.getCode(), saveOperateLog);
-        }
     }
 
     @Override

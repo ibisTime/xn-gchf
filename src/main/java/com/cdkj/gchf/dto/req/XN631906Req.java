@@ -12,6 +12,10 @@ import org.hibernate.validator.constraints.NotBlank;
  */
 public class XN631906Req {
 
+    private String code;
+
+    private String userId;
+
     // 项目编码
     @NotBlank
     private String projectCode;
@@ -45,6 +49,22 @@ public class XN631906Req {
 
     // 项目经理电话
     private String pmPhone;
+
+    public String getCode() {
+        return code;
+    }
+
+    public void setCode(String code) {
+        this.code = code;
+    }
+
+    public String getUserId() {
+        return userId;
+    }
+
+    public void setUserId(String userId) {
+        this.userId = userId;
+    }
 
     public void setProjectCode(String projectCode) {
         this.projectCode = projectCode;

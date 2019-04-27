@@ -39,6 +39,7 @@ import com.cdkj.gchf.enums.EOperateLogOperate;
 import com.cdkj.gchf.enums.EOperateLogRefType;
 import com.cdkj.gchf.enums.EUploadStatus;
 import com.cdkj.gchf.exception.BizException;
+import com.cdkj.gchf.gov.AsyncQueueHolder;
 import com.cdkj.gchf.gov.GovConnecter;
 import com.cdkj.gchf.gov.GovUtil;
 import com.cdkj.gchf.gov.SerialHandler;
@@ -171,18 +172,23 @@ public class TeamMasterBOImpl extends PaginableBOImpl<TeamMaster>
     @Override
     public void doUpdate(XN631909Req req, ProjectConfig projectConfig) {
 
-        if (StringUtils.isNotBlank(req.getResponsiblePersonIdNumber())) {
-            req.setResponsiblePersonIdNumber(AesUtils.encrypt(
-                req.getResponsiblePersonIdNumber(), projectConfig.getSecret()));
+        User user = userBO.getBriefUser(req.getUserId());
+        if (StringUtils.isNotBlank(req.getResponsiblePersonIDNumber())) {
+            req.setResponsiblePersonIDNumber(AesUtils.encrypt(
+                req.getResponsiblePersonIDNumber(), projectConfig.getSecret()));
         }
-
         String data = JSONObject.toJSONStringWithDateFormat(req, "yyyy-MM-dd")
             .toString();
         System.out.println("===" + data);
+        String operateLog = operateLogBO.saveOperateLog(
+            EOperateLogRefType.TeamMaster.getCode(), req.getCode(),
+            "修改国家平台班组信息", user, "修改国家平台班组信息");
         String resString = GovConnecter.getGovData("Team.Update", data,
             projectConfig.getProjectCode(), projectConfig.getSecret());
 
-        SerialHandler.handle(resString, projectConfig);
+        AsyncQueueHolder.addSerial(resString, projectConfig, "teamMasterBO",
+            req.getCode(), EUploadStatus.UPLOAD_UPDATE.getCode(), operateLog,
+            req.getUserId());
     }
 
     @Override

@@ -39,11 +39,9 @@ import com.cdkj.gchf.dto.req.XN631918ReqData;
 import com.cdkj.gchf.dto.req.XN631919Req;
 import com.cdkj.gchf.enums.EDeleteStatus;
 import com.cdkj.gchf.enums.EGeneratePrefix;
-import com.cdkj.gchf.enums.EOperateLogOperate;
 import com.cdkj.gchf.enums.EOperateLogRefType;
 import com.cdkj.gchf.enums.EUploadStatus;
 import com.cdkj.gchf.exception.BizException;
-import com.cdkj.gchf.gov.AsyncQueueHolder;
 import com.cdkj.gchf.gov.GovConnecter;
 import com.cdkj.gchf.gov.GovUtil;
 import com.cdkj.gchf.gov.SerialHandler;
@@ -163,6 +161,14 @@ public class WorkerAttendanceBOImpl extends PaginableBOImpl<WorkerAttendance>
     }
 
     @Override
+    public void refreshWorkerAttendance(String code, String status) {
+        WorkerAttendance workerAttendance = new WorkerAttendance();
+        workerAttendance.setCode(code);
+        workerAttendance.setUploadStatus(status);
+        workerAttendanceDAO.updateStatus(workerAttendance);
+    }
+
+    @Override
     public int updateWorkerAttendanceDeleteStatus(String code, String status) {
         WorkerAttendance workerAttendance = new WorkerAttendance();
         workerAttendance.setCode(code);
@@ -255,39 +261,6 @@ public class WorkerAttendanceBOImpl extends PaginableBOImpl<WorkerAttendance>
         dataList.add(childJson);
         jsonObject.add("dataList", dataList);
         return jsonObject;
-    }
-
-    @Override
-    public void saveWorkerAttendanceToPlantform(String userId,
-            List<String> codeList) {
-        User briefUser = userBO.getBriefUser(userId);
-        for (String code : codeList) {
-            WorkerAttendance workerAttendance = workerAttendanceBO
-                .getWorkerAttendance(code);
-
-            ProjectConfig projectConfigByLocal = projectConfigBO
-                .getProjectConfigByLocal(workerAttendance.getProjectCode());
-
-            if (projectConfigByLocal == null) {
-                throw new BizException("XN631714", "该项目未配置，无法查询");
-            }
-            TeamMaster teamMaster = teamMasterBO
-                .getTeamMaster(workerAttendance.getTeamSysNo());
-
-            JsonObject requestJson = getRequestJson(teamMaster,
-                workerAttendance, projectConfigByLocal);
-            System.out.println(requestJson);
-            String resString = GovConnecter.getGovData("WorkerAttendance.Add",
-                requestJson.toString(), projectConfigByLocal.getProjectCode(),
-                projectConfigByLocal.getSecret());
-            String saveOperateLog = operateLogBO.saveOperateLog(
-                EOperateLogRefType.WorkAttendance.getCode(), code,
-                EOperateLogOperate.UploadWorkAtendance.getValue(), briefUser,
-                null);
-            AsyncQueueHolder.addSerial(resString, projectConfigByLocal,
-                "workerAttendanceBO", code,
-                EUploadStatus.UPLOAD_UNEDITABLE.getCode(), saveOperateLog);
-        }
     }
 
     @Override

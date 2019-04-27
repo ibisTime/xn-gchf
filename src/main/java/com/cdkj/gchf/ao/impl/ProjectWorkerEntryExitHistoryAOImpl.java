@@ -233,6 +233,11 @@ public class ProjectWorkerEntryExitHistoryAOImpl
             .queryProjectWorkerEntryExitHistory(code);
     }
 
+    /**
+     * 
+     * <p>Title: uploadProjectWorkerEntryExitHistoryList</p>   
+     * <p>Description: 上传人员进退场</p>   
+     */
     @Transactional
     @Override
     public void uploadProjectWorkerEntryExitHistoryList(String userId,
@@ -252,7 +257,8 @@ public class ProjectWorkerEntryExitHistoryAOImpl
             JsonObject requestJson = projectWorkerEntryExitHistoryBO
                 .getRequestJson(teamMaster, projectWorkerEntryExitHistory,
                     projectConfigByLocal);
-
+            projectWorkerEntryExitHistoryBO.refreshUploadStatus(code,
+                EUploadStatus.UPLOADING.getCode());
             String resString = GovConnecter.getGovData("WorkerEntryExit.Add",
                 requestJson.toString(), projectConfigByLocal.getProjectCode(),
                 projectConfigByLocal.getSecret());
@@ -264,7 +270,7 @@ public class ProjectWorkerEntryExitHistoryAOImpl
                 briefUser, null);
             AsyncQueueHolder.addSerial(resString, projectConfigByLocal,
                 "projectWorkerEntryExitHistoryBO", code,
-                EUploadStatus.UPLOAD_UNEDITABLE.getCode(), operateLog);
+                EUploadStatus.UPLOAD_UNEDITABLE.getCode(), operateLog, userId);
 
         }
     }

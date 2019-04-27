@@ -13,6 +13,11 @@ import org.hibernate.validator.constraints.NotBlank;
  * @history:
  */
 public class XN631909Req {
+    // 用户id
+    private String userId;
+
+    // 编号
+    private String code;
 
     // 项目编码
     @NotBlank
@@ -21,6 +26,12 @@ public class XN631909Req {
     // 班组编号
     @Min(0)
     private Integer teamSysNo;
+
+    // 企业名称
+    private String corpName;
+
+    // 企业唯一信用代码
+    private String corpCode;
 
     // 班组名称
     @NotBlank
@@ -33,10 +44,10 @@ public class XN631909Req {
     private String responsiblePersonPhone;
 
     // 责任人证件类型
-    private String responsiblePersonIdcardType;
+    private String responsiblePersonIDCardType;
 
     // 责任人证件号码
-    private String responsiblePersonIdNumber;
+    private String responsiblePersonIDNumber;
 
     // 备注
     private String remark;
@@ -47,8 +58,40 @@ public class XN631909Req {
     // 退场日期
     private Date exitTime;
 
+    public String getUserId() {
+        return userId;
+    }
+
+    public void setUserId(String userId) {
+        this.userId = userId;
+    }
+
+    public String getCode() {
+        return code;
+    }
+
+    public void setCode(String code) {
+        this.code = code;
+    }
+
     public Integer getTeamSysNo() {
         return teamSysNo;
+    }
+
+    public String getCorpName() {
+        return corpName;
+    }
+
+    public void setCorpName(String corpName) {
+        this.corpName = corpName;
+    }
+
+    public String getCorpCode() {
+        return corpCode;
+    }
+
+    public void setCorpCode(String corpCode) {
+        this.corpCode = corpCode;
     }
 
     public void setTeamSysNo(Integer teamSysNo) {
@@ -79,21 +122,21 @@ public class XN631909Req {
         this.responsiblePersonPhone = responsiblePersonPhone;
     }
 
-    public String getResponsiblePersonIdcardType() {
-        return responsiblePersonIdcardType;
+    public String getResponsiblePersonIDCardType() {
+        return responsiblePersonIDCardType;
     }
 
-    public void setResponsiblePersonIdcardType(
-            String responsiblePersonIdcardType) {
-        this.responsiblePersonIdcardType = responsiblePersonIdcardType;
+    public void setResponsiblePersonIDCardType(
+            String responsiblePersonIDCardType) {
+        this.responsiblePersonIDCardType = responsiblePersonIDCardType;
     }
 
-    public String getResponsiblePersonIdNumber() {
-        return responsiblePersonIdNumber;
+    public String getResponsiblePersonIDNumber() {
+        return responsiblePersonIDNumber;
     }
 
-    public void setResponsiblePersonIdNumber(String responsiblePersonIdNumber) {
-        this.responsiblePersonIdNumber = responsiblePersonIdNumber;
+    public void setResponsiblePersonIDNumber(String responsiblePersonIDNumber) {
+        this.responsiblePersonIDNumber = responsiblePersonIDNumber;
     }
 
     public String getRemark() {

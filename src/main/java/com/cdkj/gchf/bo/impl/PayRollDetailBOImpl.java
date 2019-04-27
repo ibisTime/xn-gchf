@@ -16,6 +16,7 @@ import com.cdkj.gchf.bo.IProjectWorkerBO;
 import com.cdkj.gchf.bo.base.PaginableBOImpl;
 import com.cdkj.gchf.common.AesUtils;
 import com.cdkj.gchf.common.DateUtil;
+import com.cdkj.gchf.common.StringUtil;
 import com.cdkj.gchf.core.OrderNoGenerater;
 import com.cdkj.gchf.dao.impl.PayRollDetailDAOImpl;
 import com.cdkj.gchf.domain.BankCardInfo;
@@ -74,19 +75,6 @@ public class PayRollDetailBOImpl extends PaginableBOImpl<PayRollDetail>
                 throw new BizException("XN631770", "项目银行卡号不能为空");
             }
             if (bankCardInfoByNum == null) {
-                // BankCardInfo bankCardInfo = new BankCardInfo();
-                // bankCardInfo.setBankCode(detail.getPayBankCode());
-                // List<ProjectWorker> workerByIdentity = projectWorkerBO
-                // .getProjectWorkerByIdentity(teamSysNo,
-                // detail.getIdCardNumber());
-                // bankCardInfo.setBankNumber(detail.getPayBankCardNumber());
-                // bankCardInfo
-                // .setBusinessSysNo(workerByIdentity.get(0).getWorkerCode());
-                // bankCardInfo
-                // .setBusinessType(EBankCardBussinessType.USER.getCode());
-                // bankCardInfo.setBankName(EBankCardCodeType
-                // .getBankCardType(detail.getPayBankCode()).getValue());
-                // bankCardBankBO.saveBankCardInfo(bankCardInfo);
                 List<ProjectWorker> projectWorkerByIdentity = projectWorkerBO
                     .getProjectWorkerByIdentity(teamSysNo,
                         detail.getIdCardNumber());
@@ -117,7 +105,12 @@ public class PayRollDetailBOImpl extends PaginableBOImpl<PayRollDetail>
                 toDate = DateUtil.strToDate(format, "yyyy-MM-dd");
             }
             payRollDetail.setBalanceDate(toDate);
-
+            if (!StringUtil.isNumber(detail.getActualAmount())) {
+                throw new BizException("XN631770", "实发金额不是数字类型");
+            }
+            if (!StringUtil.isNumber(detail.getTotalPayAmount())) {
+                throw new BizException("XN631770", "实发金额不是数字类型");
+            }
             payRollDetail
                 .setActualAmount(new BigDecimal(detail.getActualAmount()));
             if (StringUtils.isNotBlank(detail.getIsBackPay())) {

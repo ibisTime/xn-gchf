@@ -36,10 +36,14 @@ import com.cdkj.gchf.dto.req.XN631918Req;
 import com.cdkj.gchf.dto.req.XN631919Req;
 import com.cdkj.gchf.enums.EDeleteStatus;
 import com.cdkj.gchf.enums.EDirectionType;
+import com.cdkj.gchf.enums.EOperateLogOperate;
 import com.cdkj.gchf.enums.EOperateLogRefType;
 import com.cdkj.gchf.enums.EUploadStatus;
 import com.cdkj.gchf.enums.EUserKind;
 import com.cdkj.gchf.exception.BizException;
+import com.cdkj.gchf.gov.AsyncQueueHolder;
+import com.cdkj.gchf.gov.GovConnecter;
+import com.google.gson.JsonObject;
 
 @Service
 public class WorkerAttendanceAOImpl implements IWorkerAttendanceAO {
@@ -222,19 +226,45 @@ public class WorkerAttendanceAOImpl implements IWorkerAttendanceAO {
         return workerAttendanceBO.getWorkerAttendance(code);
     }
 
+    /**
+     * 
+     * <p>Title: uploadWorkerAttendanceList</p>   
+     * <p>Description: 上传人员合同</p>   
+     */
+    @Transactional
     @Override
     public void uploadWorkerAttendanceList(String userId,
             List<String> codeList) {
+        User briefUser = userBO.getBriefUser(userId);
         for (String code : codeList) {
             WorkerAttendance workerAttendance = workerAttendanceBO
                 .getWorkerAttendance(code);
+
             ProjectConfig projectConfigByLocal = projectConfigBO
                 .getProjectConfigByLocal(workerAttendance.getProjectCode());
+
             if (projectConfigByLocal == null) {
-                throw new BizException("XN631714", "该项目未配置，无法查询");
+                throw new BizException("XN631714",
+                    "项目【" + workerAttendance.getProjectName() + "】未配置，无法上传");
             }
+            TeamMaster teamMaster = teamMasterBO
+                .getTeamMaster(workerAttendance.getTeamSysNo());
+
+            JsonObject requestJson = workerAttendanceBO.getRequestJson(
+                teamMaster, workerAttendance, projectConfigByLocal);
+
+            String resString = GovConnecter.getGovData("WorkerAttendance.Add",
+                requestJson.toString(), projectConfigByLocal.getProjectCode(),
+                projectConfigByLocal.getSecret());
+            String saveOperateLog = operateLogBO.saveOperateLog(
+                EOperateLogRefType.WorkAttendance.getCode(), code,
+                EOperateLogOperate.UploadWorkAtendance.getValue(), briefUser,
+                null);
+            AsyncQueueHolder.addSerial(resString, projectConfigByLocal,
+                "workerAttendanceBO", code,
+                EUploadStatus.UPLOAD_UNEDITABLE.getCode(), saveOperateLog,
+                userId);
         }
-        workerAttendanceBO.saveWorkerAttendanceToPlantform(userId, codeList);
     }
 
     @Override

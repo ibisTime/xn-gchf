@@ -43,8 +43,6 @@ public interface IProjectCorpInfoBO extends IPaginableBO<ProjectCorpInfo> {
     public ProjectCorpInfo getProjectCorpInfo(String projectCode,
             String corpCode);
 
-    public void uploadProjectCorpInfo(String userId, List<String> codes);
-
     /****国家平台接口****/
     public void doUpload(XN631905Req req, ProjectConfig projectConfig);
 

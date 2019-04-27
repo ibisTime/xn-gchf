@@ -37,6 +37,11 @@ public class QueueBean {
      */
     private String logCode;
 
+    /**
+     * 用户id
+     */
+    private String userId;
+
     public String getProjectCode() {
         return projectCode;
     }
@@ -93,9 +98,17 @@ public class QueueBean {
         this.logCode = logCode;
     }
 
+    public String getUserId() {
+        return userId;
+    }
+
+    public void setUserId(String userId) {
+        this.userId = userId;
+    }
+
     public QueueBean(String requestSerialCode, String projectCode,
             String secret, String boClass, String code, String status,
-            String logCode) {
+            String logCode, String userId) {
         super();
         this.requestSerialCode = requestSerialCode;
         this.projectCode = projectCode;
@@ -104,5 +117,6 @@ public class QueueBean {
         this.code = code;
         this.status = status;
         this.logCode = logCode;
+        this.userId = userId;
     }
 }

@@ -9,7 +9,6 @@ import com.alibaba.fastjson.JSONObject;
 import com.cdkj.gchf.ao.ICorpBasicinfoAO;
 import com.cdkj.gchf.bo.ICorpBasicinfoBO;
 import com.cdkj.gchf.bo.IOperateLogBO;
-import com.cdkj.gchf.bo.IProjectBO;
 import com.cdkj.gchf.bo.IProjectConfigBO;
 import com.cdkj.gchf.bo.IUserBO;
 import com.cdkj.gchf.bo.base.Paginable;
@@ -43,13 +42,9 @@ public class CorpBasicinfoAOImpl implements ICorpBasicinfoAO {
     @Autowired
     private IUserBO userBO;
 
-    @Autowired
-    private IProjectBO projectBO;
-
     @Override
     public String addCorpBasicinfo(XN631250Req req) {
 
-        String userId = req.getUserId();
         if (null != corpBasicinfoBO.getCorpBasicinfoByCorp(req.getCorpCode())) {
             throw new BizException("XN631250", "企业基本信息已存在，请勿重复添加");
         }
@@ -114,6 +109,8 @@ public class CorpBasicinfoAOImpl implements ICorpBasicinfoAO {
                     defaultProjectConfig.getSecret()));
             System.out.println(corpBasicinfo.getLegalManIdcardNumber());
             // 上传企业信息
+            corpBasicinfoBO.refreshUploadStatus(codeReq,
+                EUploadStatus.UPLOADING.getCode());
             String resString = GovConnecter.getGovData("Corp.Upload",
                 JSONObject
                     .toJSONStringWithDateFormat(corpBasicinfo, "yyyy-MM-dd")
@@ -131,7 +128,7 @@ public class CorpBasicinfoAOImpl implements ICorpBasicinfoAO {
             // 添加到上传状态更新队列
             AsyncQueueHolder.addSerial(resString, defaultProjectConfig,
                 "corpBasicinfoBO", corpBasicinfo.getCode(),
-                EUploadStatus.UPLOAD_UNEDITABLE.getCode(), logCode);
+                EUploadStatus.UPLOAD_UNEDITABLE.getCode(), logCode, userId);
 
         }
     }

@@ -33,6 +33,8 @@ public interface IWorkerAttendanceBO extends IPaginableBO<WorkerAttendance> {
 
     public void refreshWorkerAttendance(XN631712Req data);
 
+    void refreshWorkerAttendance(String code, String status);
+
     int updateWorkerAttendanceDeleteStatus(String code, String status);
 
     int fakeDeleteWorkAttendanceByProject(String projectCode);
@@ -49,9 +51,6 @@ public interface IWorkerAttendanceBO extends IPaginableBO<WorkerAttendance> {
     public JsonObject getRequestJson(TeamMaster teamMaster,
             WorkerAttendance workerAttendance,
             ProjectConfig projectConfigByLocal);
-
-    public void saveWorkerAttendanceToPlantform(String userId,
-            List<String> codeList);
 
     /****国家平台接口****/
     public void doUpload(XN631918Req req, ProjectConfig projectConfig);

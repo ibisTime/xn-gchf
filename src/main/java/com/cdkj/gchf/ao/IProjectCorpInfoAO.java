@@ -24,8 +24,10 @@ public interface IProjectCorpInfoAO {
 
     public void editProjectCorpInfo(XN631632Req req);
 
+    // 上传到国家平台
     public void uploadProjectCorpInfo(String userId, List<String> codes);
 
+    // 修改国家平台
     void updatePlantformProjectCorpInfo(XN631635Req req);
 
     public ProjectCorpInfo getProjectCorpInfo(String code);

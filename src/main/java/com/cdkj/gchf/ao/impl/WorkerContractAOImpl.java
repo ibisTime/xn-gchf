@@ -232,6 +232,11 @@ public class WorkerContractAOImpl implements IWorkerContractAO {
         return workerContract;
     }
 
+    /**
+     * 
+     * <p>Title: uploadWorkContractList</p>   
+     * <p>Description: 上传劳动合同 </p>   
+     */
     @Transactional
     @Override
     public void uploadWorkContractList(String userId, List<String> codeList) {
@@ -249,7 +254,11 @@ public class WorkerContractAOImpl implements IWorkerContractAO {
             // 请求json
             JsonObject jsonObject = workerContractBO
                 .getRequestJson(workerContract, projectConfig);
+            workerContractBO.refreshUploadStatus(code,
+                EUploadStatus.UPLOADING.getCode());
 
+            workerContractBO.refreshUploadStatus(code,
+                EUploadStatus.UPLOADING.getCode());
             // 上传到国家平台
             String resString = GovConnecter.getGovData("WorkerContract.Add",
                 jsonObject.toString(), projectConfig.getProjectCode(),
@@ -262,7 +271,7 @@ public class WorkerContractAOImpl implements IWorkerContractAO {
             // 队列更新状态
             AsyncQueueHolder.addSerial(resString, projectConfig,
                 "workerContractBO", code,
-                EUploadStatus.UPLOAD_UNEDITABLE.getCode(), log);
+                EUploadStatus.UPLOAD_UNEDITABLE.getCode(), log, userId);
         }
     }
 

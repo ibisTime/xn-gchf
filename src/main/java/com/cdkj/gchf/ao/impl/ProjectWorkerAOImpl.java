@@ -1,5 +1,6 @@
 package com.cdkj.gchf.ao.impl;
 
+import java.util.Arrays;
 import java.util.List;
 
 import org.apache.commons.collections.CollectionUtils;
@@ -133,6 +134,12 @@ public class ProjectWorkerAOImpl implements IProjectWorkerAO {
 
     }
 
+    /**
+     * 
+     * <p>Title: editProjectWorker</p>   
+     * <p>Description: 编辑班组人员 </p>   
+     */
+    @Transactional
     @Override
     public void editProjectWorker(XN631692Req req) {
 
@@ -140,13 +147,38 @@ public class ProjectWorkerAOImpl implements IProjectWorkerAO {
         if (StringUtils.isNotBlank(req.getWorkType())) {
             EWorkerType.checkExists(req.getWorkType());
         }
+        ProjectWorker projectWorker = projectWorkerBO
+            .getProjectWorker(req.getCode());
 
-        TeamMaster teamMaster = teamMasterBO.getTeamMaster(req.getTeamSysNo());
+        if (projectWorker.getUploadStatus()
+            .equals(EUploadStatus.UPLOAD_UPDATE.getCode())
+                || projectWorker.getUploadStatus()
+                    .equals(EUploadStatus.UPLOAD_UNEDITABLE.getCode())) {
+            // 修改本地和平台
+            TeamMaster teamMaster = teamMasterBO
+                .getTeamMaster(req.getTeamSysNo());
 
-        projectWorkerBO.refreshProjectWorker(req, teamMaster);
+            projectWorkerBO.refreshProjectWorker(req, teamMaster);
+            XN631695Req editReq = new XN631695Req();
+            editReq.setUserId(req.getUserId());
+            editReq.setCodeList(Arrays.asList(req.getCode()));
+            updatePlantformProjectWorker(editReq);
 
-        operateLogBO.saveOperateLog(EOperateLogRefType.ProjectWorker.getCode(),
-            req.getCode(), "修改项目人员信息", user, null);
+            operateLogBO.saveOperateLog(
+                EOperateLogRefType.ProjectWorker.getCode(), req.getCode(),
+                "修改项目人员信息", user, null);
+
+        } else {
+            TeamMaster teamMaster = teamMasterBO
+                .getTeamMaster(req.getTeamSysNo());
+
+            projectWorkerBO.refreshProjectWorker(req, teamMaster);
+
+            operateLogBO.saveOperateLog(
+                EOperateLogRefType.ProjectWorker.getCode(), req.getCode(),
+                "修改项目人员信息", user, null);
+
+        }
 
     }
 
@@ -316,7 +348,7 @@ public class ProjectWorkerAOImpl implements IProjectWorkerAO {
     /**
      * 
      * <p>Title: uploadProjectWorker</p>   
-     * <p>Description:上传数据到国家平台</p>   
+     * <p>Description:上传项目人员到国家平台</p>   
      */
     @Override
     public void uploadProjectWorker(XN631694Req req) {
@@ -329,17 +361,16 @@ public class ProjectWorkerAOImpl implements IProjectWorkerAO {
             TeamMaster teamMaster = teamMasterBO
                 .getTeamMaster(projectWorker.getTeamSysNo());
 
-            if (teamMaster == null) {
-                throw new BizException("XN631690", "班组信息不存在");
-            }
             ProjectConfig projectConfig = projectConfigBO
                 .getProjectConfigByLocal(projectWorker.getProjectCode());
             if (projectConfig == null) {
-                throw new BizException("XN631690", "项目未配置,请检查项目配置");
+                throw new BizException("XN631690",
+                    "项目未配置" + projectWorker.getProjectName() + ",请检查项目配置");
             }
+            projectWorkerBO.refreshUploadStatus(code,
+                EUploadStatus.UPLOADING.getCode());
             JsonObject json = projectWorkerBO.getProjectWorkerJson(teamMaster,
                 projectWorker, projectConfig);
-
             String resString = GovConnecter.getGovData("ProjectWorker.Add",
                 json.toString(), projectConfig.getProjectCode(),
                 projectConfig.getSecret());
@@ -350,7 +381,7 @@ public class ProjectWorkerAOImpl implements IProjectWorkerAO {
 
             AsyncQueueHolder.addSerial(resString, projectConfig,
                 "projectWorkerBO", code, EUploadStatus.UPLOAD_UPDATE.getCode(),
-                logCode);
+                logCode, req.getUserId());
         }
     }
 
@@ -369,7 +400,8 @@ public class ProjectWorkerAOImpl implements IProjectWorkerAO {
             ProjectConfig configByLocal = projectConfigBO
                 .getProjectConfigByLocal(projectWorker.getProjectCode());
             if (configByLocal == null) {
-                throw new BizException("XN631695", "项目未配置,请先上传");
+                throw new BizException("XN631695",
+                    "项目未配置" + projectWorker.getProjectName());
             }
             if (projectWorker.getUploadStatus()
                 .equals(EUploadStatus.TO_UPLOAD.getCode())) {
@@ -391,11 +423,9 @@ public class ProjectWorkerAOImpl implements IProjectWorkerAO {
             xn631612Req.setProjectCode(projectConfigByLocal.getProjectCode());
             xn631612Req.setTeamSysNo(Integer.parseInt(teamMasterBO
                 .getTeamMaster(projectWorker.getTeamSysNo()).getTeamSysNo()));
-
+            xn631612Req.setUserId(req.getUserId());
+            xn631612Req.setCode(code);
             projectWorkerBO.doUpdate(xn631612Req, configByLocal);
-            operateLogBO.saveOperateLog(
-                EOperateLogRefType.ProjectWorker.getCode(), code,
-                "修改国家平台项目人员信息", user, null);
         }
 
     }

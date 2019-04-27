@@ -1,5 +1,6 @@
 package com.cdkj.gchf.ao.impl;
 
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
@@ -159,40 +160,74 @@ public class TeamMasterAOImpl implements ITeamMasterAO {
     public void editTeamMaster(XN631652Req data) {
         User user = userBO.getBriefUser(data.getUserId());
         TeamMaster teamMaster = teamMasterBO.getTeamMaster(data.getCode());
-        if (teamMaster.getUploadStatus() != null & teamMaster.getUploadStatus()
-            .equals(EUploadStatus.UPLOAD_UNEDITABLE.getCode())) {
-            throw new BizException("XN631652", "班组信息已上传,不可修改");
-        }
 
         if (!data.getTeamName().equals(teamMaster.getTeamName())) {
-            teamMaster = teamMasterBO.getTeamMasterByProject(
+            TeamMaster tempTeamMaster = teamMasterBO.getTeamMasterByProject(
                 teamMaster.getProjectCode(), teamMaster.getCorpCode(),
                 data.getTeamName());
-            if (null != teamMaster) {
+            if (null != tempTeamMaster) {
                 throw new BizException("XN631650", "班组名称已存在，请重新输入");
             }
         }
+        // 上传中 或者同步中
+        if (teamMaster.getUploadStatus()
+            .equals(EUploadStatus.UPLOADING.getCode())
+                || teamMaster.getUploadStatus()
+                    .equals(EUploadStatus.UPDATEING.getCode())) {
+            throw new BizException("XN631650", "该操作不支持并发、请等待上次结束后修改");
+        }
 
-        teamMasterBO.refreshTeamMaster(data);
+        if (teamMaster.getUploadStatus()
+            .equals(EUploadStatus.UPLOAD_UNUPDATE.getCode())
+                || teamMaster.getUploadStatus()
+                    .equals(EUploadStatus.UPLOAD_UPDATE.getCode())) {
+            // 修改本地 再修改平台
+            teamMasterBO.refreshTeamMaster(data);
+            operateLogBO.saveOperateLog(EOperateLogRefType.TeamMaster.getCode(),
+                data.getCode(), EOperateLogOperate.EditTeamMaster.getValue(),
+                user, "修改本地班组信息");
+            teamMasterBO.refreshUploadStatus(data.getCode(),
+                EUploadStatus.UPDATEING.getCode());
+            XN631655Req editReq = new XN631655Req();
+            BeanUtils.copyProperties(data, editReq);
+            editReq.setUserId(data.getUserId());
+            editReq.setCodeList(Arrays.asList(data.getCode()));
+            updatePlantformTeamMaster(editReq);
 
-        operateLogBO.saveOperateLog(EOperateLogRefType.TeamMaster.getCode(),
-            data.getCode(), EOperateLogOperate.EditTeamMaster.getValue(), user,
-            "修改班组信息");
+        } else {
+            teamMasterBO.refreshTeamMaster(data);
+
+            operateLogBO.saveOperateLog(EOperateLogRefType.TeamMaster.getCode(),
+                data.getCode(), EOperateLogOperate.EditTeamMaster.getValue(),
+                user, "修改班组信息");
+        }
+
     }
 
+    /**
+     * 
+     * <p>Title: uploadTeamMaster</p>   
+     * <p>Description:上传本地数据到国家平台 </p>   
+     */
+    @Transactional
     @Override
     public void uploadTeamMaster(List<String> codeList, String userId) {
         User operator = userBO.getBriefUser(userId);
         for (String code : codeList) {
+
             TeamMaster teamMaster = getTeamMaster(code);
             if (EUploadStatus.UPLOAD_UPDATE.getCode()
-                .equals(teamMaster.getUploadStatus())) {
+                .equals(teamMaster.getUploadStatus())
+                    || teamMaster.getUploadStatus()
+                        .equals(EUploadStatus.UPLOAD_UNUPDATE.getCode())) {
                 continue;
             }
+            Project project = projectBO.getProject(teamMaster.getProjectCode());
             ProjectConfig projectConfig = projectConfigBO
                 .getProjectConfigByLocal(teamMaster.getProjectCode());
             if (null == projectConfig) {
-                throw new BizException("XN631253", "不存在已配置的项目，无法上传");
+                throw new BizException("XN631253",
+                    "项目【" + project.getName() + "】未配置,无法上传");
             }
             // 处理需要加密的信息
             if (StringUtils
@@ -203,6 +238,10 @@ public class TeamMasterAOImpl implements ITeamMasterAO {
                 teamMaster.setResponsiblePersonIdNumber(encryptIdCardNumber);
             }
             teamMaster.setProjectCode(projectConfig.getProjectCode());
+
+            // 更新状态为上传中
+            teamMasterBO.refreshUploadStatus(teamMaster.getCode(),
+                EUploadStatus.UPLOADING.getCode());
 
             // 上传班组信息
             String teamMasterInfo = JSONObject
@@ -218,7 +257,7 @@ public class TeamMasterAOImpl implements ITeamMasterAO {
 
             // 添加到上传状态更新队列
             AsyncQueueHolder.addSerial(resString, projectConfig, "teamMasterBO",
-                code, EUploadStatus.UPLOAD_UPDATE.getCode(), logCode);
+                code, EUploadStatus.UPLOAD_UPDATE.getCode(), logCode, userId);
         }
     }
 
@@ -235,13 +274,22 @@ public class TeamMasterAOImpl implements ITeamMasterAO {
             TeamMaster teamMaster = teamMasterBO.getTeamMaster(code);
             ProjectConfig configByLocal = projectConfigBO
                 .getProjectConfigByLocal(teamMaster.getProjectCode());
+
             if (null == configByLocal) {
-                throw new BizException("XN631655", "项目未配置");
+
+                configByLocal = projectConfigBO
+                    .getProjectConfigByProject(teamMaster.getProjectCode());
+                if (configByLocal == null) {
+                    throw new BizException("XN631655",
+                        "项目【" + teamMaster.getProjectName() + "】未配置");
+                }
+
             }
             if (teamMaster.getUploadStatus()
                 .equals(EUploadStatus.TO_UPLOAD.getCode())) {
                 throw new BizException("XN631655", "班组信息未上传,无法修改国家平台班组信息");
             }
+
             XN631909Req xn631909Req = new XN631909Req();
             xn631909Req.setTeamName(teamMaster.getTeamName());
             xn631909Req
@@ -254,12 +302,12 @@ public class TeamMasterAOImpl implements ITeamMasterAO {
             }
             if (StringUtils
                 .isNotBlank(teamMaster.getResponsiblePersonIdcardType())) {
-                xn631909Req.setResponsiblePersonIdcardType(
+                xn631909Req.setResponsiblePersonIDCardType(
                     teamMaster.getResponsiblePersonIdcardType());
             }
             if (StringUtils
                 .isNotBlank(teamMaster.getResponsiblePersonIdNumber())) {
-                xn631909Req.setResponsiblePersonIdNumber(
+                xn631909Req.setResponsiblePersonIDNumber(
                     teamMaster.getResponsiblePersonIdNumber());
             }
             if (StringUtils.isNotBlank(teamMaster.getResponsiblePersonName())) {
@@ -274,14 +322,19 @@ public class TeamMasterAOImpl implements ITeamMasterAO {
             if (StringUtils.isNotBlank(teamMaster.getRemark())) {
                 xn631909Req.setRemark(teamMaster.getRemark());
             }
-
-            teamMasterBO.doUpdate(xn631909Req, configByLocal);
-            // 更新本地班组状态
+            if (StringUtils.isNotBlank(teamMaster.getCorpCode())) {
+                xn631909Req.setCorpCode(teamMaster.getCorpCode());
+            }
+            if (StringUtils.isNotBlank(teamMaster.getCorpName())) {
+                xn631909Req.setCorpName(teamMaster.getCorpName());
+            }
+            // 更新状态-同步中 修改平台信息、保存日志
             teamMasterBO.refreshUploadStatus(code,
-                EUploadStatus.UPLOAD_UPDATE.getCode());
-            operateLogBO.saveOperateLog(EOperateLogRefType.TeamMaster.getCode(),
-                code, EOperateLogOperate.UpdateTeamMaster.getValue(), user,
-                null);
+                EUploadStatus.UPDATEING.getCode());
+            xn631909Req.setCode(code);
+            xn631909Req.setUserId(req.getUserId());
+            teamMasterBO.doUpdate(xn631909Req, configByLocal);
+
         }
 
     }

@@ -24,7 +24,11 @@ public enum EUploadStatus {
 
     UPLOAD_UNUPDATE("2", "已上传未同步"),
 
-    UPLOAD_UNEDITABLE("3", "已上传不可修改");
+    UPLOAD_UNEDITABLE("3", "已上传不可修改"),
+
+    UPLOADING("4", "上传中"),
+
+    UPDATEING("5", "同步中");
 
     EUploadStatus(String code, String value) {
         this.code = code;

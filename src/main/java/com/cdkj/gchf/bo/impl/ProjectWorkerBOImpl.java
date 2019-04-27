@@ -13,10 +13,12 @@ import org.springframework.stereotype.Component;
 
 import com.alibaba.fastjson.JSONObject;
 import com.cdkj.gchf.bo.ICorpBasicinfoBO;
+import com.cdkj.gchf.bo.IOperateLogBO;
 import com.cdkj.gchf.bo.IProjectBO;
 import com.cdkj.gchf.bo.IProjectConfigBO;
 import com.cdkj.gchf.bo.IProjectWorkerBO;
 import com.cdkj.gchf.bo.ITeamMasterBO;
+import com.cdkj.gchf.bo.IUserBO;
 import com.cdkj.gchf.bo.IWorkerInfoBO;
 import com.cdkj.gchf.bo.base.Paginable;
 import com.cdkj.gchf.bo.base.PaginableBOImpl;
@@ -30,6 +32,7 @@ import com.cdkj.gchf.domain.Project;
 import com.cdkj.gchf.domain.ProjectConfig;
 import com.cdkj.gchf.domain.ProjectWorker;
 import com.cdkj.gchf.domain.TeamMaster;
+import com.cdkj.gchf.domain.User;
 import com.cdkj.gchf.domain.WorkerInfo;
 import com.cdkj.gchf.dto.req.XN631690Req;
 import com.cdkj.gchf.dto.req.XN631692Req;
@@ -43,10 +46,12 @@ import com.cdkj.gchf.enums.EGeneratePrefix;
 import com.cdkj.gchf.enums.EGovErrorMessage;
 import com.cdkj.gchf.enums.EIdCardType;
 import com.cdkj.gchf.enums.EIsNotType;
+import com.cdkj.gchf.enums.EOperateLogRefType;
 import com.cdkj.gchf.enums.EUploadStatus;
 import com.cdkj.gchf.enums.EWorkerRoleType;
 import com.cdkj.gchf.enums.EWorkerType;
 import com.cdkj.gchf.exception.BizException;
+import com.cdkj.gchf.gov.AsyncQueueHolder;
 import com.cdkj.gchf.gov.GovConnecter;
 import com.cdkj.gchf.gov.GovUtil;
 import com.cdkj.gchf.gov.SerialHandler;
@@ -74,6 +79,12 @@ public class ProjectWorkerBOImpl extends PaginableBOImpl<ProjectWorker>
 
     @Autowired
     private IProjectBO projectBO;
+
+    @Autowired
+    private IOperateLogBO operateLogBO;
+
+    @Autowired
+    private IUserBO userBO;
 
     @Override
     public String saveProjectWorker(XN631690Req data) {
@@ -275,7 +286,7 @@ public class ProjectWorkerBOImpl extends PaginableBOImpl<ProjectWorker>
      */
     @Override
     public void doUpdate(XN631912Req req, ProjectConfig projectConfig) {
-
+        User user = userBO.getBriefUser(req.getUserId());
         req.setIdCardNumber(
             AesUtils.encrypt(req.getIdCardNumber(), projectConfig.getSecret()));
 
@@ -290,7 +301,14 @@ public class ProjectWorkerBOImpl extends PaginableBOImpl<ProjectWorker>
         String resString = GovConnecter.getGovData("ProjectWorker.Update", data,
             projectConfig.getProjectCode(), projectConfig.getSecret());
 
-        SerialHandler.handle(resString, projectConfig);
+        // SerialHandler.handle(resString, projectConfig);
+        String operateLog = operateLogBO.saveOperateLog(
+            EOperateLogRefType.ProjectWorker.getCode(), req.getCode(),
+            "修改平台项目人员", user, "修改平台项目人员");
+        AsyncQueueHolder.addSerial(resString, projectConfig, "projectWorkerBO",
+            req.getCode(), EUploadStatus.UPLOAD_UPDATE.getCode(), operateLog,
+            req.getUserId());
+
     }
 
     @Override

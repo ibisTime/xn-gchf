@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.alibaba.fastjson.JSONObject;
 import com.cdkj.gchf.ao.IProjectCorpInfoAO;
 import com.cdkj.gchf.bo.ICorpBasicinfoBO;
 import com.cdkj.gchf.bo.IOperateLogBO;
@@ -23,6 +24,7 @@ import com.cdkj.gchf.bo.IUserBO;
 import com.cdkj.gchf.bo.IWorkerAttendanceBO;
 import com.cdkj.gchf.bo.IWorkerContractBO;
 import com.cdkj.gchf.bo.base.Paginable;
+import com.cdkj.gchf.common.AesUtils;
 import com.cdkj.gchf.domain.CorpBasicinfo;
 import com.cdkj.gchf.domain.PayRoll;
 import com.cdkj.gchf.domain.Project;
@@ -46,6 +48,8 @@ import com.cdkj.gchf.enums.EProjectCorpType;
 import com.cdkj.gchf.enums.EUploadStatus;
 import com.cdkj.gchf.enums.EUserKind;
 import com.cdkj.gchf.exception.BizException;
+import com.cdkj.gchf.gov.AsyncQueueHolder;
+import com.cdkj.gchf.gov.GovConnecter;
 
 @Service
 public class ProjectCorpInfoAOImpl implements IProjectCorpInfoAO {
@@ -172,6 +176,7 @@ public class ProjectCorpInfoAOImpl implements IProjectCorpInfoAO {
     @Override
     @Transactional
     public void editProjectCorpInfo(XN631632Req req) {
+        User user = userBO.getBriefUser(req.getUserId());
         if (projectBO.getProject(req.getProjectCode()) == null) {
             throw new BizException("XN631630", "请选择项目");
         }
@@ -197,21 +202,110 @@ public class ProjectCorpInfoAOImpl implements IProjectCorpInfoAO {
                 throw new BizException("XN631630", "该项目下已存在该参建单位");
             }
         }
-        // 修改
-        projectCorpInfoBO.refreshProjectCorpInfo(req, project.getName());
-        // 保存日志
-        User briefUser = userBO.getBriefUser(req.getUserId());
-        operateLogBO.saveOperateLog(
-            EOperateLogRefType.ProjectCorpinfo.getCode(), req.getCode(),
-            EOperateLogOperate.EditProjectCorpinfo.getValue(), briefUser,
-            req.getRemark());
+        ProjectCorpInfo projectCorpInfo = projectCorpInfoBO
+            .getProjectCorpInfo(req.getCode());
+
+        if (projectCorpInfo.getUploadStatus()
+            .equals(EUploadStatus.UPLOADING.getCode())) {
+            throw new BizException("XN631630", "该操作不支持并发,请等待上次操作结束后再修改");
+        }
+        if (projectCorpInfo.getUploadStatus()
+            .equals(EUploadStatus.UPLOAD_UPDATE.getCode())
+                || projectCorpInfo.getUploadStatus()
+                    .equals(EUploadStatus.UPLOAD_UNUPDATE.getCode())) {
+            ProjectConfig configByLocal = projectConfigBO
+                .getProjectConfigByLocal(projectCorpInfo.getProjectCode());
+            if (configByLocal == null) {
+                throw new BizException("XN631635", "项目未配置");
+            }
+            // 更改状态为同步中
+            projectCorpInfoBO.refreshUploadStatus(req.getCode(),
+                EUploadStatus.UPDATEING.getCode());
+            // 刷新本地数据
+            projectCorpInfoBO.refreshProjectCorpInfo(req, project.getName());
+            // 保存日志
+            operateLogBO.saveOperateLog(
+                EOperateLogRefType.ProjectCorpinfo.getCode(), req.getCode(),
+                EOperateLogOperate.EditProjectCorpinfo.getValue(), user,
+                req.getRemark());
+            // 修改平台数据
+            XN631906Req xn631906Req = new XN631906Req();
+            BeanUtils.copyProperties(projectCorpInfo, xn631906Req);
+            xn631906Req.setProjectCode(configByLocal.getProjectCode());
+            xn631906Req.setUserId(req.getUserId());
+            if (projectCorpInfo.getEntryTime() != null) {
+                xn631906Req.setEntryTime(projectCorpInfo.getEntryTime());
+            }
+            if (projectCorpInfo.getExitTime() != null) {
+                xn631906Req.setExitTime(projectCorpInfo.getExitTime());
+            }
+            projectCorpInfoBO.doUpdate(xn631906Req, configByLocal);
+
+        } else {
+            projectCorpInfoBO.refreshProjectCorpInfo(req, project.getName());
+            // 保存日志
+            projectCorpInfoBO.refreshUploadStatus(req.getCode(),
+                EUploadStatus.TO_UPLOAD.getCode());
+            User briefUser = userBO.getBriefUser(req.getUserId());
+            operateLogBO.saveOperateLog(
+                EOperateLogRefType.ProjectCorpinfo.getCode(), req.getCode(),
+                EOperateLogOperate.EditProjectCorpinfo.getValue(), briefUser,
+                req.getRemark());
+        }
 
     }
 
     @Override
     @Transactional
     public void uploadProjectCorpInfo(String userId, List<String> codes) {
-        projectCorpInfoBO.uploadProjectCorpInfo(userId, codes);
+        User briefUser = userBO.getBriefUser(userId);
+        for (String code : codes) {
+            ProjectCorpInfo projectCorpInfo = projectCorpInfoBO
+                .getProjectCorpInfo(code);
+
+            if (EUploadStatus.UPLOAD_UPDATE.getCode()
+                .equals(projectCorpInfo.getUploadStatus()))
+                continue;
+            // 调用国家平台上传数据
+            ProjectConfig projectConfig = projectConfigBO
+                .getProjectConfigByLocal(projectCorpInfo.getProjectCode());
+            if (null == projectConfig) {
+                throw new BizException("XN631634",
+                    "项目【" + projectCorpInfo.getProjectName() + "】未配置无法上传");
+            }
+            projectCorpInfo.setProjectCode(projectConfig.getProjectCode());
+
+            if (StringUtils.isNotBlank(projectCorpInfo.getPmIDCardNumber())) {
+                String pmIDCardNumber = AesUtils.encrypt(
+                    projectCorpInfo.getPmIDCardNumber(),
+                    projectConfig.getSecret());
+                projectCorpInfo.setPmIDCardNumber(pmIDCardNumber);
+            }
+            // 获取上传json
+            String json = JSONObject.toJSONStringWithDateFormat(projectCorpInfo,
+                "yyyy-MM-dd HH:mm:ss").toString();
+
+            // 更改状态为上传中
+            projectCorpInfo.setUploadStatus(EUploadStatus.UPLOADING.getCode());
+            projectCorpInfoBO.refreshUploadStatus(code,
+                EUploadStatus.UPLOADING.getCode());
+
+            // 上传
+            String resString = GovConnecter.getGovData(
+                "ProjectSubContractor.Add", json,
+                projectConfig.getProjectCode(), projectConfig.getSecret());
+
+            // 保存操作日志
+            String saveOperateLog = operateLogBO.saveOperateLog(
+                EOperateLogRefType.ProjectCorpinfo.getCode(), code,
+                EOperateLogOperate.UploadProjectCorpinfo.getValue(), briefUser,
+                null);
+
+            // 状态消息队列更新数据库状态
+            AsyncQueueHolder.addSerial(resString, projectConfig,
+                "projectCorpInfoBO", code,
+                EUploadStatus.UPLOAD_UPDATE.getCode(), saveOperateLog, userId);
+        }
     }
 
     /**
@@ -231,10 +325,24 @@ public class ProjectCorpInfoAOImpl implements IProjectCorpInfoAO {
                 .equals(EUploadStatus.TO_UPLOAD.getCode())) {
                 throw new BizException("XN631635", "参建单位未上传,无法修改平台信息");
             }
+            Project project = projectBO
+                .getProject(projectCorpInfo.getProjectCode());
+            // 从上传转过来的
+            //////
+            ProjectConfig projectConfigByProject = null;
+            if (project == null) {
+                projectConfigByProject = projectConfigBO
+                    .getProjectConfigByProject(
+                        projectCorpInfo.getProjectCode());
+            }
             ProjectConfig configByLocal = projectConfigBO
                 .getProjectConfigByLocal(projectCorpInfo.getProjectCode());
             if (configByLocal == null) {
-                throw new BizException("XN631635", "项目未配置");
+                configByLocal = projectConfigByProject;
+                if (configByLocal == null) {
+                    throw new BizException("XN631635",
+                        "项目未配置【" + project.getName() + "】");
+                }
             }
             // 请求国家平台刷新接口
             XN631906Req xn631906Req = new XN631906Req();
@@ -246,10 +354,13 @@ public class ProjectCorpInfoAOImpl implements IProjectCorpInfoAO {
             if (projectCorpInfo.getExitTime() != null) {
                 xn631906Req.setExitTime(projectCorpInfo.getExitTime());
             }
-            projectCorpInfoBO.doUpdate(xn631906Req, configByLocal);
-            // 更新本地上传状态
+            xn631906Req.setCode(code);
+            xn631906Req.setUserId(req.getUserId());
+            // 同步中
             projectCorpInfoBO.refreshUploadStatus(code,
-                EUploadStatus.UPLOAD_UPDATE.getCode());
+                EUploadStatus.UPDATEING.getCode());
+            projectCorpInfoBO.doUpdate(xn631906Req, configByLocal);
+
             // 更新操作日志
             operateLogBO.saveOperateLog(
                 EOperateLogRefType.ProjectCorpinfo.getCode(), code,

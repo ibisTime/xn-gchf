@@ -229,7 +229,7 @@ public class PayRollAOImpl implements IPayRollAO {
 
             AsyncQueueHolder.addSerial(resString, projectConfigByLocal,
                 "payRollDetailBO", code,
-                EUploadStatus.UPLOAD_UNEDITABLE.getCode(), log);
+                EUploadStatus.UPLOAD_UNEDITABLE.getCode(), log, userId);
         }
 
     }

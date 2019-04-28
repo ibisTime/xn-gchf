@@ -146,10 +146,20 @@ public class BankCardInfoAOImpl implements IBankCardInfoAO {
             String businessSysNo = bankCardInfo.getBusinessSysNo();
             ProjectWorker projectWorker = projectWorkerBO
                 .getProjectWorker(businessSysNo);
-            bankCardInfo.setProjectName(projectWorker.getProjectName());
-            bankCardInfo.setTeamName(projectWorker.getTeamName());
-            bankCardInfo.setWorkerName(projectWorker.getWorkerName());
-            bankCardInfo.setIdcardNumber(projectWorker.getIdcardNumber());
+            if (projectWorker == null) {
+                ProjectCorpInfo projectCorpInfo = projectCorpInfoBO
+                    .getProjectCorpInfo(businessSysNo);
+                bankCardInfo.setProjectName(projectCorpInfo.getProjectName());
+                bankCardInfo.setBusinessName(projectCorpInfo.getCorpName());
+                bankCardInfo.setWorkerName(projectCorpInfo.getCorpName());
+
+            } else {
+                bankCardInfo.setProjectName(projectWorker.getProjectName());
+                bankCardInfo.setTeamName(projectWorker.getTeamName());
+                bankCardInfo.setWorkerName(projectWorker.getWorkerName());
+                bankCardInfo.setIdcardNumber(projectWorker.getIdcardNumber());
+            }
+
         }
         paginable.setList(list);
         return paginable;

@@ -25,6 +25,7 @@ import com.cdkj.gchf.dto.req.XN631655Req;
 import com.cdkj.gchf.dto.req.XN631695Req;
 import com.cdkj.gchf.enums.EGovAsyncStatus;
 import com.cdkj.gchf.enums.EUploadStatus;
+import com.cdkj.gchf.exception.BizException;
 import com.cdkj.gchf.spring.SpringContextHolder;
 
 @Component
@@ -48,16 +49,28 @@ public class AsyncQueueHolder {
     public static void addSerial(String resString, ProjectConfig projectConfig,
             String boClass, String code, String status, String logCode,
             String userId) {
+        QueueBean queueBean = null;
+        String requestSerialCode = null;
+        try {
+            // 捕捉国家平台异常
+            requestSerialCode = GovUtil.parseRequestSerialCode(resString);
 
-        String requestSerialCode = GovUtil.parseRequestSerialCode(resString);
+            queueBean = new QueueBean(requestSerialCode,
+                projectConfig.getProjectCode(), projectConfig.getSecret(),
+                boClass, code, status, logCode, userId);
 
-        QueueBean queueBean = new QueueBean(requestSerialCode,
-            projectConfig.getProjectCode(), projectConfig.getSecret(), boClass,
-            code, status, logCode, userId);
-
-        if (EGovAsyncStatus.TO_HANDLE.getCode()
-            .equals(handleQueueBean(queueBean))) {
-            serialMQHolder.serialMQ.addLast(queueBean);
+            if (EGovAsyncStatus.TO_HANDLE.getCode()
+                .equals(handleQueueBean(queueBean))) {
+                serialMQHolder.serialMQ.addLast(queueBean);
+            }
+        } catch (BizException e) {
+            queueBean.getBoClass();
+            // 国家平台抛出的异常 数据处理后再抛出
+            refreshUploadStatus(queueBean.getBoClass(), requestSerialCode,
+                EUploadStatus.UPLOAD_FAIL.getCode());
+            queueBean.setStatus(EGovAsyncStatus.FAIL.getCode());
+            e.printStackTrace();
+            throw e;
         }
 
     }
@@ -68,7 +81,7 @@ public class AsyncQueueHolder {
         synchronized (serialMQHolder.serialMQ) {
             Iterator<QueueBean> iterator = serialMQHolder.serialMQ.iterator();
             while (iterator.hasNext()) {
-                if (EGovAsyncStatus.TO_HANDLE.getCode()
+                if (!EGovAsyncStatus.TO_HANDLE.getCode()
                     .equals(handleQueueBean(iterator.next()))) {
                     iterator.remove();
                 }
@@ -93,9 +106,7 @@ public class AsyncQueueHolder {
                 // 更新本地班组编号
                 syncTeamSysNo(queueBean.getCode(), asyncRes);
                 // 刷新状态
-                ITeamMasterBO bean = SpringContextHolder
-                    .getBean(ITeamMasterBO.class);
-                bean.refreshUploadStatus(queueBean.getCode(),
+                refreshUploadStatus(queueBean.getBoClass(), queueBean.getCode(),
                     EUploadStatus.UPLOAD_UPDATE.getCode());
 
             }
@@ -214,6 +225,12 @@ public class AsyncQueueHolder {
                 refreshLogRemark(queueBean.getLogCode(), asyncRes);
             }
 
+        }
+        if (asyncRes.getStatus().equals(EGovAsyncStatus.TO_HANDLE.getCode())
+                && queueBean.getBoClass().equals("projectWorkerBO")) {
+            refreshUploadStatus(queueBean.getBoClass(), queueBean.getCode(),
+                EUploadStatus.UPLOAD_UPDATE.getCode());
+            asyncRes.setStatus(EGovAsyncStatus.SUCCESS.getCode());
         }
 
         return asyncRes.getStatus();

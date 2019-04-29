@@ -20,6 +20,7 @@ import com.cdkj.gchf.dao.IUserDAO;
 import com.cdkj.gchf.domain.Subbranch;
 import com.cdkj.gchf.domain.Supervise;
 import com.cdkj.gchf.domain.User;
+import com.cdkj.gchf.dto.req.XN631600Req;
 import com.cdkj.gchf.enums.EUserKind;
 import com.cdkj.gchf.enums.EUserStatus;
 import com.cdkj.gchf.exception.BizException;
@@ -130,17 +131,19 @@ public class UserBOImpl extends PaginableBOImpl<User> implements IUserBO {
     }
 
     @Override
-    public void saveProjectAdmin(String projectCode, String projectName,
-            String linkManName, String mobile) {
+    public void saveProjectAdmin(String projectCode, XN631600Req req) {
+        // req.getName()- projectName,
+        // req.getLinkMan()-linkManName,req.getLinkPhone()-mobile
+
         User user = new User();
         String userId = OrderNoGenerater.generate("U");
         user.setUserId(userId);
         user.setOrganizationCode(projectCode);
         user.setType(EUserKind.Owner.getCode());
-        user.setRealName(linkManName);
+        user.setRealName(req.getLinkMan());
         // user.setLoginName(linkManName);
-        user.setLoginName(projectName.concat("管理员"));
-        user.setMobile(mobile);
+        user.setLoginName(req.getName().concat("管理员"));
+        user.setMobile(req.getLinkMan());
 
         user.setLoginPwd(MD5Util.md5("888888"));
         user.setLoginPwdStrength(PwdUtil.calculateSecurityLevel("888888"));

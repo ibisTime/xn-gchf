@@ -79,4 +79,11 @@ public class ProjectWorkerDAOImpl extends AMybatisTemplate
             projectWorker);
     }
 
+    @Override
+    public int updateProjectWorkerTeamName(ProjectWorker projectWorker) {
+
+        return super.update(NAMESPACE.concat("update_projectWorker_team_name"),
+            projectWorker);
+    }
+
 }

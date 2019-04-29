@@ -30,6 +30,13 @@ public interface ITeamMasterBO extends IPaginableBO<TeamMaster> {
 
     public void refreshUploadStatus(String code, String uploadStatus);
 
+    String getRequestJson(TeamMaster teamMaster, ProjectConfig projectConfig);
+
+    /**
+     * @Description: 向下更新班组名称
+     */
+    void refreshTeamMasterDown(String localTeamNO, String teamName);
+
     public void refreshTeamSysNoByLocal(String code, String teamSysNo);
 
     public List<TeamMaster> queryTeamMasterList(TeamMaster condition);

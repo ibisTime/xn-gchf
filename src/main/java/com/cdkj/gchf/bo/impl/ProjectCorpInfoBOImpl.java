@@ -14,8 +14,6 @@ import org.springframework.stereotype.Component;
 import com.alibaba.fastjson.JSONObject;
 import com.cdkj.gchf.bo.ICorpBasicinfoBO;
 import com.cdkj.gchf.bo.IOperateLogBO;
-import com.cdkj.gchf.bo.IProjectBO;
-import com.cdkj.gchf.bo.IProjectConfigBO;
 import com.cdkj.gchf.bo.IProjectCorpInfoBO;
 import com.cdkj.gchf.bo.IUserBO;
 import com.cdkj.gchf.bo.base.Paginable;
@@ -64,16 +62,10 @@ public class ProjectCorpInfoBOImpl extends PaginableBOImpl<ProjectCorpInfo>
     private ICorpBasicinfoBO corpBasicinfoBO;
 
     @Autowired
-    private IProjectConfigBO projectConfigBO;
-
-    @Autowired
     private IProjectCorpInfoBO projectCorpInfoBO;
 
-    @Autowired
-    private IProjectBO projectBO;
-
     @Override
-    public String saveProjectCorpInfo(XN631630Req req, String projectName) {
+    public String saveProjectCorpInfo(XN631630Req req, Project project) {
         ProjectCorpInfo projectCorpInfo = new ProjectCorpInfo();
         EProjectCorpType.checkExists(req.getCorpType());
         BeanUtils.copyProperties(req, projectCorpInfo);
@@ -86,13 +78,11 @@ public class ProjectCorpInfoBOImpl extends PaginableBOImpl<ProjectCorpInfo>
         if (StringUtils.isNotBlank(req.getPmIDCardType())) {
             EIdCardType.checkExists(req.getPmIDCardType());
         }
-        if (null == projectBO.getProject(req.getProjectCode())) {
-            throw new BizException("XN0000", "请选择项目");
-        }
+
         String code = OrderNoGenerater
             .generate(EGeneratePrefix.ProjectCorpInfo.getCode());
         projectCorpInfo.setCode(code);
-        projectCorpInfo.setProjectName(projectName);
+        projectCorpInfo.setProjectName(project.getName());
         projectCorpInfo.setUploadStatus(EUploadStatus.TO_UPLOAD.getCode());
         projectCorpInfo.setDeleteStatus(EDeleteStatus.NORMAL.getCode());
         projectCorpInfoDAO.insert(projectCorpInfo);
@@ -118,6 +108,7 @@ public class ProjectCorpInfoBOImpl extends PaginableBOImpl<ProjectCorpInfo>
         projectCorpInfoDAO.update(condition);
     }
 
+    // 刷新上传状态
     @Override
     public void refreshUploadStatus(String code, String uploadStatus) {
         ProjectCorpInfo projectCorpInfo = new ProjectCorpInfo();
@@ -154,6 +145,7 @@ public class ProjectCorpInfoBOImpl extends PaginableBOImpl<ProjectCorpInfo>
         String data = JSONObject
             .toJSONStringWithDateFormat(req, "yyyy-MM-dd HH:mm:ss").toString();
         System.out.println("===" + data);
+
         String resString = null;
         try {
             resString = GovConnecter.getGovData("ProjectSubContractor.Update",
@@ -167,7 +159,7 @@ public class ProjectCorpInfoBOImpl extends PaginableBOImpl<ProjectCorpInfo>
         }
         String operateLog = operateLogBO.saveOperateLog(
             EOperateLogRefType.ProjectCorpinfo.getCode(), req.getCode(),
-            "修改平台参建单位信息", user, "修改平台信息");
+            "修改平台参建单位信息", user, "修改平台参建单位信息");
         AsyncQueueHolder.addSerial(resString, projectConfig,
             "projectCorpInfoBO", req.getCode(),
             EUploadStatus.UPLOAD_UPDATE.getCode(), operateLog, req.getUserId());
@@ -241,11 +233,6 @@ public class ProjectCorpInfoBOImpl extends PaginableBOImpl<ProjectCorpInfo>
                     "项目经理证件信息不正确" + req.getPmIDCardNumber());
             }
             if (StringUtils.isNotBlank(req.getEntryTime())) {
-                // Date strToDate = DateUtil.strToDate(req.getEntryTime(),
-                // "yyyy/mm/dd");
-                // String format = new SimpleDateFormat("yyyy-MM-dd")
-                // .format(strToDate);
-                // Date toDate = DateUtil.strToDate(format, "yyyy-MM-dd");
                 entryDate = DateUtil.strToDate(req.getEntryTime(),
                     DateUtil.FRONT_DATE_FORMAT_STRING);
                 projectCorpInfo.setEntryTime(entryDate);

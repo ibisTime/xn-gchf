@@ -193,6 +193,15 @@
 		WHERE
 		code = #{code}
 	</update>
+	
+	<update id="update_workerAttendance_team_name" parameterType="workerAttendance">
+        UPDATE
+        thf_worker_attendance
+        SET
+        team_name = #{teamName}
+        WHERE
+        team_sys_no = #{teamSysNo}
+    </update>
 
 	<update id="update_workerAttendance_delete_status"
 		parameterType="workerAttendance">

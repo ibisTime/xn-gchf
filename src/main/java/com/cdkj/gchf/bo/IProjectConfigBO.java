@@ -31,4 +31,7 @@ public interface IProjectConfigBO extends IPaginableBO<ProjectConfig> {
 
     public ProjectConfig getProjectConfigByProject(String projectCode);
 
+    // 检查项目密钥是否存在
+    ProjectConfig checkProjectConfigBySecret(String projectCode, String secret);
+
 }

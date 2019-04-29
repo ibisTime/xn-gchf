@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.alibaba.fastjson.JSONObject;
+import com.cdkj.gchf.api.impl.XN631693ReqData;
 import com.cdkj.gchf.bo.ICorpBasicinfoBO;
 import com.cdkj.gchf.bo.IOperateLogBO;
 import com.cdkj.gchf.bo.IProjectBO;
@@ -47,6 +48,7 @@ import com.cdkj.gchf.enums.EGovErrorMessage;
 import com.cdkj.gchf.enums.EIdCardType;
 import com.cdkj.gchf.enums.EIsNotType;
 import com.cdkj.gchf.enums.EOperateLogRefType;
+import com.cdkj.gchf.enums.EProjectWorkerUploadStatus;
 import com.cdkj.gchf.enums.EUploadStatus;
 import com.cdkj.gchf.enums.EWorkerRoleType;
 import com.cdkj.gchf.enums.EWorkerType;
@@ -167,6 +169,32 @@ public class ProjectWorkerBOImpl extends PaginableBOImpl<ProjectWorker>
     }
 
     @Override
+    public String saveProjectWorker(WorkerInfo workerInfo, XN631693ReqData req,
+            Project project, TeamMaster teamMaster, CorpBasicinfo corpBasic) {
+        ProjectWorker projectWorker = new ProjectWorker();
+        String code = OrderNoGenerater
+            .generate(EGeneratePrefix.ProjectWorker.getCode());
+        projectWorker.setCode(code);
+        BeanUtils.copyProperties(req, projectWorker);
+        projectWorker.setProjectCode(project.getCode());
+        projectWorker.setProjectName(project.getName());
+        if (StringUtils.isNotBlank(req.getHasBuyInsurance())) {
+            projectWorker
+                .setHasBuyInsurance(Integer.parseInt(req.getHasBuyInsurance()));
+        }
+        projectWorker.setTeamSysNo(teamMaster.getCode());
+        projectWorker.setCorpName(corpBasic.getCorpName());
+        projectWorker.setWorkerCode(workerInfo.getCode());
+        projectWorker
+            .setUploadStatus(EProjectWorkerUploadStatus.TO_UPLOAD.getCode());
+        projectWorker.setDeleteStatus(EDeleteStatus.NORMAL.getCode());
+        projectWorker.setIsTeamLeader(Integer.parseInt(req.getIsTeamLeader()));
+        projectWorker.setIdcardNumber(req.getIdCardNumber());
+        projectWorker.setIdcardType("01");
+        return code;
+    }
+
+    @Override
     public String saveProjectWorker(String workerCode, String workerName,
             String idcardNumber, Project project) {
         WorkerInfo workerInfo = workerInfoBO.getWorkerInfo(workerCode);
@@ -188,6 +216,23 @@ public class ProjectWorkerBOImpl extends PaginableBOImpl<ProjectWorker>
         projectWorker.setDeleteStatus(EDeleteStatus.NORMAL.getCode());
         projectWorkerDAO.insert(projectWorker);
 
+        return code;
+    }
+
+    @Override
+    public String saveProjectWorker(String workerCode, Project project,
+            XN631693ReqData req) {
+        ProjectWorker projectWorker = new ProjectWorker();
+        String code = OrderNoGenerater
+            .generate(EGeneratePrefix.ProjectWorker.getCode());
+        projectWorker.setCode(code);
+        projectWorker.setWorkerCode(workerCode);
+        projectWorker.setProjectName(project.getName());
+        projectWorker.setIdcardNumber(req.getIdCardNumber());
+        if (StringUtils.isNotBlank(req.getHasBuyInsurance())) {
+            projectWorker
+                .setHasBuyInsurance(Integer.parseInt(req.getHasBuyInsurance()));
+        }
         return code;
     }
 
@@ -241,6 +286,19 @@ public class ProjectWorkerBOImpl extends PaginableBOImpl<ProjectWorker>
         }
 
         projectWorkerDAO.update(projectWorkerInfo);
+    }
+
+    /**
+     * 
+     * <p>Title: refreshProjectWorkerTeamName</p>   
+     * <p>Description: 向下刷新班组名称</p>   
+     */
+    @Override
+    public void refreshProjectWorkerTeamName(String teamNO, String teamName) {
+        ProjectWorker condition = new ProjectWorker();
+        condition.setTeamSysNo(teamNO);
+        condition.setTeamName(teamName);
+        projectWorkerDAO.updateProjectWorkerTeamName(condition);
     }
 
     @Override
@@ -437,6 +495,7 @@ public class ProjectWorkerBOImpl extends PaginableBOImpl<ProjectWorker>
         projectWorker.setTeamSysNo(teamSysNo);
         projectWorker.setIdcardType("01");
         projectWorker.setIdcardNumber(idCardNumber);
+        projectWorker.setDeleteStatus(EDeleteStatus.NORMAL.getCode());
         List<ProjectWorker> infoByCondition = projectWorkerDAO
             .selectList(projectWorker);
         return infoByCondition;

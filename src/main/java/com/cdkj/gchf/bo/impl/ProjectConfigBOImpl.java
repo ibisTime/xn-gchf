@@ -2,6 +2,7 @@ package com.cdkj.gchf.bo.impl;
 
 import java.util.List;
 
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -139,6 +140,20 @@ public class ProjectConfigBOImpl extends PaginableBOImpl<ProjectConfig>
         data.setProjectCode(projectCode);
 
         return projectConfigDAO.select(data);
+    }
+
+    @Override
+    public ProjectConfig checkProjectConfigBySecret(String projectCode,
+            String secret) {
+        ProjectConfig projectConfig = new ProjectConfig();
+        projectConfig.setSecret(secret);
+        projectConfig.setProjectCode(projectCode);
+        List<ProjectConfig> selectList = projectConfigDAO
+            .selectList(projectConfig);
+        if (CollectionUtils.isNotEmpty(selectList)) {
+            throw new BizException("XN631752", "项目配置已存在");
+        }
+        return null;
     }
 
 }

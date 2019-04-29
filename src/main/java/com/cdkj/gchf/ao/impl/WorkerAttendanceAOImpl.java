@@ -38,8 +38,8 @@ import com.cdkj.gchf.enums.EDeleteStatus;
 import com.cdkj.gchf.enums.EDirectionType;
 import com.cdkj.gchf.enums.EOperateLogOperate;
 import com.cdkj.gchf.enums.EOperateLogRefType;
-import com.cdkj.gchf.enums.EUploadStatus;
 import com.cdkj.gchf.enums.EUserKind;
+import com.cdkj.gchf.enums.EWorkerAttendanceUploadStatus;
 import com.cdkj.gchf.exception.BizException;
 import com.cdkj.gchf.gov.AsyncQueueHolder;
 import com.cdkj.gchf.gov.GovConnecter;
@@ -89,8 +89,8 @@ public class WorkerAttendanceAOImpl implements IWorkerAttendanceAO {
     @Override
     public void editWorkerAttendance(XN631712Req data) {
         if (workerAttendanceBO.getWorkerAttendance(data.getCode())
-            .getUploadStatus()
-            .equals(EUploadStatus.UPLOAD_UNEDITABLE.getCode())) {
+            .getUploadStatus().equals(
+                EWorkerAttendanceUploadStatus.UPLOAD_UNEDITABLE.getCode())) {
             throw new BizException("XN631712", "人员考勤已上传,无法修改");
         }
         workerAttendanceBO.refreshWorkerAttendance(data);
@@ -101,8 +101,8 @@ public class WorkerAttendanceAOImpl implements IWorkerAttendanceAO {
         for (String code : codeList) {
             WorkerAttendance workerAttendance = workerAttendanceBO
                 .getWorkerAttendance(code);
-            if (workerAttendance.getUploadStatus()
-                .equals(EUploadStatus.UPLOAD_UNEDITABLE.getCode())) {
+            if (workerAttendance.getUploadStatus().equals(
+                EWorkerAttendanceUploadStatus.UPLOAD_UNEDITABLE.getCode())) {
                 throw new BizException("XN631711", "人员考勤已上传，不可删除");
             }
             workerAttendanceBO.updateWorkerAttendanceDeleteStatus(code,
@@ -254,7 +254,7 @@ public class WorkerAttendanceAOImpl implements IWorkerAttendanceAO {
                 teamMaster, workerAttendance, projectConfigByLocal);
 
             workerAttendanceBO.refreshWorkerAttendance(code,
-                EUploadStatus.UPDATEING.getCode());
+                EWorkerAttendanceUploadStatus.UPLOADING.getCode());
             String resString;
             try {
                 resString = GovConnecter.getGovData("WorkerAttendance.Add",
@@ -264,7 +264,7 @@ public class WorkerAttendanceAOImpl implements IWorkerAttendanceAO {
             } catch (BizException e) {
                 e.printStackTrace();
                 workerAttendanceBO.refreshWorkerAttendance(code,
-                    EUploadStatus.UPLOAD_FAIL.getCode());
+                    EWorkerAttendanceUploadStatus.UPLOAD_FAIL.getCode());
                 throw e;
             }
 
@@ -274,8 +274,8 @@ public class WorkerAttendanceAOImpl implements IWorkerAttendanceAO {
                 null);
             AsyncQueueHolder.addSerial(resString, projectConfigByLocal,
                 "workerAttendanceBO", code,
-                EUploadStatus.UPLOAD_UNEDITABLE.getCode(), saveOperateLog,
-                userId);
+                EWorkerAttendanceUploadStatus.UPLOAD_UNEDITABLE.getCode(),
+                saveOperateLog, userId);
         }
     }
 
@@ -328,7 +328,8 @@ public class WorkerAttendanceAOImpl implements IWorkerAttendanceAO {
             }
             workerAttendance.setIdCardType("01");
             workerAttendance.setWorkerName(dateReq.getWorkerName());
-            workerAttendance.setUploadStatus(EUploadStatus.TO_UPLOAD.getCode());
+            workerAttendance.setUploadStatus(
+                EWorkerAttendanceUploadStatus.TO_UPLOAD.getCode());
             workerAttendance.setDeleteStatus(EDeleteStatus.NORMAL.getCode());
             String code = workerAttendanceBO
                 .saveWorkerAttendance(workerAttendance);

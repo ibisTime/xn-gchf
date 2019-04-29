@@ -2,12 +2,15 @@ package com.cdkj.gchf.bo;
 
 import java.util.List;
 
+import com.cdkj.gchf.api.impl.XN631693ReqData;
 import com.cdkj.gchf.bo.base.IPaginableBO;
 import com.cdkj.gchf.bo.base.Paginable;
+import com.cdkj.gchf.domain.CorpBasicinfo;
 import com.cdkj.gchf.domain.Project;
 import com.cdkj.gchf.domain.ProjectConfig;
 import com.cdkj.gchf.domain.ProjectWorker;
 import com.cdkj.gchf.domain.TeamMaster;
+import com.cdkj.gchf.domain.WorkerInfo;
 import com.cdkj.gchf.dto.req.XN631690Req;
 import com.cdkj.gchf.dto.req.XN631692Req;
 import com.cdkj.gchf.dto.req.XN631911Req;
@@ -21,12 +24,20 @@ public interface IProjectWorkerBO extends IPaginableBO<ProjectWorker> {
 
     public String saveProjectWorker(ProjectWorker projectWorker);
 
+    String saveProjectWorker(WorkerInfo workerInfo, XN631693ReqData req,
+            Project project, TeamMaster teamMaster, CorpBasicinfo corpBasic);
+
     public String saveProjectWorker(String workerCode, String workerName,
             String idcardNumber, Project project);
+
+    String saveProjectWorker(String workerCode, Project project,
+            XN631693ReqData req);
 
     public void removeProjectWorker(String code);
 
     public void refreshProjectWorker(XN631692Req req, TeamMaster teamMaster);
+
+    public void refreshProjectWorkerTeamName(String teamNO, String teamName);
 
     void updateProjectWorkerDeleteStatus(String code, String status);
 

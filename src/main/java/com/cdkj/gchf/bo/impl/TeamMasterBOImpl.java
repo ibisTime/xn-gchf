@@ -13,8 +13,10 @@ import org.springframework.stereotype.Component;
 
 import com.alibaba.fastjson.JSONObject;
 import com.cdkj.gchf.bo.IOperateLogBO;
+import com.cdkj.gchf.bo.IProjectWorkerBO;
 import com.cdkj.gchf.bo.ITeamMasterBO;
 import com.cdkj.gchf.bo.IUserBO;
+import com.cdkj.gchf.bo.IWorkerAttendanceBO;
 import com.cdkj.gchf.bo.base.Paginable;
 import com.cdkj.gchf.bo.base.PaginableBOImpl;
 import com.cdkj.gchf.common.AesUtils;
@@ -56,6 +58,12 @@ public class TeamMasterBOImpl extends PaginableBOImpl<TeamMaster>
 
     @Autowired
     private IUserBO userBO;
+
+    @Autowired
+    private IProjectWorkerBO projectWorkerBO;
+
+    @Autowired
+    private IWorkerAttendanceBO workerAttendanceBO;
 
     @Override
     public String saveTeamMaster(XN631650Req data,
@@ -135,6 +143,39 @@ public class TeamMasterBOImpl extends PaginableBOImpl<TeamMaster>
         teamMaster.setUploadStatus(uploadStatus);
 
         teamMasterDAO.updateUploadStatus(teamMaster);
+    }
+
+    @Override
+    public String getRequestJson(TeamMaster teamMaster,
+            ProjectConfig projectConfig) {
+        if (StringUtils.isNotBlank(teamMaster.getResponsiblePersonIdNumber())) {
+            String encryptIdCardNumber = AesUtils.encrypt(
+                teamMaster.getResponsiblePersonIdNumber(),
+                projectConfig.getSecret());
+            teamMaster.setResponsiblePersonIdNumber(encryptIdCardNumber);
+        }
+        teamMaster.setProjectCode(projectConfig.getProjectCode());
+        // 上传班组信息
+        String teamMasterInfo = JSONObject
+            .toJSONStringWithDateFormat(teamMaster, "yyyy-MM-dd");
+        return teamMasterInfo;
+    }
+
+    @Override
+    public void refreshTeamMasterDown(String localTeamNO, String teamName) {
+        TeamMaster teamMaster = new TeamMaster();
+        teamMaster.setCode(localTeamNO);
+        TeamMaster select = teamMasterDAO.select(teamMaster);
+        // 班组
+        select.setTeamName(teamName);
+        teamMasterDAO.update(select);
+        // 班组人员
+        projectWorkerBO.refreshProjectWorkerTeamName(localTeamNO, teamName);
+
+        // 项目人员考勤
+        workerAttendanceBO.refreshWorkerAttendanceTeamName(localTeamNO,
+            teamName);
+
     }
 
     @Override

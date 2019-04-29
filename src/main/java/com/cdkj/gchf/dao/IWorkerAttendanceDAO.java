@@ -12,4 +12,5 @@ public interface IWorkerAttendanceDAO extends IBaseDAO<WorkerAttendance> {
 
     int updateWorkerAttendanceDeleteStatus(WorkerAttendance workerAttendance);
 
+    int updateWorkerAttendanceTeamName(WorkerAttendance workerAttendance);
 }

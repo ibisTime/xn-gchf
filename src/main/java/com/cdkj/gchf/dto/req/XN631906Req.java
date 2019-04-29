@@ -11,9 +11,10 @@ import org.hibernate.validator.constraints.NotBlank;
  * @history:
  */
 public class XN631906Req {
-
+    // 参建单位编号
     private String code;
 
+    // 用户id
     private String userId;
 
     // 项目编码

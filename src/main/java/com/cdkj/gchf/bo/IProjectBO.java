@@ -12,11 +12,11 @@ public interface IProjectBO extends IPaginableBO<Project> {
 
     public String saveProject(String name);
 
-    public String saveProject(XN631600Req req, CorpBasicinfo contractorCorpInfo,
-            String buildCorpName);
+    public String saveProject(XN631600Req req,
+            CorpBasicinfo contractorCorpInfo);
 
     public void refreshProject(XN631602Req req,
-            CorpBasicinfo contractorCorpInfo, CorpBasicinfo buildCorpInfo);
+            CorpBasicinfo contractorCorpInfo);
 
     public void refreshSecretStatus(String code, String secretStatus);
 

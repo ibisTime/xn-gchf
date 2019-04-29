@@ -43,8 +43,8 @@ public class ProjectBOImpl extends PaginableBOImpl<Project>
     }
 
     @Override
-    public String saveProject(XN631600Req req, CorpBasicinfo contractorCorpInfo,
-            String buildCorpName) {
+    public String saveProject(XN631600Req req,
+            CorpBasicinfo contractorCorpInfo) {
         Project project = new Project();
         BeanUtils.copyProperties(req, project);
 
@@ -76,7 +76,7 @@ public class ProjectBOImpl extends PaginableBOImpl<Project>
         if (StringUtils.isNotBlank(req.getLng())) {
             project.setLng(new BigDecimal(req.getLng()));
         }
-        project.setBuildCorpName(buildCorpName);
+        project.setBuildCorpName(req.getBuildCorpName());
         projectDAO.insert(project);
 
         return code;
@@ -84,7 +84,7 @@ public class ProjectBOImpl extends PaginableBOImpl<Project>
 
     @Override
     public void refreshProject(XN631602Req req,
-            CorpBasicinfo contractorCorpInfo, CorpBasicinfo buildCorpInfo) {
+            CorpBasicinfo contractorCorpInfo) {
 
         Project project = new Project();
         BeanUtils.copyProperties(req, project);
@@ -115,9 +115,7 @@ public class ProjectBOImpl extends PaginableBOImpl<Project>
             project.setLng(new BigDecimal(req.getLng()));
         }
 
-        if (null != buildCorpInfo) {
-            project.setBuildCorpName(buildCorpInfo.getCorpName());
-        }
+        project.setBuildCorpName(req.getBuildCorpName());
 
         projectDAO.update(project);
     }

@@ -30,7 +30,6 @@ import com.cdkj.gchf.dto.req.XN631752Req;
 import com.cdkj.gchf.dto.req.XN631767Req;
 import com.cdkj.gchf.enums.EBankCardBussinessType;
 import com.cdkj.gchf.enums.EBankCardStatus;
-import com.cdkj.gchf.enums.EUploadStatus;
 import com.cdkj.gchf.enums.EUserKind;
 import com.cdkj.gchf.exception.BizException;
 
@@ -106,9 +105,9 @@ public class BankCardInfoAOImpl implements IBankCardInfoAO {
     public void editBankCardInfo(XN631752Req req) {
         BankCardInfo bankCardInfo = bankCardBankBO
             .getBankCardInfo(req.getCode());
-        if (bankCardInfo.getUploadStatus()
-            .equals(EUploadStatus.UPLOAD_UNEDITABLE.getCode())) {
-            throw new BizException("XN631750", "银行卡信息已上传,无法修改");
+        if (bankCardInfo.getStatus().equals(EBankCardStatus.Freeze.getCode())) {
+            throw new BizException("XN631752", "银行卡已冻结,无法修改");
+
         }
         bankCardBankBO.refreshBankCardInfo(req);
     }

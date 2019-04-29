@@ -16,7 +16,7 @@ import com.cdkj.gchf.dto.req.XN631907Req;
 
 public interface IProjectCorpInfoBO extends IPaginableBO<ProjectCorpInfo> {
 
-    public String saveProjectCorpInfo(XN631630Req req, String projectName);
+    public String saveProjectCorpInfo(XN631630Req req, Project project);
 
     public String saveProjectCorpInfo(Project projectConfig,
             XN631633ReqList req);

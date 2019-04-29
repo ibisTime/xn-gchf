@@ -221,6 +221,7 @@
 		delete from
 		thf_project_worker WHERE code = #{code}
 	</delete>
+
 	<update id="update_projectWorker_status" parameterType="projectWorker">
 		UPDATE
 		thf_project_worker
@@ -228,6 +229,14 @@
 		WHERE code =
 		#{code}
 	</update>
+
+	<update id="update_projectWorker_team_name" parameterType="projectWorker">
+		UPDATE
+		thf_project_worker
+		SET team_name = #{teamName}
+		WHERE team_sys_no = #{teamSysNo}
+	</update>
+
 
 	<update id="update_projectWorker_delete_status" parameterType="projectWorker">
 		UPDATE
@@ -244,9 +253,9 @@
 			<if test="projectCode != null and projectCode != '' ">
 				AND t.project_code = #{projectCode}
 			</if>
-             <if test="teamSysNo != null and teamSysNo != '' ">
-                AND t.team_sys_no = #{teamSysNo}
-            </if>   
+			<if test="teamSysNo != null and teamSysNo != '' ">
+				AND t.team_sys_no = #{teamSysNo}
+			</if>
 		</trim>
 
 	</update>
@@ -256,7 +265,8 @@
 		SET
 		upload_status = #{uploadStatus}
 		where
-		code = #{code}
+		code
+		= #{code}
 
 	</update>
 
@@ -268,25 +278,31 @@
 		,corp_name = #{corpName}
 		,is_team_leader = #{isTeamLeader}
 		,work_type = #{workType}
-		,work_role = #{workRole}
+		,work_role =
+		#{workRole}
 		,issue_card_date = #{issueCardDate}
-		,issue_card_pic_url = #{issueCardPicUrl}
-		
+		,issue_card_pic_url =
+		#{issueCardPicUrl}
+
 		,team_sys_no = #{teamSysNo}
 		,team_name = #{teamName}
 		,card_number = #{cardNumber}
-		,pay_roll_bank_card_number = #{payRollBankCardNumber}
+		,pay_roll_bank_card_number =
+		#{payRollBankCardNumber}
 		,pay_roll_bank_name = #{payRollBankName}
-		
+
 		,pay_roll_top_bank_name = #{payRollTopBankName}
-		,bank_link_number = #{bankLinkNumber}
+		,bank_link_number =
+		#{bankLinkNumber}
 		,pay_roll_top_bank_code = #{payRollTopBankCode}
-		,has_buy_insurance = #{hasBuyInsurance}
-        ,work_date = #{workDate}
-        
+		,has_buy_insurance =
+		#{hasBuyInsurance}
+		,work_date = #{workDate}
+
 		,join_datetime = #{joinDatetime}
 		,bank_name = #{bankName}
-		WHERE code = #{code}
+		WHERE code =
+		#{code}
 	</update>
 	<select id="select_projectWorker" parameterType="projectWorker"
 		resultMap="projectWorker_DB_Result">

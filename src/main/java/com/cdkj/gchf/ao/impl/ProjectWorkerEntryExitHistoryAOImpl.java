@@ -36,7 +36,7 @@ import com.cdkj.gchf.enums.EDeleteStatus;
 import com.cdkj.gchf.enums.EEntryExitType;
 import com.cdkj.gchf.enums.EOperateLogOperate;
 import com.cdkj.gchf.enums.EOperateLogRefType;
-import com.cdkj.gchf.enums.EUploadStatus;
+import com.cdkj.gchf.enums.EProjectWorkerEntryExitUploadStatus;
 import com.cdkj.gchf.enums.EUserKind;
 import com.cdkj.gchf.exception.BizException;
 import com.cdkj.gchf.gov.AsyncQueueHolder;
@@ -95,8 +95,8 @@ public class ProjectWorkerEntryExitHistoryAOImpl
     public void editProjectWorkerEntryExitHistory(XN631732Req req) {
         ProjectWorkerEntryExitHistory projectWorkerEntryExitHistory = projectWorkerEntryExitHistoryBO
             .getProjectWorkerEntryExitHistory(req.getCode());
-        if (projectWorkerEntryExitHistory.getUploadStatus()
-            .equals(EUploadStatus.UPLOAD_UNEDITABLE.getCode())) {
+        if (projectWorkerEntryExitHistory.getUploadStatus().equals(
+            EProjectWorkerEntryExitUploadStatus.UPLOAD_UNEDITABLE.getCode())) {
             throw new BizException("XN631732", "人员进退场已上传,不可编辑");
         }
 
@@ -110,7 +110,8 @@ public class ProjectWorkerEntryExitHistoryAOImpl
             ProjectWorkerEntryExitHistory projectWorkerEntryExitHistory = projectWorkerEntryExitHistoryBO
                 .getProjectWorkerEntryExitHistory(code);
             if (projectWorkerEntryExitHistory.getUploadStatus()
-                .equals(EUploadStatus.UPLOAD_UNEDITABLE.getCode())) {
+                .equals(EProjectWorkerEntryExitUploadStatus.UPLOAD_UNEDITABLE
+                    .getCode())) {
                 throw new BizException("XN631731", "人员进退场已上传，不可删除");
             }
             projectWorkerEntryExitHistoryBO
@@ -258,7 +259,7 @@ public class ProjectWorkerEntryExitHistoryAOImpl
                 .getRequestJson(teamMaster, projectWorkerEntryExitHistory,
                     projectConfigByLocal);
             projectWorkerEntryExitHistoryBO.refreshUploadStatus(code,
-                EUploadStatus.UPLOADING.getCode());
+                EProjectWorkerEntryExitUploadStatus.UPLOADING.getCode());
 
             String resString;
             try {
@@ -268,7 +269,7 @@ public class ProjectWorkerEntryExitHistoryAOImpl
                     projectConfigByLocal.getSecret());
             } catch (BizException e) {
                 projectWorkerBO.refreshUploadStatus(code,
-                    EUploadStatus.UPLOAD_FAIL.getCode());
+                    EProjectWorkerEntryExitUploadStatus.UPLOAD_FAIL.getCode());
                 e.printStackTrace();
                 throw e;
             }
@@ -280,7 +281,8 @@ public class ProjectWorkerEntryExitHistoryAOImpl
                 briefUser, null);
             AsyncQueueHolder.addSerial(resString, projectConfigByLocal,
                 "projectWorkerEntryExitHistoryBO", code,
-                EUploadStatus.UPLOAD_UNEDITABLE.getCode(), operateLog, userId);
+                EProjectWorkerEntryExitUploadStatus.UPLOAD_UNEDITABLE.getCode(),
+                operateLog, userId);
 
         }
     }

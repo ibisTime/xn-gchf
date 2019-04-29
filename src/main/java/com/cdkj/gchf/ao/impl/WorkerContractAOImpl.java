@@ -34,8 +34,8 @@ import com.cdkj.gchf.enums.EDeleteStatus;
 import com.cdkj.gchf.enums.EOperateLogOperate;
 import com.cdkj.gchf.enums.EOperateLogRefType;
 import com.cdkj.gchf.enums.EUnitType;
-import com.cdkj.gchf.enums.EUploadStatus;
 import com.cdkj.gchf.enums.EUserKind;
+import com.cdkj.gchf.enums.EWorkerContractUploadStatus;
 import com.cdkj.gchf.exception.BizException;
 import com.cdkj.gchf.gov.AsyncQueueHolder;
 import com.cdkj.gchf.gov.GovConnecter;
@@ -105,7 +105,7 @@ public class WorkerContractAOImpl implements IWorkerContractAO {
             throw new BizException("XN631672", "劳动合同不存在");
         }
         if (workerContract.getUploadStatus()
-            .equals(EUploadStatus.UPLOAD_UNEDITABLE.getCode())) {
+            .equals(EWorkerContractUploadStatus.UPLOAD_UNEDITABLE.getCode())) {
             throw new BizException("XN631672", "劳动合同已上传,无法编辑");
         }
         if (StringUtils.isNotBlank(req.getUnit())) {
@@ -136,8 +136,8 @@ public class WorkerContractAOImpl implements IWorkerContractAO {
             if (workerContract == null) {
                 throw new BizException("XN631671", "项目合同不存在");
             }
-            if (workerContract.getUploadStatus()
-                .equals(EUploadStatus.UPLOAD_UNEDITABLE.getCode())) {
+            if (workerContract.getUploadStatus().equals(
+                EWorkerContractUploadStatus.UPLOAD_UNEDITABLE.getCode())) {
                 throw new BizException("XN631671", "项目已经上传 无法删除");
             }
             workerContractBO.updateWorkerContractDeleteStatus(code,
@@ -256,7 +256,7 @@ public class WorkerContractAOImpl implements IWorkerContractAO {
                 .getRequestJson(workerContract, projectConfig);
 
             workerContractBO.refreshUploadStatus(code,
-                EUploadStatus.UPLOADING.getCode());
+                EWorkerContractUploadStatus.UPLOADING.getCode());
             // 上传到国家平台
             String resString;
             try {
@@ -266,7 +266,7 @@ public class WorkerContractAOImpl implements IWorkerContractAO {
             } catch (BizException e) {
                 e.printStackTrace();
                 workerContractBO.refreshUploadStatus(code,
-                    EUploadStatus.UPLOAD_FAIL.getCode());
+                    EWorkerContractUploadStatus.UPLOAD_FAIL.getCode());
                 throw e;
             }
             // 增加操作日志
@@ -277,7 +277,8 @@ public class WorkerContractAOImpl implements IWorkerContractAO {
             // 队列更新状态
             AsyncQueueHolder.addSerial(resString, projectConfig,
                 "workerContractBO", code,
-                EUploadStatus.UPLOAD_UNEDITABLE.getCode(), log, userId);
+                EWorkerContractUploadStatus.UPLOAD_UNEDITABLE.getCode(), log,
+                userId);
         }
     }
 

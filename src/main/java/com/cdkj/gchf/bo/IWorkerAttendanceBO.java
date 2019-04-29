@@ -37,11 +37,13 @@ public interface IWorkerAttendanceBO extends IPaginableBO<WorkerAttendance> {
 
     int updateWorkerAttendanceDeleteStatus(String code, String status);
 
-    int fakeDeleteWorkAttendanceByProject(String projectCode);
+    void refreshWorkerAttendanceTeamName(String teamSysNo, String teamName);
 
-    int fakeDeleteWorkAttendanceByTeamMaster(String teamMasterNo);
+    int deleteWorkAttendanceByProject(String projectCode);
 
-    int fakeDeleteWorkAttendanceByWorkerCode(String workerCode);
+    int deleteWorkAttendanceByTeamMaster(String teamMasterNo);
+
+    int deleteWorkAttendanceByWorkerCode(String workerCode);
 
     public List<WorkerAttendance> queryWorkerAttendanceList(
             WorkerAttendance condition);

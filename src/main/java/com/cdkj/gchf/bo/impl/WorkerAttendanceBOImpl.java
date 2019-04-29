@@ -169,6 +169,15 @@ public class WorkerAttendanceBOImpl extends PaginableBOImpl<WorkerAttendance>
     }
 
     @Override
+    public void refreshWorkerAttendanceTeamName(String teamSysNo,
+            String teamName) {
+        WorkerAttendance workerAttendance = new WorkerAttendance();
+        workerAttendance.setTeamName(teamName);
+        workerAttendance.setTeamSysNo(teamSysNo);
+        workerAttendanceDAO.updateWorkerAttendanceTeamName(workerAttendance);
+    };
+
+    @Override
     public int updateWorkerAttendanceDeleteStatus(String code, String status) {
         WorkerAttendance workerAttendance = new WorkerAttendance();
         workerAttendance.setCode(code);
@@ -318,33 +327,24 @@ public class WorkerAttendanceBOImpl extends PaginableBOImpl<WorkerAttendance>
     }
 
     @Override
-    public int fakeDeleteWorkAttendanceByProject(String projectCode) {
+    public int deleteWorkAttendanceByProject(String projectCode) {
         WorkerAttendance workerAttendance = new WorkerAttendance();
         workerAttendance.setProjectCode(projectCode);
-        workerAttendance.setUploadStatus(EUploadStatus.TO_UPLOAD.getCode());
-        workerAttendance.setDeleteStatus(EDeleteStatus.DELETED.getCode());
-        return workerAttendanceDAO
-            .updateWorkerAttendanceDeleteStatus(workerAttendance);
+        return workerAttendanceDAO.delete(workerAttendance);
     }
 
     @Override
-    public int fakeDeleteWorkAttendanceByTeamMaster(String teamMasterNo) {
+    public int deleteWorkAttendanceByTeamMaster(String teamMasterNo) {
         WorkerAttendance workerAttendance = new WorkerAttendance();
         workerAttendance.setTeamSysNo(teamMasterNo);
-        workerAttendance.setUploadStatus(EUploadStatus.TO_UPLOAD.getCode());
-        workerAttendance.setDeleteStatus(EDeleteStatus.DELETED.getCode());
-        return workerAttendanceDAO
-            .updateWorkerAttendanceDeleteStatus(workerAttendance);
+        return workerAttendanceDAO.delete(workerAttendance);
     }
 
     @Override
-    public int fakeDeleteWorkAttendanceByWorkerCode(String workerCode) {
+    public int deleteWorkAttendanceByWorkerCode(String workerCode) {
         WorkerAttendance workerAttendance = new WorkerAttendance();
         workerAttendance.setWorkerCode(workerCode);
-        workerAttendance.setUploadStatus(EUploadStatus.TO_UPLOAD.getCode());
-        workerAttendance.setDeleteStatus(EDeleteStatus.DELETED.getCode());
-        return workerAttendanceDAO
-            .updateWorkerAttendanceDeleteStatus(workerAttendance);
+        return workerAttendanceDAO.delete(workerAttendance);
     }
 
 }

@@ -183,9 +183,16 @@ public class TeamMasterBOImpl extends PaginableBOImpl<TeamMaster>
         String operateLog = operateLogBO.saveOperateLog(
             EOperateLogRefType.TeamMaster.getCode(), req.getCode(),
             "修改国家平台班组信息", user, "修改国家平台班组信息");
-        String resString = GovConnecter.getGovData("Team.Update", data,
-            projectConfig.getProjectCode(), projectConfig.getSecret());
-
+        String resString = null;
+        try {
+            resString = GovConnecter.getGovData("Team.Update", data,
+                projectConfig.getProjectCode(), projectConfig.getSecret());
+        } catch (BizException e) {
+            e.printStackTrace();
+            refreshUploadStatus(req.getCode(),
+                EUploadStatus.UPLOAD_UNUPDATE.getCode());
+            throw e;
+        }
         AsyncQueueHolder.addSerial(resString, projectConfig, "teamMasterBO",
             req.getCode(), EUploadStatus.UPLOAD_UPDATE.getCode(), operateLog,
             req.getUserId());

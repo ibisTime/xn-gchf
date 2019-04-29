@@ -238,17 +238,24 @@ public class TeamMasterAOImpl implements ITeamMasterAO {
                 teamMaster.setResponsiblePersonIdNumber(encryptIdCardNumber);
             }
             teamMaster.setProjectCode(projectConfig.getProjectCode());
-
-            // 更新状态为上传中
-            teamMasterBO.refreshUploadStatus(teamMaster.getCode(),
-                EUploadStatus.UPLOADING.getCode());
-
             // 上传班组信息
             String teamMasterInfo = JSONObject
                 .toJSONStringWithDateFormat(teamMaster, "yyyy-MM-dd");
-            String resString = GovConnecter.getGovData("Team.Add",
-                teamMasterInfo, projectConfig.getProjectCode(),
-                projectConfig.getSecret());
+            // 更新状态为上传中
+            teamMasterBO.refreshUploadStatus(teamMaster.getCode(),
+                EUploadStatus.UPLOADING.getCode());
+            String resString = null;
+            try {
+                // 捕捉国家平台异常
+                resString = GovConnecter.getGovData("Team.Add", teamMasterInfo,
+                    projectConfig.getProjectCode(), projectConfig.getSecret());
+            } catch (BizException e) {
+                // 国家平台抛出的异常 更改为上传失败状态
+                teamMasterBO.refreshUploadStatus(code,
+                    EUploadStatus.UPLOAD_FAIL.getCode());
+                e.printStackTrace();
+                throw e;
+            }
 
             // 添加操作日志
             String logCode = operateLogBO.saveOperateLog(

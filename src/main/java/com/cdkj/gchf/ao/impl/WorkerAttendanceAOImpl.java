@@ -253,9 +253,21 @@ public class WorkerAttendanceAOImpl implements IWorkerAttendanceAO {
             JsonObject requestJson = workerAttendanceBO.getRequestJson(
                 teamMaster, workerAttendance, projectConfigByLocal);
 
-            String resString = GovConnecter.getGovData("WorkerAttendance.Add",
-                requestJson.toString(), projectConfigByLocal.getProjectCode(),
-                projectConfigByLocal.getSecret());
+            workerAttendanceBO.refreshWorkerAttendance(code,
+                EUploadStatus.UPDATEING.getCode());
+            String resString;
+            try {
+                resString = GovConnecter.getGovData("WorkerAttendance.Add",
+                    requestJson.toString(),
+                    projectConfigByLocal.getProjectCode(),
+                    projectConfigByLocal.getSecret());
+            } catch (BizException e) {
+                e.printStackTrace();
+                workerAttendanceBO.refreshWorkerAttendance(code,
+                    EUploadStatus.UPLOAD_FAIL.getCode());
+                throw e;
+            }
+
             String saveOperateLog = operateLogBO.saveOperateLog(
                 EOperateLogRefType.WorkAttendance.getCode(), code,
                 EOperateLogOperate.UploadWorkAtendance.getValue(), briefUser,
@@ -267,6 +279,11 @@ public class WorkerAttendanceAOImpl implements IWorkerAttendanceAO {
         }
     }
 
+    /**
+     * 
+     * <p>Title: importWorkerAttendanceList</p>   
+     * <p>Description: 导入人员考勤</p>   
+     */
     @Override
     @Transactional
     public void importWorkerAttendanceList(XN631713Req req) {

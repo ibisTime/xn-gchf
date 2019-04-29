@@ -97,11 +97,7 @@ public class ProjectWorkerBOImpl extends PaginableBOImpl<ProjectWorker>
         projectWorkerInfo.setProjectName(project.getName());
         BeanUtils.copyProperties(data, projectWorkerInfo);
 
-        ProjectConfig configByLocal = projectConfigBO
-            .getProjectConfigByLocal(data.getProjectCode());
-        if (configByLocal != null) {
-            projectWorkerInfo.setProjectName(configByLocal.getProjectName());
-        }
+        projectWorkerInfo.setProjectName(project.getName());
         TeamMaster teamMaster = teamMasterBO
             .getTeamMaster(String.valueOf(data.getTeamSysNo()));
         projectWorkerInfo.setTeamName(teamMaster.getTeamName());
@@ -298,8 +294,16 @@ public class ProjectWorkerBOImpl extends PaginableBOImpl<ProjectWorker>
         String data = JSONObject.toJSONStringWithDateFormat(req, "yyyy-MM-dd")
             .toString();
 
-        String resString = GovConnecter.getGovData("ProjectWorker.Update", data,
-            projectConfig.getProjectCode(), projectConfig.getSecret());
+        String resString = null;
+        try {
+            resString = GovConnecter.getGovData("ProjectWorker.Update", data,
+                projectConfig.getProjectCode(), projectConfig.getSecret());
+        } catch (BizException e) {
+            e.printStackTrace();
+            updateProjectWorkerStatus(req.getCode(),
+                EUploadStatus.UPLOAD_UNUPDATE.getCode());
+            throw e;
+        }
 
         // SerialHandler.handle(resString, projectConfig);
         String operateLog = operateLogBO.saveOperateLog(

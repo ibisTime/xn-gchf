@@ -367,14 +367,24 @@ public class ProjectWorkerAOImpl implements IProjectWorkerAO {
                 throw new BizException("XN631690",
                     "项目未配置" + projectWorker.getProjectName() + ",请检查项目配置");
             }
-            projectWorkerBO.refreshUploadStatus(code,
-                EUploadStatus.UPLOADING.getCode());
+
             JsonObject json = projectWorkerBO.getProjectWorkerJson(teamMaster,
                 projectWorker, projectConfig);
-            String resString = GovConnecter.getGovData("ProjectWorker.Add",
-                json.toString(), projectConfig.getProjectCode(),
-                projectConfig.getSecret());
-
+            projectWorkerBO.refreshUploadStatus(code,
+                EUploadStatus.UPLOADING.getCode());
+            String resString = null;
+            try {
+                // 捕捉国家平台异常
+                resString = GovConnecter.getGovData("ProjectWorker.Add",
+                    json.toString(), projectConfig.getProjectCode(),
+                    projectConfig.getSecret());
+            } catch (BizException e) {
+                // 国家平台抛出的异常 数据处理后再抛出
+                projectWorkerBO.refreshUploadStatus(code,
+                    EUploadStatus.UPLOAD_FAIL.getCode());
+                e.printStackTrace();
+                throw e;
+            }
             String logCode = operateLogBO.saveOperateLog(
                 EOperateLogRefType.ProjectWorker.getCode(), code,
                 EOperateLogOperate.UploadProjectWorker.getValue(), user, null);

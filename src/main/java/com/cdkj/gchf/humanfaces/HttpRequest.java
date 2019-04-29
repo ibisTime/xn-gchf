@@ -15,13 +15,14 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
 
-import org.apache.commons.codec.digest.Md5Crypt;
 import org.junit.Test;
 
-public class HttpRequest {
-    private InputStream ins = null;
+import com.cdkj.gchf.common.MD5Util;
 
-    private OutputStream ous = null;
+public class HttpRequest {
+    private static InputStream ins = null;
+
+    private static OutputStream ous = null;
 
     private String res = "";
 
@@ -50,6 +51,13 @@ public class HttpRequest {
             }
             httpURLConnection.setDoOutput(true);
             httpURLConnection.setDoInput(true);
+            httpURLConnection.setUseCaches(false);
+            httpURLConnection.setRequestProperty("Content-Type",
+                "application/x-www-form-urlencoded;charset=utf-8");
+            httpURLConnection.setRequestProperty("Accept", "application/json");
+            httpURLConnection.setRequestProperty("Connection", "Keep-Alive");// 维持长连接
+            httpURLConnection.setRequestProperty("Charset", "UTF-8");
+            httpURLConnection.connect();
             ins = httpURLConnection.getInputStream();
             String resString = null;
             inputStreamReader = new InputStreamReader(ins, "utf-8");
@@ -91,30 +99,21 @@ public class HttpRequest {
     @Test
     public void test1() {
 
-        String url = AppConfig.getBaseUrl() + "/Device/Authentication";
+        String url = AppConfig.getBaseUrl() + "/Api/Device/Authentication";
         System.out.println(url);
         Map<String, String> reqParameter = new HashMap<>();
         reqParameter.put("appId", AppConfig.getAppId());
         reqParameter.put("appKey", AppConfig.getAppKey());
         Timestamp timestamp = new Timestamp(System.currentTimeMillis());
-        reqParameter.put("timestamp", timestamp.toString());
-        reqParameter
-            .put("sign",
-                Md5Crypt
-                    .md5Crypt((AppConfig.getAppKey() + timestamp.toString()
-                            + AppConfig.getAppSecret()).getBytes())
-                .toLowerCase());
+        reqParameter.put("timestamp", String.valueOf(timestamp.getTime()));
+        String md5 = MD5Util
+            .md5(AppConfig.getAppKey() + String.valueOf(timestamp.getTime())
+                    + AppConfig.getAppSecret());
+        reqParameter.put("sign", md5.toLowerCase());
+        System.out.println("md5:" + md5.toLowerCase());
         String doRequest = doRequest(url, "POST", reqParameter);
-        System.out.println(timestamp.toString());
-        System.out
-            .println(
-                Md5Crypt
-                    .md5Crypt((AppConfig.getAppKey() + timestamp.toString()
-                            + AppConfig.getAppSecret()).getBytes())
-                .toLowerCase());
-
-        // System.out.println(timestamp.toString());
         System.out.println(doRequest);
 
     }
+
 }

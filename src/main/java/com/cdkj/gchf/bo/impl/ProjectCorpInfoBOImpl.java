@@ -154,10 +154,17 @@ public class ProjectCorpInfoBOImpl extends PaginableBOImpl<ProjectCorpInfo>
         String data = JSONObject
             .toJSONStringWithDateFormat(req, "yyyy-MM-dd HH:mm:ss").toString();
         System.out.println("===" + data);
-
-        String resString = GovConnecter.getGovData(
-            "ProjectSubContractor.Update", data, projectConfig.getProjectCode(),
-            projectConfig.getSecret());
+        String resString = null;
+        try {
+            resString = GovConnecter.getGovData("ProjectSubContractor.Update",
+                data, projectConfig.getProjectCode(),
+                projectConfig.getSecret());
+        } catch (BizException e) {
+            projectCorpInfoBO.refreshUploadStatus(req.getCode(),
+                EUploadStatus.UPLOAD_UNUPDATE.getCode());
+            e.printStackTrace();
+            throw e;
+        }
         String operateLog = operateLogBO.saveOperateLog(
             EOperateLogRefType.ProjectCorpinfo.getCode(), req.getCode(),
             "修改平台参建单位信息", user, "修改平台信息");

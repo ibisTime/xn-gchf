@@ -259,9 +259,19 @@ public class ProjectWorkerEntryExitHistoryAOImpl
                     projectConfigByLocal);
             projectWorkerEntryExitHistoryBO.refreshUploadStatus(code,
                 EUploadStatus.UPLOADING.getCode());
-            String resString = GovConnecter.getGovData("WorkerEntryExit.Add",
-                requestJson.toString(), projectConfigByLocal.getProjectCode(),
-                projectConfigByLocal.getSecret());
+
+            String resString;
+            try {
+                resString = GovConnecter.getGovData("WorkerEntryExit.Add",
+                    requestJson.toString(),
+                    projectConfigByLocal.getProjectCode(),
+                    projectConfigByLocal.getSecret());
+            } catch (BizException e) {
+                projectWorkerBO.refreshUploadStatus(code,
+                    EUploadStatus.UPLOAD_FAIL.getCode());
+                e.printStackTrace();
+                throw e;
+            }
 
             String operateLog = operateLogBO.saveOperateLog(
                 EOperateLogRefType.ProjectWorkerEntryExitHistory.getCode(),

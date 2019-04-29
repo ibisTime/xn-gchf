@@ -27,6 +27,7 @@ public class ProjectConfigBOImpl extends PaginableBOImpl<ProjectConfig>
     @Override
     public String saveProjectConfig(String localProjectCode, XN631620Req req) {
         ProjectConfig projectConfig = new ProjectConfig();
+        projectConfig.setSecret(projectConfig.getSecret().trim());
         BeanUtils.copyProperties(req, projectConfig);
 
         String code = OrderNoGenerater

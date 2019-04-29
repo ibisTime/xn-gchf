@@ -70,11 +70,12 @@ public class PayRollDetailBOImpl extends PaginableBOImpl<PayRollDetail>
             }
             String payRollBankCardNumber = detail.getPayRollBankCardNumber();
             BankCardInfo bankCardInfoByNum = bankCardBankBO
-                .getBankCardInfoByNum(detail.getPayRollBankCardNumber());
+                .getBankCardInfoByNum(payRollBankCardNumber);
             if (payRollBankCardNumber == null) {
-                throw new BizException("XN631770", "项目银行卡号不能为空");
+                throw new BizException("XN631770", "项目人员银行卡号不能为空");
             }
             if (bankCardInfoByNum == null) {
+
                 List<ProjectWorker> projectWorkerByIdentity = projectWorkerBO
                     .getProjectWorkerByIdentity(teamSysNo,
                         detail.getIdCardNumber());

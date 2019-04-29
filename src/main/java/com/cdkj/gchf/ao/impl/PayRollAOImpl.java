@@ -27,7 +27,6 @@ import com.cdkj.gchf.bo.IUserBO;
 import com.cdkj.gchf.bo.base.Paginable;
 import com.cdkj.gchf.common.AesUtils;
 import com.cdkj.gchf.common.DateUtil;
-import com.cdkj.gchf.domain.BankCardInfo;
 import com.cdkj.gchf.domain.CorpBasicinfo;
 import com.cdkj.gchf.domain.PayRoll;
 import com.cdkj.gchf.domain.PayRollDetail;
@@ -356,29 +355,20 @@ public class PayRollAOImpl implements IPayRollAO {
                 throw new BizException("XN631812",
                     "班组信息不存在【" + xn631773ReqData.getTeamName() + "】");
             }
-            BankCardInfo bankCardInfoByNum = bankCardBankBO
-                .getBankCardInfoByNum(
-                    xn631773ReqData.getPayRollBankCardNumber());
-            if (bankCardInfoByNum == null) {
-                // 如果没绑定银行卡，给他绑定银行卡。
-                // BankCardInfo bankCardInfo = new BankCardInfo();
-                // bankCardInfo.setBankCode(xn631773ReqData.getPayBankCode());
-                // bankCardInfo
-                // .setBusinessType(EBankCardBussinessType.USER.getCode());
-                // projectWorkerBO.getProjectWorkerByIdentity(xn631773ReqData.ge,
-                // idCardNumber)
-                // bankCardInfo.setBusinessSysNo();
-                // bankCardInfo
-                // .setBankNumber(xn631773ReqData.getPayBankCardNumber());
-                // bankCardInfo.setBankName(EBankCardCodeType
-                // .getBankCardType(xn631773ReqData.getPayBankCode())
-                // .getValue());
-                // bankCardBankBO.saveBankCardInfo(bankCardInfo);
-                throw new BizException("XN631812",
-                    "项目人员银行卡未绑定[" + xn631773ReqData.getWorkerName() + "]");
+
+            ProjectWorker condition = new ProjectWorker();
+            condition.setTeamName(xn631773ReqData.getTeamName());
+            condition.setCorpCode(xn631773ReqData.getCorpCode());
+            condition.setCorpName(xn631773ReqData.getCorpName());
+            condition.setWorkerName(xn631773ReqData.getWorkerName());
+
+            List<ProjectWorker> workerList = projectWorkerBO
+                .queryProjectWorkerList(condition);
+            if (CollectionUtils.isEmpty(workerList)) {
+                continue;
             }
             ProjectWorker projectWorker = projectWorkerBO
-                .getProjectWorker(bankCardInfoByNum.getBusinessSysNo());
+                .getProjectWorker(workerList.get(0).getCode());
             // 不存在相关工资单时相关联的工资单
             String payRollCode = null;
             PayRoll payRoll = payRollBO

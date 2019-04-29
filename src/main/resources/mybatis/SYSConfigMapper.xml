@@ -29,6 +29,9 @@
 			<if test="updater != null and updater != '' ">
 				AND t.updater = #{updater}
 			</if>	
+			<if test="remark != null and remark != '' ">
+				AND t.remark = #{remark}
+			</if>	
 		</trim>
 	</sql>
 	<select id="select_sysConfig" parameterType="sysConfig" resultMap="sysConfig_DB_Result">
@@ -82,7 +85,6 @@
 		cvalue = #{cvalue}
 		,updater=#{updater}
 		,update_datetime=#{updateDatetime}
-		,remark=#{remark}
 		WHERE id = #{id}
 	</update>
 </mapper>

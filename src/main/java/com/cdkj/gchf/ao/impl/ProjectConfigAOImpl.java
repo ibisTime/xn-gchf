@@ -47,9 +47,13 @@ public class ProjectConfigAOImpl implements IProjectConfigAO {
         // throw new BizException("XN631620", "该项目已添加配置，无法再次添加");
         // }
 
-        if (null != projectConfigBO
-            .getProjectConfigByProject(req.getProjectCode())) {
-            throw new BizException("XN631620", "该项目已添加配置，无法再次添加");
+        ProjectConfig configByProject = projectConfigBO
+            .getProjectConfigByProject(req.getProjectCode());
+        if (null != configByProject) {
+            throw new BizException("XN631620", "该项目已添加配置,无法再次添加");
+        }
+        if (configByProject.getSecret().equals(req.getSecret())) {
+            throw new BizException("XN631620", "该密钥已使用,请检查");
         }
 
         Project project = projectBO.getProjectByFullName(req.getProjectName());

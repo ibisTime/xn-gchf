@@ -254,15 +254,21 @@ public class WorkerContractAOImpl implements IWorkerContractAO {
             // 请求json
             JsonObject jsonObject = workerContractBO
                 .getRequestJson(workerContract, projectConfig);
-            workerContractBO.refreshUploadStatus(code,
-                EUploadStatus.UPLOADING.getCode());
 
             workerContractBO.refreshUploadStatus(code,
                 EUploadStatus.UPLOADING.getCode());
             // 上传到国家平台
-            String resString = GovConnecter.getGovData("WorkerContract.Add",
-                jsonObject.toString(), projectConfig.getProjectCode(),
-                projectConfig.getSecret());
+            String resString;
+            try {
+                resString = GovConnecter.getGovData("WorkerContract.Add",
+                    jsonObject.toString(), projectConfig.getProjectCode(),
+                    projectConfig.getSecret());
+            } catch (BizException e) {
+                e.printStackTrace();
+                workerContractBO.refreshUploadStatus(code,
+                    EUploadStatus.UPLOAD_FAIL.getCode());
+                throw e;
+            }
             // 增加操作日志
             String log = operateLogBO.saveOperateLog(
                 EOperateLogRefType.WorkContract.getCode(), code,

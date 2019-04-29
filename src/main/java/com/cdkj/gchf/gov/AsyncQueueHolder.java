@@ -25,7 +25,6 @@ import com.cdkj.gchf.dto.req.XN631655Req;
 import com.cdkj.gchf.dto.req.XN631695Req;
 import com.cdkj.gchf.enums.EGovAsyncStatus;
 import com.cdkj.gchf.enums.EUploadStatus;
-import com.cdkj.gchf.exception.BizException;
 import com.cdkj.gchf.spring.SpringContextHolder;
 
 @Component
@@ -51,26 +50,16 @@ public class AsyncQueueHolder {
             String userId) {
         QueueBean queueBean = null;
         String requestSerialCode = null;
-        try {
-            // 捕捉国家平台异常
-            requestSerialCode = GovUtil.parseRequestSerialCode(resString);
 
-            queueBean = new QueueBean(requestSerialCode,
-                projectConfig.getProjectCode(), projectConfig.getSecret(),
-                boClass, code, status, logCode, userId);
+        requestSerialCode = GovUtil.parseRequestSerialCode(resString);
 
-            if (EGovAsyncStatus.TO_HANDLE.getCode()
-                .equals(handleQueueBean(queueBean))) {
-                serialMQHolder.serialMQ.addLast(queueBean);
-            }
-        } catch (BizException e) {
-            queueBean.getBoClass();
-            // 国家平台抛出的异常 数据处理后再抛出
-            refreshUploadStatus(queueBean.getBoClass(), requestSerialCode,
-                EUploadStatus.UPLOAD_FAIL.getCode());
-            queueBean.setStatus(EGovAsyncStatus.FAIL.getCode());
-            e.printStackTrace();
-            throw e;
+        queueBean = new QueueBean(requestSerialCode,
+            projectConfig.getProjectCode(), projectConfig.getSecret(), boClass,
+            code, status, logCode, userId);
+
+        if (EGovAsyncStatus.TO_HANDLE.getCode()
+            .equals(handleQueueBean(queueBean))) {
+            serialMQHolder.serialMQ.addLast(queueBean);
         }
 
     }

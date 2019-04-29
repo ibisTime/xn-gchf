@@ -68,10 +68,17 @@ public class BankCardInfoAOImpl implements IBankCardInfoAO {
                 throw new BizException("631750", "该参建单位已存在银行卡【"
                         + bankCardInfos.get(0).getBankNumber() + "】");
             }
-            BankCardInfo bankCardInfoByNum = bankCardBankBO
-                .getBankCardInfoByNum(req.getBankNumber());
-            if (bankCardInfoByNum != null) {
-                throw new BizException("XN631750", "银行卡信息已存在,请重新填写");
+            BankCardInfo condition = new BankCardInfo();
+            condition.setBankNumber(req.getBankNumber());
+            condition.setBusinessType(EBankCardBussinessType.USER.getCode());
+
+            List<BankCardInfo> queryBankCardInfoList = bankCardBankBO
+                .queryBankCardInfoList(condition);
+            for (BankCardInfo bankCardInfo : queryBankCardInfoList) {
+                if (bankCardInfo.getBankNumber()
+                    .equals(bankCardInfo.getBankNumber())) {
+                    throw new BizException("XN631750", "银行卡信息已存在,请重新填写");
+                }
             }
 
             ProjectCorpInfo projectCorpInfo = projectCorpInfoBO

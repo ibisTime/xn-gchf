@@ -534,4 +534,94 @@ ADD COLUMN `city` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL D
 ALTER TABLE `thf_project` 
 ADD COLUMN `area` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '区';
 
+## 220 v1
+DROP TABLE IF EXISTS `thf_leave`
+CREATE TABLE `thf_leave` (
+  `code` varchar(32) NOT NULL COMMENT '编号',
+  `employ_code` varchar(32) DEFAULT NULL COMMENT '雇佣编号',
+  `staff_code` varchar(32) DEFAULT NULL COMMENT '员工编号',
+  `project_code` varchar(32) DEFAULT NULL COMMENT '项目编号',
+  `staff_name` varchar(32) DEFAULT NULL COMMENT '员工姓名',
+  `project_name` varchar(255) DEFAULT NULL COMMENT '项目名称',
+  `start_datetime` datetime DEFAULT NULL COMMENT '请假开始日期（包括当天）',
+  `end_datetime` datetime DEFAULT NULL COMMENT '请假结束日期',
+  `leave_days` int(11) DEFAULT NULL COMMENT '请假天数',
+  `status` varchar(4) DEFAULT NULL COMMENT '状态',
+  `updater` varchar(32) DEFAULT NULL COMMENT '更新人',
+  `update_datetime` datetime DEFAULT NULL COMMENT '更新时间',
+  `remark` varchar(255) DEFAULT NULL COMMENT '备注',
+  PRIMARY KEY (`code`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+DROP TABLE IF EXISTS `thf_message`
+CREATE TABLE `thf_message` (
+  `code` varchar(32) NOT NULL COMMENT '编号',
+  `project_code` varchar(32) DEFAULT NULL COMMENT '项目编号',
+  `project_name` varchar(255) DEFAULT NULL COMMENT '项目名称',
+  `bank_code` varchar(32) DEFAULT NULL COMMENT '银行行别',
+  `bank_name` varchar(255) DEFAULT NULL COMMENT '银行名称',
+  `subbranch` text COMMENT '开户行',
+  `bankcard_number` varchar(64) DEFAULT NULL COMMENT '银行卡号',
+  `month` varchar(32) DEFAULT NULL COMMENT '工资所属月份',
+  `total_amount` bigint(20) DEFAULT '0' COMMENT '本月累计发薪',
+  `number` int(11) DEFAULT '0' COMMENT '领薪人数',
+  `total_cut_amount` bigint(20) DEFAULT '0' COMMENT '本月累计扣款',
+  `total_tax` bigint(20) DEFAULT '0' COMMENT '本月累计税费',
+  `title` text COMMENT '标题',
+  `create_datetime` datetime DEFAULT NULL COMMENT '创建时间',
+  `download` int(11) DEFAULT '0' COMMENT '下载次数',
+  `back_download` int(11) DEFAULT '0' COMMENT '反馈下载次数',
+  `status` varchar(4) DEFAULT NULL COMMENT '状态',
+  `sender` varchar(32) DEFAULT NULL COMMENT '发送人',
+  `send_datetime` datetime DEFAULT NULL COMMENT '发送时间',
+  `send_note` text COMMENT '发送说明',
+  `handler` varchar(32) DEFAULT NULL COMMENT '处理人',
+  `handle_datetime` datetime DEFAULT NULL COMMENT '处理时间',
+  `handle_note` text COMMENT '处理说明',
+  PRIMARY KEY (`code`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+DROP TABLE IF EXISTS `thf_query_log`
+CREATE TABLE `thf_query_log` (
+  `code` varchar(32) NOT NULL COMMENT '编号',
+  `user_id` varchar(32) DEFAULT NULL COMMENT '用户id',
+  `staff_code` varchar(32) DEFAULT NULL COMMENT '员工编号',
+  `staff_name` varchar(64) DEFAULT NULL COMMENT '员工名称',
+  `id_no` varchar(64) DEFAULT NULL COMMENT '身份证号',
+  `pic1` mediumtext COMMENT '身份证头像',
+  PRIMARY KEY (`code`),
+  KEY `staff_code` (`staff_code`),
+  KEY `user_id` (`user_id`),
+  CONSTRAINT `staff_code` FOREIGN KEY (`staff_code`) REFERENCES `thf_worker_info` (`code`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `user_id` FOREIGN KEY (`user_id`) REFERENCES `thf_user` (`user_id`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+DROP TABLE IF EXISTS `thf_report`
+CREATE TABLE `thf_report` (
+  `code` varchar(32) NOT NULL COMMENT '编号',
+  `project_code` varchar(32) DEFAULT NULL COMMENT '项目编号',
+  `project_name` varchar(255) DEFAULT NULL COMMENT '项目名称',
+  `today_days` int(11) DEFAULT '0' COMMENT '今日上工人数',
+  `last_month_salary` bigint(20) DEFAULT '0' COMMENT '上月实际发薪金额',
+  `next_month_salary` bigint(20) DEFAULT '0' COMMENT '下月预计发薪金额',
+  `total_salary` bigint(20) DEFAULT '0' COMMENT '累计发薪金额',
+  `staff_on` bigint(11) DEFAULT '0' COMMENT '目前在职人数',
+  `staff_in` bigint(11) DEFAULT '0' COMMENT '累计入职人数',
+  `staff_out` bigint(11) DEFAULT '0' COMMENT '累计离职人数',
+  `leaving_days` int(11) DEFAULT '0' COMMENT '累计请假人次',
+  `working_days` int(11) DEFAULT '0' COMMENT '累计出工人次',
+  `remark` text COMMENT '备注',
+  PRIMARY KEY (`code`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+DROP TABLE IF EXISTS `thf_skill`
+CREATE TABLE `thf_skill` (
+  `code` varchar(32) NOT NULL COMMENT '编号',
+  `staff_code` varchar(32) DEFAULT NULL COMMENT '员工编号',
+  `staff_name` varchar(64) DEFAULT NULL COMMENT '员工姓名',
+  `name` varchar(64) DEFAULT NULL COMMENT '技能名称',
+  `pdf` varchar(255) DEFAULT NULL COMMENT '技能证书',
+  `score` int(11) DEFAULT NULL COMMENT '技能评分',
+  PRIMARY KEY (`code`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
 

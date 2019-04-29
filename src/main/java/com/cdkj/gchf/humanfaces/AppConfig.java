@@ -8,7 +8,7 @@ public class AppConfig {
 
     private static String AppSecret = "2434323F6E794A8D8C5C633ECB39D8F1";
 
-    private static String baseUrl = "https://smz.lesun-idea.com/Api";
+    private static String baseUrl = "https://smz.lesun-idea.com";
 
     public static AppConfig getProjectConfig() {
         AppConfig appConfig = new AppConfig();

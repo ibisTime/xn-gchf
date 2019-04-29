@@ -289,11 +289,21 @@ public class ProjectCorpInfoAOImpl implements IProjectCorpInfoAO {
             projectCorpInfo.setUploadStatus(EUploadStatus.UPLOADING.getCode());
             projectCorpInfoBO.refreshUploadStatus(code,
                 EUploadStatus.UPLOADING.getCode());
-
+            String resString = null;
             // 上传
-            String resString = GovConnecter.getGovData(
-                "ProjectSubContractor.Add", json,
-                projectConfig.getProjectCode(), projectConfig.getSecret());
+            try {
+                // 捕捉国家平台异常
+                resString = GovConnecter.getGovData("ProjectSubContractor.Add",
+                    json, projectConfig.getProjectCode(),
+                    projectConfig.getSecret());
+
+            } catch (BizException e) {
+                // 国家平台抛出的异常 更改为上传失败状态
+                projectCorpInfoBO.refreshUploadStatus(code,
+                    EUploadStatus.UPLOAD_FAIL.getCode());
+                e.printStackTrace();
+                throw e;
+            }
 
             // 保存操作日志
             String saveOperateLog = operateLogBO.saveOperateLog(
@@ -328,7 +338,6 @@ public class ProjectCorpInfoAOImpl implements IProjectCorpInfoAO {
             Project project = projectBO
                 .getProject(projectCorpInfo.getProjectCode());
             // 从上传转过来的
-            //////
             ProjectConfig projectConfigByProject = null;
             if (project == null) {
                 projectConfigByProject = projectConfigBO

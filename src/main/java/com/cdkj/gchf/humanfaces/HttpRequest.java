@@ -9,7 +9,7 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLConnection;
-import java.sql.Timestamp;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -17,6 +17,7 @@ import java.util.Set;
 
 import org.junit.Test;
 
+import com.cdkj.gchf.common.DateUtil;
 import com.cdkj.gchf.common.MD5Util;
 
 public class HttpRequest {
@@ -24,40 +25,53 @@ public class HttpRequest {
 
     private static OutputStream ous = null;
 
-    private String res = "";
+    private static String res = "";
 
-    private InputStreamReader inputStreamReader = null;
+    private static InputStreamReader inputStreamReader = null;
 
-    private BufferedReader bufferedReader = null;
+    private static BufferedReader bufferedReader = null;
 
-    private HttpURLConnection httpURLConnection = null;
+    private static HttpURLConnection httpURLConnection = null;
 
-    public String doRequest(String url, String method,
+    public static String doRequest(String url, String method,
             Map<String, String> req) {
         URL localURL = null;
         try {
+            if (method.equals("GET")) {
+                url += "?";
+                for (Entry<String, String> entry : req.entrySet()) {
+                    url += entry.getKey() + "=" + entry.getValue() + "&";
+                }
+                url.substring(0, url.length() - 1);
+                System.out.println(url);
+            }
             localURL = new URL(url);
             URLConnection connection = (URLConnection) localURL
                 .openConnection();
             httpURLConnection = (HttpURLConnection) connection;
             httpURLConnection.setRequestMethod(method);
-            // 添加参数
-            if (null != req) {
-                Set<Entry<String, String>> entrySet = req.entrySet();
-                for (Entry<String, String> entry : entrySet) {
-                    httpURLConnection.addRequestProperty(entry.getKey(),
-                        entry.getValue());
-                }
-            }
-            httpURLConnection.setDoOutput(true);
-            httpURLConnection.setDoInput(true);
-            httpURLConnection.setUseCaches(false);
-            httpURLConnection.setRequestProperty("Content-Type",
-                "application/x-www-form-urlencoded;charset=utf-8");
-            httpURLConnection.setRequestProperty("Accept", "application/json");
             httpURLConnection.setRequestProperty("Connection", "Keep-Alive");// 维持长连接
             httpURLConnection.setRequestProperty("Charset", "UTF-8");
-            httpURLConnection.connect();
+            StringBuffer sb = new StringBuffer();
+            if (method.equals("POST")) {
+                httpURLConnection.setRequestProperty("Content-Type",
+                    "application/x-www-form-urlencoded");
+                httpURLConnection.setDoOutput(true);
+                httpURLConnection.setUseCaches(false);
+                httpURLConnection.setDoInput(true);
+
+                Set<Entry<String, String>> entrySet = req.entrySet();
+                for (Entry<String, String> entry : entrySet) {
+                    sb.append(entry.getKey() + "=" + entry.getValue() + "&");
+                }
+                httpURLConnection.connect();
+                ous = httpURLConnection.getOutputStream();
+                ous.write(
+                    sb.substring(0, sb.length() - 1).toString().getBytes());
+                System.out.println(
+                    "入参:" + sb.substring(0, sb.length() - 1).toString());
+                ous.flush();
+            }
             ins = httpURLConnection.getInputStream();
             String resString = null;
             inputStreamReader = new InputStreamReader(ins, "utf-8");
@@ -65,8 +79,11 @@ public class HttpRequest {
             while ((resString = bufferedReader.readLine()) != null) {
                 res += resString;
             }
-            System.out.println("res:" + res);
-
+            // JSONObject resJson = JSONObject.parseObject(res);
+            // if (resJson.containsKey("code")) {
+            // String code = (String) resJson.get("code");
+            // System.out.println(code);
+            // }
             return res;
         } catch (MalformedURLException e) {
             e.printStackTrace();
@@ -89,6 +106,8 @@ public class HttpRequest {
                 if (ous != null) {
                     ous.close();
                 }
+                res = "";
+
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -100,17 +119,15 @@ public class HttpRequest {
     public void test1() {
 
         String url = AppConfig.getBaseUrl() + "/Api/Device/Authentication";
-        System.out.println(url);
         Map<String, String> reqParameter = new HashMap<>();
-        reqParameter.put("appId", AppConfig.getAppId());
+        reqParameter.put("appid", AppConfig.getAppid());
         reqParameter.put("appKey", AppConfig.getAppKey());
-        Timestamp timestamp = new Timestamp(System.currentTimeMillis());
-        reqParameter.put("timestamp", String.valueOf(timestamp.getTime()));
-        String md5 = MD5Util
-            .md5(AppConfig.getAppKey() + String.valueOf(timestamp.getTime())
-                    + AppConfig.getAppSecret());
+        Date time = DateUtil.strToDate(AppConfig.getTimestamp(),
+            DateUtil.DATA_TIME_PATTERN_1);
+        reqParameter.put("timestamp", String.valueOf(time.getTime()));
+        String md5 = MD5Util.md5(AppConfig.getAppKey()
+                + String.valueOf(time.getTime()) + AppConfig.getAppSecret());
         reqParameter.put("sign", md5.toLowerCase());
-        System.out.println("md5:" + md5.toLowerCase());
         String doRequest = doRequest(url, "POST", reqParameter);
         System.out.println(doRequest);
 

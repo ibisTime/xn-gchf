@@ -1,4 +1,4 @@
-package com.cdkj.gchf.humanfaces;
+package com.cdkj.gchf.humanfaces.res;
 
 public class ResultMsg {
     private String code;
@@ -8,6 +8,8 @@ public class ResultMsg {
     private String msg;
 
     private String result;
+
+    private String request;
 
     public String getCode() {
         return code;
@@ -39,6 +41,14 @@ public class ResultMsg {
 
     public void setResult(String result) {
         this.result = result;
+    }
+
+    public String getRequest() {
+        return request;
+    }
+
+    public void setRequest(String request) {
+        this.request = request;
     }
 
 }

@@ -13,7 +13,6 @@ import org.hibernate.validator.constraints.NotBlank;
 public class XN631600Req {
 
     // 总承包单位统一社会信用代码
-    @NotBlank
     private String contractorCorpCode;
 
     // 总承包单位名称

@@ -43,7 +43,7 @@ public class ProjectBOImpl extends PaginableBOImpl<Project>
     }
 
     @Override
-    public String saveProject(XN631600Req req,
+    public Project saveProject(XN631600Req req,
             CorpBasicinfo contractorCorpInfo) {
         Project project = new Project();
         BeanUtils.copyProperties(req, project);
@@ -51,7 +51,9 @@ public class ProjectBOImpl extends PaginableBOImpl<Project>
         String code = OrderNoGenerater
             .generate(EGeneratePrefix.Project.getCode());
         project.setCode(code);
-        project.setContractorCorpName(contractorCorpInfo.getCorpName());
+        if (StringUtils.isNotBlank(contractorCorpInfo.getCorpName())) {
+            project.setContractorCorpName(contractorCorpInfo.getCorpName());
+        }
         if (StringUtils.isNotBlank(req.getInvest())) {
             project.setInvest(
                 new BigDecimal(Integer.parseInt(req.getInvest()) * 10000));
@@ -77,9 +79,10 @@ public class ProjectBOImpl extends PaginableBOImpl<Project>
             project.setLng(new BigDecimal(req.getLng()));
         }
         project.setBuildCorpName(req.getBuildCorpName());
+        project.setSecretStatus(ESecretStatus.NO.getCode());
         projectDAO.insert(project);
 
-        return code;
+        return project;
     }
 
     @Override

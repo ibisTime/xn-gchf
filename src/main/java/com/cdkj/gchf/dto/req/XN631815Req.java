@@ -21,6 +21,9 @@ public class XN631815Req extends APageReq {
     // 企业统一信用编码
     private String corpCode;
 
+    // 企业名称
+    private String corpName;
+
     // userId
     @NotBlank
     private String userId;
@@ -69,6 +72,14 @@ public class XN631815Req extends APageReq {
 
     public void setCorpCode(String corpCode) {
         this.corpCode = corpCode;
+    }
+
+    public String getCorpName() {
+        return corpName;
+    }
+
+    public void setCorpName(String corpName) {
+        this.corpName = corpName;
     }
 
     public String getPayMonth() {

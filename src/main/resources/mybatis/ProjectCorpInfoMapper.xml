@@ -37,12 +37,15 @@
 				AND t.project_code = #{projectCode}
 			</if>
 			<if test="projectName != null and projectName != '' ">
-				AND t.project_name = #{projectName}
+				AND t.project_name =  #{projectName}
 			</if>
 
 			<if test="corpCode != null and corpCode != '' ">
 				AND t.corp_code = #{corpCode}
 			</if>
+			<if test="corpName != null and corpName != '' ">
+                AND t.corp_name like "%"#{corpName}"%"
+            </if>
 
 			<if test="uploadStatus != null and uploadStatus != '' ">
 				AND t.upload_status = #{uploadStatus}

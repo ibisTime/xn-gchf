@@ -7,13 +7,13 @@ import com.cdkj.gchf.exception.BizException;
 
 /**
  * 
- * @ClassName:  EWorkerContractUploadStatus   
- * @Description: 劳动合同上传状态
+ * @ClassName:  ETeamMasterUploadStatus   
+ * @Description:企业基本信息上传状态
  * @author: Old3
- * @date:   2019年4月30日 上午10:39:59     
+ * @date:   2019年4月29日 下午9:38:04     
  * @Copyright:
  */
-public enum EWorkerContractUploadStatus {
+public enum ECorpBasicUploadStatus {
     UPLOAD_FAIL("-1", "上传失败"),
 
     TO_UPLOAD("0", "待上传"),
@@ -22,24 +22,23 @@ public enum EWorkerContractUploadStatus {
 
     UPLOADING("4", "上传中");
 
-    EWorkerContractUploadStatus(String code, String value) {
+    ECorpBasicUploadStatus(String code, String value) {
         this.code = code;
         this.value = value;
 
     }
 
-    public static Map<String, EWorkerContractUploadStatus> getUploadStatusMap() {
-        Map<String, EWorkerContractUploadStatus> map = new HashMap<String, EWorkerContractUploadStatus>();
-        for (EWorkerContractUploadStatus type : EWorkerContractUploadStatus
-            .values()) {
+    public static Map<String, ECorpBasicUploadStatus> getUploadStatusMap() {
+        Map<String, ECorpBasicUploadStatus> map = new HashMap<String, ECorpBasicUploadStatus>();
+        for (ECorpBasicUploadStatus type : ECorpBasicUploadStatus.values()) {
             map.put(type.getCode(), type);
         }
         return map;
     }
 
-    public static EWorkerContractUploadStatus getUploadStatus(String code) {
-        Map<String, EWorkerContractUploadStatus> map = getUploadStatusMap();
-        EWorkerContractUploadStatus projectCorpType = map.get(code);
+    public static ECorpBasicUploadStatus getUploadStatus(String code) {
+        Map<String, ECorpBasicUploadStatus> map = getUploadStatusMap();
+        ECorpBasicUploadStatus projectCorpType = map.get(code);
         if (null == projectCorpType) {
             throw new BizException("xn0000", code + "对应上传状态不存在");
         }
@@ -47,8 +46,8 @@ public enum EWorkerContractUploadStatus {
     }
 
     public static void checkExists(String code) {
-        Map<String, EWorkerContractUploadStatus> map = getUploadStatusMap();
-        EWorkerContractUploadStatus projectCorpType = map.get(code);
+        Map<String, ECorpBasicUploadStatus> map = getUploadStatusMap();
+        ECorpBasicUploadStatus projectCorpType = map.get(code);
         if (null == projectCorpType) {
             throw new BizException("xn0000", code + "对应上传状态不存在");
         }

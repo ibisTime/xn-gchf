@@ -12,7 +12,7 @@ public interface IProjectBO extends IPaginableBO<Project> {
 
     public String saveProject(String name);
 
-    public String saveProject(XN631600Req req,
+    public Project saveProject(XN631600Req req,
             CorpBasicinfo contractorCorpInfo);
 
     public void refreshProject(XN631602Req req,

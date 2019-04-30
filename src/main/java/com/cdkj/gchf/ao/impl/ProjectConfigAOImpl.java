@@ -48,7 +48,7 @@ public class ProjectConfigAOImpl implements IProjectConfigAO {
         // }
 
         ProjectConfig configByProject = projectConfigBO
-            .getProjectConfigByProject(req.getProjectCode());
+            .getProjectConfigByLocal(req.getProjectCode());
         if (null != configByProject) {
             throw new BizException("XN631620", "该项目已添加配置,无法再次添加");
         }
@@ -81,6 +81,16 @@ public class ProjectConfigAOImpl implements IProjectConfigAO {
                 ESecretStatus.YES.getCode());
 
         } else {
+            if (projectConfig.getProjectCode().equals(req.getProjectCode())) {
+                if (!req.getPassword().equals(projectConfig.getPassword())
+                        || !req.getProjectName()
+                            .equals(projectConfig.getProjectName())) {
+                    projectConfigBO
+                        .refreshProjectConfig(projectConfig.getCode(), req);
+                }
+                throw new BizException("XN000000", "项目配置已存在,请检查");
+            }
+
             projectConfigBO.refreshProjectConfig(projectConfig.getCode(), req);
         }
 

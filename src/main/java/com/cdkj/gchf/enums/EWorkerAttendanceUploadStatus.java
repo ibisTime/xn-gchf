@@ -7,10 +7,10 @@ import com.cdkj.gchf.exception.BizException;
 
 /**
  * 
- * @ClassName:  ETeamMasterUploadStatus   
- * @Description:项目班组上传状态
+ * @ClassName:  EWorkerAttendanceUploadStatus   
+ * @Description:人员考勤上传状态
  * @author: Old3
- * @date:   2019年4月29日 下午9:38:04     
+ * @date:   2019年4月30日 上午10:40:22     
  * @Copyright:
  */
 public enum EWorkerAttendanceUploadStatus {
@@ -37,8 +37,7 @@ public enum EWorkerAttendanceUploadStatus {
         return map;
     }
 
-    public static EWorkerAttendanceUploadStatus getUploadStatus(
-            String code) {
+    public static EWorkerAttendanceUploadStatus getUploadStatus(String code) {
         Map<String, EWorkerAttendanceUploadStatus> map = getUploadStatusMap();
         EWorkerAttendanceUploadStatus projectCorpType = map.get(code);
         if (null == projectCorpType) {

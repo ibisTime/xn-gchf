@@ -73,6 +73,9 @@
 			<if test="corpCode != null and corpCode != '' ">
 				AND t.corp_code = #{corpCode}
 			</if>
+			<if test="corpName != null and corpName != '' ">
+				AND t.corp_name like "%"#{corpName}"%"
+			</if>
 			<if test="teamSysNo != null and teamSysNo != '' ">
 				AND t.team_sys_no = #{teamSysNo}
 			</if>

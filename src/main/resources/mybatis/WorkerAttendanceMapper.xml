@@ -33,14 +33,15 @@
 		<result column="remark" property="remark" />
 		<result column="upload_status" property="uploadStatus" />
 		<result column="delete_status" property="deleteStatus" />
+		<result column="corp_name" property="corpName" />
 	</resultMap>
 
-    <sql id="join_condition">
-        <if test="corpCode != null and corpCode != '' ">
-        	join thf_team_master tm on tm.code = t.team_sys_no 
-        </if>
-    </sql>
-    
+	<sql id="join_condition">
+		<if test="corpName != null and corpName != '' ">
+			join thf_team_master tm on tm.code = t.team_sys_no
+		</if>
+	</sql>
+
 	<sql id="where_condition">
 		<trim prefix="WHERE" prefixOverrides="AND | OR">
 			<if test="code != null and code != '' ">
@@ -56,9 +57,9 @@
 				AND t.status = #{status}
 			</if>
 			<if test="workerName != null and workerName != '' ">
-				AND t.worker_name = #{workerName}
+				AND t.worker_name like "%"#{workerName}"%"
 			</if>
-			<if test="date != null and date != '' ">
+			<if test="date != null  ">
 				AND t.date = #{date}
 			</if>
 			<if test="uploadStatus != null and uploadStatus != '' ">
@@ -68,8 +69,9 @@
 				AND t.delete_status = #{deleteStatus}
 			</if>
 			<if test="corpCode != null and corpCode != '' ">
-            	AND tm.corp_code = #{corpCode}
-        	</if>
+				AND tm.corp_code = #{corpCode}
+			</if>
+
 		</trim>
 	</sql>
 
@@ -193,15 +195,16 @@
 		WHERE
 		code = #{code}
 	</update>
-	
+
 	<update id="update_workerAttendance_team_name" parameterType="workerAttendance">
-        UPDATE
-        thf_worker_attendance
-        SET
-        team_name = #{teamName}
-        WHERE
-        team_sys_no = #{teamSysNo}
-    </update>
+		UPDATE
+		thf_worker_attendance
+		SET
+		team_name = #{teamName}
+		WHERE
+		team_sys_no
+		= #{teamSysNo}
+	</update>
 
 	<update id="update_workerAttendance_delete_status"
 		parameterType="workerAttendance">
@@ -262,6 +265,9 @@
 		thf_worker_attendance t
 		<include refid="join_condition" />
 		<include refid="where_condition" />
+		<if test="corpName != null and corpName != '' ">
+			AND tm.corp_name like  "%"#{corpName}"%"  
+		</if>
 		<trim prefix="ORDER BY ">
 			<if test="order != null and order != '' ">
 				t.${order}

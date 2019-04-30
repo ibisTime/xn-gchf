@@ -29,9 +29,10 @@ import com.cdkj.gchf.dto.req.XN631770ReqDetail;
 import com.cdkj.gchf.dto.req.XN631772Req;
 import com.cdkj.gchf.dto.req.XN631810Req;
 import com.cdkj.gchf.dto.req.XN631812ReqData;
+import com.cdkj.gchf.enums.EBankCardCodeType;
 import com.cdkj.gchf.enums.EDeleteStatus;
 import com.cdkj.gchf.enums.EGeneratePrefix;
-import com.cdkj.gchf.enums.EUploadStatus;
+import com.cdkj.gchf.enums.EPayRollUploadStatus;
 import com.cdkj.gchf.exception.BizException;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
@@ -79,8 +80,9 @@ public class PayRollDetailBOImpl extends PaginableBOImpl<PayRollDetail>
                 List<ProjectWorker> projectWorkerByIdentity = projectWorkerBO
                     .getProjectWorkerByIdentity(teamSysNo,
                         detail.getIdCardNumber());
-                throw new BizException("XN631770", "项目人员银行卡未绑定"
-                        + projectWorkerByIdentity.get(0).getWorkerName());
+                throw new BizException("XN631770",
+                    "项目人员【" + projectWorkerByIdentity.get(0).getWorkerName()
+                            + "】银行卡未绑定");
             }
             String workerCode = bankCardInfoByNum.getBusinessSysNo();
             ProjectWorker workerByBankCard = projectWorkerBO
@@ -120,7 +122,8 @@ public class PayRollDetailBOImpl extends PaginableBOImpl<PayRollDetail>
             }
             payRollDetail
                 .setTotalPayAmount(new BigDecimal(detail.getTotalPayAmount()));
-            payRollDetail.setUploadStatus(EUploadStatus.TO_UPLOAD.getCode());
+            payRollDetail
+                .setUploadStatus(EPayRollUploadStatus.TO_UPLOAD.getCode());
             payRollDetail.setDeleteStatus(EDeleteStatus.NORMAL.getCode());
 
             payRollDetailDAO.insert(payRollDetail);
@@ -289,7 +292,7 @@ public class PayRollDetailBOImpl extends PaginableBOImpl<PayRollDetail>
             condition.setDays(Integer.parseInt(data.getDays()));
         }
         condition.setDeleteStatus(EDeleteStatus.NORMAL.getCode());
-        condition.setUploadStatus(EUploadStatus.TO_UPLOAD.getCode());
+        condition.setUploadStatus(EPayRollUploadStatus.TO_UPLOAD.getCode());
         return payRollDetailDAO.update(condition);
     }
 
@@ -335,10 +338,15 @@ public class PayRollDetailBOImpl extends PaginableBOImpl<PayRollDetail>
         payRollDetail.setIdcardType("01");
         payRollDetail.setWorkerName(projectWorker.getWorkerName());
         payRollDetail.setIdcardNumber(projectWorker.getIdcardNumber());
+        if (StringUtils.isNotBlank(data.getPayRollBankCode())) {
+            payRollDetail.setPayRollBankCode(data.getPayBankCode());
+            payRollDetail.setPayRollBankName(EBankCardCodeType
+                .getBankCardType(data.getPayBankCode()).getValue());
 
+        }
         code = OrderNoGenerater
             .generate(EGeneratePrefix.PayRollDetail.getCode());
-        payRollDetail.setUploadStatus(EUploadStatus.TO_UPLOAD.getCode());
+        payRollDetail.setUploadStatus(EPayRollUploadStatus.TO_UPLOAD.getCode());
         payRollDetail.setDeleteStatus(EDeleteStatus.NORMAL.getCode());
         payRollDetail.setCode(code);
         payRollDetailDAO.insert(payRollDetail);
@@ -352,7 +360,7 @@ public class PayRollDetailBOImpl extends PaginableBOImpl<PayRollDetail>
         payRollDetail.setProjectCode(projectCode);
         payRollDetail.setIdcardNumber(idCardNumber);
         payRollDetail.setIdcardType("01");
-        payRollDetail.setUploadStatus(EUploadStatus.TO_UPLOAD.getCode());
+        payRollDetail.setUploadStatus(EPayRollUploadStatus.TO_UPLOAD.getCode());
         return payRollDetailDAO.updatePayRollDetailDeleteStatus(payRollDetail);
     }
 
@@ -360,7 +368,7 @@ public class PayRollDetailBOImpl extends PaginableBOImpl<PayRollDetail>
     public int FakeDeletePayRollDetailByPayRollCode(String payRollCode) {
         PayRollDetail payRollDetail = new PayRollDetail();
         payRollDetail.setPayRollCode(payRollCode);
-        payRollDetail.setUploadStatus(EUploadStatus.TO_UPLOAD.getCode());
+        payRollDetail.setUploadStatus(EPayRollUploadStatus.TO_UPLOAD.getCode());
         payRollDetail.setDeleteStatus(EDeleteStatus.DELETED.getCode());
         return payRollDetailDAO.updatePayRollDetailDeleteStatus(payRollDetail);
     }

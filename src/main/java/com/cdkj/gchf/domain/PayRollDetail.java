@@ -114,6 +114,14 @@ public class PayRollDetail extends ABaseDO {
         this.payRollCode = payRollCode;
     }
 
+    public String getProjectCode() {
+        return projectCode;
+    }
+
+    public void setProjectCode(String projectCode) {
+        this.projectCode = projectCode;
+    }
+
     public String getWorkerName() {
         return workerName;
     }
@@ -242,22 +250,6 @@ public class PayRollDetail extends ABaseDO {
         this.thirdPayRollCode = thirdPayRollCode;
     }
 
-    public String getProjectCode() {
-        return projectCode;
-    }
-
-    public void setProjectCode(String projectCode) {
-        this.projectCode = projectCode;
-    }
-
-    public String getUploadStatus() {
-        return uploadStatus;
-    }
-
-    public void setUploadStatus(String uploadStatus) {
-        this.uploadStatus = uploadStatus;
-    }
-
     public String getBackPayMonth() {
         return backPayMonth;
     }
@@ -296,6 +288,14 @@ public class PayRollDetail extends ABaseDO {
 
     public void setCorpCode(String corpCode) {
         this.corpCode = corpCode;
+    }
+
+    public String getUploadStatus() {
+        return uploadStatus;
+    }
+
+    public void setUploadStatus(String uploadStatus) {
+        this.uploadStatus = uploadStatus;
     }
 
     public String getDeleteStatus() {

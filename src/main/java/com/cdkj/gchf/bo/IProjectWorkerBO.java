@@ -31,6 +31,7 @@ public interface IProjectWorkerBO extends IPaginableBO<ProjectWorker> {
             String idcardNumber, Project project);
 
     String saveProjectWorker(String workerCode, Project project,
+            CorpBasicinfo corpBasicinfo, TeamMaster teamName,
             XN631693ReqData req);
 
     public void removeProjectWorker(String code);

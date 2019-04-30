@@ -46,7 +46,6 @@ import com.cdkj.gchf.enums.EOperateLogOperate;
 import com.cdkj.gchf.enums.EOperateLogRefType;
 import com.cdkj.gchf.enums.EProjectCorpType;
 import com.cdkj.gchf.enums.EProjectCorpUploadStatus;
-import com.cdkj.gchf.enums.EUploadStatus;
 import com.cdkj.gchf.enums.EUserKind;
 import com.cdkj.gchf.exception.BizException;
 import com.cdkj.gchf.gov.AsyncQueueHolder;
@@ -126,9 +125,9 @@ public class ProjectCorpInfoAOImpl implements IProjectCorpInfoAO {
 
             ProjectCorpInfo projectCorpInfo = projectCorpInfoBO
                 .getProjectCorpInfo(code);
-            if (EUploadStatus.UPLOAD_UPDATE.getCode()
+            if (EProjectCorpUploadStatus.UPLOAD_UPDATE.getCode()
                 .equals(projectCorpInfo.getUploadStatus())
-                    || EUploadStatus.UPLOAD_UNUPDATE.getCode()
+                    || EProjectCorpUploadStatus.UPLOAD_UNUPDATE.getCode()
                         .equals(projectCorpInfo.getUploadStatus())) {
                 throw new BizException("XN631631", "参建单位已上传，无法删除");
             }

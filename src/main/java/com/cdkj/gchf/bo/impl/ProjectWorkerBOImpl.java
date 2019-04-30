@@ -49,7 +49,7 @@ import com.cdkj.gchf.enums.EIdCardType;
 import com.cdkj.gchf.enums.EIsNotType;
 import com.cdkj.gchf.enums.EOperateLogRefType;
 import com.cdkj.gchf.enums.EProjectWorkerUploadStatus;
-import com.cdkj.gchf.enums.EUploadStatus;
+import com.cdkj.gchf.enums.ETeamMasterUploadStatus;
 import com.cdkj.gchf.enums.EWorkerRoleType;
 import com.cdkj.gchf.enums.EWorkerType;
 import com.cdkj.gchf.exception.BizException;
@@ -113,7 +113,8 @@ public class ProjectWorkerBOImpl extends PaginableBOImpl<ProjectWorker>
         projectWorkerInfo.setWorkerCode(data.getWorkerCode());
         projectWorkerInfo.setWorkerName(workerInfo.getName());
         projectWorkerInfo.setBankName(data.getBankName());
-        projectWorkerInfo.setUploadStatus(EUploadStatus.TO_UPLOAD.getCode());
+        projectWorkerInfo
+            .setUploadStatus(EProjectWorkerUploadStatus.TO_UPLOAD.getCode());
         projectWorkerInfo.setDeleteStatus(EDeleteStatus.NORMAL.getCode());
         projectWorkerInfo.setLocalTeamSysNo(teamMaster.getCode());
 
@@ -185,6 +186,8 @@ public class ProjectWorkerBOImpl extends PaginableBOImpl<ProjectWorker>
         projectWorker.setTeamSysNo(teamMaster.getCode());
         projectWorker.setCorpName(corpBasic.getCorpName());
         projectWorker.setWorkerCode(workerInfo.getCode());
+        projectWorker.setCellPhone(workerInfo.getCellPhone());
+        projectWorker.setWorkerName(workerInfo.getName());
         projectWorker
             .setUploadStatus(EProjectWorkerUploadStatus.TO_UPLOAD.getCode());
         projectWorker.setDeleteStatus(EDeleteStatus.NORMAL.getCode());
@@ -212,7 +215,8 @@ public class ProjectWorkerBOImpl extends PaginableBOImpl<ProjectWorker>
         projectWorker.setIdcardType(EIdCardType.JUMIN.getCode());
         projectWorker.setIdcardNumber(idcardNumber);
         projectWorker.setCellPhone(workerInfo.getCellPhone());
-        projectWorker.setUploadStatus(EUploadStatus.TO_UPLOAD.getCode());
+        projectWorker
+            .setUploadStatus(EProjectWorkerUploadStatus.TO_UPLOAD.getCode());
         projectWorker.setDeleteStatus(EDeleteStatus.NORMAL.getCode());
         projectWorkerDAO.insert(projectWorker);
 
@@ -221,18 +225,40 @@ public class ProjectWorkerBOImpl extends PaginableBOImpl<ProjectWorker>
 
     @Override
     public String saveProjectWorker(String workerCode, Project project,
+            CorpBasicinfo corpBasicinfo, TeamMaster teamMaster,
             XN631693ReqData req) {
         ProjectWorker projectWorker = new ProjectWorker();
         String code = OrderNoGenerater
             .generate(EGeneratePrefix.ProjectWorker.getCode());
         projectWorker.setCode(code);
         projectWorker.setWorkerCode(workerCode);
+        projectWorker.setCorpCode(corpBasicinfo.getCorpCode());
+        projectWorker.setCorpName(corpBasicinfo.getCorpName());
+        projectWorker.setTeamName(req.getTeamName());
         projectWorker.setProjectName(project.getName());
+        projectWorker.setProjectCode(project.getCode());
+        projectWorker.setTeamSysNo(teamMaster.getCode());
         projectWorker.setIdcardNumber(req.getIdCardNumber());
+        projectWorker.setCellPhone(req.getCellPhone());
+        projectWorker.setWorkerName(req.getWorkerName());
+        projectWorker.setIdcardType("01");
+        projectWorker.setWorkType(req.getWorkType());
+        projectWorker.setWorkRole(req.getWorkRole());
+
+        if (StringUtils.isNotBlank(req.getIsTeamLeader())) {
+            projectWorker
+                .setIsTeamLeader(Integer.parseInt(req.getIsTeamLeader()));
+        }
+
         if (StringUtils.isNotBlank(req.getHasBuyInsurance())) {
             projectWorker
                 .setHasBuyInsurance(Integer.parseInt(req.getHasBuyInsurance()));
         }
+        projectWorker
+            .setUploadStatus(EProjectWorkerUploadStatus.TO_UPLOAD.getCode());
+        projectWorker.setDeleteStatus(EDeleteStatus.NORMAL.getCode());
+
+        projectWorkerDAO.insert(projectWorker);
         return code;
     }
 
@@ -359,7 +385,7 @@ public class ProjectWorkerBOImpl extends PaginableBOImpl<ProjectWorker>
         } catch (BizException e) {
             e.printStackTrace();
             updateProjectWorkerStatus(req.getCode(),
-                EUploadStatus.UPLOAD_UNUPDATE.getCode());
+                ETeamMasterUploadStatus.UPLOAD_UNUPDATE.getCode());
             throw e;
         }
 
@@ -368,8 +394,8 @@ public class ProjectWorkerBOImpl extends PaginableBOImpl<ProjectWorker>
             EOperateLogRefType.ProjectWorker.getCode(), req.getCode(),
             "修改平台项目人员", user, "修改平台项目人员");
         AsyncQueueHolder.addSerial(resString, projectConfig, "projectWorkerBO",
-            req.getCode(), EUploadStatus.UPLOAD_UPDATE.getCode(), operateLog,
-            req.getUserId());
+            req.getCode(), ETeamMasterUploadStatus.UPLOAD_UPDATE.getCode(),
+            operateLog, req.getUserId());
 
     }
 
@@ -610,7 +636,8 @@ public class ProjectWorkerBOImpl extends PaginableBOImpl<ProjectWorker>
     @Override
     public void fakeDeleteProjectWorker(String projectcode) {
         ProjectWorker projectWorker = new ProjectWorker();
-        projectWorker.setUploadStatus(EUploadStatus.TO_UPLOAD.getCode());
+        projectWorker
+            .setUploadStatus(EProjectWorkerUploadStatus.TO_UPLOAD.getCode());
         projectWorker.setProjectCode(projectcode);
         projectWorker.setDeleteStatus(EDeleteStatus.DELETED.getCode());
         projectWorkerDAO.updateProjectWorkerDeleteStatus(projectWorker);
@@ -622,7 +649,8 @@ public class ProjectWorkerBOImpl extends PaginableBOImpl<ProjectWorker>
         ProjectWorker projectWorker = new ProjectWorker();
         projectWorker.setProjectCode(projectCode);
         projectWorker.setTeamSysNo(teamMasterNo);
-        projectWorker.setUploadStatus(EUploadStatus.TO_UPLOAD.getCode());
+        projectWorker
+            .setUploadStatus(EProjectWorkerUploadStatus.TO_UPLOAD.getCode());
         projectWorkerDAO.updateStatus(projectWorker);
     }
 

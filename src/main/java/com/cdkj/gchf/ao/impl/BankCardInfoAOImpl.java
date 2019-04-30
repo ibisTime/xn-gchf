@@ -109,6 +109,13 @@ public class BankCardInfoAOImpl implements IBankCardInfoAO {
             throw new BizException("XN631752", "银行卡已冻结,无法修改");
 
         }
+        req.getBankNumber();
+        BankCardInfo bankCardInfoByNum = bankCardBankBO
+            .getBankCardInfoByNum(req.getBankNumber());
+        if (bankCardInfoByNum != null && bankCardInfoByNum.getStatus()
+            .equals(EBankCardStatus.Normal.getCode())) {
+            throw new BizException("XN631752", "银行卡已存在,请检查银行卡信息");
+        }
         bankCardBankBO.refreshBankCardInfo(req);
     }
 

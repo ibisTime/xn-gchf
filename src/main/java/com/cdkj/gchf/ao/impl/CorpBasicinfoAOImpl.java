@@ -20,9 +20,9 @@ import com.cdkj.gchf.dto.req.XN631250Req;
 import com.cdkj.gchf.dto.req.XN631251Req;
 import com.cdkj.gchf.dto.req.XN631900Req;
 import com.cdkj.gchf.dto.req.XN631901Req;
+import com.cdkj.gchf.enums.ECorpBasicUploadStatus;
 import com.cdkj.gchf.enums.EOperateLogOperate;
 import com.cdkj.gchf.enums.EOperateLogRefType;
-import com.cdkj.gchf.enums.EUploadStatus;
 import com.cdkj.gchf.exception.BizException;
 import com.cdkj.gchf.gov.AsyncQueueHolder;
 import com.cdkj.gchf.gov.GovConnecter;
@@ -59,7 +59,7 @@ public class CorpBasicinfoAOImpl implements ICorpBasicinfoAO {
         CorpBasicinfo corpBasicinfo = corpBasicinfoBO
             .getCorpBasicinfo(req.getCode());
 
-        if (EUploadStatus.UPLOAD_UNEDITABLE.getCode()
+        if (ECorpBasicUploadStatus.UPLOAD_UNEDITABLE.getCode()
             .equals(corpBasicinfo.getUploadStatus())) {
             throw new BizException("XN631251", "当前状态下不可修改");
         }
@@ -77,7 +77,7 @@ public class CorpBasicinfoAOImpl implements ICorpBasicinfoAO {
     public int dropCorpBasicinfo(String code) {
         CorpBasicinfo corpBasicinfo = corpBasicinfoBO.getCorpBasicinfo(code);
 
-        if (EUploadStatus.UPLOAD_UNEDITABLE.getCode()
+        if (ECorpBasicUploadStatus.UPLOAD_UNEDITABLE.getCode()
             .equals(corpBasicinfo.getUploadStatus())) {
             throw new BizException("XN631250", "当前状态下不可删除");
         }
@@ -100,7 +100,7 @@ public class CorpBasicinfoAOImpl implements ICorpBasicinfoAO {
             CorpBasicinfo corpBasicinfo = corpBasicinfoBO
                 .getCorpBasicinfo(codeReq);
 
-            if (EUploadStatus.UPLOAD_UNEDITABLE.getCode()
+            if (ECorpBasicUploadStatus.UPLOAD_UNEDITABLE.getCode()
                 .equals(corpBasicinfo.getUploadStatus()))
                 continue;
 
@@ -110,13 +110,21 @@ public class CorpBasicinfoAOImpl implements ICorpBasicinfoAO {
             System.out.println(corpBasicinfo.getLegalManIdcardNumber());
             // 上传企业信息
             corpBasicinfoBO.refreshUploadStatus(codeReq,
-                EUploadStatus.UPLOADING.getCode());
-            String resString = GovConnecter.getGovData("Corp.Upload",
-                JSONObject
-                    .toJSONStringWithDateFormat(corpBasicinfo, "yyyy-MM-dd")
-                    .toString(),
-                defaultProjectConfig.getProjectCode(),
-                defaultProjectConfig.getSecret());
+                ECorpBasicUploadStatus.UPLOADING.getCode());
+            String resString;
+            try {
+                resString = GovConnecter
+                    .getGovData("Corp.Upload",
+                        JSONObject.toJSONStringWithDateFormat(corpBasicinfo,
+                            "yyyy-MM-dd").toString(),
+                    defaultProjectConfig.getProjectCode(),
+                    defaultProjectConfig.getSecret());
+            } catch (Exception e) {
+                corpBasicinfoBO.refreshUploadStatus(codeReq,
+                    ECorpBasicUploadStatus.UPLOAD_FAIL.getCode());
+                e.printStackTrace();
+                throw e;
+            }
 
             // 添加操作日志
             String logCode = operateLogBO.saveOperateLog(
@@ -128,7 +136,8 @@ public class CorpBasicinfoAOImpl implements ICorpBasicinfoAO {
             // 添加到上传状态更新队列
             AsyncQueueHolder.addSerial(resString, defaultProjectConfig,
                 "corpBasicinfoBO", corpBasicinfo.getCode(),
-                EUploadStatus.UPLOAD_UNEDITABLE.getCode(), logCode, userId);
+                ECorpBasicUploadStatus.UPLOAD_UNEDITABLE.getCode(), logCode,
+                userId);
 
         }
     }

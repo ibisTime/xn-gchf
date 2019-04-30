@@ -19,7 +19,6 @@ import com.cdkj.gchf.enums.EBankCardBussinessType;
 import com.cdkj.gchf.enums.EBankCardCodeType;
 import com.cdkj.gchf.enums.EBankCardStatus;
 import com.cdkj.gchf.enums.EGeneratePrefix;
-import com.cdkj.gchf.enums.EUploadStatus;
 
 @Component
 public class BankCardBankBOImpl extends PaginableBOImpl<BankCardInfo>
@@ -37,7 +36,7 @@ public class BankCardBankBOImpl extends PaginableBOImpl<BankCardInfo>
         BeanUtils.copyProperties(req, bankCardInfo);
         bankCardInfo.setBankName(
             EBankCardCodeType.getBankCardType(req.getBankCode()).getValue());
-        bankCardInfo.setUploadStatus(EUploadStatus.TO_UPLOAD.getCode());
+        // bankCardInfo.setUploadStatus(EUploadStatus.TO_UPLOAD.getCode());
         bankCardInfo.setUpdateDatetime(new Date(System.currentTimeMillis()));
         bankCardInfo.setStatus(EBankCardStatus.Normal.getCode());
         bankCardInfo.setSubranch(req.getSubranch());

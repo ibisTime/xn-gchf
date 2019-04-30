@@ -23,6 +23,7 @@ import com.cdkj.gchf.common.AesUtils;
 import com.cdkj.gchf.common.DateUtil;
 import com.cdkj.gchf.core.OrderNoGenerater;
 import com.cdkj.gchf.dao.IPayRollDAO;
+import com.cdkj.gchf.domain.CorpBasicinfo;
 import com.cdkj.gchf.domain.PayRoll;
 import com.cdkj.gchf.domain.PayRollDetail;
 import com.cdkj.gchf.domain.ProjectConfig;
@@ -51,7 +52,7 @@ public class PayRollBOImpl extends PaginableBOImpl<PayRoll>
     private ITeamMasterBO teamMasterBO;
 
     @Override
-    public String savePayRoll(XN631770Req data) {
+    public String savePayRoll(XN631770Req data, CorpBasicinfo corpBasicInfo) {
         PayRoll payRoll = new PayRoll();
 
         BeanUtils.copyProperties(data, payRoll);
@@ -62,6 +63,8 @@ public class PayRollBOImpl extends PaginableBOImpl<PayRoll>
             Date payMonth = DateUtil.strToDate(data.getPayMonth(), "yyyy-MM");
             payRoll.setPayMonth(payMonth);
         }
+        payRoll.setCorpName(corpBasicInfo.getCorpName());
+        payRoll.setDeleteStatus(EDeleteStatus.NORMAL.getCode());
         payRollDAO.insert(payRoll);
         return code;
     }
@@ -218,6 +221,7 @@ public class PayRollBOImpl extends PaginableBOImpl<PayRoll>
         String code = null;
         code = OrderNoGenerater.generate(EGeneratePrefix.PayRoll.getCode());
         payRoll.setCode(code);
+        payRoll.setDeleteStatus(EDeleteStatus.NORMAL.getCode());
         payRollDAO.insert(payRoll);
         return code;
     }
@@ -247,8 +251,11 @@ public class PayRollBOImpl extends PaginableBOImpl<PayRoll>
         payRoll.setTeamSysNo(teamMasterSysNo);
         payRoll.setCorpCode(corpCode);
         payRoll.setProjectCode(projectCode);
-        payRoll.setPayMonth(DateUtil.strToDate(payMonth, "yyyy-MM"));
-
+        Date payM = DateUtil.strToDate(payMonth, "yyyy-MM");
+        payRoll.setPayMonth(payM);
+        if (payM == null) {
+            throw new BizException("XN000000", "发放工资参数异常,请联系管理员");
+        }
         return payRollDAO.select(payRoll);
     }
 

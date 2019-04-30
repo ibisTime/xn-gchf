@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,8 +25,8 @@ import com.cdkj.gchf.dto.req.XN631250Req;
 import com.cdkj.gchf.dto.req.XN631251Req;
 import com.cdkj.gchf.dto.req.XN631900Req;
 import com.cdkj.gchf.dto.req.XN631901Req;
+import com.cdkj.gchf.enums.ECorpBasicUploadStatus;
 import com.cdkj.gchf.enums.EGeneratePrefix;
-import com.cdkj.gchf.enums.EUploadStatus;
 import com.cdkj.gchf.exception.BizException;
 import com.cdkj.gchf.gov.GovConnecter;
 import com.cdkj.gchf.gov.GovUtil;
@@ -70,7 +71,8 @@ public class CorpBasicinfoBOImpl extends PaginableBOImpl<CorpBasicinfo>
                 req.getEstablishDate(), DateUtil.FRONT_DATE_FORMAT_STRING));
         }
 
-        corpBasicinfo.setUploadStatus(EUploadStatus.TO_UPLOAD.getCode());
+        corpBasicinfo
+            .setUploadStatus(ECorpBasicUploadStatus.TO_UPLOAD.getCode());
 
         corpBasicinfoDAO.insert(corpBasicinfo);
 
@@ -193,6 +195,10 @@ public class CorpBasicinfoBOImpl extends PaginableBOImpl<CorpBasicinfo>
     public CorpBasicinfo getCorpBasicinfoByCorp(String corpCode) {
         CorpBasicinfo condition = new CorpBasicinfo();
         condition.setCorpCode(corpCode);
+        List<CorpBasicinfo> selectList = corpBasicinfoDAO.selectList(condition);
+        if (CollectionUtils.isNotEmpty(selectList)) {
+            return selectList.get(0);
+        }
         return corpBasicinfoDAO.select(condition);
     }
 

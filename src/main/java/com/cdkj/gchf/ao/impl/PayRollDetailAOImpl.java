@@ -24,7 +24,7 @@ import com.cdkj.gchf.domain.TeamMaster;
 import com.cdkj.gchf.domain.User;
 import com.cdkj.gchf.dto.req.XN631810Req;
 import com.cdkj.gchf.enums.EDeleteStatus;
-import com.cdkj.gchf.enums.EUploadStatus;
+import com.cdkj.gchf.enums.EPayRollUploadStatus;
 import com.cdkj.gchf.enums.EUserKind;
 import com.cdkj.gchf.exception.BizException;
 
@@ -63,7 +63,7 @@ public class PayRollDetailAOImpl implements IPayRollDetailAO {
                 .getUploadStatus();
 
             if (uploadStatus
-                .equals(EUploadStatus.UPLOAD_UNEDITABLE.getCode())) {
+                .equals(EPayRollUploadStatus.UPLOAD_UNEDITABLE.getCode())) {
                 throw new BizException("XN631811", "工资单已上传,不可删除");
             }
             payRollDetailBO.updatePayRollDetailDeleteStatus(code,
@@ -132,7 +132,7 @@ public class PayRollDetailAOImpl implements IPayRollDetailAO {
             .getPayRollDetail(req.getCode());
 
         if (payRollDetail.getUploadStatus()
-            .equals(EUploadStatus.UPLOAD_UNEDITABLE.getCode())) {
+            .equals(EPayRollUploadStatus.UPLOAD_UNEDITABLE.getCode())) {
             throw new BizException("XN631810", "工资单已上传,不可修改");
         }
         // 入参校验

@@ -13,14 +13,12 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.cdkj.gchf.ao.IPayRollAO;
-import com.cdkj.gchf.bo.IBankCardBankBO;
 import com.cdkj.gchf.bo.ICorpBasicinfoBO;
 import com.cdkj.gchf.bo.IOperateLogBO;
 import com.cdkj.gchf.bo.IPayRollBO;
 import com.cdkj.gchf.bo.IPayRollDetailBO;
 import com.cdkj.gchf.bo.IProjectBO;
 import com.cdkj.gchf.bo.IProjectConfigBO;
-import com.cdkj.gchf.bo.IProjectCorpInfoBO;
 import com.cdkj.gchf.bo.IProjectWorkerBO;
 import com.cdkj.gchf.bo.ITeamMasterBO;
 import com.cdkj.gchf.bo.IUserBO;
@@ -44,7 +42,7 @@ import com.cdkj.gchf.dto.req.XN631921Req;
 import com.cdkj.gchf.enums.EDeleteStatus;
 import com.cdkj.gchf.enums.EOperateLogOperate;
 import com.cdkj.gchf.enums.EOperateLogRefType;
-import com.cdkj.gchf.enums.EUploadStatus;
+import com.cdkj.gchf.enums.EPayRollUploadStatus;
 import com.cdkj.gchf.exception.BizException;
 import com.cdkj.gchf.gov.AsyncQueueHolder;
 import com.cdkj.gchf.gov.GovConnecter;
@@ -65,9 +63,6 @@ public class PayRollAOImpl implements IPayRollAO {
     private IProjectConfigBO projectConfigBO;
 
     @Autowired
-    private IProjectCorpInfoBO projectCorpInfoBO;
-
-    @Autowired
     private IUserBO userBO;
 
     @Autowired
@@ -83,9 +78,6 @@ public class PayRollAOImpl implements IPayRollAO {
     private IProjectBO projectBO;
 
     @Autowired
-    private IBankCardBankBO bankCardBankBO;
-
-    @Autowired
     private IProjectWorkerBO projectWorkerBO;
 
     @Transactional
@@ -98,12 +90,13 @@ public class PayRollAOImpl implements IPayRollAO {
         if (teamMasterBO.getTeamMaster(data.getTeamSysNo()) == null) {
             throw new BizException("XN631700", "请选择班组");
         }
-        if (corpBasicinfoBO
-            .getCorpBasicinfoByCorp(data.getCorpCode()) == null) {
+        CorpBasicinfo basicinfoByCorp = corpBasicinfoBO
+            .getCorpBasicinfoByCorp(data.getCorpCode());
+        if (basicinfoByCorp == null) {
             throw new BizException("XN631700", "企业信息不存在");
         }
         // 保存工资单信息
-        String code = payRollBO.savePayRoll(data);
+        String code = payRollBO.savePayRoll(data, basicinfoByCorp);
         // 保存明细信息
         payRollDetailBO.savePayRollDetail(code, data.getTeamSysNo(),
             data.getProjectCode(), data.getPayMonth(), data.getDetailList());
@@ -136,7 +129,7 @@ public class PayRollAOImpl implements IPayRollAO {
         for (PayRollDetail detail : queryListByPayRollDetail) {
             // 删除工资单详情
             if (detail.getUploadStatus() != null & detail.getUploadStatus()
-                .equals(EUploadStatus.UPLOAD_UNEDITABLE.getCode())) {
+                .equals(EPayRollUploadStatus.UPLOAD_UNEDITABLE.getCode())) {
                 uploadedNationPlantformCodes.add(detail.getCode());
                 continue;
             }
@@ -219,16 +212,29 @@ public class PayRollAOImpl implements IPayRollAO {
             }
             String json = getRequestJsonToPlantform(payRoll, payRollDetail,
                 projectConfigByLocal);
-            String resString = GovConnecter.getGovData("Payroll.Add", json,
-                projectConfigByLocal.getProjectCode(),
-                projectConfigByLocal.getSecret());
+            // 更新上传状态
+            payRollDetailBO.refreshUploadStatus(code,
+                EPayRollUploadStatus.UPLOADING.getCode());
+
+            String resString;
+            try {
+                resString = GovConnecter.getGovData("Payroll.Add", json,
+                    projectConfigByLocal.getProjectCode(),
+                    projectConfigByLocal.getSecret());
+            } catch (BizException e) {
+                e.printStackTrace();
+                payRollDetailBO.refreshUploadStatus(code,
+                    EPayRollUploadStatus.UPLOAD_FAIL.getCode());
+                throw e;
+            }
+
             String log = operateLogBO.saveOperateLog(
                 EOperateLogRefType.PayRollDetail.getCode(), code,
                 EOperateLogOperate.UploadPayRoll.getValue(), user, null);
 
             AsyncQueueHolder.addSerial(resString, projectConfigByLocal,
                 "payRollDetailBO", code,
-                EUploadStatus.UPLOAD_UNEDITABLE.getCode(), log, userId);
+                EPayRollUploadStatus.UPLOAD_UNEDITABLE.getCode(), log, userId);
         }
 
     }

@@ -40,7 +40,8 @@ import com.cdkj.gchf.dto.req.XN631919Req;
 import com.cdkj.gchf.enums.EDeleteStatus;
 import com.cdkj.gchf.enums.EGeneratePrefix;
 import com.cdkj.gchf.enums.EOperateLogRefType;
-import com.cdkj.gchf.enums.EUploadStatus;
+import com.cdkj.gchf.enums.EWorkerAttendanceUploadStatus;
+import com.cdkj.gchf.enums.EWorkerContractUploadStatus;
 import com.cdkj.gchf.exception.BizException;
 import com.cdkj.gchf.gov.GovConnecter;
 import com.cdkj.gchf.gov.GovUtil;
@@ -95,7 +96,8 @@ public class WorkerAttendanceBOImpl extends PaginableBOImpl<WorkerAttendance>
         workerAttendance.setWorkerName(projectWorker.getWorkerName());
         workerAttendance.setIdCardNumber(projectWorker.getIdcardNumber());
         workerAttendance.setIdCardType(projectWorker.getIdcardType());
-        workerAttendance.setUploadStatus(EUploadStatus.TO_UPLOAD.getCode());
+        workerAttendance
+            .setUploadStatus(EWorkerAttendanceUploadStatus.TO_UPLOAD.getCode());
 
         workerAttendance.setDeleteStatus(EDeleteStatus.NORMAL.getCode());
         code = OrderNoGenerater
@@ -128,7 +130,8 @@ public class WorkerAttendanceBOImpl extends PaginableBOImpl<WorkerAttendance>
         workerAttendance.setDate(date);
         workerAttendance.setDirection(direction);
         workerAttendance.setDeleteStatus(EDeleteStatus.NORMAL.getCode());
-        workerAttendance.setUploadStatus(EUploadStatus.TO_UPLOAD.getCode());
+        workerAttendance
+            .setUploadStatus(EWorkerContractUploadStatus.TO_UPLOAD.getCode());
         workerAttendanceDAO.insert(workerAttendance);
 
         return code;
@@ -154,7 +157,8 @@ public class WorkerAttendanceBOImpl extends PaginableBOImpl<WorkerAttendance>
         select.setDate(data.getDate());
         select.setDirection(data.getDirection());
         select.setDeleteStatus(EDeleteStatus.NORMAL.getCode());
-        select.setUploadStatus(EUploadStatus.TO_UPLOAD.getCode());
+        select
+            .setUploadStatus(EWorkerAttendanceUploadStatus.TO_UPLOAD.getCode());
         workerAttendanceDAO.update(select);
         operateLogBO.saveOperateLog(EOperateLogRefType.WorkAttendance.getCode(),
             data.getCode(), "修改人员考勤", user, "修改人员考勤");
@@ -311,7 +315,8 @@ public class WorkerAttendanceBOImpl extends PaginableBOImpl<WorkerAttendance>
             Date toDate = DateUtil.strToDate(format, "yyyy-MM-dd");
             workerAttendance.setDate(toDate);
         }
-        workerAttendance.setUploadStatus(EUploadStatus.TO_UPLOAD.getCode());
+        workerAttendance
+            .setUploadStatus(EWorkerAttendanceUploadStatus.TO_UPLOAD.getCode());
         workerAttendance.setDeleteStatus(EDeleteStatus.NORMAL.getCode());
         code = OrderNoGenerater
             .generate(EGeneratePrefix.WorkerAttendance.getCode());

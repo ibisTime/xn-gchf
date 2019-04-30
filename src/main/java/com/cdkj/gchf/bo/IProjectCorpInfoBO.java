@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.cdkj.gchf.bo.base.IPaginableBO;
 import com.cdkj.gchf.bo.base.Paginable;
+import com.cdkj.gchf.domain.CorpBasicinfo;
 import com.cdkj.gchf.domain.Project;
 import com.cdkj.gchf.domain.ProjectConfig;
 import com.cdkj.gchf.domain.ProjectCorpInfo;
@@ -20,6 +21,9 @@ public interface IProjectCorpInfoBO extends IPaginableBO<ProjectCorpInfo> {
 
     public String saveProjectCorpInfo(Project projectConfig,
             XN631633ReqList req);
+
+    // 添加项目生成关联 的参建单位
+    String addProjectCorpInfo(CorpBasicinfo corpbasic, Project project);
 
     public void removeProjectCorpInfo(String code);
 

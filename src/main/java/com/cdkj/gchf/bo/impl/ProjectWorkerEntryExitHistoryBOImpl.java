@@ -33,7 +33,7 @@ import com.cdkj.gchf.dto.req.XN631914ReqWorker;
 import com.cdkj.gchf.dto.req.XN631915Req;
 import com.cdkj.gchf.enums.EDeleteStatus;
 import com.cdkj.gchf.enums.EGeneratePrefix;
-import com.cdkj.gchf.enums.EUploadStatus;
+import com.cdkj.gchf.enums.EProjectWorkerEntryExitUploadStatus;
 import com.cdkj.gchf.exception.BizException;
 import com.cdkj.gchf.gov.GovConnecter;
 import com.cdkj.gchf.gov.GovUtil;
@@ -72,7 +72,8 @@ public class ProjectWorkerEntryExitHistoryBOImpl
         data.setIdcardType(projectWorker.getIdcardType());
         data.setJoinDatetime(projectWorker.getJoinDatetime());
         data.setLeavingDatetime(projectWorker.getLeavingDatetime());
-        data.setUploadStatus(EUploadStatus.TO_UPLOAD.getCode());
+        data.setUploadStatus(
+            EProjectWorkerEntryExitUploadStatus.TO_UPLOAD.getCode());
         data.setDeleteStatus(EDeleteStatus.NORMAL.getCode());
         data.setVoucherUrl(req.getVoucherUrl());
         projectWorkerEntryExitHistoryDAO.insert(data);
@@ -115,7 +116,8 @@ public class ProjectWorkerEntryExitHistoryBOImpl
         entryExitHistory.setDate(DateUtil.strToDate(data.getDate(),
             DateUtil.FRONT_DATE_FORMAT_STRING));
         entryExitHistory.setType(Integer.parseInt(data.getType()));
-        entryExitHistory.setUploadStatus(EUploadStatus.TO_UPLOAD.getCode());
+        entryExitHistory.setUploadStatus(
+            EProjectWorkerEntryExitUploadStatus.TO_UPLOAD.getCode());
         entryExitHistory.setDeleteStatus(EDeleteStatus.NORMAL.getCode());
 
         code = OrderNoGenerater
@@ -307,8 +309,8 @@ public class ProjectWorkerEntryExitHistoryBOImpl
             String projectCode) {
         ProjectWorkerEntryExitHistory projectWorkerEntryExitHistory = new ProjectWorkerEntryExitHistory();
         projectWorkerEntryExitHistory.setProjectCode(projectCode);
-        projectWorkerEntryExitHistory
-            .setUploadStatus(EUploadStatus.TO_UPLOAD.getCode());
+        projectWorkerEntryExitHistory.setUploadStatus(
+            EProjectWorkerEntryExitUploadStatus.TO_UPLOAD.getCode());
         projectWorkerEntryExitHistory
             .setDeleteStatus(EDeleteStatus.DELETED.getCode());
         projectWorkerEntryExitHistoryDAO
@@ -322,8 +324,8 @@ public class ProjectWorkerEntryExitHistoryBOImpl
         projectWorkerEntryExitHistory.setWorkerCode(workerCode);
         projectWorkerEntryExitHistory
             .setDeleteStatus(EDeleteStatus.DELETED.getCode());
-        projectWorkerEntryExitHistory
-            .setUploadStatus(EUploadStatus.TO_UPLOAD.getCode());
+        projectWorkerEntryExitHistory.setUploadStatus(
+            EProjectWorkerEntryExitUploadStatus.TO_UPLOAD.getCode());
         projectWorkerEntryExitHistoryDAO
             .updateProjectWorkerEntryHistoryDeleteStatus(
                 projectWorkerEntryExitHistory);
@@ -334,8 +336,8 @@ public class ProjectWorkerEntryExitHistoryBOImpl
             String teamMasterNo) {
         ProjectWorkerEntryExitHistory projectWorkerEntryExitHistory = new ProjectWorkerEntryExitHistory();
         projectWorkerEntryExitHistory.setTeamSysNo(teamMasterNo);
-        projectWorkerEntryExitHistory
-            .setUploadStatus(EUploadStatus.TO_UPLOAD.getCode());
+        projectWorkerEntryExitHistory.setUploadStatus(
+            EProjectWorkerEntryExitUploadStatus.TO_UPLOAD.getCode());
         projectWorkerEntryExitHistory
             .setDeleteStatus(EDeleteStatus.DELETED.getCode());
         projectWorkerEntryExitHistoryDAO

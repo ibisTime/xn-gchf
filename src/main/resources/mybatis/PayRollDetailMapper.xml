@@ -25,8 +25,9 @@
 		<result column="upload_status" property="uploadStatus" />
 		<result column="delete_status" property="deleteStatus" />
 		<result column="pay_month" property="payMonth" />
-		
-		<result column="corpCode" property="corpCode" />
+
+		<result column="corp_code" property="corpCode" />
+		<result column="corp_name" property="corpName" />
 
 	</resultMap>
 	<sql id="where_condition">
@@ -41,7 +42,7 @@
 				AND t.upload_status = #{uploadStatus}
 			</if>
 			<if test="workerName != null and workerName != '' ">
-				AND t.worker_name = #{workerName}
+				AND t.worker_name like "%"#{workerName}"%"
 			</if>
 			<if test="deleteStatus != null and deleteStatus != '' ">
 				AND t.delete_status = #{deleteStatus}
@@ -50,23 +51,20 @@
 				AND t.balance_date = #{balanceDate}
 			</if>
 			<if test="payMonth != null ">
-                AND year(t.pay_month) = year(#{payMonth})
-                AND Month(t.pay_month) = Month(#{payMonth})
-            </if>
-                        
-            <if test="corpCode != null and corpCode != '' ">
-                AND pr.corp_code = #{corpCode} 
-            </if>
-            <if test="projectCode != null  and projectCode != ''">
-                AND pr.project_code = #{projectCode}
-            </if>
-            
+				AND year(t.pay_month) = year(#{payMonth})
+				AND
+				Month(t.pay_month) = Month(#{payMonth})
+			</if>
+
+
 		</trim>
 	</sql>
-	
+
 	<sql id="join_condition">
-	 left join thf_pay_roll pr
-	 on pr.code = t.pay_roll_code
+		<if test="corpName != null and corpName != '' ">
+			left join thf_pay_roll pr
+			on pr.code = t.pay_roll_code
+		</if>
 	</sql>
 
 	<insert id="insert_PayRollDetail" parameterType="payRollDetail">
@@ -135,17 +133,19 @@
 		,total_pay_amount = #{totalPayAmount}
 		,actual_amount = #{actualAmount}
 		,is_back_pay = #{isBackPay}
-		
+
 		,balance_date = #{balanceDate}
 		,pay_roll_bank_card_number = #{payRollBankCardNumber}
 		,pay_roll_bank_code = #{payRollBankCode}
-		,pay_roll_bank_name = #{payRollBankName}
-		
+		,pay_roll_bank_name =
+		#{payRollBankName}
+
 		,pay_bank_card_number = #{payBankCardNumber}
 		,pay_bank_code = #{payBankCode}
 		,pay_bank_name = #{payBankName}
 		,third_pay_roll_code = #{thirdPayRollCode}
-        ,delete_status = #{deleteStatus}
+		,delete_status =
+		#{deleteStatus}
 		WHERE code = #{code}
 	</update>
 
@@ -164,17 +164,17 @@
 		thf_pay_roll_detail t
 		SET
 		delete_status = #{deleteStatus}
-		  <trim prefix="WHERE" prefixOverrides="AND | OR">
-            <if test="code != null and code != '' ">
-                AND t.code = #{code}
-            </if>
-            <if test="uploadStatus != null and uploadStatus != '' ">
-                AND t.upload_status = #{uploadStatus}
-            </if>
-            <if test="projectCode != null and projectCode != '' ">
-                AND t.project_code = #{projectCode}
-            </if>
-        </trim>
+		<trim prefix="WHERE" prefixOverrides="AND | OR">
+			<if test="code != null and code != '' ">
+				AND t.code = #{code}
+			</if>
+			<if test="uploadStatus != null and uploadStatus != '' ">
+				AND t.upload_status = #{uploadStatus}
+			</if>
+			<if test="projectCode != null and projectCode != '' ">
+				AND t.project_code = #{projectCode}
+			</if>
+		</trim>
 
 	</update>
 
@@ -215,8 +215,19 @@
 		,t.delete_status
 		FROM
 		thf_pay_roll_detail t
-		<include refid="join_condition"/>
+		<include refid="join_condition" />
 		<include refid="where_condition" />
+		<if test="corpCode != null and corpCode != '' ">
+			AND pr.corp_code = #{corpCode}
+		</if>
+
+		<if test="projectCode != null  and projectCode != ''">
+			AND pr.project_code = #{projectCode}
+		</if>
+
+		<if test="corpName != null and corpName != '' ">
+			AND pr.corp_name like "%"#{corpName}"%"
+		</if>
 		<trim prefix="ORDER BY ">
 			<if test="order != null and order != '' ">
 				t.${order}

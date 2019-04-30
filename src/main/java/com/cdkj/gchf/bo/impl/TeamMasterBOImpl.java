@@ -39,7 +39,7 @@ import com.cdkj.gchf.enums.EGeneratePrefix;
 import com.cdkj.gchf.enums.EIdCardType;
 import com.cdkj.gchf.enums.EOperateLogOperate;
 import com.cdkj.gchf.enums.EOperateLogRefType;
-import com.cdkj.gchf.enums.EUploadStatus;
+import com.cdkj.gchf.enums.ETeamMasterUploadStatus;
 import com.cdkj.gchf.exception.BizException;
 import com.cdkj.gchf.gov.AsyncQueueHolder;
 import com.cdkj.gchf.gov.GovConnecter;
@@ -95,7 +95,8 @@ public class TeamMasterBOImpl extends PaginableBOImpl<TeamMaster>
             .generate(EGeneratePrefix.TeamMaster.getCode());
         teamMasterInfo.setCode(code);
         teamMasterInfo.setCorpName(corpBasicinfo.getCorpName());
-        teamMasterInfo.setUploadStatus(EUploadStatus.TO_UPLOAD.getCode());
+        teamMasterInfo
+            .setUploadStatus(ETeamMasterUploadStatus.TO_UPLOAD.getCode());
         teamMasterInfo.setDeleteStatus(EDeleteStatus.NORMAL.getCode());
         teamMasterDAO.insert(teamMasterInfo);
         return code;
@@ -231,12 +232,12 @@ public class TeamMasterBOImpl extends PaginableBOImpl<TeamMaster>
         } catch (BizException e) {
             e.printStackTrace();
             refreshUploadStatus(req.getCode(),
-                EUploadStatus.UPLOAD_UNUPDATE.getCode());
+                ETeamMasterUploadStatus.UPLOAD_UNUPDATE.getCode());
             throw e;
         }
         AsyncQueueHolder.addSerial(resString, projectConfig, "teamMasterBO",
-            req.getCode(), EUploadStatus.UPLOAD_UPDATE.getCode(), operateLog,
-            req.getUserId());
+            req.getCode(), ETeamMasterUploadStatus.UPLOAD_UPDATE.getCode(),
+            operateLog, req.getUserId());
     }
 
     @Override
@@ -365,9 +366,10 @@ public class TeamMasterBOImpl extends PaginableBOImpl<TeamMaster>
         TeamMaster teamMaster = new TeamMaster();
         teamMaster.setDeleteStatus(status);
         teamMaster.setCode(code);
-        teamMaster.setUploadStatus(EUploadStatus.TO_UPLOAD.getCode());
+        teamMaster.setUploadStatus(ETeamMasterUploadStatus.TO_UPLOAD.getCode());
         teamMasterDAO.updateDeleteStatus(teamMaster);
-        teamMaster.setUploadStatus(EUploadStatus.UPLOAD_FAIL.getCode());
+        teamMaster
+            .setUploadStatus(ETeamMasterUploadStatus.UPLOAD_FAIL.getCode());
         teamMasterDAO.updateDeleteStatus(teamMaster);
     }
 
@@ -376,7 +378,7 @@ public class TeamMasterBOImpl extends PaginableBOImpl<TeamMaster>
         TeamMaster teamMaster = new TeamMaster();
         teamMaster.setProjectCode(projectCode);
         teamMaster.setCorpCode(corpCode);
-        teamMaster.setUploadStatus(EUploadStatus.TO_UPLOAD.getCode());
+        teamMaster.setUploadStatus(ETeamMasterUploadStatus.TO_UPLOAD.getCode());
         teamMaster.setDeleteStatus(EDeleteStatus.DELETED.getCode());
         teamMasterDAO.updateDeleteStatus(teamMaster);
     }

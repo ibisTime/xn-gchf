@@ -39,7 +39,7 @@ import com.cdkj.gchf.enums.EGeneratePrefix;
 import com.cdkj.gchf.enums.EIdCardType;
 import com.cdkj.gchf.enums.EOperateLogRefType;
 import com.cdkj.gchf.enums.EProjectCorpType;
-import com.cdkj.gchf.enums.EUploadStatus;
+import com.cdkj.gchf.enums.EProjectCorpUploadStatus;
 import com.cdkj.gchf.exception.BizException;
 import com.cdkj.gchf.gov.AsyncQueueHolder;
 import com.cdkj.gchf.gov.GovConnecter;
@@ -83,10 +83,28 @@ public class ProjectCorpInfoBOImpl extends PaginableBOImpl<ProjectCorpInfo>
             .generate(EGeneratePrefix.ProjectCorpInfo.getCode());
         projectCorpInfo.setCode(code);
         projectCorpInfo.setProjectName(project.getName());
-        projectCorpInfo.setUploadStatus(EUploadStatus.TO_UPLOAD.getCode());
+        projectCorpInfo
+            .setUploadStatus(EProjectCorpUploadStatus.TO_UPLOAD.getCode());
         projectCorpInfo.setDeleteStatus(EDeleteStatus.NORMAL.getCode());
         projectCorpInfoDAO.insert(projectCorpInfo);
 
+        return code;
+    }
+
+    @Override
+    public String addProjectCorpInfo(CorpBasicinfo corpbasic, Project project) {
+        ProjectCorpInfo projectCorpInfo = new ProjectCorpInfo();
+        projectCorpInfo.setCorpCode(corpbasic.getCode());
+        String code = OrderNoGenerater
+            .generate(EGeneratePrefix.ProjectCorpInfo.getCode());
+        projectCorpInfo.setCorpName(corpbasic.getCorpName());
+        projectCorpInfo.setProjectCode(project.getCode());
+        projectCorpInfo.setProjectName(project.getName());
+        projectCorpInfo.setCode(code);
+        projectCorpInfo.setDeleteStatus(EDeleteStatus.NORMAL.getCode());
+        projectCorpInfo
+            .setUploadStatus(EProjectCorpUploadStatus.TO_UPLOAD.getCode());
+        projectCorpInfoDAO.insert(projectCorpInfo);
         return code;
     }
 
@@ -153,7 +171,7 @@ public class ProjectCorpInfoBOImpl extends PaginableBOImpl<ProjectCorpInfo>
                 projectConfig.getSecret());
         } catch (BizException e) {
             projectCorpInfoBO.refreshUploadStatus(req.getCode(),
-                EUploadStatus.UPLOAD_UNUPDATE.getCode());
+                EProjectCorpUploadStatus.UPLOAD_UNUPDATE.getCode());
             e.printStackTrace();
             throw e;
         }
@@ -162,7 +180,8 @@ public class ProjectCorpInfoBOImpl extends PaginableBOImpl<ProjectCorpInfo>
             "修改平台参建单位信息", user, "修改平台参建单位信息");
         AsyncQueueHolder.addSerial(resString, projectConfig,
             "projectCorpInfoBO", req.getCode(),
-            EUploadStatus.UPLOAD_UPDATE.getCode(), operateLog, req.getUserId());
+            EProjectCorpUploadStatus.UPLOAD_UPDATE.getCode(), operateLog,
+            req.getUserId());
     }
 
     @Override
@@ -223,12 +242,14 @@ public class ProjectCorpInfoBOImpl extends PaginableBOImpl<ProjectCorpInfo>
             projectCorpInfo.setCorpName(req.getCorpName());
             projectCorpInfo.setProjectCode(project.getCode());
             projectCorpInfo.setProjectName(project.getName());
-            projectCorpInfo.setUploadStatus(EUploadStatus.TO_UPLOAD.getCode());
+            projectCorpInfo
+                .setUploadStatus(EProjectCorpUploadStatus.TO_UPLOAD.getCode());
             projectCorpInfo.setPmIDCardType("01");
             projectCorpInfo.setDeleteStatus(EDeleteStatus.NORMAL.getCode());
             IdCardChecker idCardChecker = new IdCardChecker(
                 req.getPmIDCardNumber());
-            if (!idCardChecker.validate()) {
+            if (StringUtils.isNotBlank(req.getPmIDCardNumber())
+                    && !idCardChecker.validate()) {
                 throw new BizException("XN631633",
                     "项目经理证件信息不正确" + req.getPmIDCardNumber());
             }
@@ -238,7 +259,6 @@ public class ProjectCorpInfoBOImpl extends PaginableBOImpl<ProjectCorpInfo>
                 projectCorpInfo.setEntryTime(entryDate);
             }
             if (StringUtils.isNotBlank(req.getExitTime())) {
-
                 exitDate = DateUtil.strToDate(req.getExitTime(),
                     DateUtil.FRONT_DATE_FORMAT_STRING);
                 projectCorpInfo.setExitTime(exitDate);
@@ -297,7 +317,8 @@ public class ProjectCorpInfoBOImpl extends PaginableBOImpl<ProjectCorpInfo>
         ProjectCorpInfo projectCorpInfo = new ProjectCorpInfo();
         projectCorpInfo.setCorpCode(corpCode);
         projectCorpInfo.setProjectCode(projectCode);
-        projectCorpInfo.setUploadStatus(EUploadStatus.TO_UPLOAD.getCode());
+        projectCorpInfo
+            .setUploadStatus(EProjectCorpUploadStatus.TO_UPLOAD.getCode());
         projectCorpInfoDAO.updateDeleteStatus(projectCorpInfo);
     }
 }

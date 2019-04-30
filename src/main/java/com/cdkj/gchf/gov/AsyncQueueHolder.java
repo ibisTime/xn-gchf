@@ -24,6 +24,9 @@ import com.cdkj.gchf.dto.req.XN631635Req;
 import com.cdkj.gchf.dto.req.XN631655Req;
 import com.cdkj.gchf.dto.req.XN631695Req;
 import com.cdkj.gchf.enums.EGovAsyncStatus;
+import com.cdkj.gchf.enums.EProjectCorpUploadStatus;
+import com.cdkj.gchf.enums.EProjectWorkerUploadStatus;
+import com.cdkj.gchf.enums.ETeamMasterUploadStatus;
 import com.cdkj.gchf.enums.EUploadStatus;
 import com.cdkj.gchf.spring.SpringContextHolder;
 
@@ -96,7 +99,7 @@ public class AsyncQueueHolder {
                 syncTeamSysNo(queueBean.getCode(), asyncRes);
                 // 刷新状态
                 refreshUploadStatus(queueBean.getBoClass(), queueBean.getCode(),
-                    EUploadStatus.UPLOAD_UPDATE.getCode());
+                    ETeamMasterUploadStatus.UPLOAD_UPDATE.getCode());
 
             }
             if ("payRollDetailBO".equals(queueBean.getBoClass())) {
@@ -158,25 +161,30 @@ public class AsyncQueueHolder {
                         ProjectCorpInfo projectCorpInfo = projectCorpbo
                             .getProjectCorpInfo(queueBean.getCode());
                         if (projectCorpInfo.getUploadStatus()
-                            .equals(EUploadStatus.UPLOAD_UNEDITABLE.getCode())
+                            .equals(EProjectCorpUploadStatus.UPLOAD_UPDATE
+                                .getCode())
                                 || projectCorpInfo.getUploadStatus().equals(
-                                    EUploadStatus.UPLOAD_UPDATE.getCode())) {
+                                    EProjectCorpUploadStatus.UPLOAD_UPDATE
+                                        .getCode())) {
                             projectCorpbo.refreshUploadStatus(
                                 queueBean.getCode(),
-                                EUploadStatus.UPLOAD_UNUPDATE.getCode());
+                                EProjectCorpUploadStatus.UPLOAD_UNUPDATE
+                                    .getCode());
                         }
                     }
                     if (queueBean.getBoClass().equals("teamMasterBO")) {
                         ITeamMasterBO teamMasterBO = (ITeamMasterBO) bo;
                         TeamMaster teamMaster = teamMasterBO
                             .getTeamMaster(queueBean.getCode());
-                        if (teamMaster.getUploadStatus()
-                            .equals(EUploadStatus.UPLOAD_UNEDITABLE.getCode())
+                        if (teamMaster.getUploadStatus().equals(
+                            ETeamMasterUploadStatus.UPLOAD_UPDATE.getCode())
                                 || teamMaster.getUploadStatus().equals(
-                                    EUploadStatus.UPLOAD_UPDATE.getCode())) {
+                                    ETeamMasterUploadStatus.UPLOAD_UPDATE
+                                        .getCode())) {
                             teamMasterBO.refreshUploadStatus(
                                 queueBean.getCode(),
-                                EUploadStatus.UPLOAD_UNUPDATE.getCode());
+                                ETeamMasterUploadStatus.UPLOAD_UNUPDATE
+                                    .getCode());
                         }
                     }
                     if (queueBean.getBoClass().equals("projectWorkerBO")) {
@@ -184,12 +192,15 @@ public class AsyncQueueHolder {
                         ProjectWorker projectWorker = projectWorkerBO
                             .getProjectWorker(queueBean.getCode());
                         if (projectWorker.getUploadStatus()
-                            .equals(EUploadStatus.UPLOAD_UNEDITABLE.getCode())
+                            .equals(EProjectWorkerUploadStatus.UPLOAD_UPDATE
+                                .getCode())
                                 || projectWorker.getUploadStatus().equals(
-                                    EUploadStatus.UPLOAD_UPDATE.getCode())) {
+                                    EProjectWorkerUploadStatus.UPLOAD_UPDATE
+                                        .getCode())) {
                             projectWorkerBO.refreshUploadStatus(
                                 queueBean.getCode(),
-                                EUploadStatus.UPLOAD_UNUPDATE.getCode());
+                                EProjectWorkerUploadStatus.UPLOAD_UNUPDATE
+                                    .getCode());
                         }
                     }
 

@@ -36,7 +36,7 @@ import com.cdkj.gchf.dto.req.XN631916ReqContract;
 import com.cdkj.gchf.dto.req.XN631917Req;
 import com.cdkj.gchf.enums.EDeleteStatus;
 import com.cdkj.gchf.enums.EGeneratePrefix;
-import com.cdkj.gchf.enums.EUploadStatus;
+import com.cdkj.gchf.enums.EWorkerContractUploadStatus;
 import com.cdkj.gchf.exception.BizException;
 import com.cdkj.gchf.gov.GovConnecter;
 import com.cdkj.gchf.gov.GovUtil;
@@ -121,7 +121,8 @@ public class WorkerContractBOImpl extends PaginableBOImpl<WorkerContract>
         workerContract.setCode(code);
 
         // 录入数据
-        workerContract.setUploadStatus(EUploadStatus.TO_UPLOAD.getCode());
+        workerContract
+            .setUploadStatus(EWorkerContractUploadStatus.TO_UPLOAD.getCode());
         workerContract.setDeleteStatus(EDeleteStatus.NORMAL.getCode());
         workerContractDAO.insert(workerContract);
         return code;
@@ -134,7 +135,7 @@ public class WorkerContractBOImpl extends PaginableBOImpl<WorkerContract>
         WorkerContract workerContract = workerContractBO
             .getWorkerContract(code);
         if (workerContract.getUploadStatus()
-            .equals(EUploadStatus.UPLOAD_UNEDITABLE.getCode())) {
+            .equals(EWorkerContractUploadStatus.UPLOAD_UNEDITABLE.getCode())) {
             throw new BizException("XN631671", "劳动合同已上传,无法删除");
         }
         workerContractDAO.delete(data);
@@ -171,7 +172,8 @@ public class WorkerContractBOImpl extends PaginableBOImpl<WorkerContract>
                 Integer.parseInt(req.getContractPeriodType()));
         }
         workerContract.setDeleteStatus(EDeleteStatus.NORMAL.getCode());
-        workerContract.setUploadStatus(EUploadStatus.TO_UPLOAD.getCode());
+        workerContract
+            .setUploadStatus(EWorkerContractUploadStatus.TO_UPLOAD.getCode());
 
         workerContractDAO.update(workerContract);
     }
@@ -296,7 +298,8 @@ public class WorkerContractBOImpl extends PaginableBOImpl<WorkerContract>
         workerContract.setCode(code);
         workerContract.setStartDate(startDate);
         workerContract.setEndDate(endDate);
-        workerContract.setUploadStatus(EUploadStatus.TO_UPLOAD.getCode());
+        workerContract
+            .setUploadStatus(EWorkerContractUploadStatus.TO_UPLOAD.getCode());
         workerContract.setDeleteStatus(EDeleteStatus.NORMAL.getCode());
         workerContractDAO.insert(workerContract);
         return code;
@@ -314,7 +317,8 @@ public class WorkerContractBOImpl extends PaginableBOImpl<WorkerContract>
     public void fakeDeleteWorkerContract(String workerCode) {
         WorkerContract workerContract = new WorkerContract();
         workerContract.setWorkerCode(workerCode);
-        workerContract.setUploadStatus(EUploadStatus.TO_UPLOAD.getCode());
+        workerContract
+            .setUploadStatus(EWorkerContractUploadStatus.TO_UPLOAD.getCode());
         workerContract.setDeleteStatus(EDeleteStatus.DELETED.getCode());
         workerContractDAO.updateWorkerContractDeleteStatus(workerContract);
     }
@@ -323,7 +327,8 @@ public class WorkerContractBOImpl extends PaginableBOImpl<WorkerContract>
     public void fakeDeleteWorkerContractByProjectCode(String projectCode) {
         WorkerContract workerContract = new WorkerContract();
         workerContract.setProjectCode(projectCode);
-        workerContract.setUploadStatus(EUploadStatus.TO_UPLOAD.getCode());
+        workerContract
+            .setUploadStatus(EWorkerContractUploadStatus.TO_UPLOAD.getCode());
         workerContract.setDeleteStatus(EDeleteStatus.DELETED.getCode());
         workerContractDAO.updateWorkerContractDeleteStatus(workerContract);
     }

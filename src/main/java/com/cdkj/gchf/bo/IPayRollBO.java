@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.cdkj.gchf.bo.base.IPaginableBO;
 import com.cdkj.gchf.bo.base.Paginable;
+import com.cdkj.gchf.domain.CorpBasicinfo;
 import com.cdkj.gchf.domain.PayRoll;
 import com.cdkj.gchf.domain.PayRollDetail;
 import com.cdkj.gchf.domain.ProjectConfig;
@@ -14,7 +15,7 @@ import com.cdkj.gchf.dto.req.XN631921Req;
 
 public interface IPayRollBO extends IPaginableBO<PayRoll> {
 
-    public String savePayRoll(XN631770Req data);
+    public String savePayRoll(XN631770Req data, CorpBasicinfo corpBasicInfo);
 
     public String savePayRoll(PayRoll payRoll);
 

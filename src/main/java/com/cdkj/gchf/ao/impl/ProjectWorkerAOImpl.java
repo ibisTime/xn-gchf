@@ -300,7 +300,7 @@ public class ProjectWorkerAOImpl implements IProjectWorkerAO {
                 String workerCode = workerInfoBO
                     .saveWorkerInfoByImport(projectWorkerData);
                 projectWorkerBO.saveProjectWorker(workerCode, project,
-                    projectWorkerData);
+                    corpBasicinfo, teamMaster, projectWorkerData);
             }
 
         }

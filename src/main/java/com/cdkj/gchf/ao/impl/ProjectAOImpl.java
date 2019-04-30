@@ -12,6 +12,7 @@ import com.cdkj.gchf.bo.ICorpBasicinfoBO;
 import com.cdkj.gchf.bo.IProjectBO;
 import com.cdkj.gchf.bo.IProjectBuilderLicenseBO;
 import com.cdkj.gchf.bo.IProjectConfigBO;
+import com.cdkj.gchf.bo.IProjectCorpInfoBO;
 import com.cdkj.gchf.bo.IUserBO;
 import com.cdkj.gchf.bo.base.Paginable;
 import com.cdkj.gchf.common.StringUtil;
@@ -40,6 +41,9 @@ public class ProjectAOImpl implements IProjectAO {
 
     @Autowired
     private IProjectConfigBO projectConfigBO;
+
+    @Autowired
+    private IProjectCorpInfoBO projectCorpInfoBO;
 
     @Override
     @Transactional
@@ -73,24 +77,24 @@ public class ProjectAOImpl implements IProjectAO {
         if (null != preProject) {
             throw new BizException("XN631600", "项目名称已存在，请重新输入");
         }
-
         CorpBasicinfo contractorCorpInfo = corpBasicinfoBO
             .getCorpBasicinfoByCorp(req.getContractorCorpCode());
-        if (null == contractorCorpInfo) {
-            throw new BizException("XN631600", "总承包单位不存在");
+        // 添加项目
+        Project project = projectBO.saveProject(req, contractorCorpInfo);
+
+        if (null != contractorCorpInfo) {
+            // 生成对应的参建单位
+            projectCorpInfoBO.addProjectCorpInfo(contractorCorpInfo, project);
         }
 
-        // 添加项目
-        String projectCode = projectBO.saveProject(req, contractorCorpInfo);
-
         // 添加项目管理员
-        userBO.saveProjectAdmin(projectCode, req);
+        userBO.saveProjectAdmin(project.getCode(), req);
 
         // 添加施工许可证
-        projectBuilderLicenseBO.saveProjectBuilderLicense(projectCode,
+        projectBuilderLicenseBO.saveProjectBuilderLicense(project.getCode(),
             req.getBuilderLicenses());
 
-        return projectCode;
+        return project.getCode();
     }
 
     @Override

@@ -267,6 +267,8 @@ public class WorkerInfoBOImpl extends PaginableBOImpl<WorkerInfo>
                     "yyyy-MM-dd");
                 workerInfo.setExpiryDate(toDate);
             }
+            workerInfo.setCreateDatetime(new Date(System.currentTimeMillis()));
+            workerInfo.setIdCardType("01");
             workerInfoDAO.insert(workerInfo);
 
         } catch (ParseException e) {

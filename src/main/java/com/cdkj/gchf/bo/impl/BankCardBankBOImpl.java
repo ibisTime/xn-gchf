@@ -13,8 +13,10 @@ import com.cdkj.gchf.bo.base.PaginableBOImpl;
 import com.cdkj.gchf.core.OrderNoGenerater;
 import com.cdkj.gchf.dao.IBankCardInfoDAO;
 import com.cdkj.gchf.domain.BankCardInfo;
+import com.cdkj.gchf.domain.ProjectWorker;
 import com.cdkj.gchf.dto.req.XN631750Req;
 import com.cdkj.gchf.dto.req.XN631752Req;
+import com.cdkj.gchf.dto.req.XN631770ReqDetail;
 import com.cdkj.gchf.enums.EBankCardBussinessType;
 import com.cdkj.gchf.enums.EBankCardCodeType;
 import com.cdkj.gchf.enums.EBankCardStatus;
@@ -51,6 +53,31 @@ public class BankCardBankBOImpl extends PaginableBOImpl<BankCardInfo>
         String code = OrderNoGenerater
             .generate(EGeneratePrefix.BankCardInfo.getCode());
         bankCardInfo.setCode(code);
+        bankCardInfoDAO.insert(bankCardInfo);
+        return code;
+    }
+
+    @Override
+    public String saveBankCardInfo(XN631770ReqDetail data,
+            ProjectWorker projectWorker) {
+        BankCardInfo bankCardInfo = new BankCardInfo();
+
+        String code = OrderNoGenerater
+            .generate(EGeneratePrefix.BankCardInfo.getCode());
+        bankCardInfo.setBankNumber(data.getPayRollBankCardNumber());
+        bankCardInfo.setCode(code);
+        bankCardInfo.setBankCode(data.getPayRollBankCode());
+        bankCardInfo.setBankName(EBankCardCodeType
+            .getBankCardType(data.getPayRollBankCode()).getValue());
+
+        bankCardInfo.setBusinessSysNo(projectWorker.getCode());
+        bankCardInfo.setBusinessType(EBankCardBussinessType.USER.getCode());
+        bankCardInfo.setBusinessName(projectWorker.getWorkerName());
+
+        bankCardInfo.setStatus(EBankCardStatus.Normal.getCode());
+        bankCardInfo.setBankLinkNumber("");
+        bankCardInfo.setCreateDatetime(new Date(System.currentTimeMillis()));
+        bankCardInfo.setUpdateDatetime(new Date(System.currentTimeMillis()));
         bankCardInfoDAO.insert(bankCardInfo);
         return code;
     }
@@ -100,6 +127,16 @@ public class BankCardBankBOImpl extends PaginableBOImpl<BankCardInfo>
         bankCardInfo.setBankNumber(payRollBankCardNumber);
         bankCardInfo.setStatus(EBankCardStatus.Normal.getCode());
         bankCardInfo.setBusinessType(EBankCardBussinessType.USER.getCode());
+        return bankCardInfoDAO.select(bankCardInfo);
+    }
+
+    @Override
+    public BankCardInfo getBankCardByIdCardNumBankNum(String idCardNumber,
+            String bankNum) {
+        BankCardInfo bankCardInfo = new BankCardInfo();
+        bankCardInfo.setBankNumber(bankNum);
+        bankCardInfo.setIdcardNumber(idCardNumber);
+
         return bankCardInfoDAO.select(bankCardInfo);
     }
 

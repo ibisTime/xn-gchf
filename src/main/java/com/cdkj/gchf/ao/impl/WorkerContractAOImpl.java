@@ -33,6 +33,7 @@ import com.cdkj.gchf.enums.EContractPeriodType;
 import com.cdkj.gchf.enums.EDeleteStatus;
 import com.cdkj.gchf.enums.EOperateLogOperate;
 import com.cdkj.gchf.enums.EOperateLogRefType;
+import com.cdkj.gchf.enums.EProjectWorkerUploadStatus;
 import com.cdkj.gchf.enums.EUnitType;
 import com.cdkj.gchf.enums.EUserKind;
 import com.cdkj.gchf.enums.EWorkerContractUploadStatus;
@@ -96,6 +97,10 @@ public class WorkerContractAOImpl implements IWorkerContractAO {
         return workerContractBO.saveWorkerContract(req);
     }
 
+    /**
+     * <p>Title: editWorkerContract</p>   
+     * <p>Description: 编辑劳动合同</p>   
+     */
     @Override
     public void editWorkerContract(XN631672Req req) {
         User user = userBO.getBriefUser(req.getUserId());
@@ -117,15 +122,7 @@ public class WorkerContractAOImpl implements IWorkerContractAO {
         if (user.getType().equals(EUserKind.Owner.getCode())) {
             req.setProjectCode(user.getOrganizationCode());
         }
-
-        WorkerContract tempContract = workerContractBO
-            .getWorkerContract(req.getProjectCode(), req.getWorkerCode());
-        if (tempContract == null) {
-            workerContractBO.refreshWorkerContract(req);
-        } else {
-            throw new BizException("Xn631670",
-                "项目人员【" + tempContract.getWorkerName() + "】合同已添加");
-        }
+        workerContractBO.refreshWorkerContract(req);
     }
 
     @Override
@@ -250,7 +247,18 @@ public class WorkerContractAOImpl implements IWorkerContractAO {
             if (projectConfig == null) {
                 throw new BizException("XN631674", "该项目未配置，无法上传");
             }
+            // 判断人员是否上传
+            ProjectWorker projectWorker = projectWorkerBO
+                .getProjectWorker(workerContract.getWorkerCode());
+            if (!projectWorker.getUploadStatus()
+                .equals(EProjectWorkerUploadStatus.UPLOAD_UPDATE.getCode())
+                    && !projectWorker.getUploadStatus().equals(
+                        EProjectWorkerUploadStatus.UPLOAD_UNUPDATE.getCode())) {
+                // 不是已上传的人员
+                throw new BizException("XN00000",
+                    "项目人员未上传【 " + projectWorker.getWorkerName() + " 】");
 
+            }
             // 请求json
             JsonObject jsonObject = workerContractBO
                 .getRequestJson(workerContract, projectConfig);
@@ -273,7 +281,7 @@ public class WorkerContractAOImpl implements IWorkerContractAO {
             String log = operateLogBO.saveOperateLog(
                 EOperateLogRefType.WorkContract.getCode(), code,
                 EOperateLogOperate.UploadWorkContract.getValue(), briefUser,
-                null);
+                EOperateLogOperate.UploadWorkContract.getValue());
             // 队列更新状态
             AsyncQueueHolder.addSerial(resString, projectConfig,
                 "workerContractBO", code,

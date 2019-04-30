@@ -42,11 +42,6 @@ public class ProjectConfigAOImpl implements IProjectConfigAO {
     @Transactional
     public String addProjectConfig(XN631620Req req) {
 
-        // if (null != projectConfigBO
-        // .getProjectConfigByLocal(req.getLocalProjectCode())) {
-        // throw new BizException("XN631620", "该项目已添加配置，无法再次添加");
-        // }
-
         ProjectConfig configByProject = projectConfigBO
             .getProjectConfigByLocal(req.getProjectCode());
         if (null != configByProject) {

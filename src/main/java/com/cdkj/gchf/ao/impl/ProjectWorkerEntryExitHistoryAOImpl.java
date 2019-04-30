@@ -37,6 +37,7 @@ import com.cdkj.gchf.enums.EEntryExitType;
 import com.cdkj.gchf.enums.EOperateLogOperate;
 import com.cdkj.gchf.enums.EOperateLogRefType;
 import com.cdkj.gchf.enums.EProjectWorkerEntryExitUploadStatus;
+import com.cdkj.gchf.enums.EProjectWorkerUploadStatus;
 import com.cdkj.gchf.enums.EUserKind;
 import com.cdkj.gchf.exception.BizException;
 import com.cdkj.gchf.gov.AsyncQueueHolder;
@@ -250,19 +251,38 @@ public class ProjectWorkerEntryExitHistoryAOImpl
             ProjectConfig projectConfigByLocal = projectConfigBO
                 .getProjectConfigByLocal(
                     projectWorkerEntryExitHistory.getProjectCode());
+            // 校验项目配置
+            Project project = projectBO
+                .getProject(projectWorkerEntryExitHistory.getProjectCode());
             if (projectConfigByLocal == null) {
-                throw new BizException("XN631734", "项目编号不存在");
+                throw new BizException("XN631734", "项目未配置" + project.getName());
             }
+
+            // 校验项目人员是否上传
+
+            ProjectWorker projectWorker = projectWorkerBO.getProjectWorker(
+                projectWorkerEntryExitHistory.getWorkerCode());
+            if (!projectWorker.getUploadStatus()
+                .equals(EProjectWorkerUploadStatus.UPLOAD_UPDATE.getCode())
+                    && !projectWorker.getUploadStatus().equals(
+                        EProjectWorkerUploadStatus.UPLOAD_UNUPDATE.getCode())) {
+                throw new BizException("XN00000",
+                    "项目人员未上传【  " + projectWorker.getWorkerName() + " 】");
+            }
+
             TeamMaster teamMaster = teamMasterBO
                 .getTeamMaster(projectWorkerEntryExitHistory.getTeamSysNo());
+            // 获取上传json
             JsonObject requestJson = projectWorkerEntryExitHistoryBO
                 .getRequestJson(teamMaster, projectWorkerEntryExitHistory,
                     projectConfigByLocal);
+            // 更新状态为上传中
             projectWorkerEntryExitHistoryBO.refreshUploadStatus(code,
                 EProjectWorkerEntryExitUploadStatus.UPLOADING.getCode());
 
             String resString;
             try {
+                // 捕捉国家平台抛出的异常 更新数据状态为上传失败
                 resString = GovConnecter.getGovData("WorkerEntryExit.Add",
                     requestJson.toString(),
                     projectConfigByLocal.getProjectCode(),
@@ -276,9 +296,12 @@ public class ProjectWorkerEntryExitHistoryAOImpl
 
             String operateLog = operateLogBO.saveOperateLog(
                 EOperateLogRefType.ProjectWorkerEntryExitHistory.getCode(),
-                code, EOperateLogOperate.UploadProjectWorkerEntryExitHistory
+                code,
+                EOperateLogOperate.UploadProjectWorkerEntryExitHistory
                     .getValue(),
-                briefUser, null);
+                briefUser,
+                EOperateLogOperate.UploadProjectWorkerEntryExitHistory
+                    .getValue());
             AsyncQueueHolder.addSerial(resString, projectConfigByLocal,
                 "projectWorkerEntryExitHistoryBO", code,
                 EProjectWorkerEntryExitUploadStatus.UPLOAD_UNEDITABLE.getCode(),
@@ -306,19 +329,19 @@ public class ProjectWorkerEntryExitHistoryAOImpl
                     "项目班组【" + data.getTeamName() + "】未录入");
             }
 
-            List<ProjectWorker> infoByIdCardNumber = projectWorkerBO
+            ProjectWorker infoByIdCardNumber = projectWorkerBO
                 .getProjectWorkerByIdentity(teamMaster.getCode(),
                     data.getIdcardNumber());
-            if (CollectionUtils.isEmpty(infoByIdCardNumber)) {
+            if (infoByIdCardNumber != null) {
                 throw new BizException("XN631733",
                     "项目人员【" + data.getIdcardNumber() + "】未录入");
             }
             String code = projectWorkerEntryExitHistoryBO
                 .saveProjectWorkerEntryExitHistory(teamMaster,
-                    infoByIdCardNumber.get(0), data);
+                    infoByIdCardNumber, data);
             operateLogBO.saveOperateLog(
                 EOperateLogRefType.WorkAttendance.getCode(), code, "导入人员进退场信息",
-                user, null);
+                user, "导入人员进退场信息");
         }
     }
 

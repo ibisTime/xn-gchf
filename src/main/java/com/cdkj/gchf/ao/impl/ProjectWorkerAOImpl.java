@@ -280,10 +280,10 @@ public class ProjectWorkerAOImpl implements IProjectWorkerAO {
             }
 
             // 校验班组中是否已存在该成员
-            List<ProjectWorker> projectWorkerByIdentity = projectWorkerBO
+            ProjectWorker projectWorkerByIdentity = projectWorkerBO
                 .getProjectWorkerByIdentity(teamMaster.getCode(),
                     projectWorkerData.getIdCardNumber());
-            if (projectWorkerByIdentity.size() == 1) {
+            if (projectWorkerByIdentity != null) {
                 throw new BizException("XN631690",
                     teamMaster.getTeamName() + "班组中" + "已存在该人员【"
                             + projectWorkerData.getIdCardNumber() + "】");
@@ -373,7 +373,7 @@ public class ProjectWorkerAOImpl implements IProjectWorkerAO {
                 .getProjectConfigByLocal(projectWorker.getProjectCode());
             if (configByLocal == null) {
                 throw new BizException("XN631695",
-                    "项目未配置" + projectWorker.getProjectName());
+                    "项目未配置：" + projectWorker.getProjectName());
             }
             if (projectWorker.getUploadStatus()
                 .equals(EProjectWorkerUploadStatus.TO_UPLOAD.getCode())) {

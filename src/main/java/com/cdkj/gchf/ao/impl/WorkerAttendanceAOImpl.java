@@ -38,6 +38,7 @@ import com.cdkj.gchf.enums.EDeleteStatus;
 import com.cdkj.gchf.enums.EDirectionType;
 import com.cdkj.gchf.enums.EOperateLogOperate;
 import com.cdkj.gchf.enums.EOperateLogRefType;
+import com.cdkj.gchf.enums.EProjectWorkerUploadStatus;
 import com.cdkj.gchf.enums.EUserKind;
 import com.cdkj.gchf.enums.EWorkerAttendanceUploadStatus;
 import com.cdkj.gchf.exception.BizException;
@@ -229,13 +230,14 @@ public class WorkerAttendanceAOImpl implements IWorkerAttendanceAO {
     /**
      * 
      * <p>Title: uploadWorkerAttendanceList</p>   
-     * <p>Description: 上传人员合同</p>   
+     * <p>Description: 上传人员考勤</p>   
      */
     @Transactional
     @Override
     public void uploadWorkerAttendanceList(String userId,
             List<String> codeList) {
         User briefUser = userBO.getBriefUser(userId);
+        // 未上传的项目人员不能上传
         for (String code : codeList) {
             WorkerAttendance workerAttendance = workerAttendanceBO
                 .getWorkerAttendance(code);
@@ -247,12 +249,23 @@ public class WorkerAttendanceAOImpl implements IWorkerAttendanceAO {
                 throw new BizException("XN631714",
                     "项目【" + workerAttendance.getProjectName() + "】未配置，无法上传");
             }
+
+            ProjectWorker projectWorker = projectWorkerBO
+                .getProjectWorker(workerAttendance.getWorkerCode());
+            if (!projectWorker.getUploadStatus()
+                .equals(EProjectWorkerUploadStatus.UPLOAD_UPDATE.getCode())
+                    && !projectWorker.getUploadStatus().equals(
+                        EProjectWorkerUploadStatus.UPLOAD_UNUPDATE.getCode())) {
+                // 不是已上传的人员
+                throw new BizException("XN00000",
+                    "项目人员未上传【 " + projectWorker.getWorkerName() + " 】");
+            }
             TeamMaster teamMaster = teamMasterBO
                 .getTeamMaster(workerAttendance.getTeamSysNo());
-
+            // 获取上传json
             JsonObject requestJson = workerAttendanceBO.getRequestJson(
                 teamMaster, workerAttendance, projectConfigByLocal);
-
+            // 更改上传状态为上传中
             workerAttendanceBO.refreshWorkerAttendance(code,
                 EWorkerAttendanceUploadStatus.UPLOADING.getCode());
             String resString;
@@ -262,6 +275,7 @@ public class WorkerAttendanceAOImpl implements IWorkerAttendanceAO {
                     projectConfigByLocal.getProjectCode(),
                     projectConfigByLocal.getSecret());
             } catch (BizException e) {
+                // 捕捉国家平台抛出的异常,将数据状态更新为上传失败
                 e.printStackTrace();
                 workerAttendanceBO.refreshWorkerAttendance(code,
                     EWorkerAttendanceUploadStatus.UPLOAD_FAIL.getCode());
@@ -271,12 +285,13 @@ public class WorkerAttendanceAOImpl implements IWorkerAttendanceAO {
             String saveOperateLog = operateLogBO.saveOperateLog(
                 EOperateLogRefType.WorkAttendance.getCode(), code,
                 EOperateLogOperate.UploadWorkAtendance.getValue(), briefUser,
-                null);
+                EOperateLogOperate.UploadWorkAtendance.getValue());
             AsyncQueueHolder.addSerial(resString, projectConfigByLocal,
                 "workerAttendanceBO", code,
                 EWorkerAttendanceUploadStatus.UPLOAD_UNEDITABLE.getCode(),
                 saveOperateLog, userId);
         }
+
     }
 
     /**

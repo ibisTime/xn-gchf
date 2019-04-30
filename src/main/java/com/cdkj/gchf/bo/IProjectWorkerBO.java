@@ -40,6 +40,9 @@ public interface IProjectWorkerBO extends IPaginableBO<ProjectWorker> {
 
     public void refreshProjectWorkerTeamName(String teamNO, String teamName);
 
+    void refreshIdCardInfo(String oldIdCardNum, String newIdCardNum,
+            String name);
+
     void updateProjectWorkerDeleteStatus(String code, String status);
 
     public void refreshUploadStatus(String code, String status);
@@ -70,7 +73,7 @@ public interface IProjectWorkerBO extends IPaginableBO<ProjectWorker> {
 
     int updateProjectWorkerStatus(String code, String status);
 
-    public List<ProjectWorker> getProjectWorkerByIdentity(String teamMasterNo,
+    public ProjectWorker getProjectWorkerByIdentity(String teamMasterNo,
             String idCardNumber);
 
     public JsonObject getProjectWorkerJson(TeamMaster teamMaster,

@@ -17,7 +17,7 @@ public class XN631770ReqDetail {
     private String workHours;
 
     // 工人工资卡号
-    @NotBlank
+    @NotBlank(message = "项目人员银行卡号不能为空")
     private String payRollBankCardNumber;
 
     // 工人工资卡银行代码
@@ -40,7 +40,7 @@ public class XN631770ReqDetail {
     private String payBankName;
 
     // 应发金额
-    @NotBlank
+    @NotBlank(message = "应发金额不能为空")
     private String totalPayAmount;
 
     // 实发金额
@@ -50,7 +50,7 @@ public class XN631770ReqDetail {
     private String isBackPay;
 
     // 发放日期
-    @NotBlank
+    @NotBlank(message = "发放日期不能为空")
     private String balanceDate;
 
     // 补发月份

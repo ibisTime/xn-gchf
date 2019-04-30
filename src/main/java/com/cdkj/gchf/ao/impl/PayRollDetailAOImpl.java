@@ -11,7 +11,6 @@ import com.cdkj.gchf.bo.ICorpBasicinfoBO;
 import com.cdkj.gchf.bo.IPayRollBO;
 import com.cdkj.gchf.bo.IPayRollDetailBO;
 import com.cdkj.gchf.bo.IProjectBO;
-import com.cdkj.gchf.bo.IProjectConfigBO;
 import com.cdkj.gchf.bo.ITeamMasterBO;
 import com.cdkj.gchf.bo.IUserBO;
 import com.cdkj.gchf.bo.base.Paginable;
@@ -38,9 +37,6 @@ public class PayRollDetailAOImpl implements IPayRollDetailAO {
 
     @Autowired
     private ITeamMasterBO teamMasterBO;
-
-    @Autowired
-    private IProjectConfigBO projectConfigBO;
 
     @Autowired
     private IProjectBO projectBO;

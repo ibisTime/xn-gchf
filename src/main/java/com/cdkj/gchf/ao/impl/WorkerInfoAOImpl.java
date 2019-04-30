@@ -62,22 +62,20 @@ public class WorkerInfoAOImpl implements IWorkerInfoAO {
             throw new BizException("XN631790", "身份证信息错误");
         }
 
-        if (StringUtils.isNotBlank(req.getIdCardNumber())) {
-            WorkerInfo workerInfoByIdCardNumber = workerInfoBO
-                .getWorkerInfoByIdCardNumber(req.getIdCardNumber());
-            if (workerInfoByIdCardNumber != null) {
-                XN631793Req xn631791Req = new XN631793Req();
-                xn631791Req.setCode(workerInfoByIdCardNumber.getCode());
-                BeanUtils.copyProperties(req, xn631791Req);
-                workerInfoBO.refreshWorkerInfo(xn631791Req);
-                operateLogBO.saveOperateLog(
-                    EOperateLogRefType.WorkerInfo.getCode(),
-                    workerInfoByIdCardNumber.getCode(), "重新建档人员实名制信息", user,
-                    null);
-                return workerInfoByIdCardNumber.getCode();
-            }
-        }
+        if (StringUtils.isNotBlank(req.getCode())) {
+            WorkerInfo workerInfo = workerInfoBO.getWorkerInfo(req.getCode());
+            XN631793Req xn631791Req = new XN631793Req();
+            xn631791Req.setCode(req.getCode());
+            BeanUtils.copyProperties(req, xn631791Req);
 
+            operateLogBO.saveOperateLog(EOperateLogRefType.WorkerInfo.getCode(),
+                workerInfo.getCode(), "重新建档人员实名制信息", user, null);
+            // 更新建档信息
+            workerInfoBO.refreshWorkerInfo(xn631791Req);
+            // 存在项目人员-更新
+            // projectWorkerBO.getpro
+            return req.getCode();
+        }
         String workerCode = workerInfoBO.saveWorkerInfo(req);
 
         if (StringUtils.isNotBlank(req.getProjectCode())) {
@@ -133,6 +131,11 @@ public class WorkerInfoAOImpl implements IWorkerInfoAO {
         return workerInfoBO.refreshWorkerInfo(req);
     }
 
+    /**
+     * 
+     * <p>Title: readdWorkerInfo</p>   
+     * <p>Description: </p>   
+     */
     @Override
     public void readdWorkerInfo(XN631793Req req) {
         User user = userBO.getBriefUser(req.getUserId());

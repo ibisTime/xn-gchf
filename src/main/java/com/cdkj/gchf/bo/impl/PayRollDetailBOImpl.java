@@ -5,6 +5,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -55,46 +56,64 @@ public class PayRollDetailBOImpl extends PaginableBOImpl<PayRollDetail>
             List<XN631770ReqDetail> data) {
 
         for (XN631770ReqDetail detail : data) {
-            String code = OrderNoGenerater
-                .generate(EGeneratePrefix.PayRollDetail.getCode());
             PayRollDetail payRollDetail = new PayRollDetail();
-            payRollDetail.setPayRollCode(payRollCode);
+            if (!StringUtil.isNumber(detail.getActualAmount())) {
+                throw new BizException("XN631770", "实发金额不是数字类型");
+            }
+            if (!StringUtil.isNumber(detail.getTotalPayAmount())) {
+                throw new BizException("XN631770", "实发金额不是数字类型");
+            }
+
+            // 先校验项目人员
+            List<ProjectWorker> projectWorker = projectWorkerBO
+                .getProjectWorker(projectCode, detail.getIdCardNumber());
+            if (CollectionUtils.isEmpty(projectWorker)) {
+                throw new BizException("XN631770", "身份证号为:【"
+                        + detail.getIdCardNumber() + "】的项目人员不存在,请检查身份证号输入是否正确");
+            }
+            // 在校验项目人员银行卡信息
+            BankCardInfo bankCardInfoByNum = bankCardBankBO
+                .getBankCardByIdCardNumBankNum(detail.getIdCardNumber(),
+                    detail.getPayRollBankCardNumber());
+            // 没有银行卡信息 新增
+            if (bankCardInfoByNum == null) {
+                bankCardBankBO.saveBankCardInfo(detail, projectWorker.get(0));
+            }
+            // 插入数据
             BeanUtils.copyProperties(detail, payRollDetail);
-            payRollDetail.setCode(code);
+            // 银行卡信息
+            payRollDetail
+                .setPayRollBankCardNumber(detail.getPayBankCardNumber());
+            payRollDetail.setPayRollBankCode(detail.getPayBankCode());
+            payRollDetail.setPayRollBankName(EBankCardCodeType
+                .getBankCardType(detail.getPayBankCode()).getValue());
+            payRollDetail.setPayBankCode(detail.getPayBankCode());
+            payRollDetail.setPayBankName(EBankCardCodeType
+                .getBankCardType(detail.getPayBankCode()).getValue());
+
+            // 员工信息
+            payRollDetail.setWorkerName(projectWorker.get(0).getWorkerName());
+            payRollDetail
+                .setIdcardNumber(projectWorker.get(0).getIdcardNumber());
+            payRollDetail.setIdcardType("01");
+            payRollDetail.setPayRollCode(payRollCode);
+            payRollDetail.setCode(OrderNoGenerater
+                .generate(EGeneratePrefix.PayRollDetail.getCode()));
             if (StringUtils.isNotBlank(detail.getDays())) {
                 payRollDetail.setDays(Integer.parseInt(detail.getDays()));
             }
-
             if (StringUtils.isNotBlank(detail.getWorkHours())) {
                 payRollDetail
                     .setWorkHours(new BigDecimal(detail.getWorkHours()));
             }
-            String payRollBankCardNumber = detail.getPayRollBankCardNumber();
-            BankCardInfo bankCardInfoByNum = bankCardBankBO
-                .getBankCardInfoByNum(payRollBankCardNumber);
-            if (payRollBankCardNumber == null) {
-                throw new BizException("XN631770", "项目人员银行卡号不能为空");
+            payRollDetail
+                .setActualAmount(new BigDecimal(detail.getActualAmount()));
+            if (StringUtils.isNotBlank(detail.getIsBackPay())) {
+                payRollDetail
+                    .setIsBackPay(Integer.parseInt(detail.getIsBackPay()));
             }
-            if (bankCardInfoByNum == null) {
-
-                List<ProjectWorker> projectWorkerByIdentity = projectWorkerBO
-                    .getProjectWorkerByIdentity(teamSysNo,
-                        detail.getIdCardNumber());
-                throw new BizException("XN631770",
-                    "项目人员【" + projectWorkerByIdentity.get(0).getWorkerName()
-                            + "】银行卡未绑定");
-            }
-            String workerCode = bankCardInfoByNum.getBusinessSysNo();
-            ProjectWorker workerByBankCard = projectWorkerBO
-                .getProjectWorker(workerCode);
-            if (null == workerByBankCard) {
-                throw new BizException("XN631733", "项目人员【"
-                        + bankCardInfoByNum.getBusinessSysNo() + "银行卡信息未绑定");
-            }
-            payRollDetail.setWorkerName(workerByBankCard.getWorkerName());
-            payRollDetail.setIdcardNumber(workerByBankCard.getIdcardNumber());
-            payRollDetail.setIdcardType("01");
-
+            payRollDetail
+                .setTotalPayAmount(new BigDecimal(detail.getTotalPayAmount()));
             Date toDate;
             try {
                 toDate = DateUtil.strToDate(detail.getBalanceDate(),
@@ -107,25 +126,10 @@ public class PayRollDetailBOImpl extends PaginableBOImpl<PayRollDetail>
                     .format(strToDate);
                 toDate = DateUtil.strToDate(format, "yyyy-MM-dd");
             }
-            payRollDetail.setBalanceDate(toDate);
-            if (!StringUtil.isNumber(detail.getActualAmount())) {
-                throw new BizException("XN631770", "实发金额不是数字类型");
-            }
-            if (!StringUtil.isNumber(detail.getTotalPayAmount())) {
-                throw new BizException("XN631770", "实发金额不是数字类型");
-            }
-            payRollDetail
-                .setActualAmount(new BigDecimal(detail.getActualAmount()));
-            if (StringUtils.isNotBlank(detail.getIsBackPay())) {
-                payRollDetail
-                    .setIsBackPay(Integer.parseInt(detail.getIsBackPay()));
-            }
-            payRollDetail
-                .setTotalPayAmount(new BigDecimal(detail.getTotalPayAmount()));
             payRollDetail
                 .setUploadStatus(EPayRollUploadStatus.TO_UPLOAD.getCode());
             payRollDetail.setDeleteStatus(EDeleteStatus.NORMAL.getCode());
-
+            payRollDetail.setBalanceDate(toDate);
             payRollDetailDAO.insert(payRollDetail);
         }
     }

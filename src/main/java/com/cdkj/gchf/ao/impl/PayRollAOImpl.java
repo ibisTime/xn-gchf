@@ -43,6 +43,7 @@ import com.cdkj.gchf.enums.EDeleteStatus;
 import com.cdkj.gchf.enums.EOperateLogOperate;
 import com.cdkj.gchf.enums.EOperateLogRefType;
 import com.cdkj.gchf.enums.EPayRollUploadStatus;
+import com.cdkj.gchf.enums.EProjectWorkerUploadStatus;
 import com.cdkj.gchf.exception.BizException;
 import com.cdkj.gchf.gov.AsyncQueueHolder;
 import com.cdkj.gchf.gov.GovConnecter;
@@ -210,6 +211,20 @@ public class PayRollAOImpl implements IPayRollAO {
                     user, null);
                 continue;
             }
+            // 校验项目人员是否上传
+            ProjectWorker projectWorker = projectWorkerBO
+                .getProjectWorkerByIdentity(payRoll.getTeamSysNo(),
+                    payRollDetail.getIdcardNumber());
+            if (!projectWorker.getUploadStatus()
+                .equals(EProjectWorkerUploadStatus.UPLOAD_UPDATE.getCode())
+                    && !projectWorker.getUploadStatus().equals(
+                        EProjectWorkerUploadStatus.UPLOAD_UNUPDATE.getCode())) {
+                // 不是已上传的人员
+                throw new BizException("XN00000",
+                    "项目人员未上传【 " + projectWorker.getWorkerName() + " 】");
+
+            }
+            // 获取上传JSON
             String json = getRequestJsonToPlantform(payRoll, payRollDetail,
                 projectConfigByLocal);
             // 更新上传状态

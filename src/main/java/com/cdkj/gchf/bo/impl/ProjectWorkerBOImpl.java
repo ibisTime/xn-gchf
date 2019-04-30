@@ -16,7 +16,6 @@ import com.cdkj.gchf.api.impl.XN631693ReqData;
 import com.cdkj.gchf.bo.ICorpBasicinfoBO;
 import com.cdkj.gchf.bo.IOperateLogBO;
 import com.cdkj.gchf.bo.IProjectBO;
-import com.cdkj.gchf.bo.IProjectConfigBO;
 import com.cdkj.gchf.bo.IProjectWorkerBO;
 import com.cdkj.gchf.bo.ITeamMasterBO;
 import com.cdkj.gchf.bo.IUserBO;
@@ -69,9 +68,6 @@ public class ProjectWorkerBOImpl extends PaginableBOImpl<ProjectWorker>
 
     @Autowired
     private ICorpBasicinfoBO corpBasicinfoBO;
-
-    @Autowired
-    private IProjectConfigBO projectConfigBO;
 
     @Autowired
     private ITeamMasterBO teamMasterBO;
@@ -267,7 +263,6 @@ public class ProjectWorkerBOImpl extends PaginableBOImpl<ProjectWorker>
         ProjectWorker data = new ProjectWorker();
         data.setCode(code);
         data.setDeleteStatus(EDeleteStatus.DELETED.getCode());
-        // projectWorkerDAO.delete(data);
         projectWorkerDAO.updateProjectWorkerDeleteStatus(data);
     }
 
@@ -325,6 +320,21 @@ public class ProjectWorkerBOImpl extends PaginableBOImpl<ProjectWorker>
         condition.setTeamSysNo(teamNO);
         condition.setTeamName(teamName);
         projectWorkerDAO.updateProjectWorkerTeamName(condition);
+    }
+
+    /**
+     * 
+     * <p>Title: refreshIdCardInfo</p>   
+     * <p>Description: 重新建档后-更新已存在的项目人员信息</p>   
+     */
+    @Override
+    public void refreshIdCardInfo(String oldIdCardNum, String newIdCardNum,
+            String name) {
+        // 项目人员
+
+        // 项目人员进退场
+
+        //
     }
 
     @Override
@@ -389,7 +399,6 @@ public class ProjectWorkerBOImpl extends PaginableBOImpl<ProjectWorker>
             throw e;
         }
 
-        // SerialHandler.handle(resString, projectConfig);
         String operateLog = operateLogBO.saveOperateLog(
             EOperateLogRefType.ProjectWorker.getCode(), req.getCode(),
             "修改平台项目人员", user, "修改平台项目人员");
@@ -424,7 +433,6 @@ public class ProjectWorkerBOImpl extends PaginableBOImpl<ProjectWorker>
             for (ProjectWorker worker : page.getList()) {
                 worker.setIdcardNumber(AesUtils.decrypt(
                     worker.getIdcardNumber(), projectConfig.getSecret()));
-                // worker.setWorkerRole(Integer.parseInt(worker.getWorkerRole()));
             }
         }
 
@@ -515,15 +523,14 @@ public class ProjectWorkerBOImpl extends PaginableBOImpl<ProjectWorker>
     }
 
     @Override
-    public List<ProjectWorker> getProjectWorkerByIdentity(String teamSysNo,
+    public ProjectWorker getProjectWorkerByIdentity(String teamSysNo,
             String idCardNumber) {
         ProjectWorker projectWorker = new ProjectWorker();
         projectWorker.setTeamSysNo(teamSysNo);
         projectWorker.setIdcardType("01");
         projectWorker.setIdcardNumber(idCardNumber);
         projectWorker.setDeleteStatus(EDeleteStatus.NORMAL.getCode());
-        List<ProjectWorker> infoByCondition = projectWorkerDAO
-            .selectList(projectWorker);
+        ProjectWorker infoByCondition = projectWorkerDAO.select(projectWorker);
         return infoByCondition;
     }
 

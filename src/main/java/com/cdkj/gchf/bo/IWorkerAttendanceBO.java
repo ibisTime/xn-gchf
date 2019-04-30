@@ -31,6 +31,8 @@ public interface IWorkerAttendanceBO extends IPaginableBO<WorkerAttendance> {
 
     public int removeWorkerAttendance(String code);
 
+    void refreshUploadStatus(String code, String uploadStatus);
+
     public void refreshWorkerAttendance(XN631712Req data);
 
     void refreshWorkerAttendance(String code, String status);

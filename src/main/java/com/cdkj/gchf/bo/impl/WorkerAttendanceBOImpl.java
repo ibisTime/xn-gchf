@@ -324,6 +324,7 @@ public class WorkerAttendanceBOImpl extends PaginableBOImpl<WorkerAttendance>
         return code;
     }
 
+    @Override
     public void refreshUploadStatus(String code, String status) {
         WorkerAttendance workerAttendance = new WorkerAttendance();
         workerAttendance.setCode(code);

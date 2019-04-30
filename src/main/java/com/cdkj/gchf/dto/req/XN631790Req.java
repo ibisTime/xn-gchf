@@ -31,6 +31,9 @@ public class XN631790Req {
     @NotBlank
     private String idCardNumber;
 
+    // 人员实名制编号
+    private String code;
+
     // 有效期开始日期
     @NotBlank
     private String startDate;
@@ -81,6 +84,14 @@ public class XN631790Req {
 
     public void setUserId(String userId) {
         this.userId = userId;
+    }
+
+    public String getCode() {
+        return code;
+    }
+
+    public void setCode(String code) {
+        this.code = code;
     }
 
     public String getName() {

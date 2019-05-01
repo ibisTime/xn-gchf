@@ -63,6 +63,7 @@ public class WorkerInfoAOImpl implements IWorkerInfoAO {
         }
 
         if (StringUtils.isNotBlank(req.getCode())) {
+            // 重新建档
             WorkerInfo workerInfo = workerInfoBO.getWorkerInfo(req.getCode());
             XN631793Req xn631791Req = new XN631793Req();
             xn631791Req.setCode(req.getCode());
@@ -70,10 +71,16 @@ public class WorkerInfoAOImpl implements IWorkerInfoAO {
 
             operateLogBO.saveOperateLog(EOperateLogRefType.WorkerInfo.getCode(),
                 workerInfo.getCode(), "重新建档人员实名制信息", user, null);
+
+            // 存在项目人员-更新 基本基本信息
+            if (!req.getIdCardNumber().equals(workerInfo.getIdCardNumber())
+                    || !req.getName().equals(workerInfo.getName())) {
+                projectWorkerBO.refreshWorkerIdCardNumber(req.getCode(),
+                    req.getIdCardNumber(), req.getName());
+            }
+
             // 更新建档信息
             workerInfoBO.refreshWorkerInfo(xn631791Req);
-            // 存在项目人员-更新
-            // projectWorkerBO.getpro
             return req.getCode();
         }
         String workerCode = workerInfoBO.saveWorkerInfo(req);
@@ -128,6 +135,12 @@ public class WorkerInfoAOImpl implements IWorkerInfoAO {
 
     @Override
     public int addWorkerInfoContact(XN631792Req req) {
+        WorkerInfo workerInfo = workerInfoBO.getWorkerInfo(req.getCode());
+        if (!workerInfo.getCellPhone().equals(req.getCellPhone())) {
+            // 手机号改变 更新项目人员手机号码
+            projectWorkerBO.refreshWorkerCelephone(workerInfo.getCode(),
+                req.getCellPhone());
+        }
         return workerInfoBO.refreshWorkerInfo(req);
     }
 
@@ -139,7 +152,11 @@ public class WorkerInfoAOImpl implements IWorkerInfoAO {
     @Override
     public void readdWorkerInfo(XN631793Req req) {
         User user = userBO.getBriefUser(req.getUserId());
+
         workerInfoBO.refreshWorkerInfo(req);
+        projectWorkerBO.refreshWorkerIdCardNumber(req.getCode(),
+            req.getIdCardNumber(), req.getName());
+
         operateLogBO.saveOperateLog(EOperateLogRefType.WorkerInfo.getCode(),
             req.getCode(), "重新建档人员实名制信息", user, null);
     }

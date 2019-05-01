@@ -86,4 +86,18 @@ public class ProjectWorkerDAOImpl extends AMybatisTemplate
             projectWorker);
     }
 
+    @Override
+    public int updateProjectWorkerWorkerInfo(ProjectWorker projectWorker) {
+        return super.update(
+            NAMESPACE.concat("update_projectWorker_worker_info"),
+            projectWorker);
+    }
+
+    @Override
+    public int updateProjectWorkerWorkerPhone(ProjectWorker projectWorker) {
+        return super.update(
+            NAMESPACE.concat("update_projectWorker_worker_info_phone"),
+            projectWorker);
+    }
+
 }

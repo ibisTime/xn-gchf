@@ -50,7 +50,9 @@ public enum EGovErrorMessage {
 
     NoWorkerToPay("的工人信息,不允许上传该工人的工资发放信息!", "工人信息未上传,无法上传员工工资单信息"),
 
-    JoinExitTimeUnValid("[date]不能小于历史进退场时间!", "进退场日期不能小于历史进退场信息");
+    JoinExitTimeUnValid("[date]不能小于历史进退场时间!", "进退场日期不能小于历史进退场信息"),
+
+    GovError("Internal Error", "国家平台异常");
 
     EGovErrorMessage(String govMessage, String localMessage) {
         this.govMessage = govMessage;

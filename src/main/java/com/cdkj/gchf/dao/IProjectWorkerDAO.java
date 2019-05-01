@@ -18,4 +18,10 @@ public interface IProjectWorkerDAO extends IBaseDAO<ProjectWorker> {
 
     int updateProjectWorkerTeamName(ProjectWorker projectWorker);
 
+    // 重新建档-更新项目人员信息
+    int updateProjectWorkerWorkerInfo(ProjectWorker projectWorker);
+
+    // 重新建档-第三步-更新项目人员手机号
+    int updateProjectWorkerWorkerPhone(ProjectWorker projectWorker);
+
 }

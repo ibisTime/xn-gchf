@@ -310,7 +310,28 @@ public class ProjectWorkerBOImpl extends PaginableBOImpl<ProjectWorker>
     }
 
     /**
-     * 
+     * @Description: 更新项目人员信息
+     */
+    @Override
+    public void refreshWorkerIdCardNumber(String workerCode,
+            String newIdCardNumber, String workerName) {
+        ProjectWorker condition = new ProjectWorker();
+        condition.setWorkerCode(workerCode);
+        condition.setIdcardNumber(newIdCardNumber);
+        condition.setWorkerName(workerName);
+        condition.setIdcardType("01");
+        projectWorkerDAO.updateProjectWorkerWorkerInfo(condition);
+    }
+
+    @Override
+    public void refreshWorkerCelephone(String workerCode, String phone) {
+        ProjectWorker condition = new ProjectWorker();
+        condition.setWorkerCode(workerCode);
+        condition.setCellPhone(phone);
+        projectWorkerDAO.updateProjectWorkerWorkerPhone(condition);
+    }
+
+    /**
      * <p>Title: refreshProjectWorkerTeamName</p>   
      * <p>Description: 向下刷新班组名称</p>   
      */

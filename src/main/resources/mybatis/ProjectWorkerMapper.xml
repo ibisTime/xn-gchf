@@ -229,15 +229,15 @@
 		UPDATE
 		thf_project_worker
 		SET upload_status = #{uploadStatus}
-		WHERE code =
-		#{code}
+		WHERE code = #{code}
 	</update>
 
 	<update id="update_projectWorker_team_name" parameterType="projectWorker">
 		UPDATE
 		thf_project_worker
 		SET team_name = #{teamName}
-		WHERE team_sys_no = #{teamSysNo}
+		WHERE team_sys_no =
+		#{teamSysNo}
 	</update>
 
 
@@ -272,7 +272,26 @@
 		= #{code}
 
 	</update>
-
+    
+	<update id="update_projectWorker_worker_info">
+		UPDATE
+		thf_project_worker
+		SET
+        worker_name = #{workerName}
+        ,worker_mobile = #{workerMobile}
+        ,idcard_type = #{idcardType}
+        ,idcard_number = #{idcardNumber}
+        where worker_code = #{workerCode}
+	</update>
+	
+	<update id="update_projectWorker_worker_info_phone">
+        UPDATE
+        thf_project_worker
+        SET
+        worker_mobile = #{workerMobile}
+        where worker_code = #{workerCode}
+    </update>
+	
 	<update id="update_projectWorker" parameterType="projectWorker">
 		UPDATE
 		thf_project_worker
@@ -281,25 +300,20 @@
 		,corp_name = #{corpName}
 		,is_team_leader = #{isTeamLeader}
 		,work_type = #{workType}
-		,work_role =
-		#{workRole}
+		,work_role = #{workRole}
 		,issue_card_date = #{issueCardDate}
-		,issue_card_pic_url =
-		#{issueCardPicUrl}
+		,issue_card_pic_url = #{issueCardPicUrl}
 
 		,team_sys_no = #{teamSysNo}
 		,team_name = #{teamName}
 		,card_number = #{cardNumber}
-		,pay_roll_bank_card_number =
-		#{payRollBankCardNumber}
+		,pay_roll_bank_card_number = #{payRollBankCardNumber}
 		,pay_roll_bank_name = #{payRollBankName}
 
 		,pay_roll_top_bank_name = #{payRollTopBankName}
-		,bank_link_number =
-		#{bankLinkNumber}
+		,bank_link_number = #{bankLinkNumber}
 		,pay_roll_top_bank_code = #{payRollTopBankCode}
-		,has_buy_insurance =
-		#{hasBuyInsurance}
+		,has_buy_insurance = #{hasBuyInsurance}
 		,work_date = #{workDate}
 
 		,join_datetime = #{joinDatetime}

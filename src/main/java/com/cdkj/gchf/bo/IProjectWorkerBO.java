@@ -38,6 +38,14 @@ public interface IProjectWorkerBO extends IPaginableBO<ProjectWorker> {
 
     public void refreshProjectWorker(XN631692Req req, TeamMaster teamMaster);
 
+    /**
+     * @Description: 建档人员 更新项目人员
+     */
+    void refreshWorkerIdCardNumber(String workerCode, String newIdCardNumber,
+            String workerName);
+
+    void refreshWorkerCelephone(String workerCode, String phone);
+
     public void refreshProjectWorkerTeamName(String teamNO, String teamName);
 
     void refreshIdCardInfo(String oldIdCardNum, String newIdCardNum,

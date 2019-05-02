@@ -1,7 +1,5 @@
 package com.cdkj.gchf.humanfaces.res;
 
-import java.util.List;
-
 /**
  * 
  * @ClassName:  DeviceRes   
@@ -16,7 +14,7 @@ public class DeviceRes {
 
     private String code;
 
-    private List<DeviceResData> data;
+    private DeviceResData data;
 
     public String getAppId() {
         return appId;
@@ -34,11 +32,11 @@ public class DeviceRes {
         this.code = code;
     }
 
-    public List<DeviceResData> getData() {
+    public DeviceResData getData() {
         return data;
     }
 
-    public void setData(List<DeviceResData> data) {
+    public void setData(DeviceResData data) {
         this.data = data;
     }
 

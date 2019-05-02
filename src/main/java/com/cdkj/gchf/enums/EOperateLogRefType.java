@@ -30,7 +30,9 @@ public enum EOperateLogRefType {
 
     ProjectWorker("11", "项目人员信息"),
 
-    BankCardInfo("12", "银行卡信息");
+    BankCardInfo("12", "银行卡信息"),
+
+    EquipmentInfo("13", "考勤设备");
 
     EOperateLogRefType(String code, String value) {
         this.code = code;

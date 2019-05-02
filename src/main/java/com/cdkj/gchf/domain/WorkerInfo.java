@@ -113,6 +113,21 @@ public class WorkerInfo extends ABaseDO {
     // 建档时间
     private Date createDatetime;
 
+    // 人脸考勤照片
+    private String attendancePicture;
+
+    // 人员guid
+    private String workerGuid;
+
+    // 考勤照片guid
+    private String workerAttendancePicGuid;
+
+    // 人脸上传状态
+    private Integer workerPicUploadStatus;
+
+    // 考勤人员上传状态
+    private Integer workerUploadStatus;
+
     /****DB Properties****/
 
     // 建档开始时间
@@ -386,6 +401,46 @@ public class WorkerInfo extends ABaseDO {
 
     public void setCreateDatetime(Date createDatetime) {
         this.createDatetime = createDatetime;
+    }
+
+    public String getAttendancePicture() {
+        return attendancePicture;
+    }
+
+    public void setAttendancePicture(String attendancePicture) {
+        this.attendancePicture = attendancePicture;
+    }
+
+    public String getWorkerGuid() {
+        return workerGuid;
+    }
+
+    public void setWorkerGuid(String workerGuid) {
+        this.workerGuid = workerGuid;
+    }
+
+    public String getWorkerAttendancePicGuid() {
+        return workerAttendancePicGuid;
+    }
+
+    public void setWorkerAttendancePicGuid(String workerAttendancePicGuid) {
+        this.workerAttendancePicGuid = workerAttendancePicGuid;
+    }
+
+    public Integer getWorkerPicUploadStatus() {
+        return workerPicUploadStatus;
+    }
+
+    public void setWorkerPicUploadStatus(Integer workerPicUploadStatus) {
+        this.workerPicUploadStatus = workerPicUploadStatus;
+    }
+
+    public Integer getWorkerUploadStatus() {
+        return workerUploadStatus;
+    }
+
+    public void setWorkerUploadStatus(Integer workerUploadStatus) {
+        this.workerUploadStatus = workerUploadStatus;
     }
 
     public Date getCreateDatetimeStart() {

@@ -9,34 +9,25 @@ import com.cdkj.gchf.common.DateUtil;
 
 public class SCDM_IDAO {
     // 实体
-    private static String key = "WorkerInfo";
+    private static String key = "EquipmentWorker";
 
     // 实体名称
-    private static String keyName = "人员实名信息";
+    private static String keyName = "考勤设备信息";
 
     // 包路径
     private static String packge = "com.cdkj.gchf.";
 
     // 表名
-    private static String dbname = "thf_worker_info";
+    private static String dbname = "thf_equipment_worker";
 
-    private static String[] DBwords = { "code", "name", "id_card_type",
-            "id_card_number", "gender", "nation", "edu_level", "degree",
-            "worker_type", "birthday", "birth_place_code", "address",
-            "head_image_url", "politics_type", "is_joined", "joined_time",
-            "cell_phone", "culture_level_type", "specialty",
-            "has_bad_medical_history", "urgent_link_man",
-            "urgent_link_man_phone", "work_type_code", "work_corp_name",
-            "work_date", "marital_status", "grant_org",
-            "positive_id_card_image_url", "negative_id_card_image_url",
-            "start_date", "expiry_date" };
+    private static String[] DBwords = { "code", "device_code", "device_key",
+            "device_name", "worker_code", "worker_name", "team_code",
+            "team_name", "id_card_number", "status", "pass_times",
+            "create_time" };
 
-    private static String[] DBwordsName = { "编号", "工人姓名", "证件类型", "证件号码",
-            "工人性别", "民族", "学历", "学位", "类别", "出生日期", "籍贯 身份证号码前六位", "住址",
-            "头像 二代身份证上面的头像", "政治面貌", "是否加入工会", "加入工会时间 已加入工会时，此字段必须有值", "手机号码",
-            "文化程度", "特长", "否有重大病史", "紧急联系人姓名", "紧急联系电话", "当前工种", "当前聘用企业",
-            "开始工作日期", "婚姻状况", "发证机关", "正面照 URL", "反面照 URL", "有效期开始日期",
-            "有效期结束日期" };
+    private static String[] DBwordsName = { "编号", "人脸识别设备编号", "人脸识别设备序列号",
+            "人脸识别设备名称", "项目人员编号", "项目人员姓名", "班组编号", "班组名称 ", "员工身份证件号", "状态",
+            "每日允许进入", "添加时间", "考勤设备人员表" };
 
     public void testname() throws Exception {
     }
@@ -49,7 +40,7 @@ public class SCDM_IDAO {
     public static void main(String[] args) {
 
         System.out.println("*********开始打印*********");
-        String path = "C:\\Users\\old3\\git\\xn-gchf\\src\\main\\java\\com\\cdkj\\gchf\\domain";
+        String path = "D:\\Temp\\modelWorker";
 
         File DOMAINfile = new File(path, Key + ".java");
 

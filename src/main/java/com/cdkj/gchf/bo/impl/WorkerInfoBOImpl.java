@@ -127,6 +127,17 @@ public class WorkerInfoBOImpl extends PaginableBOImpl<WorkerInfo>
         return workerInfoDAO.selectList(condition);
     }
 
+    // 回写实名制考勤相关信息
+    @Override
+    public void updateWorkerInfoAttendance(String code, String workerGuid,
+            String picGuid) {
+        WorkerInfo workerInfo = new WorkerInfo();
+        workerInfo.setCode(code);
+        workerInfo.setWorkerGuid(workerGuid);
+        workerInfo.setWorkerAttendancePicGuid(picGuid);
+        workerInfoDAO.updateWorkerInfoAttendance(workerInfo);
+    }
+
     @Override
     public WorkerInfo getWorkerInfo(String code) {
         WorkerInfo data = null;

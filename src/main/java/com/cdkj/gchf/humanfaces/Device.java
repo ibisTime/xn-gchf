@@ -5,8 +5,11 @@ import java.util.Map;
 
 import org.apache.commons.lang3.StringUtils;
 import org.junit.Test;
+import org.springframework.stereotype.Component;
 
+import com.cdkj.gchf.humanfaces.res.DeviceQuery;
 import com.cdkj.gchf.humanfaces.res.DeviceRes;
+import com.cdkj.gchf.humanfaces.res.ResultMsg;
 import com.google.gson.Gson;
 
 /**
@@ -17,6 +20,7 @@ import com.google.gson.Gson;
  * @date:   2019年4月29日 下午12:56:00     
  * @Copyright:
  */
+@Component
 public class Device {
     // 添加设备Url
     private String createUrl = AppConfig.getBaseUrl()
@@ -89,14 +93,16 @@ public class Device {
      * @return: DeviceRes      
      * @throws
      */
-    public String deviceQuery(String deviceKey) {
+    public DeviceQuery deviceQuery(String deviceKey) {
         String token = AppConfig.getToken();
         Map<String, String> req = new HashMap<>();
         req.put("appid", AppConfig.getAppid());
         req.put("token", token);
         req.put("deviceKey", deviceKey);
         String doRequest = HttpRequest.doRequest(queryUrl, "GET", req);
-        return doRequest;
+        DeviceQuery fromJson = AppConfig.gson.fromJson(doRequest,
+            DeviceQuery.class);
+        return fromJson;
 
     }
 
@@ -108,14 +114,16 @@ public class Device {
      * @return: String      
      * @throws
      */
-    public String updateCloudDevice(String deviceKey) {
+    public ResultMsg updateCloudDevice(String deviceKey) {
         String token = AppConfig.getToken();
         Map<String, String> req = new HashMap<>();
         req.put("appid", AppConfig.getAppid());
         req.put("token", token);
         req.put("deviceKey", deviceKey);
         String doRequest = HttpRequest.doRequest(updateCloudUrl, "POST", req);
-        return doRequest;
+        ResultMsg fromJson = AppConfig.gson.fromJson(doRequest,
+            ResultMsg.class);
+        return fromJson;
     }
 
     @Test
@@ -131,8 +139,8 @@ public class Device {
         // System.out.println(equipmentUpdate.toString());
 
         // 查询设备
-        // String str = deviceQuery("84E0F420576700B0");
-        // System.out.println(str.toString());
+        // DeviceQuery deviceQuery = deviceQuery("84E0F420576700B0");
+        // System.out.println(deviceQuery.toString());
 
         // String updateCloudDevice = updateCloudDevice("84E0F420576700B0");
         // System.out.println(updateCloudDevice);

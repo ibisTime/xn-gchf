@@ -23,6 +23,8 @@ public class AppConfig {
 
     private static String baseUrl = "https://smz.lesun-idea.com";
 
+    protected static Gson gson = new Gson();
+
     public static AppConfig getProjectConfig() {
         AppConfig appConfig = new AppConfig();
         return appConfig;

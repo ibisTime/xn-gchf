@@ -364,7 +364,6 @@ public class ProjectWorkerAOImpl implements IProjectWorkerAO {
      */
     @Override
     public void updatePlantformProjectWorker(XN631695Req req) {
-        User user = userBO.getBriefUser(req.getUserId());
         List<String> codeList = req.getCodeList();
         for (String code : codeList) {
             ProjectWorker projectWorker = projectWorkerBO

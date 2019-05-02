@@ -405,7 +405,8 @@ public class ProjectWorkerBOImpl extends PaginableBOImpl<ProjectWorker>
             req.setPayRollBankCardNumber(AesUtils.encrypt(
                 req.getPayRollBankCardNumber(), projectConfig.getSecret()));
         }
-
+        req.setHeadImage(req.getHeadImage().replace("data:image/bmp;base64,",
+            "data:image/png;base64,"));
         String data = JSONObject.toJSONStringWithDateFormat(req, "yyyy-MM-dd")
             .toString();
 

@@ -624,4 +624,60 @@ CREATE TABLE `thf_skill` (
   PRIMARY KEY (`code`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
+-- 以下为220修改
+ALTER TABLE `thf_worker_info` 
+ADD COLUMN `attendance_picture` longtext CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '人脸考勤照片';
 
+ALTER TABLE `thf_worker_info` 
+ADD COLUMN `worker_guid` varchar(32) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '人员guid(用于上传人脸考勤用于上传人脸考勤)';
+
+ALTER TABLE `thf_worker_info` 
+ADD COLUMN `worker_attendance_pic_guid` varchar(32) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '人脸考勤图片guid((用于上传人脸考勤照片到平台)';
+
+ALTER TABLE `thf_worker_info` 
+ADD COLUMN `worker_pic_upload_status` tinyint(1) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '人脸上传状态';
+
+ALTER TABLE `thf_worker_info` 
+ADD COLUMN `worker_upload_status` tinyint(1) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '考勤人员上传状态';
+
+-- 人脸识别设备表
+DROP TABLE IF EXISTS `thf_equipment_info`
+    CREATE TABLE `thf_equipment_info` (
+    `code` VARCHAR ( 32 ) NOT NULL PRIMARY KEY COMMENT '主键',
+    `device_key` VARCHAR ( 64 ) NOT NULL COMMENT '人脸识别设备序列号',
+    `name` VARCHAR ( 32 ) NOT NULL COMMENT '设备名称',
+    `tag` VARCHAR ( 32 ) DEFAULT NULL COMMENT '设备标签',
+    `tag_encreapt` VARCHAR ( 32 ) DEFAULT NULL COMMENT '加密tag标签',
+    `scene_guid` VARCHAR ( 32 ) DEFAULT NULL COMMENT '设备场景guid',
+    `state` TINYINT ( 2 ) NOT NULL COMMENT '设备状态',
+    `status` TINYINT ( 2 ) DEFAULT NULL COMMENT '设备网络状态',
+    `client_id` VARCHAR ( 32 ) DEFAULT NULL COMMENT '设备客户端id',
+    `c_id` VARCHAR ( 32 ) DEFAULT NULL COMMENT '设备客户端 id（个推）',
+    `version_no` VARCHAR ( 10 ) DEFAULT NULL COMMENT '设备应用版本号',
+    `system_version_no` VARCHAR ( 10 ) DEFAULT NULL COMMENT '设备系统版本号',
+    `reg_num` INTEGER DEFAULT NULL COMMENT '设备总识别次数',
+    `need_upgrade_app` VARCHAR ( 50 ) COMMENT '是否需要升级app',
+    `need_upgrade` VARCHAR ( 50 ) COMMENT '是否需要升级app和系统',
+    `create_time` TIMESTAMP NULL DEFAULT CURRENT_TIMESTAMP COMMENT '设备添加时间',
+    `expired` VARCHAR ( 10 ) DEFAULT NULL COMMENT '人脸识别设备是否禁用',
+    `device_status` VARCHAR ( 10 ) DEFAULT NULL COMMENT '人脸识别设备状态',
+    `project_code` VARCHAR ( 32 ) DEFAULT NULL COMMENT '项目编码',
+    `project_name` VARCHAR ( 512 ) DEFAULT NULL COMMENT '项目名称' 
+    ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='考勤设备';
+-- 设备人员信息表
+DROP TABLE IF EXISTS `thf_equipment_worker`
+    CREATE TABLE `thf_equipment_worker` (
+    `code`   varchar(32) NOT NULL COMMENT '主键',
+    `device_code` varchar(64)    NOT NULL COMMENT '人脸识别设备编号' ,
+    `device_key` varchar(64)     NOT NULL COMMENT '人脸识别设备序列号',
+    `device_name` varchar(64)    NOT NULL COMMENT '人脸识别设备名称',
+    `worker_code` varchar(32)    NOT NULL COMMENT '项目人员编号',
+    `worker_name` varchar(32)    NOT NULL COMMENT '项目人员姓名',
+    `team_code` varchar(32)  DEFAULT NULL COMMENT '班组编号',
+    `team_name` varchar(32)  DEFAULT NULL COMMENT '班组名称',
+    `id_card_number` varchar(32)     DEFAULT NULL COMMENT '员工身份证件号',
+    `status` varchar(10)      DEFAULT NULL COMMENT '状态',
+    `pass_times` varchar(255)    DEFAULT NULL COMMENT '每日允许进入' ,
+    `create_time` datetime DEFAULT NULL COMMENT '添加时间'
+    )ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='考勤设备人员';
+    

@@ -46,7 +46,11 @@ public enum EGeneratePrefix {
 
     OperateLog("OL", "操作日志"),
 
-    WorkerInfo("WI", "人员实名信息");
+    WorkerInfo("WI", "人员实名信息"),
+
+    EquipmentInfo("EI", "考勤设备"),
+
+    EquipmentWorker("EW", "考勤设备人员");
 
     public static Map<String, EGeneratePrefix> getMap() {
         Map<String, EGeneratePrefix> map = new HashMap<String, EGeneratePrefix>();

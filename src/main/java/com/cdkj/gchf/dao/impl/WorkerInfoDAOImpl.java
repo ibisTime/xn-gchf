@@ -70,4 +70,10 @@ public class WorkerInfoDAOImpl extends AMybatisTemplate
             condition, WorkerInfo.class);
     }
 
+    @Override
+    public int updateWorkerInfoAttendance(WorkerInfo condition) {
+        return super.update(
+            NAMESPACE.concat("update_WorkerInfoAboutAttendance"), condition);
+    }
+
 }

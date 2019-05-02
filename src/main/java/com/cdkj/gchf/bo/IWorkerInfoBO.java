@@ -42,6 +42,9 @@ public interface IWorkerInfoBO extends IPaginableBO<WorkerInfo> {
 
     public List<WorkerInfo> queryWorkerInfoList(WorkerInfo condition);
 
+    void updateWorkerInfoAttendance(String code, String workerGuid,
+            String picGuid);
+
     /****国家平台接口****/
     public Paginable<WorkerInfo> doQuery(String idCardNumber,
             ProjectConfig projectConfig);

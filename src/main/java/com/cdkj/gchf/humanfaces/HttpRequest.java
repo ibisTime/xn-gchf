@@ -84,6 +84,8 @@ public class HttpRequest {
             // String code = (String) resJson.get("code");
             // System.out.println(code);
             // }
+            System.out.println();
+            System.out.println("响应" + res);
             return res;
         } catch (MalformedURLException e) {
             e.printStackTrace();

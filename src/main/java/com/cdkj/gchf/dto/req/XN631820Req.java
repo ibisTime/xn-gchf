@@ -1,6 +1,9 @@
 package com.cdkj.gchf.dto.req;
 
-public class XN631820 {
+public class XN631820Req {
+    // 项目编号
+    private String projectCode;
+
     // 设备序列号
     private String deviceKey;
 
@@ -10,8 +13,8 @@ public class XN631820 {
     // 设备标签
     private String tag;
 
-    // 项目编号
-    private String projectCode;
+    // 人员id
+    private String userId;
 
     public String getDeviceKey() {
         return deviceKey;
@@ -43,6 +46,14 @@ public class XN631820 {
 
     public void setProjectCode(String projectCode) {
         this.projectCode = projectCode;
+    }
+
+    public String getUserId() {
+        return userId;
+    }
+
+    public void setUserId(String userId) {
+        this.userId = userId;
     }
 
 }

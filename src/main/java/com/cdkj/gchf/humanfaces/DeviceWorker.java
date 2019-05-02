@@ -1,9 +1,15 @@
 package com.cdkj.gchf.humanfaces;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
+import org.apache.commons.lang3.StringUtils;
 import org.junit.Test;
+import org.springframework.stereotype.Component;
+
+import com.cdkj.gchf.humanfaces.res.DeviceWorkerRes;
+import com.cdkj.gchf.humanfaces.res.ResultMsg;
 
 /**
  * 
@@ -11,22 +17,27 @@ import org.junit.Test;
  * @author: Old3
  * @date:   2019年4月29日 下午4:20:32     
  */
+@Component
 public class DeviceWorker {
     // 人员录入设备Url
-    public String workerAddUrl = AppConfig.getBaseUrl()
+    private String workerAddUrl = AppConfig.getBaseUrl()
             + "/Api/Personnel/PersonnelEntry";
 
     // 人员删除Url
-    public String workerDelUrl = AppConfig.getBaseUrl()
+    private String workerDelUrl = AppConfig.getBaseUrl()
             + "/Api/Personnel/PersonnelDeletion";
 
     // 人员查询Url
-    public String workerQueryUrl = AppConfig.getBaseUrl()
+    private String workerQueryUrl = AppConfig.getBaseUrl()
             + "/Api/Personnel/StaffInquiry";
 
     // 人员更新Url
-    public String workerUpdateUrl = AppConfig.getBaseUrl()
+    private String workerUpdateUrl = AppConfig.getBaseUrl()
             + "/Api/Personnel/PersonnelUpdate";
+
+    // 人员授权
+    private String authorizationUrl = AppConfig.getBaseUrl()
+            + "/Api/Device/EquipmentAP";
 
     /**
      * 
@@ -38,8 +49,8 @@ public class DeviceWorker {
      * @param: @param type 人员类型 可自定义 0无意义
      * @throws
      */
-    public String cloudWorkerAdd(String deviceKey, String name, String icNo,
-            String phone, String tag, String type) {
+    public DeviceWorkerRes cloudWorkerAdd(String deviceKey, String name,
+            String icNo, String phone, String tag, String type) {
         String token = AppConfig.getToken();
         Map<String, String> req = new HashMap<>();
         req.put("appid", AppConfig.getAppid());
@@ -50,7 +61,10 @@ public class DeviceWorker {
         req.put("tag", tag);
         req.put("type", type);
         String request = HttpRequest.doRequest(workerAddUrl, "POST", req);
-        return request;
+        DeviceWorkerRes fromJson = AppConfig.gson.fromJson(request,
+            DeviceWorkerRes.class);
+
+        return fromJson;
     }
 
     /**
@@ -88,7 +102,7 @@ public class DeviceWorker {
         req.put("phone", phone);
         req.put("tag", tag);
         req.put("type", type);
-        String request = HttpRequest.doRequest(workerDelUrl, "POST", req);
+        String request = HttpRequest.doRequest(workerUpdateUrl, "POST", req);
         return request;
     }
 
@@ -109,21 +123,34 @@ public class DeviceWorker {
     }
 
     /**
-     * @Description: 人员设备授权接口  没写完
+     * @Description: 人员设备授权接口  
      */
-    public String cloudWorkerAuthorizationEuipMent() {
+    public ResultMsg cloudWorkerAuthorizationEuipment(String deviceKey,
+            List<String> personGuids, String startTime, String endTime) {
         String token = AppConfig.getToken();
         Map<String, String> req = new HashMap<>();
         req.put("appid", AppConfig.getAppid());
         req.put("token", token);
-
-        return null;
+        req.put("deviceKey", deviceKey);
+        String person = "";
+        for (String string : personGuids) {
+            person += string + ",";
+        }
+        req.put("personGuids", person.substring(0, person.length() - 1));
+        if (StringUtils.isNotBlank(startTime)
+                && StringUtils.isNotBlank(endTime)) {
+            req.put("passTimes", startTime + "," + endTime);
+        }
+        String response = HttpRequest.doRequest(authorizationUrl, "POST", req);
+        ResultMsg resultMsg = AppConfig.gson.fromJson(response,
+            ResultMsg.class);
+        return resultMsg;
     }
 
     @Test
     public void test22() {
         // 人员录入
-        // String device = cloudWorkerAdd("84E0F420576700B0", "李四", "002532123",
+        // String device = cloudWorkerAdd("84E0F420576700B0", "老三", "002532123",
         // "18967632284", "", "");
         // System.out.println(device);
 

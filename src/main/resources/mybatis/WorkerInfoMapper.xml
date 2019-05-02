@@ -36,6 +36,11 @@
 		<result column="start_date" property="startDate" />
 		<result column="expiry_date" property="expiryDate" />
 		<result column="create_datetime" property="createDatetime" />
+		<result column="attendance_picture" property="attendancePicture" />
+		<result column="worker_guid" property="workerGuid" />
+		<result column="worker_attendance_pic_guid" property="workerAttendancePicGuid" />
+		<result column="worker_pic_upload_status" property="workerPicUploadStatus" />
+		<result column="worker_upload_status" property="workerUploadStatus" />
 		
 		<result column="id_card_number" property="businessIdCardNumber" />
 	</resultMap>
@@ -96,6 +101,11 @@
 		,marital_status
 		,hand_id_card_image_url
 		,culture_level_type
+		,attendance_picture
+		,worker_guid
+		,worker_attendance_pic_guid
+		,worker_pic_upload_status
+		,worker_upload_status
 		)
 		VALUES(
 		#{code}
@@ -124,6 +134,11 @@
 		,#{maritalStatus}
 		,#{handIdCardImageUrl}
 		,#{cultureLevelType}
+		,#{attendancePicture}
+		,#{workerGuid}
+		,#{workerAttendancePicGuid}
+		,#{workerPicUploadStatus}
+		,#{workerUploadStatus}
 		)
 	</insert>
 
@@ -165,6 +180,7 @@
 		,start_date = #{startDate}
 		,expiry_date = #{expiryDate}
 		,create_datetime = #{createDatetime}
+		,attendance_picture = #{attendancePicture}
 		WHERE code = #{code}
 	</update>
 
@@ -178,6 +194,17 @@
 		WHERE code =
 		#{code}
 	</update>
+	
+	<update id="update_WorkerInfoAboutAttendance" parameterType="workerInfo">
+        UPDATE
+        thf_worker_info
+        SET
+        worker_guid = #{workerGuid}
+        ,worker_attendance_pic_guid = #{workerAttendancePicGuid}
+        
+        WHERE code =
+        #{code}
+    </update>
 
 	<update id="update_WorkerInfoAboutPhone" parameterType="workerInfo">
 		UPDATE
@@ -203,24 +230,28 @@
 		,t.nation
 		,t.edu_level
 		,t.degree
+		
 		,t.worker_type
 		,t.birthday
 		,t.birth_place_code
 		,t.address
 		,t.head_image_url
 		,t.politics_type
+		
 		,t.is_joined
 		,t.joined_time
 		,t.cell_phone
 		,t.culture_level_type
 		,t.specialty
 		,t.has_bad_medical_history
+		
 		,t.urgent_link_man
 		,t.urgent_link_man_phone
 		,t.work_type_code
 		,t.work_corp_name
 		,t.work_date
 		,t.marital_status
+		
 		,t.grant_org
 		,t.positive_id_card_image_url
 		,t.negative_id_card_image_url
@@ -228,6 +259,13 @@
 		,t.start_date
 		,t.expiry_date
 		,t.create_datetime
+		
+		
+		,t.attendance_picture
+		,t.worker_guid
+		,t.worker_attendance_pic_guid
+		,t.worker_pic_upload_status
+		,t.worker_upload_status
 		FROM
 		thf_worker_info t
 		<include refid="where_condition" />

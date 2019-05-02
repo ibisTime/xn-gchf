@@ -136,7 +136,8 @@ public class WorkerInfoAOImpl implements IWorkerInfoAO {
     @Override
     public int addWorkerInfoContact(XN631792Req req) {
         WorkerInfo workerInfo = workerInfoBO.getWorkerInfo(req.getCode());
-        if (!workerInfo.getCellPhone().equals(req.getCellPhone())) {
+        if (workerInfo.getCellPhone() == null
+                || !workerInfo.getCellPhone().equals(req.getCellPhone())) {
             // 手机号改变 更新项目人员手机号码
             projectWorkerBO.refreshWorkerCelephone(workerInfo.getCode(),
                 req.getCellPhone());

@@ -16,7 +16,6 @@ import com.cdkj.gchf.bo.IProjectBO;
 import com.cdkj.gchf.bo.IProjectCorpInfoBO;
 import com.cdkj.gchf.bo.IProjectWorkerBO;
 import com.cdkj.gchf.bo.IUserBO;
-import com.cdkj.gchf.bo.IWorkerInfoBO;
 import com.cdkj.gchf.bo.base.Page;
 import com.cdkj.gchf.bo.base.Paginable;
 import com.cdkj.gchf.domain.BankCardInfo;
@@ -40,9 +39,6 @@ public class BankCardInfoAOImpl implements IBankCardInfoAO {
 
     @Autowired
     private IProjectCorpInfoBO projectCorpInfoBO;
-
-    @Autowired
-    private IWorkerInfoBO workerInfoBO;
 
     @Autowired
     private IProjectWorkerBO projectWorkerBO;

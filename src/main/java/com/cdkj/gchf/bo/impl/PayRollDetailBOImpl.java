@@ -5,7 +5,6 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
-import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -65,19 +64,22 @@ public class PayRollDetailBOImpl extends PaginableBOImpl<PayRollDetail>
             }
 
             // 先校验项目人员
-            List<ProjectWorker> projectWorker = projectWorkerBO
-                .getProjectWorker(projectCode, detail.getIdCardNumber());
-            if (CollectionUtils.isEmpty(projectWorker)) {
-                throw new BizException("XN631770", "身份证号为:【"
-                        + detail.getIdCardNumber() + "】的项目人员不存在,请检查身份证号输入是否正确");
-            }
+            // List<ProjectWorker> projectWorker = projectWorkerBO
+            // .getProjectWorker(projectCode, detail.getIdCardNumber());
+            // if (CollectionUtils.isEmpty(projectWorker)) {
+            // throw new BizException("XN631770", "身份证号为:【"
+            // + detail.getIdCardNumber() + "】的项目人员不存在,请检查身份证号输入是否正确");
+            // }
+            ProjectWorker projectWorker = projectWorkerBO
+                .getProjectWorker(detail.getWorkerCode());
+
             // 在校验项目人员银行卡信息
             BankCardInfo bankCardInfoByNum = bankCardBankBO
                 .getBankCardByIdCardNumBankNum(detail.getIdCardNumber(),
                     detail.getPayRollBankCardNumber());
             // 没有银行卡信息 新增
             if (bankCardInfoByNum == null) {
-                bankCardBankBO.saveBankCardInfo(detail, projectWorker.get(0));
+                bankCardBankBO.saveBankCardInfo(detail, projectWorker);
             }
             // 插入数据
             BeanUtils.copyProperties(detail, payRollDetail);
@@ -92,9 +94,8 @@ public class PayRollDetailBOImpl extends PaginableBOImpl<PayRollDetail>
                 .getBankCardType(detail.getPayBankCode()).getValue());
 
             // 员工信息
-            payRollDetail.setWorkerName(projectWorker.get(0).getWorkerName());
-            payRollDetail
-                .setIdcardNumber(projectWorker.get(0).getIdcardNumber());
+            payRollDetail.setWorkerName(projectWorker.getWorkerName());
+            payRollDetail.setIdcardNumber(projectWorker.getIdcardNumber());
             payRollDetail.setIdcardType("01");
             payRollDetail.setPayRollCode(payRollCode);
             payRollDetail.setCode(OrderNoGenerater

@@ -9,6 +9,7 @@ import com.cdkj.gchf.domain.BankCardInfo;
 import com.cdkj.gchf.dto.req.XN631750Req;
 import com.cdkj.gchf.dto.req.XN631751Req;
 import com.cdkj.gchf.dto.req.XN631752Req;
+import com.cdkj.gchf.dto.req.XN631766Req;
 import com.cdkj.gchf.dto.req.XN631767Req;
 
 @Component
@@ -28,6 +29,6 @@ public interface IBankCardInfoAO {
 
     public List<BankCardInfo> queryBankCardInfoList(XN631767Req req);
 
-    public BankCardInfo getBankCardInfo(String code);
+    public Object getBankCardInfo(XN631766Req req);
 
 }

@@ -95,6 +95,9 @@ public class PayRollDetail extends ABaseDO {
 
     private String userId;
 
+    // 业主端查询
+    private String ownerProjectCode;
+
     // 发放月份
     private Date payMonth;
 
@@ -320,6 +323,14 @@ public class PayRollDetail extends ABaseDO {
 
     public void setPayMonth(Date payMonth) {
         this.payMonth = payMonth;
+    }
+
+    public String getOwnerProjectCode() {
+        return ownerProjectCode;
+    }
+
+    public void setOwnerProjectCode(String ownerProjectCode) {
+        this.ownerProjectCode = ownerProjectCode;
     }
 
 }

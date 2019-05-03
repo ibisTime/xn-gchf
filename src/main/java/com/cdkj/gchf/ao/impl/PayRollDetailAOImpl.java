@@ -81,6 +81,7 @@ public class PayRollDetailAOImpl implements IPayRollDetailAO {
         User user = userBO.getBriefUser(condition.getUserId());
         if (EUserKind.Owner.getCode().equals(user.getType())) {
             condition.setProjectCode(user.getOrganizationCode());
+            // condition.setOwnerProjectCode(user.getOrganizationCode());
         }
 
         Paginable<PayRollDetail> page = payRollDetailBO.getPaginable(start,

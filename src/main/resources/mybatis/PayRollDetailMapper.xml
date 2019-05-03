@@ -28,6 +28,7 @@
 
 		<result column="corp_code" property="corpCode" />
 		<result column="corp_name" property="corpName" />
+		<result column="project_code" property="ownerProjectCode" />
 
 	</resultMap>
 	<sql id="where_condition">
@@ -55,13 +56,16 @@
 				AND
 				Month(t.pay_month) = Month(#{payMonth})
 			</if>
+			<if test="ownerProjectCode != null and ownerProjectCode != '' ">
+                AND t.project_code = #{ownerProjectCode}
+            </if>
 
 
 		</trim>
 	</sql>
 
 	<sql id="join_condition">
-		<if test="corpName != null and corpName != '' ">
+		<if test="(corpName != null and corpName != '' ) or (projectCode != null and  projectCode != '' ) ">
 			left join thf_pay_roll pr
 			on pr.code = t.pay_roll_code
 		</if>
@@ -221,7 +225,7 @@
 			AND pr.corp_code = #{corpCode}
 		</if>
 
-		<if test="projectCode != null  and projectCode != ''">
+		<if test="projectCode != null and projectCode != ''">
 			AND pr.project_code = #{projectCode}
 		</if>
 

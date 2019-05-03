@@ -40,6 +40,7 @@ import com.cdkj.gchf.dto.req.XN631812ReqData;
 import com.cdkj.gchf.dto.req.XN631920Req;
 import com.cdkj.gchf.dto.req.XN631921Req;
 import com.cdkj.gchf.enums.EDeleteStatus;
+import com.cdkj.gchf.enums.EIsNotType;
 import com.cdkj.gchf.enums.EOperateLogOperate;
 import com.cdkj.gchf.enums.EOperateLogRefType;
 import com.cdkj.gchf.enums.EPayRollUploadStatus;
@@ -81,6 +82,11 @@ public class PayRollAOImpl implements IPayRollAO {
     @Autowired
     private IProjectWorkerBO projectWorkerBO;
 
+    /**
+     * 
+     * <p>Title: addPayRoll</p>   
+     * <p>Description: 添加工资单</p>   
+     */
     @Transactional
     @Override
     public String addPayRoll(XN631770Req data) {
@@ -265,6 +271,21 @@ public class PayRollAOImpl implements IPayRollAO {
      */
     private String getRequestJsonToPlantform(PayRoll payRoll,
             PayRollDetail payRollDetail, ProjectConfig projectconfig) {
+        if (StringUtils.isBlank(payRollDetail.getPayRollBankCode())) {
+            throw new BizException("XN00000", "导入信息不全,请修改后上传");
+        }
+        if (StringUtils.isBlank(payRollDetail.getPayBankName())) {
+            throw new BizException("XN00000", "导入信息不全,请修改后上传");
+        }
+        if (StringUtils.isBlank(payRollDetail.getPayRollBankName())) {
+            throw new BizException("XN00000", "导入信息不全,请修改后上传");
+        }
+        if (StringUtils.isBlank(payRollDetail.getPayBankCode())) {
+            throw new BizException("XN00000", "导入信息不全,请修改后上传");
+        }
+        if (StringUtils.isBlank(payRollDetail.getPayBankName())) {
+            throw new BizException("XN00000", "导入信息不全,请修改后上传");
+        }
         JsonObject jsonObject = new JsonObject();
         JsonArray jsonArray = new JsonArray();
         ProjectConfig projectConfigByLocal = projectConfigBO
@@ -289,21 +310,7 @@ public class PayRollAOImpl implements IPayRollAO {
         jsonObject.addProperty("PayMonth", payMonth);
         // payRoll data
         JsonObject payRollData = new JsonObject();
-        if (StringUtils.isBlank(payRollDetail.getPayRollBankCode())) {
-            throw new BizException("XN00000", "导入信息不全,请修改后上传");
-        }
-        if (StringUtils.isBlank(payRollDetail.getPayBankName())) {
-            throw new BizException("XN00000", "导入信息不全,请修改后上传");
-        }
-        if (StringUtils.isBlank(payRollDetail.getPayRollBankName())) {
-            throw new BizException("XN00000", "导入信息不全,请修改后上传");
-        }
-        if (StringUtils.isBlank(payRollDetail.getPayBankCode())) {
-            throw new BizException("XN00000", "导入信息不全,请修改后上传");
-        }
-        if (StringUtils.isBlank(payRollDetail.getPayBankName())) {
-            throw new BizException("XN00000", "导入信息不全,请修改后上传");
-        }
+
         BeanUtils.copyProperties(payRollDetail, payRollData);
         payRollData.addProperty("payBankName", payRollDetail.getPayBankName());
         payRollData.addProperty("totalPayAmount",
@@ -311,6 +318,11 @@ public class PayRollAOImpl implements IPayRollAO {
         payRollData.addProperty("actualAmount",
             payRollDetail.getActualAmount());
         payRollData.addProperty("isBackPay", payRollDetail.getIsBackPay());
+        if (payRollDetail.getIsBackPay().intValue() == Integer
+            .parseInt(EIsNotType.IS.getCode())) {
+            // 补发
+
+        }
         if (payRollDetail.getBalanceDate() != null) {
             String balanceDate = DateUtil.dateToStr(
                 payRollDetail.getBalanceDate(),

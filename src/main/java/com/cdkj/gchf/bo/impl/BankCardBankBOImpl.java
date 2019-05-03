@@ -147,12 +147,12 @@ public class BankCardBankBOImpl extends PaginableBOImpl<BankCardInfo>
         if (StringUtils.isNotBlank(workerName)) {
             bankCardInfo.setBusinessName(workerName);
         }
-        if (StringUtils.isNotEmpty(status)) {
+        if (StringUtils.isNotBlank(status)) {
             bankCardInfo.setStatus(status);
         }
 
         bankCardInfo.setBusinessSysNo(bussinessNo);
-        return bankCardInfoDAO.select(bankCardInfo);
+        return bankCardInfoDAO.selectList(bankCardInfo).get(0);
     }
 
     @Override

@@ -191,6 +191,7 @@
 		hand_id_card_image_url = #{handIdCardImageUrl}
 		,positive_id_card_image_url = #{positiveIdCardImageUrl}
 		,negative_id_card_image_url = #{negativeIdCardImageUrl}
+		,attendance_picture = #{attendancePicture}
 		WHERE code =
 		#{code}
 	</update>

@@ -30,7 +30,8 @@ public class BankCardInfoDAOImpl extends AMybatisTemplate
 
     @Override
     public long selectTotalCount(BankCardInfo condition) {
-        return 0;
+        return super.selectTotalCount(
+            NAMESPACE.concat("select_bankCardInfo_count"), condition);
     }
 
     @Override

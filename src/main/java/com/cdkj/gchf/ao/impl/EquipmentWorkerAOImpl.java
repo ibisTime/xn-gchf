@@ -12,10 +12,12 @@ import com.cdkj.gchf.bo.IEquipmentWorkerBO;
 import com.cdkj.gchf.bo.IProjectWorkerBO;
 import com.cdkj.gchf.bo.IWorkerInfoBO;
 import com.cdkj.gchf.bo.base.Paginable;
+import com.cdkj.gchf.core.OrderNoGenerater;
 import com.cdkj.gchf.domain.EquipmentInfo;
 import com.cdkj.gchf.domain.EquipmentWorker;
 import com.cdkj.gchf.domain.ProjectWorker;
 import com.cdkj.gchf.dto.req.XN631830Req;
+import com.cdkj.gchf.enums.EGeneratePrefix;
 import com.cdkj.gchf.enums.EProjectWorkerUploadStatus;
 import com.cdkj.gchf.exception.BizException;
 import com.cdkj.gchf.humanfaces.DeviceWorker;
@@ -97,6 +99,7 @@ public class EquipmentWorkerAOImpl implements IEquipmentWorkerAO {
             throw new BizException("XN631830", "设备不存在");
         }
         List<String> workerInfos = new ArrayList<>();
+        List<ProjectWorker> projectWorkers = new ArrayList<>();
         for (String code : req.getWorkerList()) {
             ProjectWorker projectWorker = projectWorkerBO
                 .getProjectWorker(code);
@@ -129,6 +132,7 @@ public class EquipmentWorkerAOImpl implements IEquipmentWorkerAO {
                     .picRegisterToCloudUrl(device.getGuid(),
                         workerInfo.getAttendancePicture(),
                         projectWorker.getWorkType(), null, null);
+                projectWorkers.add(projectWorker);
                 workerInfoBO.updateWorkerInfoAttendance(workerInfo.getCode(),
                     worker.getData().getGuid(),
                     picRegisterToCloudUrl.getData().getGuid());
@@ -145,6 +149,23 @@ public class EquipmentWorkerAOImpl implements IEquipmentWorkerAO {
         if (cloudWorkerAuthorizationEuipment.getCode()
             .equals(EEquipmentWorkerResponse.SHOUQUANCHENGONG.getCode())) {
             // 授权成功
+
+            for (ProjectWorker projectWorker : projectWorkers) {
+                EquipmentWorker equipmentWorker = new EquipmentWorker();
+                equipmentWorker.setCode(OrderNoGenerater
+                    .generate(EGeneratePrefix.EquipmentWorker.getCode()));
+                equipmentWorker.setDeviceKey(equipmentInfo.getDeviceKey());
+                equipmentWorker.setDeviceCode(equipmentInfo.getCode());
+                equipmentWorker.setDeviceName(equipmentInfo.getName());
+                equipmentWorker.setWorkerCode(projectWorker.getWorkerCode());
+                equipmentWorker.setWorkerName(projectWorker.getWorkerName());
+                equipmentWorker.setTeamCode(projectWorker.getTeamSysNo());
+                equipmentWorker.setTeamName(projectWorker.getTeamName());
+                equipmentWorker
+                    .setIdCardNumber(projectWorker.getIdcardNumber());
+                equipmentWorkerBO.saveEquipmentWorker(equipmentWorker);
+            }
+
         }
     }
 

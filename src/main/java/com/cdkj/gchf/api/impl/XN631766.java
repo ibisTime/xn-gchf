@@ -26,7 +26,7 @@ public class XN631766 extends AProcessor {
 
     @Override
     public Object doBusiness() throws BizException {
-        return bankCardInfoAO.getBankCardInfo(req.getCode());
+        return bankCardInfoAO.getBankCardInfo(req);
     }
 
     @Override

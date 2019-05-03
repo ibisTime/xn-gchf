@@ -136,7 +136,7 @@
 
 	<select id="select_bankCardInfo_count" parameterType="bankCardInfo"
 		resultType="java.lang.Long">
-		SELECT count(1) FROM tqy_corp_basicinfo t
+		SELECT count(1) FROM thf_bank_card_info t
 		<include refid="where_condition" />
 	</select>
 

@@ -26,6 +26,7 @@ import com.cdkj.gchf.domain.User;
 import com.cdkj.gchf.dto.req.XN631750Req;
 import com.cdkj.gchf.dto.req.XN631751Req;
 import com.cdkj.gchf.dto.req.XN631752Req;
+import com.cdkj.gchf.dto.req.XN631766Req;
 import com.cdkj.gchf.dto.req.XN631767Req;
 import com.cdkj.gchf.enums.EBankCardBussinessType;
 import com.cdkj.gchf.enums.EBankCardStatus;
@@ -153,9 +154,13 @@ public class BankCardInfoAOImpl implements IBankCardInfoAO {
         List<BankCardInfo> list = paginable.getList();
         for (BankCardInfo bankCardInfo : list) {
             String businessSysNo = bankCardInfo.getBusinessSysNo();
-            ProjectWorker projectWorker = projectWorkerBO
-                .getProjectWorker(businessSysNo);
-            if (projectWorker == null) {
+            // ProjectWorker projectWorker = projectWorkerBO
+            // .getProjectWorker(businessSysNo);
+            ProjectWorker worker = new ProjectWorker();
+            worker.setCode(businessSysNo);
+            List<ProjectWorker> queryProjectWorkerList = projectWorkerBO
+                .queryProjectWorkerList(worker);
+            if (CollectionUtils.isEmpty(queryProjectWorkerList)) {
                 ProjectCorpInfo projectCorpInfo = projectCorpInfoBO
                     .getProjectCorpInfo(businessSysNo);
                 bankCardInfo.setProjectName(projectCorpInfo.getProjectName());
@@ -163,6 +168,7 @@ public class BankCardInfoAOImpl implements IBankCardInfoAO {
                 bankCardInfo.setWorkerName(projectCorpInfo.getCorpName());
 
             } else {
+                ProjectWorker projectWorker = queryProjectWorkerList.get(0);
                 bankCardInfo.setProjectName(projectWorker.getProjectName());
                 bankCardInfo.setTeamName(projectWorker.getTeamName());
                 bankCardInfo.setWorkerName(projectWorker.getWorkerName());
@@ -192,8 +198,15 @@ public class BankCardInfoAOImpl implements IBankCardInfoAO {
     }
 
     @Override
-    public BankCardInfo getBankCardInfo(String code) {
-        BankCardInfo bankCardInfo = bankCardBankBO.getBankCardInfo(code);
+    public Object getBankCardInfo(XN631766Req req) {
+        if (StringUtils.isNotBlank(req.getWorkerCode())) {
+            BankCardInfo condition = new BankCardInfo();
+            condition.setBusinessSysNo(req.getWorkerCode());
+            return bankCardBankBO.getPaginable(1, 20, condition);
+
+        }
+        BankCardInfo bankCardInfo = bankCardBankBO
+            .getBankCardInfo(req.getCode());
         // 人员
         if (bankCardInfo.getBusinessType()
             .equals(EBankCardBussinessType.USER.getCode())) {

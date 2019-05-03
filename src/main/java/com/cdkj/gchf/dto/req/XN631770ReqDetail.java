@@ -10,6 +10,9 @@ public class XN631770ReqDetail {
     // 证件号码
     private String idCardNumber;
 
+    // 人员编号
+    private String workerCode;
+
     // 出勤天数
     private String days;
 
@@ -186,6 +189,14 @@ public class XN631770ReqDetail {
 
     public void setThirdPayRollCode(String thirdPayRollCode) {
         this.thirdPayRollCode = thirdPayRollCode;
+    }
+
+    public String getWorkerCode() {
+        return workerCode;
+    }
+
+    public void setWorkerCode(String workerCode) {
+        this.workerCode = workerCode;
     }
 
 }

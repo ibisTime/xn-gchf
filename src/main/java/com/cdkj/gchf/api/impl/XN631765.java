@@ -10,6 +10,7 @@ import com.cdkj.gchf.core.ObjValidater;
 import com.cdkj.gchf.core.StringValidater;
 import com.cdkj.gchf.domain.BankCardInfo;
 import com.cdkj.gchf.dto.req.XN631765Req;
+import com.cdkj.gchf.enums.EBankCardCodeType;
 import com.cdkj.gchf.enums.EBankCardStatus;
 import com.cdkj.gchf.exception.BizException;
 import com.cdkj.gchf.exception.ParaException;
@@ -45,12 +46,15 @@ public class XN631765 extends AProcessor {
         if (StringUtils.isBlank(column)) {
             column = IBankCardInfoAO.DEFAULT_ORDER_COLUMN;
         }
+        if (StringUtils.isNotBlank(req.getBankCode())) {
+            EBankCardCodeType.checkExists(req.getBankCode());
+        }
         if (StringUtils.isNotBlank(req.getStatus())) {
             EBankCardStatus.checkExists(req.getStatus());
         }
         condition.setOrder(column, req.getOrderDir());
-        return bankCardInfoAO.queryBankCardInfoPage(req.getUserId(), start,
-            limit, condition);
+        return bankCardInfoAO.queryBankCardInfoPage(req, start, limit,
+            condition);
     }
 
     @Override

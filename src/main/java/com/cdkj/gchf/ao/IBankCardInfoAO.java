@@ -9,6 +9,7 @@ import com.cdkj.gchf.domain.BankCardInfo;
 import com.cdkj.gchf.dto.req.XN631750Req;
 import com.cdkj.gchf.dto.req.XN631751Req;
 import com.cdkj.gchf.dto.req.XN631752Req;
+import com.cdkj.gchf.dto.req.XN631765Req;
 import com.cdkj.gchf.dto.req.XN631766Req;
 import com.cdkj.gchf.dto.req.XN631767Req;
 
@@ -24,7 +25,7 @@ public interface IBankCardInfoAO {
 
     public void queryBankCardInfoDetail(String code);
 
-    public Paginable<BankCardInfo> queryBankCardInfoPage(String userId,
+    public Paginable<BankCardInfo> queryBankCardInfoPage(XN631765Req req,
             int start, int limit, BankCardInfo condition);
 
     public List<BankCardInfo> queryBankCardInfoList(XN631767Req req);

@@ -418,7 +418,6 @@ public class PayRollAOImpl implements IPayRollAO {
                 try {
                     toDate = DateUtil.strToDate(xn631773ReqData.getPayMonth(),
                         "yyyy-MM");
-
                 } catch (Exception e) {
                     Date strToDate = DateUtil
                         .strToDate(xn631773ReqData.getPayMonth(), "yyyy/mm");

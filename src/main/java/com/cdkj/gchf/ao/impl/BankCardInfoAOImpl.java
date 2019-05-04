@@ -26,6 +26,7 @@ import com.cdkj.gchf.domain.User;
 import com.cdkj.gchf.dto.req.XN631750Req;
 import com.cdkj.gchf.dto.req.XN631751Req;
 import com.cdkj.gchf.dto.req.XN631752Req;
+import com.cdkj.gchf.dto.req.XN631765Req;
 import com.cdkj.gchf.dto.req.XN631766Req;
 import com.cdkj.gchf.dto.req.XN631767Req;
 import com.cdkj.gchf.enums.EBankCardBussinessType;
@@ -118,9 +119,9 @@ public class BankCardInfoAOImpl implements IBankCardInfoAO {
 
     @Transactional
     @Override
-    public Paginable<BankCardInfo> queryBankCardInfoPage(String userId,
+    public Paginable<BankCardInfo> queryBankCardInfoPage(XN631765Req req,
             int start, int limit, BankCardInfo condition) {
-        User briefUser = userBO.getBriefUser(userId);
+        User briefUser = userBO.getBriefUser(req.getUserId());
         // 根据用户类型进行查询
         // 项目端查询
         if (briefUser.getType().equals(EUserKind.Owner.getCode())) {
@@ -130,6 +131,16 @@ public class BankCardInfoAOImpl implements IBankCardInfoAO {
             List<ProjectWorker> projectWorkerList = projectWorkerBO
                 .queryProjectWorkerListByProject(project.getCode());
             List<BankCardInfo> workerBankCard = new ArrayList<>();
+            if (req.getBusinessType()
+                .equals(EBankCardBussinessType.CORP.getCode())) {
+                BankCardInfo bankCardInfo = new BankCardInfo();
+                bankCardInfo
+                    .setBusinessType(EBankCardBussinessType.CORP.getCode());
+                bankCardInfo.setBusinessSysNo(req.getBusinessSysNo());
+                Page<BankCardInfo> page = new Page<BankCardInfo>();
+                page.setList(bankCardBankBO.queryBankCardInfoList(condition));
+                return page;
+            }
             for (ProjectWorker projectWorker : projectWorkerList) {
                 List<BankCardInfo> bankCardInfo = bankCardBankBO
                     .getOwnerBankCardInfo(condition.getBusinessName(),
@@ -147,6 +158,7 @@ public class BankCardInfoAOImpl implements IBankCardInfoAO {
                 }
 
             }
+
             Page<BankCardInfo> page = new Page<BankCardInfo>();
             page.setList(workerBankCard);
             return page;

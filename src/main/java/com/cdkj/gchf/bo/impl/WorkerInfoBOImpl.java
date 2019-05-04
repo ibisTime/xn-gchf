@@ -172,7 +172,8 @@ public class WorkerInfoBOImpl extends PaginableBOImpl<WorkerInfo>
     @Override
     public WorkerInfo getWorkerInfoByIdCardNumber(String idCardNumber) {
         WorkerInfo workerInfo = new WorkerInfo();
-        workerInfo.setIdCardNumber(idCardNumber);
+        // workerInfo.setIdCardNumber(idCardNumber);
+        workerInfo.setBusinessIdCardNumber(idCardNumber);
         return workerInfoDAO.select(workerInfo);
     }
 
@@ -218,15 +219,18 @@ public class WorkerInfoBOImpl extends PaginableBOImpl<WorkerInfo>
             workerInfo.setHasBadMedicalHistory(
                 Integer.parseInt(req.getHasBadMedicalHistory()));
         }
-        if (req.getIsJoined().equals(EIsNotType.IS.getCode())
-                && StringUtils.isNotBlank(req.getJoinedTime())) {
-            workerInfo.setJoinedTime(DateUtil.strToDate(req.getJoinedTime(),
-                DateUtil.FRONT_DATE_FORMAT_STRING));
-        } else {
-            workerInfo.setIsJoined(0);
-            workerInfo.setJoinedTime(null);
+        if (StringUtils.isNotBlank(req.getIsJoined())) {
+            if (req.getIsJoined().equals(EIsNotType.IS.getCode())
+                    && StringUtils.isNotBlank(req.getJoinedTime())) {
+                workerInfo.setJoinedTime(DateUtil.strToDate(req.getJoinedTime(),
+                    DateUtil.FRONT_DATE_FORMAT_STRING));
+            } else {
+                workerInfo.setIsJoined(0);
+                workerInfo.setJoinedTime(null);
 
+            }
         }
+
         if (StringUtils.isNotBlank(req.getStartDate())) {
             workerInfo.setStartDate(DateUtil.strToDate(req.getStartDate(),
                 DateUtil.FRONT_DATE_FORMAT_STRING));

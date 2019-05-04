@@ -73,7 +73,7 @@ public class PayRollDetail extends ABaseDO {
     private String thirdPayRollCode;
 
     // 补发日期
-    private String backPayMonth;
+    private Date backPayMonth;
 
     /****DB Properties****/
     // 项目名称
@@ -253,11 +253,11 @@ public class PayRollDetail extends ABaseDO {
         this.thirdPayRollCode = thirdPayRollCode;
     }
 
-    public String getBackPayMonth() {
+    public Date getBackPayMonth() {
         return backPayMonth;
     }
 
-    public void setBackPayMonth(String backPayMonth) {
+    public void setBackPayMonth(Date backPayMonth) {
         this.backPayMonth = backPayMonth;
     }
 

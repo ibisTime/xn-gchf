@@ -190,6 +190,7 @@ public class ProjectWorkerBOImpl extends PaginableBOImpl<ProjectWorker>
         projectWorker.setIsTeamLeader(Integer.parseInt(req.getIsTeamLeader()));
         projectWorker.setIdcardNumber(req.getIdCardNumber());
         projectWorker.setIdcardType("01");
+        projectWorkerDAO.insert(projectWorker);
         return code;
     }
 

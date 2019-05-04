@@ -32,6 +32,7 @@ import com.cdkj.gchf.dto.req.XN631812ReqData;
 import com.cdkj.gchf.enums.EBankCardCodeType;
 import com.cdkj.gchf.enums.EDeleteStatus;
 import com.cdkj.gchf.enums.EGeneratePrefix;
+import com.cdkj.gchf.enums.EIsNotType;
 import com.cdkj.gchf.enums.EPayRollUploadStatus;
 import com.cdkj.gchf.exception.BizException;
 import com.google.gson.JsonArray;
@@ -110,6 +111,11 @@ public class PayRollDetailBOImpl extends PaginableBOImpl<PayRollDetail>
             payRollDetail
                 .setActualAmount(new BigDecimal(detail.getActualAmount()));
             if (StringUtils.isNotBlank(detail.getIsBackPay())) {
+
+                if (detail.getIsBackPay().equals(EIsNotType.IS.getCode())) {
+                    payRollDetail.setBackPayMonth(DateUtil
+                        .strToDate(detail.getBackPayMonth(), "yyyy-MM"));
+                }
                 payRollDetail
                     .setIsBackPay(Integer.parseInt(detail.getIsBackPay()));
             }
@@ -293,6 +299,10 @@ public class PayRollDetailBOImpl extends PaginableBOImpl<PayRollDetail>
             condition
                 .setTotalPayAmount(new BigDecimal(data.getTotalPayAmount()));
         }
+        if (StringUtils.isNotBlank(data.getBackPayMonth())) {
+            condition.setBackPayMonth(
+                DateUtil.strToDate(data.getBackPayMonth(), "yyyy-MM"));
+        }
         if (StringUtils.isNotBlank(data.getDays())) {
             condition.setDays(Integer.parseInt(data.getDays()));
         }
@@ -336,6 +346,11 @@ public class PayRollDetailBOImpl extends PaginableBOImpl<PayRollDetail>
         }
         if (StringUtils.isNotBlank(data.getDays())) {
             payRollDetail.setDays(Integer.parseInt(data.getDays()));
+        }
+        if (StringUtils.isNotBlank(data.getBackPayMonth())) {
+            payRollDetail.setBackPayMonth(
+                DateUtil.strToDate(data.getBackPayMonth(), "yyyy-MM"));
+
         }
 
         payRollDetail.setBalanceDate(DateUtil.strToDate(data.getBalanceDate(),

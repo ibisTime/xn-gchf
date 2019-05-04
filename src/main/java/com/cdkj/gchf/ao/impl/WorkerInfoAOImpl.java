@@ -9,13 +9,11 @@ import org.springframework.stereotype.Service;
 
 import com.cdkj.gchf.ao.IWorkerInfoAO;
 import com.cdkj.gchf.bo.IOperateLogBO;
-import com.cdkj.gchf.bo.IProjectBO;
 import com.cdkj.gchf.bo.IProjectWorkerBO;
 import com.cdkj.gchf.bo.IUserBO;
 import com.cdkj.gchf.bo.IWorkerInfoBO;
 import com.cdkj.gchf.bo.base.Paginable;
 import com.cdkj.gchf.common.IdCardChecker;
-import com.cdkj.gchf.domain.Project;
 import com.cdkj.gchf.domain.User;
 import com.cdkj.gchf.domain.WorkerInfo;
 import com.cdkj.gchf.dto.req.XN631790Req;
@@ -44,9 +42,6 @@ public class WorkerInfoAOImpl implements IWorkerInfoAO {
 
     @Autowired
     private IProjectWorkerBO projectWorkerBO;
-
-    @Autowired
-    private IProjectBO projectBO;
 
     @Override
     public String addWorkerInfo(XN631790Req req) {
@@ -83,13 +78,24 @@ public class WorkerInfoAOImpl implements IWorkerInfoAO {
             workerInfoBO.refreshWorkerInfo(xn631791Req);
             return req.getCode();
         }
+        // 身份证信息已存在
+        WorkerInfo infoByIdCardNumber = workerInfoBO
+            .getWorkerInfoByIdCardNumber(req.getIdCardNumber());
+        if (infoByIdCardNumber != null) {
+            // 更新建档信息
+            XN631793Req xn631791Req = new XN631793Req();
+            BeanUtils.copyProperties(req, xn631791Req);
+            xn631791Req.setCode(infoByIdCardNumber.getCode());
+            workerInfoBO.refreshWorkerInfo(xn631791Req);
+            return infoByIdCardNumber.getCode();
+        }
         String workerCode = workerInfoBO.saveWorkerInfo(req);
 
-        if (StringUtils.isNotBlank(req.getProjectCode())) {
-            Project project = projectBO.getProject(req.getProjectCode());
-            projectWorkerBO.saveProjectWorker(workerCode, req.getName(),
-                req.getIdCardNumber(), project);
-        }
+        // if (StringUtils.isNotBlank(req.getProjectCode())) {
+        // Project project = projectBO.getProject(req.getProjectCode());
+        // projectWorkerBO.saveProjectWorker(workerCode, req.getName(),
+        // req.getIdCardNumber(), project);
+        // }
 
         return workerCode;
     }
@@ -125,6 +131,10 @@ public class WorkerInfoAOImpl implements IWorkerInfoAO {
 
     @Override
     public WorkerInfo getWorkerInfoByIdCardNumber(String idCardNumber) {
+        // User briefUser = userBO.getBriefUser(userId);
+        // if (briefUser.getType().equals(EUserKind.Owner.getCode())) {
+        // // 项目端
+        // }
         return workerInfoBO.getWorkerInfoByIdCardNumber(idCardNumber);
     }
 

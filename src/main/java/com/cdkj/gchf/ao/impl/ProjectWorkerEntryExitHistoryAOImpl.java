@@ -332,7 +332,7 @@ public class ProjectWorkerEntryExitHistoryAOImpl
             ProjectWorker infoByIdCardNumber = projectWorkerBO
                 .getProjectWorkerByIdentity(teamMaster.getCode(),
                     data.getIdcardNumber());
-            if (infoByIdCardNumber != null) {
+            if (infoByIdCardNumber == null) {
                 throw new BizException("XN631733",
                     "项目人员【" + data.getIdcardNumber() + "】未录入");
             }

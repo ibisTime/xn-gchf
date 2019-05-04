@@ -20,6 +20,7 @@
 		<result column="total_pay_amount" property="totalPayAmount" />
 		<result column="actual_amount" property="actualAmount" />
 		<result column="is_back_pay" property="isBackPay" />
+		<result column="back_pay_month" property="backPayMonth" />
 		<result column="balance_date" property="balanceDate" />
 		<result column="third_pay_roll_code" property="thirdPayRollCode" />
 		<result column="upload_status" property="uploadStatus" />
@@ -92,6 +93,7 @@
 		,total_pay_amount
 		,actual_amount
 		,is_back_pay
+		,back_pay_month
 		,balance_date
 		,third_pay_roll_code
 		,upload_status
@@ -116,6 +118,7 @@
 		,#{totalPayAmount}
 		,#{actualAmount}
 		,#{isBackPay}
+		,#{backPayMonth}
 		,#{balanceDate}
 		,#{thirdPayRollCode}
 		,#{uploadStatus}
@@ -137,19 +140,18 @@
 		,total_pay_amount = #{totalPayAmount}
 		,actual_amount = #{actualAmount}
 		,is_back_pay = #{isBackPay}
+		,back_pay_month = #{backPayMonth}
 
 		,balance_date = #{balanceDate}
 		,pay_roll_bank_card_number = #{payRollBankCardNumber}
 		,pay_roll_bank_code = #{payRollBankCode}
-		,pay_roll_bank_name =
-		#{payRollBankName}
+		,pay_roll_bank_name = #{payRollBankName}
 
 		,pay_bank_card_number = #{payBankCardNumber}
 		,pay_bank_code = #{payBankCode}
 		,pay_bank_name = #{payBankName}
 		,third_pay_roll_code = #{thirdPayRollCode}
-		,delete_status =
-		#{deleteStatus}
+		,delete_status = #{deleteStatus}
 		WHERE code = #{code}
 	</update>
 
@@ -158,8 +160,7 @@
 		thf_pay_roll_detail
 		SET
 		upload_status = #{uploadStatus}
-		WHERE code =
-		#{code}
+		WHERE code = #{code}
 	</update>
 
 
@@ -212,6 +213,7 @@
 		,t.total_pay_amount
 		,t.actual_amount
 		,t.is_back_pay
+		,t.back_pay_month
 		,t.balance_date
 		,t.third_pay_roll_code
 		,t.upload_status

@@ -625,23 +625,19 @@ CREATE TABLE `thf_skill` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- 以下为220修改
-ALTER TABLE `thf_worker_info` 
-ADD COLUMN `attendance_picture` longtext CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '人脸考勤照片';
+ALTER TABLE `test_xn_gchf_gov`.`thf_worker_info` 
+ADD COLUMN `attendance_picture` longtext NULL COMMENT '人员考勤照片' AFTER `create_datetime`,
+ADD COLUMN `worker_guid` varchar(32) NULL COMMENT '人员guid' AFTER `attendance_picture`,
+ADD COLUMN `worker_attendance_pic_guid` varchar(32) NULL COMMENT '人员考勤照片guid' AFTER `worker_guid`,
+ADD COLUMN `worker_pic_upload_status` tinyint(1) NULL COMMENT '人脸上传状态' AFTER `worker_attendance_pic_guid`,
+ADD COLUMN `worker_upload_status` tinyint(1) NULL COMMENT '考勤人员上传状态' AFTER `worker_pic_upload_status`;
 
-ALTER TABLE `thf_worker_info` 
-ADD COLUMN `worker_guid` varchar(32) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '人员guid(用于上传人脸考勤用于上传人脸考勤)';
 
-ALTER TABLE `thf_worker_info` 
-ADD COLUMN `worker_attendance_pic_guid` varchar(32) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '人脸考勤图片guid((用于上传人脸考勤照片到平台)';
-
-ALTER TABLE `thf_worker_info` 
-ADD COLUMN `worker_pic_upload_status` tinyint(1) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '人脸上传状态';
-
-ALTER TABLE `thf_worker_info` 
-ADD COLUMN `worker_upload_status` tinyint(1) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '考勤人员上传状态';
-
+alter table thf_pay_roll_detail add COLUMN `back_pay_month` datetime 
+  COMMENT '补发日期';
+  
 -- 人脸识别设备表
-DROP TABLE IF EXISTS `thf_equipment_info`
+DROP TABLE IF EXISTS `thf_equipment_info`;
     CREATE TABLE `thf_equipment_info` (
     `code` VARCHAR ( 32 ) NOT NULL PRIMARY KEY COMMENT '主键',
     `device_key` VARCHAR ( 64 ) NOT NULL COMMENT '人脸识别设备序列号',
@@ -665,7 +661,7 @@ DROP TABLE IF EXISTS `thf_equipment_info`
     `project_name` VARCHAR ( 512 ) DEFAULT NULL COMMENT '项目名称' 
     ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='考勤设备';
 -- 设备人员信息表
-DROP TABLE IF EXISTS `thf_equipment_worker`
+DROP TABLE IF EXISTS `thf_equipment_worker`;
     CREATE TABLE `thf_equipment_worker` (
     `code`   varchar(32) NOT NULL COMMENT '主键',
     `device_code` varchar(64)    NOT NULL COMMENT '人脸识别设备编号' ,

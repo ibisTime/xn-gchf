@@ -13,8 +13,7 @@ public class XN631765Req extends APageReq {
     @NotBlank
     private String userId;
 
-    private String uploadStatus;
-
+    // 银行卡状态
     private String status;
 
     // 业务类型
@@ -23,8 +22,10 @@ public class XN631765Req extends APageReq {
     // 业务编号
     private String businessSysNo;
 
-    //
+    // 业务名称 人员存储的是projectworker的code 参建单位存储的是CorpInfo的code
     private String businessName;
+
+    private String bankCode;
 
     public String getUserId() {
         return userId;
@@ -32,14 +33,6 @@ public class XN631765Req extends APageReq {
 
     public void setUserId(String userId) {
         this.userId = userId;
-    }
-
-    public String getUploadStatus() {
-        return uploadStatus;
-    }
-
-    public void setUploadStatus(String uploadStatus) {
-        this.uploadStatus = uploadStatus;
     }
 
     public String getStatus() {
@@ -72,6 +65,14 @@ public class XN631765Req extends APageReq {
 
     public void setBusinessName(String businessName) {
         this.businessName = businessName;
+    }
+
+    public String getBankCode() {
+        return bankCode;
+    }
+
+    public void setBankCode(String bankCode) {
+        this.bankCode = bankCode;
     }
 
 }

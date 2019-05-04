@@ -45,6 +45,9 @@
 			<if test="businessName != null and businessName != '' ">
 				AND t.business_name like "%"#{businessName}"%"
 			</if>
+			<if test="bankCode != null and bankCode != '' ">
+				AND t.bank_code = #{bankCode}
+			</if>
 
 		</trim>
 	</sql>
@@ -103,7 +106,8 @@
 		thf_bank_card_info
 		SET
 		status = #{status}
-		,update_datetime = #{updateDatetime}
+		,update_datetime =
+		#{updateDatetime}
 		WHERE code = #{code}
 	</update>
 
@@ -146,6 +150,7 @@
 		thf_bank_card_info
 		SET
 		status = #{status}
-		WHERE business_sys_no = #{businessSysNo}
+		WHERE business_sys_no =
+		#{businessSysNo}
 	</update>
 </mapper>

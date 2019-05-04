@@ -21,7 +21,7 @@ public class GovConnecter {
 
     public static String APPSECRET = "24484b262dd63dd584902a266bdbdca0";
 
-    public static String TESTCORPSECRET = "3e43e64832ea4d298c277e52a96e407e";
+    // public static String TESTCORPSECRET = "3e43e64832ea4d298c277e52a96e407e";
 
     public static String getGovData(String method, String data) {
 
@@ -97,6 +97,7 @@ public class GovConnecter {
         sortString += "&nonce=" + guid;
         sortString += "&timestamp=" + timestamp;
         sortString += "&version=" + DEFAULT_VERSION;
+
         sortString += "&appsecret=" + appSecert;
 
         String sign = EncriptionHelper
@@ -106,6 +107,8 @@ public class GovConnecter {
         };
         Map<String, String> dataMap = new HashMap<>();
         dataMap.put("appid", appId);
+        // sortString += "&corpsign="
+        // + AesUtils.encrypt(TESTCORPSECRET + timestamp, appSecert);
         dataMap.put("data", data);
 
         dataMap.put("format", "json");

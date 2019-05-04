@@ -141,8 +141,8 @@ public class BankCardBankBOImpl extends PaginableBOImpl<BankCardInfo>
     }
 
     @Override
-    public BankCardInfo getOwnerBankCardInfo(String workerName, String status,
-            String bussinessNo) {
+    public List<BankCardInfo> getOwnerBankCardInfo(String workerName,
+            String status, String bussinessNo) {
         BankCardInfo bankCardInfo = new BankCardInfo();
         if (StringUtils.isNotBlank(workerName)) {
             bankCardInfo.setBusinessName(workerName);
@@ -152,7 +152,8 @@ public class BankCardBankBOImpl extends PaginableBOImpl<BankCardInfo>
         }
 
         bankCardInfo.setBusinessSysNo(bussinessNo);
-        return bankCardInfoDAO.selectList(bankCardInfo).get(0);
+
+        return bankCardInfoDAO.selectList(bankCardInfo);
     }
 
     @Override

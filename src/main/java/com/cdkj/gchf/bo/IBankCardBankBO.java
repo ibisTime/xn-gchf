@@ -28,7 +28,7 @@ public interface IBankCardBankBO extends IPaginableBO<BankCardInfo> {
 
     BankCardInfo getBankCardInfoByNum(String payRollBankCardNumber);
 
-    BankCardInfo getOwnerBankCardInfo(String workerName, String status,
+    List<BankCardInfo> getOwnerBankCardInfo(String workerName, String status,
             String bussinessNo);
 
     /**

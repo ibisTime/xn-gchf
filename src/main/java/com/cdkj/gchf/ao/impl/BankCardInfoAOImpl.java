@@ -131,17 +131,21 @@ public class BankCardInfoAOImpl implements IBankCardInfoAO {
                 .queryProjectWorkerListByProject(project.getCode());
             List<BankCardInfo> workerBankCard = new ArrayList<>();
             for (ProjectWorker projectWorker : projectWorkerList) {
-                BankCardInfo bankCardInfo = bankCardBankBO.getOwnerBankCardInfo(
-                    condition.getBusinessName(), condition.getStatus(),
-                    projectWorker.getCode());
+                List<BankCardInfo> bankCardInfo = bankCardBankBO
+                    .getOwnerBankCardInfo(condition.getBusinessName(),
+                        condition.getStatus(), projectWorker.getCode());
                 if (bankCardInfo == null) {
                     continue;
                 }
-                bankCardInfo.setProjectName(projectWorker.getProjectName());
-                bankCardInfo.setTeamName(projectWorker.getTeamName());
-                bankCardInfo.setWorkerName(projectWorker.getWorkerName());
-                bankCardInfo.setIdcardNumber(projectWorker.getIdcardNumber());
-                workerBankCard.add(bankCardInfo);
+
+                for (BankCardInfo temp : bankCardInfo) {
+                    temp.setProjectName(projectWorker.getProjectName());
+                    temp.setTeamName(projectWorker.getTeamName());
+                    temp.setWorkerName(projectWorker.getWorkerName());
+                    temp.setIdcardNumber(projectWorker.getIdcardNumber());
+                    workerBankCard.add(temp);
+                }
+
             }
             Page<BankCardInfo> page = new Page<BankCardInfo>();
             page.setList(workerBankCard);

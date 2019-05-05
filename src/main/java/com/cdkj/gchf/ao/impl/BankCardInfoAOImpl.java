@@ -131,12 +131,8 @@ public class BankCardInfoAOImpl implements IBankCardInfoAO {
             List<ProjectWorker> projectWorkerList = projectWorkerBO
                 .queryProjectWorkerListByProject(project.getCode());
             List<BankCardInfo> workerBankCard = new ArrayList<>();
-            if (req.getBusinessType()
-                .equals(EBankCardBussinessType.CORP.getCode())) {
-                BankCardInfo bankCardInfo = new BankCardInfo();
-                bankCardInfo
-                    .setBusinessType(EBankCardBussinessType.CORP.getCode());
-                bankCardInfo.setBusinessSysNo(req.getBusinessSysNo());
+            if (EBankCardBussinessType.CORP.getCode()
+                .equals(req.getBusinessType())) {
                 Page<BankCardInfo> page = new Page<BankCardInfo>();
                 page.setList(bankCardBankBO.queryBankCardInfoList(condition));
                 return page;

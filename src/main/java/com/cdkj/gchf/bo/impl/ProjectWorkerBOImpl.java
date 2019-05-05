@@ -1,5 +1,6 @@
 package com.cdkj.gchf.bo.impl;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -468,10 +469,19 @@ public class ProjectWorkerBOImpl extends PaginableBOImpl<ProjectWorker>
     }
 
     @Override
-    public List<ProjectWorker> queryProjectWorkerList(String teamMasterNo) {
+    public List<ProjectWorker> queryUploadedProjectWorkerList(
+            String teamMasterNo) {
         ProjectWorker projectWorker = new ProjectWorker();
 
         projectWorker.setTeamSysNo(teamMasterNo);
+
+        List<String> uploadStatusList = new ArrayList<>();
+        uploadStatusList
+            .add(EProjectWorkerUploadStatus.UPLOAD_UPDATE.getCode());
+        uploadStatusList
+            .add(EProjectWorkerUploadStatus.UPLOAD_UNUPDATE.getCode());
+        uploadStatusList.add(EProjectWorkerUploadStatus.UPDATEING.getCode());
+        projectWorker.setUploadStatusList(uploadStatusList);
 
         return projectWorkerDAO.selectList(projectWorker);
     }

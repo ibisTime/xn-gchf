@@ -115,10 +115,6 @@ public class ProjectCorpInfoAOImpl implements IProjectCorpInfoAO {
         return projectCorpInfoBO.saveProjectCorpInfo(data, project);
     }
 
-    /**
-     * <p>Title: dropProjectCorpInfo</p>   
-     * <p>Description: 假删除参建单位及向下所有相关的数据</p>   
-     */
     @Transactional
     @Override
     public void dropProjectCorpInfo(List<String> codeList) {
@@ -204,10 +200,7 @@ public class ProjectCorpInfoAOImpl implements IProjectCorpInfoAO {
             .getProjectCorpInfo(req.getCode());
         // 上传中 同步中状态不可编辑
         if (projectCorpInfo.getUploadStatus()
-            .equals(EProjectCorpUploadStatus.UPLOADING.getCode())
-                || projectCorpInfo.getUploadStatus()
-                    .equals(EProjectCorpUploadStatus.UPLOAD_UPDATE.getCode())) {
-
+            .equals(EProjectCorpUploadStatus.UPLOADING.getCode())) {
             throw new BizException("XN631630", "该操作不支持并发,请等待上次操作结束后再修改");
         }
         // 已上传状态下的修改

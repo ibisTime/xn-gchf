@@ -1,6 +1,7 @@
 package com.cdkj.gchf.domain;
 
 import java.util.Date;
+import java.util.List;
 
 import com.cdkj.gchf.dao.base.ABaseDO;
 
@@ -218,6 +219,10 @@ public class ProjectWorker extends ABaseDO {
 
     // 建档时间
     private Date archiveDatetime;
+
+    private WorkerInfo workerInfo;
+
+    private List<String> uploadStatusList;
 
     /**
      * DB properties
@@ -774,6 +779,22 @@ public class ProjectWorker extends ABaseDO {
 
     public void setRealTeamMasterName(String realTeamMasterName) {
         this.realTeamMasterName = realTeamMasterName;
+    }
+
+    public WorkerInfo getWorkerInfo() {
+        return workerInfo;
+    }
+
+    public void setWorkerInfo(WorkerInfo workerInfo) {
+        this.workerInfo = workerInfo;
+    }
+
+    public List<String> getUploadStatusList() {
+        return uploadStatusList;
+    }
+
+    public void setUploadStatusList(List<String> uploadStatusList) {
+        this.uploadStatusList = uploadStatusList;
     }
 
 }

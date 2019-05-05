@@ -352,7 +352,6 @@ public class ProjectWorkerAOImpl implements IProjectWorkerAO {
                 // 国家平台抛出的异常 数据处理后再抛出
                 projectWorkerBO.refreshUploadStatus(code,
                     EProjectWorkerUploadStatus.UPLOAD_FAIL.getCode());
-                e.printStackTrace();
                 throw e;
             }
             String logCode = operateLogBO.saveOperateLog(
@@ -473,7 +472,13 @@ public class ProjectWorkerAOImpl implements IProjectWorkerAO {
 
     @Override
     public ProjectWorker getProjectWorker(String code) {
-        return projectWorkerBO.getProjectWorker(code);
+        ProjectWorker projectWorker = projectWorkerBO.getProjectWorker(code);
+
+        WorkerInfo workerInfo = workerInfoBO
+            .getWorkerInfo(projectWorker.getWorkerCode());
+        projectWorker.setWorkerInfo(workerInfo);
+
+        return projectWorker;
     }
 
 }

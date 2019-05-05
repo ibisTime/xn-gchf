@@ -62,10 +62,17 @@ public class ProjectConfigAOImpl implements IProjectConfigAO {
     @Override
     @Transactional
     public void editProjectConfig(XN631622Req req) {
+
         ProjectConfig projectConfig = projectConfigBO
             .getProjectConfigByLocal(req.getLocalProjectCode());
 
         if (null == projectConfig) {
+
+            ProjectConfig configByProject = projectConfigBO
+                .getProjectConfigByProject(req.getProjectCode());
+            if (null != configByProject) {
+                throw new BizException("XN631620", "该项目配置已添加,无法再次添加");
+            }
 
             Project project = projectBO.getProject(req.getLocalProjectCode());
             projectConfigBO.saveProjectConfig(project, req);
@@ -74,6 +81,13 @@ public class ProjectConfigAOImpl implements IProjectConfigAO {
                 ESecretStatus.YES.getCode());
 
         } else {
+
+            ProjectConfig configByProject = projectConfigBO
+                .getProjectConfigByProject(req.getProjectCode());
+            if (null != configByProject && !req.getProjectCode()
+                .equals(configByProject.getProjectCode())) {
+                throw new BizException("XN631620", "该项目配置已添加,无法再次添加");
+            }
 
             if (!projectConfig.getSecret().equals(req.getSecret())) {
                 projectConfigBO.checkProjectConfigBySecret(req.getProjectCode(),

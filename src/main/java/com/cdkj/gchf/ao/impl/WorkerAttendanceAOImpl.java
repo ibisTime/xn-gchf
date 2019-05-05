@@ -120,7 +120,7 @@ public class WorkerAttendanceAOImpl implements IWorkerAttendanceAO {
         TeamMaster teamMaster = teamMasterBO.getTeamMaster(teamMasterNo);
 
         List<ProjectWorker> projectWorkers = projectWorkerBO
-            .queryProjectWorkerList(teamMaster.getCode());
+            .queryUploadedProjectWorkerList(teamMaster.getCode());
 
         if (CollectionUtils.isNotEmpty(projectWorkers)) {
             for (ProjectWorker projectWorker : projectWorkers) {

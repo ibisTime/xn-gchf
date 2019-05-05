@@ -102,6 +102,7 @@ public class ProjectCorpInfoBOImpl extends PaginableBOImpl<ProjectCorpInfo>
         projectCorpInfo.setProjectCode(project.getCode());
         projectCorpInfo.setProjectName(project.getName());
         projectCorpInfo.setCode(code);
+        projectCorpInfo.setCorpType(EProjectCorpType.ZONGCHENGBAO.getCode());
         projectCorpInfo.setDeleteStatus(EDeleteStatus.NORMAL.getCode());
         projectCorpInfo
             .setUploadStatus(EProjectCorpUploadStatus.TO_UPLOAD.getCode());

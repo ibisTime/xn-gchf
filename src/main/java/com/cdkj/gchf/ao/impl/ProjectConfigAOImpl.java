@@ -47,19 +47,16 @@ public class ProjectConfigAOImpl implements IProjectConfigAO {
         if (null != configByProject) {
             throw new BizException("XN631620", "该项目已添加配置,无法再次添加");
         }
+
         projectConfigBO.checkProjectConfigBySecret(req.getProjectCode(),
             req.getSecret());
 
-        Project project = projectBO.getProjectByFullName(req.getProjectName());
-        if (null == project) {
-            throw new BizException("XN631620",
-                "项目【" + req.getProjectName() + "】不存在，无法添加配置");
-        }
+        Project project = projectBO.getProject(req.getLocalProjectCode());
 
         projectBO.refreshSecretStatus(project.getCode(),
             ESecretStatus.YES.getCode());
 
-        return projectConfigBO.saveProjectConfig(project.getCode(), req);
+        return projectConfigBO.saveProjectConfig(project, req);
     }
 
     @Override
@@ -70,23 +67,21 @@ public class ProjectConfigAOImpl implements IProjectConfigAO {
 
         if (null == projectConfig) {
 
-            projectConfigBO.saveProjectConfig(req);
+            Project project = projectBO.getProject(req.getLocalProjectCode());
+            projectConfigBO.saveProjectConfig(project, req);
 
             projectBO.refreshSecretStatus(req.getLocalProjectCode(),
                 ESecretStatus.YES.getCode());
 
         } else {
-            if (projectConfig.getProjectCode().equals(req.getProjectCode())) {
-                if (!req.getPassword().equals(projectConfig.getPassword())
-                        || !req.getProjectName()
-                            .equals(projectConfig.getProjectName())) {
-                    projectConfigBO
-                        .refreshProjectConfig(projectConfig.getCode(), req);
-                }
-                throw new BizException("XN000000", "项目配置已存在,请检查");
+
+            if (!projectConfig.getSecret().equals(req.getSecret())) {
+                projectConfigBO.checkProjectConfigBySecret(req.getProjectCode(),
+                    req.getSecret());
             }
 
             projectConfigBO.refreshProjectConfig(projectConfig.getCode(), req);
+
         }
 
     }

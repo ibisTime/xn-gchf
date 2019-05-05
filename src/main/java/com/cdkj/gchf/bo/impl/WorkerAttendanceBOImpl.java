@@ -14,7 +14,6 @@ import org.springframework.stereotype.Component;
 import com.alibaba.fastjson.JSONObject;
 import com.cdkj.gchf.bo.IOperateLogBO;
 import com.cdkj.gchf.bo.IProjectBO;
-import com.cdkj.gchf.bo.IProjectConfigBO;
 import com.cdkj.gchf.bo.IProjectWorkerBO;
 import com.cdkj.gchf.bo.ITeamMasterBO;
 import com.cdkj.gchf.bo.IUserBO;
@@ -52,12 +51,6 @@ import com.google.gson.JsonObject;
 @Component
 public class WorkerAttendanceBOImpl extends PaginableBOImpl<WorkerAttendance>
         implements IWorkerAttendanceBO {
-
-    @Autowired
-    private IWorkerAttendanceBO workerAttendanceBO;
-
-    @Autowired
-    private IProjectConfigBO projectConfigBO;
 
     @Autowired
     private IUserBO userBO;

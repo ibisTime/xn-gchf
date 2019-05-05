@@ -22,9 +22,6 @@
 		<result column="voucher_url" property="voucherUrl" />
 		<result column="upload_status" property="uploadStatus" />
 		<result column="delete_status" property="deleteStatus" />
-
-
-
 		<result column="team_name" property="teamName" />
 
 	</resultMap>
@@ -35,6 +32,9 @@
 			</if>
 			<if test="corpCode != null and corpCode != '' ">
 				AND t.corp_code = #{corpCode}
+			</if>
+			<if test="corpName != null and corpName != '' ">
+				AND t.corp_name like "%"#{corpName}"%"
 			</if>
 			<if test="idcardNumber != null and idcardNumber != '' ">
 				AND t.idcard_number = #{idcardNumber}

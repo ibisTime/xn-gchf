@@ -65,8 +65,9 @@ public class ProjectWorkerEntryExitHistoryBOImpl
             .generate(EGeneratePrefix.ProjectWorkerEntryExitHistory.getCode());
         BeanUtils.copyProperties(projectWorker, data);
         data.setCode(code);
-        data.setDate(req.getDate());
-        data.setType(req.getType());
+        data.setDate(DateUtil.strToDate(req.getDate(),
+            DateUtil.FRONT_DATE_FORMAT_STRING));
+        data.setType(Integer.parseInt(req.getType()));
         data.setWorkerCode(projectWorker.getCode());
         data.setIdcardNumber(projectWorker.getIdcardNumber());
         data.setIdcardType(projectWorker.getIdcardType());
@@ -98,21 +99,6 @@ public class ProjectWorkerEntryExitHistoryBOImpl
         entryExitHistory.setIdcardType("01");
         entryExitHistory.setIdcardNumber(data.getIdcardNumber());
 
-        // try {
-        // Date strToDate = DateUtil.strToDate(data.getDate(), "yyyy/mm/dd");
-        // //
-        // String format = new SimpleDateFormat("yyyy-MM-dd")
-        // .format(strToDate);
-        // Date toDate = DateUtil.strToDate(format, "yyyy-MM-dd");
-        // Date date = DateUtil.strToDate(data.getDate(),
-        // DateUtil.FRONT_DATE_FORMAT_STRING);
-        // if (date != null) {
-        // entryExitHistory.setDate(date);
-        // } else if (toDate != null) {
-        // entryExitHistory.setDate(toDate);
-        // }
-        // } catch (Exception e) {
-        // }
         entryExitHistory.setDate(DateUtil.strToDate(data.getDate(),
             DateUtil.FRONT_DATE_FORMAT_STRING));
         entryExitHistory.setType(Integer.parseInt(data.getType()));

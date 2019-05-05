@@ -202,6 +202,14 @@ public class WorkerInfoBOImpl extends PaginableBOImpl<WorkerInfo>
     }
 
     @Override
+    public void refreshAttendancePic(String code, String attendancePicture) {
+        WorkerInfo workerInfo = new WorkerInfo();
+        workerInfo.setCode(code);
+        workerInfo.setAttendancePicture(attendancePicture);
+        workerInfoDAO.updateWorkerInfoAttendancePic(workerInfo);
+    }
+
+    @Override
     public int refreshWorkerInfo(XN631793Req req) {
         WorkerInfo condition = new WorkerInfo();
         condition.setCode(req.getCode());

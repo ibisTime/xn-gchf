@@ -113,19 +113,15 @@ public class XN631600Req {
     private String thirdPartyProjectCode;
 
     // 上班时间
-    @NotBlank
     private String attendanceStarttime;
 
     // 下班时间
-    @NotBlank
     private String attendanceEndtime;
 
     // 工资条形成时间
-    @NotBlank
     private String payRollCreateDatetime;
 
     // 薪资发放时间
-    @NotBlank
     private String payRollDatetime;
 
     // 薪资发放可延迟天数

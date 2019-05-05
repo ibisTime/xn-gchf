@@ -12,6 +12,7 @@ import com.cdkj.gchf.bo.IProjectConfigBO;
 import com.cdkj.gchf.bo.base.PaginableBOImpl;
 import com.cdkj.gchf.core.OrderNoGenerater;
 import com.cdkj.gchf.dao.IProjectConfigDAO;
+import com.cdkj.gchf.domain.Project;
 import com.cdkj.gchf.domain.ProjectConfig;
 import com.cdkj.gchf.dto.req.XN631620Req;
 import com.cdkj.gchf.dto.req.XN631622Req;
@@ -26,7 +27,7 @@ public class ProjectConfigBOImpl extends PaginableBOImpl<ProjectConfig>
     private IProjectConfigDAO projectConfigDAO;
 
     @Override
-    public String saveProjectConfig(String localProjectCode, XN631620Req req) {
+    public String saveProjectConfig(Project project, XN631620Req req) {
         ProjectConfig projectConfig = new ProjectConfig();
         projectConfig.setSecret(projectConfig.getSecret().trim());
         BeanUtils.copyProperties(req, projectConfig);
@@ -34,7 +35,8 @@ public class ProjectConfigBOImpl extends PaginableBOImpl<ProjectConfig>
         String code = OrderNoGenerater
             .generate(EGeneratePrefix.ProjectConfig.getCode());
         projectConfig.setCode(code);
-        projectConfig.setLocalProjectCode(localProjectCode);
+        projectConfig.setLocalProjectCode(project.getCode());
+        projectConfig.setProjectName(project.getName());
 
         projectConfigDAO.insert(projectConfig);
 
@@ -54,7 +56,7 @@ public class ProjectConfigBOImpl extends PaginableBOImpl<ProjectConfig>
     }
 
     @Override
-    public String saveProjectConfig(XN631622Req req) {
+    public String saveProjectConfig(Project project, XN631622Req req) {
         ProjectConfig localProjectConfig = new ProjectConfig();
         String code = OrderNoGenerater
             .generate(EGeneratePrefix.ProjectConfig.getCode());
@@ -63,7 +65,7 @@ public class ProjectConfigBOImpl extends PaginableBOImpl<ProjectConfig>
         localProjectConfig.setLocalProjectCode(req.getLocalProjectCode());
         localProjectConfig.setProjectCode(req.getProjectCode());
         localProjectConfig.setPassword(req.getPassword());
-        localProjectConfig.setProjectName(req.getProjectName());
+        localProjectConfig.setProjectName(project.getName());
         localProjectConfig.setSecret(req.getSecret());
 
         projectConfigDAO.insert(localProjectConfig);

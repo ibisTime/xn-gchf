@@ -111,11 +111,6 @@ public class WorkerAttendanceAOImpl implements IWorkerAttendanceAO {
         }
     }
 
-    /**
-     * 
-     * @Description: 批量生成班组考勤信息
-     * @throws
-     */
     @Override
     @Transactional
     public void batchCreateAttandance(String projectCode, String teamMasterNo,

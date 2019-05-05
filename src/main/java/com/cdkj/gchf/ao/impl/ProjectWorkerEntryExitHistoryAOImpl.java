@@ -77,7 +77,7 @@ public class ProjectWorkerEntryExitHistoryAOImpl
         if (projectWorker == null) {
             throw new BizException("XN631730", "员工信息不存在");
         }
-        if (data.getType() == Integer.parseInt(EEntryExitType.IN.getCode())) {
+        if (EEntryExitType.IN.getCode().equals(data.getType())) {
             ProjectWorkerEntryExitHistory lastTimeEntryTime = projectWorkerEntryExitHistoryBO
                 .getLastTimeEntryTime(data.getWorkerCode());
             if (lastTimeEntryTime != null) {
@@ -88,6 +88,7 @@ public class ProjectWorkerEntryExitHistoryAOImpl
             }
 
         }
+
         return projectWorkerEntryExitHistoryBO
             .saveProjectWorkerEntryExitHistory(data);
     }

@@ -30,6 +30,8 @@ public interface IWorkerInfoBO extends IPaginableBO<WorkerInfo> {
 
     public int refreshWorkerInfo(XN631793Req req);
 
+    void refreshAttendancePic(String code, String attendancePicture);
+
     public WorkerInfo getWorkerInfoByCelephone(String phone);
 
     public WorkerInfo getWorkerInfo(String code);

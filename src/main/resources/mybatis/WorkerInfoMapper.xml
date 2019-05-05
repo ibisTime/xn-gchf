@@ -220,6 +220,15 @@
 		code = #{code}
 	</update>
 
+	<update id="update_attendancePic" parameterType="workerInfo">
+		UPDATE
+		thf_worker_info
+		SET
+		attendance_picture = #{attendancePicture}
+		WHERE
+		code = #{code}
+	</update>
+	
 	<select id="select_WorkerInfo" parameterType="workerInfo"
 		resultMap="WorkerInfo_DB_Result">
 		SELECT

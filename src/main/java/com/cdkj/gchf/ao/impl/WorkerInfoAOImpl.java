@@ -109,6 +109,12 @@ public class WorkerInfoAOImpl implements IWorkerInfoAO {
     }
 
     @Override
+    public void refreshAttendancePicture(String code,
+            String attendancePicture) {
+        workerInfoBO.refreshAttendancePic(code, attendancePicture);
+    }
+
+    @Override
     public Paginable<WorkerInfo> queryWorkerInfoPage(String userId, int start,
             int limit, WorkerInfo condition) {
         User user = userBO.getBriefUser(userId);
@@ -131,10 +137,6 @@ public class WorkerInfoAOImpl implements IWorkerInfoAO {
 
     @Override
     public WorkerInfo getWorkerInfoByIdCardNumber(String idCardNumber) {
-        // User briefUser = userBO.getBriefUser(userId);
-        // if (briefUser.getType().equals(EUserKind.Owner.getCode())) {
-        // // 项目端
-        // }
         return workerInfoBO.getWorkerInfoByIdCardNumber(idCardNumber);
     }
 
@@ -155,11 +157,6 @@ public class WorkerInfoAOImpl implements IWorkerInfoAO {
         return workerInfoBO.refreshWorkerInfo(req);
     }
 
-    /**
-     * 
-     * <p>Title: readdWorkerInfo</p>   
-     * <p>Description: </p>   
-     */
     @Override
     public void readdWorkerInfo(XN631793Req req) {
         User user = userBO.getBriefUser(req.getUserId());

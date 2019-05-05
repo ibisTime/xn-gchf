@@ -26,6 +26,7 @@ import com.cdkj.gchf.bo.IWorkerAttendanceBO;
 import com.cdkj.gchf.bo.IWorkerContractBO;
 import com.cdkj.gchf.bo.IWorkerInfoBO;
 import com.cdkj.gchf.bo.base.Paginable;
+import com.cdkj.gchf.common.ImportUtil;
 import com.cdkj.gchf.domain.CorpBasicinfo;
 import com.cdkj.gchf.domain.PayRollDetail;
 import com.cdkj.gchf.domain.Project;
@@ -260,6 +261,14 @@ public class ProjectWorkerAOImpl implements IProjectWorkerAO {
         if (project == null) {
             throw new BizException("XN631793", "项目不存在");
         }
+
+        String repeatValue = ImportUtil.checkRepeat(req.getWorkerList(),
+            "idCardNumber");
+        if (StringUtils.isNotBlank(repeatValue)) {
+            throw new BizException("XN000000",
+                "导入数据中证件号码【" + repeatValue + "】存在重复");
+        }
+
         for (XN631693ReqData projectWorkerData : req.getWorkerList()) {
             // 数据字典key校验
             checkDicKey(projectWorkerData);

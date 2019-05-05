@@ -17,10 +17,6 @@ public class XN631620Req {
     @NotBlank
     private String projectCode;
 
-    // 国家平台项目名称
-    @NotBlank
-    private String projectName;
-
     // 国家平台项目密码
     @NotBlank
     private String password;
@@ -51,14 +47,6 @@ public class XN631620Req {
 
     public void setSecret(String secret) {
         this.secret = secret;
-    }
-
-    public String getProjectName() {
-        return projectName;
-    }
-
-    public void setProjectName(String projectName) {
-        this.projectName = projectName;
     }
 
     public String getPassword() {

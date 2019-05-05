@@ -26,6 +26,7 @@ import com.cdkj.gchf.bo.IWorkerAttendanceBO;
 import com.cdkj.gchf.bo.IWorkerContractBO;
 import com.cdkj.gchf.bo.base.Paginable;
 import com.cdkj.gchf.common.DateUtil;
+import com.cdkj.gchf.common.ImportUtil;
 import com.cdkj.gchf.domain.CorpBasicinfo;
 import com.cdkj.gchf.domain.Project;
 import com.cdkj.gchf.domain.ProjectConfig;
@@ -434,6 +435,13 @@ public class TeamMasterAOImpl implements ITeamMasterAO {
         User user = userBO.getBriefUser(req.getUserId());
         if (projectBO.getProject(req.getProjectCode()) == null) {
             throw new BizException("XN631650", "请选择项目");
+        }
+
+        String repeatTeamName = ImportUtil.checkRepeat(req.getDateList(),
+            "teamName");
+        if (StringUtils.isNotBlank(repeatTeamName)) {
+            throw new BizException("XN631793",
+                "导入数据中班组名称【" + repeatTeamName + "】存在重复");
         }
 
         for (XN631653ReqData reqData : req.getDateList()) {

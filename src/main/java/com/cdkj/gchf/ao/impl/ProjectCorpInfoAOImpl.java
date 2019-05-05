@@ -25,6 +25,7 @@ import com.cdkj.gchf.bo.IWorkerAttendanceBO;
 import com.cdkj.gchf.bo.IWorkerContractBO;
 import com.cdkj.gchf.bo.base.Paginable;
 import com.cdkj.gchf.common.AesUtils;
+import com.cdkj.gchf.common.ImportUtil;
 import com.cdkj.gchf.domain.CorpBasicinfo;
 import com.cdkj.gchf.domain.PayRoll;
 import com.cdkj.gchf.domain.Project;
@@ -175,10 +176,6 @@ public class ProjectCorpInfoAOImpl implements IProjectCorpInfoAO {
 
     }
 
-    /**
-     * <p>Title: editProjectCorpInfo</p>   
-     * <p>Description: 修改参建单位</p>   
-     */
     @Override
     @Transactional
     public void editProjectCorpInfo(XN631632Req req) {
@@ -254,10 +251,6 @@ public class ProjectCorpInfoAOImpl implements IProjectCorpInfoAO {
 
     }
 
-    /**
-     * <p>Title: uploadProjectCorpInfo</p>   
-     * <p>Description: 上传信息到国家平台</p>   
-     */
     @Override
     @Transactional
     public void uploadProjectCorpInfo(String userId, List<String> codes) {
@@ -417,6 +410,14 @@ public class ProjectCorpInfoAOImpl implements IProjectCorpInfoAO {
         if (projectBO.getProject(req.getProjectCode()) == null) {
             throw new BizException("XN631600", "请选择项目");
         }
+
+        String repeatValue = ImportUtil.checkRepeat(req.getDateList(),
+            "corpCode");
+        if (StringUtils.isNotBlank(repeatValue)) {
+            throw new BizException("XN000000",
+                "导入数据中统一社会信用代码【" + repeatValue + "】存在重复");
+        }
+
         for (XN631633ReqList data : dateList) {
             // 数据字典类型数据检查
             EProjectCorpType.checkExists(data.getCorpType());

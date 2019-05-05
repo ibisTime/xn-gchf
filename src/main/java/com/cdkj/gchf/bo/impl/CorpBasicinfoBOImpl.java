@@ -70,7 +70,7 @@ public class CorpBasicinfoBOImpl extends PaginableBOImpl<CorpBasicinfo>
             corpBasicinfo.setEstablishDate(DateUtil.strToDate(
                 req.getEstablishDate(), DateUtil.FRONT_DATE_FORMAT_STRING));
         }
-
+        corpBasicinfo.setCorpType(req.getCorpType());
         corpBasicinfo
             .setUploadStatus(ECorpBasicUploadStatus.TO_UPLOAD.getCode());
 

@@ -94,7 +94,8 @@ public class ProjectCorpInfoBOImpl extends PaginableBOImpl<ProjectCorpInfo>
     @Override
     public String addProjectCorpInfo(CorpBasicinfo corpbasic, Project project) {
         ProjectCorpInfo projectCorpInfo = new ProjectCorpInfo();
-        projectCorpInfo.setCorpCode(corpbasic.getCode());
+        projectCorpInfo.setCorpCode(corpbasic.getCorpCode());
+        projectCorpInfo.setCorpType(corpbasic.getCorpType());
         String code = OrderNoGenerater
             .generate(EGeneratePrefix.ProjectCorpInfo.getCode());
         projectCorpInfo.setCorpName(corpbasic.getCorpName());

@@ -77,8 +77,12 @@ public class ProjectAOImpl implements IProjectAO {
         if (null != preProject) {
             throw new BizException("XN631600", "项目名称已存在，请重新输入");
         }
-        CorpBasicinfo contractorCorpInfo = corpBasicinfoBO
-            .getCorpBasicinfoByCorp(req.getContractorCorpCode());
+        CorpBasicinfo contractorCorpInfo = null;
+        if (StringUtils.isNotBlank(req.getContractorCorpCode())) {
+            contractorCorpInfo = corpBasicinfoBO
+                .getCorpBasicinfoByCorp(req.getContractorCorpCode());
+        }
+
         // 添加项目
         Project project = projectBO.saveProject(req, contractorCorpInfo);
 

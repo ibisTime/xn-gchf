@@ -51,7 +51,8 @@ public class ProjectBOImpl extends PaginableBOImpl<Project>
         String code = OrderNoGenerater
             .generate(EGeneratePrefix.Project.getCode());
         project.setCode(code);
-        if (StringUtils.isNotBlank(contractorCorpInfo.getCorpName())) {
+        if (contractorCorpInfo != null
+                && StringUtils.isNotBlank(contractorCorpInfo.getCorpName())) {
             project.setContractorCorpName(contractorCorpInfo.getCorpName());
         }
         if (StringUtils.isNotBlank(req.getInvest())) {

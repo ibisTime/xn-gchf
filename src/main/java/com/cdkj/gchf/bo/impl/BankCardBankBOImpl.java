@@ -70,6 +70,7 @@ public class BankCardBankBOImpl extends PaginableBOImpl<BankCardInfo>
         bankCardInfo.setBankName(EBankCardCodeType
             .getBankCardType(data.getPayRollBankCode()).getValue());
 
+        bankCardInfo.setSubranch(data.getPayRollBankName());
         bankCardInfo.setBusinessSysNo(projectWorker.getCode());
         bankCardInfo.setBusinessType(EBankCardBussinessType.USER.getCode());
         bankCardInfo.setBusinessName(projectWorker.getWorkerName());

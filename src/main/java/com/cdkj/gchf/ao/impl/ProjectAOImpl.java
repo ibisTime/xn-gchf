@@ -20,8 +20,11 @@ import com.cdkj.gchf.domain.CorpBasicinfo;
 import com.cdkj.gchf.domain.Project;
 import com.cdkj.gchf.domain.ProjectBuilderLicense;
 import com.cdkj.gchf.domain.ProjectConfig;
+import com.cdkj.gchf.domain.ProjectCorpInfo;
 import com.cdkj.gchf.dto.req.XN631600Req;
 import com.cdkj.gchf.dto.req.XN631602Req;
+import com.cdkj.gchf.enums.EProjectCorpType;
+import com.cdkj.gchf.enums.EProjectCorpUploadStatus;
 import com.cdkj.gchf.exception.BizException;
 
 @Service
@@ -142,6 +145,33 @@ public class ProjectAOImpl implements IProjectAO {
             if (null != preProject) {
                 throw new BizException("XN631600", "项目名称已存在，请重新输入");
             }
+        }
+
+        if (!project.getContractorCorpCode()
+            .equals(req.getContractorCorpCode())) {
+            ProjectCorpInfo projectCorpInfo = projectCorpInfoBO
+                .getProjectCorpInfo(req.getCode(),
+                    project.getContractorCorpCode(),
+                    EProjectCorpType.ZONGCHENGBAO.getCode());
+
+            if (null != projectCorpInfo) {
+                if (!EProjectCorpUploadStatus.UPLOAD_FAIL.getCode()
+                    .equals(projectCorpInfo.getUploadStatus())
+                        && !EProjectCorpUploadStatus.TO_UPLOAD.getCode()
+                            .equals(projectCorpInfo.getUploadStatus())) {
+                    throw new BizException("XN631600", "项目总承包单位已上传，无法修改");
+                }
+
+                projectCorpInfoBO
+                    .removeProjectCorpInfo(projectCorpInfo.getCode());
+
+                projectCorpInfoBO.addProjectCorpInfo(contractorCorpInfo,
+                    project);
+            } else {
+                projectCorpInfoBO.addProjectCorpInfo(contractorCorpInfo,
+                    project);
+            }
+
         }
 
         // 删除旧的施工许可证

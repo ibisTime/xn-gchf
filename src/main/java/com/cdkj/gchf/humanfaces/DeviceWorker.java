@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.junit.Test;
 import org.springframework.stereotype.Component;
@@ -39,9 +40,13 @@ public class DeviceWorker {
     private String authorizationUrl = AppConfig.getBaseUrl()
             + "/Api/Device/EquipmentAP";
 
-    // 人员搜索
+    // 人员搜索Url
     private String workerSearchUrl = AppConfig.getBaseUrl()
             + "/Api/Personnel/StaffSearch";
+
+    // 人员授权查询Url
+    private String authorizationQueryUrl = AppConfig.getBaseUrl()
+            + "/Api/Personnel/PersonnelAuthorizedDeviceQuery";
 
     /**
      * 
@@ -62,8 +67,12 @@ public class DeviceWorker {
         req.put("name", name);
         req.put("idNo", icNo);
         req.put("phone", phone);
-        req.put("tag", tag);
-        req.put("type", type);
+        if (StringUtils.isNotBlank(tag)) {
+            req.put("tag", tag);
+        }
+        if (StringUtils.isNotBlank(type)) {
+            req.put("type", type);
+        }
         String request = HttpRequest.doRequest(workerAddUrl, "POST", req);
         DeviceWorkerRes fromJson = AppConfig.gson.fromJson(request,
             DeviceWorkerRes.class);
@@ -140,7 +149,12 @@ public class DeviceWorker {
         for (String string : personGuids) {
             person += string + ",";
         }
-        req.put("personGuids", person.substring(0, person.length() - 1));
+        if (CollectionUtils.isEmpty(personGuids)) {
+            req.put("personGuids", "");
+        } else {
+            req.put("personGuids", person.substring(0, person.length() - 1));
+        }
+
         if (StringUtils.isNotBlank(startTime)
                 && StringUtils.isNotBlank(endTime)) {
             req.put("passTimes", startTime + "," + endTime);
@@ -166,6 +180,26 @@ public class DeviceWorker {
         System.out.println(doRequest);
         return doRequest;
     }
+
+    /**
+     * 
+     * @Description: 人员授权
+     * @param: guid 人员guid
+     * @return      
+     * @return: String      
+     */
+    public String workerAuthorizationQuery(String guid) {
+        String token = AppConfig.getToken();
+        Map<String, String> req = new HashMap<>();
+        req.put("appid", AppConfig.getAppid());
+        req.put("token", token);
+        req.put("guid", guid);
+        String doRequest = HttpRequest.doRequest(authorizationQueryUrl, "GET",
+            req);
+        System.out.println(doRequest);
+        return doRequest;
+    }
+
     @Test
     public void test22() {
         // 人员录入
@@ -183,8 +217,11 @@ public class DeviceWorker {
 
         // 人员查询
         // String cloudWorkerQuery = cloudWorkerQuery(
-        // "70C34989189A47C3BCA4B68F412B7360");
-        // System.out.println(cloudWorkerQuery);
+        // "A7FE8C63E3094E1281E6738C34DD1C65");
+        // JSONObject parse = JSONObject.parseObject(cloudWorkerQuery);
+        // System.out.println(parse.getString("code")
+        // .equals(EEquipmentWorkerResponse.CHAXUNCHENGGONG.getCode())
+        // && parse.get("data") == null);
 
         // 人员删除
         // 70C34989189A47C3BCA4B68F412B7360 guid
@@ -192,5 +229,8 @@ public class DeviceWorker {
         // "70C34989189A47C3BCA4B68F412B7360");
         // System.out.println(cloudWorkerDel);
 
+        // 人员授权查询
+        String workerAuthorizationQuery = workerAuthorizationQuery(
+            "C83BFC0DB364433B97FB0BA7254C20EA");
     }
 }

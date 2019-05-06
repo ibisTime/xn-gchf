@@ -1,5 +1,8 @@
 package com.cdkj.gchf.humanfaces;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -90,10 +93,25 @@ public class AppConfig {
         return fromJson.getData();
     }
 
+    public void test2() {
+
+        java.util.Properties properties = new java.util.Properties();
+
+        try {
+            FileInputStream is = new FileInputStream(
+                File.separator + "token.properties");
+            properties.load(is);
+            is.close();
+            System.out.println(properties.getProperty("token"));
+        } catch (IOException e) {
+            System.out.println("路径错误");
+            e.printStackTrace();
+        }
+    }
+
     @Test
     public void test() {
-
-        System.out.println(getToken());
+        getToken();
     }
 
 }

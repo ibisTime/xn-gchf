@@ -15,6 +15,8 @@ public enum EEquipmentWorkerResponse {
 
     TUPIANLEIXINGCUOWU("GS_EXP-610", "文件不为jpg或png类型"),
 
+    CHAXUNCHENGGONG("GS_SUS202", "查询成功"),
+
     SHOUQUANCHENGONG("GS_SUS327", "授权成功");
 
     EEquipmentWorkerResponse(String code, String message) {

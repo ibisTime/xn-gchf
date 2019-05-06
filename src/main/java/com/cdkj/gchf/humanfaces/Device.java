@@ -133,6 +133,7 @@ public class Device {
             ResultMsg.class);
         return fromJson;
     }
+
     /**
      * 
      * @Description: 从云端删除设备
@@ -181,19 +182,21 @@ public class Device {
         // System.out.println(deviceCreation);
 
         // 修改设备
-        // DeviceRes equipmentUpdate = EquipmentUpdate("84E0F420576700B0",
-        // "(⊙o⊙)？", null);
-        // System.out.println(equipmentUpdate.toString());
+        DeviceRes equipmentUpdate = EquipmentUpdate("84E0F420576700B0",
+            "!@#$%%^&**()", null);
+        System.out.println(equipmentUpdate.toString());
 
         // 查询设备
-        // DeviceQuery deviceQuery = deviceQuery("84E0F420576700B0");
-        // System.out.println(deviceQuery.toString());
+        DeviceQuery deviceQuery = deviceQuery("84E0F420576700B0");
+        System.out.println(deviceQuery.toString());
 
         // String updateCloudDevice = updateCloudDevice("84E0F420576700B0");
         // System.out.println(updateCloudDevice);
 
         // String updateCloudDevice = updateCloudDevice("84E0F420576700B0");
         // System.out.println(updateCloudDevice);
+        // GovUtil.queryAsyncHandleResult("projectworker-add-2019050611-4-0001",
+        // "23108420190520001", "8e2f8935685a0d58564df09ea5e4f102");
     }
 
 }

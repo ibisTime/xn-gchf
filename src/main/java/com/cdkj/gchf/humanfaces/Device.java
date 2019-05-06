@@ -38,6 +38,14 @@ public class Device {
     private String updateCloudUrl = AppConfig.getBaseUrl()
             + "/Api/Device/Equipment";
 
+    // 删除设备信息
+    private String delDeviceUrl = AppConfig.getBaseUrl()
+            + "/Api/Device/DeviceDeletion";
+
+    // 设备销权人员接口
+    private String trancateUrl = AppConfig.getBaseUrl()
+            + "/Api/Device/EquipmentEP";
+
     /**
      * @Description: 设备创建、添加设备信息到云端
      * @param: @return      
@@ -125,6 +133,45 @@ public class Device {
             ResultMsg.class);
         return fromJson;
     }
+    /**
+     * 
+     * @Description: 从云端删除设备
+     * @param: @param deviceKey
+     * @param: @return      
+     * @return: String      
+     * @throws
+     */
+    public String delCloudDevice(String deviceKey) {
+        String token = AppConfig.getToken();
+        Map<String, String> req = new HashMap<>();
+        req.put("appid", AppConfig.getAppid());
+        req.put("token", token);
+        req.put("deviceKey", deviceKey);
+        String doRequest = HttpRequest.doRequest(delDeviceUrl, "POST", req);
+        return doRequest;
+    }
+
+    /**
+     * 
+     * @Description: 清空某台机器授权人员 若人员guid为空 则清空所有授权人员
+     * @param: @param deviceKey 设备序列号
+     * @param: @param personGuid 人员guid
+     * @param: @return      
+     * @return: String      
+     * @throws
+     */
+    public String truncateDevice(String deviceKey, String personGuid) {
+        String token = AppConfig.getToken();
+        Map<String, String> req = new HashMap<>();
+        req.put("appid", AppConfig.getAppid());
+        req.put("token", token);
+        req.put("deviceKey", deviceKey);
+        if (StringUtils.isNotEmpty(personGuid)) {
+            req.put("deviceKey", deviceKey);
+        }
+        String doRequest = HttpRequest.doRequest(trancateUrl, "POST", req);
+        return doRequest;
+    };
 
     @Test
     public void test1() {

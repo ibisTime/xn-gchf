@@ -12,7 +12,7 @@ public enum EEquipmentResponse {
 
     TIANJIACHENGGONG("GS_SUS300", "添加成功"),
 
-    XULIEHAOZHANYONG("GS_EXP-321", "序列号被占用"),
+    XULIEHAOZHANYONG("GS_EXP-321", "设备已被被占用,如要添加,请重置"),
 
     GENGXINCHENGGONG("GS_SUS332", "更新成功"),
 

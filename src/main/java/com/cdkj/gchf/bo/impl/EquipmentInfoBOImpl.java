@@ -114,9 +114,35 @@ public class EquipmentInfoBOImpl extends PaginableBOImpl<EquipmentInfo>
             condition.setCode(code);
             data = EquipmentInfoDAO.select(condition);
             if (data == null) {
-                throw new BizException("xn0000", "�� ��Ų�����");
+                throw new BizException("xn0000", "设备不存在");
             }
         }
         return data;
     }
+
+    @Override
+    public EquipmentInfo getEquipmentInfo(String code, String projectCode) {
+        EquipmentInfo data = new EquipmentInfo();
+        data.setCode(code);
+        data.setProjectCode(projectCode);
+        return EquipmentInfoDAO.select(data);
+    }
+
+    @Override
+    public EquipmentInfo getEquipmentInfoByKey(String deviceKey,
+            String projectCode) {
+        EquipmentInfo condition = new EquipmentInfo();
+        condition.setProjectCode(projectCode);
+        condition.setDeviceKey(deviceKey);
+        return EquipmentInfoDAO.select(condition);
+
+    }
+
+    @Override
+    public List<EquipmentInfo> getEquipmentList(String projectCode) {
+        EquipmentInfo condition = new EquipmentInfo();
+        condition.setProjectCode(projectCode);
+        return EquipmentInfoDAO.selectList(condition);
+    }
+
 }

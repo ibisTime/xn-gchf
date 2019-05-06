@@ -26,4 +26,9 @@ public interface IEquipmentInfoBO extends IPaginableBO<EquipmentInfo> {
 
     public EquipmentInfo getEquipmentInfo(String code);
 
+    public EquipmentInfo getEquipmentInfo(String code, String projectCode);
+
+    EquipmentInfo getEquipmentInfoByKey(String deviceKey, String projectCode);
+
+    List<EquipmentInfo> getEquipmentList(String projectCode);
 }

@@ -23,7 +23,8 @@ public interface IWorkerInfoAO {
 
     public int dropWorkerInfo(String code);
 
-    public void refreshAttendancePicture(String code, String attendancePicture);
+    public void refreshAttendancePicture(String code, String attendancePicture,
+            String userId);
 
     public Paginable<WorkerInfo> queryWorkerInfoPage(String userId, int start,
             int limit, WorkerInfo condition);

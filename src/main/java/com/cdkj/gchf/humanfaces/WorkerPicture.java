@@ -8,6 +8,7 @@ import org.junit.Test;
 import org.springframework.stereotype.Component;
 
 import com.cdkj.gchf.humanfaces.res.DeviceWorkerPicRes;
+import com.cdkj.gchf.humanfaces.res.ResultMsg;
 
 /**
  * 
@@ -28,7 +29,7 @@ public class WorkerPicture {
 
     // 云端人员删除照片Url
     private String picDelUrl = AppConfig.getBaseUrl()
-            + "Api/Photo/PhotoDeletion";
+            + "/Api/Photo/PhotoDeletion";
 
     // 云端照片查询UrL
     private String picQueryUrl = AppConfig.getBaseUrl()
@@ -124,6 +125,24 @@ public class WorkerPicture {
         return doRequest;
     }
 
+    /**
+     * @Description: 删除云端照片信息
+     * @param: @param picGuid 图片guid
+     * @param: @param workerGuid 人员guid
+     */
+    public ResultMsg picDelCloud(String picGuid, String workerGuid) {
+        String token = AppConfig.getToken();
+        Map<String, String> req = new HashMap<>();
+        req.put("appid", AppConfig.getAppid());
+        req.put("token", token);
+        req.put("guid", picGuid);
+        req.put("personGuid", workerGuid);
+        String doRequest = HttpRequest.doRequest(picDelUrl, "POST", req);
+        ResultMsg fromJson = AppConfig.gson.fromJson(doRequest,
+            ResultMsg.class);
+        return fromJson;
+    }
+
     @Test
     public void test1() {
         // String t = "abcdef";
@@ -131,7 +150,11 @@ public class WorkerPicture {
         // System.out.println(t.indexOf("b"));
         // System.out.println(t.substring(t.indexOf("b") + 1, t.length()));
         // String picRegisterToCloud = picRegisterToCloud(
-        // "5D2A1DBBAB6D4330AA7EA8336FF913E9","" ,"", "", "");
-        // System.out.println(picRegisterToCloud);
+        // "5D2A1DBBAB6D4330AA7EA8336FF913E9","" ,"", "",
+        // "");07CAADCFED8E4916ADDEA048EEF71A99
+        // System.out.println(picRegisterToCloud);5EE70015C96848FA8E9C4023B30F0464
+        ResultMsg picDelCloud = picDelCloud("07CAADCFED8E4916ADDEA048EEF71A99",
+            "5EE70015C96848FA8E9C4023B30F0464");
+        System.out.println(picDelCloud.toString());
     }
 }

@@ -15,6 +15,10 @@ public class XN631794Req {
     @NotBlank
     private String attendancePicture;
 
+    // 用户id
+    @NotBlank
+    private String userId;
+
     public String getCode() {
         return code;
     }
@@ -29,6 +33,14 @@ public class XN631794Req {
 
     public void setAttendancePicture(String attendancePicture) {
         this.attendancePicture = attendancePicture;
+    }
+
+    public String getUserId() {
+        return userId;
+    }
+
+    public void setUserId(String userId) {
+        this.userId = userId;
     }
 
 }

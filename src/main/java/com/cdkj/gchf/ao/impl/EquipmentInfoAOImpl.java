@@ -57,6 +57,16 @@ public class EquipmentInfoAOImpl implements IEquipmentInfoAO {
     @Override
     public String addEquipmentInfo(XN631820Req req) {
         User user = userBO.getBriefUser(req.getUserId());
+        // 是否已添加
+        if (equipmentInfoBO.getEquipmentInfoByKey(req.getDeviceKey(),
+            req.getProjectCode()) != null) {
+            throw new BizException("XN631820",
+                "序列号为【" + req.getDeviceKey() + "】的设备已添加");
+        }
+
+        // 与之前应用解绑
+        device.delCloudDevice(req.getDeviceKey());
+        // 添加设备到云端
         DeviceRes deviceCreation = device.deviceCreation(req.getDeviceKey(),
             req.getName(), req.getTag());
         Project project = projectBO.getProject(req.getProjectCode());
@@ -70,9 +80,11 @@ public class EquipmentInfoAOImpl implements IEquipmentInfoAO {
             // 同步数据到云端
             device.EquipmentUpdate(req.getDeviceKey(), req.getName(),
                 req.getTag());
+            // 查询设备信息 落地到本地
             DeviceQuery deviceQuery = device.deviceQuery(req.getDeviceKey());
             code = equipmentInfoBO.saveEquipmentInfo(req, project, deviceQuery);
         } else {
+            // 添加失败
             EEquipmentResponse message = EEquipmentResponse
                 .getMessage(deviceCreation.getCode());
             if (message != null) {

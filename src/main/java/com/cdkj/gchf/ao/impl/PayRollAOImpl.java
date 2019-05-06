@@ -329,6 +329,13 @@ public class PayRollAOImpl implements IPayRollAO {
                 DateUtil.FRONT_DATE_FORMAT_STRING);
             payRollData.addProperty("balanceDate", balanceDate);
         }
+        if (payRollDetail.getWorkHours() != null) {
+            payRollData.addProperty("balanceDate",
+                payRollDetail.getWorkHours());
+        }
+        if (payRollDetail.getDays() != null) {
+            payRollData.addProperty("days", payRollDetail.getDays());
+        }
         payRollData.addProperty("idCardType", payRollDetail.getIdcardType());
         payRollData.addProperty("idCardNumber", AesUtils.encrypt(
             payRollDetail.getIdcardNumber(), projectconfig.getSecret()));

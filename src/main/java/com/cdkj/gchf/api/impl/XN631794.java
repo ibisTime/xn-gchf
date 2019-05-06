@@ -25,7 +25,7 @@ public class XN631794 extends AProcessor {
     @Override
     public Object doBusiness() throws BizException {
         workerInfoAO.refreshAttendancePicture(req.getCode(),
-            req.getAttendancePicture());
+            req.getAttendancePicture(), req.getUserId());
         return new BooleanRes(true);
     }
 

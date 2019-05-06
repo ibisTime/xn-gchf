@@ -3,29 +3,28 @@ package com.cdkj.gchf.ao.impl;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.alibaba.fastjson.JSONObject;
 import com.cdkj.gchf.ao.IEquipmentWorkerAO;
 import com.cdkj.gchf.bo.IEquipmentInfoBO;
 import com.cdkj.gchf.bo.IEquipmentWorkerBO;
 import com.cdkj.gchf.bo.IProjectWorkerBO;
 import com.cdkj.gchf.bo.IWorkerInfoBO;
 import com.cdkj.gchf.bo.base.Paginable;
-import com.cdkj.gchf.core.OrderNoGenerater;
 import com.cdkj.gchf.domain.EquipmentInfo;
 import com.cdkj.gchf.domain.EquipmentWorker;
 import com.cdkj.gchf.domain.ProjectWorker;
+import com.cdkj.gchf.domain.WorkerInfo;
 import com.cdkj.gchf.dto.req.XN631830Req;
-import com.cdkj.gchf.enums.EGeneratePrefix;
 import com.cdkj.gchf.enums.EProjectWorkerUploadStatus;
 import com.cdkj.gchf.exception.BizException;
 import com.cdkj.gchf.humanfaces.DeviceWorker;
 import com.cdkj.gchf.humanfaces.EEquipmentWorkerResponse;
 import com.cdkj.gchf.humanfaces.WorkerPicture;
-import com.cdkj.gchf.humanfaces.res.DeviceWorkerPicRes;
-import com.cdkj.gchf.humanfaces.res.DeviceWorkerRes;
-import com.cdkj.gchf.humanfaces.res.DeviceWorkerRes.DeviceWorkerInfo;
 import com.cdkj.gchf.humanfaces.res.ResultMsg;
 
 @Service
@@ -89,7 +88,7 @@ public class EquipmentWorkerAOImpl implements IEquipmentWorkerAO {
 
     /**
      * <p>Title: addEquipmentWorker</p>   
-     * <p>Description:添加设备人员 </p>   
+     * <p>Description:添加设备人员 -> 单设备-多人员的情况</p>   
      */
     @Override
     public void addEquipmentWorker(XN631830Req req) {
@@ -100,9 +99,12 @@ public class EquipmentWorkerAOImpl implements IEquipmentWorkerAO {
         }
         List<String> workerInfos = new ArrayList<>();
         List<ProjectWorker> projectWorkers = new ArrayList<>();
+        // 校验
         for (String code : req.getWorkerList()) {
+
             ProjectWorker projectWorker = projectWorkerBO
                 .getProjectWorker(code);
+            // 未上传的不可授权
             if (!projectWorker.getUploadStatus()
                 .equals(EProjectWorkerUploadStatus.UPLOAD_UNUPDATE.getCode())
                     && !projectWorker.getUploadStatus().equals(
@@ -110,36 +112,31 @@ public class EquipmentWorkerAOImpl implements IEquipmentWorkerAO {
                 throw new BizException("XN631830",
                     "项目人员未上传" + projectWorker.getWorkerName());
             }
-            // 人员录入
-            DeviceWorkerRes worker = deviceWorker.cloudWorkerAdd(
-                equipmentInfo.getDeviceKey(), projectWorker.getWorkerName(),
-                projectWorker.getCode(), projectWorker.getWorkerMobile(),
-                String.valueOf(projectWorker.getWorkRole()),
-                projectWorker.getWorkType());
-            // 添加成功
-            if (worker.getCode()
-                .equals(EEquipmentWorkerResponse.TIANJIACHENGGONG.getCode())) {
-
-                // 回写guid到实名制信息中
-                DeviceWorkerInfo device = worker.getData();
-                com.cdkj.gchf.domain.WorkerInfo workerInfo = workerInfoBO
-                    .getWorkerInfo(projectWorker.getWorkerCode());
-
-                workerInfos.add(worker.getData().getGuid());
-
-                // 人员照片信息录入
-                DeviceWorkerPicRes picRegisterToCloudUrl = workerPicture
-                    .picRegisterToCloud(device.getGuid(),
-                        workerInfo.getAttendancePicture(), null, null, null);
+            // 未添加考勤照片的不可授权
+            WorkerInfo workerInfo = workerInfoBO
+                .getWorkerInfo(projectWorker.getWorkerCode());
+            if (StringUtils.isBlank(workerInfo.getAttendancePicture())) {
+                throw new BizException("XN631830",
+                    "项目人员【" + projectWorker.getWorkerName() + "】考勤照片未添加");
+            }
+            // 查看是否授权过 已在其他机器添加过照片并授权的 不管
+            String workerAuthorizationQuery = deviceWorker
+                .workerAuthorizationQuery(workerInfo.getWorkerGuid());
+            JSONObject parseObject = JSONObject
+                .parseObject(workerAuthorizationQuery);
+            if (parseObject.getJSONArray("data").isEmpty()) {
+                workerInfos.add(workerInfo.getWorkerGuid());
                 projectWorkers.add(projectWorker);
-                workerInfoBO.updateWorkerInfoAttendance(workerInfo.getCode(),
-                    worker.getData().getGuid(),
-                    picRegisterToCloudUrl.getData().getGuid());
-
             } else {
-                throw new BizException(worker.getMsg());
+                // 已经授权过的
+                equipmentWorkerBO.saveEquipmentWorker(equipmentInfo,
+                    projectWorker);
+                continue;
             }
 
+        }
+        if (CollectionUtils.isEmpty(workerInfos)) {
+            throw new BizException("XN631830", "没有可授权的人员");
         }
         // 设备授权人员照片
         ResultMsg cloudWorkerAuthorizationEuipment = deviceWorker
@@ -148,23 +145,10 @@ public class EquipmentWorkerAOImpl implements IEquipmentWorkerAO {
         if (cloudWorkerAuthorizationEuipment.getCode()
             .equals(EEquipmentWorkerResponse.SHOUQUANCHENGONG.getCode())) {
             // 授权成功
-
             for (ProjectWorker projectWorker : projectWorkers) {
-                EquipmentWorker equipmentWorker = new EquipmentWorker();
-                equipmentWorker.setCode(OrderNoGenerater
-                    .generate(EGeneratePrefix.EquipmentWorker.getCode()));
-                equipmentWorker.setDeviceKey(equipmentInfo.getDeviceKey());
-                equipmentWorker.setDeviceCode(equipmentInfo.getCode());
-                equipmentWorker.setDeviceName(equipmentInfo.getName());
-                equipmentWorker.setWorkerCode(projectWorker.getWorkerCode());
-                equipmentWorker.setWorkerName(projectWorker.getWorkerName());
-                equipmentWorker.setTeamCode(projectWorker.getTeamSysNo());
-                equipmentWorker.setTeamName(projectWorker.getTeamName());
-                equipmentWorker
-                    .setIdCardNumber(projectWorker.getIdcardNumber());
-                equipmentWorkerBO.saveEquipmentWorker(equipmentWorker);
+                equipmentWorkerBO.saveEquipmentWorker(equipmentInfo,
+                    projectWorker);
             }
-
         }
     }
 

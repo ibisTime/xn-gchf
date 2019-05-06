@@ -10,7 +10,9 @@ import com.cdkj.gchf.bo.IEquipmentWorkerBO;
 import com.cdkj.gchf.bo.base.PaginableBOImpl;
 import com.cdkj.gchf.core.OrderNoGenerater;
 import com.cdkj.gchf.dao.IEquipmentWorkerDAO;
+import com.cdkj.gchf.domain.EquipmentInfo;
 import com.cdkj.gchf.domain.EquipmentWorker;
+import com.cdkj.gchf.domain.ProjectWorker;
 import com.cdkj.gchf.enums.EGeneratePrefix;
 import com.cdkj.gchf.exception.BizException;
 
@@ -41,6 +43,23 @@ public class EquipmentWorkerBOImpl extends PaginableBOImpl<EquipmentWorker>
             EquipmentWorkerDAO.insert(data);
         }
         return code;
+    }
+
+    @Override
+    public void saveEquipmentWorker(EquipmentInfo equipmentInfo,
+            ProjectWorker projectWorker) {
+        EquipmentWorker equipmentWorker = new EquipmentWorker();
+        equipmentWorker.setCode(OrderNoGenerater
+            .generate(EGeneratePrefix.EquipmentWorker.getCode()));
+        equipmentWorker.setDeviceKey(equipmentInfo.getDeviceKey());
+        equipmentWorker.setDeviceCode(equipmentInfo.getCode());
+        equipmentWorker.setDeviceName(equipmentInfo.getName());
+        equipmentWorker.setWorkerCode(projectWorker.getWorkerCode());
+        equipmentWorker.setWorkerName(projectWorker.getWorkerName());
+        equipmentWorker.setTeamCode(projectWorker.getTeamSysNo());
+        equipmentWorker.setTeamName(projectWorker.getTeamName());
+        equipmentWorker.setIdCardNumber(projectWorker.getIdcardNumber());
+        EquipmentWorkerDAO.insert(equipmentWorker);
     }
 
     @Override

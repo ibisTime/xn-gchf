@@ -39,6 +39,10 @@ public class DeviceWorker {
     private String authorizationUrl = AppConfig.getBaseUrl()
             + "/Api/Device/EquipmentAP";
 
+    // 人员搜索
+    private String workerSearchUrl = AppConfig.getBaseUrl()
+            + "/Api/Personnel/StaffSearch";
+
     /**
      * 
      * @Description: 人员录入到云端
@@ -147,6 +151,21 @@ public class DeviceWorker {
         return resultMsg;
     }
 
+    /**
+     * @Description: 搜索云端人员 id为空默认查询、全部
+     */
+    public String workerSearch(String name, String tag, String idNo,
+            String phone, String startTime, String endTime, String index,
+            String length, String type, String guid, String userGuid,
+            String orderFieldKey, String orderTypeKey) {
+        String token = AppConfig.getToken();
+        Map<String, String> req = new HashMap<>();
+        req.put("appid", AppConfig.getAppid());
+        req.put("token", token);
+        String doRequest = HttpRequest.doRequest(workerSearchUrl, "POST", req);
+        System.out.println(doRequest);
+        return doRequest;
+    }
     @Test
     public void test22() {
         // 人员录入

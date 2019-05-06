@@ -31,6 +31,14 @@ public class DeviceWorkerPicRes {
 
         private String faceUrl;
 
+        private String boxString;
+
+        private String box;
+
+        private String version;
+
+        private String ufaceId;
+
         public String getGuid() {
             return guid;
         }
@@ -85,6 +93,38 @@ public class DeviceWorkerPicRes {
 
         public void setFaceUrl(String faceUrl) {
             this.faceUrl = faceUrl;
+        }
+
+        public String getBox() {
+            return box;
+        }
+
+        public void setBox(String box) {
+            this.box = box;
+        }
+
+        public String getVersion() {
+            return version;
+        }
+
+        public void setVersion(String version) {
+            this.version = version;
+        }
+
+        public String getUfaceId() {
+            return ufaceId;
+        }
+
+        public void setUfaceId(String ufaceId) {
+            this.ufaceId = ufaceId;
+        }
+
+        public String getBoxString() {
+            return boxString;
+        }
+
+        public void setBoxString(String boxString) {
+            this.boxString = boxString;
         }
 
     }

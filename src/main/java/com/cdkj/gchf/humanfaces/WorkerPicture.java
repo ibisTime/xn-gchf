@@ -45,17 +45,19 @@ public class WorkerPicture {
      * @return: String      
      * @throws
      */
-    public String picRegisterToCloud(String guid, String img, String type,
-            String useUFaceCloud, String validLevel) {
+    public DeviceWorkerPicRes picRegisterToCloud(String guid, String img,
+            String type, String useUFaceCloud, String validLevel) {
         String token = AppConfig.getToken();
         Map<String, String> req = new HashMap<>();
         req.put("appid", AppConfig.getAppid());
         req.put("token", token);
         req.put("guid", guid);
-        req.put("img", img.substring(img.indexOf("base64") + 1, img.length()));
-        System.out.println(
-            "::" + img.substring(img.indexOf("base64") + 1, img.length()));
-        req.put("type", type);
+        req.put("img", img.substring(img.indexOf(",") + 1, img.length()));
+
+        if (StringUtils.isNotBlank(type)) {
+            req.put("type", type);
+        }
+
         if (StringUtils.isNotBlank(useUFaceCloud)) {
             req.put("useUFaceCloud", useUFaceCloud);
         }
@@ -63,7 +65,10 @@ public class WorkerPicture {
             req.put("validLevel", validLevel);
         }
         String doRequest = HttpRequest.doRequest(picAddBase64Url, "POST", req);
-        return doRequest;
+        System.out.println(doRequest);
+        DeviceWorkerPicRes fromJson = AppConfig.gson.fromJson(doRequest,
+            DeviceWorkerPicRes.class);
+        return fromJson;
     }
 
     /**
@@ -96,6 +101,27 @@ public class WorkerPicture {
         DeviceWorkerPicRes fromJson = AppConfig.gson.fromJson(doRequest,
             DeviceWorkerPicRes.class);
         return fromJson;
+    }
+
+    /**
+     * @Description: 注册人员照片到云端 Url
+     * @param: @param guid 人员guid
+     * @param: @param img  图片base64字符串
+     * @param: @param type 图片类型  1.：普通 RGB 照片2：红外照片， 特定设备型号使用； 
+     * @param: @param useUFaceCloud
+     * @param: @param validLevel
+     * @param: @return      
+     * @return: String      
+     * @throws
+     */
+    public String picQueryCloud(String guid) {
+        String token = AppConfig.getToken();
+        Map<String, String> req = new HashMap<>();
+        req.put("appid", AppConfig.getAppid());
+        req.put("token", token);
+        req.put("guid", guid);
+        String doRequest = HttpRequest.doRequest(picQueryUrl, "GET", req);
+        return doRequest;
     }
 
     @Test

@@ -129,9 +129,8 @@ public class EquipmentWorkerAOImpl implements IEquipmentWorkerAO {
 
                 // 人员照片信息录入
                 DeviceWorkerPicRes picRegisterToCloudUrl = workerPicture
-                    .picRegisterToCloudUrl(device.getGuid(),
-                        workerInfo.getAttendancePicture(),
-                        projectWorker.getWorkType(), null, null);
+                    .picRegisterToCloud(device.getGuid(),
+                        workerInfo.getAttendancePicture(), null, null, null);
                 projectWorkers.add(projectWorker);
                 workerInfoBO.updateWorkerInfoAttendance(workerInfo.getCode(),
                     worker.getData().getGuid(),

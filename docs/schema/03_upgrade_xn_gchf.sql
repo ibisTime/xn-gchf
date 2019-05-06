@@ -677,4 +677,4 @@ DROP TABLE IF EXISTS `thf_equipment_worker`;
     )ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='考勤设备人员';
     
 ALTER TABLE `tqy_corp_basicinfo` 
-CHANGE COLUMN `corp_code` `corp_code` VARCHAR(32) NULL DEFAULT NULL COMMENT '统一社会信用代码' ;
+CHANGE COLUMN `corp_code` `corp_code` VARCHAR(255) NULL DEFAULT NULL COMMENT '统一社会信用代码' ;

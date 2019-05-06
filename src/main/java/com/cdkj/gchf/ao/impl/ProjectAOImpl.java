@@ -80,6 +80,11 @@ public class ProjectAOImpl implements IProjectAO {
         if (null != preProject) {
             throw new BizException("XN631600", "项目名称已存在，请重新输入");
         }
+
+        if (userBO.checkMobile(req.getLinkPhone())) {
+            throw new BizException("XN631600", "联系人电话已存在，请重新输入");
+        }
+
         CorpBasicinfo contractorCorpInfo = null;
         if (StringUtils.isNotBlank(req.getContractorCorpCode())) {
             contractorCorpInfo = corpBasicinfoBO
@@ -149,6 +154,7 @@ public class ProjectAOImpl implements IProjectAO {
 
         if (!project.getContractorCorpCode()
             .equals(req.getContractorCorpCode())) {
+
             ProjectCorpInfo projectCorpInfo = projectCorpInfoBO
                 .getProjectCorpInfo(req.getCode(),
                     project.getContractorCorpCode(),

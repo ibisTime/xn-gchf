@@ -312,8 +312,7 @@ public class WorkerAttendanceAOImpl implements IWorkerAttendanceAO {
             // 核实身份信息
             String idcardNumber = dateReq.getIdCardNumber();
             ProjectWorker workerByIdCardNumber = projectWorkerBO
-                .getProjectWorker(req.getProjectCode(), dateReq.getCorpCode(),
-                    req.getTeamSysNo(), idcardNumber);
+                .getProjectWorker(req.getProjectCode(), idcardNumber);
             if (workerByIdCardNumber == null) {
                 throw new BizException("XN631713",
                     "员工信息【" + idcardNumber + "】不存在");

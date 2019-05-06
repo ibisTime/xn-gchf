@@ -59,6 +59,13 @@ public class WorkerInfoDAOImpl extends AMybatisTemplate
     }
 
     @Override
+    public List<WorkerInfo> selectBrifeList(WorkerInfo condition, int start,
+            int count) {
+        return super.selectList(NAMESPACE.concat("select_BrifeWorkerInfo"),
+            start, count, condition, WorkerInfo.class);
+    }
+
+    @Override
     public int updateWorkerInfoAboutPhone(WorkerInfo condition) {
         return super.update(NAMESPACE.concat("update_WorkerInfoAboutPhone"),
             condition);

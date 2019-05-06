@@ -158,4 +158,16 @@ public class ProjectBOImpl extends PaginableBOImpl<Project>
         return projectDAO.select(project);
     }
 
+    @Override
+    public void refreshcontractorCorp(String code, String contractorCorpCode,
+            String contractorCorpName) {
+        Project project = new Project();
+
+        project.setCode(code);
+        project.setContractorCorpCode(contractorCorpCode);
+        project.setContractorCorpName(contractorCorpName);
+
+        projectDAO.updateContractorCorp(project);
+    }
+
 }

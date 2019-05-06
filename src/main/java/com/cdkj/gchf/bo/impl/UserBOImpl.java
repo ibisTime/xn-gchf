@@ -263,4 +263,19 @@ public class UserBOImpl extends PaginableBOImpl<User> implements IUserBO {
         }
     }
 
+    @Override
+    public boolean checkMobile(String mobile) {
+        if (StringUtils.isNotBlank(mobile)) {
+            // 判断格式
+            PhoneUtil.checkMobile(mobile);
+            User condition = new User();
+            condition.setMobile(mobile);
+            long count = getTotalCount(condition);
+            if (count > 0) {
+                return true;
+            }
+        }
+        return false;
+    }
+
 }

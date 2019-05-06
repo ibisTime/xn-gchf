@@ -10,4 +10,5 @@ public interface IProjectDAO extends IBaseDAO<Project> {
 
     void updateSecretStatus(Project project);
 
+    void updateContractorCorp(Project project);
 }

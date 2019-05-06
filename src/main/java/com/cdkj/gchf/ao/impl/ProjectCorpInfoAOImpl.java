@@ -435,6 +435,13 @@ public class ProjectCorpInfoAOImpl implements IProjectCorpInfoAO {
             String projectCorpInfoCode = projectCorpInfoBO
                 .saveProjectCorpInfo(project, data);
 
+            if (StringUtils.isEmpty(project.getContractorCorpCode())
+                    && EProjectCorpType.ZONGCHENGBAO.getCode()
+                        .equals(data.getCorpType())) {
+                projectBO.refreshcontractorCorp(project.getCode(),
+                    data.getCorpCode(), data.getCorpName());
+            }
+
             // 操作日志
             operateLogBO.saveOperateLog(
                 EOperateLogRefType.ProjectCorpinfo.getCode(),

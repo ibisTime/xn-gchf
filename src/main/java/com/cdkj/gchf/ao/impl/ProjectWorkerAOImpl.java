@@ -123,8 +123,7 @@ public class ProjectWorkerAOImpl implements IProjectWorkerAO {
             req.setProjectCode(user.getOrganizationCode());
         }
         ProjectWorker preProjectWorker = projectWorkerBO.getProjectWorker(
-            req.getProjectCode(), req.getCorpCode(), teamMaster.getCode(),
-            workerInfo.getIdCardNumber());
+            req.getProjectCode(), workerInfo.getIdCardNumber());
 
         if (preProjectWorker != null && preProjectWorker.getDeleteStatus()
             .equals(EDeleteStatus.NORMAL.getCode())) {

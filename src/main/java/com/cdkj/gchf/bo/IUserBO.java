@@ -22,6 +22,8 @@ public interface IUserBO extends IPaginableBO<User> {
 
     public void isMobileExist(String mobile);
 
+    public boolean checkMobile(String mobile);
+
     public boolean isUserExist(String code);
 
     public void saveUser(User data);

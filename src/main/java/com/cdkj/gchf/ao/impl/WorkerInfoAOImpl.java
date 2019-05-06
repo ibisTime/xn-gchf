@@ -12,6 +12,7 @@ import com.cdkj.gchf.bo.IOperateLogBO;
 import com.cdkj.gchf.bo.IProjectWorkerBO;
 import com.cdkj.gchf.bo.IUserBO;
 import com.cdkj.gchf.bo.IWorkerInfoBO;
+import com.cdkj.gchf.bo.base.Page;
 import com.cdkj.gchf.bo.base.Paginable;
 import com.cdkj.gchf.common.IdCardChecker;
 import com.cdkj.gchf.domain.User;
@@ -122,7 +123,19 @@ public class WorkerInfoAOImpl implements IWorkerInfoAO {
             condition.setBusinessIdCardNumber(condition.getIdCardNumber());
             condition.setIdCardNumber(null);
         }
-        return workerInfoBO.getPaginable(start, limit, condition);
+
+        long totalCount = workerInfoBO.getTotalCount(condition);
+
+        Paginable<WorkerInfo> page = new Page<WorkerInfo>(start, limit,
+            totalCount);
+
+        List<WorkerInfo> dataList = workerInfoBO.queryStaffListBrief(condition,
+            page.getStart(), page.getPageSize());
+
+        page.setList(dataList);
+
+        return page;
+
     }
 
     @Override
@@ -162,6 +175,7 @@ public class WorkerInfoAOImpl implements IWorkerInfoAO {
         User user = userBO.getBriefUser(req.getUserId());
 
         workerInfoBO.refreshWorkerInfo(req);
+
         projectWorkerBO.refreshWorkerIdCardNumber(req.getCode(),
             req.getIdCardNumber(), req.getName());
 

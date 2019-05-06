@@ -178,6 +178,17 @@ public class WorkerInfoBOImpl extends PaginableBOImpl<WorkerInfo>
     }
 
     @Override
+    public List<WorkerInfo> queryStaffListBrief(WorkerInfo condition, int start,
+            int count) {
+        return workerInfoDAO.selectBrifeList(condition, start, count);
+    }
+
+    @Override
+    public long queryTotalCount(WorkerInfo condition) {
+        return workerInfoDAO.selectTotalCount(condition);
+    }
+
+    @Override
     public String saveWorkerInfo(WorkerInfo workerInfo) {
         String code = null;
         code = OrderNoGenerater.generate(EGeneratePrefix.WorkerInfo.getCode());

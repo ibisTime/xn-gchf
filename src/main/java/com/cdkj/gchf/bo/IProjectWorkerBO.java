@@ -67,15 +67,13 @@ public interface IProjectWorkerBO extends IPaginableBO<ProjectWorker> {
 
     List<ProjectWorker> queryProjectWorkerListByProject(String projectCode);
 
-    public List<ProjectWorker> queryUploadedProjectWorkerList(String teamMasterNo);
+    public List<ProjectWorker> queryUploadedProjectWorkerList(
+            String teamMasterNo);
 
     public ProjectWorker getProjectWorker(String code);
 
-    public List<ProjectWorker> getProjectWorker(String projectCode,
-            String idCardNumber);
-
-    public ProjectWorker getProjectWorker(String projectCode, String corpCode,
-            String teamSysNo, String idcardNumber);
+    public ProjectWorker getProjectWorker(String projectCode,
+            String idcardNumber);
 
     public ProjectWorker getProjectWorkerByProjectCode(String code);
 

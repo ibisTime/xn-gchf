@@ -55,4 +55,9 @@ public class ProjectDAOImpl extends AMybatisTemplate implements IProjectDAO {
         super.update(NAMESPACE.concat("update_projectSecretStatus"), project);
     }
 
+    @Override
+    public void updateContractorCorp(Project project) {
+        super.update(NAMESPACE.concat("update_contractorCorp"), project);
+    }
+
 }

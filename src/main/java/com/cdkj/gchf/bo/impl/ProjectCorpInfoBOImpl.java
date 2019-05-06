@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.BeansException;
@@ -322,5 +323,21 @@ public class ProjectCorpInfoBOImpl extends PaginableBOImpl<ProjectCorpInfo>
         projectCorpInfo
             .setUploadStatus(EProjectCorpUploadStatus.TO_UPLOAD.getCode());
         projectCorpInfoDAO.updateDeleteStatus(projectCorpInfo);
+    }
+
+    @Override
+    public ProjectCorpInfo getProjectCorpInfo(String projectCode,
+            String corpCode, String corpType) {
+        ProjectCorpInfo projectCorpInfo = new ProjectCorpInfo();
+        projectCorpInfo.setProjectCode(projectCode);
+        projectCorpInfo.setCorpCode(corpCode);
+        projectCorpInfo.setCorpType(corpType);
+        List<ProjectCorpInfo> projectCorpInfos = projectCorpInfoDAO
+            .selectList(projectCorpInfo);
+        if (CollectionUtils.isNotEmpty(projectCorpInfos)) {
+            return projectCorpInfos.get(0);
+        }
+        return null;
+
     }
 }

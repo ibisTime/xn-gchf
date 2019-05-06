@@ -625,13 +625,12 @@ CREATE TABLE `thf_skill` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- 以下为220修改
-ALTER TABLE `test_xn_gchf_gov`.`thf_worker_info` 
+ALTER TABLE `thf_worker_info` 
 ADD COLUMN `attendance_picture` longtext NULL COMMENT '人员考勤照片' AFTER `create_datetime`,
 ADD COLUMN `worker_guid` varchar(32) NULL COMMENT '人员guid' AFTER `attendance_picture`,
 ADD COLUMN `worker_attendance_pic_guid` varchar(32) NULL COMMENT '人员考勤照片guid' AFTER `worker_guid`,
 ADD COLUMN `worker_pic_upload_status` tinyint(1) NULL COMMENT '人脸上传状态' AFTER `worker_attendance_pic_guid`,
 ADD COLUMN `worker_upload_status` tinyint(1) NULL COMMENT '考勤人员上传状态' AFTER `worker_pic_upload_status`;
-
 
 alter table thf_pay_roll_detail add COLUMN `back_pay_month` datetime 
   COMMENT '补发日期';
@@ -677,3 +676,5 @@ DROP TABLE IF EXISTS `thf_equipment_worker`;
     `create_time` datetime DEFAULT NULL COMMENT '添加时间'
     )ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='考勤设备人员';
     
+ALTER TABLE `tqy_corp_basicinfo` 
+CHANGE COLUMN `corp_code` `corp_code` VARCHAR(255) NULL DEFAULT NULL COMMENT '统一社会信用代码' ;

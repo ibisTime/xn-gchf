@@ -312,8 +312,7 @@ public class WorkerAttendanceAOImpl implements IWorkerAttendanceAO {
             // 核实身份信息
             String idcardNumber = dateReq.getIdCardNumber();
             ProjectWorker workerByIdCardNumber = projectWorkerBO
-                .getProjectWorker(req.getProjectCode(), dateReq.getCorpCode(),
-                    req.getTeamSysNo(), idcardNumber);
+                .getProjectWorker(req.getProjectCode(), idcardNumber);
             if (workerByIdCardNumber == null) {
                 throw new BizException("XN631713",
                     "员工信息【" + idcardNumber + "】不存在");
@@ -330,6 +329,11 @@ public class WorkerAttendanceAOImpl implements IWorkerAttendanceAO {
             condition.setRealTeamName(dateReq.getTeamName());
             TeamMaster masterByCondition = teamMasterBO
                 .getTeamMasterByCondition(condition);
+            if (masterByCondition == null) {
+                throw new BizException("XN631713",
+                    "班组信息【" + dateReq.getTeamName() + "】不存在");
+            }
+
             workerAttendance.setTeamSysNo(masterByCondition.getCode());
             if (StringUtils.isNotBlank(dateReq.getDate())) {
                 Date date = DateUtil.strToDate(dateReq.getDate(),

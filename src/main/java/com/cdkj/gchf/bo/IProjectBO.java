@@ -18,6 +18,9 @@ public interface IProjectBO extends IPaginableBO<Project> {
     public void refreshProject(XN631602Req req,
             CorpBasicinfo contractorCorpInfo);
 
+    public void refreshcontractorCorp(String code, String contractorCorpCode,
+            String contractorCorpName);
+
     public void refreshSecretStatus(String code, String secretStatus);
 
     public List<Project> queryProjectList(Project condition);

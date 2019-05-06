@@ -296,5 +296,14 @@
 		secret_status = #{secretStatus}
 		WHERE code = #{code}
 	</update>
+	
+	<update id="update_contractorCorp" parameterType="project">
+		UPDATE
+		thf_project
+		SET
+		contractor_corp_code = #{contractorCorpCode}
+		,contractor_corp_name = #{contractorCorpName}
+		WHERE code = #{code}
+	</update>
 
 </mapper>

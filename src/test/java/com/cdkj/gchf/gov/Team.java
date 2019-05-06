@@ -38,17 +38,18 @@ public class Team {
     public void teamUpdate() {
 
         Map<String, String> dataMap = new HashMap<String, String>();
-        dataMap.put("projectCode", "3311222019030002");
-        dataMap.put("corpCode", "91331122MA2A0M9B7N");
-        dataMap.put("teamSysNo", "100156750");
-        dataMap.put("corpName", "浙江兰芽科技有限公司");
-        dataMap.put("teamName", "泥工组");
+        dataMap.put("projectCode", "3311222019030008");
+        dataMap.put("corpCode", "91330322254505447T");
+        dataMap.put("teamSysNo", "100381945");
+        dataMap.put("corpName", "浙江立鹏建设有限公司");
+        dataMap.put("teamName", "架子班组");
 
         String data = JSONObject.toJSON(dataMap).toString();
 
         System.out.println(data);
 
-        GovConnecter.getGovData("Team.Update", data);
+        GovConnecter.getGovData("Team.Update", data, "3311222019030008",
+            "b6953c9d0e9f5db147c8bc9989c70eac");
 
         // team-add-2019031411-1-0262
         // teamSysNo : 100156750
@@ -60,14 +61,14 @@ public class Team {
         Map<String, String> dataMap = new HashMap<String, String>();
         dataMap.put("pageIndex", "0");
         dataMap.put("pageSize", "10");
-        dataMap.put("projectCode", "33112220190310002");
+        dataMap.put("projectCode", "3311222019030008");
 
         String data = JSONObject.toJSON(dataMap).toString();
 
         System.out.println(data);
 
-        GovConnecter.getGovData("Team.Query", data, "33112220190310002",
-            "24484b262dd63dd584902a266bdbdca0");
+        GovConnecter.getGovData("Team.Query", data, "3311222019030008",
+            "b6953c9d0e9f5db147c8bc9989c70eac");
 
         // team-add-2019031411-1-0262
         // teamSysNo : 100156750

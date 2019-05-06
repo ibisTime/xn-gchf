@@ -194,7 +194,7 @@ public class CorpBasicinfoBOImpl extends PaginableBOImpl<CorpBasicinfo>
     @Override
     public CorpBasicinfo getCorpBasicinfoByCorp(String corpCode) {
         CorpBasicinfo condition = new CorpBasicinfo();
-        condition.setCorpCode(corpCode);
+        condition.setTotalCorpCode(corpCode);
         List<CorpBasicinfo> selectList = corpBasicinfoDAO.selectList(condition);
         if (CollectionUtils.isNotEmpty(selectList)) {
             return selectList.get(0);

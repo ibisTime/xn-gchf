@@ -420,6 +420,7 @@ public class PayRollAOImpl implements IPayRollAO {
 
                 PayRoll payRollcondition = new PayRoll();
                 payRollcondition.setCorpCode(xn631773ReqData.getCorpCode());
+                payRollcondition.setCorpName(xn631773ReqData.getCorpName());
                 payRollcondition.setTeamSysNo(teamMasterByCondition.getCode());
                 Date toDate;
                 try {

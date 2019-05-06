@@ -309,16 +309,14 @@ public class WorkerContractAOImpl implements IWorkerContractAO {
                 .checkExists(xn631673ReqData.getContractPeriodType());
 
             // 取得个人信息
-            List<ProjectWorker> projectWorker = projectWorkerBO
-                .getProjectWorker(req.getProjectCode(),
-                    xn631673ReqData.getIdCardNumber());
-            if (CollectionUtils.isEmpty(projectWorker)) {
+            ProjectWorker projectWorker = projectWorkerBO.getProjectWorker(
+                req.getProjectCode(), xn631673ReqData.getIdCardNumber());
+            if (null == projectWorker) {
                 throw new BizException("XN631673",
                     "项目人员不存在【" + xn631673ReqData.getIdCardNumber() + "】");
-
             }
             String code = workerContractBO.saveWorkerContract(xn631673ReqData,
-                projectWorker.get(0));
+                projectWorker);
 
             operateLogBO.saveOperateLog(
                 EOperateLogRefType.WorkContract.getCode(), code, "导入员工合同", user,

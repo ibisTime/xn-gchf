@@ -86,13 +86,11 @@ public class PayRollDetailBOImpl extends PaginableBOImpl<PayRollDetail>
             BeanUtils.copyProperties(detail, payRollDetail);
             // 银行卡信息
             payRollDetail
-                .setPayRollBankCardNumber(detail.getPayBankCardNumber());
-            payRollDetail.setPayRollBankCode(detail.getPayBankCode());
-            payRollDetail.setPayRollBankName(EBankCardCodeType
-                .getBankCardType(detail.getPayBankCode()).getValue());
+                .setPayRollBankCardNumber(detail.getPayRollBankCardNumber());
+            payRollDetail.setPayRollBankCode(detail.getPayRollBankCode());
+            payRollDetail.setPayRollBankName(detail.getPayRollBankName());
             payRollDetail.setPayBankCode(detail.getPayBankCode());
-            payRollDetail.setPayBankName(EBankCardCodeType
-                .getBankCardType(detail.getPayBankCode()).getValue());
+            payRollDetail.setPayBankName(detail.getPayBankName());
 
             // 员工信息
             payRollDetail.setWorkerName(projectWorker.getWorkerName());

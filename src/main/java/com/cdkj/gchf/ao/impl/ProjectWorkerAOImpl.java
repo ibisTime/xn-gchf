@@ -414,12 +414,12 @@ public class ProjectWorkerAOImpl implements IProjectWorkerAO {
     }
 
     // 查询所有授权和未授权人员
-    @Override
-    public List<ProjectWorker> getProjectWorkerByProject(String userId) {
-        User briefUser = userBO.getBriefUser(userId);
-        return projectWorkerBO
-            .queryProjectWorkerListProjectCode(briefUser.getOrganizationCode());
-    }
+    // @Override
+    // public List<ProjectWorker> getProjectWorkerByProject(String userId) {
+    // User briefUser = userBO.getBriefUser(userId);
+    // return projectWorkerBO
+    // .queryProjectWorkerListProjectCode(briefUser.getOrganizationCode());
+    // }
 
     public void checkDicKey(XN631693ReqData projectWorkerData) {
 
@@ -497,23 +497,25 @@ public class ProjectWorkerAOImpl implements IProjectWorkerAO {
             // .queryEquipmentWorkerList(equipmentWorker);
             // 已授权人员
 
-            List<ProjectWorker> queryProjectWorkerListProjectCode = projectWorkerBO
-                .queryProjectWorkerListProjectCode(userBO
-                    .getBriefUser(condition.getUserId()).getOrganizationCode());
+            // List<ProjectWorker> queryProjectWorkerListProjectCode =
+            // projectWorkerBO
+            // .queryProjectWorkerListProjectCode(userBO
+            // .getBriefUser(condition.getUserId()).getOrganizationCode());
 
-            for (ProjectWorker projectWorker : queryProjectWorkerListProjectCode) {
-                WorkerInfo workerInfo = workerInfoBO
-                    .getWorkerInfo(projectWorker.getWorkerCode());
-                if (workerInfo != null) {
-                    projectWorker.setIsLink(EIsNotType.IS.getCode());
-                }
-            }
+            // for (ProjectWorker projectWorker :
+            // queryProjectWorkerListProjectCode) {
+            // WorkerInfo workerInfo = workerInfoBO
+            // .getWorkerInfo(projectWorker.getWorkerCode());
+            // if (workerInfo != null) {
+            // projectWorker.setIsLink(EIsNotType.IS.getCode());
+            // }
+            // }
             // 取差集
-            queryProjectWorkerList.removeAll(queryProjectWorkerListProjectCode);
-            for (ProjectWorker projectWorker : queryProjectWorkerList) {
-                projectWorker.setIsLink(EIsNotType.NOT.getCode());
-            }
-            queryProjectWorkerList.addAll(queryProjectWorkerListProjectCode);
+            // queryProjectWorkerList.removeAll(queryProjectWorkerListProjectCode);
+            // for (ProjectWorker projectWorker : queryProjectWorkerList) {
+            // projectWorker.setIsLink(EIsNotType.NOT.getCode());
+            // }
+            // queryProjectWorkerList.addAll(queryProjectWorkerListProjectCode);
         }
         return queryProjectWorkerList;
     }

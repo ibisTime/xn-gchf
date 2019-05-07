@@ -505,13 +505,6 @@ public class ProjectWorkerBOImpl extends PaginableBOImpl<ProjectWorker>
         return projectWorkerDAO.selectList(condition);
     }
 
-    // 根据projectcode 获取所有授权和未授权的人员
-    @Override
-    public List<ProjectWorker> queryProjectWorkerListProjectCode(
-            String projectCode) {
-        return projectWorkerDAO.selectDistinctWorkerByProjectCode(projectCode);
-    }
-
     @Override
     public ProjectWorker getProjectWorker(String code) {
         ProjectWorker data = null;

@@ -154,6 +154,8 @@ public class ProjectWorker extends ABaseDO {
     private String remark;
 
     /****DB Properties****/
+    // 是否关联
+    private String isLink;
 
     // 民族
     private String nation;
@@ -818,4 +820,11 @@ public class ProjectWorker extends ABaseDO {
         this.personGuid = personGuid;
     }
 
+    public String getIsLink() {
+        return isLink;
+    }
+
+    public void setIsLink(String isLink) {
+        this.isLink = isLink;
+    }
 }

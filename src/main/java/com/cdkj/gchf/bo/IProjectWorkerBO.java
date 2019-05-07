@@ -65,9 +65,6 @@ public interface IProjectWorkerBO extends IPaginableBO<ProjectWorker> {
     public List<ProjectWorker> queryProjectWorkerList(String projectCode,
             String idcardNumber);
 
-    // 根据workercode查询不重复的人员
-    List<ProjectWorker> queryProjectWorkerListProjectCode(String projectCode);
-
     List<ProjectWorker> queryProjectWorkerListByProject(String projectCode);
 
     public List<ProjectWorker> queryUploadedProjectWorkerList(

@@ -111,7 +111,8 @@ public class AppConfig {
 
     @Test
     public void test() {
-        getToken();
+        // getToken();
+        System.out.println(getToken());
     }
 
 }

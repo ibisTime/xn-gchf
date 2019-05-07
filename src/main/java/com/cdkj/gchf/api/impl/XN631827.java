@@ -32,6 +32,7 @@ public class XN631827 extends AProcessor {
         EquipmentInfo equipmentInfo = new EquipmentInfo();
         BeanUtils.copyProperties(req, equipmentInfo);
         String order = req.getOrderColumn();
+        equipmentInfo.setUserId(req.getUserId());
         if (StringUtils.isBlank(order)) {
             order = IEquipmentInfoAO.DEFAULT_ORDER_COLUMN;
         }
@@ -42,7 +43,7 @@ public class XN631827 extends AProcessor {
     @Override
     public void doCheck(String inputparams, String operator)
             throws ParaException {
-        JsonUtils.json2Bean(inputparams, XN631827Req.class);
+        req = JsonUtils.json2Bean(inputparams, XN631827Req.class);
         ObjValidater.validateReq(req);
     }
 

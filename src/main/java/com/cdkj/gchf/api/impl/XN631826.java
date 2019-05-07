@@ -24,13 +24,13 @@ public class XN631826 extends AProcessor {
 
     @Override
     public Object doBusiness() throws BizException {
-        return equipmentInfoAO.getEquipmentInfo(req.getCode());
+        return equipmentInfoAO.getEquipmentInfo(req.getUserId(), req.getCode());
     }
 
     @Override
     public void doCheck(String inputparams, String operator)
             throws ParaException {
-        JsonUtils.json2Bean(inputparams, XN631826Req.class);
+        req = JsonUtils.json2Bean(inputparams, XN631826Req.class);
         ObjValidater.validateReq(req);
 
     }

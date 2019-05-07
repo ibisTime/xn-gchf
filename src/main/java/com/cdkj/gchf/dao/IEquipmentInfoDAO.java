@@ -8,4 +8,7 @@ public interface IEquipmentInfoDAO extends IBaseDAO<EquipmentInfo> {
     String NAMESPACE = IEquipmentInfoDAO.class.getName().concat(".");
 
     int update(EquipmentInfo equipmentInfo);
+
+    int updateEquipment(EquipmentInfo equipmentInfo);
+
 }

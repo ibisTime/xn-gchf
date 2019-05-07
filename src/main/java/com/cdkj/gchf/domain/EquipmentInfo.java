@@ -77,6 +77,9 @@ public class EquipmentInfo extends ABaseDO {
     // 项目名称
     private String projectName;
 
+    // 用户id
+    private String userId;
+
     public String getCode() {
         return code;
     }
@@ -235,6 +238,14 @@ public class EquipmentInfo extends ABaseDO {
 
     public void setProjectName(String projectName) {
         this.projectName = projectName;
+    }
+
+    public String getUserId() {
+        return userId;
+    }
+
+    public void setUserId(String userId) {
+        this.userId = userId;
     }
 
 }

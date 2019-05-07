@@ -54,4 +54,10 @@ public class EquipmentInfoDAOImpl extends AMybatisTemplate
             condition);
     }
 
+    @Override
+    public int updateEquipment(EquipmentInfo equipmentInfo) {
+        return super.update(NAMESPACE.concat("update_EquipmentInfo_cloud"),
+            equipmentInfo);
+    }
+
 }

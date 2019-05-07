@@ -1,5 +1,6 @@
 package com.cdkj.gchf.ao.impl;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,6 +19,7 @@ import com.cdkj.gchf.dto.req.XN631820Req;
 import com.cdkj.gchf.dto.req.XN631821Req;
 import com.cdkj.gchf.enums.EOperateLogOperate;
 import com.cdkj.gchf.enums.EOperateLogRefType;
+import com.cdkj.gchf.enums.EUserKind;
 import com.cdkj.gchf.exception.BizException;
 import com.cdkj.gchf.humanfaces.Device;
 import com.cdkj.gchf.humanfaces.EEquipmentResponse;
@@ -117,17 +119,55 @@ public class EquipmentInfoAOImpl implements IEquipmentInfoAO {
     @Override
     public Paginable<EquipmentInfo> queryEquipmentInfoPage(int start, int limit,
             EquipmentInfo condition) {
-        return equipmentInfoBO.getPaginable(start, limit, condition);
+        User user = userBO.getBriefUser(condition.getUserId());
+        if (user.getType().equals(EUserKind.Owner.getCode())) {
+            condition.setProjectCode(user.getOrganizationCode());
+        }
+        Paginable<EquipmentInfo> paginable = equipmentInfoBO.getPaginable(start,
+            limit, condition);
+        List<EquipmentInfo> updateEquipment = new ArrayList<>();
+        for (EquipmentInfo equipmentInfo : paginable.getList()) {
+            EquipmentInfo refreshEquipment = equipmentInfoBO.refreshEquipment(
+                equipmentInfo.getDeviceKey(), equipmentInfo.getProjectCode(),
+                device.deviceQuery(equipmentInfo.getDeviceKey()).getData());
+            updateEquipment.add(refreshEquipment);
+        }
+        paginable.setList(updateEquipment);
+
+        return paginable;
     }
 
     @Override
     public List<EquipmentInfo> queryEquipmentInfoList(EquipmentInfo condition) {
-        return equipmentInfoBO.queryEquipmentInfoList(condition);
+        List<EquipmentInfo> list = new ArrayList<>();
+
+        User user = userBO.getBriefUser(condition.getUserId());
+        condition.setProjectCode(user.getOrganizationCode());
+
+        for (EquipmentInfo equipmentInfo : equipmentInfoBO
+            .queryEquipmentInfoList(condition)) {
+
+            DeviceQuery deviceQuery = device
+                .deviceQuery(equipmentInfo.getDeviceKey());
+            EquipmentInfo refreshEquipment = equipmentInfoBO.refreshEquipment(
+                equipmentInfo.getDeviceKey(), equipmentInfo.getProjectCode(),
+                deviceQuery.getData());
+
+            list.add(refreshEquipment);
+        }
+        return list;
     }
 
     @Override
-    public EquipmentInfo getEquipmentInfo(String code) {
-        return equipmentInfoBO.getEquipmentInfo(code);
+    public EquipmentInfo getEquipmentInfo(String userId, String code) {
+        EquipmentInfo equipmentInfo = equipmentInfoBO.getEquipmentInfo(code);
+
+        DeviceQuery deviceQuery = device
+            .deviceQuery(equipmentInfo.getDeviceKey());
+
+        return equipmentInfoBO.refreshEquipment(equipmentInfo.getDeviceKey(),
+            userBO.getBriefUser(userId).getOrganizationCode(),
+            deviceQuery.getData());
     }
 
     @Override

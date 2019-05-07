@@ -6,6 +6,7 @@ import com.cdkj.gchf.bo.base.IPaginableBO;
 import com.cdkj.gchf.domain.EquipmentInfo;
 import com.cdkj.gchf.domain.Project;
 import com.cdkj.gchf.dto.req.XN631820Req;
+import com.cdkj.gchf.humanfaces.res.DeviceInfo;
 import com.cdkj.gchf.humanfaces.res.DeviceQuery;
 
 //CHECK ��鲢��ע�� 
@@ -28,7 +29,11 @@ public interface IEquipmentInfoBO extends IPaginableBO<EquipmentInfo> {
 
     public EquipmentInfo getEquipmentInfo(String code, String projectCode);
 
+    EquipmentInfo refreshEquipment(String deviceKey, String projectCode,
+            DeviceInfo info);
+
     EquipmentInfo getEquipmentInfoByKey(String deviceKey, String projectCode);
 
     List<EquipmentInfo> getEquipmentList(String projectCode);
+
 }

@@ -28,7 +28,7 @@ public interface IEquipmentInfoAO {
     public List<EquipmentInfo> queryEquipmentInfoList(EquipmentInfo condition);
 
     // 添加设备
-    public EquipmentInfo getEquipmentInfo(String code);
+    public EquipmentInfo getEquipmentInfo(String userId, String code);
 
     // 修改设备
     void modifyEquipment(XN631821Req req);

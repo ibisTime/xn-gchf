@@ -126,6 +126,28 @@
 
 		WHERE code = #{code}
 	</update>
-
+	 
+    <update id="update_EquipmentInfo_cloud" parameterType="equipmentInfo">
+        UPDATE thf_equipment_info
+        SET
+        name = #{name}
+        ,tag = #{tag}
+        ,tag_encreapt = #{tagEncreapt}
+        ,scene_guid = #{sceneGuid}
+        ,state = #{state}
+        ,status = #{status}
+        ,client_id = #{clientId}
+        ,c_id = #{cId}
+        ,version_no = #{versionNo}
+        ,system_version_no = #{systemVersionNo}
+        ,reg_num = #{regNum}
+        ,need_upgrade_app = #{needUpgradeApp}
+        ,need_upgrade = #{needUpgrade}
+        ,create_time = #{createTime}
+        ,expired = #{expired}
+        ,device_status = #{deviceStatus}
+        
+        WHERE code = #{code}
+    </update>
 
 </mapper>

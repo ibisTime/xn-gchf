@@ -8,4 +8,5 @@ public interface IEquipmentWorkerDAO extends IBaseDAO<EquipmentWorker> {
     String NAMESPACE = IEquipmentWorkerDAO.class.getName().concat(".");
 
     int update(EquipmentWorker equipmentWorker);
+
 }

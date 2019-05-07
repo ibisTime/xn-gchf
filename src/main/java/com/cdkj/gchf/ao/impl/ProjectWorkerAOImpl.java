@@ -1,5 +1,6 @@
 package com.cdkj.gchf.ao.impl;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -480,42 +481,40 @@ public class ProjectWorkerAOImpl implements IProjectWorkerAO {
 
     @Override
     public List<ProjectWorker> queryProjectWorkerList(ProjectWorker condition) {
+        // 项目端
+        User user = userBO.getBriefUser(condition.getUserId());
         if (StringUtils.isNotBlank(condition.getUserId())) {
-            condition.setProjectCode(userBO.getBriefUser(condition.getUserId())
-                .getOrganizationCode());
+            condition.setProjectCode(user.getOrganizationCode());
         }
+        // 查询项目端人员
         List<ProjectWorker> queryProjectWorkerList = projectWorkerBO
             .queryProjectWorkerList(condition);
 
         if (StringUtils.isNotBlank(condition.getDeviceKey())) {
-            // 查询设备人员
-            EquipmentWorker equipmentWorker = new EquipmentWorker();
-            equipmentWorker.setDeviceKey(condition.getDeviceKey());
-            // 已授权人员
-            // List<EquipmentWorker> queryEquipmentWorkerList =
-            // equipmentWorkerAO
-            // .queryEquipmentWorkerList(equipmentWorker);
-            // 已授权人员
+            // 项目端-查询人员-包含已授权和未授权
 
-            // List<ProjectWorker> queryProjectWorkerListProjectCode =
-            // projectWorkerBO
-            // .queryProjectWorkerListProjectCode(userBO
-            // .getBriefUser(condition.getUserId()).getOrganizationCode());
+            // 查询设备人员(已授权)
+            EquipmentWorker tempEquipMentWorker = new EquipmentWorker();
+            tempEquipMentWorker.setDeviceKey(condition.getDeviceKey());
+            List<EquipmentWorker> queryEquipmentWorkerList = equipmentWorkerAO
+                .queryEquipmentWorkerList(tempEquipMentWorker);
+            List<ProjectWorker> hasAuthorization = new ArrayList<>();
+            for (EquipmentWorker equipmentWorker : queryEquipmentWorkerList) {
+                ProjectWorker projectWorker = projectWorkerBO
+                    .getProjectWorker(equipmentWorker.getWorkerCode());
+                projectWorker.setIsLink(EIsNotType.IS.getCode());
+                hasAuthorization.add(projectWorker);
+            }
+            // // 此项目下所有人员
+            List<ProjectWorker> projectWorkerByProjectCode = projectWorkerBO
+                .getProjectWorkerByProjectCode(user.getOrganizationCode());
+            projectWorkerByProjectCode.removeAll(hasAuthorization);
 
-            // for (ProjectWorker projectWorker :
-            // queryProjectWorkerListProjectCode) {
-            // WorkerInfo workerInfo = workerInfoBO
-            // .getWorkerInfo(projectWorker.getWorkerCode());
-            // if (workerInfo != null) {
-            // projectWorker.setIsLink(EIsNotType.IS.getCode());
-            // }
-            // }
-            // 取差集
-            // queryProjectWorkerList.removeAll(queryProjectWorkerListProjectCode);
-            // for (ProjectWorker projectWorker : queryProjectWorkerList) {
-            // projectWorker.setIsLink(EIsNotType.NOT.getCode());
-            // }
-            // queryProjectWorkerList.addAll(queryProjectWorkerListProjectCode);
+            for (ProjectWorker projectWorker : projectWorkerByProjectCode) {
+                projectWorker.setIsLink(EIsNotType.NOT.getCode());
+            }
+            projectWorkerByProjectCode.addAll(hasAuthorization);
+            return projectWorkerByProjectCode;
         }
         return queryProjectWorkerList;
     }

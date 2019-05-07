@@ -121,6 +121,8 @@ public class EquipmentWorkerAOImpl implements IEquipmentWorkerAO {
 
             deviceWorker.workerBatchElimination(workerInfo.getWorkerGuid(),
                 equipmentInfo.getDeviceKey());
+            // 删除本地数据
+            equipmentWorkerBO.removeEquipmentWorker(equipmentInfo.getCode());
         }
 
         List<String> workerInfos = new ArrayList<>();
@@ -165,12 +167,13 @@ public class EquipmentWorkerAOImpl implements IEquipmentWorkerAO {
                         deviceWorker.workerBatchElimination(
                             workerInfo.getWorkerGuid(),
                             equipmentInfo.getDeviceKey());
+                        // 删除本地数据
+                        equipmentWorkerBO
+                            .removeEquipmentWorker(equipmentInfo.getCode());
                         workerInfos.add(workerInfo.getWorkerGuid());
                         projectWorkers.add(projectWorker);
                     }
-
                 }
-
             }
 
         }

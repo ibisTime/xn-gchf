@@ -193,7 +193,7 @@ public class DeviceWorker {
         req.put("token", token);
         req.put("guid", guid);
         if (StringUtils.isNotBlank(deviceKey)) {
-            req.put("deviceKey", deviceKey);
+            req.put("deviceKeys", deviceKey);
         }
         String doRequest = HttpRequest.doRequest(
             DeviceWorkUrl.BatchEliminationOfPersonnelEquipmentUrl, "POST", req);
@@ -228,11 +228,15 @@ public class DeviceWorker {
         // String cloudWorkerDel = cloudWorkerDel(
         // "70C34989189A47C3BCA4B68F412B7360");
         // System.out.println(cloudWorkerDel);
-        workerSearch(null, null, null, null, null, null, null, null, null, null,
-            null, null, null);
+        // workerSearch(null, null, null, null, null, null, null, null, null,
+        // null,
+        // null, null, null);
         // 人员授权查询
         // String workerAuthorizationQuery = workerAuthorizationQuery(
         // "C83BFC0DB364433B97FB0BA7254C20EA");
         // workerAuthorizationQuery("422585696F4E405A854D92EAE17174A9");
+        // 人员授权销毁
+        workerBatchElimination("422585696F4E405A854D92EAE17174A9",
+            "84E0F420576700B0");
     }
 }

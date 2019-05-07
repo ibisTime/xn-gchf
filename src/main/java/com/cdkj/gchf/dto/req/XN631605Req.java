@@ -30,6 +30,9 @@ public class XN631605Req extends APageReq {
     @NotBlank
     private String userId;
 
+    // 设备序列号
+    private String deviceKey;
+
     public String getUserId() {
         return userId;
     }
@@ -84,6 +87,14 @@ public class XN631605Req extends APageReq {
 
     public void setUploadStatus(String uploadStatus) {
         this.uploadStatus = uploadStatus;
+    }
+
+    public String getDeviceKey() {
+        return deviceKey;
+    }
+
+    public void setDeviceKey(String deviceKey) {
+        this.deviceKey = deviceKey;
     }
 
 }

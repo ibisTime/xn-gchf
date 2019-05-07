@@ -13,7 +13,7 @@ import com.cdkj.gchf.spring.SpringContextHolder;
 /**
  * 
  * @ClassName:  XN631830   
- * @Description:添加考勤人员
+ * @Description:添加设备人员
  * @author: Old3
  * @date:   2019年5月2日 下午4:34:19     
  * @Copyright:

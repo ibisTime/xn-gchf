@@ -162,7 +162,7 @@ public class DeviceWorker {
 
     /**
      * 
-     * @Description: 人员授权
+     * @Description: 人员授权查询
      * @param: guid 人员guid
      * @return      
      * @return: String      
@@ -176,6 +176,27 @@ public class DeviceWorker {
         String doRequest = HttpRequest
             .doRequest(DeviceWorkUrl.authorizationQueryUrl, "GET", req);
         System.out.println(doRequest);
+        return doRequest;
+    }
+
+    /**
+     * 
+     * @Description: 取消人员授权  取消人员授权  全部设备或某台设备
+     * @param: @return      
+     * @return: String      
+     * @throws
+     */
+    public String workerBatchElimination(String guid, String deviceKey) {
+        String token = AppConfig.getToken();
+        Map<String, String> req = new HashMap<>();
+        req.put("appid", AppConfig.getAppid());
+        req.put("token", token);
+        req.put("guid", guid);
+        if (StringUtils.isNotBlank(deviceKey)) {
+            req.put("deviceKey", deviceKey);
+        }
+        String doRequest = HttpRequest.doRequest(
+            DeviceWorkUrl.BatchEliminationOfPersonnelEquipmentUrl, "POST", req);
         return doRequest;
     }
 
@@ -207,9 +228,11 @@ public class DeviceWorker {
         // String cloudWorkerDel = cloudWorkerDel(
         // "70C34989189A47C3BCA4B68F412B7360");
         // System.out.println(cloudWorkerDel);
-
+        workerSearch(null, null, null, null, null, null, null, null, null, null,
+            null, null, null);
         // 人员授权查询
         // String workerAuthorizationQuery = workerAuthorizationQuery(
         // "C83BFC0DB364433B97FB0BA7254C20EA");
+        // workerAuthorizationQuery("422585696F4E405A854D92EAE17174A9");
     }
 }

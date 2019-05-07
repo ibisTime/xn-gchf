@@ -42,6 +42,8 @@ public interface IWorkerInfoBO extends IPaginableBO<WorkerInfo> {
 
     public WorkerInfo getWorkerInfoByIdCardNumber(String idCardNumber);
 
+    WorkerInfo getWorkerInfoByGuid(String guid);
+
     public List<WorkerInfo> queryWorkerInfoList(WorkerInfo condition);
 
     void updateWorkerInfoAttendance(String code, String workerGuid,

@@ -16,6 +16,9 @@ public class XN631607Req extends AListReq {
     // 上传状态
     private String uploadStatus;
 
+    // 设备序列号
+    private String deviceKey;
+
     // 工人姓名
     private String workerName;
 
@@ -57,6 +60,14 @@ public class XN631607Req extends AListReq {
 
     public void setWorkerName(String workerName) {
         this.workerName = workerName;
+    }
+
+    public String getDeviceKey() {
+        return deviceKey;
+    }
+
+    public void setDeviceKey(String deviceKey) {
+        this.deviceKey = deviceKey;
     }
 
 }

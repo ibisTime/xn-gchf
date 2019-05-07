@@ -37,6 +37,9 @@ public class XN631607 extends AProcessor {
         if (StringUtils.isBlank(order)) {
             order = IProjectWorkerAO.DEFAULT_ORDER_COLUMN;
         }
+        if (StringUtils.isNotBlank(req.getUserId())) {
+            projectWorker.setUserId(req.getUserId());
+        }
         projectWorker.setOrder(order, req.getOrderDir());
         return projectWorkerAO.queryProjectWorkerList(projectWorker);
     }

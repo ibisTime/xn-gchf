@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.cdkj.gchf.ao.IEquipmentWorkerAO;
 import com.cdkj.gchf.ao.IProjectWorkerAO;
 import com.cdkj.gchf.api.impl.XN631693ReqData;
 import com.cdkj.gchf.bo.ICorpBasicinfoBO;
@@ -28,6 +29,7 @@ import com.cdkj.gchf.bo.IWorkerInfoBO;
 import com.cdkj.gchf.bo.base.Paginable;
 import com.cdkj.gchf.common.ImportUtil;
 import com.cdkj.gchf.domain.CorpBasicinfo;
+import com.cdkj.gchf.domain.EquipmentWorker;
 import com.cdkj.gchf.domain.PayRollDetail;
 import com.cdkj.gchf.domain.Project;
 import com.cdkj.gchf.domain.ProjectConfig;
@@ -98,6 +100,9 @@ public class ProjectWorkerAOImpl implements IProjectWorkerAO {
 
     @Autowired
     private IProjectWorkerEntryExitHistoryBO projectWorkerEntryExitHistoryBO;
+
+    @Autowired
+    private IEquipmentWorkerAO equipmentWorkerAO;
 
     @Override
     public String addProjectWorker(XN631690Req req) {
@@ -408,6 +413,14 @@ public class ProjectWorkerAOImpl implements IProjectWorkerAO {
 
     }
 
+    // 查询所有授权和未授权人员
+    @Override
+    public List<ProjectWorker> getProjectWorkerByProject(String userId) {
+        User briefUser = userBO.getBriefUser(userId);
+        return projectWorkerBO
+            .queryProjectWorkerListProjectCode(briefUser.getOrganizationCode());
+    }
+
     public void checkDicKey(XN631693ReqData projectWorkerData) {
 
         EWorkerRoleType
@@ -462,11 +475,47 @@ public class ProjectWorkerAOImpl implements IProjectWorkerAO {
         }
 
         return page;
+
     }
 
     @Override
     public List<ProjectWorker> queryProjectWorkerList(ProjectWorker condition) {
-        return projectWorkerBO.queryProjectWorkerList(condition);
+        if (StringUtils.isNotBlank(condition.getUserId())) {
+            condition.setProjectCode(userBO.getBriefUser(condition.getUserId())
+                .getOrganizationCode());
+        }
+        List<ProjectWorker> queryProjectWorkerList = projectWorkerBO
+            .queryProjectWorkerList(condition);
+
+        if (StringUtils.isNotBlank(condition.getDeviceKey())) {
+            // 查询设备人员
+            EquipmentWorker equipmentWorker = new EquipmentWorker();
+            equipmentWorker.setDeviceKey(condition.getDeviceKey());
+            // 已授权人员
+            // List<EquipmentWorker> queryEquipmentWorkerList =
+            // equipmentWorkerAO
+            // .queryEquipmentWorkerList(equipmentWorker);
+            // 已授权人员
+
+            List<ProjectWorker> queryProjectWorkerListProjectCode = projectWorkerBO
+                .queryProjectWorkerListProjectCode(userBO
+                    .getBriefUser(condition.getUserId()).getOrganizationCode());
+
+            for (ProjectWorker projectWorker : queryProjectWorkerListProjectCode) {
+                WorkerInfo workerInfo = workerInfoBO
+                    .getWorkerInfo(projectWorker.getWorkerCode());
+                if (workerInfo != null) {
+                    projectWorker.setIsLink(EIsNotType.IS.getCode());
+                }
+            }
+            // 取差集
+            queryProjectWorkerList.removeAll(queryProjectWorkerListProjectCode);
+            for (ProjectWorker projectWorker : queryProjectWorkerList) {
+                projectWorker.setIsLink(EIsNotType.NOT.getCode());
+            }
+            queryProjectWorkerList.addAll(queryProjectWorkerListProjectCode);
+        }
+        return queryProjectWorkerList;
     }
 
     @Override

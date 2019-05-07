@@ -54,7 +54,7 @@ public class EquipmentWorkerBOImpl extends PaginableBOImpl<EquipmentWorker>
         equipmentWorker.setDeviceKey(equipmentInfo.getDeviceKey());
         equipmentWorker.setDeviceCode(equipmentInfo.getCode());
         equipmentWorker.setDeviceName(equipmentInfo.getName());
-        equipmentWorker.setWorkerCode(projectWorker.getWorkerCode());
+        equipmentWorker.setWorkerCode(projectWorker.getCode());
         equipmentWorker.setWorkerName(projectWorker.getWorkerName());
         equipmentWorker.setTeamCode(projectWorker.getTeamSysNo());
         equipmentWorker.setTeamName(projectWorker.getTeamName());

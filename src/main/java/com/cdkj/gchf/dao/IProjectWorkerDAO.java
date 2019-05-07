@@ -1,5 +1,7 @@
 package com.cdkj.gchf.dao;
 
+import java.util.List;
+
 import com.cdkj.gchf.dao.base.IBaseDAO;
 import com.cdkj.gchf.domain.ProjectWorker;
 
@@ -25,5 +27,7 @@ public interface IProjectWorkerDAO extends IBaseDAO<ProjectWorker> {
     int updateProjectWorkerWorkerPhone(ProjectWorker projectWorker);
 
     ProjectWorker selectProjectWorkerWorkerGuid(String guid);
+
+    List<ProjectWorker> selectDistinctWorkerByProjectCode(String projectCode);
 
 }

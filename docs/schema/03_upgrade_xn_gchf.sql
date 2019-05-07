@@ -678,3 +678,27 @@ DROP TABLE IF EXISTS `thf_equipment_worker`;
     
 ALTER TABLE `tqy_corp_basicinfo` 
 CHANGE COLUMN `corp_code` `corp_code` VARCHAR(255) NULL DEFAULT NULL COMMENT '统一社会信用代码' ;
+
+
+INSERT INTO tsys_dict VALUES (null,"0",null,"device_status","设备状态","admin","2019-05-07 03:07:37",null);
+INSERT INTO tsys_dict VALUES (null,"1","device_status","1","设备未绑定","admin","2019-05-07 03:07:37",null);
+INSERT INTO tsys_dict VALUES (null,"1","device_status","2","绑定中","admin","2019-05-07 03:07:37",null);
+INSERT INTO tsys_dict VALUES (null,"1","device_status","3","解绑中","admin","2019-05-07 03:07:37",null);
+INSERT INTO tsys_dict VALUES (null,"1","device_status","4","未同步","admin","2019-05-07 03:07:37",null);
+INSERT INTO tsys_dict VALUES (null,"1","device_status","5","同步中","admin","2019-05-07 03:07:37",null);
+INSERT INTO tsys_dict VALUES (null,"1","device_status","6","已同步","admin","2019-05-07 03:07:37",null);
+INSERT INTO tsys_dict VALUES (null,"1","device_status","7","已禁用","admin","2019-05-07 03:07:37",null);
+INSERT INTO tsys_dict VALUES (null,"1","device_status","8","禁用中","admin","2019-05-07 03:07:37",null);
+INSERT INTO tsys_dict VALUES (null,"1","device_status","9","启用中","admin","2019-05-07 03:07:37",null);
+
+
+INSERT INTO tsys_dict VALUES (null,'0',null,"device_net_status","设备网络状态","admin","2019-05-07 05:07:37",null);
+INSERT INTO tsys_dict VALUES (null,"1","device_net_status","1","在线","admin","2019-05-07 05:07:37",null);
+INSERT INTO tsys_dict VALUES (null,"1","device_net_status","2","离线","admin","2019-05-07 05:07:37",null);
+
+ALTER TABLE `dev_xn_gchf_gov`.`thf_worker_attendance` 
+MODIFY COLUMN `image` varchar(300) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '刷卡近照' AFTER `direction`;
+
+ALTER TABLE `thf_equipment_worker` 
+ADD PRIMARY KEY (`code`);
+

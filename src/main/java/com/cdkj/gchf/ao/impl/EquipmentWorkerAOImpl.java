@@ -8,11 +8,14 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.cdkj.gchf.ao.IEquipmentWorkerAO;
 import com.cdkj.gchf.bo.IEquipmentInfoBO;
 import com.cdkj.gchf.bo.IEquipmentWorkerBO;
+import com.cdkj.gchf.bo.IProjectBO;
 import com.cdkj.gchf.bo.IProjectWorkerBO;
+import com.cdkj.gchf.bo.IUserBO;
 import com.cdkj.gchf.bo.IWorkerInfoBO;
 import com.cdkj.gchf.bo.base.Paginable;
 import com.cdkj.gchf.domain.EquipmentInfo;
@@ -47,6 +50,12 @@ public class EquipmentWorkerAOImpl implements IEquipmentWorkerAO {
 
     @Autowired
     private IWorkerInfoBO workerInfoBO;
+
+    @Autowired
+    private IProjectBO projectBO;
+
+    @Autowired
+    private IUserBO userBO;
 
     @Override
     public String addEquipmentWorker(EquipmentWorker data) {
@@ -97,6 +106,23 @@ public class EquipmentWorkerAOImpl implements IEquipmentWorkerAO {
         if (equipmentInfo == null) {
             throw new BizException("XN631830", "设备不存在");
         }
+
+        EquipmentWorker equipmentWorker = new EquipmentWorker();
+        equipmentWorker.setDeviceKey(equipmentInfo.getDeviceKey());
+        List<EquipmentWorker> queryEquipmentWorkerList = equipmentWorkerBO
+            .queryEquipmentWorkerList(equipmentWorker);
+        for (EquipmentWorker temp : queryEquipmentWorkerList) {
+            // 取消旧的所有人员授权
+
+            ProjectWorker projectWorker = projectWorkerBO
+                .getProjectWorker(temp.getWorkerCode());
+            WorkerInfo workerInfo = workerInfoBO
+                .getWorkerInfo(projectWorker.getWorkerCode());
+
+            deviceWorker.workerBatchElimination(workerInfo.getWorkerGuid(),
+                equipmentInfo.getDeviceKey());
+        }
+
         List<String> workerInfos = new ArrayList<>();
         List<ProjectWorker> projectWorkers = new ArrayList<>();
         // 校验
@@ -128,10 +154,23 @@ public class EquipmentWorkerAOImpl implements IEquipmentWorkerAO {
                 workerInfos.add(workerInfo.getWorkerGuid());
                 projectWorkers.add(projectWorker);
             } else {
-                // 已经授权过的
-                equipmentWorkerBO.saveEquipmentWorker(equipmentInfo,
-                    projectWorker);
-                continue;
+                // 已经授权过的 移除授权重新授权
+                JSONArray jsonArray = parseObject.getJSONArray("data");
+                for (int i = 0; i < jsonArray.size(); i++) {
+                    JSONObject obj = (JSONObject) jsonArray.get(i);
+                    String object = (String) obj.get("deviceKey");
+                    if (object.equals(equipmentInfo.getDeviceKey())) {
+                        // 此设备已授权
+
+                        deviceWorker.workerBatchElimination(
+                            workerInfo.getWorkerGuid(),
+                            equipmentInfo.getDeviceKey());
+                        workerInfos.add(workerInfo.getWorkerGuid());
+                        projectWorkers.add(projectWorker);
+                    }
+
+                }
+
             }
 
         }

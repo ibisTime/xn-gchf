@@ -412,17 +412,33 @@
 		<include refid="where_condition" />
 	</select>
 
-	<select id="select_projectWorker_guid" parameterType="java.lang.String" resultMap="projectWorker_DB_Result">
+	<select id="select_projectWorker_guid" parameterType="java.lang.String"
+		resultMap="projectWorker_DB_Result">
 		SELECT a.* from
 		thf_project_worker a
 		LEFT JOIN
-		thf_worker_info b
+		thf_worker_info
+		b
 		on
 		a.worker_code = b.code
 		where b.worker_guid =
 		#{0}
 		and
-		a.upload_status in ('1','2');
+		a.upload_status
+		in ('1','2');
+	</select>
+
+	<select id="select_worker_workerCode_distinct" parameterType="java.lang.String" resultMap="projectWorker_DB_Result">
+
+		SELECT a.* 
+		from thf_project_worker a
+		 LEFT JOIN thf_worker_info b
+		  on a.worker_code = b.`code`
+		LEFT JOIN thf_equipment_worker c 
+		on c.worker_code = b.`code` where
+		a.project_code = #{0}  and a.upload_status in ("1","2") GROUP BY a.`worker_code`;
+
+
 	</select>
 
 

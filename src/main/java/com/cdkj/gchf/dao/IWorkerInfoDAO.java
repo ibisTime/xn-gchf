@@ -23,4 +23,6 @@ public interface IWorkerInfoDAO extends IBaseDAO<WorkerInfo> {
 
     public List<WorkerInfo> selectBrifeList(WorkerInfo condition, int start,
             int count);
+
+    WorkerInfo selectWorkerInfo(String guid);
 }

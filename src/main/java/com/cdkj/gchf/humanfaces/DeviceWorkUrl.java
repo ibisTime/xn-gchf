@@ -29,4 +29,8 @@ public interface DeviceWorkUrl {
     String authorizationQueryUrl = AppConfig.getBaseUrl()
             + "/Api/Personnel/PersonnelAuthorizedDeviceQuery";
 
+    // 人员授权取消Url
+    String BatchEliminationOfPersonnelEquipmentUrl = AppConfig.getBaseUrl()
+            + "/Api/Personnel/BatchEliminationOfPersonnelEquipment";
+
 }

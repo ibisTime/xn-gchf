@@ -106,4 +106,12 @@ public class ProjectWorkerDAOImpl extends AMybatisTemplate
             ProjectWorker.class);
     }
 
+    @Override
+    public List<ProjectWorker> selectDistinctWorkerByProjectCode(
+            String projectCode) {
+        return super.selectList(
+            NAMESPACE.concat("select_worker_workerCode_distinct"), projectCode,
+            ProjectWorker.class);
+    }
+
 }

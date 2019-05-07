@@ -89,4 +89,10 @@ public class WorkerInfoDAOImpl extends AMybatisTemplate
             condition);
     }
 
+    @Override
+    public WorkerInfo selectWorkerInfo(String guid) {
+        return super.select(NAMESPACE.concat("update_attendancePic"), guid,
+            WorkerInfo.class);
+    }
+
 }

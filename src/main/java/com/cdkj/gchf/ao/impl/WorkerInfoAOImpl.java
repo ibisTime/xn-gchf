@@ -208,7 +208,7 @@ public class WorkerInfoAOImpl implements IWorkerInfoAO {
             }
 
         }
-        // workerInfoBO.refreshAttendancePic(code, attendancePicture);
+        workerInfoBO.refreshAttendancePic(code, attendancePicture);
     }
 
     @Override

@@ -15,12 +15,17 @@
 		<result column="status" property="status" />
 		<result column="pass_times" property="passTimes" />
 		<result column="create_time" property="createTime" />
+		
+		
 	</resultMap>
 	<sql id="where_condition">
 		<trim prefix="WHERE" prefixOverrides="AND | OR">
 			<if test="code != null and code != '' ">
 				AND t.code = #{code}
 			</if>
+			<if test="deviceKey != null and deviceKey != '' ">
+                AND t.device_key = #{deviceKey}
+            </if>
 		</trim>
 	</sql>
 	<select id="select_EquipmentWorker" parameterType="equipmentWorker" resultMap="EquipmentWorker_DB_Result">

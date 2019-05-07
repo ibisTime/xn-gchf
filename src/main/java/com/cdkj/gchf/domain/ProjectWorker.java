@@ -229,6 +229,12 @@ public class ProjectWorker extends ABaseDO {
      */
     private String realTeamMasterName;
 
+    // 人脸考勤设备序列号
+    private String deviceKey;
+
+    // 是否关联
+    private String isLink;
+
     public String getCode() {
         return code;
     }
@@ -795,6 +801,22 @@ public class ProjectWorker extends ABaseDO {
 
     public void setUploadStatusList(List<String> uploadStatusList) {
         this.uploadStatusList = uploadStatusList;
+    }
+
+    public String getDeviceKey() {
+        return deviceKey;
+    }
+
+    public void setDeviceKey(String deviceKey) {
+        this.deviceKey = deviceKey;
+    }
+
+    public String getIsLink() {
+        return isLink;
+    }
+
+    public void setIsLink(String isLink) {
+        this.isLink = isLink;
     }
 
 }

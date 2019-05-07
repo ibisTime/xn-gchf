@@ -36,6 +36,8 @@ public interface IProjectWorkerAO {
 
     void updatePlantformProjectWorker(XN631695Req req);
 
+    List<ProjectWorker> getProjectWorkerByProject(String projectCode);
+
     public void uploadProjectWorker(XN631694Req req);
 
     /****国家平台接口****/

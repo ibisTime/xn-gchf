@@ -178,6 +178,11 @@ public class WorkerInfoBOImpl extends PaginableBOImpl<WorkerInfo>
     }
 
     @Override
+    public WorkerInfo getWorkerInfoByGuid(String guid) {
+        return workerInfoDAO.selectWorkerInfo(guid);
+    }
+
+    @Override
     public List<WorkerInfo> queryStaffListBrief(WorkerInfo condition, int start,
             int count) {
         return workerInfoDAO.selectBrifeList(condition, start, count);

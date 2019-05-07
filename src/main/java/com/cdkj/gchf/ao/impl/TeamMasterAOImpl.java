@@ -422,7 +422,14 @@ public class TeamMasterAOImpl implements ITeamMasterAO {
 
     @Override
     public TeamMaster getTeamMaster(String code) {
-        return teamMasterBO.getTeamMaster(code);
+        TeamMaster teamMaster = teamMasterBO.getTeamMaster(code);
+
+        Project project = projectBO.getProject(teamMaster.getProjectCode());
+        if (null != project) {
+            teamMaster.setProjectName(project.getName());
+        }
+
+        return teamMaster;
     }
 
     /**

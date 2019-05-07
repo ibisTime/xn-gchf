@@ -30,6 +30,20 @@ LIMIT 0, 1000
 */
 INSERT INTO `thf_user` (`user_id`,`real_name`,`type`,`login_name`,`mobile`,`login_pwd`,`login_pwd_strength`,`user_refree`,`create_datetime`,`role_code`,`updater`,`update_datetime`,`status`,`remark`)  VALUES ('USYS201800000000001','平台端','P','admin',NULL,'21218cca77804d2ba1922c33e0151105','1',NULL,now(),'RO201800000000000001',NULL,NULL,'0',NULL);
 
+/*
+-- Query: SELECT * FROM dev_xn_gchf_gov.tsys_config
+LIMIT 0, 2000
+
+-- Date: 2019-05-07 09:47
+*/
+INSERT INTO `tsys_config` (`id`,`type`,`ckey`,`cvalue`,`updater`,`update_datetime`,`remark`) VALUES (1,'sys_txt','telephone','0571-88888888','USYS201800000000001','2018-07-27 03:07:39','联系电话');
+INSERT INTO `tsys_config` (`id`,`type`,`ckey`,`cvalue`,`updater`,`update_datetime`,`remark`) VALUES (2,'sys_txt','about_us','关于我们112','USYS201800000000001','2018-07-27 03:07:39','关于我们');
+INSERT INTO `tsys_config` (`id`,`type`,`ckey`,`cvalue`,`updater`,`update_datetime`,`remark`) VALUES (3,'sys_txt','service_time','9:00-17:40','USYS201800000000001','2018-07-27 03:07:39','服务时间');
+INSERT INTO `tsys_config` (`id`,`type`,`ckey`,`cvalue`,`updater`,`update_datetime`,`remark`) VALUES (4,'qiniu','qiniu_access_key','cqvDk0ZwlrIrepSL6mj28gZvnyKJLg4oLUItjJud','USYS201800000000001','2018-07-27 03:07:39','七牛云key1');
+INSERT INTO `tsys_config` (`id`,`type`,`ckey`,`cvalue`,`updater`,`update_datetime`,`remark`) VALUES (5,'qiniu','qiniu_secret_key','RdDXis-aig3LsSJ-otNhf1rASgMcC5cKBcAO-6rI','USYS201800000000001','2018-07-27 03:07:39','qiniu_secret_key');
+INSERT INTO `tsys_config` (`id`,`type`,`ckey`,`cvalue`,`updater`,`update_datetime`,`remark`) VALUES (6,'qiniu','qiniu_bucket','gchf','USYS201800000000001','2018-07-27 03:07:39','qiniu_bucket');
+INSERT INTO `tsys_config` (`id`,`type`,`ckey`,`cvalue`,`updater`,`update_datetime`,`remark`) VALUES (7,'qiniu','qiniu_domain','http://picture.jm60s.com','USYS201800000000001','2018-07-27 03:07:39','访问域名');
+
 /*INSERT INTO `thf_project_config` (`code`, `local_project_code`, `project_code`, `project_name`, `secret`) VALUES ('online_default_project', 'online_default_project', '3311222019030001', '正式默认项目', 'c1043953304b67b526c1d85701885e36');*/
 /*INSERT INTO `thf_project_config` (`code`, `local_project_code`, `project_code`, `project_name`, `secret`) VALUES ('test_default_project', 'test_default_project', '33112220190310001', '测试环境默认项目', 'ffb92fe3058b1276d872714aae4038d4');*/
 
@@ -881,7 +895,6 @@ INSERT INTO `tsys_dict`(`id`, `type`, `parent_key`, `dkey`, `dvalue`, `updater`,
 INSERT INTO `tsys_dict`(`id`, `type`, `parent_key`, `dkey`, `dvalue`, `updater`, `update_datetime`, `remark`) VALUES (1677, '0', NULL, 'project_secret_status', '密钥状态', 'admin', '2018-07-27 03:07:38', NULL);
 INSERT INTO `tsys_dict`(`id`, `type`, `parent_key`, `dkey`, `dvalue`, `updater`, `update_datetime`, `remark`) VALUES (1678, '1', 'project_secret_status', '0', '未得到密钥', 'admin', '2018-07-27 03:07:38', NULL);
 INSERT INTO `tsys_dict`(`id`, `type`, `parent_key`, `dkey`, `dvalue`, `updater`, `update_datetime`, `remark`) VALUES (1679, '1', 'project_secret_status', '1', '已得到密钥', 'admin', '2018-07-27 03:07:38', NULL);
-INSERT INTO `tsys_dict`(`id`, `type`, `parent_key`, `dkey`, `dvalue`, `updater`, `update_datetime`, `remark`) VALUES (1680, '1', 'upload_status', '-1', '上传失败', 'admin', '2018-07-27 03:07:37', NULL);
 INSERT INTO `tsys_dict`(`id`, `type`, `parent_key`, `dkey`, `dvalue`, `updater`, `update_datetime`, `remark`) VALUES (1681, '0', NULL, 'project_approval_level', '立项级别', 'admin', '2018-07-27 03:07:37', NULL);
 INSERT INTO `tsys_dict`(`id`, `type`, `parent_key`, `dkey`, `dvalue`, `updater`, `update_datetime`, `remark`) VALUES (1682, '1', 'project_approval_level', '001', '部级', 'admin', '2018-07-27 03:07:37', NULL);
 INSERT INTO `tsys_dict`(`id`, `type`, `parent_key`, `dkey`, `dvalue`, `updater`, `update_datetime`, `remark`) VALUES (1683, '1', 'project_approval_level', '002', '省级', 'admin', '2018-07-27 03:07:37', NULL);

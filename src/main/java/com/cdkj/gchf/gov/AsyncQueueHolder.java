@@ -160,9 +160,8 @@ public class AsyncQueueHolder {
                         IProjectCorpInfoBO projectCorpbo = (IProjectCorpInfoBO) bo;
                         ProjectCorpInfo projectCorpInfo = projectCorpbo
                             .getProjectCorpInfo(queueBean.getCode());
-                        if (projectCorpInfo.getUploadStatus()
-                            .equals(EProjectCorpUploadStatus.UPLOAD_UPDATE
-                                .getCode())
+                        if (projectCorpInfo.getUploadStatus().equals(
+                            EProjectCorpUploadStatus.UPLOAD_UPDATE.getCode())
                                 || projectCorpInfo.getUploadStatus().equals(
                                     EProjectCorpUploadStatus.UPLOAD_UPDATE
                                         .getCode())) {
@@ -191,9 +190,8 @@ public class AsyncQueueHolder {
                         IProjectWorkerBO projectWorkerBO = (IProjectWorkerBO) bo;
                         ProjectWorker projectWorker = projectWorkerBO
                             .getProjectWorker(queueBean.getCode());
-                        if (projectWorker.getUploadStatus()
-                            .equals(EProjectWorkerUploadStatus.UPLOAD_UPDATE
-                                .getCode())
+                        if (projectWorker.getUploadStatus().equals(
+                            EProjectWorkerUploadStatus.UPLOAD_UPDATE.getCode())
                                 || projectWorker.getUploadStatus().equals(
                                     EProjectWorkerUploadStatus.UPLOAD_UPDATE
                                         .getCode())) {
@@ -225,12 +223,6 @@ public class AsyncQueueHolder {
                 refreshLogRemark(queueBean.getLogCode(), asyncRes);
             }
 
-        }
-        if (asyncRes.getStatus().equals(EGovAsyncStatus.TO_HANDLE.getCode())
-                && queueBean.getBoClass().equals("projectWorkerBO")) {
-            refreshUploadStatus(queueBean.getBoClass(), queueBean.getCode(),
-                EUploadStatus.UPLOAD_UPDATE.getCode());
-            asyncRes.setStatus(EGovAsyncStatus.SUCCESS.getCode());
         }
 
         return asyncRes.getStatus();
@@ -264,7 +256,8 @@ public class AsyncQueueHolder {
             result = SpringContextHolder.getBean("operateLogBO");
 
             String remark = StringUtils.isEmpty(asyncRes.getResult())
-                    ? asyncRes.getMessage() : asyncRes.getResult();
+                    ? asyncRes.getMessage()
+                    : asyncRes.getResult();
             String[] arges = new String[] { code, remark };
 
             Method method = result.getClass().getMethod("refreshRemark",

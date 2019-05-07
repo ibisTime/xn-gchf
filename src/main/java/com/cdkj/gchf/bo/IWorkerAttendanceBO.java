@@ -29,6 +29,11 @@ public interface IWorkerAttendanceBO extends IPaginableBO<WorkerAttendance> {
     public String saveWorkerAttendance(Project project, TeamMaster teamMaster,
             ProjectWorker projectWorker, Date date, String direction);
 
+    // 保存人员考勤-人脸
+    void saveDeviceWorkerAttendance(ProjectWorker projectWorker,
+            String deviceKey, String dateTime, String photoUrl, String type,
+            String dataString, String recMode, String idCardInfo);
+
     public int removeWorkerAttendance(String code);
 
     void refreshUploadStatus(String code, String uploadStatus);

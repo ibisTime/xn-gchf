@@ -1,4 +1,4 @@
-package com.cdkj.gchf.humanfaces;
+package com.cdkj.gchf.humanfaces.enums;
 
 public enum EEquipmentWorkerResponse {
     SHOUQUAN("GS_EXP-100", "接口授权 appKey 错误"),

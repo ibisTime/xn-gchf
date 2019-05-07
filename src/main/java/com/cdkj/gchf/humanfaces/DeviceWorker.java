@@ -20,33 +20,6 @@ import com.cdkj.gchf.humanfaces.res.ResultMsg;
  */
 @Component
 public class DeviceWorker {
-    // 人员录入设备Url
-    private String workerAddUrl = AppConfig.getBaseUrl()
-            + "/Api/Personnel/PersonnelEntry";
-
-    // 人员删除Url
-    private String workerDelUrl = AppConfig.getBaseUrl()
-            + "/Api/Personnel/PersonnelDeletion";
-
-    // 人员查询Url
-    private String workerQueryUrl = AppConfig.getBaseUrl()
-            + "/Api/Personnel/StaffInquiry";
-
-    // 人员更新Url
-    private String workerUpdateUrl = AppConfig.getBaseUrl()
-            + "/Api/Personnel/PersonnelUpdate";
-
-    // 人员授权
-    private String authorizationUrl = AppConfig.getBaseUrl()
-            + "/Api/Device/EquipmentAP";
-
-    // 人员搜索Url
-    private String workerSearchUrl = AppConfig.getBaseUrl()
-            + "/Api/Personnel/StaffSearch";
-
-    // 人员授权查询Url
-    private String authorizationQueryUrl = AppConfig.getBaseUrl()
-            + "/Api/Personnel/PersonnelAuthorizedDeviceQuery";
 
     /**
      * 
@@ -73,7 +46,8 @@ public class DeviceWorker {
         if (StringUtils.isNotBlank(type)) {
             req.put("type", type);
         }
-        String request = HttpRequest.doRequest(workerAddUrl, "POST", req);
+        String request = HttpRequest.doRequest(DeviceWorkUrl.workerAddUrl,
+            "POST", req);
         DeviceWorkerRes fromJson = AppConfig.gson.fromJson(request,
             DeviceWorkerRes.class);
 
@@ -91,7 +65,8 @@ public class DeviceWorker {
         req.put("appid", AppConfig.getAppid());
         req.put("token", token);
         req.put("guid", guid);
-        String request = HttpRequest.doRequest(workerDelUrl, "POST", req);
+        String request = HttpRequest.doRequest(DeviceWorkUrl.workerDelUrl,
+            "POST", req);
         return request;
     }
 
@@ -115,7 +90,8 @@ public class DeviceWorker {
         req.put("phone", phone);
         req.put("tag", tag);
         req.put("type", type);
-        String request = HttpRequest.doRequest(workerUpdateUrl, "POST", req);
+        String request = HttpRequest.doRequest(DeviceWorkUrl.workerUpdateUrl,
+            "POST", req);
         return request;
     }
 
@@ -130,7 +106,8 @@ public class DeviceWorker {
         req.put("appid", AppConfig.getAppid());
         req.put("token", token);
         req.put("guid", guid);
-        String request = HttpRequest.doRequest(workerQueryUrl, "GET", req);
+        String request = HttpRequest.doRequest(DeviceWorkUrl.workerQueryUrl,
+            "GET", req);
         return request;
 
     }
@@ -159,7 +136,8 @@ public class DeviceWorker {
                 && StringUtils.isNotBlank(endTime)) {
             req.put("passTimes", startTime + "," + endTime);
         }
-        String response = HttpRequest.doRequest(authorizationUrl, "POST", req);
+        String response = HttpRequest.doRequest(DeviceWorkUrl.authorizationUrl,
+            "POST", req);
         ResultMsg resultMsg = AppConfig.gson.fromJson(response,
             ResultMsg.class);
         return resultMsg;
@@ -176,7 +154,8 @@ public class DeviceWorker {
         Map<String, String> req = new HashMap<>();
         req.put("appid", AppConfig.getAppid());
         req.put("token", token);
-        String doRequest = HttpRequest.doRequest(workerSearchUrl, "POST", req);
+        String doRequest = HttpRequest.doRequest(DeviceWorkUrl.workerSearchUrl,
+            "POST", req);
         System.out.println(doRequest);
         return doRequest;
     }
@@ -194,8 +173,8 @@ public class DeviceWorker {
         req.put("appid", AppConfig.getAppid());
         req.put("token", token);
         req.put("guid", guid);
-        String doRequest = HttpRequest.doRequest(authorizationQueryUrl, "GET",
-            req);
+        String doRequest = HttpRequest
+            .doRequest(DeviceWorkUrl.authorizationQueryUrl, "GET", req);
         System.out.println(doRequest);
         return doRequest;
     }
@@ -230,7 +209,7 @@ public class DeviceWorker {
         // System.out.println(cloudWorkerDel);
 
         // 人员授权查询
-        String workerAuthorizationQuery = workerAuthorizationQuery(
-            "C83BFC0DB364433B97FB0BA7254C20EA");
+        // String workerAuthorizationQuery = workerAuthorizationQuery(
+        // "C83BFC0DB364433B97FB0BA7254C20EA");
     }
 }

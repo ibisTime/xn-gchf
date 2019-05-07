@@ -536,6 +536,11 @@ public class ProjectWorkerBOImpl extends PaginableBOImpl<ProjectWorker>
     }
 
     @Override
+    public ProjectWorker getProjectWorkerByGuid(String guid) {
+        return projectWorkerDAO.selectProjectWorkerWorkerGuid(guid);
+    }
+
+    @Override
     public int updateProjectWorkerStatus(String code, String status) {
         ProjectWorker projectWorker = new ProjectWorker();
         projectWorker.setCode(code);

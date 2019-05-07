@@ -1,4 +1,4 @@
-package com.cdkj.gchf.humanfaces;
+package com.cdkj.gchf.humanfaces.enums;
 
 /**
  * @ClassName:  EEquipmentStatus   

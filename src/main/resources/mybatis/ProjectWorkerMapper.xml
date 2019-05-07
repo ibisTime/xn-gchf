@@ -101,10 +101,11 @@
 				AND t.team_name = #{realTeamMasterName}
 			</if>
 			<if test="uploadStatusList != null and uploadStatusList.size() != 0 ">
-				AND t.upload_status in 
-                <foreach item="item" index="index" collection="uploadStatusList" open="(" separator="," close=")">
-	            	#{item}
-                </foreach> 
+				AND t.upload_status in
+				<foreach item="item" index="index" collection="uploadStatusList"
+					open="(" separator="," close=")">
+					#{item}
+				</foreach>
 			</if>
 		</trim>
 	</sql>
@@ -235,7 +236,8 @@
 		UPDATE
 		thf_project_worker
 		SET upload_status = #{uploadStatus}
-		WHERE code = #{code}
+		WHERE code =
+		#{code}
 	</update>
 
 	<update id="update_projectWorker_team_name" parameterType="projectWorker">
@@ -278,26 +280,30 @@
 		= #{code}
 
 	</update>
-    
+
 	<update id="update_projectWorker_worker_info">
 		UPDATE
 		thf_project_worker
 		SET
-        worker_name = #{workerName}
-        ,worker_mobile = #{workerMobile}
-        ,idcard_type = #{idcardType}
-        ,idcard_number = #{idcardNumber}
-        where worker_code = #{workerCode}
+		worker_name =
+		#{workerName}
+		,worker_mobile = #{workerMobile}
+		,idcard_type =
+		#{idcardType}
+		,idcard_number = #{idcardNumber}
+		where worker_code =
+		#{workerCode}
 	</update>
-	
+
 	<update id="update_projectWorker_worker_info_phone">
-        UPDATE
-        thf_project_worker
-        SET
-        worker_mobile = #{workerMobile}
-        where worker_code = #{workerCode}
-    </update>
-	
+		UPDATE
+		thf_project_worker
+		SET
+		worker_mobile =
+		#{workerMobile}
+		where worker_code = #{workerCode}
+	</update>
+
 	<update id="update_projectWorker" parameterType="projectWorker">
 		UPDATE
 		thf_project_worker
@@ -306,18 +312,22 @@
 		,corp_name = #{corpName}
 		,is_team_leader = #{isTeamLeader}
 		,work_type = #{workType}
-		,work_role = #{workRole}
+		,work_role =
+		#{workRole}
 		,issue_card_date = #{issueCardDate}
-		,issue_card_pic_url = #{issueCardPicUrl}
+		,issue_card_pic_url =
+		#{issueCardPicUrl}
 
 		,team_sys_no = #{teamSysNo}
 		,team_name = #{teamName}
 		,card_number = #{cardNumber}
-		,pay_roll_bank_card_number = #{payRollBankCardNumber}
+		,pay_roll_bank_card_number =
+		#{payRollBankCardNumber}
 		,pay_roll_bank_name = #{payRollBankName}
 
 		,pay_roll_top_bank_name = #{payRollTopBankName}
-		,bank_link_number = #{bankLinkNumber}
+		,bank_link_number =
+		#{bankLinkNumber}
 		,pay_roll_top_bank_code = #{payRollTopBankCode}
 		,has_buy_insurance = #{hasBuyInsurance}
 		,work_date = #{workDate}
@@ -401,5 +411,19 @@
 		SELECT count(1) FROM thf_project_worker t
 		<include refid="where_condition" />
 	</select>
+
+	<select id="select_projectWorker_guid" parameterType="java.lang.String" resultMap="projectWorker_DB_Result">
+		SELECT a.* from
+		thf_project_worker a
+		LEFT JOIN
+		thf_worker_info b
+		on
+		a.worker_code = b.code
+		where b.worker_guid =
+		#{0}
+		and
+		a.upload_status in ('1','2');
+	</select>
+
 
 </mapper>

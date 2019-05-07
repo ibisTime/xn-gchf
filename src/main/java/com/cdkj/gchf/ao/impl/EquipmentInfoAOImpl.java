@@ -22,7 +22,7 @@ import com.cdkj.gchf.enums.EOperateLogRefType;
 import com.cdkj.gchf.enums.EUserKind;
 import com.cdkj.gchf.exception.BizException;
 import com.cdkj.gchf.humanfaces.Device;
-import com.cdkj.gchf.humanfaces.EEquipmentResponse;
+import com.cdkj.gchf.humanfaces.enums.EEquipmentResponse;
 import com.cdkj.gchf.humanfaces.res.DeviceQuery;
 import com.cdkj.gchf.humanfaces.res.DeviceRes;
 import com.cdkj.gchf.humanfaces.res.ResultMsg;

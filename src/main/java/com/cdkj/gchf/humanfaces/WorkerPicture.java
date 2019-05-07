@@ -19,21 +19,6 @@ import com.cdkj.gchf.humanfaces.res.ResultMsg;
  */
 @Component
 public class WorkerPicture {
-    // 云端录入人员照片base64 Url
-    private String picAddBase64Url = AppConfig.getBaseUrl()
-            + "/Api/Photo/StaffPhotoRegistrationBase";
-
-    // 云端录入人员照片Url
-    private String picAddUrl = AppConfig.getBaseUrl()
-            + "/Api/Photo/StaffPhotoRegistrationUrl";
-
-    // 云端人员删除照片Url
-    private String picDelUrl = AppConfig.getBaseUrl()
-            + "/Api/Photo/PhotoDeletion";
-
-    // 云端照片查询UrL
-    private String picQueryUrl = AppConfig.getBaseUrl()
-            + "/Api/Photo/PersonnelPhotoQuery";
 
     /**
      * @Description: 注册人员照片到云端 base64
@@ -65,7 +50,8 @@ public class WorkerPicture {
         if (StringUtils.isNotBlank(validLevel)) {
             req.put("validLevel", validLevel);
         }
-        String doRequest = HttpRequest.doRequest(picAddBase64Url, "POST", req);
+        String doRequest = HttpRequest.doRequest(WorkerUrl.picAddBase64Url,
+            "POST", req);
         System.out.println(doRequest);
         DeviceWorkerPicRes fromJson = AppConfig.gson.fromJson(doRequest,
             DeviceWorkerPicRes.class);
@@ -98,14 +84,15 @@ public class WorkerPicture {
         if (StringUtils.isNotBlank(validLevel)) {
             req.put("validLevel", validLevel);
         }
-        String doRequest = HttpRequest.doRequest(picAddUrl, "POST", req);
+        String doRequest = HttpRequest.doRequest(WorkerUrl.picAddUrl, "POST",
+            req);
         DeviceWorkerPicRes fromJson = AppConfig.gson.fromJson(doRequest,
             DeviceWorkerPicRes.class);
         return fromJson;
     }
 
     /**
-     * @Description: 注册人员照片到云端 Url
+     * @Description: 查询人员照片
      * @param: @param guid 人员guid
      * @param: @param img  图片base64字符串
      * @param: @param type 图片类型  1.：普通 RGB 照片2：红外照片， 特定设备型号使用； 
@@ -121,7 +108,8 @@ public class WorkerPicture {
         req.put("appid", AppConfig.getAppid());
         req.put("token", token);
         req.put("guid", guid);
-        String doRequest = HttpRequest.doRequest(picQueryUrl, "GET", req);
+        String doRequest = HttpRequest.doRequest(WorkerUrl.picQueryUrl, "GET",
+            req);
         return doRequest;
     }
 
@@ -137,7 +125,8 @@ public class WorkerPicture {
         req.put("token", token);
         req.put("guid", picGuid);
         req.put("personGuid", workerGuid);
-        String doRequest = HttpRequest.doRequest(picDelUrl, "POST", req);
+        String doRequest = HttpRequest.doRequest(WorkerUrl.picDelUrl, "POST",
+            req);
         ResultMsg fromJson = AppConfig.gson.fromJson(doRequest,
             ResultMsg.class);
         return fromJson;
@@ -153,8 +142,9 @@ public class WorkerPicture {
         // "5D2A1DBBAB6D4330AA7EA8336FF913E9","" ,"", "",
         // "");07CAADCFED8E4916ADDEA048EEF71A99
         // System.out.println(picRegisterToCloud);5EE70015C96848FA8E9C4023B30F0464
-        ResultMsg picDelCloud = picDelCloud("07CAADCFED8E4916ADDEA048EEF71A99",
-            "5EE70015C96848FA8E9C4023B30F0464");
-        System.out.println(picDelCloud.toString());
+        // ResultMsg picDelCloud =
+        // picDelCloud("07CAADCFED8E4916ADDEA048EEF71A99",
+        // "5EE70015C96848FA8E9C4023B30F0464");
+        // System.out.println(picDelCloud.toString());
     }
 }

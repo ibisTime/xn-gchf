@@ -130,6 +130,38 @@ public class WorkerAttendanceBOImpl extends PaginableBOImpl<WorkerAttendance>
         return code;
     }
 
+    /**
+     * 
+     * <p>Title: saveDeviceWorkerAttendance</p>   
+     * <p>Description: 保存设备识别的人员考勤</p>   
+     */
+    @Override
+    public void saveDeviceWorkerAttendance(ProjectWorker projectWorker,
+            String deviceKey, String dateTime, String photoUrl, String type,
+            String dataString, String recMode, String idCardInfo) {
+        WorkerAttendance workerAttendance = new WorkerAttendance();
+        String code = OrderNoGenerater
+            .generate(EGeneratePrefix.WorkerAttendance.getCode());
+        workerAttendance.setCode(code);
+        workerAttendance.setProjectCode(projectWorker.getProjectCode());
+        workerAttendance.setProjectName(projectWorker.getProjectName());
+        workerAttendance.setDate(new Date(Long.parseLong(dateTime)));
+
+        workerAttendance.setTeamSysNo(projectWorker.getTeamSysNo());
+        workerAttendance.setTeamName(projectWorker.getTeamName());
+        workerAttendance.setWorkerCode(projectWorker.getCode());
+        workerAttendance.setWorkerName(projectWorker.getWorkerName());
+        workerAttendance.setIdCardType(projectWorker.getIdcardType());
+        workerAttendance.setIdCardNumber(projectWorker.getIdcardNumber());
+        workerAttendance.setImage(photoUrl);
+        workerAttendance.setTerminalCode(deviceKey);
+        workerAttendance
+            .setUploadStatus(EWorkerAttendanceUploadStatus.TO_UPLOAD.getCode());
+
+        workerAttendance.setDeleteStatus(EDeleteStatus.NORMAL.getCode());
+        workerAttendanceDAO.insert(workerAttendance);
+    }
+
     @Override
     public int removeWorkerAttendance(String code) {
         int count = 0;

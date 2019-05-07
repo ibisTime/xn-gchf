@@ -100,4 +100,10 @@ public class ProjectWorkerDAOImpl extends AMybatisTemplate
             projectWorker);
     }
 
+    @Override
+    public ProjectWorker selectProjectWorkerWorkerGuid(String guid) {
+        return super.select(NAMESPACE.concat("select_projectWorker_guid"), guid,
+            ProjectWorker.class);
+    }
+
 }

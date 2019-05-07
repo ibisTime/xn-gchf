@@ -33,9 +33,9 @@ import com.cdkj.gchf.enums.EUserKind;
 import com.cdkj.gchf.exception.BizException;
 import com.cdkj.gchf.humanfaces.Device;
 import com.cdkj.gchf.humanfaces.DeviceWorker;
-import com.cdkj.gchf.humanfaces.EEquipmentWorkerResponse;
-import com.cdkj.gchf.humanfaces.EPicResponse;
 import com.cdkj.gchf.humanfaces.WorkerPicture;
+import com.cdkj.gchf.humanfaces.enums.EEquipmentWorkerResponse;
+import com.cdkj.gchf.humanfaces.enums.EPicResponse;
 import com.cdkj.gchf.humanfaces.res.DeviceWorkerPicRes;
 import com.cdkj.gchf.humanfaces.res.DeviceWorkerRes;
 

@@ -22,29 +22,6 @@ import com.google.gson.Gson;
  */
 @Component
 public class Device {
-    // 添加设备Url
-    private String createUrl = AppConfig.getBaseUrl()
-            + "/Api/Device/DeviceCreation";
-
-    // 更新设备信息Url
-    private String updateUrl = AppConfig.getBaseUrl()
-            + "/Api/Device/EquipmentUpdate";
-
-    // 查询设备信息Url
-    private String queryUrl = AppConfig.getBaseUrl()
-            + "/Api/Device/DeviceQuery";
-
-    // 同步设备信息Url
-    private String updateCloudUrl = AppConfig.getBaseUrl()
-            + "/Api/Device/Equipment";
-
-    // 删除设备信息
-    private String delDeviceUrl = AppConfig.getBaseUrl()
-            + "/Api/Device/DeviceDeletion";
-
-    // 设备销权人员接口
-    private String trancateUrl = AppConfig.getBaseUrl()
-            + "/Api/Device/EquipmentEP";
 
     /**
      * @Description: 设备创建、添加设备信息到云端
@@ -62,7 +39,8 @@ public class Device {
             req.put("tag", tag);
         }
 
-        String doRequest = HttpRequest.doRequest(createUrl, "POST", req);
+        String doRequest = HttpRequest.doRequest(DeviceUrl.createUrl, "POST",
+            req);
         DeviceRes fromJson = new Gson().fromJson(doRequest, DeviceRes.class);
         return fromJson;
     }
@@ -88,7 +66,8 @@ public class Device {
             req.put("tag", tag);
         }
         req.put("deviceKey", deviceKey);
-        String doRequest = HttpRequest.doRequest(updateUrl, "POST", req);
+        String doRequest = HttpRequest.doRequest(DeviceUrl.updateUrl, "POST",
+            req);
         DeviceRes fromJson = new Gson().fromJson(doRequest, DeviceRes.class);
         return fromJson;
     }
@@ -107,7 +86,8 @@ public class Device {
         req.put("appid", AppConfig.getAppid());
         req.put("token", token);
         req.put("deviceKey", deviceKey);
-        String doRequest = HttpRequest.doRequest(queryUrl, "GET", req);
+        String doRequest = HttpRequest.doRequest(DeviceUrl.queryUrl, "GET",
+            req);
         DeviceQuery fromJson = AppConfig.gson.fromJson(doRequest,
             DeviceQuery.class);
         return fromJson;
@@ -128,7 +108,8 @@ public class Device {
         req.put("appid", AppConfig.getAppid());
         req.put("token", token);
         req.put("deviceKey", deviceKey);
-        String doRequest = HttpRequest.doRequest(updateCloudUrl, "POST", req);
+        String doRequest = HttpRequest.doRequest(DeviceUrl.updateCloudUrl,
+            "POST", req);
         ResultMsg fromJson = AppConfig.gson.fromJson(doRequest,
             ResultMsg.class);
         return fromJson;
@@ -148,7 +129,8 @@ public class Device {
         req.put("appid", AppConfig.getAppid());
         req.put("token", token);
         req.put("deviceKey", deviceKey);
-        String doRequest = HttpRequest.doRequest(delDeviceUrl, "POST", req);
+        String doRequest = HttpRequest.doRequest(DeviceUrl.delDeviceUrl, "POST",
+            req);
         return doRequest;
     }
 
@@ -170,7 +152,8 @@ public class Device {
         if (StringUtils.isNotEmpty(personGuid)) {
             req.put("deviceKey", deviceKey);
         }
-        String doRequest = HttpRequest.doRequest(trancateUrl, "POST", req);
+        String doRequest = HttpRequest.doRequest(DeviceUrl.trancateUrl, "POST",
+            req);
         return doRequest;
     };
 

@@ -7,7 +7,9 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.cdkj.gchf.bo.IProjectWorkerBO;
 import com.cdkj.gchf.bo.IWorkerAttendanceBO;
+import com.cdkj.gchf.domain.ProjectWorker;
 
 /**
  * 
@@ -22,6 +24,9 @@ public class CallBackIdentity {
 
     @Autowired
     private IWorkerAttendanceBO workerAttendanceBO;
+
+    @Autowired
+    private IProjectWorkerBO projectWorkerBO;
 
     /**
      * @Description: 回调函数
@@ -41,10 +46,12 @@ public class CallBackIdentity {
             @RequestParam String photoUrl, @RequestParam String type,
             @RequestParam String data, @RequestParam String recMode,
             @RequestParam String idCardInfo) {
-        System.out.println("ss" + deviceKey + personGuid + showTime + photoUrl
-                + type + data + recMode + idCardInfo);
+        ProjectWorker workerByGuid = projectWorkerBO
+            .getProjectWorkerByGuid(personGuid);
+        // 考勤录入
+        workerAttendanceBO.saveDeviceWorkerAttendance(workerByGuid, deviceKey,
+            showTime, photoUrl, type, data, recMode, idCardInfo);
 
-        System.out.println("======");
         return "SUCCESS";
     }
 

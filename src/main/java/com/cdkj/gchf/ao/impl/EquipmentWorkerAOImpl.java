@@ -23,8 +23,8 @@ import com.cdkj.gchf.dto.req.XN631830Req;
 import com.cdkj.gchf.enums.EProjectWorkerUploadStatus;
 import com.cdkj.gchf.exception.BizException;
 import com.cdkj.gchf.humanfaces.DeviceWorker;
-import com.cdkj.gchf.humanfaces.EEquipmentWorkerResponse;
 import com.cdkj.gchf.humanfaces.WorkerPicture;
+import com.cdkj.gchf.humanfaces.enums.EEquipmentWorkerResponse;
 import com.cdkj.gchf.humanfaces.res.ResultMsg;
 
 @Service

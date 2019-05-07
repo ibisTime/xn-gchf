@@ -906,6 +906,10 @@ INSERT INTO `tsys_dict`(`id`, `type`, `parent_key`, `dkey`, `dvalue`, `updater`,
 INSERT INTO `tsys_dict`(`id`, `type`, `parent_key`, `dkey`, `dvalue`, `updater`, `update_datetime`, `remark`) VALUES (1689, '1', 'project_size', '01', '大型', 'admin', '2018-07-27 03:07:37', NULL);
 INSERT INTO `tsys_dict`(`id`, `type`, `parent_key`, `dkey`, `dvalue`, `updater`, `update_datetime`, `remark`) VALUES (1690, '1', 'project_size', '02', '中型', 'admin', '2018-07-27 03:07:37', NULL);
 INSERT INTO `tsys_dict`(`id`, `type`, `parent_key`, `dkey`, `dvalue`, `updater`, `update_datetime`, `remark`) VALUES (1691, '1', 'project_size', '03', '小型', 'admin', '2018-07-27 03:07:37', NULL);
+INSERT INTO `tsys_dict`(`id`, `type`, `parent_key`, `dkey`, `dvalue`, `updater`, `update_datetime`, `remark`) VALUES (1688, '0', NULL, 'attendance_source', '考勤来源', 'admin', '2018-07-27 03:07:37', NULL);
+INSERT INTO `tsys_dict`(`id`, `type`, `parent_key`, `dkey`, `dvalue`, `updater`, `update_datetime`, `remark`) VALUES (1689, '1', 'attendance_source', '1', '系统生成', 'admin', '2018-07-27 03:07:37', NULL);
+INSERT INTO `tsys_dict`(`id`, `type`, `parent_key`, `dkey`, `dvalue`, `updater`, `update_datetime`, `remark`) VALUES (1690, '1', 'attendance_source', '2', '实时数据', 'admin', '2018-07-27 03:07:37', NULL);
+
 /*
 -- Query: SELECT * FROM dev_xn_gchf_gov.tsys_menu
 LIMIT 0, 2000

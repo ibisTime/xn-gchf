@@ -69,6 +69,9 @@ public class WorkerAttendance extends ABaseDO {
     // 生成时间
     private Date createDatetime;
 
+    // 来源
+    private String source;
+
     // 上班时间
     private Date startDatetime;
 
@@ -331,6 +334,14 @@ public class WorkerAttendance extends ABaseDO {
 
     public void setCorpCode(String corpCode) {
         this.corpCode = corpCode;
+    }
+
+    public String getSource() {
+        return source;
+    }
+
+    public void setSource(String source) {
+        this.source = source;
     }
 
 }

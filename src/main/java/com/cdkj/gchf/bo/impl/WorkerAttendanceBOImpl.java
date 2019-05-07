@@ -36,6 +36,7 @@ import com.cdkj.gchf.dto.req.XN631713ReqData;
 import com.cdkj.gchf.dto.req.XN631918Req;
 import com.cdkj.gchf.dto.req.XN631918ReqData;
 import com.cdkj.gchf.dto.req.XN631919Req;
+import com.cdkj.gchf.enums.EAttendanceSource;
 import com.cdkj.gchf.enums.EDeleteStatus;
 import com.cdkj.gchf.enums.EGeneratePrefix;
 import com.cdkj.gchf.enums.EOperateLogRefType;
@@ -97,6 +98,7 @@ public class WorkerAttendanceBOImpl extends PaginableBOImpl<WorkerAttendance>
             .generate(EGeneratePrefix.WorkerAttendance.getCode());
         workerAttendance.setCode(code);
         workerAttendance.setTeamName(teamMaster.getTeamName());
+        workerAttendance.setSource(EAttendanceSource.SYSTEM.getCode());
 
         workerAttendanceDAO.insert(workerAttendance);
         return code;
@@ -125,6 +127,8 @@ public class WorkerAttendanceBOImpl extends PaginableBOImpl<WorkerAttendance>
         workerAttendance.setDeleteStatus(EDeleteStatus.NORMAL.getCode());
         workerAttendance
             .setUploadStatus(EWorkerContractUploadStatus.TO_UPLOAD.getCode());
+        workerAttendance.setSource(EAttendanceSource.SYSTEM.getCode());
+
         workerAttendanceDAO.insert(workerAttendance);
 
         return code;
@@ -152,12 +156,14 @@ public class WorkerAttendanceBOImpl extends PaginableBOImpl<WorkerAttendance>
         workerAttendance.setWorkerCode(projectWorker.getCode());
         workerAttendance.setWorkerName(projectWorker.getWorkerName());
         workerAttendance.setIdCardType(projectWorker.getIdcardType());
+
         workerAttendance.setIdCardNumber(projectWorker.getIdcardNumber());
         workerAttendance.setImage(photoUrl);
         workerAttendance.setTerminalCode(deviceKey);
         workerAttendance
             .setUploadStatus(EWorkerAttendanceUploadStatus.TO_UPLOAD.getCode());
 
+        workerAttendance.setSource(EAttendanceSource.REAL_TIME.getCode());
         workerAttendance.setDeleteStatus(EDeleteStatus.NORMAL.getCode());
         workerAttendanceDAO.insert(workerAttendance);
     }
@@ -346,6 +352,8 @@ public class WorkerAttendanceBOImpl extends PaginableBOImpl<WorkerAttendance>
         code = OrderNoGenerater
             .generate(EGeneratePrefix.WorkerAttendance.getCode());
         workerAttendance.setCode(code);
+        workerAttendance.setSource(EAttendanceSource.SYSTEM.getCode());
+
         return code;
     }
 

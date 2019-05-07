@@ -78,7 +78,7 @@ public interface IProjectWorkerBO extends IPaginableBO<ProjectWorker> {
     public ProjectWorker getProjectWorker(String projectCode,
             String idcardNumber);
 
-    ProjectWorker getProjectWorkerByGuid(String guid);
+    ProjectWorker getProjectWorkerByGuid(String guid, String deviceKey);
 
     public List<ProjectWorker> getProjectWorkerByProjectCode(String code);
 

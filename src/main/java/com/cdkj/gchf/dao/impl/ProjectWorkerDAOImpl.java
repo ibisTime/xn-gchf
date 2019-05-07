@@ -100,6 +100,7 @@ public class ProjectWorkerDAOImpl extends AMybatisTemplate
             projectWorker);
     }
 
+<<<<<<< HEAD
     @Override
     public ProjectWorker selectProjectWorkerWorkerGuid(String guid) {
         return super.select(NAMESPACE.concat("select_projectWorker_guid"), guid,
@@ -114,4 +115,6 @@ public class ProjectWorkerDAOImpl extends AMybatisTemplate
             ProjectWorker.class);
     }
 
+=======
+>>>>>>> branch 'gchf_branch_v2.2.0' of https://github.com/ibisTime/xn-gchf.git
 }

@@ -224,16 +224,15 @@ public class ProjectWorker extends ABaseDO {
 
     private List<String> uploadStatusList;
 
+    private String deviceKey;
+
+    // 实名制人员guid
+    private String personGuid;
+
     /**
      * DB properties
      */
     private String realTeamMasterName;
-
-    // 人脸考勤设备序列号
-    private String deviceKey;
-
-    // 是否关联
-    private String isLink;
 
     public String getCode() {
         return code;
@@ -811,12 +810,12 @@ public class ProjectWorker extends ABaseDO {
         this.deviceKey = deviceKey;
     }
 
-    public String getIsLink() {
-        return isLink;
+    public String getPersonGuid() {
+        return personGuid;
     }
 
-    public void setIsLink(String isLink) {
-        this.isLink = isLink;
+    public void setPersonGuid(String personGuid) {
+        this.personGuid = personGuid;
     }
 
 }

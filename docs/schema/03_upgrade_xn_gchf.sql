@@ -624,7 +624,7 @@ CREATE TABLE `thf_skill` (
   PRIMARY KEY (`code`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
--- 以下为220修改
+-- 以下为220 第一版修改
 ALTER TABLE `thf_worker_info` 
 ADD COLUMN `attendance_picture` longtext NULL COMMENT '人员考勤照片' AFTER `create_datetime`,
 ADD COLUMN `worker_guid` varchar(32) NULL COMMENT '人员guid' AFTER `attendance_picture`,
@@ -702,3 +702,6 @@ MODIFY COLUMN `image` varchar(300) CHARACTER SET utf8 COLLATE utf8_general_ci NU
 ALTER TABLE `thf_equipment_worker` 
 ADD PRIMARY KEY (`code`);
 
+-- 以下为220 第二版修改
+ALTER TABLE `thf_worker_attendance` 
+ADD COLUMN `source` VARCHAR(4) NULL COMMENT '来源（系统生成/实时数据）' AFTER `create_datetime`;

@@ -45,7 +45,9 @@ public class CallBackIdentity {
             @RequestParam String personGuid, @RequestParam String showTime,
             @RequestParam String photoUrl, @RequestParam String type,
             @RequestParam String data, @RequestParam String recMode,
-            @RequestParam String idCardInfo) {
+            @RequestParam String guid, @RequestParam String userGuid,
+            @RequestParam(value = "idCardInfo", defaultValue = "") String idCardInfo) {
+
         ProjectWorker workerByGuid = projectWorkerBO
             .getProjectWorkerByGuid(personGuid);
         // 考勤录入

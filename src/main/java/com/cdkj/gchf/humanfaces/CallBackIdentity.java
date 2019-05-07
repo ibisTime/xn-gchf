@@ -49,10 +49,13 @@ public class CallBackIdentity {
             @RequestParam(value = "idCardInfo", defaultValue = "") String idCardInfo) {
 
         ProjectWorker workerByGuid = projectWorkerBO
-            .getProjectWorkerByGuid(personGuid);
-        // 考勤录入
-        workerAttendanceBO.saveDeviceWorkerAttendance(workerByGuid, deviceKey,
-            showTime, photoUrl, type, data, recMode, idCardInfo);
+            .getProjectWorkerByGuid(personGuid, deviceKey);
+
+        if (null != workerByGuid) {
+            // 考勤录入
+            workerAttendanceBO.saveDeviceWorkerAttendance(workerByGuid,
+                deviceKey, showTime, photoUrl, type, data, recMode, idCardInfo);
+        }
 
         return "SUCCESS";
     }

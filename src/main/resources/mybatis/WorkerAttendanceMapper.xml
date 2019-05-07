@@ -24,6 +24,7 @@
 		<result column="lng" property="lng" />
 		<result column="lat" property="lat" />
 		<result column="create_datetime" property="createDatetime" />
+		<result column="source" property="source" />
 		<result column="start_datetime" property="startDatetime" />
 		<result column="end_datetime" property="endDatetime" />
 
@@ -71,6 +72,9 @@
 			<if test="corpCode != null and corpCode != '' ">
 				AND tm.corp_code = #{corpCode}
 			</if>
+			<if test="source != null and source != '' ">
+				AND t.source = #{source}
+			</if>
 
 		</trim>
 	</sql>
@@ -98,6 +102,7 @@
 		,lng
 		,lat
 		,create_datetime
+		,source
 		,start_datetime
 		,end_datetime
 
@@ -130,6 +135,7 @@
 		,#{lat}
 
 		,#{createDatetime}
+		,#{source}
 		,#{startDatetime}
 		,#{endDatetime}
 		,#{settleDatetime}
@@ -252,6 +258,7 @@
 		,t.lat
 
 		,t.create_datetime
+		,t.source
 		,t.start_datetime
 		,t.end_datetime
 		,t.settle_datetime

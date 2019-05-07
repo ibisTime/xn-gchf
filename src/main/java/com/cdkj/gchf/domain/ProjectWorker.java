@@ -224,6 +224,11 @@ public class ProjectWorker extends ABaseDO {
 
     private List<String> uploadStatusList;
 
+    private String deviceKey;
+
+    // 实名制人员guid
+    private String personGuid;
+
     /**
      * DB properties
      */
@@ -795,6 +800,22 @@ public class ProjectWorker extends ABaseDO {
 
     public void setUploadStatusList(List<String> uploadStatusList) {
         this.uploadStatusList = uploadStatusList;
+    }
+
+    public String getDeviceKey() {
+        return deviceKey;
+    }
+
+    public void setDeviceKey(String deviceKey) {
+        this.deviceKey = deviceKey;
+    }
+
+    public String getPersonGuid() {
+        return personGuid;
+    }
+
+    public void setPersonGuid(String personGuid) {
+        this.personGuid = personGuid;
     }
 
 }

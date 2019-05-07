@@ -62,6 +62,15 @@
 		<result column="team_name" property="realTeamMasterName" />
 	</resultMap>
 
+	<sql id="join_condition">
+		<if test=" personGuid != null and personGuid != '' ">
+			join thf_worker_info wi on t.worker_code = wi.code
+		</if>
+		<if test=" deviceKey != null and personGuid != '' ">
+			join thf_equipment_worker ew on ew.worker_code = t.worker_code
+		</if>
+	</sql>
+	
 	<sql id="where_condition">
 		<trim prefix="WHERE" prefixOverrides="AND | OR">
 			<if test="code != null and code != '' ">
@@ -107,9 +116,14 @@
 					#{item}
 				</foreach>
 			</if>
+			<if test=" personGuid != null and personGuid != '' ">
+				AND wi.worker_guid = #{personGuid}
+			</if>
+			<if test="deviceKey != null and deviceKey != '' ">
+				AND ew.device_key = #{deviceKey}
+			</if>
 		</trim>
 	</sql>
-
 
 	<insert id="insert_projectWorker" parameterType="projectWorker">
 		INSERT INTO
@@ -398,6 +412,7 @@
 		,t.bank_name
 		FROM
 		thf_project_worker t
+		<include refid="join_condition" />
 		<include refid="where_condition" />
 		<trim prefix="ORDER BY ">
 			<if test="order != null and order != '' ">
@@ -409,21 +424,8 @@
 	<select id="select_projectWorker_count" parameterType="projectWorker"
 		resultType="java.lang.Long">
 		SELECT count(1) FROM thf_project_worker t
+		<include refid="join_condition" />
 		<include refid="where_condition" />
 	</select>
-
-	<select id="select_projectWorker_guid" parameterType="java.lang.String" resultMap="projectWorker_DB_Result">
-		SELECT a.* from
-		thf_project_worker a
-		LEFT JOIN
-		thf_worker_info b
-		on
-		a.worker_code = b.code
-		where b.worker_guid =
-		#{0}
-		and
-		a.upload_status in ('1','2');
-	</select>
-
 
 </mapper>

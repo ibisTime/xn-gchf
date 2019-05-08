@@ -13,6 +13,9 @@ public class XN631825Req extends APageReq {
     // 设备状态
     private String state;
 
+    // 设备命名成
+    private String name;
+
     // 用户id
     private String userId;
 
@@ -34,6 +37,14 @@ public class XN631825Req extends APageReq {
 
     public String getUserId() {
         return userId;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 
     public void setUserId(String userId) {

@@ -36,7 +36,9 @@ public class XN631835 extends AProcessor {
         int start = StringValidater.toInteger(req.getStart());
         int limit = StringValidater.toInteger(req.getLimit());
         String order = req.getOrderColumn();
-
+        if (StringUtils.isNotBlank(req.getUserId())) {
+            equipmentWorker.setUserId(req.getUserId());
+        }
         if (StringUtils.isBlank(order)) {
             order = IEquipmentWorkerAO.DEFAULT_ORDER_COLUMN;
         }

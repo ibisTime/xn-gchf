@@ -67,7 +67,7 @@
 			join thf_worker_info wi on t.worker_code = wi.code
 		</if>
 		<if test=" deviceKey != null and personGuid != '' ">
-			join thf_equipment_worker ew on ew.worker_code = t.worker_code
+			join thf_equipment_worker ew on ew.worker_code = t.code
 		</if>
 	</sql>
 	

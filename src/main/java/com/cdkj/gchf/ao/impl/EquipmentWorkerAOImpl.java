@@ -21,10 +21,12 @@ import com.cdkj.gchf.bo.base.Paginable;
 import com.cdkj.gchf.domain.EquipmentInfo;
 import com.cdkj.gchf.domain.EquipmentWorker;
 import com.cdkj.gchf.domain.ProjectWorker;
+import com.cdkj.gchf.domain.User;
 import com.cdkj.gchf.domain.WorkerInfo;
 import com.cdkj.gchf.dto.req.XN631830Req;
 import com.cdkj.gchf.enums.EProjectWorkerUploadStatus;
 import com.cdkj.gchf.exception.BizException;
+import com.cdkj.gchf.humanfaces.Device;
 import com.cdkj.gchf.humanfaces.DeviceWorker;
 import com.cdkj.gchf.humanfaces.WorkerPicture;
 import com.cdkj.gchf.humanfaces.enums.EEquipmentWorkerResponse;
@@ -81,6 +83,12 @@ public class EquipmentWorkerAOImpl implements IEquipmentWorkerAO {
     @Override
     public Paginable<EquipmentWorker> queryEquipmentWorkerPage(int start,
             int limit, EquipmentWorker condition) {
+        if (StringUtils.isNotBlank(condition.getUserId())) {
+            String userId = condition.getUserId();
+            User briefUser = userBO.getBriefUser(userId);
+            condition.setProjectCode(briefUser.getOrganizationCode());
+        }
+
         return equipmentWorkerBO.getPaginable(start, limit, condition);
     }
 
@@ -122,7 +130,7 @@ public class EquipmentWorkerAOImpl implements IEquipmentWorkerAO {
             deviceWorker.workerBatchElimination(workerInfo.getWorkerGuid(),
                 equipmentInfo.getDeviceKey());
             // 删除本地数据
-            equipmentWorkerBO.removeEquipmentWorker(equipmentInfo.getCode());
+            equipmentWorkerBO.removeEquipmentWorker(temp.getCode());
         }
 
         List<String> workerInfos = new ArrayList<>();
@@ -168,8 +176,8 @@ public class EquipmentWorkerAOImpl implements IEquipmentWorkerAO {
                             workerInfo.getWorkerGuid(),
                             equipmentInfo.getDeviceKey());
                         // 删除本地数据
-                        equipmentWorkerBO
-                            .removeEquipmentWorker(equipmentInfo.getCode());
+                        equipmentWorkerBO.removeEquipmentWorker(
+                            projectWorker.getWorkerCode());
                         workerInfos.add(workerInfo.getWorkerGuid());
                         projectWorkers.add(projectWorker);
                     }
@@ -177,21 +185,22 @@ public class EquipmentWorkerAOImpl implements IEquipmentWorkerAO {
             }
 
         }
-        if (CollectionUtils.isEmpty(workerInfos)) {
-            throw new BizException("XN631830", "没有可授权的人员");
-        }
-        // 设备授权人员照片
-        ResultMsg cloudWorkerAuthorizationEuipment = deviceWorker
-            .cloudWorkerAuthorizationEuipment(equipmentInfo.getDeviceKey(),
-                workerInfos, req.getStartTime(), req.getEndTime());
-        if (cloudWorkerAuthorizationEuipment.getCode()
-            .equals(EEquipmentWorkerResponse.SHOUQUANCHENGONG.getCode())) {
-            // 授权成功
-            for (ProjectWorker projectWorker : projectWorkers) {
-                equipmentWorkerBO.saveEquipmentWorker(equipmentInfo,
-                    projectWorker);
+        if (CollectionUtils.isNotEmpty(workerInfos)) {
+            // 设备授权人员照片
+            ResultMsg cloudWorkerAuthorizationEuipment = deviceWorker
+                .cloudWorkerAuthorizationEuipment(equipmentInfo.getDeviceKey(),
+                    workerInfos, req.getStartTime(), req.getEndTime());
+            if (cloudWorkerAuthorizationEuipment.getCode()
+                .equals(EEquipmentWorkerResponse.SHOUQUANCHENGONG.getCode())) {
+                // 授权成功
+                for (ProjectWorker projectWorker : projectWorkers) {
+                    equipmentWorkerBO.saveEquipmentWorker(equipmentInfo,
+                        projectWorker);
+                }
             }
+            new Device().updateCloudDevice(equipmentInfo.getDeviceKey());
         }
+
     }
 
 }

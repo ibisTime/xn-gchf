@@ -29,9 +29,16 @@
 			<if test="code != null and code != '' ">
 				AND t.code = #{code}
 			</if>
+			<if test="name != null and name != '' ">
+				AND t.name like "%"#{name}"%"
+			</if>
+			<if test="projectCode != null and projectCode != '' ">
+				AND t.project_code = #{projectCode}
+			</if>
 		</trim>
 	</sql>
-	<select id="select_EquipmentInfo" parameterType="equipmentInfo" resultMap="EquipmentInfo_DB_Result">
+	<select id="select_EquipmentInfo" parameterType="equipmentInfo"
+		resultMap="EquipmentInfo_DB_Result">
 		SELECT
 		t.code
 		,t.device_key
@@ -118,36 +125,50 @@
 	</insert>
 
 	<update id="update_EquipmentInfo" parameterType="equipmentInfo">
-		UPDATE thf_equipment_info
+		UPDATE
+		thf_equipment_info
 		SET
 		name = #{name}
 		,tag = #{tag}
-		,tag_encreapt = #{tagEncreapt}
+		,tag_encreapt =
+		#{tagEncreapt}
 
 		WHERE code = #{code}
 	</update>
-	 
-    <update id="update_EquipmentInfo_cloud" parameterType="equipmentInfo">
-        UPDATE thf_equipment_info
-        SET
-        name = #{name}
-        ,tag = #{tag}
-        ,tag_encreapt = #{tagEncreapt}
-        ,scene_guid = #{sceneGuid}
-        ,state = #{state}
-        ,status = #{status}
-        ,client_id = #{clientId}
-        ,c_id = #{cId}
-        ,version_no = #{versionNo}
-        ,system_version_no = #{systemVersionNo}
-        ,reg_num = #{regNum}
-        ,need_upgrade_app = #{needUpgradeApp}
-        ,need_upgrade = #{needUpgrade}
-        ,create_time = #{createTime}
-        ,expired = #{expired}
-        ,device_status = #{deviceStatus}
-        
-        WHERE code = #{code}
-    </update>
+
+	<update id="update_EquipmentInfo_cloud" parameterType="equipmentInfo">
+		UPDATE
+		thf_equipment_info
+		SET
+		name = #{name}
+		,tag = #{tag}
+		,tag_encreapt =
+		#{tagEncreapt}
+		,scene_guid = #{sceneGuid}
+		,state = #{state}
+		,status =
+		#{status}
+		,client_id = #{clientId}
+		,c_id = #{cId}
+		,version_no =
+		#{versionNo}
+		,system_version_no = #{systemVersionNo}
+		,reg_num =
+		#{regNum}
+		,need_upgrade_app = #{needUpgradeApp}
+		,need_upgrade =
+		#{needUpgrade}
+		,create_time = #{createTime}
+		,expired = #{expired}
+		,device_status = #{deviceStatus}
+
+		WHERE code = #{code}
+	</update>
+
+	<delete id="delete_EquipmentInfo" parameterType="equipmentInfo">
+		DELETE FROM
+		thf_equipment_info
+		WHERE code = #{code}
+	</delete>
 
 </mapper>

@@ -46,7 +46,7 @@ public class CallBackIdentity {
             @RequestParam String photoUrl, @RequestParam String type,
             @RequestParam String data, @RequestParam String recMode,
             @RequestParam String guid, @RequestParam String userGuid,
-            @RequestParam(value = "idCardInfo", defaultValue = "") String idCardInfo) {
+            @RequestParam(value = "idCardInfo", defaultValue = "", required = false) String idCardInfo) {
 
         ProjectWorker workerByGuid = projectWorkerBO
             .getProjectWorkerByGuid(personGuid, deviceKey);

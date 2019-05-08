@@ -149,7 +149,8 @@ public class WorkerAttendanceBOImpl extends PaginableBOImpl<WorkerAttendance>
         workerAttendance.setCode(code);
         workerAttendance.setProjectCode(projectWorker.getProjectCode());
         workerAttendance.setProjectName(projectWorker.getProjectName());
-        workerAttendance.setDate(new Date(Long.parseLong(dateTime)));
+        workerAttendance.setDate(
+            DateUtil.strToDate(dateTime, DateUtil.DATA_TIME_PATTERN_1));
 
         workerAttendance.setTeamSysNo(projectWorker.getTeamSysNo());
         workerAttendance.setTeamName(projectWorker.getTeamName());

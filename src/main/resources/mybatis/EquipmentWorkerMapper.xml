@@ -15,8 +15,8 @@
 		<result column="status" property="status" />
 		<result column="pass_times" property="passTimes" />
 		<result column="create_time" property="createTime" />
-		
-		
+
+
 	</resultMap>
 	<sql id="where_condition">
 		<trim prefix="WHERE" prefixOverrides="AND | OR">
@@ -24,11 +24,31 @@
 				AND t.code = #{code}
 			</if>
 			<if test="deviceKey != null and deviceKey != '' ">
-                AND t.device_key = #{deviceKey}
-            </if>
+				AND t.device_key = #{deviceKey}
+			</if>
+			<if test="deviceName != null and deviceName != '' ">
+				AND t.worker_name like "%"#{deviceName}"%"
+			</if>
+
+
+			<if test="uploadStatus != null and uploadStatus != '' ">
+				AND upload_status NOT IN ("1","2");
+			</if>
 		</trim>
 	</sql>
-	<select id="select_EquipmentWorker" parameterType="equipmentWorker" resultMap="EquipmentWorker_DB_Result">
+
+	<sql id="join_condition">
+		<if test="projectCode != null and projectCode != '' ">
+			LEFT JOIN thf_equipment_info b
+			on t.device_key =
+			b.device_key
+			LEFT JOIN thf_project_worker c
+			on c.project_code =
+			c.project_code
+		</if>
+	</sql>
+	<select id="select_EquipmentWorker" parameterType="equipmentWorker"
+		resultMap="EquipmentWorker_DB_Result">
 		SELECT
 		t.code
 		,t.device_code
@@ -55,7 +75,11 @@
 	<select id="select_EquipmentWorker_count" parameterType="equipmentWorker"
 		resultType="java.lang.Long">
 		SELECT count(1) FROM thf_equipment_worker t
+		<include refid="join_condition" />
 		<include refid="where_condition" />
+		<if test="projectCode != null and projectCode != '' ">
+			AND b.project_code = #{projectCode}
+		</if>
 	</select>
 
 	<insert id="insert_EquipmentWorker" parameterType="equipmentWorker">
@@ -91,21 +115,29 @@
 	</insert>
 
 	<update id="update_EquipmentWorker" parameterType="equipmentWorker">
-		UPDATE thf_equipment_worker
+		UPDATE
+		thf_equipment_worker
 		SET
 		device_code = #{deviceCode}
-		,device_key = #{deviceKey}
+		,device_key =
+		#{deviceKey}
 		,device_name = #{deviceName}
 		,worker_code = #{workerCode}
 		,worker_name = #{workerName}
 		,team_code = #{teamCode}
-		,team_name = #{teamName}
+		,team_name =
+		#{teamName}
 		,id_card_number = #{idCardNumber}
 		,status = #{status}
 		,pass_times = #{passTimes}
 		,create_time = #{createTime}
-		WHERE code = #{code}
+		WHERE code =
+		#{code}
 	</update>
 
-
+	<delete id="delete_EquipmentWorker" parameterType="equipmentWorker">
+		DELETE FROM
+		thf_equipment_worker
+		WHERE code = #{code}
+	</delete>
 </mapper>

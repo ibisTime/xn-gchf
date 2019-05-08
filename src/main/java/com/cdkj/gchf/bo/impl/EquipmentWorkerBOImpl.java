@@ -65,11 +65,9 @@ public class EquipmentWorkerBOImpl extends PaginableBOImpl<EquipmentWorker>
     @Override
     public int removeEquipmentWorker(String code) {
         int count = 0;
-        if (StringUtils.isNotBlank(code)) {
-            EquipmentWorker data = new EquipmentWorker();
-            data.setCode(code);
-            count = EquipmentWorkerDAO.delete(data);
-        }
+        EquipmentWorker data = new EquipmentWorker();
+        data.setCode(code);
+        count = EquipmentWorkerDAO.delete(data);
         return count;
     }
 

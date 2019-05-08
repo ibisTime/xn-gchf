@@ -696,7 +696,7 @@ INSERT INTO tsys_dict VALUES (null,'0',null,"device_net_status","设备网络状
 INSERT INTO tsys_dict VALUES (null,"1","device_net_status","1","在线","admin","2019-05-07 05:07:37",null);
 INSERT INTO tsys_dict VALUES (null,"1","device_net_status","2","离线","admin","2019-05-07 05:07:37",null);
 
-ALTER TABLE `dev_xn_gchf_gov`.`thf_worker_attendance` 
+ALTER TABLE `thf_worker_attendance` 
 MODIFY COLUMN `image` varchar(300) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '刷卡近照' AFTER `direction`;
 
 ALTER TABLE `thf_equipment_worker` 
@@ -705,3 +705,7 @@ ADD PRIMARY KEY (`code`);
 -- 以下为220 第二版修改
 ALTER TABLE `thf_worker_attendance` 
 ADD COLUMN `source` VARCHAR(4) NULL COMMENT '来源（系统生成/实时数据）' AFTER `create_datetime`;
+
+INSERT INTO `tsys_dict`(`id`, `type`, `parent_key`, `dkey`, `dvalue`, `updater`, `update_datetime`, `remark`) VALUES (1688, '0', NULL, 'attendance_source', '考勤来源', 'admin', '2018-07-27 03:07:37', NULL);
+INSERT INTO `tsys_dict`(`id`, `type`, `parent_key`, `dkey`, `dvalue`, `updater`, `update_datetime`, `remark`) VALUES (1689, '1', 'attendance_source', '1', '系统生成', 'admin', '2018-07-27 03:07:37', NULL);
+INSERT INTO `tsys_dict`(`id`, `type`, `parent_key`, `dkey`, `dvalue`, `updater`, `update_datetime`, `remark`) VALUES (1690, '1', 'attendance_source', '2', '实时数据', 'admin', '2018-07-27 03:07:37', NULL);

@@ -33,4 +33,7 @@ public interface DeviceWorkUrl {
     String BatchEliminationOfPersonnelEquipmentUrl = AppConfig.getBaseUrl()
             + "/Api/Personnel/BatchEliminationOfPersonnelEquipment";
 
+    // 人员清空url （清空人员和照片）
+    String ClearWorkersUrl = AppConfig.getBaseUrl() + "/Api/Device/EquipmentEP";
+
 }

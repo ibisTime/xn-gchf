@@ -31,8 +31,8 @@ public class DeviceWorker {
      * @param: @param type 人员类型 可自定义 0无意义
      * @throws
      */
-    public DeviceWorkerRes cloudWorkerAdd(String deviceKey, String name,
-            String icNo, String phone, String tag, String type) {
+    public DeviceWorkerRes cloudWorkerAdd(String name, String icNo,
+            String phone, String tag, String type) {
         String token = AppConfig.getToken();
         Map<String, String> req = new HashMap<>();
         req.put("appid", AppConfig.getAppid());
@@ -154,6 +154,7 @@ public class DeviceWorker {
         Map<String, String> req = new HashMap<>();
         req.put("appid", AppConfig.getAppid());
         req.put("token", token);
+        req.put("length", "80");
         String doRequest = HttpRequest.doRequest(DeviceWorkUrl.workerSearchUrl,
             "POST", req);
         System.out.println(doRequest);
@@ -176,6 +177,29 @@ public class DeviceWorker {
         String doRequest = HttpRequest
             .doRequest(DeviceWorkUrl.authorizationQueryUrl, "GET", req);
         System.out.println(doRequest);
+        return doRequest;
+    }
+
+    /**
+     * 
+     * @Description: 清空设备人员
+     * @param: @param deviceKey
+     * @param: @param personGuid
+     * @param: @return      
+     * @return: String      
+     * @throws
+     */
+    public String workerClear(String deviceKey, String personGuid) {
+        String token = AppConfig.getToken();
+        Map<String, String> req = new HashMap<>();
+        req.put("appid", AppConfig.getAppid());
+        req.put("token", token);
+        req.put("deviceKey", deviceKey);
+        if (StringUtils.isNotBlank(personGuid)) {
+            req.put("personGuid", personGuid);
+        }
+        String doRequest = HttpRequest.doRequest(DeviceWorkUrl.ClearWorkersUrl,
+            "POST", req);
         return doRequest;
     }
 
@@ -226,17 +250,27 @@ public class DeviceWorker {
         // 人员删除
         // 70C34989189A47C3BCA4B68F412B7360 guid
         // String cloudWorkerDel = cloudWorkerDel(
-        // "70C34989189A47C3BCA4B68F412B7360");
+        // "2E81A9B755804030BF0744CD8359B083");
+        // String cloudWorkerDel2 = cloudWorkerDel(
+        // "662D10F24FCF4FED8963BA6D1F4651BD");
+        // String cloudWorkerDel3 = cloudWorkerDel(
+        // "931D130D04FD44E7B9A0E797C1A20644");
+        // String cloudWorkerDel4 = cloudWorkerDel(
+        // "C83BFC0DB364433B97FB0BA7254C20EA");
+        // String cloudWorkerDel5 = cloudWorkerDel(
+        // "87A8121E3F1A41EA8912E5B9D223B1F4");
         // System.out.println(cloudWorkerDel);
+        // 人员搜索
         // workerSearch(null, null, null, null, null, null, null, null, null,
         // null,
         // null, null, null);
+        // 清空设备人员
+        //
+        // workerClear("84E0F420576700B0", null);
         // 人员授权查询
         // String workerAuthorizationQuery = workerAuthorizationQuery(
         // "C83BFC0DB364433B97FB0BA7254C20EA");
         // workerAuthorizationQuery("422585696F4E405A854D92EAE17174A9");
         // 人员授权销毁
-        workerBatchElimination("422585696F4E405A854D92EAE17174A9",
-            "84E0F420576700B0");
     }
 }

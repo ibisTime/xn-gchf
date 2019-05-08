@@ -14,6 +14,9 @@ public class XN631827Req extends AListReq {
     // 设备状态
     private String state;
 
+    // 设备名称
+    private String name;
+
     // 用户id
     @NotBlank
     private String userId;
@@ -40,6 +43,14 @@ public class XN631827Req extends AListReq {
 
     public void setUserId(String userId) {
         this.userId = userId;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 
 }

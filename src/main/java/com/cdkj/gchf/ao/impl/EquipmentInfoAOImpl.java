@@ -23,6 +23,7 @@ import com.cdkj.gchf.enums.EUserKind;
 import com.cdkj.gchf.exception.BizException;
 import com.cdkj.gchf.humanfaces.Device;
 import com.cdkj.gchf.humanfaces.enums.EEquipmentResponse;
+import com.cdkj.gchf.humanfaces.res.DeviceInfo;
 import com.cdkj.gchf.humanfaces.res.DeviceQuery;
 import com.cdkj.gchf.humanfaces.res.DeviceRes;
 import com.cdkj.gchf.humanfaces.res.ResultMsg;
@@ -127,9 +128,12 @@ public class EquipmentInfoAOImpl implements IEquipmentInfoAO {
             limit, condition);
         List<EquipmentInfo> updateEquipment = new ArrayList<>();
         for (EquipmentInfo equipmentInfo : paginable.getList()) {
+            DeviceInfo data = device.deviceQuery(equipmentInfo.getDeviceKey())
+                .getData();
+
             EquipmentInfo refreshEquipment = equipmentInfoBO.refreshEquipment(
                 equipmentInfo.getDeviceKey(), equipmentInfo.getProjectCode(),
-                device.deviceQuery(equipmentInfo.getDeviceKey()).getData());
+                data);
             updateEquipment.add(refreshEquipment);
         }
         paginable.setList(updateEquipment);

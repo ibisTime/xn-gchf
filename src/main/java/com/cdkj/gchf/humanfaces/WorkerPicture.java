@@ -134,8 +134,18 @@ public class WorkerPicture {
 
     @Test
     public void test1() {
-        // String t = "abcdef";
-        // 老三：5D2A1DBBAB6D4330AA7EA8336FF913E9
+
+        String picQueryCloud = picQueryCloud(
+            "2E81A9B755804030BF0744CD8359B083");
+            // String t = "abcdef";
+            // 老三：5D2A1DBBAB6D4330AA7EA8336FF913E9
+
+        // picDelCloud("A56C86A544B4423CBAE23452D0924B2F",
+        // "2E81A9B755804030BF0744CD8359B083");
+        // picDelCloud("B6ED5FDF07F448B4884A19B98D196FDE",
+        // "2E81A9B755804030BF0744CD8359B083");
+        // picDelCloud("ED2D5F2D862D4AB2B9B72E512457B6C7",
+        // "2E81A9B755804030BF0744CD8359B083");
         // System.out.println(t.indexOf("b"));
         // System.out.println(t.substring(t.indexOf("b") + 1, t.length()));
         // String picRegisterToCloud = picRegisterToCloud(
@@ -146,5 +156,6 @@ public class WorkerPicture {
         // picDelCloud("07CAADCFED8E4916ADDEA048EEF71A99",
         // "5EE70015C96848FA8E9C4023B30F0464");
         // System.out.println(picDelCloud.toString());
+        System.out.println(picQueryCloud);
     }
 }

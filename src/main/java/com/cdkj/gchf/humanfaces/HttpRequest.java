@@ -33,7 +33,7 @@ public class HttpRequest {
 
     private static HttpURLConnection httpURLConnection = null;
 
-    public static String doRequest(String url, String method,
+    public static synchronized String doRequest(String url, String method,
             Map<String, String> req) {
         URL localURL = null;
         try {

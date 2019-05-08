@@ -48,6 +48,16 @@ public class EquipmentWorker extends ABaseDO {
     // 添加时间
     private String createTime;
 
+    /**
+     * DB
+     * 
+     */
+    private String userId;
+
+    private String projectCode;
+
+    private String uploadStatus;
+
     public void setCode(String code) {
         this.code = code;
     }
@@ -142,6 +152,30 @@ public class EquipmentWorker extends ABaseDO {
 
     public String getCreateTime() {
         return createTime;
+    }
+
+    public String getUserId() {
+        return userId;
+    }
+
+    public void setUserId(String userId) {
+        this.userId = userId;
+    }
+
+    public String getProjectCode() {
+        return projectCode;
+    }
+
+    public void setProjectCode(String projectCode) {
+        this.projectCode = projectCode;
+    }
+
+    public String getUploadStatus() {
+        return uploadStatus;
+    }
+
+    public void setUploadStatus(String uploadStatus) {
+        this.uploadStatus = uploadStatus;
     }
 
 }

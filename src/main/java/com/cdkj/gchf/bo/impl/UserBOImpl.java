@@ -139,7 +139,7 @@ public class UserBOImpl extends PaginableBOImpl<User> implements IUserBO {
         user.setOrganizationCode(projectCode);
         user.setType(EUserKind.Owner.getCode());
         user.setRealName(req.getLinkMan());
-        user.setLoginName(projectCode);
+        user.setLoginName(req.getName() + "管理员");
         user.setMobile(req.getLinkPhone());
 
         user.setLoginPwd(MD5Util.md5("888888"));

@@ -77,6 +77,7 @@ public class EquipmentInfoBOImpl extends PaginableBOImpl<EquipmentInfo>
         equipmentInfo.setcId(data.getCid());
         equipmentInfo.setClientId(data.getClientId());
         equipmentInfo.setExpired(data.getExpired() ? 1 : 0);
+        equipmentInfo.setDirection(req.getDirection());
         EquipmentInfoDAO.insert(equipmentInfo);
         return code;
     }

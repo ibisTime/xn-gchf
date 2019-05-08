@@ -6,6 +6,7 @@ import com.cdkj.gchf.bo.base.IPaginableBO;
 import com.cdkj.gchf.domain.EquipmentInfo;
 import com.cdkj.gchf.domain.EquipmentWorker;
 import com.cdkj.gchf.domain.ProjectWorker;
+import com.cdkj.gchf.dto.req.XN631830Req;
 
 //CHECK ��鲢��ע�� 
 public interface IEquipmentWorkerBO extends IPaginableBO<EquipmentWorker> {
@@ -23,7 +24,7 @@ public interface IEquipmentWorkerBO extends IPaginableBO<EquipmentWorker> {
 
     public EquipmentWorker getEquipmentWorker(String code);
 
-    void saveEquipmentWorker(EquipmentInfo equipmentInfo,
+    void saveEquipmentWorker(XN631830Req req, EquipmentInfo equipmentInfo,
             ProjectWorker projectWorker);
 
 }

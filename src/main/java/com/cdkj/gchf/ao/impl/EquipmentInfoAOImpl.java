@@ -8,11 +8,13 @@ import org.springframework.stereotype.Service;
 
 import com.cdkj.gchf.ao.IEquipmentInfoAO;
 import com.cdkj.gchf.bo.IEquipmentInfoBO;
+import com.cdkj.gchf.bo.IEquipmentWorkerBO;
 import com.cdkj.gchf.bo.IOperateLogBO;
 import com.cdkj.gchf.bo.IProjectBO;
 import com.cdkj.gchf.bo.IUserBO;
 import com.cdkj.gchf.bo.base.Paginable;
 import com.cdkj.gchf.domain.EquipmentInfo;
+import com.cdkj.gchf.domain.EquipmentWorker;
 import com.cdkj.gchf.domain.Project;
 import com.cdkj.gchf.domain.User;
 import com.cdkj.gchf.dto.req.XN631820Req;
@@ -46,6 +48,9 @@ public class EquipmentInfoAOImpl implements IEquipmentInfoAO {
 
     @Autowired
     private IOperateLogBO operateLogBO;
+
+    @Autowired
+    private IEquipmentWorkerBO equipmentWorkerBO;
 
     @Override
     public String addEquipmentInfo(EquipmentInfo data) {
@@ -187,7 +192,18 @@ public class EquipmentInfoAOImpl implements IEquipmentInfoAO {
             // 更新成功
             equipmentInfo.setName(req.getName());
             equipmentInfo.setTag(req.getTag());
+            equipmentInfo.setDirection(req.getDirection());
             equipmentInfoBO.refreshEquipmentInfo(equipmentInfo);
+
+            // 刷新设备人员信息
+            EquipmentWorker condition = new EquipmentWorker();
+            condition.setDeviceKey(equipmentInfo.getDeviceKey());
+            List<EquipmentWorker> queryEquipmentWorkerList = equipmentWorkerBO
+                .queryEquipmentWorkerList(condition);
+            for (EquipmentWorker equipmentWorker : queryEquipmentWorkerList) {
+                equipmentWorker.setDeviceName(req.getName());
+                equipmentWorkerBO.refreshEquipmentWorker(equipmentWorker);
+            }
 
         } else {
             throw new BizException("XN631821", updateCloudDevice.getMsg());

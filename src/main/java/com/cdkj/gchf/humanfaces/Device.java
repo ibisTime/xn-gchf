@@ -157,6 +157,40 @@ public class Device {
         return doRequest;
     };
 
+    /**
+     * 
+     * @Description: 禁用设备
+     * @param: @param deviceKey  设备序列号
+     * @param: @return      
+     * @return: String      
+     * @throws
+     */
+    public ResultMsg banDevice(String deviceKey) {
+        String token = AppConfig.getToken();
+        Map<String, String> req = new HashMap<>();
+        req.put("appid", AppConfig.getAppid());
+        req.put("token", token);
+        req.put("deviceKey", deviceKey);
+        String doRequest = HttpRequest.doRequest(DeviceUrl.banDeviceUrl, "POST",
+            req);
+        ResultMsg fromJson = AppConfig.gson.fromJson(doRequest,
+            ResultMsg.class);
+        return fromJson;
+    }
+
+    public ResultMsg ennableDevice(String deviceKey) {
+        String token = AppConfig.getToken();
+        Map<String, String> req = new HashMap<>();
+        req.put("appid", AppConfig.getAppid());
+        req.put("token", token);
+        req.put("deviceKey", deviceKey);
+        String doRequest = HttpRequest.doRequest(DeviceUrl.enableDeviceUrl,
+            "POST", req);
+        ResultMsg fromJson = AppConfig.gson.fromJson(doRequest,
+            ResultMsg.class);
+        return fromJson;
+    };
+
     @Test
     public void test1() {
         // 添加设备
@@ -170,8 +204,8 @@ public class Device {
         // System.out.println(equipmentUpdate.toString());
 
         // 查询设备
-        DeviceQuery deviceQuery = deviceQuery("84E0F420576700B0");
-        DeviceQuery deviceQuery2 = deviceQuery("84E0F420576700B0");
+        // DeviceQuery deviceQuery = deviceQuery("84E0F420576700B0");
+        // DeviceQuery deviceQuery2 = deviceQuery("84E0F420576700B0");
         // System.out.println(deviceQuery.toString());
 
         // String updateCloudDevice = updateCloudDevice("84E0F420576700B0");
@@ -182,26 +216,8 @@ public class Device {
         // GovUtil.queryAsyncHandleResult("projectworker-add-2019050611-4-0001",
         // "23108420190520001", "8e2f8935685a0d58564df09ea5e4f102");
 
+        // banDevice("84E0F420576700B0");
+        // ennableDevice("84E0F420576700B0");
     }
 
-    public static void main(String[] args) {
-
-        tmpThread tmpThread = new Device().new tmpThread();
-        tmpThread tmpThread2 = new Device().new tmpThread();
-        tmpThread tmpThread3 = new Device().new tmpThread();
-        tmpThread.start();
-        tmpThread2.start();
-        tmpThread3.start();
-
-    }
-
-    class tmpThread extends Thread {
-
-        @Override
-        public void run() {
-            DeviceQuery deviceQuery2 = deviceQuery("84E0F420576700B0");
-            System.out.println(deviceQuery2);
-        }
-
-    }
 }

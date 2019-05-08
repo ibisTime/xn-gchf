@@ -58,6 +58,10 @@ public class EquipmentWorker extends ABaseDO {
 
     private String uploadStatus;
 
+    private String attendanceStarttime;
+
+    private String attendanceEndtime;
+
     public void setCode(String code) {
         this.code = code;
     }
@@ -176,6 +180,22 @@ public class EquipmentWorker extends ABaseDO {
 
     public void setUploadStatus(String uploadStatus) {
         this.uploadStatus = uploadStatus;
+    }
+
+    public String getAttendanceStarttime() {
+        return attendanceStarttime;
+    }
+
+    public void setAttendanceStarttime(String attendanceStarttime) {
+        this.attendanceStarttime = attendanceStarttime;
+    }
+
+    public String getAttendanceEndtime() {
+        return attendanceEndtime;
+    }
+
+    public void setAttendanceEndtime(String attendanceEndtime) {
+        this.attendanceEndtime = attendanceEndtime;
     }
 
 }

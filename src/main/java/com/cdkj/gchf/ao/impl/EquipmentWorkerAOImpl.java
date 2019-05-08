@@ -140,7 +140,6 @@ public class EquipmentWorkerAOImpl implements IEquipmentWorkerAO {
 
             ProjectWorker projectWorker = projectWorkerBO
                 .getProjectWorker(code);
-            // 未上传的不可授权
             if (!projectWorker.getUploadStatus()
                 .equals(EProjectWorkerUploadStatus.UPLOAD_UNUPDATE.getCode())
                     && !projectWorker.getUploadStatus().equals(
@@ -193,8 +192,10 @@ public class EquipmentWorkerAOImpl implements IEquipmentWorkerAO {
             if (cloudWorkerAuthorizationEuipment.getCode()
                 .equals(EEquipmentWorkerResponse.SHOUQUANCHENGONG.getCode())) {
                 // 授权成功
+
                 for (ProjectWorker projectWorker : projectWorkers) {
-                    equipmentWorkerBO.saveEquipmentWorker(equipmentInfo,
+
+                    equipmentWorkerBO.saveEquipmentWorker(req, equipmentInfo,
                         projectWorker);
                 }
             }

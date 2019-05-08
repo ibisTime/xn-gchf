@@ -21,4 +21,8 @@ public interface DeviceUrl {
 
     // 设备禁用Url
     String banDeviceUrl = AppConfig.getBaseUrl() + "/Api/Device/DeviceDisable";
+
+    // 设备启动Url
+    String enableDeviceUrl = AppConfig.getBaseUrl()
+            + "/Api/Device/DeviceEnabled";
 }

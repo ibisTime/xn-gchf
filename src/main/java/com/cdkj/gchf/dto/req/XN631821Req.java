@@ -13,6 +13,9 @@ public class XN631821Req {
     // 用户id
     private String userId;
 
+    // 考勤设备方向
+    private String direction;
+
     public String getCode() {
         return code;
     }
@@ -31,6 +34,14 @@ public class XN631821Req {
 
     public String getTag() {
         return tag;
+    }
+
+    public String getDirection() {
+        return direction;
+    }
+
+    public void setDirection(String direction) {
+        this.direction = direction;
     }
 
     public void setTag(String tag) {

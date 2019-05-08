@@ -16,6 +16,9 @@ public class XN631820Req {
     // 人员id
     private String userId;
 
+    // 考勤设备方向
+    private String direction;
+
     public String getDeviceKey() {
         return deviceKey;
     }
@@ -54,6 +57,14 @@ public class XN631820Req {
 
     public void setUserId(String userId) {
         this.userId = userId;
+    }
+
+    public String getDirection() {
+        return direction;
+    }
+
+    public void setDirection(String direction) {
+        this.direction = direction;
     }
 
 }

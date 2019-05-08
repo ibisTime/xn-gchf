@@ -27,9 +27,12 @@
 				AND t.device_key = #{deviceKey}
 			</if>
 			<if test="deviceName != null and deviceName != '' ">
-				AND t.worker_name like "%"#{deviceName}"%"
+				AND t.device_name like "%"#{deviceName}"%"
 			</if>
-
+			
+			<if test="workerName != null and workerName != '' ">
+                AND t.worker_name like "%"#{workerName}"%"
+            </if>
 
 			<if test="uploadStatus != null and uploadStatus != '' ">
 				AND upload_status NOT IN ("1","2");

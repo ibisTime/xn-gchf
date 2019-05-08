@@ -680,21 +680,7 @@ ALTER TABLE `tqy_corp_basicinfo`
 CHANGE COLUMN `corp_code` `corp_code` VARCHAR(255) NULL DEFAULT NULL COMMENT '统一社会信用代码' ;
 
 
-INSERT INTO tsys_dict VALUES (null,"0",null,"device_status","设备状态","admin","2019-05-07 03:07:37",null);
-INSERT INTO tsys_dict VALUES (null,"1","device_status","1","设备未绑定","admin","2019-05-07 03:07:37",null);
-INSERT INTO tsys_dict VALUES (null,"1","device_status","2","绑定中","admin","2019-05-07 03:07:37",null);
-INSERT INTO tsys_dict VALUES (null,"1","device_status","3","解绑中","admin","2019-05-07 03:07:37",null);
-INSERT INTO tsys_dict VALUES (null,"1","device_status","4","未同步","admin","2019-05-07 03:07:37",null);
-INSERT INTO tsys_dict VALUES (null,"1","device_status","5","同步中","admin","2019-05-07 03:07:37",null);
-INSERT INTO tsys_dict VALUES (null,"1","device_status","6","已同步","admin","2019-05-07 03:07:37",null);
-INSERT INTO tsys_dict VALUES (null,"1","device_status","7","已禁用","admin","2019-05-07 03:07:37",null);
-INSERT INTO tsys_dict VALUES (null,"1","device_status","8","禁用中","admin","2019-05-07 03:07:37",null);
-INSERT INTO tsys_dict VALUES (null,"1","device_status","9","启用中","admin","2019-05-07 03:07:37",null);
 
-
-INSERT INTO tsys_dict VALUES (null,'0',null,"device_net_status","设备网络状态","admin","2019-05-07 05:07:37",null);
-INSERT INTO tsys_dict VALUES (null,"1","device_net_status","1","在线","admin","2019-05-07 05:07:37",null);
-INSERT INTO tsys_dict VALUES (null,"1","device_net_status","2","离线","admin","2019-05-07 05:07:37",null);
 
 ALTER TABLE `thf_worker_attendance` 
 MODIFY COLUMN `image` varchar(300) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '刷卡近照' AFTER `direction`;
@@ -709,3 +695,7 @@ ADD COLUMN `source` VARCHAR(4) NULL COMMENT '来源（系统生成/实时数据�
 INSERT INTO `tsys_dict`(`id`, `type`, `parent_key`, `dkey`, `dvalue`, `updater`, `update_datetime`, `remark`) VALUES (1688, '0', NULL, 'attendance_source', '考勤来源', 'admin', '2018-07-27 03:07:37', NULL);
 INSERT INTO `tsys_dict`(`id`, `type`, `parent_key`, `dkey`, `dvalue`, `updater`, `update_datetime`, `remark`) VALUES (1689, '1', 'attendance_source', '1', '系统生成', 'admin', '2018-07-27 03:07:37', NULL);
 INSERT INTO `tsys_dict`(`id`, `type`, `parent_key`, `dkey`, `dvalue`, `updater`, `update_datetime`, `remark`) VALUES (1690, '1', 'attendance_source', '2', '实时数据', 'admin', '2018-07-27 03:07:37', NULL);
+
+-- 220 第三次版修改
+ALTER TABLE `thf_equipment_info` 
+MODIFY COLUMN `direction` varchar(10) NULL DEFAULT NULL COMMENT '考勤设备方向' AFTER `project_name`;

@@ -1,5 +1,6 @@
 package com.cdkj.gchf.bo.impl;
 
+import java.util.Date;
 import java.util.List;
 
 import org.apache.commons.lang3.StringUtils;
@@ -8,11 +9,13 @@ import org.springframework.stereotype.Component;
 
 import com.cdkj.gchf.bo.IEquipmentWorkerBO;
 import com.cdkj.gchf.bo.base.PaginableBOImpl;
+import com.cdkj.gchf.common.DateUtil;
 import com.cdkj.gchf.core.OrderNoGenerater;
 import com.cdkj.gchf.dao.IEquipmentWorkerDAO;
 import com.cdkj.gchf.domain.EquipmentInfo;
 import com.cdkj.gchf.domain.EquipmentWorker;
 import com.cdkj.gchf.domain.ProjectWorker;
+import com.cdkj.gchf.dto.req.XN631830Req;
 import com.cdkj.gchf.enums.EGeneratePrefix;
 import com.cdkj.gchf.exception.BizException;
 
@@ -46,8 +49,8 @@ public class EquipmentWorkerBOImpl extends PaginableBOImpl<EquipmentWorker>
     }
 
     @Override
-    public void saveEquipmentWorker(EquipmentInfo equipmentInfo,
-            ProjectWorker projectWorker) {
+    public void saveEquipmentWorker(XN631830Req req,
+            EquipmentInfo equipmentInfo, ProjectWorker projectWorker) {
         EquipmentWorker equipmentWorker = new EquipmentWorker();
         equipmentWorker.setCode(OrderNoGenerater
             .generate(EGeneratePrefix.EquipmentWorker.getCode()));
@@ -59,6 +62,12 @@ public class EquipmentWorkerBOImpl extends PaginableBOImpl<EquipmentWorker>
         equipmentWorker.setTeamCode(projectWorker.getTeamSysNo());
         equipmentWorker.setTeamName(projectWorker.getTeamName());
         equipmentWorker.setIdCardNumber(projectWorker.getIdcardNumber());
+
+        equipmentWorker
+            .setPassTimes(req.getStartTime() + "," + req.getEndTime());
+        equipmentWorker.setCreateTime(
+            DateUtil.dateToStr(new Date(System.currentTimeMillis()),
+                DateUtil.DATA_TIME_PATTERN_1));
         EquipmentWorkerDAO.insert(equipmentWorker);
     }
 
@@ -99,4 +108,5 @@ public class EquipmentWorkerBOImpl extends PaginableBOImpl<EquipmentWorker>
         }
         return data;
     }
+
 }

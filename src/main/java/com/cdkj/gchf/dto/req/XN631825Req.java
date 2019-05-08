@@ -19,6 +19,9 @@ public class XN631825Req extends APageReq {
     // 用户id
     private String userId;
 
+    // 来源
+    private String source;
+
     public String getProjectCode() {
         return projectCode;
     }
@@ -45,6 +48,14 @@ public class XN631825Req extends APageReq {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public String getSource() {
+        return source;
+    }
+
+    public void setSource(String source) {
+        this.source = source;
     }
 
     public void setUserId(String userId) {

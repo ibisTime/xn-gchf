@@ -15,6 +15,9 @@ public class XN631835Req extends APageReq {
     @NotBlank
     private String userId;
 
+    // 工人姓名
+    private String workerName;
+
     public String getState() {
         return state;
     }
@@ -29,6 +32,14 @@ public class XN631835Req extends APageReq {
 
     public void setUserId(String userId) {
         this.userId = userId;
+    }
+
+    public String getWorkerName() {
+        return workerName;
+    }
+
+    public void setWorkerName(String workerName) {
+        this.workerName = workerName;
     }
 
 }

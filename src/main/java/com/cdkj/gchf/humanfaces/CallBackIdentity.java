@@ -1,5 +1,8 @@
 package com.cdkj.gchf.humanfaces;
 
+import java.util.Arrays;
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -7,9 +10,13 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.cdkj.gchf.ao.IWorkerAttendanceAO;
 import com.cdkj.gchf.bo.IProjectWorkerBO;
+import com.cdkj.gchf.bo.IUserBO;
 import com.cdkj.gchf.bo.IWorkerAttendanceBO;
 import com.cdkj.gchf.domain.ProjectWorker;
+import com.cdkj.gchf.domain.User;
+import com.cdkj.gchf.domain.WorkerAttendance;
 
 /**
  * 
@@ -27,6 +34,12 @@ public class CallBackIdentity {
 
     @Autowired
     private IProjectWorkerBO projectWorkerBO;
+
+    @Autowired
+    private IWorkerAttendanceAO workerAttendanceAO;
+
+    @Autowired
+    private IUserBO userBO;
 
     /**
      * @Description: 回调函数
@@ -53,8 +66,17 @@ public class CallBackIdentity {
 
         if (null != workerByGuid) {
             // 考勤录入
-            workerAttendanceBO.saveDeviceWorkerAttendance(workerByGuid,
-                deviceKey, showTime, photoUrl, type, data, recMode, idCardInfo);
+            WorkerAttendance deviceWorkerAttendance = workerAttendanceBO
+                .saveDeviceWorkerAttendance(workerByGuid, deviceKey, showTime,
+                    photoUrl, type, data, recMode, idCardInfo);
+
+            // 上传国家平台
+            List<User> userByOrganization = userBO
+                .getUserByOrganization(deviceWorkerAttendance.getProjectCode());
+            workerAttendanceAO.uploadWorkerAttendanceList(
+                userByOrganization.get(0).getUserId(),
+                Arrays.asList(deviceWorkerAttendance.getCode()));
+
         }
 
         return "SUCCESS";

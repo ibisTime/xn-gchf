@@ -23,18 +23,29 @@
 		<result column="device_status" property="deviceStatus" />
 		<result column="project_code" property="projectCode" />
 		<result column="project_name" property="projectName" />
+		<result column="direction" property="direction" />
 	</resultMap>
 	<sql id="where_condition">
 		<trim prefix="WHERE" prefixOverrides="AND | OR">
 			<if test="code != null and code != '' ">
 				AND t.code = #{code}
 			</if>
+			
 			<if test="name != null and name != '' ">
 				AND t.name like "%"#{name}"%"
 			</if>
+			
 			<if test="projectCode != null and projectCode != '' ">
 				AND t.project_code = #{projectCode}
 			</if>
+			
+			<if test="deviceKey != null and deviceKey != '' ">
+                AND t.device_key = #{deviceKey}
+            </if>
+            
+            <if test="state != null and state != '' ">
+                AND t.state = #{state}
+            </if>
 		</trim>
 	</sql>
 	<select id="select_EquipmentInfo" parameterType="equipmentInfo"
@@ -60,6 +71,7 @@
 		,t.device_status
 		,t.project_code
 		,t.project_name
+		,t.direction
 		FROM
 		thf_equipment_info t
 		<include refid="where_condition" />
@@ -99,6 +111,7 @@
 		,device_status
 		,project_code
 		,project_name
+		,direction
 		)
 		VALUES(
 		#{code}
@@ -121,6 +134,7 @@
 		,#{deviceStatus}
 		,#{projectCode}
 		,#{projectName}
+		,#{direction}
 		)
 	</insert>
 
@@ -130,8 +144,8 @@
 		SET
 		name = #{name}
 		,tag = #{tag}
-		,tag_encreapt =
-		#{tagEncreapt}
+		,tag_encreapt =#{tagEncreapt}
+		,direction = #{direction}
 
 		WHERE code = #{code}
 	</update>
@@ -142,26 +156,23 @@
 		SET
 		name = #{name}
 		,tag = #{tag}
-		,tag_encreapt =
-		#{tagEncreapt}
+		,tag_encreapt = #{tagEncreapt}
 		,scene_guid = #{sceneGuid}
 		,state = #{state}
-		,status =
-		#{status}
+		
+		,status = #{status}
 		,client_id = #{clientId}
 		,c_id = #{cId}
-		,version_no =
-		#{versionNo}
+		,version_no = #{versionNo}
 		,system_version_no = #{systemVersionNo}
-		,reg_num =
-		#{regNum}
+		
+		,reg_num = #{regNum}
 		,need_upgrade_app = #{needUpgradeApp}
-		,need_upgrade =
-		#{needUpgrade}
+		,need_upgrade = #{needUpgrade}
 		,create_time = #{createTime}
 		,expired = #{expired}
 		,device_status = #{deviceStatus}
-
+        ,direction = #{direction}
 		WHERE code = #{code}
 	</update>
 

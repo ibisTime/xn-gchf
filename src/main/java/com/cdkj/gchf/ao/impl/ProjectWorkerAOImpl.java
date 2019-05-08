@@ -479,6 +479,11 @@ public class ProjectWorkerAOImpl implements IProjectWorkerAO {
 
     }
 
+    /**
+     * 
+     * <p>Title: queryProjectWorkerList</p>   
+     * <p>Description: 列表查班组人员-参数带deviceKey则查询班组人员授权情况</p>   
+     */
     @Override
     public List<ProjectWorker> queryProjectWorkerList(ProjectWorker condition) {
         // 项目端
@@ -499,16 +504,18 @@ public class ProjectWorkerAOImpl implements IProjectWorkerAO {
             List<EquipmentWorker> queryEquipmentWorkerList = equipmentWorkerAO
                 .queryEquipmentWorkerList(tempEquipMentWorker);
             List<ProjectWorker> hasAuthorization = new ArrayList<>();
+            List<ProjectWorker> tempList = new ArrayList<>();
             for (EquipmentWorker equipmentWorker : queryEquipmentWorkerList) {
                 ProjectWorker projectWorker = projectWorkerBO
                     .getProjectWorker(equipmentWorker.getWorkerCode());
+                tempList.add(projectWorker);
                 projectWorker.setIsLink(EIsNotType.IS.getCode());
                 hasAuthorization.add(projectWorker);
             }
             // // 此项目下所有人员
             List<ProjectWorker> projectWorkerByProjectCode = projectWorkerBO
                 .getProjectWorkerByProjectCode(user.getOrganizationCode());
-            projectWorkerByProjectCode.removeAll(hasAuthorization);
+            projectWorkerByProjectCode.removeAll(tempList);
 
             for (ProjectWorker projectWorker : projectWorkerByProjectCode) {
                 projectWorker.setIsLink(EIsNotType.NOT.getCode());

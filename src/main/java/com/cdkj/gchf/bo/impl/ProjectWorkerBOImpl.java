@@ -465,6 +465,7 @@ public class ProjectWorkerBOImpl extends PaginableBOImpl<ProjectWorker>
 
     @Override
     public List<ProjectWorker> queryProjectWorkerList(ProjectWorker condition) {
+        condition.setDeleteStatus(EDeleteStatus.NORMAL.getCode());
         return projectWorkerDAO.selectList(condition);
     }
 
@@ -520,6 +521,7 @@ public class ProjectWorkerBOImpl extends PaginableBOImpl<ProjectWorker>
     public List<ProjectWorker> getProjectWorkerByProjectCode(String code) {
         ProjectWorker condition = new ProjectWorker();
         condition.setProjectCode(code);
+        condition.setDeleteStatus(EDeleteStatus.NORMAL.getCode());
         return projectWorkerDAO.selectList(condition);
     }
 

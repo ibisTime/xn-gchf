@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.alibaba.fastjson.JSONObject;
+import com.cdkj.gchf.bo.IEquipmentInfoBO;
 import com.cdkj.gchf.bo.IOperateLogBO;
 import com.cdkj.gchf.bo.IProjectBO;
 import com.cdkj.gchf.bo.IProjectWorkerBO;
@@ -71,6 +72,9 @@ public class WorkerAttendanceBOImpl extends PaginableBOImpl<WorkerAttendance>
     @Autowired
     private IProjectBO projectBO;
 
+    @Autowired
+    private IEquipmentInfoBO equipmentInfoBO;
+
     @Override
     public String saveWorkerAttendance(XN631710Req data,
             TeamMaster teamMaster) {
@@ -92,8 +96,8 @@ public class WorkerAttendanceBOImpl extends PaginableBOImpl<WorkerAttendance>
         workerAttendance.setIdCardType(projectWorker.getIdcardType());
         workerAttendance
             .setUploadStatus(EWorkerAttendanceUploadStatus.TO_UPLOAD.getCode());
-
         workerAttendance.setDeleteStatus(EDeleteStatus.NORMAL.getCode());
+
         code = OrderNoGenerater
             .generate(EGeneratePrefix.WorkerAttendance.getCode());
         workerAttendance.setCode(code);
@@ -140,9 +144,10 @@ public class WorkerAttendanceBOImpl extends PaginableBOImpl<WorkerAttendance>
      * <p>Description: 保存设备识别的人员考勤</p>   
      */
     @Override
-    public void saveDeviceWorkerAttendance(ProjectWorker projectWorker,
-            String deviceKey, String dateTime, String photoUrl, String type,
-            String dataString, String recMode, String idCardInfo) {
+    public WorkerAttendance saveDeviceWorkerAttendance(
+            ProjectWorker projectWorker, String deviceKey, String dateTime,
+            String photoUrl, String type, String dataString, String recMode,
+            String idCardInfo) {
         WorkerAttendance workerAttendance = new WorkerAttendance();
         String code = OrderNoGenerater
             .generate(EGeneratePrefix.WorkerAttendance.getCode());
@@ -161,12 +166,17 @@ public class WorkerAttendanceBOImpl extends PaginableBOImpl<WorkerAttendance>
         workerAttendance.setIdCardNumber(projectWorker.getIdcardNumber());
         workerAttendance.setImage(photoUrl);
         workerAttendance.setTerminalCode(deviceKey);
+        workerAttendance.setDirection(equipmentInfoBO
+            .getEquipmentInfoByKey(deviceKey, projectWorker.getProjectCode())
+            .getDirection());
+
         workerAttendance
             .setUploadStatus(EWorkerAttendanceUploadStatus.TO_UPLOAD.getCode());
 
         workerAttendance.setSource(EAttendanceSource.REAL_TIME.getCode());
         workerAttendance.setDeleteStatus(EDeleteStatus.NORMAL.getCode());
         workerAttendanceDAO.insert(workerAttendance);
+        return workerAttendance;
     }
 
     @Override

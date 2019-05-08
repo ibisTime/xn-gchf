@@ -10,6 +10,12 @@ public enum EEquipmentResponse {
 
     SHEBEIXULIEHAOKONG("GS_EXP-305", "设备创建 deviceKey为空"),
 
+    TIANJIASHIBAIWEIQIYONG("GS_EXP-342", "设备未启动 "),
+
+    XULIEHAOCUOWU("GS_EXP-345", "设备序列号类型错误 "),
+
+    BUZAIXIAN("GS_EXP-326", "设备不在线"),
+
     TIANJIACHENGGONG("GS_SUS300", "添加成功"),
 
     XULIEHAOZHANYONG("GS_EXP-321", "设备已被被占用,如要添加,请重置"),

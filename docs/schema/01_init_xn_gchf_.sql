@@ -906,9 +906,22 @@ INSERT INTO `tsys_dict`(`id`, `type`, `parent_key`, `dkey`, `dvalue`, `updater`,
 INSERT INTO `tsys_dict`(`id`, `type`, `parent_key`, `dkey`, `dvalue`, `updater`, `update_datetime`, `remark`) VALUES (1689, '1', 'project_size', '01', '大型', 'admin', '2018-07-27 03:07:37', NULL);
 INSERT INTO `tsys_dict`(`id`, `type`, `parent_key`, `dkey`, `dvalue`, `updater`, `update_datetime`, `remark`) VALUES (1690, '1', 'project_size', '02', '中型', 'admin', '2018-07-27 03:07:37', NULL);
 INSERT INTO `tsys_dict`(`id`, `type`, `parent_key`, `dkey`, `dvalue`, `updater`, `update_datetime`, `remark`) VALUES (1691, '1', 'project_size', '03', '小型', 'admin', '2018-07-27 03:07:37', NULL);
-INSERT INTO `tsys_dict`(`id`, `type`, `parent_key`, `dkey`, `dvalue`, `updater`, `update_datetime`, `remark`) VALUES (1688, '0', NULL, 'attendance_source', '考勤来源', 'admin', '2018-07-27 03:07:37', NULL);
-INSERT INTO `tsys_dict`(`id`, `type`, `parent_key`, `dkey`, `dvalue`, `updater`, `update_datetime`, `remark`) VALUES (1689, '1', 'attendance_source', '1', '系统生成', 'admin', '2018-07-27 03:07:37', NULL);
-INSERT INTO `tsys_dict`(`id`, `type`, `parent_key`, `dkey`, `dvalue`, `updater`, `update_datetime`, `remark`) VALUES (1690, '1', 'attendance_source', '2', '实时数据', 'admin', '2018-07-27 03:07:37', NULL);
+INSERT INTO `tsys_dict`(`id`, `type`, `parent_key`, `dkey`, `dvalue`, `updater`, `update_datetime`, `remark`) VALUES (1692, '0', NULL, 'device_status', '设备状态', 'admin', '2019-05-07 03:07:37', NULL);
+INSERT INTO `tsys_dict`(`id`, `type`, `parent_key`, `dkey`, `dvalue`, `updater`, `update_datetime`, `remark`) VALUES (1693, '1', 'device_status', '1', '设备未绑定', 'admin', '2019-05-07 03:07:37', NULL);
+INSERT INTO `tsys_dict`(`id`, `type`, `parent_key`, `dkey`, `dvalue`, `updater`, `update_datetime`, `remark`) VALUES (1694, '1', 'device_status', '2', '绑定中', 'admin', '2019-05-07 03:07:37', NULL);
+INSERT INTO `tsys_dict`(`id`, `type`, `parent_key`, `dkey`, `dvalue`, `updater`, `update_datetime`, `remark`) VALUES (1695, '1', 'device_status', '3', '解绑中', 'admin', '2019-05-07 03:07:37', NULL);
+INSERT INTO `tsys_dict`(`id`, `type`, `parent_key`, `dkey`, `dvalue`, `updater`, `update_datetime`, `remark`) VALUES (1696, '1', 'device_status', '4', '未同步', 'admin', '2019-05-07 03:07:37', NULL);
+INSERT INTO `tsys_dict`(`id`, `type`, `parent_key`, `dkey`, `dvalue`, `updater`, `update_datetime`, `remark`) VALUES (1697, '1', 'device_status', '5', '同步中', 'admin', '2019-05-07 03:07:37', NULL);
+INSERT INTO `tsys_dict`(`id`, `type`, `parent_key`, `dkey`, `dvalue`, `updater`, `update_datetime`, `remark`) VALUES (1698, '1', 'device_status', '6', '已同步', 'admin', '2019-05-07 03:07:37', NULL);
+INSERT INTO `tsys_dict`(`id`, `type`, `parent_key`, `dkey`, `dvalue`, `updater`, `update_datetime`, `remark`) VALUES (1699, '1', 'device_status', '7', '已禁用', 'admin', '2019-05-07 03:07:37', NULL);
+INSERT INTO `tsys_dict`(`id`, `type`, `parent_key`, `dkey`, `dvalue`, `updater`, `update_datetime`, `remark`) VALUES (1700, '1', 'device_status', '8', '禁用中', 'admin', '2019-05-07 03:07:37', NULL);
+INSERT INTO `tsys_dict`(`id`, `type`, `parent_key`, `dkey`, `dvalue`, `updater`, `update_datetime`, `remark`) VALUES (1701, '1', 'device_status', '9', '启用中', 'admin', '2019-05-07 03:07:37', NULL);
+INSERT INTO `tsys_dict`(`id`, `type`, `parent_key`, `dkey`, `dvalue`, `updater`, `update_datetime`, `remark`) VALUES (1702, '0', NULL, 'device_net_status', '设备网络状态', 'admin', '2019-05-07 05:07:37', NULL);
+INSERT INTO `tsys_dict`(`id`, `type`, `parent_key`, `dkey`, `dvalue`, `updater`, `update_datetime`, `remark`) VALUES (1703, '1', 'device_net_status', '1', '在线', 'admin', '2019-05-07 05:07:37', NULL);
+INSERT INTO `tsys_dict`(`id`, `type`, `parent_key`, `dkey`, `dvalue`, `updater`, `update_datetime`, `remark`) VALUES (1704, '1', 'device_net_status', '2', '离线', 'admin', '2019-05-07 05:07:37', NULL);
+INSERT INTO `tsys_dict`(`id`, `type`, `parent_key`, `dkey`, `dvalue`, `updater`, `update_datetime`, `remark`) VALUES (1705, '0', NULL, 'attendance_source', '考勤来源', 'admin', '2018-07-27 03:07:37', NULL);
+INSERT INTO `tsys_dict`(`id`, `type`, `parent_key`, `dkey`, `dvalue`, `updater`, `update_datetime`, `remark`) VALUES (1706, '1', 'attendance_source', '1', '系统生成', 'admin', '2018-07-27 03:07:37', NULL);
+INSERT INTO `tsys_dict`(`id`, `type`, `parent_key`, `dkey`, `dvalue`, `updater`, `update_datetime`, `remark`) VALUES (1707, '1', 'attendance_source', '2', '实时数据', 'admin', '2018-07-27 03:07:37', NULL);
 
 /*
 -- Query: SELECT * FROM dev_xn_gchf_gov.tsys_menu
@@ -1165,6 +1178,7 @@ INSERT INTO `tsys_menu` (`code`,`name`,`type`,`system_code`,`url`,`order_no`,`up
 INSERT INTO `tsys_menu` (`code`,`name`,`type`,`system_code`,`url`,`order_no`,`updater`,`update_datetime`,`remark`,`parent_code`) VALUES ('SM201905061516461525471','详情','2','P','/detail','3','USYS201800000000001','2019-05-06 15:16:46','','SM201905061514057971391');
 INSERT INTO `tsys_menu` (`code`,`name`,`type`,`system_code`,`url`,`order_no`,`updater`,`update_datetime`,`remark`,`parent_code`) VALUES ('SM201905061517042254520','导出','2','P','/export','4','USYS201800000000001','2019-05-06 15:17:04','','SM201905061514057971391');
 INSERT INTO `tsys_menu` (`code`,`name`,`type`,`system_code`,`url`,`order_no`,`updater`,`update_datetime`,`remark`,`parent_code`) VALUES ('SM201905061615039852106','重置密码','2','P','/resetPaw','1','USYS201800000000001','2019-05-06 16:15:03','','SM201807251132224253480');
+
 /*
 -- Query: SELECT * FROM dev_xn_gchf_gov.tsys_menu_role
 LIMIT 0, 2000

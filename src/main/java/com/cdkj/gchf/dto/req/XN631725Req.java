@@ -29,6 +29,9 @@ public class XN631725Req extends APageReq {
     // 工人姓名
     private String workerName;
 
+    // 来源
+    private String source;
+
     // 用户id
     @NotBlank
     private String userId;
@@ -95,6 +98,14 @@ public class XN631725Req extends APageReq {
 
     public void setWorkerName(String workerName) {
         this.workerName = workerName;
+    }
+
+    public String getSource() {
+        return source;
+    }
+
+    public void setSource(String source) {
+        this.source = source;
     }
 
 }

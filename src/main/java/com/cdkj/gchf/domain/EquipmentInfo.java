@@ -77,6 +77,9 @@ public class EquipmentInfo extends ABaseDO {
     // 项目名称
     private String projectName;
 
+    // 考勤方向
+    private String direction;
+
     // 用户id
     private String userId;
 
@@ -246,6 +249,14 @@ public class EquipmentInfo extends ABaseDO {
 
     public void setUserId(String userId) {
         this.userId = userId;
+    }
+
+    public String getDirection() {
+        return direction;
+    }
+
+    public void setDirection(String direction) {
+        this.direction = direction;
     }
 
 }

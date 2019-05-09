@@ -7,6 +7,7 @@ import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
@@ -26,7 +27,6 @@ import com.cdkj.gchf.domain.WorkerInfo;
 import com.cdkj.gchf.dto.req.XN631830Req;
 import com.cdkj.gchf.enums.EProjectWorkerUploadStatus;
 import com.cdkj.gchf.exception.BizException;
-import com.cdkj.gchf.humanfaces.Device;
 import com.cdkj.gchf.humanfaces.DeviceWorker;
 import com.cdkj.gchf.humanfaces.WorkerPicture;
 import com.cdkj.gchf.humanfaces.enums.EAttendancePicUploadStatus;
@@ -110,6 +110,7 @@ public class EquipmentWorkerAOImpl implements IEquipmentWorkerAO {
      * <p>Description:添加设备人员 -> 单设备-多人员的情况</p>   
      */
     @Override
+    @Transactional
     public void addEquipmentWorker(XN631830Req req) {
         EquipmentInfo equipmentInfo = equipmentInfoBO
             .getEquipmentInfo(req.getEquipmentCode());
@@ -200,8 +201,9 @@ public class EquipmentWorkerAOImpl implements IEquipmentWorkerAO {
             ResultMsg cloudWorkerAuthorizationEuipment = deviceWorker
                 .cloudWorkerAuthorizationEuipment(equipmentInfo.getDeviceKey(),
                     workerInfos, req.getStartTime(), req.getEndTime());
-            if (cloudWorkerAuthorizationEuipment.getCode()
-                .equals(EEquipmentWorkerResponse.SHOUQUANCHENGONG.getCode())) {
+            if (cloudWorkerAuthorizationEuipment != null
+                    && cloudWorkerAuthorizationEuipment.getCode().equals(
+                        EEquipmentWorkerResponse.SHOUQUANCHENGONG.getCode())) {
                 // 授权成功
 
                 for (ProjectWorker projectWorker : projectWorkers) {
@@ -210,7 +212,7 @@ public class EquipmentWorkerAOImpl implements IEquipmentWorkerAO {
                         projectWorker);
                 }
             }
-            new Device().updateCloudDevice(equipmentInfo.getDeviceKey());
+
         }
 
     }

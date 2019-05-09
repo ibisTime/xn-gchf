@@ -697,6 +697,27 @@ ADD COLUMN `direction` varchar(10) NULL DEFAULT NULL COMMENT '考勤设备方向
 
 
 
-ALTER TABLE `dev_xn_gchf_gov`.`thf_worker_info` 
+ALTER TABLE `thf_worker_info` 
 MODIFY COLUMN `worker_pic_upload_status` varchar(4) NULL DEFAULT NULL COMMENT '人脸上传状态' AFTER `worker_attendance_pic_guid`,
 MODIFY COLUMN `worker_upload_status` varchar(4) NULL DEFAULT NULL COMMENT '考勤人员上传状态' AFTER `worker_pic_upload_status`;
+
+DROP TABLE IF EXISTS `thf_worker_entry_exit_record`;
+CREATE TABLE `thf_worker_entry_exit_record` (
+  `code` varchar(32) NOT NULL COMMENT '编号',
+  `project_code` varchar(32) DEFAULT NULL COMMENT '项目编码',
+  `project_name` varchar(512) DEFAULT NULL COMMENT '项目名称',
+  `device_key` varchar(50) DEFAULT NULL COMMENT '设备序列号',
+  `device_name` varchar(50) DEFAULT NULL COMMENT '设备名称',
+  `team_sys_no` varchar(32) DEFAULT NULL COMMENT '班组编号',
+  `team_name` varchar(200) DEFAULT NULL COMMENT '班组名称',
+  `worker_code` varchar(32) DEFAULT NULL COMMENT '员工编号',
+  `worker_name` varchar(50) DEFAULT NULL COMMENT '员工名称',
+  `idcard_number` varchar(30) DEFAULT NULL COMMENT '证件号码',
+  `date` datetime DEFAULT NULL COMMENT '考勤时间',
+  `direction` varchar(2) DEFAULT NULL COMMENT '进出方向',
+  `image` varchar(512) DEFAULT NULL COMMENT '刷卡近照',
+  `rec_mode` varchar(4) DEFAULT NULL COMMENT '识别模式(1:刷脸，2:刷卡，3:双重认证， 4:人证比对)',
+  `attend_type` varchar(4) DEFAULT NULL COMMENT '识别出的人员类型(0:时间段内，1:时间段外，2:陌生人)',
+  `delete_status` varchar(4) DEFAULT NULL COMMENT '删除状态',
+  PRIMARY KEY (`code`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='人员进出记录';

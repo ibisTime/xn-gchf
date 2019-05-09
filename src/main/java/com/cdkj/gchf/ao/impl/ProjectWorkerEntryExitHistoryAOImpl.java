@@ -232,8 +232,18 @@ public class ProjectWorkerEntryExitHistoryAOImpl
 
     @Override
     public Object queryProjectWorkerEntryExitHistory(String code) {
-        return projectWorkerEntryExitHistoryBO
+        ProjectWorkerEntryExitHistory queryProjectWorkerEntryExitHistory = projectWorkerEntryExitHistoryBO
             .queryProjectWorkerEntryExitHistory(code);
+
+        Project project = projectBO
+            .getProject(queryProjectWorkerEntryExitHistory.getProjectCode());
+        TeamMaster teamMaster = teamMasterBO
+            .getTeamMaster(queryProjectWorkerEntryExitHistory.getTeamSysNo());
+        queryProjectWorkerEntryExitHistory.setProjectName(project.getName());
+        queryProjectWorkerEntryExitHistory
+            .setTeamName(teamMaster.getTeamName());
+
+        return queryProjectWorkerEntryExitHistory;
     }
 
     /**

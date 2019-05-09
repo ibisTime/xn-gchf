@@ -23,6 +23,8 @@ public enum EEquipmentWorkerResponse {
 
     BUSHUYU("GS_EXP610", "照片不属于该应用"),
 
+    WUSHOUQUANRENYUAN("-1", "无授权人员"),
+
     TUPIANCHAOGUOSHULIANG("GS_EXP606", "超出照片添加数量 ");
 
     EEquipmentWorkerResponse(String code, String message) {

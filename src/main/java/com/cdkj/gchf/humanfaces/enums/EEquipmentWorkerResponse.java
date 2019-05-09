@@ -17,7 +17,13 @@ public enum EEquipmentWorkerResponse {
 
     CHAXUNCHENGGONG("GS_SUS202", "查询成功"),
 
-    SHOUQUANCHENGONG("GS_SUS327", "授权成功");
+    SHOUQUANCHENGONG("GS_SUS327", "授权成功"),
+
+    TUPIANGUODA("GS_EXP607", "图片过大"),
+
+    BUSHUYU("GS_EXP610", "照片不属于该应用"),
+
+    TUPIANCHAOGUOSHULIANG("GS_EXP606", "超出照片添加数量 ");
 
     EEquipmentWorkerResponse(String code, String message) {
         this.code = code;

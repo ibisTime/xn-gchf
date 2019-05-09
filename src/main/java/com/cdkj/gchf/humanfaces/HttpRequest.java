@@ -68,8 +68,8 @@ public class HttpRequest {
                 ous = httpURLConnection.getOutputStream();
                 ous.write(
                     sb.substring(0, sb.length() - 1).toString().getBytes());
-                System.out.println(
-                    "入参:" + sb.substring(0, sb.length() - 1).toString());
+                // System.out.println(
+                // "入参:" + sb.substring(0, sb.length() - 1).toString());
                 ous.flush();
             }
             ins = httpURLConnection.getInputStream();
@@ -84,8 +84,8 @@ public class HttpRequest {
             // String code = (String) resJson.get("code");
             // System.out.println(code);
             // }
-            System.out.println();
-            System.out.println("响应" + res);
+            // System.out.println();
+            // System.out.println("响应" + res);
             return res;
         } catch (MalformedURLException e) {
             e.printStackTrace();

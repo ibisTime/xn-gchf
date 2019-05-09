@@ -681,7 +681,6 @@ CHANGE COLUMN `corp_code` `corp_code` VARCHAR(255) NULL DEFAULT NULL COMMENT '�
 
 
 
-
 ALTER TABLE `thf_worker_attendance` 
 MODIFY COLUMN `image` varchar(300) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '刷卡近照' AFTER `direction`;
 
@@ -692,10 +691,12 @@ ADD PRIMARY KEY (`code`);
 ALTER TABLE `thf_worker_attendance` 
 ADD COLUMN `source` VARCHAR(4) NULL COMMENT '来源（系统生成/实时数据）' AFTER `create_datetime`;
 
-INSERT INTO `tsys_dict`(`id`, `type`, `parent_key`, `dkey`, `dvalue`, `updater`, `update_datetime`, `remark`) VALUES (1688, '0', NULL, 'attendance_source', '考勤来源', 'admin', '2018-07-27 03:07:37', NULL);
-INSERT INTO `tsys_dict`(`id`, `type`, `parent_key`, `dkey`, `dvalue`, `updater`, `update_datetime`, `remark`) VALUES (1689, '1', 'attendance_source', '1', '系统生成', 'admin', '2018-07-27 03:07:37', NULL);
-INSERT INTO `tsys_dict`(`id`, `type`, `parent_key`, `dkey`, `dvalue`, `updater`, `update_datetime`, `remark`) VALUES (1690, '1', 'attendance_source', '2', '实时数据', 'admin', '2018-07-27 03:07:37', NULL);
-
--- 220 第三次版修改
 ALTER TABLE `thf_equipment_info` 
-MODIFY COLUMN `direction` varchar(10) NULL DEFAULT NULL COMMENT '考勤设备方向' AFTER `project_name`;
+ADD COLUMN `direction` varchar(10) NULL DEFAULT NULL COMMENT '考勤设备方向' AFTER `project_name`;
+
+
+
+
+ALTER TABLE `dev_xn_gchf_gov`.`thf_worker_info` 
+MODIFY COLUMN `worker_pic_upload_status` varchar(4) NULL DEFAULT NULL COMMENT '人脸上传状态' AFTER `worker_attendance_pic_guid`,
+MODIFY COLUMN `worker_upload_status` varchar(4) NULL DEFAULT NULL COMMENT '考勤人员上传状态' AFTER `worker_pic_upload_status`;

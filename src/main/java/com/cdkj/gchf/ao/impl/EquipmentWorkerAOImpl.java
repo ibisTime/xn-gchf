@@ -29,7 +29,9 @@ import com.cdkj.gchf.exception.BizException;
 import com.cdkj.gchf.humanfaces.Device;
 import com.cdkj.gchf.humanfaces.DeviceWorker;
 import com.cdkj.gchf.humanfaces.WorkerPicture;
+import com.cdkj.gchf.humanfaces.enums.EAttendancePicUploadStatus;
 import com.cdkj.gchf.humanfaces.enums.EEquipmentWorkerResponse;
+import com.cdkj.gchf.humanfaces.enums.EWorkerUploadStatus;
 import com.cdkj.gchf.humanfaces.res.ResultMsg;
 
 @Service
@@ -126,9 +128,13 @@ public class EquipmentWorkerAOImpl implements IEquipmentWorkerAO {
                 .getProjectWorker(temp.getWorkerCode());
             WorkerInfo workerInfo = workerInfoBO
                 .getWorkerInfo(projectWorker.getWorkerCode());
+            if (workerInfo.getWorkerUploadStatus()
+                .equals(EWorkerUploadStatus.SUCCESS.getCode())) {
+                // 取消授权
+                deviceWorker.workerBatchElimination(workerInfo.getWorkerGuid(),
+                    equipmentInfo.getDeviceKey());
+            }
 
-            deviceWorker.workerBatchElimination(workerInfo.getWorkerGuid(),
-                equipmentInfo.getDeviceKey());
             // 删除本地数据
             equipmentWorkerBO.removeEquipmentWorker(temp.getCode());
         }
@@ -147,12 +153,17 @@ public class EquipmentWorkerAOImpl implements IEquipmentWorkerAO {
                 throw new BizException("XN631830",
                     "项目人员未上传" + projectWorker.getWorkerName());
             }
-            // 未添加考勤照片的不可授权
+            // 考勤照片未上传的不可授权
             WorkerInfo workerInfo = workerInfoBO
                 .getWorkerInfo(projectWorker.getWorkerCode());
-            if (StringUtils.isBlank(workerInfo.getAttendancePicture())) {
-                throw new BizException("XN631830",
-                    "项目人员【" + projectWorker.getWorkerName() + "】考勤照片未添加");
+            if ((workerInfo.getWorkerPicUploadStatus() == null
+                    && workerInfo.getWorkerUploadStatus() == null)
+                    || (workerInfo.getWorkerPicUploadStatus()
+                        .equals(EAttendancePicUploadStatus.FAIL.getCode())
+                            && workerInfo.getWorkerUploadStatus()
+                                .equals(EWorkerUploadStatus.FAIL.getCode()))) {
+                throw new BizException("XN631830", "项目人员"
+                        + projectWorker.getWorkerName() + "】考勤照片不符合标准,请修改考勤照片");
             }
             // 查看是否授权过 已在其他机器添加过照片并授权的 不管
             String workerAuthorizationQuery = deviceWorker

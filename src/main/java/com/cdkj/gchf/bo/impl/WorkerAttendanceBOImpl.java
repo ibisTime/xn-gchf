@@ -307,7 +307,7 @@ public class WorkerAttendanceBOImpl extends PaginableBOImpl<WorkerAttendance>
             new SimpleDateFormat("yyyy-MM-dd hh:mm:ss")
                 .format(workerAttendance.getDate()));
         childJson.addProperty("direction", workerAttendance.getDirection());
-        childJson.addProperty("image", workerAttendance.getImage());
+        // childJson.addProperty("image", workerAttendance.getImage());
         childJson.addProperty("channel", workerAttendance.getChannel());
         childJson.addProperty("attendType", workerAttendance.getAttendType());
         childJson.addProperty("lng", workerAttendance.getLng());

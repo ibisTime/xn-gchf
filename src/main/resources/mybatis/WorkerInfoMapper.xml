@@ -236,6 +236,9 @@
 		thf_worker_info
 		SET
 		attendance_picture = #{attendancePicture}
+		,worker_upload_status = #{workerUploadStatus}
+		,worker_pic_upload_status = #{workerPicUploadStatus}
+		
 		WHERE
 		code =
 		#{code}

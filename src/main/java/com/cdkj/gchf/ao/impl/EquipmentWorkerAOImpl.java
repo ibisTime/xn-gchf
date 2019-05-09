@@ -7,7 +7,6 @@ import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
@@ -110,7 +109,6 @@ public class EquipmentWorkerAOImpl implements IEquipmentWorkerAO {
      * <p>Description:添加设备人员 -> 单设备-多人员的情况</p>   
      */
     @Override
-    @Transactional
     public void addEquipmentWorker(XN631830Req req) {
         EquipmentInfo equipmentInfo = equipmentInfoBO
             .getEquipmentInfo(req.getEquipmentCode());
@@ -118,6 +116,34 @@ public class EquipmentWorkerAOImpl implements IEquipmentWorkerAO {
             throw new BizException("XN631830", "设备不存在");
         }
 
+        // 调用接口前先做校验
+        for (String code : req.getWorkerList()) {
+            ProjectWorker projectWorker = projectWorkerBO
+                .getProjectWorker(code);
+            if (!projectWorker.getUploadStatus()
+                .equals(EProjectWorkerUploadStatus.UPLOAD_UNUPDATE.getCode())
+                    && !projectWorker.getUploadStatus().equals(
+                        EProjectWorkerUploadStatus.UPLOAD_UPDATE.getCode())) {
+                throw new BizException("XN631830",
+                    "项目人员未上传" + projectWorker.getWorkerName());
+            }
+            // 考勤照片未上传的不可授权
+            WorkerInfo workerInfo = workerInfoBO
+                .getWorkerInfo(projectWorker.getWorkerCode());
+            if (StringUtils.isBlank(workerInfo.getWorkerPicUploadStatus())
+                    || StringUtils
+                        .isBlank(workerInfo.getWorkerUploadStatus())) {
+                throw new BizException("XN631830", "项目人员"
+                        + projectWorker.getWorkerName() + "】考勤照片不符合标准,请修改考勤照片");
+            }
+            if (workerInfo.getWorkerPicUploadStatus()
+                .equals(EAttendancePicUploadStatus.FAIL.getCode())
+                    && workerInfo.getWorkerUploadStatus()
+                        .equals(EWorkerUploadStatus.FAIL.getCode())) {
+                throw new BizException("XN631830", "项目人员"
+                        + projectWorker.getWorkerName() + "】考勤照片不符合标准,请修改考勤照片");
+            }
+        }
         EquipmentWorker equipmentWorker = new EquipmentWorker();
         equipmentWorker.setDeviceKey(equipmentInfo.getDeviceKey());
         List<EquipmentWorker> queryEquipmentWorkerList = equipmentWorkerBO
@@ -134,10 +160,13 @@ public class EquipmentWorkerAOImpl implements IEquipmentWorkerAO {
                 // 取消授权
                 deviceWorker.workerBatchElimination(workerInfo.getWorkerGuid(),
                     equipmentInfo.getDeviceKey());
+                // 删除本地数据
+                equipmentWorkerBO.removeEquipmentWorker(temp.getCode());
+            } else {
+                throw new BizException("工人【" + "XN0000",
+                    workerInfo.getName() + "】信息异常,请联系管理员");
             }
 
-            // 删除本地数据
-            equipmentWorkerBO.removeEquipmentWorker(temp.getCode());
         }
 
         List<String> workerInfos = new ArrayList<>();
@@ -147,25 +176,9 @@ public class EquipmentWorkerAOImpl implements IEquipmentWorkerAO {
 
             ProjectWorker projectWorker = projectWorkerBO
                 .getProjectWorker(code);
-            if (!projectWorker.getUploadStatus()
-                .equals(EProjectWorkerUploadStatus.UPLOAD_UNUPDATE.getCode())
-                    && !projectWorker.getUploadStatus().equals(
-                        EProjectWorkerUploadStatus.UPLOAD_UPDATE.getCode())) {
-                throw new BizException("XN631830",
-                    "项目人员未上传" + projectWorker.getWorkerName());
-            }
             // 考勤照片未上传的不可授权
             WorkerInfo workerInfo = workerInfoBO
                 .getWorkerInfo(projectWorker.getWorkerCode());
-            if ((workerInfo.getWorkerPicUploadStatus() == null
-                    && workerInfo.getWorkerUploadStatus() == null)
-                    || (workerInfo.getWorkerPicUploadStatus()
-                        .equals(EAttendancePicUploadStatus.FAIL.getCode())
-                            && workerInfo.getWorkerUploadStatus()
-                                .equals(EWorkerUploadStatus.FAIL.getCode()))) {
-                throw new BizException("XN631830", "项目人员"
-                        + projectWorker.getWorkerName() + "】考勤照片不符合标准,请修改考勤照片");
-            }
             // 查看是否授权过 已在其他机器添加过照片并授权的 不管
             String workerAuthorizationQuery = deviceWorker
                 .workerAuthorizationQuery(workerInfo.getWorkerGuid());
@@ -207,9 +220,15 @@ public class EquipmentWorkerAOImpl implements IEquipmentWorkerAO {
                 // 授权成功
 
                 for (ProjectWorker projectWorker : projectWorkers) {
-
-                    equipmentWorkerBO.saveEquipmentWorker(req, equipmentInfo,
-                        projectWorker);
+                    // 保存设备人员
+                    String code = equipmentWorkerBO.saveEquipmentWorker(req,
+                        equipmentInfo, projectWorker);
+                    // 保存允许进入时间到设备中
+                    if (StringUtils.isNotBlank(req.getStartTime())
+                            && StringUtils.isNotBlank(req.getEndTime())) {
+                        equipmentInfoBO.updatePassTimes(code,
+                            req.getStartTime() + "," + req.getEndTime());
+                    }
                 }
             }
 

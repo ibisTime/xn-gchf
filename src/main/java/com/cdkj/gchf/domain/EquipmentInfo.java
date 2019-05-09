@@ -80,6 +80,8 @@ public class EquipmentInfo extends ABaseDO {
     // 考勤方向
     private String direction;
 
+    private String passTimes;
+
     // 用户id
     private String userId;
 
@@ -257,6 +259,14 @@ public class EquipmentInfo extends ABaseDO {
 
     public void setDirection(String direction) {
         this.direction = direction;
+    }
+
+    public String getPassTimes() {
+        return passTimes;
+    }
+
+    public void setPassTimes(String passTimes) {
+        this.passTimes = passTimes;
     }
 
 }

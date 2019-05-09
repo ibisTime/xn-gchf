@@ -80,4 +80,24 @@ public class WorkerEntryExitRecordBOImpl
         return data;
     }
 
+    @Override
+    public WorkerEntryExitRecord getMorningEntryExitRecord(String projectCode,
+            String workerCode) {
+        WorkerEntryExitRecord workerEntryExitRecord = new WorkerEntryExitRecord();
+        workerEntryExitRecord.setProjectCode(projectCode);
+        workerEntryExitRecord.setWorkerCode(workerCode);
+        return workerEntryExitRecordDAO
+            .selectMorningRecoder(workerEntryExitRecord);
+    }
+
+    @Override
+    public WorkerEntryExitRecord getAfternoonEntryExitRecord(String projectCode,
+            String workerCode) {
+        WorkerEntryExitRecord workerEntryExitRecord = new WorkerEntryExitRecord();
+        workerEntryExitRecord.setProjectCode(projectCode);
+        workerEntryExitRecord.setWorkerCode(workerCode);
+        return workerEntryExitRecordDAO
+            .selectAfternoonRecoder(workerEntryExitRecord);
+    }
+
 }

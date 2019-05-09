@@ -49,11 +49,12 @@ public class EquipmentWorkerBOImpl extends PaginableBOImpl<EquipmentWorker>
     }
 
     @Override
-    public void saveEquipmentWorker(XN631830Req req,
+    public String saveEquipmentWorker(XN631830Req req,
             EquipmentInfo equipmentInfo, ProjectWorker projectWorker) {
         EquipmentWorker equipmentWorker = new EquipmentWorker();
-        equipmentWorker.setCode(OrderNoGenerater
-            .generate(EGeneratePrefix.EquipmentWorker.getCode()));
+        String code = OrderNoGenerater
+            .generate(EGeneratePrefix.EquipmentWorker.getCode());
+        equipmentWorker.setCode(code);
         equipmentWorker.setDeviceKey(equipmentInfo.getDeviceKey());
         equipmentWorker.setDeviceCode(equipmentInfo.getCode());
         equipmentWorker.setDeviceName(equipmentInfo.getName());
@@ -69,6 +70,7 @@ public class EquipmentWorkerBOImpl extends PaginableBOImpl<EquipmentWorker>
             DateUtil.dateToStr(new Date(System.currentTimeMillis()),
                 DateUtil.DATA_TIME_PATTERN_1));
         EquipmentWorkerDAO.insert(equipmentWorker);
+        return code;
     }
 
     @Override

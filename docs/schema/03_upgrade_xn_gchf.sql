@@ -722,3 +722,6 @@ CREATE TABLE `thf_worker_entry_exit_record` (
   `delete_status` varchar(4) DEFAULT NULL COMMENT '删除状态',
   PRIMARY KEY (`code`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='人员进出记录';
+
+ALTER TABLE `thf_equipment_info` 
+ADD COLUMN `pass_times` datetime NULL COMMENT '进退场时间' AFTER `direction`;

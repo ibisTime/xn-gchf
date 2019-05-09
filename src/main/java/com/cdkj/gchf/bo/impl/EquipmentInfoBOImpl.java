@@ -168,4 +168,12 @@ public class EquipmentInfoBOImpl extends PaginableBOImpl<EquipmentInfo>
         return EquipmentInfoDAO.selectList(condition);
     }
 
+    @Override
+    public void updatePassTimes(String code, String passTimes) {
+        EquipmentInfo condition = new EquipmentInfo();
+        condition.setPassTimes(passTimes);
+        condition.setCode(code);
+        EquipmentInfoDAO.updateEquipmentPassTimes(condition);
+    }
+
 }

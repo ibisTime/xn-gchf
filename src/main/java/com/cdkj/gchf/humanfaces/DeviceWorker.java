@@ -254,8 +254,8 @@ public class DeviceWorker {
         // "2E81A9B755804030BF0744CD8359B083");
         // String cloudWorkerDel2 = cloudWorkerDel(
         // 人员搜索 删除已上传人员
-        workerBatchElimination("8A436291DC414307ADFD5B213063D706",
-            "84E0F420576700B0");
+        // workerBatchElimination("8A436291DC414307ADFD5B213063D706",
+        // "84E0F420576700B0");
         String workerSearch = workerSearch(null, null, null, null, null, null,
             null, null, null, null, null, null, null);
         System.out.println(workerSearch);
@@ -272,6 +272,7 @@ public class DeviceWorker {
             System.out.println("res" + cloudWorkerDel);
         }
 
+        // cloudWorkerDel("7ACE02006D934D0296325B3E3DFEF02D");
         // 清空设备人员
         //
         // workerClear("84E0F420576700B0", null);

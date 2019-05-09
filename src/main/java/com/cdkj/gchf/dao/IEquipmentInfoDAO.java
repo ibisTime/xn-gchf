@@ -11,4 +11,6 @@ public interface IEquipmentInfoDAO extends IBaseDAO<EquipmentInfo> {
 
     int updateEquipment(EquipmentInfo equipmentInfo);
 
+    int updateEquipmentPassTimes(EquipmentInfo equipmentInfo);
+
 }

@@ -240,6 +240,49 @@ public class WorkerInfoAOImpl implements IWorkerInfoAO {
 
     @Override
     public int addWorkerInfoIdCardInfo(XN631791Req req) {
+        // 考勤相关
+        WorkerInfo workerInfo = workerInfoBO.getWorkerInfo(req.getCode());
+        if (StringUtils.isNotBlank(workerInfo.getWorkerGuid())) {
+            // 已上传人员
+            String workerGuid = workerInfo.getWorkerGuid();
+            DeviceWorkerPicRes picRegisterToCloud = null;
+            if (StringUtils
+                .isNotBlank(workerInfo.getWorkerAttendancePicGuid())) {
+                // 删除重新添加
+                workerPicture.picDelCloud(
+                    workerInfo.getWorkerAttendancePicGuid(), workerGuid);
+                picRegisterToCloud = workerPicture.picRegisterToCloud(
+                    workerGuid, req.getAttendancePicture(), "1", null, null);
+
+            } else {
+                // 添加照片
+                picRegisterToCloud = workerPicture.picRegisterToCloud(
+                    workerGuid, req.getAttendancePicture(), "1", null, null);
+            }
+            workerInfoBO.updateWorkerInfoAttendance(req.getCode(), workerGuid,
+                picRegisterToCloud.getData().getGuid());
+            workerInfoBO.refreshAttendancePic(workerInfo.getCode(),
+                req.getAttendancePicture(),
+                EAttendancePicUploadStatus.SUCCESS.getCode(),
+                EAttendancePicUploadStatus.SUCCESS.getCode());
+
+        } else {
+            // 未上传
+            DeviceWorkerRes cloudWorkerAdd = deviceWorker.cloudWorkerAdd(
+                workerInfo.getName(), workerInfo.getCode(),
+                workerInfo.getCellPhone(), null, null);
+            DeviceWorkerPicRes picRegisterToCloud = workerPicture
+                .picRegisterToCloud(cloudWorkerAdd.getData().getGuid(),
+                    req.getAttendancePicture(), "1", null, null);
+            workerInfoBO.updateWorkerInfoAttendance(req.getCode(),
+                cloudWorkerAdd.getData().getGuid(),
+                picRegisterToCloud.getData().getGuid());
+            workerInfoBO.refreshAttendancePic(workerInfo.getCode(),
+                req.getAttendancePicture(),
+                EAttendancePicUploadStatus.SUCCESS.getCode(),
+                EAttendancePicUploadStatus.SUCCESS.getCode());
+        }
+
         return workerInfoBO.refreshWorkerInfo(req);
     }
 

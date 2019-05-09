@@ -34,20 +34,13 @@
                 AND t.worker_name like "%"#{workerName}"%"
             </if>
 
-			<if test="uploadStatus != null and uploadStatus != '' ">
-				AND upload_status NOT IN ("1","2");
-			</if>
 		</trim>
 	</sql>
 
 	<sql id="join_condition">
 		<if test="projectCode != null and projectCode != '' ">
 			LEFT JOIN thf_equipment_info b
-			on t.device_key =
-			b.device_key
-			LEFT JOIN thf_project_worker c
-			on c.project_code =
-			c.project_code
+			on t.device_code = b.code
 		</if>
 	</sql>
 	<select id="select_EquipmentWorker" parameterType="equipmentWorker"
@@ -67,7 +60,11 @@
 		,t.create_time
 		FROM
 		thf_equipment_worker t
+		<include refid="join_condition" />
 		<include refid="where_condition" />
+		<if test="projectCode != null and projectCode != '' ">
+            WHERE b.project_code = #{projectCode}
+        </if>
 		<trim prefix="ORDER BY ">
 			<if test="order != null and order != '' ">
 				t.${order}
@@ -81,7 +78,7 @@
 		<include refid="join_condition" />
 		<include refid="where_condition" />
 		<if test="projectCode != null and projectCode != '' ">
-			AND b.project_code = #{projectCode}
+			WHERE b.project_code = #{projectCode}
 		</if>
 	</select>
 

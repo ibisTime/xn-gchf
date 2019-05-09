@@ -136,7 +136,7 @@ public class WorkerPicture {
     public void test1() {
 
         String picQueryCloud = picQueryCloud(
-            "2E81A9B755804030BF0744CD8359B083");
+            "48D2722B89D040E6858EE69153839FED");
             // String t = "abcdef";
             // 老三：5D2A1DBBAB6D4330AA7EA8336FF913E9
 

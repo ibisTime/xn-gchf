@@ -1,8 +1,5 @@
 package com.cdkj.gchf.humanfaces;
 
-import java.util.Arrays;
-import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -11,12 +8,13 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.cdkj.gchf.ao.IWorkerAttendanceAO;
+import com.cdkj.gchf.bo.IEquipmentInfoBO;
 import com.cdkj.gchf.bo.IProjectWorkerBO;
 import com.cdkj.gchf.bo.IUserBO;
 import com.cdkj.gchf.bo.IWorkerAttendanceBO;
+import com.cdkj.gchf.bo.IWorkerEntryExitRecordBO;
+import com.cdkj.gchf.domain.EquipmentInfo;
 import com.cdkj.gchf.domain.ProjectWorker;
-import com.cdkj.gchf.domain.User;
-import com.cdkj.gchf.domain.WorkerAttendance;
 
 /**
  * 
@@ -37,6 +35,12 @@ public class CallBackIdentity {
 
     @Autowired
     private IWorkerAttendanceAO workerAttendanceAO;
+
+    @Autowired
+    private IWorkerEntryExitRecordBO workerEntryExitRecordBO;
+
+    @Autowired
+    private IEquipmentInfoBO equipmentInfoBO;
 
     @Autowired
     private IUserBO userBO;
@@ -63,19 +67,31 @@ public class CallBackIdentity {
 
         ProjectWorker workerByGuid = projectWorkerBO
             .getProjectWorkerByGuid(personGuid, deviceKey);
-
         if (null != workerByGuid) {
+
+            EquipmentInfo equipmentInfo = equipmentInfoBO.getEquipmentInfoByKey(
+                deviceKey, workerByGuid.getProjectCode());
+            System.out.println(equipmentInfo);
+            System.out.println("showtime" + showTime);
+            System.out.println("direction" + "equipmentInfo.getDirection()");
+            System.out.println("recMode" + recMode);
+            System.out.println("type" + type);
+            // 生成进出记录
+            workerEntryExitRecordBO.saveWorkerEntryExitRecord(equipmentInfo,
+                workerByGuid, showTime, equipmentInfo.getDirection(), photoUrl,
+                recMode, type);
+
             // 考勤录入
-            WorkerAttendance deviceWorkerAttendance = workerAttendanceBO
-                .saveDeviceWorkerAttendance(workerByGuid, deviceKey, showTime,
-                    photoUrl, type, data, recMode, idCardInfo);
+            // WorkerAttendance deviceWorkerAttendance = workerAttendanceBO
+            // .saveDeviceWorkerAttendance(workerByGuid, deviceKey, showTime,
+            // photoUrl, type, data, recMode, idCardInfo);
 
             // 上传国家平台
-            List<User> userByOrganization = userBO
-                .getUserByOrganization(deviceWorkerAttendance.getProjectCode());
-            workerAttendanceAO.uploadWorkerAttendanceList(
-                userByOrganization.get(0).getUserId(),
-                Arrays.asList(deviceWorkerAttendance.getCode()));
+            // List<User> userByOrganization = userBO
+            // .getUserByOrganization(deviceWorkerAttendance.getProjectCode());
+            // workerAttendanceAO.uploadWorkerAttendanceList(
+            // userByOrganization.get(0).getUserId(),
+            // Arrays.asList(deviceWorkerAttendance.getCode()));
 
         }
 

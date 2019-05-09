@@ -50,7 +50,9 @@ public enum EGeneratePrefix {
 
     EquipmentInfo("EI", "考勤设备"),
 
-    EquipmentWorker("EW", "考勤设备人员");
+    EquipmentWorker("EW", "考勤设备人员"),
+
+    WorkerEntryExitRecord("WEER", "人员进出场记录");
 
     public static Map<String, EGeneratePrefix> getMap() {
         Map<String, EGeneratePrefix> map = new HashMap<String, EGeneratePrefix>();

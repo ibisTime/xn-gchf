@@ -34,7 +34,9 @@
 		<typeAlias alias="payRollDetail" type="com.cdkj.gchf.domain.PayRollDetail" />
 		<typeAlias alias="operateLog" type="com.cdkj.gchf.domain.OperateLog" />
 		<typeAlias alias="workerInfo" type="com.cdkj.gchf.domain.WorkerInfo" />
+		
 		<typeAlias alias="equipmentInfo" type="com.cdkj.gchf.domain.EquipmentInfo" />
 		<typeAlias alias="equipmentWorker" type="com.cdkj.gchf.domain.EquipmentWorker" />
+		<typeAlias alias="workerEntryExitRecord" type="com.cdkj.gchf.domain.WorkerEntryExitRecord" />
 	</typeAliases>
 </configuration>

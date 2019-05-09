@@ -116,4 +116,8 @@
     <bean id="equipmentWorkerBO" class="com.cdkj.gchf.bo.impl.EquipmentWorkerBOImpl">
         <property name="paginableDAO" ref="equipmentWorkerDAOImpl" />
     </bean>
+    
+    <bean id="workerEntryExitRecordBO" class="com.cdkj.gchf.bo.impl.WorkerEntryExitRecordBOImpl">
+        <property name="paginableDAO" ref="workerEntryExitRecordDAOImpl" />
+    </bean>
 </beans>

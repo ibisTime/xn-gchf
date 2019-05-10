@@ -1,5 +1,6 @@
 package com.cdkj.gchf.api.impl;
 
+import com.cdkj.gchf.ao.IEquipmentInfoAO;
 import com.cdkj.gchf.api.AProcessor;
 import com.cdkj.gchf.core.ObjValidater;
 import com.cdkj.gchf.dto.req.XN631823Req;
@@ -22,11 +23,12 @@ public class XN631823 extends AProcessor {
 
     private XN631823Req req = null;
 
-    private Device device = SpringContextHolder.getBean(Device.class);
+    private IEquipmentInfoAO equipmentInfoAO = SpringContextHolder
+        .getBean(IEquipmentInfoAO.class);
 
     @Override
     public Object doBusiness() throws BizException {
-        device.ennableDevice(req.getDeviceKey());
+        equipmentInfoAO.enableEquipment(req.getDeviceKey(), req.getUserId());
         return new BooleanRes(true);
     }
 

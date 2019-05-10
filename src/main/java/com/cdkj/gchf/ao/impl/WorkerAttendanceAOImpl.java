@@ -34,6 +34,7 @@ import com.cdkj.gchf.dto.req.XN631713ReqData;
 import com.cdkj.gchf.dto.req.XN631913Req;
 import com.cdkj.gchf.dto.req.XN631918Req;
 import com.cdkj.gchf.dto.req.XN631919Req;
+import com.cdkj.gchf.enums.EAttendanceSource;
 import com.cdkj.gchf.enums.EDeleteStatus;
 import com.cdkj.gchf.enums.EDirectionType;
 import com.cdkj.gchf.enums.EOperateLogOperate;
@@ -342,6 +343,7 @@ public class WorkerAttendanceAOImpl implements IWorkerAttendanceAO {
             }
             workerAttendance.setIdCardType("01");
             workerAttendance.setWorkerName(dateReq.getWorkerName());
+            workerAttendance.setSource(EAttendanceSource.SYSTEM.getCode());
             workerAttendance.setUploadStatus(
                 EWorkerAttendanceUploadStatus.TO_UPLOAD.getCode());
             workerAttendance.setDeleteStatus(EDeleteStatus.NORMAL.getCode());

@@ -396,7 +396,7 @@ public class WorkerAttendanceBOImpl extends PaginableBOImpl<WorkerAttendance>
         workerAttendance.setIdCardType("01");
         workerAttendance
             .setIdCardNumber(workerEntryExitRecord.getIdcardNumber());
-        workerAttendance.setDirection(equipmentInfo.getDirection());
+        workerAttendance.setDirection(workerEntryExitRecord.getDirection());
         workerAttendance.setImage(photoUrl);
         workerAttendance.setDate(time);
         // workerAttendance.setAttendType(type);同行方式

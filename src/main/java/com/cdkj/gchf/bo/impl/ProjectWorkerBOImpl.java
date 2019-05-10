@@ -518,9 +518,11 @@ public class ProjectWorkerBOImpl extends PaginableBOImpl<ProjectWorker>
     }
 
     @Override
-    public List<ProjectWorker> getProjectWorkerByProjectCode(String code) {
+    public List<ProjectWorker> getProjectWorkerByProjectCode(String code,
+            String uploadStatus) {
         ProjectWorker condition = new ProjectWorker();
         condition.setProjectCode(code);
+        condition.setUploadStatus(uploadStatus);
         condition.setDeleteStatus(EDeleteStatus.NORMAL.getCode());
         return projectWorkerDAO.selectList(condition);
     }

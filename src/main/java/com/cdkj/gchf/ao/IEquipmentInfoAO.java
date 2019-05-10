@@ -9,7 +9,6 @@ import com.cdkj.gchf.domain.EquipmentInfo;
 import com.cdkj.gchf.dto.req.XN631820Req;
 import com.cdkj.gchf.dto.req.XN631821Req;
 
-//CHECK ��鲢��ע�� 
 @Component
 public interface IEquipmentInfoAO {
     static final String DEFAULT_ORDER_COLUMN = "code";
@@ -21,6 +20,10 @@ public interface IEquipmentInfoAO {
     public int dropEquipmentInfo(String code);
 
     public int editEquipmentInfo(EquipmentInfo data);
+
+    public void enableEquipment(String deviceKey, String userId);
+
+    public void disableEquipment(String deviceKey, String userId);
 
     public Paginable<EquipmentInfo> queryEquipmentInfoPage(int start, int limit,
             EquipmentInfo condition);

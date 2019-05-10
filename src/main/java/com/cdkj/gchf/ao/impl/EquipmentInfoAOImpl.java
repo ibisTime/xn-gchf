@@ -19,6 +19,8 @@ import com.cdkj.gchf.domain.Project;
 import com.cdkj.gchf.domain.User;
 import com.cdkj.gchf.dto.req.XN631820Req;
 import com.cdkj.gchf.dto.req.XN631821Req;
+import com.cdkj.gchf.enums.EEquipNetStatus;
+import com.cdkj.gchf.enums.EEquipResultMsg;
 import com.cdkj.gchf.enums.EOperateLogOperate;
 import com.cdkj.gchf.enums.EOperateLogRefType;
 import com.cdkj.gchf.enums.EUserKind;
@@ -30,7 +32,6 @@ import com.cdkj.gchf.humanfaces.res.DeviceQuery;
 import com.cdkj.gchf.humanfaces.res.DeviceRes;
 import com.cdkj.gchf.humanfaces.res.ResultMsg;
 
-//CHECK ��鲢��ע�� 
 @Service
 public class EquipmentInfoAOImpl implements IEquipmentInfoAO {
 
@@ -123,6 +124,39 @@ public class EquipmentInfoAOImpl implements IEquipmentInfoAO {
     }
 
     @Override
+    public void enableEquipment(String deviceKey, String userId) {
+        User user = userBO.getBriefUser(userId);
+
+        EquipmentInfo equipmentInfo = equipmentInfoBO
+            .getEquipmentInfoByKey(deviceKey, user.getOrganizationCode());
+        if (null != equipmentInfo) {
+            if (EEquipNetStatus.OFFLINE.getCode()
+                .equals(equipmentInfo.getStatus())) {
+                throw new BizException("xn0000", "设备已离线，无法修改");
+            }
+        }
+
+        device.ennableDevice(deviceKey);
+
+    }
+
+    @Override
+    public void disableEquipment(String deviceKey, String userId) {
+        User user = userBO.getBriefUser(userId);
+
+        EquipmentInfo equipmentInfo = equipmentInfoBO
+            .getEquipmentInfoByKey(deviceKey, user.getOrganizationCode());
+        if (null != equipmentInfo) {
+            if (EEquipNetStatus.OFFLINE.getCode()
+                .equals(equipmentInfo.getStatus())) {
+                throw new BizException("xn0000", "设备已离线，无法修改");
+            }
+        }
+
+        device.banDevice(deviceKey);
+    }
+
+    @Override
     public Paginable<EquipmentInfo> queryEquipmentInfoPage(int start, int limit,
             EquipmentInfo condition) {
         User user = userBO.getBriefUser(condition.getUserId());
@@ -206,7 +240,8 @@ public class EquipmentInfoAOImpl implements IEquipmentInfoAO {
             }
 
         } else {
-            throw new BizException("XN631821", updateCloudDevice.getMsg());
+            throw new BizException("XN631821",
+                EEquipResultMsg.parseValue(updateCloudDevice.getMsg()));
         }
 
     }

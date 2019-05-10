@@ -43,7 +43,7 @@ public class WorkerEntryExitRecordBOImpl
         workerEntryExitRecord.setDeviceName(equipmentInfo.getName());
         workerEntryExitRecord.setTeamCode(projectWorker.getTeamSysNo());
         workerEntryExitRecord.setTeamName(projectWorker.getTeamName());
-        workerEntryExitRecord.setWorkerCode(projectWorker.getWorkerCode());
+        workerEntryExitRecord.setWorkerCode(projectWorker.getCode());
         workerEntryExitRecord.setWorkerName(projectWorker.getWorkerName());
 
         workerEntryExitRecord.setIdcardNumber(projectWorker.getIdcardNumber());

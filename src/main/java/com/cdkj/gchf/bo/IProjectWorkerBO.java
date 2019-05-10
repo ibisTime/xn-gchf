@@ -77,7 +77,8 @@ public interface IProjectWorkerBO extends IPaginableBO<ProjectWorker> {
 
     ProjectWorker getProjectWorkerByGuid(String guid, String deviceKey);
 
-    public List<ProjectWorker> getProjectWorkerByProjectCode(String code);
+    public List<ProjectWorker> getProjectWorkerByProjectCode(String code,
+            String uploadStatus);
 
     int updateProjectWorkerStatus(String code, String status);
 

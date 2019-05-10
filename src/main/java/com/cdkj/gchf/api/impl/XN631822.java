@@ -1,5 +1,6 @@
 package com.cdkj.gchf.api.impl;
 
+import com.cdkj.gchf.ao.IEquipmentInfoAO;
 import com.cdkj.gchf.api.AProcessor;
 import com.cdkj.gchf.core.ObjValidater;
 import com.cdkj.gchf.dto.req.XN631822Req;
@@ -7,7 +8,6 @@ import com.cdkj.gchf.dto.res.BooleanRes;
 import com.cdkj.gchf.exception.BizException;
 import com.cdkj.gchf.exception.ParaException;
 import com.cdkj.gchf.http.JsonUtils;
-import com.cdkj.gchf.humanfaces.Device;
 import com.cdkj.gchf.spring.SpringContextHolder;
 
 /**
@@ -22,11 +22,12 @@ public class XN631822 extends AProcessor {
 
     private XN631822Req req = null;
 
-    private Device device = SpringContextHolder.getBean(Device.class);
+    private IEquipmentInfoAO equipmentInfoAO = SpringContextHolder
+        .getBean(IEquipmentInfoAO.class);
 
     @Override
     public Object doBusiness() throws BizException {
-        device.banDevice(req.getDeviceKey());
+        equipmentInfoAO.disableEquipment(req.getDeviceKey(), req.getUserId());
         return new BooleanRes(true);
     }
 

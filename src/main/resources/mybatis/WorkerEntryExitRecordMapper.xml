@@ -148,7 +148,8 @@
 	WHERE project_code = #{projectCode}
 	AND  worker_code = #{workerCode}
 	AND TO_DAYS(date) = TO_DAYS(NOW())
-    order by date asc LIMIT 1,1 
+	AND direction = '01'
+    order by date asc LIMIT 0,1 
 	</select>
 	
 	<select id="select_afternoon_recorder" parameterType="workerEntryExitRecord" resultMap="workerEntryExitRecord_DB_Result">
@@ -156,8 +157,8 @@
 	WHERE project_code = #{projectCode} 
 	AND  worker_code = #{workerCode}
 	AND TO_DAYS(date) = TO_DAYS(NOW())
-    order by date desc LIMIT 1,1 
+	AND direction = '02'
+    order by date desc LIMIT 0,1 
 	</select>
-
 
 </mapper>

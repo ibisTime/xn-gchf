@@ -491,6 +491,7 @@ public class ProjectWorkerAOImpl implements IProjectWorkerAO {
         if (StringUtils.isNotBlank(condition.getUserId())) {
             condition.setProjectCode(user.getOrganizationCode());
         }
+
         // 查询项目端人员
         List<ProjectWorker> queryProjectWorkerList = projectWorkerBO
             .queryProjectWorkerList(condition);
@@ -514,7 +515,8 @@ public class ProjectWorkerAOImpl implements IProjectWorkerAO {
             }
             // // 此项目下所有人员
             List<ProjectWorker> projectWorkerByProjectCode = projectWorkerBO
-                .getProjectWorkerByProjectCode(user.getOrganizationCode());
+                .getProjectWorkerByProjectCode(user.getOrganizationCode(),
+                    EProjectWorkerUploadStatus.UPLOAD_UPDATE.getCode());
             projectWorkerByProjectCode.removeAll(tempList);
 
             for (ProjectWorker projectWorker : projectWorkerByProjectCode) {

@@ -64,8 +64,14 @@ public class EquipmentWorkerBOImpl extends PaginableBOImpl<EquipmentWorker>
         equipmentWorker.setTeamName(projectWorker.getTeamName());
         equipmentWorker.setIdCardNumber(projectWorker.getIdcardNumber());
 
-        equipmentWorker
-            .setPassTimes(req.getStartTime() + "," + req.getEndTime());
+        if (StringUtils.isBlank(req.getStartTime())
+                && StringUtils.isBlank(req.getEndTime())) {
+            equipmentWorker.setPassTimes("00:00:00,23:59:59");
+        } else {
+            equipmentWorker
+                .setPassTimes(req.getStartTime() + "," + req.getEndTime());
+        }
+
         equipmentWorker.setCreateTime(
             DateUtil.dateToStr(new Date(System.currentTimeMillis()),
                 DateUtil.DATA_TIME_PATTERN_1));

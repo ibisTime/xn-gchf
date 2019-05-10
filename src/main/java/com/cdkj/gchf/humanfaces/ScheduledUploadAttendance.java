@@ -1,6 +1,5 @@
 package com.cdkj.gchf.humanfaces;
 
-import java.util.Arrays;
 import java.util.List;
 
 import org.apache.commons.lang3.StringUtils;
@@ -60,9 +59,6 @@ public class ScheduledUploadAttendance {
         List<User> queryUserList = userBO.queryUserList(user);
         for (User tempUser : queryUserList) {
             // 获取每个项目实时考勤
-            if (tempUser.getType().equals("P")) {
-                continue;
-            }
             String projectCode = tempUser.getOrganizationCode();
             ProjectConfig configByLocal = projectConfigBO
                 .getProjectConfigByLocal(projectCode);
@@ -104,15 +100,10 @@ public class ScheduledUploadAttendance {
                     morningEquipmentInfo, morningEntryExitRecord.getDate(),
                     morningEntryExitRecord.getImage(),
                     morningEntryExitRecord.getAttendType());
-                workerAttendanceBO.addWorkerAttendace(morningEntryExitRecord,
+                workerAttendanceBO.addWorkerAttendace(afternoonEntryExitRecord,
                     afternoonEquipmentInfo, afternoonEntryExitRecord.getDate(),
                     afternoonEntryExitRecord.getImage(),
                     afternoonEntryExitRecord.getAttendType());
-
-                // 上传
-                workerAttendanceAO.uploadWorkerAttendanceList(user.getUserId(),
-                    Arrays.asList(morningEntryExitRecord.getCode(),
-                        afternoonEntryExitRecord.getCode()));
             }
 
         }

@@ -123,10 +123,10 @@ public class WorkerInfo extends ABaseDO {
     private String workerAttendancePicGuid;
 
     // 人脸上传状态
-    private Integer workerPicUploadStatus;
+    private String workerPicUploadStatus;
 
     // 考勤人员上传状态
-    private Integer workerUploadStatus;
+    private String workerUploadStatus;
 
     /****DB Properties****/
 
@@ -427,19 +427,19 @@ public class WorkerInfo extends ABaseDO {
         this.workerAttendancePicGuid = workerAttendancePicGuid;
     }
 
-    public Integer getWorkerPicUploadStatus() {
+    public String getWorkerPicUploadStatus() {
         return workerPicUploadStatus;
     }
 
-    public void setWorkerPicUploadStatus(Integer workerPicUploadStatus) {
+    public void setWorkerPicUploadStatus(String workerPicUploadStatus) {
         this.workerPicUploadStatus = workerPicUploadStatus;
     }
 
-    public Integer getWorkerUploadStatus() {
+    public String getWorkerUploadStatus() {
         return workerUploadStatus;
     }
 
-    public void setWorkerUploadStatus(Integer workerUploadStatus) {
+    public void setWorkerUploadStatus(String workerUploadStatus) {
         this.workerUploadStatus = workerUploadStatus;
     }
 

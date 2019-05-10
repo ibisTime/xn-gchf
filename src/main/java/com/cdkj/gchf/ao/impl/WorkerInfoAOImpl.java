@@ -32,7 +32,9 @@ import com.cdkj.gchf.exception.BizException;
 import com.cdkj.gchf.humanfaces.Device;
 import com.cdkj.gchf.humanfaces.DeviceWorker;
 import com.cdkj.gchf.humanfaces.WorkerPicture;
+import com.cdkj.gchf.humanfaces.enums.EAttendancePicUploadStatus;
 import com.cdkj.gchf.humanfaces.enums.EPicResponse;
+import com.cdkj.gchf.humanfaces.enums.EWorkerUploadStatus;
 import com.cdkj.gchf.humanfaces.res.DeviceWorkerPicRes;
 import com.cdkj.gchf.humanfaces.res.DeviceWorkerRes;
 
@@ -139,6 +141,7 @@ public class WorkerInfoAOImpl implements IWorkerInfoAO {
     @Override
     public void refreshAttendancePicture(String code, String attendancePicture,
             String userId) {
+        workerInfoBO.refreshAttendancePic(code, attendancePicture, null, null);
         WorkerInfo workerInfo = workerInfoBO.getWorkerInfo(code);
         // 人员已经上传过 -> 没有考勤照片 -> 添加考勤照片
         // ↓→ 有考勤照片 -> 删除后添加考勤照片
@@ -153,7 +156,16 @@ public class WorkerInfoAOImpl implements IWorkerInfoAO {
                     null);
             if (picRegisterToCloud.getCode()
                 .equals(EPicResponse.TIANJIACHENG.getCode())) {
-                workerInfoBO.refreshAttendancePic(code, attendancePicture);
+                // 照片添加成功
+                workerInfoBO.refreshAttendancePic(code, attendancePicture,
+                    EWorkerUploadStatus.SUCCESS.getCode(),
+                    EAttendancePicUploadStatus.SUCCESS.getCode());
+            } else {
+                workerInfoBO.refreshAttendancePic(code, attendancePicture,
+                    EWorkerUploadStatus.SUCCESS.getCode(),
+                    EAttendancePicUploadStatus.FAIL.getCode());
+                throw new BizException("XN631794",
+                    "人脸录入云端失败:" + picRegisterToCloud.getMsg());
 
             }
         } else {
@@ -162,64 +174,30 @@ public class WorkerInfoAOImpl implements IWorkerInfoAO {
                 workerInfo.getName(), workerInfo.getCode(),
                 workerInfo.getCellPhone(), null, null);
             // 添加照片信息到云端
-            // 保存信息到本地
-
             DeviceWorkerPicRes picRegisterToCloud = workerPicture
                 .picRegisterToCloud(cloudWorkerAdd.getData().getGuid(),
                     attendancePicture, "1", null, null);
-            String picguid = picRegisterToCloud.getData().getGuid();
-            workerInfoBO.updateWorkerInfoAttendance(workerInfo.getCode(),
-                cloudWorkerAdd.getData().getGuid(), picguid);
-            workerInfoBO.refreshAttendancePic(workerInfo.getCode(),
-                attendancePicture);
+            if (picRegisterToCloud.getCode()
+                .equals(EPicResponse.TIANJIACHENG.getCode())) {
+                // 添加成功
+                // 更新本地人员 和图片guid
+                workerInfoBO.updateWorkerInfoAttendance(workerInfo.getCode(),
+                    cloudWorkerAdd.getData().getGuid(),
+                    picRegisterToCloud.getData().getGuid());
+                workerInfoBO.refreshAttendancePic(workerInfo.getCode(),
+                    attendancePicture, EWorkerUploadStatus.SUCCESS.getCode(),
+                    EAttendancePicUploadStatus.SUCCESS.getCode());
+            } else {
+                workerInfoBO.updateWorkerInfoAttendance(workerInfo.getCode(),
+                    cloudWorkerAdd.getData().getGuid(), null);
+                workerInfoBO.refreshAttendancePic(workerInfo.getCode(),
+                    attendancePicture, EWorkerUploadStatus.SUCCESS.getCode(),
+                    EAttendancePicUploadStatus.FAIL.getCode());
+            }
+
             // 人员没上传过 -> 拿到项目下所有设备 ->添加人员到设备中 已存在就添加照片
-            // String organizationCode = userBO.getBriefUser(userId)
-            // .getOrganizationCode();
-            // // 向所有的机器中录入该人员
-            // List<EquipmentInfo> equipmentList = equipmentInfoBO
-            // .getEquipmentList(organizationCode);
-            // for (EquipmentInfo equipmentInfo : equipmentList) {
-            // // 查询该设备是否有该人员 没有则录入到云端,更新本地数据
-            // String cloudWorkerQuery = deviceWorker
-            // //
-            // .cloudWorkerQuery(workerGuid);
-            // JSONObject jsonObject = JSONObject
-            // .parseObject(cloudWorkerQuery);
-            // if (jsonObject.getString("code").equals(
-            // EEquipmentWorkerResponse.CHAXUNCHENGGONG.getCode())
-            // && jsonObject.get("data") == null) {
-            // // 这个设备没有这个人 录入人员 录入照片
-            // DeviceWorkerRes cloudWorkerAdd = deviceWorker
-            // .cloudWorkerAdd(equipmentInfo.getDeviceKey(),
-            // workerInfo.getName(), workerInfo.getCode(),
-            // workerInfo.getCellPhone(), null, null);
-            // DeviceWorkerPicRes picRegisterToCloudUrl = workerPicture
-            // .picRegisterToCloud(
-            // cloudWorkerAdd.getData().getGuid(),
-            // attendancePicture, null, null, null);
-            // workerInfoBO.updateWorkerInfoAttendance(
-            // workerInfo.getCode(),
-            // cloudWorkerAdd.getData().getGuid(),
-            // picRegisterToCloudUrl.getData().getGuid());
-            // workerInfoBO.refreshAttendancePic(workerInfo.getCode(),
-            // attendancePicture);
-            // } else {
-            // // 有这个人
-            // String guid = jsonObject.getString("guid");
-            // // 注册人员照片到机器
-            // DeviceWorkerPicRes picRegisterToCloudUrl = workerPicture
-            // .picRegisterToCloud(jsonObject.getString("guid"),
-            // attendancePicture, null, null, null);
-            // workerInfoBO.updateWorkerInfoAttendance(
-            // workerInfo.getCode(), guid,
-            // picRegisterToCloudUrl.getData().getGuid());
-            // workerInfoBO.refreshAttendancePic(workerInfo.getCode(),
-            // attendancePicture);
-            // }
-            // }
 
         }
-        // workerInfoBO.refreshAttendancePic(code, attendancePicture);
     }
 
     @Override
@@ -262,6 +240,49 @@ public class WorkerInfoAOImpl implements IWorkerInfoAO {
 
     @Override
     public int addWorkerInfoIdCardInfo(XN631791Req req) {
+        // 考勤相关
+        WorkerInfo workerInfo = workerInfoBO.getWorkerInfo(req.getCode());
+        if (StringUtils.isNotBlank(workerInfo.getWorkerGuid())) {
+            // 已上传人员
+            String workerGuid = workerInfo.getWorkerGuid();
+            DeviceWorkerPicRes picRegisterToCloud = null;
+            if (StringUtils
+                .isNotBlank(workerInfo.getWorkerAttendancePicGuid())) {
+                // 删除重新添加
+                workerPicture.picDelCloud(
+                    workerInfo.getWorkerAttendancePicGuid(), workerGuid);
+                picRegisterToCloud = workerPicture.picRegisterToCloud(
+                    workerGuid, req.getAttendancePicture(), "1", null, null);
+
+            } else {
+                // 添加照片
+                picRegisterToCloud = workerPicture.picRegisterToCloud(
+                    workerGuid, req.getAttendancePicture(), "1", null, null);
+            }
+            workerInfoBO.updateWorkerInfoAttendance(req.getCode(), workerGuid,
+                picRegisterToCloud.getData().getGuid());
+            workerInfoBO.refreshAttendancePic(workerInfo.getCode(),
+                req.getAttendancePicture(),
+                EAttendancePicUploadStatus.SUCCESS.getCode(),
+                EAttendancePicUploadStatus.SUCCESS.getCode());
+
+        } else {
+            // 未上传
+            DeviceWorkerRes cloudWorkerAdd = deviceWorker.cloudWorkerAdd(
+                workerInfo.getName(), workerInfo.getCode(),
+                workerInfo.getCellPhone(), null, null);
+            DeviceWorkerPicRes picRegisterToCloud = workerPicture
+                .picRegisterToCloud(cloudWorkerAdd.getData().getGuid(),
+                    req.getAttendancePicture(), "1", null, null);
+            workerInfoBO.updateWorkerInfoAttendance(req.getCode(),
+                cloudWorkerAdd.getData().getGuid(),
+                picRegisterToCloud.getData().getGuid());
+            workerInfoBO.refreshAttendancePic(workerInfo.getCode(),
+                req.getAttendancePicture(),
+                EAttendancePicUploadStatus.SUCCESS.getCode(),
+                EAttendancePicUploadStatus.SUCCESS.getCode());
+        }
+
         return workerInfoBO.refreshWorkerInfo(req);
     }
 

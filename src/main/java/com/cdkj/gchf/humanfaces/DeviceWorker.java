@@ -9,6 +9,8 @@ import org.apache.commons.lang3.StringUtils;
 import org.junit.Test;
 import org.springframework.stereotype.Component;
 
+import com.alibaba.fastjson.JSONArray;
+import com.alibaba.fastjson.JSONObject;
 import com.cdkj.gchf.humanfaces.res.DeviceWorkerRes;
 import com.cdkj.gchf.humanfaces.res.ResultMsg;
 
@@ -117,6 +119,7 @@ public class DeviceWorker {
      */
     public ResultMsg cloudWorkerAuthorizationEuipment(String deviceKey,
             List<String> personGuids, String startTime, String endTime) {
+        ResultMsg resultMsg = null;
         String token = AppConfig.getToken();
         Map<String, String> req = new HashMap<>();
         req.put("appid", AppConfig.getAppid());
@@ -127,7 +130,7 @@ public class DeviceWorker {
             person += string + ",";
         }
         if (CollectionUtils.isEmpty(personGuids)) {
-            req.put("personGuids", "");
+            return null;
         } else {
             req.put("personGuids", person.substring(0, person.length() - 1));
         }
@@ -138,8 +141,7 @@ public class DeviceWorker {
         }
         String response = HttpRequest.doRequest(DeviceWorkUrl.authorizationUrl,
             "POST", req);
-        ResultMsg resultMsg = AppConfig.gson.fromJson(response,
-            ResultMsg.class);
+        resultMsg = AppConfig.gson.fromJson(response, ResultMsg.class);
         return resultMsg;
     }
 
@@ -154,7 +156,7 @@ public class DeviceWorker {
         Map<String, String> req = new HashMap<>();
         req.put("appid", AppConfig.getAppid());
         req.put("token", token);
-        req.put("length", "80");
+        // req.put("length", "77");
         String doRequest = HttpRequest.doRequest(DeviceWorkUrl.workerSearchUrl,
             "POST", req);
         System.out.println(doRequest);
@@ -248,22 +250,29 @@ public class DeviceWorker {
         // && parse.get("data") == null);
 
         // 人员删除
-        // 70C34989189A47C3BCA4B68F412B7360 guid
         // String cloudWorkerDel = cloudWorkerDel(
         // "2E81A9B755804030BF0744CD8359B083");
         // String cloudWorkerDel2 = cloudWorkerDel(
-        // "662D10F24FCF4FED8963BA6D1F4651BD");
-        // String cloudWorkerDel3 = cloudWorkerDel(
-        // "931D130D04FD44E7B9A0E797C1A20644");
-        // String cloudWorkerDel4 = cloudWorkerDel(
-        // "C83BFC0DB364433B97FB0BA7254C20EA");
-        // String cloudWorkerDel5 = cloudWorkerDel(
-        // "87A8121E3F1A41EA8912E5B9D223B1F4");
-        // System.out.println(cloudWorkerDel);
-        // 人员搜索
-        // workerSearch(null, null, null, null, null, null, null, null, null,
-        // null,
-        // null, null, null);
+        // 人员搜索 删除已上传人员
+        // workerBatchElimination("8A436291DC414307ADFD5B213063D706",
+        // "84E0F420576700B0");
+        String workerSearch = workerSearch(null, null, null, null, null, null,
+            null, null, null, null, null, null, null);
+        System.out.println(workerSearch);
+        // 删除云端所有人员
+        JSONObject jsonObject = JSONObject.parseObject(workerSearch);
+        JSONObject js = (JSONObject) jsonObject.get("data");
+        JSONArray ja = (JSONArray) js.get("content");
+        System.out.println(ja.size());
+        for (int i = 0; i < ja.size(); i++) {
+            JSONObject jp = (JSONObject) ja.get(i);
+            String guid = jp.getString("guid");
+            System.out.println("guid" + guid);
+            String cloudWorkerDel = cloudWorkerDel(guid);
+            System.out.println("res" + cloudWorkerDel);
+        }
+
+        // cloudWorkerDel("7ACE02006D934D0296325B3E3DFEF02D");
         // 清空设备人员
         //
         // workerClear("84E0F420576700B0", null);
@@ -272,5 +281,6 @@ public class DeviceWorker {
         // "C83BFC0DB364433B97FB0BA7254C20EA");
         // workerAuthorizationQuery("422585696F4E405A854D92EAE17174A9");
         // 人员授权销毁
+
     }
 }

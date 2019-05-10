@@ -211,7 +211,8 @@ public class ProjectWorkerEntryExitHistoryBOImpl
     }
 
     @Override
-    public Object queryProjectWorkerEntryExitHistory(String code) {
+    public ProjectWorkerEntryExitHistory queryProjectWorkerEntryExitHistory(
+            String code) {
         ProjectWorkerEntryExitHistory condition = new ProjectWorkerEntryExitHistory();
         condition.setCode(code);
         return projectWorkerEntryExitHistoryDAO.select(condition);

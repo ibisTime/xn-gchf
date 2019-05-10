@@ -218,10 +218,14 @@ public class WorkerInfoBOImpl extends PaginableBOImpl<WorkerInfo>
     }
 
     @Override
-    public void refreshAttendancePic(String code, String attendancePicture) {
+    public void refreshAttendancePic(String code, String attendancePicture,
+            String workerUploadStatus, String attendancePicUploadStatus) {
         WorkerInfo workerInfo = new WorkerInfo();
         workerInfo.setCode(code);
         workerInfo.setAttendancePicture(attendancePicture);
+        // 更新状态
+        workerInfo.setWorkerUploadStatus(workerUploadStatus);
+        workerInfo.setWorkerPicUploadStatus(attendancePicUploadStatus);
         workerInfoDAO.updateWorkerInfoAttendancePic(workerInfo);
     }
 

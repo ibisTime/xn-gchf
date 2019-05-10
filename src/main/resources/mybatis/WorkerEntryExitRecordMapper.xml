@@ -142,6 +142,22 @@
 		,#{deleteStatus}
 		)
 	</insert>
+	
+	<select id="select_morning_recorder" parameterType="workerEntryExitRecord" resultMap="workerEntryExitRecord_DB_Result">
+	SELECT * from thf_worker_entry_exit_record 
+	WHERE project_code = #{projectCode}
+	AND  worker_code = #{workerCode}
+	AND TO_DAYS(date) = TO_DAYS(NOW())
+    order by date asc LIMIT 1,1 
+	</select>
+	
+	<select id="select_afternoon_recorder" parameterType="workerEntryExitRecord" resultMap="workerEntryExitRecord_DB_Result">
+	SELECT * from thf_worker_entry_exit_record 
+	WHERE project_code = #{projectCode} 
+	AND  worker_code = #{workerCode}
+	AND TO_DAYS(date) = TO_DAYS(NOW())
+    order by date desc LIMIT 1,1 
+	</select>
 
 
 </mapper>

@@ -19,4 +19,10 @@ public interface IWorkerEntryExitRecordBO
 
     public WorkerEntryExitRecord getWorkerEntryExitRecord(String code);
 
+    WorkerEntryExitRecord getMorningEntryExitRecord(String projectCode,
+            String workerCode);
+
+    WorkerEntryExitRecord getAfternoonEntryExitRecord(String projectCode,
+            String workerCode);
+
 }

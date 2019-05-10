@@ -52,4 +52,18 @@ public class WorkerEntryExitRecordDAOImpl extends AMybatisTemplate
             condition, WorkerEntryExitRecord.class);
     }
 
+    @Override
+    public WorkerEntryExitRecord selectMorningRecoder(
+            WorkerEntryExitRecord workerEntryExitRecord) {
+        return super.select(NAMESPACE.concat("select_morning_recorder"),
+            workerEntryExitRecord, WorkerEntryExitRecord.class);
+    }
+
+    @Override
+    public WorkerEntryExitRecord selectAfternoonRecoder(
+            WorkerEntryExitRecord workerEntryExitRecord) {
+        return super.select(NAMESPACE.concat("select_afternoon_recorder"),
+            workerEntryExitRecord, WorkerEntryExitRecord.class);
+    }
+
 }

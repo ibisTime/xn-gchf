@@ -25,12 +25,14 @@ import com.cdkj.gchf.common.AesUtils;
 import com.cdkj.gchf.common.DateUtil;
 import com.cdkj.gchf.core.OrderNoGenerater;
 import com.cdkj.gchf.dao.IWorkerAttendanceDAO;
+import com.cdkj.gchf.domain.EquipmentInfo;
 import com.cdkj.gchf.domain.Project;
 import com.cdkj.gchf.domain.ProjectConfig;
 import com.cdkj.gchf.domain.ProjectWorker;
 import com.cdkj.gchf.domain.TeamMaster;
 import com.cdkj.gchf.domain.User;
 import com.cdkj.gchf.domain.WorkerAttendance;
+import com.cdkj.gchf.domain.WorkerEntryExitRecord;
 import com.cdkj.gchf.dto.req.XN631710Req;
 import com.cdkj.gchf.dto.req.XN631712Req;
 import com.cdkj.gchf.dto.req.XN631713ReqData;
@@ -307,7 +309,7 @@ public class WorkerAttendanceBOImpl extends PaginableBOImpl<WorkerAttendance>
             new SimpleDateFormat("yyyy-MM-dd hh:mm:ss")
                 .format(workerAttendance.getDate()));
         childJson.addProperty("direction", workerAttendance.getDirection());
-        childJson.addProperty("image", workerAttendance.getImage());
+        // childJson.addProperty("image", workerAttendance.getImage());
         childJson.addProperty("channel", workerAttendance.getChannel());
         childJson.addProperty("attendType", workerAttendance.getAttendType());
         childJson.addProperty("lng", workerAttendance.getLng());
@@ -365,6 +367,50 @@ public class WorkerAttendanceBOImpl extends PaginableBOImpl<WorkerAttendance>
         workerAttendance.setCode(code);
         workerAttendance.setSource(EAttendanceSource.SYSTEM.getCode());
 
+        return code;
+    }
+
+    /**
+     * <p>Title: addWorkerAttendace</p>   
+     * <p>Description:保存进出记录生成的人员考勤</p>   
+     */
+    @Override
+    public String addWorkerAttendace(
+            WorkerEntryExitRecord workerEntryExitRecord,
+            EquipmentInfo equipmentInfo, Date time, String photoUrl,
+            String type) {
+        WorkerAttendance workerAttendance = new WorkerAttendance();
+
+        workerAttendance.setProjectCode(workerEntryExitRecord.getProjectCode());
+        workerAttendance.setProjectName(workerEntryExitRecord.getProjectName());
+        workerAttendance.setTeamSysNo(workerEntryExitRecord.getTeamCode());
+        workerAttendance.setTeamName(workerEntryExitRecord.getTeamName());
+        workerAttendance.setWorkerCode(workerEntryExitRecord.getWorkerCode());
+        workerAttendance.setWorkerName(workerEntryExitRecord.getWorkerName());
+        workerAttendance
+            .setIdCardNumber(workerEntryExitRecord.getIdcardNumber());
+        workerAttendance.setCreateDatetime(workerEntryExitRecord.getDate());
+
+        workerAttendance.setTeamSysNo(workerEntryExitRecord.getTeamCode());
+        workerAttendance.setTerminalCode(workerEntryExitRecord.getCode());
+        workerAttendance.setIdCardType("01");
+        workerAttendance
+            .setIdCardNumber(workerEntryExitRecord.getIdcardNumber());
+        workerAttendance.setDirection(equipmentInfo.getDirection());
+        workerAttendance.setImage(photoUrl);
+        workerAttendance.setDate(time);
+        // workerAttendance.setAttendType(type);同行方式
+        //
+        String code = OrderNoGenerater
+            .generate(EGeneratePrefix.WorkerAttendance.getCode());
+        workerAttendance.setCode(code);
+        workerAttendance
+            .setCreateDatetime(new Date(System.currentTimeMillis()));
+        workerAttendance.setSource(EAttendanceSource.REAL_TIME.getCode());
+        workerAttendance
+            .setUploadStatus(EWorkerAttendanceUploadStatus.TO_UPLOAD.getCode());
+        workerAttendance.setDeleteStatus(EDeleteStatus.NORMAL.getCode());
+        workerAttendanceDAO.insert(workerAttendance);
         return code;
     }
 

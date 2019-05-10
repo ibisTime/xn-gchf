@@ -60,4 +60,10 @@ public class EquipmentInfoDAOImpl extends AMybatisTemplate
             equipmentInfo);
     }
 
+    @Override
+    public int updateEquipmentPassTimes(EquipmentInfo equipmentInfo) {
+        return super.update(NAMESPACE.concat("update_EquipmentInfo_passTimes"),
+            equipmentInfo);
+    }
+
 }

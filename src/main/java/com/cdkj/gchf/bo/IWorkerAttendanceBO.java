@@ -5,11 +5,13 @@ import java.util.List;
 
 import com.cdkj.gchf.bo.base.IPaginableBO;
 import com.cdkj.gchf.bo.base.Paginable;
+import com.cdkj.gchf.domain.EquipmentInfo;
 import com.cdkj.gchf.domain.Project;
 import com.cdkj.gchf.domain.ProjectConfig;
 import com.cdkj.gchf.domain.ProjectWorker;
 import com.cdkj.gchf.domain.TeamMaster;
 import com.cdkj.gchf.domain.WorkerAttendance;
+import com.cdkj.gchf.domain.WorkerEntryExitRecord;
 import com.cdkj.gchf.dto.req.XN631710Req;
 import com.cdkj.gchf.dto.req.XN631712Req;
 import com.cdkj.gchf.dto.req.XN631713ReqData;
@@ -25,6 +27,12 @@ public interface IWorkerAttendanceBO extends IPaginableBO<WorkerAttendance> {
 
     public String saveWorkerAttendance(String projectCode, XN631713ReqData data,
             ProjectWorker projectWorker, WorkerAttendance workerAttendance);
+
+    // 每日自动上传的考勤记录
+    public String addWorkerAttendace(
+            WorkerEntryExitRecord workerEntryExitRecord,
+            EquipmentInfo equipmentInfo, Date time, String photoUrl,
+            String type);
 
     public String saveWorkerAttendance(Project project, TeamMaster teamMaster,
             ProjectWorker projectWorker, Date date, String direction);

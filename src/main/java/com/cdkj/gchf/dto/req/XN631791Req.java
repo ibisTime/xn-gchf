@@ -23,6 +23,7 @@ public class XN631791Req {
     @NotBlank
     private String negativeIdCardImageUrl;
 
+    // 考勤照片
     private String attendancePicture;
 
     public String getUserId() {

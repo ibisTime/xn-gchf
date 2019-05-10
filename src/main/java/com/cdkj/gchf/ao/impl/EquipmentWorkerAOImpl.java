@@ -26,10 +26,11 @@ import com.cdkj.gchf.domain.WorkerInfo;
 import com.cdkj.gchf.dto.req.XN631830Req;
 import com.cdkj.gchf.enums.EProjectWorkerUploadStatus;
 import com.cdkj.gchf.exception.BizException;
-import com.cdkj.gchf.humanfaces.Device;
 import com.cdkj.gchf.humanfaces.DeviceWorker;
 import com.cdkj.gchf.humanfaces.WorkerPicture;
+import com.cdkj.gchf.humanfaces.enums.EAttendancePicUploadStatus;
 import com.cdkj.gchf.humanfaces.enums.EEquipmentWorkerResponse;
+import com.cdkj.gchf.humanfaces.enums.EWorkerUploadStatus;
 import com.cdkj.gchf.humanfaces.res.ResultMsg;
 
 @Service
@@ -115,6 +116,34 @@ public class EquipmentWorkerAOImpl implements IEquipmentWorkerAO {
             throw new BizException("XN631830", "设备不存在");
         }
 
+        // 调用接口前先做校验
+        for (String code : req.getWorkerList()) {
+            ProjectWorker projectWorker = projectWorkerBO
+                .getProjectWorker(code);
+            if (!projectWorker.getUploadStatus()
+                .equals(EProjectWorkerUploadStatus.UPLOAD_UNUPDATE.getCode())
+                    && !projectWorker.getUploadStatus().equals(
+                        EProjectWorkerUploadStatus.UPLOAD_UPDATE.getCode())) {
+                throw new BizException("XN631830",
+                    "项目人员未上传" + projectWorker.getWorkerName());
+            }
+            // 考勤照片未上传的不可授权
+            WorkerInfo workerInfo = workerInfoBO
+                .getWorkerInfo(projectWorker.getWorkerCode());
+            if (StringUtils.isBlank(workerInfo.getWorkerPicUploadStatus())
+                    || StringUtils
+                        .isBlank(workerInfo.getWorkerUploadStatus())) {
+                throw new BizException("XN631830", "项目人员"
+                        + projectWorker.getWorkerName() + "】考勤照片不符合标准,请修改考勤照片");
+            }
+            if (workerInfo.getWorkerPicUploadStatus()
+                .equals(EAttendancePicUploadStatus.FAIL.getCode())
+                    && workerInfo.getWorkerUploadStatus()
+                        .equals(EWorkerUploadStatus.FAIL.getCode())) {
+                throw new BizException("XN631830", "项目人员"
+                        + projectWorker.getWorkerName() + "】考勤照片不符合标准,请修改考勤照片");
+            }
+        }
         EquipmentWorker equipmentWorker = new EquipmentWorker();
         equipmentWorker.setDeviceKey(equipmentInfo.getDeviceKey());
         List<EquipmentWorker> queryEquipmentWorkerList = equipmentWorkerBO
@@ -126,11 +155,18 @@ public class EquipmentWorkerAOImpl implements IEquipmentWorkerAO {
                 .getProjectWorker(temp.getWorkerCode());
             WorkerInfo workerInfo = workerInfoBO
                 .getWorkerInfo(projectWorker.getWorkerCode());
+            if (workerInfo.getWorkerUploadStatus()
+                .equals(EWorkerUploadStatus.SUCCESS.getCode())) {
+                // 取消授权
+                deviceWorker.workerBatchElimination(workerInfo.getWorkerGuid(),
+                    equipmentInfo.getDeviceKey());
+                // 删除本地数据
+                equipmentWorkerBO.removeEquipmentWorker(temp.getCode());
+            } else {
+                throw new BizException("工人【" + "XN0000",
+                    workerInfo.getName() + "】信息异常,请联系管理员");
+            }
 
-            deviceWorker.workerBatchElimination(workerInfo.getWorkerGuid(),
-                equipmentInfo.getDeviceKey());
-            // 删除本地数据
-            equipmentWorkerBO.removeEquipmentWorker(temp.getCode());
         }
 
         List<String> workerInfos = new ArrayList<>();
@@ -140,20 +176,9 @@ public class EquipmentWorkerAOImpl implements IEquipmentWorkerAO {
 
             ProjectWorker projectWorker = projectWorkerBO
                 .getProjectWorker(code);
-            if (!projectWorker.getUploadStatus()
-                .equals(EProjectWorkerUploadStatus.UPLOAD_UNUPDATE.getCode())
-                    && !projectWorker.getUploadStatus().equals(
-                        EProjectWorkerUploadStatus.UPLOAD_UPDATE.getCode())) {
-                throw new BizException("XN631830",
-                    "项目人员未上传" + projectWorker.getWorkerName());
-            }
-            // 未添加考勤照片的不可授权
+            // 考勤照片未上传的不可授权
             WorkerInfo workerInfo = workerInfoBO
                 .getWorkerInfo(projectWorker.getWorkerCode());
-            if (StringUtils.isBlank(workerInfo.getAttendancePicture())) {
-                throw new BizException("XN631830",
-                    "项目人员【" + projectWorker.getWorkerName() + "】考勤照片未添加");
-            }
             // 查看是否授权过 已在其他机器添加过照片并授权的 不管
             String workerAuthorizationQuery = deviceWorker
                 .workerAuthorizationQuery(workerInfo.getWorkerGuid());
@@ -189,17 +214,24 @@ public class EquipmentWorkerAOImpl implements IEquipmentWorkerAO {
             ResultMsg cloudWorkerAuthorizationEuipment = deviceWorker
                 .cloudWorkerAuthorizationEuipment(equipmentInfo.getDeviceKey(),
                     workerInfos, req.getStartTime(), req.getEndTime());
-            if (cloudWorkerAuthorizationEuipment.getCode()
-                .equals(EEquipmentWorkerResponse.SHOUQUANCHENGONG.getCode())) {
+            if (cloudWorkerAuthorizationEuipment != null
+                    && cloudWorkerAuthorizationEuipment.getCode().equals(
+                        EEquipmentWorkerResponse.SHOUQUANCHENGONG.getCode())) {
                 // 授权成功
 
                 for (ProjectWorker projectWorker : projectWorkers) {
-
-                    equipmentWorkerBO.saveEquipmentWorker(req, equipmentInfo,
-                        projectWorker);
+                    // 保存设备人员
+                    String code = equipmentWorkerBO.saveEquipmentWorker(req,
+                        equipmentInfo, projectWorker);
+                    // 保存允许进入时间到设备中
+                    if (StringUtils.isNotBlank(req.getStartTime())
+                            && StringUtils.isNotBlank(req.getEndTime())) {
+                        equipmentInfoBO.updatePassTimes(code,
+                            req.getStartTime() + "," + req.getEndTime());
+                    }
                 }
             }
-            new Device().updateCloudDevice(equipmentInfo.getDeviceKey());
+
         }
 
     }

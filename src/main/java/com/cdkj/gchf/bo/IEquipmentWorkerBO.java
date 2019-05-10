@@ -24,7 +24,7 @@ public interface IEquipmentWorkerBO extends IPaginableBO<EquipmentWorker> {
 
     public EquipmentWorker getEquipmentWorker(String code);
 
-    void saveEquipmentWorker(XN631830Req req, EquipmentInfo equipmentInfo,
+    String saveEquipmentWorker(XN631830Req req, EquipmentInfo equipmentInfo,
             ProjectWorker projectWorker);
 
 }

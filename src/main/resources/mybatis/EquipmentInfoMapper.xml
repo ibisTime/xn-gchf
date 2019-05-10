@@ -24,13 +24,14 @@
 		<result column="project_code" property="projectCode" />
 		<result column="project_name" property="projectName" />
 		<result column="direction" property="direction" />
+		<result column="pass_times" property="passTimes" />
 	</resultMap>
 	<sql id="where_condition">
 		<trim prefix="WHERE" prefixOverrides="AND | OR">
 			<if test="code != null and code != '' ">
 				AND t.code = #{code}
 			</if>
-			
+
 			<if test="name != null and name != '' ">
 				AND t.name like "%"#{name}"%"
 			</if>
@@ -38,18 +39,18 @@
 			<if test="deviceName != null and deviceName != '' ">
 				AND t.name like "%"#{deviceName}"%"
 			</if>
-			
+
 			<if test="projectCode != null and projectCode != '' ">
 				AND t.project_code = #{projectCode}
 			</if>
-			
+
 			<if test="deviceKey != null and deviceKey != '' ">
-                AND t.device_key = #{deviceKey}
-            </if>
-            
-            <if test="state != null and state != '' ">
-                AND t.state = #{state}
-            </if>
+				AND t.device_key = #{deviceKey}
+			</if>
+
+			<if test="state != null and state != '' ">
+				AND t.state = #{state}
+			</if>
 		</trim>
 	</sql>
 	<select id="select_EquipmentInfo" parameterType="equipmentInfo"
@@ -76,6 +77,7 @@
 		,t.project_code
 		,t.project_name
 		,t.direction
+		,t.pass_times
 		FROM
 		thf_equipment_info t
 		<include refid="where_condition" />
@@ -116,31 +118,42 @@
 		,project_code
 		,project_name
 		,direction
+		,pass_times
 		)
 		VALUES(
 		#{code}
 		,#{deviceKey}
 		,#{name}
 		,#{tag}
+		
 		,#{tagEncreapt}
 		,#{sceneGuid}
 		,#{state}
 		,#{status}
 		,#{clientId}
 		,#{cId}
+		
 		,#{versionNo}
 		,#{systemVersionNo}
 		,#{regNum}
 		,#{needUpgradeApp}
 		,#{needUpgrade}
 		,#{createTime}
+		
 		,#{expired}
 		,#{deviceStatus}
 		,#{projectCode}
 		,#{projectName}
 		,#{direction}
+		,#{passTimes}
 		)
 	</insert>
+
+	<delete id="delete_EquipmentInfo" parameterType="equipmentInfo">
+		DELETE FROM
+		thf_equipment_info
+		WHERE code = #{code}
+	</delete>
 
 	<update id="update_EquipmentInfo" parameterType="equipmentInfo">
 		UPDATE
@@ -150,40 +163,49 @@
 		,tag = #{tag}
 		,tag_encreapt =#{tagEncreapt}
 		,direction = #{direction}
+		,pass_times = #{passTimes}
 
 		WHERE code = #{code}
 	</update>
-
+    
+    <update id="update_EquipmentInfo_passTimes"  parameterType="equipmentInfo"> 
+       UPDATE 
+       thf_equipment_info
+       SET
+       pass_times = #{passTimes}
+       WHERE code = #{code}
+    </update>
+    
 	<update id="update_EquipmentInfo_cloud" parameterType="equipmentInfo">
 		UPDATE
 		thf_equipment_info
 		SET
 		name = #{name}
 		,tag = #{tag}
-		,tag_encreapt = #{tagEncreapt}
+		,tag_encreapt =
+		#{tagEncreapt}
 		,scene_guid = #{sceneGuid}
 		,state = #{state}
-		
+
 		,status = #{status}
 		,client_id = #{clientId}
 		,c_id = #{cId}
-		,version_no = #{versionNo}
+		,version_no =
+		#{versionNo}
 		,system_version_no = #{systemVersionNo}
-		
+
 		,reg_num = #{regNum}
 		,need_upgrade_app = #{needUpgradeApp}
-		,need_upgrade = #{needUpgrade}
+		,need_upgrade =
+		#{needUpgrade}
 		,create_time = #{createTime}
 		,expired = #{expired}
 		,device_status = #{deviceStatus}
-        ,direction = #{direction}
+		,direction = #{direction}
 		WHERE code = #{code}
 	</update>
 
-	<delete id="delete_EquipmentInfo" parameterType="equipmentInfo">
-		DELETE FROM
-		thf_equipment_info
-		WHERE code = #{code}
-	</delete>
+
+
 
 </mapper>

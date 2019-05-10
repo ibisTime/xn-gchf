@@ -36,4 +36,6 @@ public interface IEquipmentInfoBO extends IPaginableBO<EquipmentInfo> {
 
     List<EquipmentInfo> getEquipmentList(String projectCode);
 
+    void updatePassTimes(String code, String passTimes);
+
 }

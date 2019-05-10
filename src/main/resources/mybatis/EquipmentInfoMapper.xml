@@ -35,6 +35,10 @@
 				AND t.name like "%"#{name}"%"
 			</if>
 			
+			<if test="deviceName != null and deviceName != '' ">
+				AND t.name like "%"#{deviceName}"%"
+			</if>
+			
 			<if test="projectCode != null and projectCode != '' ">
 				AND t.project_code = #{projectCode}
 			</if>

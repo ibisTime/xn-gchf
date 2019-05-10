@@ -83,6 +83,9 @@ public class EquipmentInfo extends ABaseDO {
     // 用户id
     private String userId;
 
+    /****DB Properties****/
+    private String deviceName;
+
     public String getCode() {
         return code;
     }
@@ -257,6 +260,14 @@ public class EquipmentInfo extends ABaseDO {
 
     public void setDirection(String direction) {
         this.direction = direction;
+    }
+
+    public String getDeviceName() {
+        return deviceName;
+    }
+
+    public void setDeviceName(String deviceName) {
+        this.deviceName = deviceName;
     }
 
 }

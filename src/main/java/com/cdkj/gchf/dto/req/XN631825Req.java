@@ -22,6 +22,8 @@ public class XN631825Req extends APageReq {
     // 来源
     private String source;
 
+    private String deviceName;
+
     public String getProjectCode() {
         return projectCode;
     }
@@ -60,6 +62,14 @@ public class XN631825Req extends APageReq {
 
     public void setUserId(String userId) {
         this.userId = userId;
+    }
+
+    public String getDeviceName() {
+        return deviceName;
+    }
+
+    public void setDeviceName(String deviceName) {
+        this.deviceName = deviceName;
     }
 
 }

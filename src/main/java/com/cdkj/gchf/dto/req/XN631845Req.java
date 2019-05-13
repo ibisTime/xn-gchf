@@ -1,5 +1,7 @@
 package com.cdkj.gchf.dto.req;
 
+import org.hibernate.validator.constraints.NotBlank;
+
 public class XN631845Req extends APageReq {
 
     private static final long serialVersionUID = -2425673826710669835L;
@@ -12,6 +14,9 @@ public class XN631845Req extends APageReq {
 
     // 进出方向
     private String direction;
+
+    @NotBlank
+    private String userId;
 
     public String getDeviceKey() {
         return deviceKey;
@@ -35,6 +40,14 @@ public class XN631845Req extends APageReq {
 
     public void setDirection(String direction) {
         this.direction = direction;
+    }
+
+    public String getUserId() {
+        return userId;
+    }
+
+    public void setUserId(String userId) {
+        this.userId = userId;
     }
 
 }

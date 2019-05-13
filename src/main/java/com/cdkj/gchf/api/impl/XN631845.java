@@ -42,8 +42,8 @@ public class XN631845 extends AProcessor {
         }
         workerEntryExitRecord.setOrder(order, req.getOrderDir());
 
-        return workerEntryExitRecordAO.queryWorkerEntryExitRecordPage(start,
-            limit, workerEntryExitRecord);
+        return workerEntryExitRecordAO.queryWorkerEntryExitRecordPage(
+            req.getUserId(), start, limit, workerEntryExitRecord);
     }
 
     @Override

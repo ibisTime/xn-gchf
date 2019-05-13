@@ -12,7 +12,8 @@ public interface IWorkerEntryExitRecordAO {
     static final String DEFAULT_ORDER_COLUMN = "code";
 
     public Paginable<WorkerEntryExitRecord> queryWorkerEntryExitRecordPage(
-            int start, int limit, WorkerEntryExitRecord condition);
+            String userId, int start, int limit,
+            WorkerEntryExitRecord condition);
 
     public List<WorkerEntryExitRecord> queryWorkerEntryExitRecordList(
             WorkerEntryExitRecord condition);

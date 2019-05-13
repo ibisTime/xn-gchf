@@ -254,10 +254,9 @@ public class DeviceWorker {
         // String cloudWorkerDel2 = cloudWorkerDel(
 
         // 人员搜索 删除已上传人员
-        // String workerSearch = workerSearch(null, null, null, null, null,
-        // null,
-        // null, null, null, null, null, null, null);
-        // System.out.println(workerSearch);
+        String workerSearch = workerSearch(null, null, null, null, null, null,
+            null, null, null, null, null, null, null);
+        System.out.println(workerSearch);
 
         // 删除云端所有人员 线上已部署 不要调用
         // JSONObject jsonObject = JSONObject.parseObject(workerSearch);
@@ -278,7 +277,7 @@ public class DeviceWorker {
         // workerClear("84E0F420576700B0", null);
         // 人员授权查询
         // String workerAuthorizationQuery = workerAuthorizationQuery(
-        // "88A3084FA3B444F283452686EC2000F1");
+        // "8D4B08C9861C44D985DD9629BDECB0DB");
         // System.out.println(workerAuthorizationQuery);
 
         // workerAuthorizationQuery("422585696F4E405A854D92EAE17174A9");

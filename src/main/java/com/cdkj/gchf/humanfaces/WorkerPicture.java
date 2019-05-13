@@ -136,12 +136,14 @@ public class WorkerPicture {
     public void test1() {
 
         String picQueryCloud = picQueryCloud(
-            "061B202C819C40CFAB3C4933B65C2DBA");
+            "8D4B08C9861C44D985DD9629BDECB0DB");
             // String t = "abcdef";
             // 老三：5D2A1DBBAB6D4330AA7EA8336FF913E9
 
-        // picDelCloud("3AC1B48C71DE4803B13CE417D4C56ACC",
-        // "061B202C819C40CFAB3C4933B65C2DBA");
+        // ResultMsg picDelCloud =
+        // picDelCloud("478F7997A776460FB4AF5F8E8E5FED41",
+        // "8D4B08C9861C44D985DD9629BDECB0DB");
+        // System.out.println(picDelCloud);
         // picDelCloud("6127CCC1623F43E6BBBAF81A06A2DCC5",
         // "061B202C819C40CFAB3C4933B65C2DBA");
         // picDelCloud("B6ED5FDF07F448B4884A19B98D196FDE",

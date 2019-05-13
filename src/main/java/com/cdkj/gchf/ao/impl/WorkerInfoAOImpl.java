@@ -148,8 +148,8 @@ public class WorkerInfoAOImpl implements IWorkerInfoAO {
         String workerGuid = workerInfo.getWorkerGuid();
         if (StringUtils.isNotBlank(workerGuid)) {
             // // 人员已存在, 删除旧照片 , 添加新的 (base64 方式)
-            workerPicture.picDelCloud(workerGuid,
-                workerInfo.getWorkerAttendancePicGuid());
+            workerPicture.picDelCloud(workerInfo.getWorkerAttendancePicGuid(),
+                workerGuid);
 
             DeviceWorkerPicRes picRegisterToCloud = workerPicture
                 .picRegisterToCloud(workerGuid, attendancePicture, "1", null,
@@ -160,6 +160,8 @@ public class WorkerInfoAOImpl implements IWorkerInfoAO {
                 workerInfoBO.refreshAttendancePic(code, attendancePicture,
                     EWorkerUploadStatus.SUCCESS.getCode(),
                     EAttendancePicUploadStatus.SUCCESS.getCode());
+                workerInfoBO.updateWorkerInfoAttendance(workerInfo.getCode(),
+                    workerGuid, picRegisterToCloud.getData().getGuid());
             } else {
                 workerInfoBO.refreshAttendancePic(code, attendancePicture,
                     EWorkerUploadStatus.SUCCESS.getCode(),
@@ -194,8 +196,6 @@ public class WorkerInfoAOImpl implements IWorkerInfoAO {
                     attendancePicture, EWorkerUploadStatus.SUCCESS.getCode(),
                     EAttendancePicUploadStatus.FAIL.getCode());
             }
-
-            // 人员没上传过 -> 拿到项目下所有设备 ->添加人员到设备中 已存在就添加照片
 
         }
     }
@@ -238,6 +238,11 @@ public class WorkerInfoAOImpl implements IWorkerInfoAO {
         return workerInfoBO.getWorkerInfoByIdCardNumber(idCardNumber);
     }
 
+    /**
+     * 
+     * <p>Title: addWorkerInfoIdCardInfo</p>   
+     * <p>Description: 添加身份证考勤照片</p>   
+     */
     @Override
     public int addWorkerInfoIdCardInfo(XN631791Req req) {
         // 考勤相关
@@ -251,6 +256,7 @@ public class WorkerInfoAOImpl implements IWorkerInfoAO {
                 // 删除重新添加
                 workerPicture.picDelCloud(
                     workerInfo.getWorkerAttendancePicGuid(), workerGuid);
+
                 picRegisterToCloud = workerPicture.picRegisterToCloud(
                     workerGuid, req.getAttendancePicture(), "1", null, null);
 

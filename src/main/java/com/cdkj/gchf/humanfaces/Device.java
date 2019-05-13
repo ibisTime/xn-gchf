@@ -218,6 +218,11 @@ public class Device {
 
         // banDevice("84E0F420576700B0");
         // ennableDevice("84E0F420576700B0");
+
+        // "84E0F420576700B0"
+        // String test3333 = test3333("84E0F420576700B0");
+        // System.out.println(test3333);
+
     }
 
 }

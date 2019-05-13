@@ -188,24 +188,26 @@ public class EquipmentWorkerAOImpl implements IEquipmentWorkerAO {
                 workerInfos.add(workerInfo.getWorkerGuid());
                 projectWorkers.add(projectWorker);
             } else {
-                // 已经授权过的 移除授权重新授权
+                // 已经授权过的 移除授权
                 JSONArray jsonArray = parseObject.getJSONArray("data");
+                List<String> euiqmentDevice = new ArrayList<>();
                 for (int i = 0; i < jsonArray.size(); i++) {
                     JSONObject obj = (JSONObject) jsonArray.get(i);
                     String object = (String) obj.get("deviceKey");
-                    if (object.equals(equipmentInfo.getDeviceKey())) {
-                        // 此设备已授权
-
-                        deviceWorker.workerBatchElimination(
-                            workerInfo.getWorkerGuid(),
-                            equipmentInfo.getDeviceKey());
-                        // 删除本地数据
-                        equipmentWorkerBO.removeEquipmentWorker(
-                            projectWorker.getWorkerCode());
-                        workerInfos.add(workerInfo.getWorkerGuid());
-                        projectWorkers.add(projectWorker);
-                    }
+                    euiqmentDevice.add(object);
                 }
+                if (euiqmentDevice.contains(equipmentInfo.getDeviceKey())) {
+                    deviceWorker.workerBatchElimination(
+                        workerInfo.getWorkerGuid(),
+                        equipmentInfo.getDeviceKey());
+                    // 删除本地数据
+                    equipmentWorkerBO
+                        .removeEquipmentWorker(projectWorker.getWorkerCode());
+
+                }
+                workerInfos.add(workerInfo.getWorkerGuid());
+                projectWorkers.add(projectWorker);
+
             }
 
         }

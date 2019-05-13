@@ -9,8 +9,6 @@ import org.apache.commons.lang3.StringUtils;
 import org.junit.Test;
 import org.springframework.stereotype.Component;
 
-import com.alibaba.fastjson.JSONArray;
-import com.alibaba.fastjson.JSONObject;
 import com.cdkj.gchf.humanfaces.res.DeviceWorkerRes;
 import com.cdkj.gchf.humanfaces.res.ResultMsg;
 
@@ -156,7 +154,7 @@ public class DeviceWorker {
         Map<String, String> req = new HashMap<>();
         req.put("appid", AppConfig.getAppid());
         req.put("token", token);
-        // req.put("length", "77");
+        req.put("length", "77");
         String doRequest = HttpRequest.doRequest(DeviceWorkUrl.workerSearchUrl,
             "POST", req);
         System.out.println(doRequest);
@@ -243,7 +241,8 @@ public class DeviceWorker {
 
         // 人员查询
         // String cloudWorkerQuery = cloudWorkerQuery(
-        // "A7FE8C63E3094E1281E6738C34DD1C65");
+        // "061B202C819C40CFAB3C4933B65C2DBA");
+        // System.out.println(cloudWorkerQuery);
         // JSONObject parse = JSONObject.parseObject(cloudWorkerQuery);
         // System.out.println(parse.getString("code")
         // .equals(EEquipmentWorkerResponse.CHAXUNCHENGGONG.getCode())
@@ -253,24 +252,25 @@ public class DeviceWorker {
         // String cloudWorkerDel = cloudWorkerDel(
         // "2E81A9B755804030BF0744CD8359B083");
         // String cloudWorkerDel2 = cloudWorkerDel(
+
         // 人员搜索 删除已上传人员
-        // workerBatchElimination("8A436291DC414307ADFD5B213063D706",
-        // "84E0F420576700B0");
-        String workerSearch = workerSearch(null, null, null, null, null, null,
-            null, null, null, null, null, null, null);
-        System.out.println(workerSearch);
-        // 删除云端所有人员
-        JSONObject jsonObject = JSONObject.parseObject(workerSearch);
-        JSONObject js = (JSONObject) jsonObject.get("data");
-        JSONArray ja = (JSONArray) js.get("content");
-        System.out.println(ja.size());
-        for (int i = 0; i < ja.size(); i++) {
-            JSONObject jp = (JSONObject) ja.get(i);
-            String guid = jp.getString("guid");
-            System.out.println("guid" + guid);
-            String cloudWorkerDel = cloudWorkerDel(guid);
-            System.out.println("res" + cloudWorkerDel);
-        }
+        // String workerSearch = workerSearch(null, null, null, null, null,
+        // null,
+        // null, null, null, null, null, null, null);
+        // System.out.println(workerSearch);
+
+        // 删除云端所有人员 线上已部署 不要调用
+        // JSONObject jsonObject = JSONObject.parseObject(workerSearch);
+        // JSONObject js = (JSONObject) jsonObject.get("data");
+        // JSONArray ja = (JSONArray) js.get("content");
+        // System.out.println(ja.size());
+        // for (int i = 0; i < ja.size(); i++) {
+        // JSONObject jp = (JSONObject) ja.get(i);
+        // String guid = jp.getString("guid");
+        // System.out.println("guid" + guid);
+        // String cloudWorkerDel = cloudWorkerDel(guid);
+        // System.out.println("res" + cloudWorkerDel);
+        // }
 
         // cloudWorkerDel("7ACE02006D934D0296325B3E3DFEF02D");
         // 清空设备人员
@@ -278,7 +278,9 @@ public class DeviceWorker {
         // workerClear("84E0F420576700B0", null);
         // 人员授权查询
         // String workerAuthorizationQuery = workerAuthorizationQuery(
-        // "C83BFC0DB364433B97FB0BA7254C20EA");
+        // "88A3084FA3B444F283452686EC2000F1");
+        // System.out.println(workerAuthorizationQuery);
+
         // workerAuthorizationQuery("422585696F4E405A854D92EAE17174A9");
         // 人员授权销毁
 

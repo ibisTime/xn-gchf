@@ -1,25 +1,25 @@
 package com.cdkj.gchf.humanfaces;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.OutputStream;
+import com.cdkj.gchf.common.DateUtil;
+import com.cdkj.gchf.common.MD5Util;
+import org.junit.jupiter.api.Test;
+import org.springframework.web.bind.annotation.RequestMethod;
+
+import java.io.*;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLConnection;
+import java.nio.charset.StandardCharsets;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
 
-import org.junit.Test;
-
-import com.cdkj.gchf.common.DateUtil;
-import com.cdkj.gchf.common.MD5Util;
-
+/**
+ * @author old3
+ */
 public class HttpRequest {
     private static InputStream ins = null;
 
@@ -33,11 +33,13 @@ public class HttpRequest {
 
     private static HttpURLConnection httpURLConnection = null;
 
+
+
     public static synchronized String doRequest(String url, String method,
             Map<String, String> req) {
-        URL localURL = null;
+        URL localURL;
         try {
-            if (method.equals("GET")) {
+            if (RequestMethod.GET.name().equals(method)) {
                 url += "?";
                 for (Entry<String, String> entry : req.entrySet()) {
                     url += entry.getKey() + "=" + entry.getValue() + "&";
@@ -50,10 +52,11 @@ public class HttpRequest {
                 .openConnection();
             httpURLConnection = (HttpURLConnection) connection;
             httpURLConnection.setRequestMethod(method);
-            httpURLConnection.setRequestProperty("Connection", "Keep-Alive");// 维持长连接
+            // 维持长连接
+            httpURLConnection.setRequestProperty("Connection", "Keep-Alive");
             httpURLConnection.setRequestProperty("Charset", "UTF-8");
             StringBuffer sb = new StringBuffer();
-            if (method.equals("POST")) {
+            if (RequestMethod.POST.name().equals(method)) {
                 httpURLConnection.setRequestProperty("Content-Type",
                     "application/x-www-form-urlencoded");
                 httpURLConnection.setDoOutput(true);
@@ -67,25 +70,16 @@ public class HttpRequest {
                 httpURLConnection.connect();
                 ous = httpURLConnection.getOutputStream();
                 ous.write(
-                    sb.substring(0, sb.length() - 1).toString().getBytes());
-                // System.out.println(
-                // "入参:" + sb.substring(0, sb.length() - 1).toString());
+                    sb.substring(0, sb.length() - 1).getBytes());
                 ous.flush();
             }
             ins = httpURLConnection.getInputStream();
-            String resString = null;
-            inputStreamReader = new InputStreamReader(ins, "utf-8");
+            String resString;
+            inputStreamReader = new InputStreamReader(ins, StandardCharsets.UTF_8);
             bufferedReader = new BufferedReader(inputStreamReader);
             while ((resString = bufferedReader.readLine()) != null) {
                 res += resString;
             }
-            // JSONObject resJson = JSONObject.parseObject(res);
-            // if (resJson.containsKey("code")) {
-            // String code = (String) resJson.get("code");
-            // System.out.println(code);
-            // }
-            // System.out.println();
-            // System.out.println("响应" + res);
             return res;
         } catch (MalformedURLException e) {
             e.printStackTrace();
@@ -128,7 +122,7 @@ public class HttpRequest {
             DateUtil.DATA_TIME_PATTERN_1);
         reqParameter.put("timestamp", String.valueOf(time.getTime()));
         String md5 = MD5Util.md5(AppConfig.getAppKey()
-                + String.valueOf(time.getTime()) + AppConfig.getAppSecret());
+                + time.getTime() + AppConfig.getAppSecret());
         reqParameter.put("sign", md5.toLowerCase());
         String doRequest = doRequest(url, "POST", reqParameter);
         System.out.println(doRequest);

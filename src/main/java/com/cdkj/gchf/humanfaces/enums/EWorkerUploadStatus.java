@@ -1,7 +1,11 @@
 package com.cdkj.gchf.humanfaces.enums;
 
-public enum EWorkerUploadStatus {
+/**
+ * @author old3
+ */
 
+public enum EWorkerUploadStatus {
+    //云端人员上传状态
     FAIL("-1", "失败"),
 
     SUCCESS("1", "成功");

@@ -101,8 +101,9 @@ public class CorpBasicinfoAOImpl implements ICorpBasicinfoAO {
                 .getCorpBasicinfo(codeReq);
 
             if (ECorpBasicUploadStatus.UPLOAD_UNEDITABLE.getCode()
-                .equals(corpBasicinfo.getUploadStatus()))
+                .equals(corpBasicinfo.getUploadStatus())) {
                 continue;
+            }
 
             corpBasicinfo.setLegalManIdcardNumber(
                 AesUtils.encrypt(corpBasicinfo.getLegalManIdcardNumber(),

@@ -42,7 +42,6 @@ public interface IWorkerAttendanceBO extends IPaginableBO<WorkerAttendance> {
             String deviceKey, String dateTime, String photoUrl, String type,
             String dataString, String recMode, String idCardInfo);
 
-    public int removeWorkerAttendance(String code);
 
     int deleteWorkAttendanceByProject(String projectCode);
 

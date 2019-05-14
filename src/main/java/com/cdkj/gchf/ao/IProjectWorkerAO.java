@@ -15,9 +15,12 @@ import com.cdkj.gchf.dto.req.XN631911Req;
 import com.cdkj.gchf.dto.req.XN631912Req;
 import com.cdkj.gchf.dto.req.XN631913Req;
 
+/**
+ * @author old3
+ */
 @Component
 public interface IProjectWorkerAO {
-    static final String DEFAULT_ORDER_COLUMN = "code";
+    String DEFAULT_ORDER_COLUMN = "code";
 
     /**
      * 添加项目人员 

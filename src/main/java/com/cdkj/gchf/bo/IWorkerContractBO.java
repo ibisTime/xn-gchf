@@ -36,10 +36,6 @@ public interface IWorkerContractBO extends IPaginableBO<WorkerContract> {
      */
     void fakeDeleteWorkerContractByProjectCode(String projectCode);
 
-    /**
-     * 根据code假删除 
-     */
-    public void removeWorkerContract(String userId, String code);
 
     /**
      * 修改劳动合同
@@ -64,8 +60,6 @@ public interface IWorkerContractBO extends IPaginableBO<WorkerContract> {
     public List<WorkerContract> queryWorkerContractList(
             WorkerContract condition);
 
-    List<WorkerContract> queryWorkerContract(String projectCode,
-            String workerCode);
 
     public WorkerContract getWorkerContract(String code);
 

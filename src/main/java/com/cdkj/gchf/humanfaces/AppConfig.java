@@ -7,13 +7,16 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.junit.Test;
 
 import com.cdkj.gchf.common.DateUtil;
 import com.cdkj.gchf.common.MD5Util;
 import com.cdkj.gchf.humanfaces.res.ResultMsg;
 import com.google.gson.Gson;
+import org.junit.jupiter.api.Test;
 
+/**
+ * @author old3
+ */
 public class AppConfig {
 
     private static String appid = "09387D3AA2CE4F9C8F170852B70ADFD7";
@@ -29,8 +32,7 @@ public class AppConfig {
     protected static Gson gson = new Gson();
 
     public static AppConfig getProjectConfig() {
-        AppConfig appConfig = new AppConfig();
-        return appConfig;
+        return new AppConfig();
     }
 
     public static String getConfigBaseUrl() {
@@ -86,7 +88,7 @@ public class AppConfig {
             DateUtil.DATA_TIME_PATTERN_1);
         reqParameter.put("timestamp", String.valueOf(time.getTime()));
         String md5 = MD5Util.md5(AppConfig.getAppKey()
-                + String.valueOf(time.getTime()) + AppConfig.getAppSecret());
+                + time.getTime() + AppConfig.getAppSecret());
         reqParameter.put("sign", md5.toLowerCase());
         String json = HttpRequest.doRequest(url, "POST", reqParameter);
         ResultMsg fromJson = new Gson().fromJson(json, ResultMsg.class);

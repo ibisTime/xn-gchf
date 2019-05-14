@@ -4,7 +4,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.apache.commons.lang3.StringUtils;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.springframework.stereotype.Component;
 
 import com.cdkj.gchf.humanfaces.res.DeviceQuery;
@@ -39,10 +39,9 @@ public class Device {
             req.put("tag", tag);
         }
 
-        String doRequest = HttpRequest.doRequest(DeviceUrl.createUrl, "POST",
+        String doRequest = HttpRequest.doRequest(DeviceUrl.CREATE_URL, "POST",
             req);
-        DeviceRes fromJson = new Gson().fromJson(doRequest, DeviceRes.class);
-        return fromJson;
+        return new Gson().fromJson(doRequest, DeviceRes.class);
     }
 
     /**
@@ -66,10 +65,9 @@ public class Device {
             req.put("tag", tag);
         }
         req.put("deviceKey", deviceKey);
-        String doRequest = HttpRequest.doRequest(DeviceUrl.updateUrl, "POST",
+        String doRequest = HttpRequest.doRequest(DeviceUrl.UPDATE_URL, "POST",
             req);
-        DeviceRes fromJson = new Gson().fromJson(doRequest, DeviceRes.class);
-        return fromJson;
+        return new Gson().fromJson(doRequest, DeviceRes.class);
     }
 
     /**
@@ -86,11 +84,10 @@ public class Device {
         req.put("appid", AppConfig.getAppid());
         req.put("token", token);
         req.put("deviceKey", deviceKey);
-        String doRequest = HttpRequest.doRequest(DeviceUrl.queryUrl, "GET",
+        String doRequest = HttpRequest.doRequest(DeviceUrl.QUERY_URL, "GET",
             req);
-        DeviceQuery fromJson = AppConfig.gson.fromJson(doRequest,
+        return AppConfig.gson.fromJson(doRequest,
             DeviceQuery.class);
-        return fromJson;
 
     }
 
@@ -108,11 +105,10 @@ public class Device {
         req.put("appid", AppConfig.getAppid());
         req.put("token", token);
         req.put("deviceKey", deviceKey);
-        String doRequest = HttpRequest.doRequest(DeviceUrl.updateCloudUrl,
+        String doRequest = HttpRequest.doRequest(DeviceUrl.UPDATE_CLOUD_URL,
             "POST", req);
-        ResultMsg fromJson = AppConfig.gson.fromJson(doRequest,
+        return AppConfig.gson.fromJson(doRequest,
             ResultMsg.class);
-        return fromJson;
     }
 
     /**
@@ -129,9 +125,8 @@ public class Device {
         req.put("appid", AppConfig.getAppid());
         req.put("token", token);
         req.put("deviceKey", deviceKey);
-        String doRequest = HttpRequest.doRequest(DeviceUrl.delDeviceUrl, "POST",
+        return HttpRequest.doRequest(DeviceUrl.DEL_DEVICE_URL, "POST",
             req);
-        return doRequest;
     }
 
     /**
@@ -152,9 +147,8 @@ public class Device {
         if (StringUtils.isNotEmpty(personGuid)) {
             req.put("deviceKey", deviceKey);
         }
-        String doRequest = HttpRequest.doRequest(DeviceUrl.trancateUrl, "POST",
+        return HttpRequest.doRequest(DeviceUrl.TRANCATE_URL, "POST",
             req);
-        return doRequest;
     };
 
     /**
@@ -171,11 +165,10 @@ public class Device {
         req.put("appid", AppConfig.getAppid());
         req.put("token", token);
         req.put("deviceKey", deviceKey);
-        String doRequest = HttpRequest.doRequest(DeviceUrl.banDeviceUrl, "POST",
+        String doRequest = HttpRequest.doRequest(DeviceUrl.BAN_DEVICE_URL, "POST",
             req);
-        ResultMsg fromJson = AppConfig.gson.fromJson(doRequest,
+        return AppConfig.gson.fromJson(doRequest,
             ResultMsg.class);
-        return fromJson;
     }
 
     public ResultMsg ennableDevice(String deviceKey) {
@@ -184,14 +177,13 @@ public class Device {
         req.put("appid", AppConfig.getAppid());
         req.put("token", token);
         req.put("deviceKey", deviceKey);
-        String doRequest = HttpRequest.doRequest(DeviceUrl.enableDeviceUrl,
+        String doRequest = HttpRequest.doRequest(DeviceUrl.ENABLE_DEVICE_URL,
             "POST", req);
-        ResultMsg fromJson = AppConfig.gson.fromJson(doRequest,
+        return AppConfig.gson.fromJson(doRequest,
             ResultMsg.class);
-        return fromJson;
     };
 
-    @Test
+//    @Test
     public void test1() {
         // 添加设备
         // DeviceRes deviceCreation = deviceCreation("84E0F420576700B0", "test",

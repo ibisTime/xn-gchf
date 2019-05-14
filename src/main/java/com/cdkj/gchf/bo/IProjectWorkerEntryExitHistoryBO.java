@@ -83,11 +83,6 @@ public interface IProjectWorkerEntryExitHistoryBO
      */
     public void refreshUploadStatus(String code, String status);
 
-    /**
-     *根据身份证号查询进退场信息 
-     */
-    public ProjectWorkerEntryExitHistory getProjectWorkerEntryExitHistoryByIdCardNumber(
-            String idCardNumber);
 
     /**
      * 获取上传国家平台json

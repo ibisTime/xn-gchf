@@ -159,8 +159,8 @@ public class WorkerAttendanceBOImpl extends PaginableBOImpl<WorkerAttendance>
     }
 
     /**
-     * <p>Title: addWorkerAttendace</p>   
-     * <p>Description:保存进出记录生成的人员考勤</p>   
+     * <p>Title: addWorkerAttendace</p>
+     * <p>Description:保存进出记录生成的人员考勤</p>
      */
     @Override
     public String addWorkerAttendace(
@@ -231,9 +231,9 @@ public class WorkerAttendanceBOImpl extends PaginableBOImpl<WorkerAttendance>
     }
 
     /**
-     * 
-     * <p>Title: saveDeviceWorkerAttendance</p>   
-     * <p>Description: 保存设备识别的人员考勤</p>   
+     *
+     * <p>Title: saveDeviceWorkerAttendance</p>
+     * <p>Description: 保存设备识别的人员考勤</p>
      */
     @Override
     public WorkerAttendance saveDeviceWorkerAttendance(
@@ -270,14 +270,6 @@ public class WorkerAttendanceBOImpl extends PaginableBOImpl<WorkerAttendance>
         return workerAttendance;
     }
 
-    @Override
-    public int removeWorkerAttendance(String code) {
-        int count = 0;
-        WorkerAttendance data = new WorkerAttendance();
-        data.setCode(code);
-        count = workerAttendanceDAO.delete(data);
-        return count;
-    }
 
     @Override
     public int deleteWorkAttendanceByProject(String projectCode) {

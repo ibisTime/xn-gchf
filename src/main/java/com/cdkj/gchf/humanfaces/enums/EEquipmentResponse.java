@@ -3,7 +3,14 @@ package com.cdkj.gchf.humanfaces.enums;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * @author old3
+ */
+
 public enum EEquipmentResponse {
+    /**
+     *以下为云端设备 相关响应
+     */
     SHOUQUAN("GS_EXP-100", "接口授权 appKey 错误"),
 
     SHOUQUANCUOWU("GS_EXP-101", "接口授权 sign 错误"),

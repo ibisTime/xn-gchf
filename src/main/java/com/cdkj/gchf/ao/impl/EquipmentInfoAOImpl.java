@@ -53,10 +53,6 @@ public class EquipmentInfoAOImpl implements IEquipmentInfoAO {
     @Autowired
     private IEquipmentWorkerBO equipmentWorkerBO;
 
-    @Override
-    public String addEquipmentInfo(EquipmentInfo data) {
-        return equipmentInfoBO.saveEquipmentInfo(data);
-    }
 
     @Override
     public String addEquipmentInfo(XN631820Req req) {
@@ -74,7 +70,7 @@ public class EquipmentInfoAOImpl implements IEquipmentInfoAO {
         if (project == null) {
             throw new BizException("XN631820", "请选择项目");
         }
-        String code = null;
+        String code;
         if (deviceCreation.getCode()
             .equals(EEquipmentResponse.TIANJIACHENGGONG.getCode())) {
             // 成功
@@ -99,13 +95,6 @@ public class EquipmentInfoAOImpl implements IEquipmentInfoAO {
         return code;
     }
 
-    @Override
-    public int dropEquipmentInfo(String code) {
-        if (!equipmentInfoBO.isEquipmentInfoExist(code)) {
-            throw new BizException("xn0000", "记录编号不存在");
-        }
-        return equipmentInfoBO.removeEquipmentInfo(code);
-    }
 
     @Override
     public void modifyEquipment(XN631821Req req) {

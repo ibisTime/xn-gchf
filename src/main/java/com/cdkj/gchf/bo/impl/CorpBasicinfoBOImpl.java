@@ -79,14 +79,6 @@ public class CorpBasicinfoBOImpl extends PaginableBOImpl<CorpBasicinfo>
         return code;
     }
 
-    @Override
-    public String insertCorpBasicinfo(CorpBasicinfo corpBasicinfo) {
-        String code = OrderNoGenerater
-            .generate(EGeneratePrefix.CorpBasicinfo.getCode());
-        corpBasicinfo.setCode(code);
-        corpBasicinfoDAO.insert(corpBasicinfo);
-        return code;
-    }
 
     @Override
     public int removeCorpBasicinfo(String code) {

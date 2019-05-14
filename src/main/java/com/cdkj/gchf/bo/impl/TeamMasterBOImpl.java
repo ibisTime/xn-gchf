@@ -65,14 +65,6 @@ public class TeamMasterBOImpl extends PaginableBOImpl<TeamMaster>
     @Autowired
     private IWorkerAttendanceBO workerAttendanceBO;
 
-    @Override
-    public String saveTeamMaster(TeamMaster teamMaster) {
-        String code = null;
-        code = OrderNoGenerater.generate(EGeneratePrefix.TeamMaster.getCode());
-        teamMaster.setCode(code);
-        teamMasterDAO.insert(teamMaster);
-        return code;
-    }
 
     @Override
     public String saveTeamMaster(XN631653ReqData data, String corpName,
@@ -137,34 +129,7 @@ public class TeamMasterBOImpl extends PaginableBOImpl<TeamMaster>
         return code;
     }
 
-    @Override
-    public void saveTeamMasterByImport(XN631653Req req) {
-        User user = userBO.getBriefUser(req.getUserId());
-        for (XN631653ReqData xn631654ReqData : req.getDateList()) {
 
-            String code = null;
-            TeamMaster teamMaster = new TeamMaster();
-            teamMaster.setCorpCode(xn631654ReqData.getCorpCode());
-            teamMaster.setResponsiblePersonIdcardType("01");
-            teamMaster.setProjectCode(req.getProjectCode());
-            BeanUtils.copyProperties(xn631654ReqData, teamMaster);
-            teamMasterDAO.insert(teamMaster);
-
-            code = OrderNoGenerater
-                .generate(EGeneratePrefix.TeamMaster.getCode());
-            operateLogBO.saveOperateLog(EOperateLogRefType.TeamMaster.getCode(),
-                code, EOperateLogOperate.UploadTeamMaster.getValue(), user,
-                "导入班组信息");
-        }
-
-    }
-
-    @Override
-    public void removeTeamMaster(String userId, String code) {
-        TeamMaster data = new TeamMaster();
-        data.setCode(code);
-        teamMasterDAO.delete(data);
-    }
 
     @Override
     public void fakeDeleteTeamMaster(String projectCode, String corpCode) {
@@ -273,15 +238,6 @@ public class TeamMasterBOImpl extends PaginableBOImpl<TeamMaster>
         return teamMasterInfo;
     }
 
-    @Override
-    public List<TeamMaster> queryTeamMasterList(String projectCode) {
-        TeamMaster condition = new TeamMaster();
-
-        condition.setProjectCode(projectCode);
-        condition.setDeleteStatus(EDeleteStatus.NORMAL.getCode());
-
-        return teamMasterDAO.selectList(condition);
-    }
 
     @Override
     public TeamMaster getTeamMaster(String code) {

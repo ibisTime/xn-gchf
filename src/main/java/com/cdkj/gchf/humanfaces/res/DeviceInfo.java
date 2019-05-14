@@ -1,61 +1,61 @@
 package com.cdkj.gchf.humanfaces.res;
 
 public class DeviceInfo {
-    // 设备id
+    /** 设备id */
     private String id;
 
-    // 设备所有者 id
+    /** 设备所有者 id*/
     private String userGuid;
 
-    // 设备序列号id
+    /** 设备序列号id */
     private String deviceKey;
 
-    // 测试设备
+    /** 设备名称 */
     private String name;
 
-    // 设备状态
+    /** 设备状态 */
     private String state;
 
-    // 设备网络状态
+    /** 设备网络状态*/
     private String status;
 
-    // 设备客户端id
+    /** 设备客户端id */
     private String clientId;
 
-    // 设备客户端 id（个推），通常用于消息推送
+    /** 设备客户端 id（个推），通常用于消息推送 */
     private String cid;
 
-    // 设备应用版本号
+    /** 设备应用版本号 */
     private String versionNo;
 
-    // 设备系统版本号
+    /** 设备系统版本号*/
     private String systemVersionNo;
 
-    // 设备场景 gu id
+    /** 设备场景 gu id*/
     private String sceneGuid;
 
-    // 应用id
+    /** 应用id*/
     private String appId;
 
-    // 设备总识别次数
+    /** 设备总识别次数*/
     private Integer regNum;
 
-    // 设备tag(加密)
+    /**设备tag(加密)*/
     private String tag;
 
-    // 是否需要app升级
+    /** 是否需要app升级*/
     private Boolean needUpgradeApp;
 
-    // 是否需要系统升级
+    /** 是否需要系统升级*/
     private Boolean needUpgradeSystem;
 
-    // 是否需要升级 app和系统
+    /** 是否需要升级 app和系统 */
     private Boolean needUpgrade;
 
-    // 创建时间 时间戳
+    /** 创建时间 时间戳*/
     private long createTime;
 
-    // 设备是否禁用
+    /** 设备是否禁用 */
     private Boolean expired;
 
     public String getId() {

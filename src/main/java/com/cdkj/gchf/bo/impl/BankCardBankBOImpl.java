@@ -48,14 +48,6 @@ public class BankCardBankBOImpl extends PaginableBOImpl<BankCardInfo>
         return code;
     }
 
-    @Override
-    public String saveBankCardInfo(BankCardInfo bankCardInfo) {
-        String code = OrderNoGenerater
-            .generate(EGeneratePrefix.BankCardInfo.getCode());
-        bankCardInfo.setCode(code);
-        bankCardInfoDAO.insert(bankCardInfo);
-        return code;
-    }
 
     @Override
     public String saveBankCardInfo(XN631770ReqDetail data,
@@ -83,12 +75,6 @@ public class BankCardBankBOImpl extends PaginableBOImpl<BankCardInfo>
         return code;
     }
 
-    @Override
-    public void removeBankCardInfo(String code) {
-        BankCardInfo bankCardInfo = new BankCardInfo();
-        bankCardInfo.setCode(code);
-        bankCardInfoDAO.delete(bankCardInfo);
-    }
 
     @Override
     public void refreshBankCardInfo(XN631752Req req) {
@@ -112,15 +98,6 @@ public class BankCardBankBOImpl extends PaginableBOImpl<BankCardInfo>
         bankCardInfoDAO.updateBankCardInfo(condition);
     }
 
-    @Override
-    public void refreshStatus(String businessSysNo, String status) {
-        BankCardInfo bankCardInfo = new BankCardInfo();
-
-        bankCardInfo.setBusinessSysNo(businessSysNo);
-        bankCardInfo.setStatus(status);
-
-        bankCardInfoDAO.updateBankCardInfoStatusByBussiness(bankCardInfo);
-    }
 
     @Override
     public BankCardInfo getBankCardInfoByNum(String payRollBankCardNumber) {
@@ -172,10 +149,6 @@ public class BankCardBankBOImpl extends PaginableBOImpl<BankCardInfo>
         return bankCardInfoDAO.selectList(bankCardInfo);
     }
 
-    @Override
-    public BankCardInfo getBankCardInfo(Long id) {
-        return null;
-    }
 
     @Override
     public BankCardInfo getBankCardInfo(String code) {
@@ -201,10 +174,5 @@ public class BankCardBankBOImpl extends PaginableBOImpl<BankCardInfo>
         return bankCardInfoDAO.updateBankCardInfoStatus(select);
     }
 
-    @Override
-    public List<BankCardInfo> queryBankCardInfoListByIdcardNumber(
-            List<String> idCardNumbers) {
-        return bankCardInfoDAO.selectBankCardByIdcard(idCardNumbers);
-    }
 
 }

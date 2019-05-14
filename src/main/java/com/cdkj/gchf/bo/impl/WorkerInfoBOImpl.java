@@ -41,15 +41,6 @@ public class WorkerInfoBOImpl extends PaginableBOImpl<WorkerInfo>
     @Autowired
     private IWorkerInfoDAO workerInfoDAO;
 
-    @Override
-    public boolean isWorkerInfoExist(String code) {
-        WorkerInfo condition = new WorkerInfo();
-        condition.setCode(code);
-        if (workerInfoDAO.selectTotalCount(condition) > 0) {
-            return true;
-        }
-        return false;
-    }
 
     @Override
     public String saveWorkerInfo(XN631790Req req) {
@@ -90,16 +81,6 @@ public class WorkerInfoBOImpl extends PaginableBOImpl<WorkerInfo>
         return code;
     }
 
-    @Override
-    public int removeWorkerInfo(String code) {
-        int count = 0;
-        if (StringUtils.isNotBlank(code)) {
-            WorkerInfo data = new WorkerInfo();
-            data.setCode(code);
-            count = workerInfoDAO.delete(data);
-        }
-        return count;
-    }
 
     @Override
     public Paginable<WorkerInfo> doQuery(String idCardNumber,
@@ -150,17 +131,7 @@ public class WorkerInfoBOImpl extends PaginableBOImpl<WorkerInfo>
         return data;
     }
 
-    @Override
-    public WorkerInfo getWorkerInfoByCondition(WorkerInfo workerInfo) {
-        return workerInfoDAO.select(workerInfo);
-    }
 
-    @Override
-    public WorkerInfo getWorkerInfoByCelephone(String phone) {
-        WorkerInfo workerInfo = new WorkerInfo();
-        workerInfo.setCellPhone(phone);
-        return workerInfoDAO.select(workerInfo);
-    }
 
     @Override
     public WorkerInfo getBriefWorkerInfo(String code) {
@@ -177,10 +148,6 @@ public class WorkerInfoBOImpl extends PaginableBOImpl<WorkerInfo>
         return workerInfoDAO.select(workerInfo);
     }
 
-    @Override
-    public WorkerInfo getWorkerInfoByGuid(String guid) {
-        return workerInfoDAO.selectWorkerInfo(guid);
-    }
 
     @Override
     public List<WorkerInfo> queryStaffListBrief(WorkerInfo condition, int start,
@@ -193,14 +160,6 @@ public class WorkerInfoBOImpl extends PaginableBOImpl<WorkerInfo>
         return workerInfoDAO.selectTotalCount(condition);
     }
 
-    @Override
-    public String saveWorkerInfo(WorkerInfo workerInfo) {
-        String code = null;
-        code = OrderNoGenerater.generate(EGeneratePrefix.WorkerInfo.getCode());
-        workerInfo.setCode(code);
-        workerInfoDAO.insert(workerInfo);
-        return code;
-    }
 
     @Override
     public int refreshWorkerInfo(XN631791Req req) {

@@ -1,9 +1,14 @@
 package com.cdkj.gchf.humanfaces.enums;
 
-public enum EDirection {
-    IN("1", "入场"),
+/**
+ * @author old3
+ */
 
-    OUT("2", "立场");
+public enum EDirection {
+    //设备方向
+    IN("1", "入场"),
+    //设备方向
+    OUT("2", "离场");
 
     EDirection(String code, String status) {
         this.code = code;

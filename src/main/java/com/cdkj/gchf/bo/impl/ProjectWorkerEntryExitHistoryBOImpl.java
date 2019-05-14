@@ -252,14 +252,6 @@ public class ProjectWorkerEntryExitHistoryBOImpl
         return jsonObject;
     }
 
-    @Override
-    public ProjectWorkerEntryExitHistory getProjectWorkerEntryExitHistoryByIdCardNumber(
-            String idCardNumber) {
-        ProjectWorkerEntryExitHistory projectWorkerEntryExitHistory = new ProjectWorkerEntryExitHistory();
-        projectWorkerEntryExitHistory.setIdcardNumber(idCardNumber);
-        return projectWorkerEntryExitHistoryDAO
-            .select(projectWorkerEntryExitHistory);
-    }
 
     @Override
     public ProjectWorkerEntryExitHistory getLastTimeEntryTime(

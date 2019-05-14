@@ -7,7 +7,7 @@ package com.cdkj.gchf.humanfaces.enums;
  * @date:   2019年5月7日 上午10:08:15     
  */
 public enum EEquipmentStatus {
-
+    //设备状态
     UNBINDING("1", "设备未绑定"),
 
     BINDING("2", "绑定中"),

@@ -328,12 +328,6 @@ public class ProjectWorkerEntryExitHistoryAOImpl
             .queryProjectWorkerEntryExitHistoryList(condition);
     }
 
-    @Override
-    public ProjectWorkerEntryExitHistory getProjectWorkerEntryExitHistory(
-            String code) {
-        return projectWorkerEntryExitHistoryBO
-            .getProjectWorkerEntryExitHistory(code);
-    }
 
     @Override
     public Object queryProjectWorkerEntryExitHistory(String code) {

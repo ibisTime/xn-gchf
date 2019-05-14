@@ -40,6 +40,9 @@ import com.cdkj.gchf.humanfaces.enums.EWorkerUploadStatus;
 import com.cdkj.gchf.humanfaces.res.DeviceWorkerPicRes;
 import com.cdkj.gchf.humanfaces.res.DeviceWorkerRes;
 
+/**
+ * @author old3
+ */
 @Service
 public class WorkerInfoAOImpl implements IWorkerInfoAO {
 
@@ -113,13 +116,6 @@ public class WorkerInfoAOImpl implements IWorkerInfoAO {
         return workerCode;
     }
 
-    @Override
-    public int dropWorkerInfo(String code) {
-        if (!workerInfoBO.isWorkerInfoExist(code)) {
-            throw new BizException("xn0000", "记录编号不存在");
-        }
-        return workerInfoBO.removeWorkerInfo(code);
-    }
 
     @Override
     public void refreshAttendancePicture(String code, String attendancePicture,

@@ -223,13 +223,6 @@ public class ProjectWorkerBOImpl extends PaginableBOImpl<ProjectWorker>
         return code;
     }
 
-    @Override
-    public void removeProjectWorker(String code) {
-        ProjectWorker data = new ProjectWorker();
-        data.setCode(code);
-        data.setDeleteStatus(EDeleteStatus.DELETED.getCode());
-        projectWorkerDAO.updateProjectWorkerDeleteStatus(data);
-    }
 
     @Override
     public void fakeDeleteProjectWorker(String projectcode) {
@@ -472,16 +465,6 @@ public class ProjectWorkerBOImpl extends PaginableBOImpl<ProjectWorker>
         return projectWorkerDAO.selectList(projectWorker);
     }
 
-    @Override
-    public List<ProjectWorker> queryProjectWorkerList(String projectCode,
-            String idcardNumber) {
-        ProjectWorker condition = new ProjectWorker();
-
-        condition.setProjectCode(projectCode);
-        condition.setIdcardNumber(idcardNumber);
-
-        return projectWorkerDAO.selectList(condition);
-    }
 
     @Override
     public ProjectWorker getProjectWorker(String code) {

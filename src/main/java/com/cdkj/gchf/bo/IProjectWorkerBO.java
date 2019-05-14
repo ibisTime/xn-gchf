@@ -22,7 +22,7 @@ public interface IProjectWorkerBO extends IPaginableBO<ProjectWorker> {
     /**
      * 保存项目人员 
      */
-    public String saveProjectWorker(XN631690Req req);
+    String saveProjectWorker(XN631690Req req);
 
     /**
      * 保存项目人员-导入
@@ -37,10 +37,6 @@ public interface IProjectWorkerBO extends IPaginableBO<ProjectWorker> {
             CorpBasicinfo corpBasicinfo, TeamMaster teamName,
             XN631693ReqData req);
 
-    /**
-     * 删除项目人员 
-     */
-    public void removeProjectWorker(String code);
 
     /**
      *修改项目人员 
@@ -86,8 +82,6 @@ public interface IProjectWorkerBO extends IPaginableBO<ProjectWorker> {
 
     public List<ProjectWorker> queryProjectWorkerList(ProjectWorker condition);
 
-    public List<ProjectWorker> queryProjectWorkerList(String projectCode,
-            String idcardNumber);
 
     List<ProjectWorker> queryProjectWorkerListByProject(String projectCode);
 

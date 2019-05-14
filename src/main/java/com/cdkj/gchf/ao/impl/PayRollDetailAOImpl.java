@@ -47,23 +47,19 @@ public class PayRollDetailAOImpl implements IPayRollDetailAO {
     @Autowired
     private ICorpBasicinfoBO corpBasicinfoBO;
 
-    @Override
-    public String addPayRollDetail(PayRollDetail data) {
-        return payRollDetailBO.savePayRollDetail(data);
-    }
 
     @Override
     public void dropPayRollDetail(List<String> codeList) {
         for (String code : codeList) {
             String uploadStatus = payRollDetailBO.getPayRollDetail(code)
-                .getUploadStatus();
+                    .getUploadStatus();
 
             if (uploadStatus
-                .equals(EPayRollUploadStatus.UPLOAD_UNEDITABLE.getCode())) {
+                    .equals(EPayRollUploadStatus.UPLOAD_UNEDITABLE.getCode())) {
                 throw new BizException("XN631811", "工资单已上传,不可删除");
             }
             payRollDetailBO.updatePayRollDetailDeleteStatus(code,
-                EDeleteStatus.DELETED.getCode());
+                    EDeleteStatus.DELETED.getCode());
 
         }
 
@@ -76,7 +72,7 @@ public class PayRollDetailAOImpl implements IPayRollDetailAO {
 
     @Override
     public Paginable<PayRollDetail> queryPayRollDetailPage(int start, int limit,
-            PayRollDetail condition) {
+                                                           PayRollDetail condition) {
 
         User user = userBO.getBriefUser(condition.getUserId());
         if (EUserKind.Owner.getCode().equals(user.getType())) {
@@ -84,7 +80,7 @@ public class PayRollDetailAOImpl implements IPayRollDetailAO {
         }
 
         Paginable<PayRollDetail> page = payRollDetailBO.getPaginable(start,
-            limit, condition);
+                limit, condition);
         List<PayRollDetail> list = page.getList();
         for (PayRollDetail payRollDetail : list) {
 
@@ -95,7 +91,7 @@ public class PayRollDetailAOImpl implements IPayRollDetailAO {
             }
             if (payRoll.getTeamSysNo() != null) {
                 TeamMaster teamMaster = teamMasterBO
-                    .getTeamMaster(payRoll.getTeamSysNo());
+                        .getTeamMaster(payRoll.getTeamSysNo());
                 if (teamMaster != null) {
                     payRollDetail.setTeamName(teamMaster.getTeamName());
                 }
@@ -104,7 +100,7 @@ public class PayRollDetailAOImpl implements IPayRollDetailAO {
             Project project = projectBO.getProject(payRoll.getProjectCode());
             payRollDetail.setProjectName(project.getName());
             CorpBasicinfo corpBasicinfoByCorp = corpBasicinfoBO
-                .getCorpBasicinfoByCorp(payRoll.getCorpCode());
+                    .getCorpBasicinfoByCorp(payRoll.getCorpCode());
             payRollDetail.setCorpName(corpBasicinfoByCorp.getCorpName());
         }
         page.setList(list);
@@ -116,7 +112,7 @@ public class PayRollDetailAOImpl implements IPayRollDetailAO {
         List<PayRollDetail> queryList = payRollDetailBO.queryList(condition);
         for (PayRollDetail payRollDetail : queryList) {
             PayRoll payRoll = payRollBO
-                .getPayRoll(payRollDetail.getPayRollCode());
+                    .getPayRoll(payRollDetail.getPayRollCode());
             payRoll.setPayMonth(payRoll.getPayMonth());
         }
         return queryList;
@@ -125,10 +121,10 @@ public class PayRollDetailAOImpl implements IPayRollDetailAO {
     @Override
     public int editPayRollDetail(XN631810Req req) {
         PayRollDetail payRollDetail = payRollDetailBO
-            .getPayRollDetail(req.getCode());
+                .getPayRollDetail(req.getCode());
 
         if (payRollDetail.getUploadStatus()
-            .equals(EPayRollUploadStatus.UPLOAD_UNEDITABLE.getCode())) {
+                .equals(EPayRollUploadStatus.UPLOAD_UNEDITABLE.getCode())) {
             throw new BizException("XN631810", "工资单已上传,不可修改");
         }
         // 入参校验

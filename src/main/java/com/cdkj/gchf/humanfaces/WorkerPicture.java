@@ -4,7 +4,6 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.apache.commons.lang3.StringUtils;
-import org.junit.Test;
 import org.springframework.stereotype.Component;
 
 import com.cdkj.gchf.humanfaces.res.DeviceWorkerPicRes;
@@ -29,7 +28,6 @@ public class WorkerPicture {
      * @param: @param validLevel
      * @param: @return      
      * @return: String      
-     * @throws
      */
     public DeviceWorkerPicRes picRegisterToCloud(String guid, String img,
             String type, String useUFaceCloud, String validLevel) {
@@ -50,7 +48,7 @@ public class WorkerPicture {
         if (StringUtils.isNotBlank(validLevel)) {
             req.put("validLevel", validLevel);
         }
-        String doRequest = HttpRequest.doRequest(WorkerUrl.picAddBase64Url,
+        String doRequest = HttpRequest.doRequest(WorkerUrl.PIC_ADD_BASE64_URL,
             "POST", req);
         System.out.println(doRequest);
         DeviceWorkerPicRes fromJson = AppConfig.gson.fromJson(doRequest,
@@ -67,7 +65,6 @@ public class WorkerPicture {
      * @param: @param validLevel
      * @param: @return      
      * @return: String      
-     * @throws
      */
     public DeviceWorkerPicRes picRegisterToCloudUrl(String guid, String img,
             String type, String useUFaceCloud, String validLevel) {
@@ -84,7 +81,7 @@ public class WorkerPicture {
         if (StringUtils.isNotBlank(validLevel)) {
             req.put("validLevel", validLevel);
         }
-        String doRequest = HttpRequest.doRequest(WorkerUrl.picAddUrl, "POST",
+        String doRequest = HttpRequest.doRequest(WorkerUrl.PIC_ADD_URL, "POST",
             req);
         DeviceWorkerPicRes fromJson = AppConfig.gson.fromJson(doRequest,
             DeviceWorkerPicRes.class);
@@ -100,17 +97,15 @@ public class WorkerPicture {
      * @param: @param validLevel
      * @param: @return      
      * @return: String      
-     * @throws
      */
-    public String picQueryCloud(String guid) {
+    private String picQueryCloud(String guid) {
         String token = AppConfig.getToken();
         Map<String, String> req = new HashMap<>();
         req.put("appid", AppConfig.getAppid());
         req.put("token", token);
         req.put("guid", guid);
-        String doRequest = HttpRequest.doRequest(WorkerUrl.picQueryUrl, "GET",
+        return HttpRequest.doRequest(WorkerUrl.PIC_QUERY_URL, "GET",
             req);
-        return doRequest;
     }
 
     /**
@@ -125,14 +120,13 @@ public class WorkerPicture {
         req.put("token", token);
         req.put("guid", picGuid);
         req.put("personGuid", workerGuid);
-        String doRequest = HttpRequest.doRequest(WorkerUrl.picDelUrl, "POST",
+        String doRequest = HttpRequest.doRequest(WorkerUrl.PIC_DEL_URL, "POST",
             req);
-        ResultMsg fromJson = AppConfig.gson.fromJson(doRequest,
+        return AppConfig.gson.fromJson(doRequest,
             ResultMsg.class);
-        return fromJson;
     }
 
-    @Test
+//    @Test
     public void test1() {
 
         String picQueryCloud = picQueryCloud(

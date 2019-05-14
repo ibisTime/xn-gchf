@@ -6,7 +6,6 @@ import java.util.Map;
 
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
-import org.junit.Test;
 import org.springframework.stereotype.Component;
 
 import com.cdkj.gchf.humanfaces.res.DeviceWorkerRes;
@@ -46,12 +45,11 @@ public class DeviceWorker {
         if (StringUtils.isNotBlank(type)) {
             req.put("type", type);
         }
-        String request = HttpRequest.doRequest(DeviceWorkUrl.workerAddUrl,
+        String request = HttpRequest.doRequest(DeviceWorkUrl.WORKER_ADD_URL,
             "POST", req);
-        DeviceWorkerRes fromJson = AppConfig.gson.fromJson(request,
-            DeviceWorkerRes.class);
 
-        return fromJson;
+        return AppConfig.gson.fromJson(request,
+            DeviceWorkerRes.class);
     }
 
     /**
@@ -65,9 +63,8 @@ public class DeviceWorker {
         req.put("appid", AppConfig.getAppid());
         req.put("token", token);
         req.put("guid", guid);
-        String request = HttpRequest.doRequest(DeviceWorkUrl.workerDelUrl,
+        return HttpRequest.doRequest(DeviceWorkUrl.WORKER_DEL_URL,
             "POST", req);
-        return request;
     }
 
     /**
@@ -90,7 +87,7 @@ public class DeviceWorker {
         req.put("phone", phone);
         req.put("tag", tag);
         req.put("type", type);
-        String request = HttpRequest.doRequest(DeviceWorkUrl.workerUpdateUrl,
+        String request = HttpRequest.doRequest(DeviceWorkUrl.WORKER_UPDATE_URL,
             "POST", req);
         return request;
     }
@@ -106,7 +103,7 @@ public class DeviceWorker {
         req.put("appid", AppConfig.getAppid());
         req.put("token", token);
         req.put("guid", guid);
-        String request = HttpRequest.doRequest(DeviceWorkUrl.workerQueryUrl,
+        String request = HttpRequest.doRequest(DeviceWorkUrl.WORKER_QUERY_URL,
             "GET", req);
         return request;
 
@@ -123,9 +120,9 @@ public class DeviceWorker {
         req.put("appid", AppConfig.getAppid());
         req.put("token", token);
         req.put("deviceKey", deviceKey);
-        String person = "";
+        StringBuilder person = new StringBuilder();
         for (String string : personGuids) {
-            person += string + ",";
+            person.append(string).append(",");
         }
         if (CollectionUtils.isEmpty(personGuids)) {
             return null;
@@ -137,7 +134,7 @@ public class DeviceWorker {
                 && StringUtils.isNotBlank(endTime)) {
             req.put("passTimes", startTime + "," + endTime);
         }
-        String response = HttpRequest.doRequest(DeviceWorkUrl.authorizationUrl,
+        String response = HttpRequest.doRequest(DeviceWorkUrl.AUTHORIZATION_URL,
             "POST", req);
         resultMsg = AppConfig.gson.fromJson(response, ResultMsg.class);
         return resultMsg;
@@ -155,7 +152,7 @@ public class DeviceWorker {
         req.put("appid", AppConfig.getAppid());
         req.put("token", token);
         req.put("length", "77");
-        String doRequest = HttpRequest.doRequest(DeviceWorkUrl.workerSearchUrl,
+        String doRequest = HttpRequest.doRequest(DeviceWorkUrl.WORKER_SEARCH_URL,
             "POST", req);
         System.out.println(doRequest);
         return doRequest;
@@ -175,7 +172,7 @@ public class DeviceWorker {
         req.put("token", token);
         req.put("guid", guid);
         String doRequest = HttpRequest
-            .doRequest(DeviceWorkUrl.authorizationQueryUrl, "GET", req);
+            .doRequest(DeviceWorkUrl.AUTHORIZATION_QUERY_URL, "GET", req);
         System.out.println(doRequest);
         return doRequest;
     }
@@ -198,7 +195,7 @@ public class DeviceWorker {
         if (StringUtils.isNotBlank(personGuid)) {
             req.put("personGuid", personGuid);
         }
-        String doRequest = HttpRequest.doRequest(DeviceWorkUrl.ClearWorkersUrl,
+        String doRequest = HttpRequest.doRequest(DeviceWorkUrl.CLEAR_WORKERS_URL,
             "POST", req);
         return doRequest;
     }
@@ -219,12 +216,11 @@ public class DeviceWorker {
         if (StringUtils.isNotBlank(deviceKey)) {
             req.put("deviceKeys", deviceKey);
         }
-        String doRequest = HttpRequest.doRequest(
-            DeviceWorkUrl.BatchEliminationOfPersonnelEquipmentUrl, "POST", req);
-        return doRequest;
+        return HttpRequest.doRequest(
+            DeviceWorkUrl.BATCH_ELIMINATION_OF_PERSONNEL_EQUIPMENT_URL, "POST", req);
     }
 
-    @Test
+//    @Test
     public void test22() {
         // 人员录入
         // String device = cloudWorkerAdd("84E0F420576700B0", "老三", "002532123",
@@ -240,9 +236,9 @@ public class DeviceWorker {
         // E73D7C4277A540018D6E90AA6595A182
 
         // 人员查询
-        String cloudWorkerQuery = cloudWorkerQuery(
-            "9CB3F6AF244D499BA0EE6786CAC5AA44");
-        System.out.println(cloudWorkerQuery);
+//        String cloudWorkerQuery = cloudWorkerQuery(
+//            "9CB3F6AF244D499BA0EE6786CAC5AA44");
+//        System.out.println(cloudWorkerQuery);
         // JSONObject parse = JSONObject.parseObject(cloudWorkerQuery);
         // System.out.println(parse.getString("code")
         // .equals(EEquipmentWorkerResponse.CHAXUNCHENGGONG.getCode())

@@ -17,97 +17,80 @@ import com.cdkj.gchf.dto.req.XN631910Req;
 
 public interface ITeamMasterBO extends IPaginableBO<TeamMaster> {
     /**
-     * 保存项目班组 
+     * 保存项目班组
      */
     public String saveTeamMaster(XN631650Req data, CorpBasicinfo corpBasicinfo);
 
-    /**
-     * 保存项目班组 
-     */
-    public String saveTeamMaster(TeamMaster teamMaster);
 
     /**
-     * 保存项目班组 
+     * 保存项目班组
      */
     String saveTeamMaster(XN631653ReqData data, String corpName,
-            XN631653Req req);
+                          XN631653Req req);
+
 
     /**
-     * 导入班组信息 
-     */
-    void saveTeamMasterByImport(XN631653Req req);
-
-    /**
-     * 删除项目班组 
-     */
-    public void removeTeamMaster(String userId, String code);
-
-    /**
-     * 假删除班组信息 
+     * 假删除班组信息
      */
     void fakeDeleteTeamMaster(String projectCode, String corpCode);
 
     /**
-     * 修改项目班组 
+     * 修改项目班组
      */
-    public void refreshTeamMaster(XN631652Req data);
+    void refreshTeamMaster(XN631652Req data);
 
     /**
-     * 修改班组删除状态 
+     * 修改班组删除状态
      */
     void updateTeamMasterDeleteStatus(String code, String status);
 
     /**
-     * 更新上传状态 
+     * 更新上传状态
      */
     public void refreshUploadStatus(String code, String uploadStatus);
 
     /**
-     * 获取上传国家平台json 
+     * 获取上传国家平台json
      */
     String getRequestJson(TeamMaster teamMaster, ProjectConfig projectConfig);
 
     /**
-     *  向下更新班组名称
+     * 向下更新班组名称
      */
     void refreshTeamMasterDown(String localTeamNO, String teamName);
 
     /**
-     * 反射修改本地国家平台编号 
+     * 反射修改本地国家平台编号
      */
-    public void refreshTeamSysNoByLocal(String code, String teamSysNo);
+     void refreshTeamSysNoByLocal(String code, String teamSysNo);
 
     /**
-     * code查 
+     * code查
      */
-    public TeamMaster getTeamMaster(String code);
+     TeamMaster getTeamMaster(String code);
 
     /**
-     * 条件查班组信息 
+     * 条件查班组信息
      */
-    public List<TeamMaster> queryTeamMasterList(TeamMaster condition);
+     List<TeamMaster> queryTeamMasterList(TeamMaster condition);
+
 
     /**
-     * 通过projectCode查询班组信息 
-     */
-    public List<TeamMaster> queryTeamMasterList(String projectCode);
-
-    /**
-     *查询项目班 
+     * 查询项目班
      */
     TeamMaster getTeamMasterByProject(String ProjectCode, String corpCode,
-            String TeamMasterName);
+                                      String TeamMasterName);
 
     /**
-     * 根据项目编号查询班组 
+     * 根据项目编号查询班组
      */
     List<TeamMaster> queryTeamMasterByProject(String projectCode,
-            String corpCode);
+                                              String corpCode);
 
     /**
-     * 条件查 
+     * 条件查
      */
-    public TeamMaster getTeamMasterByCondition(TeamMaster condition);
+    TeamMaster getTeamMasterByCondition(TeamMaster condition);
 
     /****v200_国家平台接口****/
     public void doUpload(XN631908Req req, ProjectConfig projectConfig);
@@ -115,6 +98,6 @@ public interface ITeamMasterBO extends IPaginableBO<TeamMaster> {
     public void doUpdate(XN631909Req req, ProjectConfig projectConfig);
 
     public Paginable<TeamMaster> doQuery(XN631910Req req,
-            ProjectConfig projectConfig);
+                                         ProjectConfig projectConfig);
 
 }

@@ -14,35 +14,38 @@ import com.cdkj.gchf.dto.req.XN631905Req;
 import com.cdkj.gchf.dto.req.XN631906Req;
 import com.cdkj.gchf.dto.req.XN631907Req;
 
+/**
+ * @author old3
+ */
 @Component
 public interface IProjectCorpInfoAO {
-    static final String DEFAULT_ORDER_COLUMN = "code";
+    String DEFAULT_ORDER_COLUMN = "code";
 
     /**
      * @Description: 新增参建
      */
-    public String addProjectCorpInfo(XN631630Req data);
+    String addProjectCorpInfo(XN631630Req data);
 
     /**
      * @Description: 删除参建单位
      */
-    public void dropProjectCorpInfo(List<String> codeList);
+    void dropProjectCorpInfo(List<String> codeList);
 
     /**
      * @Description: 修改参建单位
      */
-    public void editProjectCorpInfo(XN631632Req req);
+    void editProjectCorpInfo(XN631632Req req);
 
     /**
      * @Description: 导入参建单位
      */
-    public void importProjectCorpInfo(XN631633Req req);
+    void importProjectCorpInfo(XN631633Req req);
 
     /**
      * 
      * @Description: 上传到国家平台
      */
-    public void uploadProjectCorpInfo(String userId, List<String> codes);
+    void uploadProjectCorpInfo(String userId, List<String> codes);
 
     /**
      * 修改国家平台
@@ -50,27 +53,27 @@ public interface IProjectCorpInfoAO {
     void updatePlantformProjectCorpInfo(XN631635Req req);
 
     /****国家平台接口****/
-    public void uploadProjectCorpInfo(XN631905Req data);
+    void uploadProjectCorpInfo(XN631905Req data);
 
     /**
      * 修改平台（200版本 
      */
-    public void updateProjectCorpInfo(XN631906Req req);
+    void updateProjectCorpInfo(XN631906Req req);
 
     /**
      * 查询国家平台参建单位信息 
      */
-    public Paginable<ProjectCorpInfo> queryProjectCorpInfo(XN631907Req req);
+    Paginable<ProjectCorpInfo> queryProjectCorpInfo(XN631907Req req);
 
     /**
      * 以下为本地查询
      */
-    public ProjectCorpInfo getProjectCorpInfo(String code);
+    ProjectCorpInfo getProjectCorpInfo(String code);
 
-    public Paginable<ProjectCorpInfo> queryProjectCorpInfoPage(int start,
-            int limit, ProjectCorpInfo condition);
+    Paginable<ProjectCorpInfo> queryProjectCorpInfoPage(int start,
+                                                        int limit, ProjectCorpInfo condition);
 
-    public List<ProjectCorpInfo> queryProjectCorpInfoList(
+    List<ProjectCorpInfo> queryProjectCorpInfoList(
             ProjectCorpInfo condition);
 
 }

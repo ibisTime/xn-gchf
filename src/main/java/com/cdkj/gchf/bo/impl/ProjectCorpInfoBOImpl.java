@@ -285,14 +285,6 @@ public class ProjectCorpInfoBOImpl extends PaginableBOImpl<ProjectCorpInfo>
         return projectCorpInfoDAO.select(condition);
     }
 
-    @Override
-    public List<ProjectCorpInfo> getProjectCorpInfoList(String projectCode) {
-        ProjectCorpInfo projectCorpInfo = new ProjectCorpInfo();
-        projectCorpInfo.setProjectCode(projectCode);
-        projectCorpInfo.setDeleteStatus(EDeleteStatus.NORMAL.getCode());
-        return projectCorpInfoDAO.selectList(projectCorpInfo);
-
-    }
 
     @Override
     public ProjectCorpInfo getProjectCorpInfo(String projectCode,

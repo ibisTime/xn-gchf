@@ -1,6 +1,11 @@
 package com.cdkj.gchf.humanfaces.enums;
 
+/**
+ * @author old3
+ */
+
 public enum EEquipmentWorkerResponse {
+    //设备人员相关响应
     SHOUQUAN("GS_EXP-100", "接口授权 appKey 错误"),
 
     SHOUQUANCUOWU("GS_EXP-101", "接口授权 sign 错误"),

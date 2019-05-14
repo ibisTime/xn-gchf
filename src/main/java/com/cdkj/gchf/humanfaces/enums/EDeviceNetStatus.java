@@ -1,8 +1,13 @@
 package com.cdkj.gchf.humanfaces.enums;
 
-public enum EDeviceNetStatus {
-    ONLINE("1", "在线"),
+/**
+ * @author old3
+ */
 
+public enum EDeviceNetStatus {
+    //设备网络在线
+    ONLINE("1", "在线"),
+    //设备网络离线
     OFFLINE("2", "离线");
 
     EDeviceNetStatus(String code, String status) {

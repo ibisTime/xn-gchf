@@ -9,7 +9,7 @@ package com.cdkj.gchf.humanfaces.enums;
  * @Copyright:
  */
 public enum EPicResponse {
-
+    //图片相关响应
     TIANJIACHENG("GS_SUS600", "照片录入成功");
 
     EPicResponse(String code, String message) {

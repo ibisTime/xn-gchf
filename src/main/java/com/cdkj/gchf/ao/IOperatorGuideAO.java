@@ -17,22 +17,49 @@ import com.cdkj.gchf.dto.req.XN631122Req;
  */
 @Component
 public interface IOperatorGuideAO {
-    static final String DEFAULT_ORDER_COLUMN = "code";
+    String DEFAULT_ORDER_COLUMN = "code";
 
-    // 添加操作指南
-    public String addOperatorGuide(XN631120Req req);
+    /**
+     * 添加操作指南
+     * @param req
+     * @return
+     */
+    String addOperatorGuide(XN631120Req req);
 
-    // 删除操作指南
-    public void dropOperatorGuide(String code);
+    /**
+     *  删除操作指南
+     * @param code 根据主键code删除操作指南
+     */
+    void dropOperatorGuide(String code);
 
-    // 编辑操作指南
-    public void editOperatorGuide(XN631122Req req);
+    /**
+     * 编辑操作指南
+     * @param req
+     */
+    void editOperatorGuide(XN631122Req req);
 
-    public Paginable<OperatorGuide> queryOperatorGuidePage(int start, int limit,
-            OperatorGuide condition);
+    /**
+     * 分页查操作指南
+     * @param start 开始页数
+     * @param limit 每页记录数
+     * @param condition 条件
+     * @return
+     */
+    Paginable<OperatorGuide> queryOperatorGuidePage(int start, int limit,
+                                                    OperatorGuide condition);
 
-    public List<OperatorGuide> queryOperatorGuideList(OperatorGuide condition);
+    /**
+     * 按条件查询操作指南列表
+     * @param condition 条件
+     * @return
+     */
+    List<OperatorGuide> queryOperatorGuideList(OperatorGuide condition);
 
-    public OperatorGuide getOperatorGuide(String code);
+    /**
+     * 按code详细查操作指南
+     * @param code 主键code
+     * @return
+     */
+    OperatorGuide getOperatorGuide(String code);
 
 }

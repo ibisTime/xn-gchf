@@ -158,18 +158,6 @@ public class WorkerContractBOImpl extends PaginableBOImpl<WorkerContract>
         workerContractDAO.updateWorkerContractDeleteStatus(workerContract);
     }
 
-    @Override
-    public void removeWorkerContract(String userId, String code) {
-        WorkerContract data = new WorkerContract();
-        data.setCode(code);
-        WorkerContract workerContract = workerContractBO
-            .getWorkerContract(code);
-        if (workerContract.getUploadStatus()
-            .equals(EWorkerContractUploadStatus.UPLOAD_UNEDITABLE.getCode())) {
-            throw new BizException("XN631671", "劳动合同已上传,无法删除");
-        }
-        workerContractDAO.delete(data);
-    }
 
     @Override
     public void refreshUploadStatus(String code, String status) {
@@ -280,16 +268,6 @@ public class WorkerContractBOImpl extends PaginableBOImpl<WorkerContract>
         return workerContractDAO.selectList(condition);
     }
 
-    @Override
-    public List<WorkerContract> queryWorkerContract(String projectCode,
-            String workerCode) {
-        WorkerContract workerContract = new WorkerContract();
-        workerContract.setProjectCode(projectCode);
-        workerContract.setWorkerCode(workerCode);
-        workerContract.setDeleteStatus(EDeleteStatus.NORMAL.getCode());
-        return workerContractDAO.selectList(workerContract);
-
-    }
 
     @Override
     public WorkerContract getWorkerContract(String code) {

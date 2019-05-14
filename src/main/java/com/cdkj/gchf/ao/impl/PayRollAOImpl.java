@@ -219,7 +219,7 @@ public class PayRollAOImpl implements IPayRollAO {
 
         payRollBO.doUpload(req, projectConfig);
     }
-
+    @Override
     public void uploadPayRollList(String userId, List<String> codeList) {
         User user = userBO.getBriefUser(userId);
 

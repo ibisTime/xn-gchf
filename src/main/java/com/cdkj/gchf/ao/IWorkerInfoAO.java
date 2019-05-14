@@ -13,35 +13,62 @@ import com.cdkj.gchf.dto.req.XN631793Req;
 
 @Component
 public interface IWorkerInfoAO {
-    static final String DEFAULT_ORDER_COLUMN = "code";
+    String DEFAULT_ORDER_COLUMN = "code";
 
-    public String addWorkerInfo(XN631790Req req);
+    String addWorkerInfo(XN631790Req req);
 
-    public int addWorkerInfoIdCardInfo(XN631791Req req);
+    int addWorkerInfoIdCardInfo(XN631791Req req);
 
-    public int addWorkerInfoContact(XN631792Req req);
+    int addWorkerInfoContact(XN631792Req req);
 
-    public int dropWorkerInfo(String code);
 
     /**
-     * <p>Title: refreshAttendancePicture</p>   
-     * <p>Description: base64方式 上传考勤照片到云端  保存云端返回的图片URL到本地 
-     * </p>   
-     * @param code 人员编号
-     * @param attendancePicture 考勤照片 (base64)
+     * base64方式 上传考勤照片到云端  保存云端返回的图片URL到本地
+     * 根据workerinfo表中，人员上传状态和人员考勤照片状态处理
+     * 已添加，删除重加 ，未添加，添加
+     * @param code 主键code
+     * @param attendancePicture 人员考勤照片(base64字符串)
+     * @param userId 用户id
      */
-    public void refreshAttendancePicture(String code, String attendancePicture,
-            String userId);
+    void refreshAttendancePicture(String code, String attendancePicture,
+                                  String userId);
 
-    public Paginable<WorkerInfo> queryWorkerInfoPage(String userId, int start,
-            int limit, WorkerInfo condition);
+    /**
+     * 分页查
+     * @param userId yonghuid
+     * @param start
+     * @param limit
+     * @param condition
+     * @return
+     */
+    Paginable<WorkerInfo> queryWorkerInfoPage(String userId, int start,
+                                              int limit, WorkerInfo condition);
 
-    public void readdWorkerInfo(XN631793Req req);
+    /**
+     * 重新建档
+     * @param req
+     */
+    void readdWorkerInfo(XN631793Req req);
 
-    public List<WorkerInfo> queryWorkerInfoList(WorkerInfo condition);
+    /**
+     * 列表查人员实名制信息
+     * @param condition  条件
+     * @return List
+     */
+    List<WorkerInfo> queryWorkerInfoList(WorkerInfo condition);
 
-    public WorkerInfo getWorkerInfo(String code);
+    /**
+     * 根据主键code查询人员实名制信息
+     * @param code 主键code
+     * @return
+     */
+    WorkerInfo getWorkerInfo(String code);
 
-    public WorkerInfo getWorkerInfoByIdCardNumber(String idCardNumber);
+    /**
+     * 根据身份证号查询人员实名制信息
+     * @param idCardNumber 身份证号
+     * @return
+     */
+    WorkerInfo getWorkerInfoByIdCardNumber(String idCardNumber);
 
 }

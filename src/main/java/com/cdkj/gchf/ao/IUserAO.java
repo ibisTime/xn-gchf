@@ -8,6 +8,9 @@ import com.cdkj.gchf.bo.base.Paginable;
 import com.cdkj.gchf.domain.User;
 import com.cdkj.gchf.dto.req.XN631070Req;
 
+/**
+ * @author old3
+ */
 @Component
 public interface IUserAO {
 

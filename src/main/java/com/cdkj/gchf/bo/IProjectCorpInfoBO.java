@@ -85,10 +85,6 @@ public interface IProjectCorpInfoBO extends IPaginableBO<ProjectCorpInfo> {
      */
     public ProjectCorpInfo getProjectCorpInfo(ProjectCorpInfo condition);
 
-    /**
-     * 根据项目编号 列表查询参建单位 
-     */
-    List<ProjectCorpInfo> getProjectCorpInfoList(String projectCode);
 
     /**
      * 查询参建单位 

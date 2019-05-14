@@ -163,12 +163,6 @@ public class EquipmentWorkerAOImpl implements IEquipmentWorkerAO {
                         EEquipmentWorkerResponse.SHOUQUANCHENGONG.getCode())) {
                 // 授权成功
 
-                // for (ProjectWorker projectWorker : projectWorkers) {
-                // // 保存设备人员
-                // equipmentWorkerBO.saveEquipmentWorker(req, equipmentInfo,
-                // projectWorker);
-                // }
-
                 equipmentWorkerBO.batchSaveEquipmentWorker(projectWorkers,
                     equipmentInfo, req);
             }
@@ -201,70 +195,6 @@ public class EquipmentWorkerAOImpl implements IEquipmentWorkerAO {
                         + projectWorker.getWorkerName() + "】考勤照片不符合标准,请修改考勤照片");
             }
         }
-    }
-
-    // 测试方法
-    private void test1(XN631830Req req) {
-        // 校验人员
-        checkWorkerPicValid(req);
-
-        // 入参设备
-        EquipmentInfo equipmentInfo = equipmentInfoBO
-            .getEquipmentInfo(req.getEquipmentCode());
-
-        // 所有设备人员
-        List<EquipmentWorker> equipmentWorkerList = equipmentWorkerBO
-            .getEquipmentWorkerList(equipmentInfoBO
-                .getEquipmentInfo(req.getEquipmentCode()).getDeviceKey());
-        List<String> Authoriworkers = new ArrayList<>();
-        for (EquipmentWorker equipmentWorker : equipmentWorkerList) {
-            equipmentWorker.getWorkerCode();
-
-            WorkerInfo workerInfo = workerInfoBO.getWorkerInfo(projectWorkerBO
-                .getProjectWorker(equipmentWorker.getWorkerCode())
-                .getWorkerCode());
-            Authoriworkers.add(workerInfo.getCode());
-        }
-        List<String> workerList = req.getWorkerList();
-
-        workerList.removeAll(Authoriworkers);
-
-        List<String> todo = new ArrayList<>();
-        for (String code : workerList) {
-            WorkerInfo workerInfo = workerInfoBO.getWorkerInfo(code);
-
-            String cloudWorkerQuery = deviceWorker
-                .cloudWorkerQuery(workerInfo.getWorkerGuid());
-
-            JSONObject parseObject = JSONObject.parseObject(cloudWorkerQuery);
-
-            if (parseObject.getJSONArray("data").isEmpty()) {
-                todo.add(code);
-            } else {
-                // 已经授权过的 移除授权
-                JSONArray jsonArray = parseObject.getJSONArray("data");
-                List<String> euiqmentDevice = new ArrayList<>();
-                for (int i = 0; i < jsonArray.size(); i++) {
-                    JSONObject obj = (JSONObject) jsonArray.get(i);
-                    String object = (String) obj.get("deviceKey");
-                    euiqmentDevice.add(object);
-                }
-                if (euiqmentDevice.contains(equipmentInfo.getDeviceKey())) {
-                    deviceWorker.workerBatchElimination(
-                        workerInfo.getWorkerGuid(),
-                        equipmentInfo.getDeviceKey());
-                    // 删除本地数据
-                    // equipmentWorkerBO
-                    // .removeEquipmentWorker();
-
-                }
-                todo.add(code);
-
-            }
-
-        }
-        // 人员授权
-
     }
 
 }

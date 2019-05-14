@@ -17,11 +17,30 @@ import com.cdkj.gchf.dto.req.XN631921Req;
 public interface IPayRollAO {
     static final String DEFAULT_ORDER_COLUMN = "code";
 
+    /**
+     * 新增工资单 
+     */
     public String addPayRoll(XN631770Req req);
 
+    /**
+     * code删工资单 
+     */
     public int dropPayRoll(String code);
 
+    /**
+     * 修改工资单
+     */
     public int editPayRoll(XN631772Req req);
+
+    /**
+     * 导入工资单 
+     */
+    public void importPayRollCodeList(XN631812Req req);
+
+    /**
+     * 上传工资单 
+     */
+    public void uploadPayRollList(String userId, List<String> codeList);
 
     public Paginable<PayRoll> queryPayRollPage(int start, int limit,
             PayRoll condition);
@@ -30,11 +49,7 @@ public interface IPayRollAO {
 
     public PayRoll getPayRoll(String code);
 
-    public void uploadPayRollList(String userId, List<String> codeList);
-
     public void refreshPayRollCodeByLocal(String code, String payRollCode);
-
-    public void importPayRollCodeList(XN631812Req req);
 
     /****国家平台接口****/
     public void uploadPayRoll(XN631920Req data);

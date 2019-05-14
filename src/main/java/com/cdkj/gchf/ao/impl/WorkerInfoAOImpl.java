@@ -6,6 +6,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.cdkj.gchf.ao.IWorkerInfoAO;
 import com.cdkj.gchf.bo.IEquipmentInfoBO;
@@ -16,6 +17,7 @@ import com.cdkj.gchf.bo.IWorkerInfoBO;
 import com.cdkj.gchf.bo.base.Page;
 import com.cdkj.gchf.bo.base.Paginable;
 import com.cdkj.gchf.common.IdCardChecker;
+import com.cdkj.gchf.domain.EquipmentInfo;
 import com.cdkj.gchf.domain.User;
 import com.cdkj.gchf.domain.WorkerInfo;
 import com.cdkj.gchf.dto.req.XN631790Req;
@@ -57,15 +59,16 @@ public class WorkerInfoAOImpl implements IWorkerInfoAO {
     private WorkerPicture workerPicture;
 
     @Autowired
-    private Device device;
+    private DeviceWorker deviceWorker;
 
     @Autowired
-    private DeviceWorker deviceWorker;
+    private Device device;
 
     @Autowired
     private IEquipmentInfoBO equipmentInfoBO;
 
     @Override
+    @Transactional
     public String addWorkerInfo(XN631790Req req) {
         User user = userBO.getBriefUser(req.getUserId());
         // 数据字典校验
@@ -100,24 +103,12 @@ public class WorkerInfoAOImpl implements IWorkerInfoAO {
             workerInfoBO.refreshWorkerInfo(xn631791Req);
             return req.getCode();
         }
-        // 身份证信息已存在
-        WorkerInfo infoByIdCardNumber = workerInfoBO
-            .getWorkerInfoByIdCardNumber(req.getIdCardNumber());
-        if (infoByIdCardNumber != null) {
-            // 更新建档信息
-            XN631793Req xn631791Req = new XN631793Req();
-            BeanUtils.copyProperties(req, xn631791Req);
-            xn631791Req.setCode(infoByIdCardNumber.getCode());
-            workerInfoBO.refreshWorkerInfo(xn631791Req);
-            return infoByIdCardNumber.getCode();
+        // 身份证重复校验
+        if (workerInfoBO
+            .getWorkerInfoByIdCardNumber(req.getIdCardNumber()) != null) {
+            throw new BizException("XN0000", "身份证号已存在,请修改");
         }
         String workerCode = workerInfoBO.saveWorkerInfo(req);
-
-        // if (StringUtils.isNotBlank(req.getProjectCode())) {
-        // Project project = projectBO.getProject(req.getProjectCode());
-        // projectWorkerBO.saveProjectWorker(workerCode, req.getName(),
-        // req.getIdCardNumber(), project);
-        // }
 
         return workerCode;
     }
@@ -130,14 +121,6 @@ public class WorkerInfoAOImpl implements IWorkerInfoAO {
         return workerInfoBO.removeWorkerInfo(code);
     }
 
-    /**
-     * 
-     * <p>Title: refreshAttendancePicture</p>   
-     * <p>Description: base64方式 上传考勤照片到云端  保存云端返回的图片URL到本地 
-     * </p>   
-     * @param code 人员编号
-     * @param attendancePicture 考勤照片 (base64)
-     */
     @Override
     public void refreshAttendancePicture(String code, String attendancePicture,
             String userId) {
@@ -198,6 +181,13 @@ public class WorkerInfoAOImpl implements IWorkerInfoAO {
             }
 
         }
+        // 同步下设备
+        List<EquipmentInfo> queryEquipmentList = equipmentInfoBO
+            .queryEquipmentList(
+                userBO.getBriefUser(userId).getOrganizationCode());
+        for (EquipmentInfo equipmentInfo : queryEquipmentList) {
+            device.updateCloudDevice(equipmentInfo.getDeviceKey());
+        }
     }
 
     @Override
@@ -257,14 +247,10 @@ public class WorkerInfoAOImpl implements IWorkerInfoAO {
                 workerPicture.picDelCloud(
                     workerInfo.getWorkerAttendancePicGuid(), workerGuid);
 
-                picRegisterToCloud = workerPicture.picRegisterToCloud(
-                    workerGuid, req.getAttendancePicture(), "1", null, null);
-
-            } else {
-                // 添加照片
-                picRegisterToCloud = workerPicture.picRegisterToCloud(
-                    workerGuid, req.getAttendancePicture(), "1", null, null);
             }
+            // 添加照片
+            picRegisterToCloud = workerPicture.picRegisterToCloud(workerGuid,
+                req.getAttendancePicture(), "1", null, null);
             workerInfoBO.updateWorkerInfoAttendance(req.getCode(), workerGuid,
                 picRegisterToCloud.getData().getGuid());
             workerInfoBO.refreshAttendancePic(workerInfo.getCode(),
@@ -288,7 +274,13 @@ public class WorkerInfoAOImpl implements IWorkerInfoAO {
                 EAttendancePicUploadStatus.SUCCESS.getCode(),
                 EAttendancePicUploadStatus.SUCCESS.getCode());
         }
-
+        // 同步设备
+        List<EquipmentInfo> queryEquipmentList = equipmentInfoBO
+            .queryEquipmentList(
+                userBO.getBriefUser(req.getUserId()).getOrganizationCode());
+        for (EquipmentInfo equipmentInfo : queryEquipmentList) {
+            device.updateCloudDevice(equipmentInfo.getDeviceKey());
+        }
         return workerInfoBO.refreshWorkerInfo(req);
     }
 

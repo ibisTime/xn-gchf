@@ -75,7 +75,9 @@
 			<if test="source != null and source != '' ">
 				AND t.source = #{source}
 			</if>
-
+			<if test="teamSysNo != null and teamSysNo != '' ">
+				AND t.team_sys_no = #{teamSysNo}
+			</if>
 		</trim>
 	</sql>
 
@@ -218,20 +220,7 @@
 		thf_worker_attendance t
 		SET
 		t.delete_status = #{deleteStatus}
-		<trim prefix="WHERE" prefixOverrides="AND|OR">
-			<if test="code != null and code != '' ">
-				AND t.code = #{code}
-			</if>
-			<if test="uploadStatus != null and uploadStatus != '' ">
-				AND t.upload_status = #{uploadStatus}
-			</if>
-			<if test="projectCode != null and projectCode != '' ">
-				AND t.project_code = #{projectCode}
-			</if>
-			<if test="teamSysNo != null and teamSysNo != '' ">
-				AND t.team_sys_no = #{teamSysNo}
-			</if>
-		</trim>
+		<include refid="join_condition"/>
 	</update>
 
 	<select id="select_workerAttendance" parameterType="workerAttendance"
@@ -273,7 +262,7 @@
 		<include refid="join_condition" />
 		<include refid="where_condition" />
 		<if test="corpName != null and corpName != '' ">
-			AND tm.corp_name like  "%"#{corpName}"%"  
+			AND tm.corp_name like "%"#{corpName}"%"
 		</if>
 		<trim prefix="ORDER BY ">
 			<if test="order != null and order != '' ">

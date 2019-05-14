@@ -17,27 +17,51 @@ import com.cdkj.gchf.dto.req.XN631919Req;
 public interface IWorkerAttendanceAO {
     static final String DEFAULT_ORDER_COLUMN = "code";
 
+    /**
+     * 新增 
+     */
     public String addWorkerAttendance(XN631710Req data);
 
+    /**
+     * 删除 
+     */
     public void dropWorkerAttendance(List<String> codeList);
 
+    /**
+     * 修改
+     */
     public void editWorkerAttendance(XN631712Req data);
 
+    /**
+     * 批量生成考勤
+     */
     public void batchCreateAttandance(String projectCode, String teamMasterNo,
             String direction, Date startDatetime, Date endDatetime);
 
+    /**
+     * 导入人员考勤 
+     */
+    public void importWorkerAttendanceList(XN631713Req req);
+
+    /**
+     * 上传人员考勤 
+     */
+    public void uploadWorkerAttendanceList(String userId,
+            List<String> codeList);
+
+    /**
+     *分页查 
+     */
     public Paginable<WorkerAttendance> queryWorkerAttendancePage(int start,
             int limit, WorkerAttendance condition);
 
     public List<WorkerAttendance> queryWorkerAttendanceList(
             WorkerAttendance condition);
 
+    /**
+     * 根据code查 
+     */
     public WorkerAttendance getWorkerAttendance(String code);
-
-    public void importWorkerAttendanceList(XN631713Req req);
-
-    public void uploadWorkerAttendanceList(String userId,
-            List<String> codeList);
 
     /****国家平台接口****/
     public void uploadWorkerAttendance(XN631918Req data);

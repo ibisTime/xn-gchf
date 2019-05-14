@@ -23,6 +23,13 @@ public interface IWorkerInfoAO {
 
     public int dropWorkerInfo(String code);
 
+    /**
+     * <p>Title: refreshAttendancePicture</p>   
+     * <p>Description: base64方式 上传考勤照片到云端  保存云端返回的图片URL到本地 
+     * </p>   
+     * @param code 人员编号
+     * @param attendancePicture 考勤照片 (base64)
+     */
     public void refreshAttendancePicture(String code, String attendancePicture,
             String userId);
 

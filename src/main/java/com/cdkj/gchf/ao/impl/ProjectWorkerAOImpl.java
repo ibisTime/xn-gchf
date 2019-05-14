@@ -31,6 +31,7 @@ import com.cdkj.gchf.bo.base.Paginable;
 import com.cdkj.gchf.common.ImportUtil;
 import com.cdkj.gchf.domain.CorpBasicinfo;
 import com.cdkj.gchf.domain.EquipmentWorker;
+import com.cdkj.gchf.domain.PayRoll;
 import com.cdkj.gchf.domain.PayRollDetail;
 import com.cdkj.gchf.domain.Project;
 import com.cdkj.gchf.domain.ProjectConfig;
@@ -141,11 +142,6 @@ public class ProjectWorkerAOImpl implements IProjectWorkerAO {
 
     }
 
-    /**
-     * 
-     * <p>Title: editProjectWorker</p>   
-     * <p>Description: 编辑班组人员 </p>   
-     */
     @Transactional
     @Override
     public void editProjectWorker(XN631692Req req) {
@@ -191,6 +187,7 @@ public class ProjectWorkerAOImpl implements IProjectWorkerAO {
     }
 
     @Override
+    @Transactional
     public void dropProjectWorker(List<String> codeList) {
         for (String code : codeList) {
             ProjectWorker projectWorker = projectWorkerBO
@@ -216,8 +213,14 @@ public class ProjectWorkerAOImpl implements IProjectWorkerAO {
             condition.setIdcardNumber(projectWorker.getIdcardNumber());
             List<PayRollDetail> queryList = payRollDetailBO
                 .queryList(condition);
+            // 如果工资单下还存在未删除的工资明细 不删除
             for (PayRollDetail payRollDetail : queryList) {
                 String payRollCode = payRollDetail.getPayRollCode();
+                List<PayRoll> payRollList = payRollBO
+                    .getPayRollList(payRollCode);
+                if (payRollList.size() > 1) {
+                    continue;
+                }
                 payRollBO.updatePayRollDeleteStatus(payRollCode);
             }
             payRollDetailBO.fakeDeletePayRollDetail(
@@ -252,12 +255,6 @@ public class ProjectWorkerAOImpl implements IProjectWorkerAO {
         projectWorkerBO.doUpdate(req, projectConfig);
     }
 
-    /**
-     * 导入项目人员
-     * 1、根据证件查询人员实名制表信息
-     *  1.1、如果表中没有这个数据 添加到实名制信息表中
-     *  1.2、否则判断是否添加过该员工，没添加再添加
-     */
     @Override
     @Transactional
     public void importProjectWorkers(XN631693Req req) {
@@ -320,11 +317,6 @@ public class ProjectWorkerAOImpl implements IProjectWorkerAO {
         }
     }
 
-    /**
-     * 
-     * <p>Title: uploadProjectWorker</p>   
-     * <p>Description:上传项目人员到国家平台</p>   
-     */
     @Override
     public void uploadProjectWorker(XN631694Req req) {
         User user = userBO.getBriefUser(req.getUserId());
@@ -359,6 +351,7 @@ public class ProjectWorkerAOImpl implements IProjectWorkerAO {
                     EProjectWorkerUploadStatus.UPLOAD_FAIL.getCode());
                 throw e;
             }
+            // 保存日志
             String logCode = operateLogBO.saveOperateLog(
                 EOperateLogRefType.ProjectWorker.getCode(), code,
                 EOperateLogOperate.UploadProjectWorker.getValue(), user, null);
@@ -370,11 +363,6 @@ public class ProjectWorkerAOImpl implements IProjectWorkerAO {
         }
     }
 
-    /**
-     * 
-     * <p>Title: updatePlantformProjectWorker</p>   
-     * <p>Description: 更新国家平台班组成员信息</p>   
-     */
     @Override
     public void updatePlantformProjectWorker(XN631695Req req) {
         List<String> codeList = req.getCodeList();
@@ -414,21 +402,12 @@ public class ProjectWorkerAOImpl implements IProjectWorkerAO {
 
     }
 
-    // 查询所有授权和未授权人员
-    // @Override
-    // public List<ProjectWorker> getProjectWorkerByProject(String userId) {
-    // User briefUser = userBO.getBriefUser(userId);
-    // return projectWorkerBO
-    // .queryProjectWorkerListProjectCode(briefUser.getOrganizationCode());
-    // }
-
     public void checkDicKey(XN631693ReqData projectWorkerData) {
 
         EWorkerRoleType
             .checkExists(String.valueOf(projectWorkerData.getWorkRole()));
         EWorkerType.checkExists(projectWorkerData.getWorkType());
         EPoliticsType.checkExists(projectWorkerData.getPoliticsType());
-        // EIdCardType.checkExists(projectWorkerData.getIdCardType());
         EIsNotType.checkExists(projectWorkerData.getIsTeamLeader());
         if (StringUtils
             .isNotBlank(projectWorkerData.getHasBadMedicalHistory())) {
@@ -479,11 +458,6 @@ public class ProjectWorkerAOImpl implements IProjectWorkerAO {
 
     }
 
-    /**
-     * 
-     * <p>Title: queryProjectWorkerList</p>   
-     * <p>Description: 列表查班组人员-参数带deviceKey则查询班组人员授权情况</p>   
-     */
     @Override
     public List<ProjectWorker> queryProjectWorkerList(ProjectWorker condition) {
         // 项目端
@@ -513,7 +487,7 @@ public class ProjectWorkerAOImpl implements IProjectWorkerAO {
                 projectWorker.setIsLink(EIsNotType.IS.getCode());
                 hasAuthorization.add(projectWorker);
             }
-            // // 此项目下所有人员
+            // 此项目下所有人员
             List<ProjectWorker> projectWorkerByProjectCode = projectWorkerBO
                 .getProjectWorkerByProjectCode(user.getOrganizationCode(),
                     EProjectWorkerUploadStatus.UPLOAD_UPDATE.getCode());

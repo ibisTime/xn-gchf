@@ -14,28 +14,47 @@ public interface IEquipmentInfoBO extends IPaginableBO<EquipmentInfo> {
 
     public boolean isEquipmentInfoExist(String code);
 
+    /**
+     * 添加设备 
+     */
     public String saveEquipmentInfo(EquipmentInfo data);
 
+    /**
+     * 添加设备
+     */
     String saveEquipmentInfo(XN631820Req req, Project project,
             DeviceQuery query);
 
     public int removeEquipmentInfo(String code);
 
+    /**
+     * 修改设备信息 
+     */
     public int refreshEquipmentInfo(EquipmentInfo data);
 
+    /**
+     * 修改准入时间
+     */
+    void updatePassTimes(String code, String passTimes);
+
+    /**
+     * 按添加查 
+     */
     public List<EquipmentInfo> queryEquipmentInfoList(EquipmentInfo condition);
 
-    public EquipmentInfo getEquipmentInfo(String code);
+    /**
+     * 根据项目编号查询设备信息 
+     */
+    List<EquipmentInfo> queryEquipmentList(String projectCode);
 
-    public EquipmentInfo getEquipmentInfo(String code, String projectCode);
+    public EquipmentInfo getEquipmentInfo(String code);
 
     EquipmentInfo refreshEquipment(String deviceKey, String projectCode,
             DeviceInfo info);
 
-    EquipmentInfo getEquipmentInfoByKey(String deviceKey, String projectCode);
-
-    List<EquipmentInfo> getEquipmentList(String projectCode);
-
-    void updatePassTimes(String code, String passTimes);
+    /**
+     * 根据序列号查询设备 
+     */
+    EquipmentInfo getEquipmentInfoByKey(String deviceKey);
 
 }

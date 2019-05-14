@@ -1,8 +1,6 @@
 package com.cdkj.gchf.ao.impl;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 import org.apache.commons.collections.CollectionUtils;
@@ -39,7 +37,6 @@ import com.cdkj.gchf.dto.req.XN631812Req;
 import com.cdkj.gchf.dto.req.XN631812ReqData;
 import com.cdkj.gchf.dto.req.XN631920Req;
 import com.cdkj.gchf.dto.req.XN631921Req;
-import com.cdkj.gchf.enums.EDeleteStatus;
 import com.cdkj.gchf.enums.EIsNotType;
 import com.cdkj.gchf.enums.EOperateLogOperate;
 import com.cdkj.gchf.enums.EOperateLogRefType;
@@ -82,11 +79,6 @@ public class PayRollAOImpl implements IPayRollAO {
     @Autowired
     private IProjectWorkerBO projectWorkerBO;
 
-    /**
-     * 
-     * <p>Title: addPayRoll</p>   
-     * <p>Description: 添加工资单</p>   
-     */
     @Transactional
     @Override
     public String addPayRoll(XN631770Req data) {
@@ -113,15 +105,6 @@ public class PayRollAOImpl implements IPayRollAO {
             EOperateLogRefType.PayRoll.getValue(), briefUser, "新增工资单" + code);
 
         return code;
-    }
-
-    @Override
-    public int editPayRoll(XN631772Req req) {
-        PayRoll payRoll = payRollBO.getPayRoll(req.getCode());
-        if (payRoll == null) {
-            throw new BizException("XN631772", "工资单不存在");
-        }
-        return payRollBO.updatePayRollDetail(req);
     }
 
     @Transactional
@@ -152,6 +135,80 @@ public class PayRollAOImpl implements IPayRollAO {
     }
 
     @Override
+    public int editPayRoll(XN631772Req req) {
+        PayRoll payRoll = payRollBO.getPayRoll(req.getCode());
+        if (payRoll == null) {
+            throw new BizException("XN631772", "工资单不存在");
+        }
+        return payRollBO.updatePayRollDetail(req);
+    }
+
+    @Override
+    public void refreshPayRollCodeByLocal(String code, String payRollCode) {
+        PayRoll payRoll = new PayRoll();
+        payRoll.setCode(code);
+        payRoll.setPayRollCode(payRollCode);
+        payRollBO.refreshPayRoll(payRoll);
+    }
+
+    @Transactional
+    @Override
+    public void importPayRollCodeList(XN631812Req req) {
+        User user = userBO.getBriefUser(req.getUpdater());
+        Project project = projectBO.getProject(req.getProjectCode());
+
+        if (project == null) {
+            throw new BizException("XN631773", "项目不存在");
+        }
+        // excel字段中有工资单信息和明细信息 两张表操作
+        List<XN631812ReqData> dateList = req.getDateList();
+        for (XN631812ReqData data : dateList) {
+
+            TeamMaster teamMasterByCondition = teamMasterBO
+                .getTeamMasterByProject(req.getProjectCode(),
+                    data.getCorpCode(), data.getTeamName());
+
+            if (teamMasterByCondition == null) {
+                throw new BizException("XN631812",
+                    "班组信息不存在【" + data.getTeamName() + "】");
+            }
+
+            List<ProjectWorker> workerList = projectWorkerBO.getProjectWorkers(
+                data.getCorpCode(), data.getTeamName(), data.getWorkerName());
+            if (CollectionUtils.isEmpty(workerList)) {
+                continue;
+            }
+            ProjectWorker projectWorker = projectWorkerBO
+                .getProjectWorker(workerList.get(0).getCode());
+            // 不存在相关工资单时相关联的工资单
+            String payRollCode = null;
+            PayRoll payRoll = payRollBO
+                .getPayRollByCorpCodeAndTeamSysNoAndProjectCode(
+                    data.getCorpCode(), teamMasterByCondition.getCode(),
+                    req.getProjectCode(), data.getPayMonth());
+            if (payRoll == null) {
+
+                String savePayRollCode = payRollBO.savePayRoll(
+                    data.getCorpCode(), req.getProjectCode(),
+                    data.getCorpName(), teamMasterByCondition.getCode(),
+                    data.getPayMonth());
+
+                payRollCode = savePayRollCode;
+
+            }
+            payRollCode = (payRollCode == null ? payRoll.getCode()
+                    : payRollCode);
+
+            String payRollDetailCode = payRollDetailBO
+                .savePayRollDetail(projectWorker, payRollCode, data);
+
+            operateLogBO.saveOperateLog(
+                EOperateLogRefType.PayRollDetail.getCode(), payRollDetailCode,
+                EOperateLogOperate.ImportPayRollDetail.getValue(), user, null);
+        }
+    }
+
+    @Override
     public void uploadPayRoll(XN631920Req req) {
         ProjectConfig projectConfig = projectConfigBO
             .getProjectConfigByProject(req.getProjectCode());
@@ -163,44 +220,6 @@ public class PayRollAOImpl implements IPayRollAO {
         payRollBO.doUpload(req, projectConfig);
     }
 
-    @Override
-    public Paginable<PayRollDetail> queryPayRoll(XN631921Req req) {
-        ProjectConfig projectConfig = projectConfigBO
-            .getProjectConfigByProject(req.getProjectCode());
-
-        if (null == projectConfig) {
-            throw new BizException("XN631921", "该项目未配置，无法查询");
-        }
-
-        return payRollBO.doQuery(req, projectConfig);
-    }
-
-    @Override
-    public Paginable<PayRoll> queryPayRollPage(int start, int limit,
-            PayRoll condition) {
-        Paginable<PayRoll> page = payRollBO.getPaginable(start, limit,
-            condition);
-
-        List<PayRoll> payRollList = page.getList();
-        if (CollectionUtils.isNotEmpty(payRollList)) {
-            for (PayRoll payRoll : payRollList) {
-                payRoll.setPayRollDetailList(payRollDetailBO
-                    .queryListByPayRollDetail(payRoll.getCode()));
-            }
-        }
-        return page;
-    }
-
-    @Override
-    public List<PayRoll> queryPayRollList(PayRoll condition) {
-        return payRollBO.queryPayRollList(condition);
-    }
-
-    /**
-     * 
-     * <p>Title: uploadPayRollList</p>   
-     * <p>Description: 上传工资单详情 </p>   
-     */
     public void uploadPayRollList(String userId, List<String> codeList) {
         User user = userBO.getBriefUser(userId);
 
@@ -260,14 +279,41 @@ public class PayRollAOImpl implements IPayRollAO {
 
     }
 
+    @Override
+    public Paginable<PayRollDetail> queryPayRoll(XN631921Req req) {
+        ProjectConfig projectConfig = projectConfigBO
+            .getProjectConfigByProject(req.getProjectCode());
+
+        if (null == projectConfig) {
+            throw new BizException("XN631921", "该项目未配置，无法查询");
+        }
+
+        return payRollBO.doQuery(req, projectConfig);
+    }
+
+    @Override
+    public Paginable<PayRoll> queryPayRollPage(int start, int limit,
+            PayRoll condition) {
+        Paginable<PayRoll> page = payRollBO.getPaginable(start, limit,
+            condition);
+
+        List<PayRoll> payRollList = page.getList();
+        if (CollectionUtils.isNotEmpty(payRollList)) {
+            for (PayRoll payRoll : payRollList) {
+                payRoll.setPayRollDetailList(payRollDetailBO
+                    .queryListByPayRollDetail(payRoll.getCode()));
+            }
+        }
+        return page;
+    }
+
+    @Override
+    public List<PayRoll> queryPayRollList(PayRoll condition) {
+        return payRollBO.queryPayRollList(condition);
+    }
+
     /**
-     * 
-     * @Description: 获取请求国家平台的Json
-     * @param: @param payRoll
-     * @param: @param payRollDetail
-     * @param: @return      
-     * @return: String      
-     * @throws
+     * 获取请求国家平台的Json
      */
     private String getRequestJsonToPlantform(PayRoll payRoll,
             PayRollDetail payRollDetail, ProjectConfig projectconfig) {
@@ -349,9 +395,6 @@ public class PayRollAOImpl implements IPayRollAO {
             payRollDetail.getPayBankName());
         payRollData.addProperty("payRollBankCode",
             payRollDetail.getPayRollBankCode());
-        // payRollData.addProperty("payRollBankCardNumber",
-        // AesUtils.encrypt(payRollDetail.getPayRollBankCardNumber(),
-        // projectconfig.getSecret()));
 
         jsonArray.add(payRollData);
         jsonObject.add("detailList", jsonArray);
@@ -363,96 +406,6 @@ public class PayRollAOImpl implements IPayRollAO {
     @Override
     public PayRoll getPayRoll(String code) {
         return payRollBO.getPayRoll(code);
-    }
-
-    @Override
-    public void refreshPayRollCodeByLocal(String code, String payRollCode) {
-        PayRoll payRoll = new PayRoll();
-        payRoll.setCode(code);
-        payRoll.setPayRollCode(payRollCode);
-        payRollBO.refreshPayRoll(payRoll);
-    }
-
-    @Transactional
-    @Override
-    public void importPayRollCodeList(XN631812Req req) {
-        User user = userBO.getBriefUser(req.getUpdater());
-        Project project = projectBO.getProject(req.getProjectCode());
-
-        if (project == null) {
-            throw new BizException("XN631773", "项目不存在");
-        }
-        // excel字段中有工资单信息和明细信息 两张表操作
-        List<XN631812ReqData> dateList = req.getDateList();
-        for (XN631812ReqData xn631773ReqData : dateList) {
-
-            TeamMaster teamMasterByCondition = teamMasterBO
-                .getTeamMasterByProject(req.getProjectCode(),
-                    xn631773ReqData.getCorpCode(),
-                    xn631773ReqData.getTeamName());
-
-            if (teamMasterByCondition == null) {
-                throw new BizException("XN631812",
-                    "班组信息不存在【" + xn631773ReqData.getTeamName() + "】");
-            }
-
-            ProjectWorker condition = new ProjectWorker();
-            condition.setTeamName(xn631773ReqData.getTeamName());
-            condition.setCorpCode(xn631773ReqData.getCorpCode());
-            condition.setCorpName(xn631773ReqData.getCorpName());
-            condition.setWorkerName(xn631773ReqData.getWorkerName());
-
-            List<ProjectWorker> workerList = projectWorkerBO
-                .queryProjectWorkerList(condition);
-            if (CollectionUtils.isEmpty(workerList)) {
-                continue;
-            }
-            ProjectWorker projectWorker = projectWorkerBO
-                .getProjectWorker(workerList.get(0).getCode());
-            // 不存在相关工资单时相关联的工资单
-            String payRollCode = null;
-            PayRoll payRoll = payRollBO
-                .getPayRollByCorpCodeAndTeamSysNoAndProjectCode(
-                    xn631773ReqData.getCorpCode(),
-                    teamMasterByCondition.getCode(), req.getProjectCode(),
-                    xn631773ReqData.getPayMonth());
-            if (payRoll == null) {
-
-                PayRoll payRollcondition = new PayRoll();
-                payRollcondition.setCorpCode(xn631773ReqData.getCorpCode());
-                payRollcondition.setCorpName(xn631773ReqData.getCorpName());
-                payRollcondition.setTeamSysNo(teamMasterByCondition.getCode());
-                Date toDate;
-                try {
-                    toDate = DateUtil.strToDate(xn631773ReqData.getPayMonth(),
-                        "yyyy-MM");
-                } catch (Exception e) {
-                    Date strToDate = DateUtil
-                        .strToDate(xn631773ReqData.getPayMonth(), "yyyy/mm");
-                    //
-                    String format = new SimpleDateFormat("yyyy-MM")
-                        .format(strToDate);
-                    toDate = DateUtil.strToDate(format, "yyyy-MM");
-                }
-                payRollcondition.setProjectCode(req.getProjectCode());
-                payRollcondition
-                    .setDeleteStatus(EDeleteStatus.NORMAL.getCode());
-                payRollcondition.setPayMonth(toDate);
-                String savePayRollCode = payRollBO
-                    .savePayRoll(payRollcondition);
-                payRollCode = savePayRollCode;
-
-            }
-            payRollCode = (payRollCode == null ? payRoll.getCode()
-                    : payRollCode);
-
-            String payRollDetailCode = payRollDetailBO
-                .savePayRollDetail(projectWorker, payRollCode, xn631773ReqData);
-
-            operateLogBO.saveOperateLog(
-                EOperateLogRefType.PayRollDetail.getCode(), payRollDetailCode,
-                EOperateLogOperate.ImportPayRollDetail.getValue(), user, null);
-        }
     }
 
 }

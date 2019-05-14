@@ -18,18 +18,53 @@ import com.cdkj.gchf.dto.req.XN631907Req;
 public interface IProjectCorpInfoAO {
     static final String DEFAULT_ORDER_COLUMN = "code";
 
+    /**
+     * @Description: 新增参建
+     */
     public String addProjectCorpInfo(XN631630Req data);
 
+    /**
+     * @Description: 删除参建单位
+     */
     public void dropProjectCorpInfo(List<String> codeList);
 
+    /**
+     * @Description: 修改参建单位
+     */
     public void editProjectCorpInfo(XN631632Req req);
 
-    // 上传到国家平台
+    /**
+     * @Description: 导入参建单位
+     */
+    public void importProjectCorpInfo(XN631633Req req);
+
+    /**
+     * 
+     * @Description: 上传到国家平台
+     */
     public void uploadProjectCorpInfo(String userId, List<String> codes);
 
-    // 修改国家平台
+    /**
+     * 修改国家平台
+     */
     void updatePlantformProjectCorpInfo(XN631635Req req);
 
+    /****国家平台接口****/
+    public void uploadProjectCorpInfo(XN631905Req data);
+
+    /**
+     * 修改平台（200版本 
+     */
+    public void updateProjectCorpInfo(XN631906Req req);
+
+    /**
+     * 查询国家平台参建单位信息 
+     */
+    public Paginable<ProjectCorpInfo> queryProjectCorpInfo(XN631907Req req);
+
+    /**
+     * 以下为本地查询
+     */
     public ProjectCorpInfo getProjectCorpInfo(String code);
 
     public Paginable<ProjectCorpInfo> queryProjectCorpInfoPage(int start,
@@ -37,14 +72,5 @@ public interface IProjectCorpInfoAO {
 
     public List<ProjectCorpInfo> queryProjectCorpInfoList(
             ProjectCorpInfo condition);
-
-    public void importProjectCorpInfo(XN631633Req req);
-
-    /****国家平台接口****/
-    public void uploadProjectCorpInfo(XN631905Req data);
-
-    public void updateProjectCorpInfo(XN631906Req req);
-
-    public Paginable<ProjectCorpInfo> queryProjectCorpInfo(XN631907Req req);
 
 }

@@ -53,4 +53,9 @@ public class EquipmentWorkerDAOImpl extends AMybatisTemplate
             equipmentWorker);
     }
 
+    @Override
+    public void batchInsert(List<EquipmentWorker> equipmentWorker) {
+        super.insertBatch(NAMESPACE.concat("batch_insert"), equipmentWorker);
+    }
+
 }

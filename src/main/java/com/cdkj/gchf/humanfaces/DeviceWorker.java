@@ -240,9 +240,9 @@ public class DeviceWorker {
         // E73D7C4277A540018D6E90AA6595A182
 
         // 人员查询
-        // String cloudWorkerQuery = cloudWorkerQuery(
-        // "061B202C819C40CFAB3C4933B65C2DBA");
-        // System.out.println(cloudWorkerQuery);
+        String cloudWorkerQuery = cloudWorkerQuery(
+            "9CB3F6AF244D499BA0EE6786CAC5AA44");
+        System.out.println(cloudWorkerQuery);
         // JSONObject parse = JSONObject.parseObject(cloudWorkerQuery);
         // System.out.println(parse.getString("code")
         // .equals(EEquipmentWorkerResponse.CHAXUNCHENGGONG.getCode())
@@ -254,9 +254,10 @@ public class DeviceWorker {
         // String cloudWorkerDel2 = cloudWorkerDel(
 
         // 人员搜索 删除已上传人员
-        String workerSearch = workerSearch(null, null, null, null, null, null,
-            null, null, null, null, null, null, null);
-        System.out.println(workerSearch);
+        // String workerSearch = workerSearch(null, null, null, null, null,
+        // null,
+        // null, null, null, null, null, null, null);
+        // System.out.println(workerSearch);
 
         // 删除云端所有人员 线上已部署 不要调用
         // JSONObject jsonObject = JSONObject.parseObject(workerSearch);

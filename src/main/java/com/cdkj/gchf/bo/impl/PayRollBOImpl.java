@@ -70,6 +70,24 @@ public class PayRollBOImpl extends PaginableBOImpl<PayRoll>
     }
 
     @Override
+    public String savePayRoll(String corpCode, String projectCode,
+            String corpName, String teamMasterNo, String payMonth) {
+        PayRoll payRollcondition = new PayRoll();
+        payRollcondition.setCorpCode(corpCode);
+        payRollcondition.setCorpName(corpName);
+        payRollcondition.setTeamSysNo(teamMasterNo);
+        Date toDate = DateUtil.strToDate(payMonth, "yyyy-MM");
+        payRollcondition.setProjectCode(projectCode);
+        payRollcondition.setDeleteStatus(EDeleteStatus.NORMAL.getCode());
+        payRollcondition.setPayMonth(toDate);
+        String code = OrderNoGenerater
+            .generate(EGeneratePrefix.PayRoll.getCode());
+        payRollcondition.setCode(code);
+        payRollDAO.insert(payRollcondition);
+        return code;
+    }
+
+    @Override
     public int removePayRoll(String code) {
 
         PayRoll data = new PayRoll();
@@ -200,6 +218,16 @@ public class PayRollBOImpl extends PaginableBOImpl<PayRoll>
     }
 
     @Override
+    public List<PayRoll> queryPayRollList(String projectCode,
+            String teamMasterNo, String corpCode) {
+        PayRoll payRollCondition = new PayRoll();
+        payRollCondition.setCorpCode(corpCode);
+        payRollCondition.setTeamSysNo(teamMasterNo);
+        payRollCondition.setProjectCode(projectCode);
+        return payRollDAO.selectList(payRollCondition);
+    }
+
+    @Override
     public PayRoll getPayRoll(String code) {
         PayRoll data = null;
         PayRoll condition = new PayRoll();
@@ -209,6 +237,14 @@ public class PayRollBOImpl extends PaginableBOImpl<PayRoll>
             throw new BizException("xn0000", "工资单编号不存在");
         }
         return data;
+    }
+
+    @Override
+    public List<PayRoll> getPayRollList(String payRollCode) {
+        PayRoll payRoll = new PayRoll();
+        payRoll.setPayRollCode(payRollCode);
+        payRoll.setDeleteStatus(EDeleteStatus.NORMAL.getCode());
+        return payRollDAO.selectList(payRoll);
     }
 
     @Override

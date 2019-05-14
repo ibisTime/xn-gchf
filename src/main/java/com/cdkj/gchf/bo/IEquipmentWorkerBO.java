@@ -15,6 +15,12 @@ public interface IEquipmentWorkerBO extends IPaginableBO<EquipmentWorker> {
 
     public String saveEquipmentWorker(EquipmentWorker data);
 
+    /**
+     * 保存设备人员 
+     */
+    void batchSaveEquipmentWorker(List<ProjectWorker> projectWorkers,
+            EquipmentInfo equipmentInfo, XN631830Req req);
+
     public int removeEquipmentWorker(String code);
 
     public int refreshEquipmentWorker(EquipmentWorker data);
@@ -23,6 +29,11 @@ public interface IEquipmentWorkerBO extends IPaginableBO<EquipmentWorker> {
             EquipmentWorker condition);
 
     public EquipmentWorker getEquipmentWorker(String code);
+
+    /**
+     * 根据设备序列号查询设备人员 
+     */
+    List<EquipmentWorker> getEquipmentWorkerList(String deviceKey);
 
     String saveEquipmentWorker(XN631830Req req, EquipmentInfo equipmentInfo,
             ProjectWorker projectWorker);

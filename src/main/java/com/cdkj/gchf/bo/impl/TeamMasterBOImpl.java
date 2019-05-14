@@ -66,6 +66,41 @@ public class TeamMasterBOImpl extends PaginableBOImpl<TeamMaster>
     private IWorkerAttendanceBO workerAttendanceBO;
 
     @Override
+    public String saveTeamMaster(TeamMaster teamMaster) {
+        String code = null;
+        code = OrderNoGenerater.generate(EGeneratePrefix.TeamMaster.getCode());
+        teamMaster.setCode(code);
+        teamMasterDAO.insert(teamMaster);
+        return code;
+    }
+
+    @Override
+    public String saveTeamMaster(XN631653ReqData data, String corpName,
+            XN631653Req req) {
+        TeamMaster teamMaster = new TeamMaster();
+        BeanUtils.copyProperties(data, teamMaster);
+        String code = OrderNoGenerater
+            .generate(EGeneratePrefix.TeamMaster.getCode());
+        if (StringUtils.isNotBlank(data.getEntryTime())) {
+            Date strToDate = DateUtil.strToDate(data.getEntryTime(),
+                DateUtil.FRONT_DATE_FORMAT_STRING);
+            teamMaster.setEntryTime(strToDate);
+        }
+        if (StringUtils.isNotBlank(data.getExitTime())) {
+            Date strToDate = DateUtil.strToDate(data.getExitTime(),
+                DateUtil.FRONT_DATE_FORMAT_STRING);
+            teamMaster.setExitTime(strToDate);
+        }
+        teamMaster.setProjectCode(req.getProjectCode());
+        teamMaster.setCorpName(corpName);
+        teamMaster.setResponsiblePersonIdcardType("01");
+        teamMaster.setUploadStatus(ETeamMasterUploadStatus.TO_UPLOAD.getCode());
+        teamMaster.setDeleteStatus(EDeleteStatus.NORMAL.getCode());
+        teamMaster.setCode(code);
+        return code;
+    }
+
+    @Override
     public String saveTeamMaster(XN631650Req data,
             CorpBasicinfo corpBasicinfo) {
         TeamMaster teamMasterInfo = new TeamMaster();
@@ -103,10 +138,42 @@ public class TeamMasterBOImpl extends PaginableBOImpl<TeamMaster>
     }
 
     @Override
+    public void saveTeamMasterByImport(XN631653Req req) {
+        User user = userBO.getBriefUser(req.getUserId());
+        for (XN631653ReqData xn631654ReqData : req.getDateList()) {
+
+            String code = null;
+            TeamMaster teamMaster = new TeamMaster();
+            teamMaster.setCorpCode(xn631654ReqData.getCorpCode());
+            teamMaster.setResponsiblePersonIdcardType("01");
+            teamMaster.setProjectCode(req.getProjectCode());
+            BeanUtils.copyProperties(xn631654ReqData, teamMaster);
+            teamMasterDAO.insert(teamMaster);
+
+            code = OrderNoGenerater
+                .generate(EGeneratePrefix.TeamMaster.getCode());
+            operateLogBO.saveOperateLog(EOperateLogRefType.TeamMaster.getCode(),
+                code, EOperateLogOperate.UploadTeamMaster.getValue(), user,
+                "导入班组信息");
+        }
+
+    }
+
+    @Override
     public void removeTeamMaster(String userId, String code) {
         TeamMaster data = new TeamMaster();
         data.setCode(code);
         teamMasterDAO.delete(data);
+    }
+
+    @Override
+    public void fakeDeleteTeamMaster(String projectCode, String corpCode) {
+        TeamMaster teamMaster = new TeamMaster();
+        teamMaster.setProjectCode(projectCode);
+        teamMaster.setCorpCode(corpCode);
+        teamMaster.setUploadStatus(ETeamMasterUploadStatus.TO_UPLOAD.getCode());
+        teamMaster.setDeleteStatus(EDeleteStatus.DELETED.getCode());
+        teamMasterDAO.updateDeleteStatus(teamMaster);
     }
 
     @Override
@@ -137,6 +204,18 @@ public class TeamMasterBOImpl extends PaginableBOImpl<TeamMaster>
     }
 
     @Override
+    public void updateTeamMasterDeleteStatus(String code, String status) {
+        TeamMaster teamMaster = new TeamMaster();
+        teamMaster.setDeleteStatus(status);
+        teamMaster.setCode(code);
+        teamMaster.setUploadStatus(ETeamMasterUploadStatus.TO_UPLOAD.getCode());
+        teamMasterDAO.updateDeleteStatus(teamMaster);
+        teamMaster
+            .setUploadStatus(ETeamMasterUploadStatus.UPLOAD_FAIL.getCode());
+        teamMasterDAO.updateDeleteStatus(teamMaster);
+    }
+
+    @Override
     public void refreshUploadStatus(String code, String uploadStatus) {
         TeamMaster teamMaster = new TeamMaster();
 
@@ -144,22 +223,6 @@ public class TeamMasterBOImpl extends PaginableBOImpl<TeamMaster>
         teamMaster.setUploadStatus(uploadStatus);
 
         teamMasterDAO.updateUploadStatus(teamMaster);
-    }
-
-    @Override
-    public String getRequestJson(TeamMaster teamMaster,
-            ProjectConfig projectConfig) {
-        if (StringUtils.isNotBlank(teamMaster.getResponsiblePersonIdNumber())) {
-            String encryptIdCardNumber = AesUtils.encrypt(
-                teamMaster.getResponsiblePersonIdNumber(),
-                projectConfig.getSecret());
-            teamMaster.setResponsiblePersonIdNumber(encryptIdCardNumber);
-        }
-        teamMaster.setProjectCode(projectConfig.getProjectCode());
-        // 上传班组信息
-        String teamMasterInfo = JSONObject
-            .toJSONStringWithDateFormat(teamMaster, "yyyy-MM-dd");
-        return teamMasterInfo;
     }
 
     @Override
@@ -187,6 +250,79 @@ public class TeamMasterBOImpl extends PaginableBOImpl<TeamMaster>
         teamMaster.setTeamSysNo(teamSysNo);
 
         teamMasterDAO.updateTeamSysNo(teamMaster);
+    }
+
+    @Override
+    public List<TeamMaster> queryTeamMasterList(TeamMaster condition) {
+        return teamMasterDAO.selectList(condition);
+    }
+
+    @Override
+    public String getRequestJson(TeamMaster teamMaster,
+            ProjectConfig projectConfig) {
+        if (StringUtils.isNotBlank(teamMaster.getResponsiblePersonIdNumber())) {
+            String encryptIdCardNumber = AesUtils.encrypt(
+                teamMaster.getResponsiblePersonIdNumber(),
+                projectConfig.getSecret());
+            teamMaster.setResponsiblePersonIdNumber(encryptIdCardNumber);
+        }
+        teamMaster.setProjectCode(projectConfig.getProjectCode());
+        // 上传班组信息
+        String teamMasterInfo = JSONObject
+            .toJSONStringWithDateFormat(teamMaster, "yyyy-MM-dd");
+        return teamMasterInfo;
+    }
+
+    @Override
+    public List<TeamMaster> queryTeamMasterList(String projectCode) {
+        TeamMaster condition = new TeamMaster();
+
+        condition.setProjectCode(projectCode);
+        condition.setDeleteStatus(EDeleteStatus.NORMAL.getCode());
+
+        return teamMasterDAO.selectList(condition);
+    }
+
+    @Override
+    public TeamMaster getTeamMaster(String code) {
+        TeamMaster data = null;
+        if (StringUtils.isNotBlank(code)) {
+            TeamMaster condition = new TeamMaster();
+            condition.setCode(code);
+            data = teamMasterDAO.select(condition);
+            if (data == null) {
+                throw new BizException("xn0000", "班组编号不存在");
+            }
+        }
+        return data;
+    }
+
+    @Override
+    public TeamMaster getTeamMasterByCondition(TeamMaster condition) {
+        return teamMasterDAO.select(condition);
+    }
+
+    @Override
+    public TeamMaster getTeamMasterByProject(String projectCode,
+            String corpCode, String teamMasterName) {
+        TeamMaster condition = new TeamMaster();
+
+        condition.setProjectCode(projectCode);
+        condition.setCorpCode(corpCode);
+        condition.setRealTeamName(teamMasterName);
+        condition.setDeleteStatus(EDeleteStatus.NORMAL.getCode());
+
+        return teamMasterDAO.select(condition);
+
+    }
+
+    @Override
+    public List<TeamMaster> queryTeamMasterByProject(String projectCode,
+            String corpCode) {
+        TeamMaster condition = new TeamMaster();
+        condition.setCorpCode(corpCode);
+        condition.setProjectCode(projectCode);
+        return teamMasterDAO.selectList(condition);
     }
 
     @Override
@@ -269,118 +405,4 @@ public class TeamMasterBOImpl extends PaginableBOImpl<TeamMaster>
 
         return page;
     }
-
-    @Override
-    public List<TeamMaster> queryTeamMasterList(TeamMaster condition) {
-        return teamMasterDAO.selectList(condition);
-    }
-
-    @Override
-    public List<TeamMaster> queryTeamMasterList(String projectCode) {
-        TeamMaster condition = new TeamMaster();
-
-        condition.setProjectCode(projectCode);
-        condition.setDeleteStatus(EDeleteStatus.NORMAL.getCode());
-
-        return teamMasterDAO.selectList(condition);
-    }
-
-    @Override
-    public TeamMaster getTeamMaster(String code) {
-        TeamMaster data = null;
-        if (StringUtils.isNotBlank(code)) {
-            TeamMaster condition = new TeamMaster();
-            condition.setCode(code);
-            data = teamMasterDAO.select(condition);
-            if (data == null) {
-                throw new BizException("xn0000", "班组编号不存在");
-            }
-        }
-        return data;
-    }
-
-    @Override
-    public TeamMaster getTeamMasterByCondition(TeamMaster condition) {
-        return teamMasterDAO.select(condition);
-    }
-
-    @Override
-    public void saveTeamMasterByImport(XN631653Req req) {
-        User user = userBO.getBriefUser(req.getUserId());
-        for (XN631653ReqData xn631654ReqData : req.getDateList()) {
-
-            // EIdCardType
-            // .checkExists(xn631654ReqData.getResponsiblePersonIdcardType());
-            String code = null;
-            TeamMaster teamMaster = new TeamMaster();
-            teamMaster.setCorpCode(xn631654ReqData.getCorpCode());
-            // String responsidCardType = EIdCardType.getIdCardDictValue(
-            // xn631654ReqData.getResponsiblePersonIdcardType());
-            teamMaster.setResponsiblePersonIdcardType("01");
-            teamMaster.setProjectCode(req.getProjectCode());
-            BeanUtils.copyProperties(xn631654ReqData, teamMaster);
-            teamMasterDAO.insert(teamMaster);
-
-            code = OrderNoGenerater
-                .generate(EGeneratePrefix.TeamMaster.getCode());
-            operateLogBO.saveOperateLog(EOperateLogRefType.TeamMaster.getCode(),
-                code, EOperateLogOperate.UploadTeamMaster.getValue(), user,
-                "导入班组信息");
-        }
-
-    }
-
-    @Override
-    public String saveTeamMaster(TeamMaster teamMaster) {
-        String code = null;
-        code = OrderNoGenerater.generate(EGeneratePrefix.TeamMaster.getCode());
-        teamMaster.setCode(code);
-        teamMasterDAO.insert(teamMaster);
-        return code;
-    }
-
-    @Override
-    public TeamMaster getTeamMasterByProject(String projectCode,
-            String corpCode, String teamMasterName) {
-        TeamMaster condition = new TeamMaster();
-
-        condition.setProjectCode(projectCode);
-        condition.setCorpCode(corpCode);
-        condition.setRealTeamName(teamMasterName);
-        condition.setDeleteStatus(EDeleteStatus.NORMAL.getCode());
-
-        return teamMasterDAO.select(condition);
-
-    }
-
-    @Override
-    public String getTeamMasterNameByTeamMasterSysNo(String teamMasterSysNo) {
-        TeamMaster condition = new TeamMaster();
-        condition.setCode(teamMasterSysNo);
-        TeamMaster team = teamMasterDAO.select(condition);
-        return team.getTeamName();
-    }
-
-    @Override
-    public void updateTeamMasterDeleteStatus(String code, String status) {
-        TeamMaster teamMaster = new TeamMaster();
-        teamMaster.setDeleteStatus(status);
-        teamMaster.setCode(code);
-        teamMaster.setUploadStatus(ETeamMasterUploadStatus.TO_UPLOAD.getCode());
-        teamMasterDAO.updateDeleteStatus(teamMaster);
-        teamMaster
-            .setUploadStatus(ETeamMasterUploadStatus.UPLOAD_FAIL.getCode());
-        teamMasterDAO.updateDeleteStatus(teamMaster);
-    }
-
-    @Override
-    public void fakeDeleteTeamMaster(String projectCode, String corpCode) {
-        TeamMaster teamMaster = new TeamMaster();
-        teamMaster.setProjectCode(projectCode);
-        teamMaster.setCorpCode(corpCode);
-        teamMaster.setUploadStatus(ETeamMasterUploadStatus.TO_UPLOAD.getCode());
-        teamMaster.setDeleteStatus(EDeleteStatus.DELETED.getCode());
-        teamMasterDAO.updateDeleteStatus(teamMaster);
-    }
-
 }

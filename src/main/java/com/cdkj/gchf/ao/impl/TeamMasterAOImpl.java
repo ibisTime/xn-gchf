@@ -1,7 +1,6 @@
 package com.cdkj.gchf.ao.impl;
 
 import java.util.Arrays;
-import java.util.Date;
 import java.util.List;
 
 import org.apache.commons.collections.CollectionUtils;
@@ -25,7 +24,6 @@ import com.cdkj.gchf.bo.IUserBO;
 import com.cdkj.gchf.bo.IWorkerAttendanceBO;
 import com.cdkj.gchf.bo.IWorkerContractBO;
 import com.cdkj.gchf.bo.base.Paginable;
-import com.cdkj.gchf.common.DateUtil;
 import com.cdkj.gchf.common.ImportUtil;
 import com.cdkj.gchf.domain.CorpBasicinfo;
 import com.cdkj.gchf.domain.Project;
@@ -111,11 +109,6 @@ public class TeamMasterAOImpl implements ITeamMasterAO {
         return teamMasterBO.saveTeamMaster(data, corpBasicinfoByCorp);
     }
 
-    /**
-     * 
-     * <p>Title: dropTeamMaster</p>   
-     * <p>Description: 假删除班组及向下的数据</p>   
-     */
     @Transactional
     @Override
     public void dropTeamMaster(XN631651Req req) {
@@ -161,10 +154,6 @@ public class TeamMasterAOImpl implements ITeamMasterAO {
 
     }
 
-    /**
-     * <p>Title: editTeamMaster</p>   
-     * <p>Description: </p>   
-     */
     @Override
     @Transactional
     public void editTeamMaster(XN631652Req data) {
@@ -221,11 +210,45 @@ public class TeamMasterAOImpl implements ITeamMasterAO {
 
     }
 
-    /**
-     * 
-     * <p>Title: uploadTeamMaster</p>   
-     * <p>Description:上传本地数据到国家平台 </p>   
-     */
+    @Override
+    public void importTeamMaster(XN631653Req req) {
+        User user = userBO.getBriefUser(req.getUserId());
+        if (projectBO.getProject(req.getProjectCode()) == null) {
+            throw new BizException("XN631650", "请选择项目");
+        }
+
+        String repeatTeamName = ImportUtil.checkRepeat(req.getDateList(),
+            "teamName");
+        if (StringUtils.isNotBlank(repeatTeamName)) {
+            throw new BizException("XN631793",
+                "导入数据中班组名称【" + repeatTeamName + "】存在重复");
+        }
+
+        for (XN631653ReqData reqData : req.getDateList()) {
+
+            CorpBasicinfo corpBasicinfo = corpBasicinfoBO
+                .getCorpBasicinfoByCorp(reqData.getCorpCode());
+            if (corpBasicinfo == null) {
+                throw new BizException("XN631650",
+                    "企业信息【" + reqData.getCorpName() + "】不存在");
+            }
+
+            TeamMaster preTeamMaster = teamMasterBO.getTeamMasterByProject(
+                req.getProjectCode(), reqData.getCorpCode(),
+                reqData.getTeamName());
+            if (null != preTeamMaster) {
+                throw new BizException("XN631650",
+                    "班组名称【" + reqData.getTeamName() + "】已存在，请重新输入");
+            }
+
+            String code = teamMasterBO.saveTeamMaster(reqData,
+                corpBasicinfo.getCorpName(), req);
+            operateLogBO.saveOperateLog(EOperateLogRefType.TeamMaster.getCode(),
+                code, "导入班组信息", user, null);
+        }
+
+    }
+
     @Transactional
     @Override
     public void uploadTeamMaster(List<String> codeList, String userId) {
@@ -277,14 +300,20 @@ public class TeamMasterAOImpl implements ITeamMasterAO {
         }
     }
 
-    /**
-     * 
-     * <p>Title: updatePlantformTeamMaster</p>   
-     * <p>Description: 修改国家平台班组信息接口</p>   
-     */
+    @Override
+    public void uploadTeamMaster(XN631908Req req) {
+        ProjectConfig projectConfig = projectConfigBO
+            .getProjectConfigByProject(req.getProjectCode());
+
+        if (null == projectConfig) {
+            throw new BizException("XN631908", "该项目未配置，无法上传");
+        }
+
+        teamMasterBO.doUpload(req, projectConfig);
+    }
+
     @Override
     public void updatePlantformTeamMaster(XN631655Req req) {
-        User user = userBO.getBriefUser(req.getUserId());
         List<String> codeList = req.getCodeList();
         for (String code : codeList) {
             TeamMaster teamMaster = teamMasterBO.getTeamMaster(code);
@@ -356,18 +385,6 @@ public class TeamMasterAOImpl implements ITeamMasterAO {
     }
 
     @Override
-    public void uploadTeamMaster(XN631908Req req) {
-        ProjectConfig projectConfig = projectConfigBO
-            .getProjectConfigByProject(req.getProjectCode());
-
-        if (null == projectConfig) {
-            throw new BizException("XN631908", "该项目未配置，无法上传");
-        }
-
-        teamMasterBO.doUpload(req, projectConfig);
-    }
-
-    @Override
     public void updateTeamMaster(XN631909Req req) {
         ProjectConfig projectConfig = projectConfigBO
             .getProjectConfigByProject(req.getProjectCode());
@@ -430,67 +447,6 @@ public class TeamMasterAOImpl implements ITeamMasterAO {
         }
 
         return teamMaster;
-    }
-
-    /**
-     * 
-     * <p>Title: importTeamMaster</p>   
-     * <p>Description: 导入班组信息</p>   
-     */
-    @Override
-    public void importTeamMaster(XN631653Req req) {
-        User user = userBO.getBriefUser(req.getUserId());
-        if (projectBO.getProject(req.getProjectCode()) == null) {
-            throw new BizException("XN631650", "请选择项目");
-        }
-
-        String repeatTeamName = ImportUtil.checkRepeat(req.getDateList(),
-            "teamName");
-        if (StringUtils.isNotBlank(repeatTeamName)) {
-            throw new BizException("XN631793",
-                "导入数据中班组名称【" + repeatTeamName + "】存在重复");
-        }
-
-        for (XN631653ReqData reqData : req.getDateList()) {
-
-            CorpBasicinfo corpBasicinfo = corpBasicinfoBO
-                .getCorpBasicinfoByCorp(reqData.getCorpCode());
-            if (corpBasicinfo == null) {
-                throw new BizException("XN631650",
-                    "企业信息【" + reqData.getCorpName() + "】不存在");
-            }
-
-            TeamMaster preTeamMaster = teamMasterBO.getTeamMasterByProject(
-                req.getProjectCode(), reqData.getCorpCode(),
-                reqData.getTeamName());
-            if (null != preTeamMaster) {
-                throw new BizException("XN631650",
-                    "班组名称【" + reqData.getTeamName() + "】已存在，请重新输入");
-            }
-
-            TeamMaster teamMaster = new TeamMaster();
-            BeanUtils.copyProperties(reqData, teamMaster);
-            if (StringUtils.isNotBlank(reqData.getEntryTime())) {
-                Date strToDate = DateUtil.strToDate(reqData.getEntryTime(),
-                    DateUtil.FRONT_DATE_FORMAT_STRING);
-                teamMaster.setEntryTime(strToDate);
-            }
-            if (StringUtils.isNotBlank(reqData.getExitTime())) {
-                Date strToDate = DateUtil.strToDate(reqData.getExitTime(),
-                    DateUtil.FRONT_DATE_FORMAT_STRING);
-                teamMaster.setExitTime(strToDate);
-            }
-            teamMaster.setProjectCode(req.getProjectCode());
-            teamMaster.setCorpName(corpBasicinfo.getCorpName());
-            teamMaster.setResponsiblePersonIdcardType("01");
-            teamMaster
-                .setUploadStatus(ETeamMasterUploadStatus.TO_UPLOAD.getCode());
-            teamMaster.setDeleteStatus(EDeleteStatus.NORMAL.getCode());
-            String code = teamMasterBO.saveTeamMaster(teamMaster);
-            operateLogBO.saveOperateLog(EOperateLogRefType.TeamMaster.getCode(),
-                code, "导入班组信息", user, null);
-        }
-
     }
 
 }

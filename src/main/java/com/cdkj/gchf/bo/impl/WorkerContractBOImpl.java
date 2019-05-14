@@ -15,7 +15,6 @@ import org.springframework.stereotype.Component;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.alibaba.fastjson.serializer.SerializerFeature;
-import com.cdkj.gchf.bo.IProjectBO;
 import com.cdkj.gchf.bo.IProjectWorkerBO;
 import com.cdkj.gchf.bo.IWorkerContractBO;
 import com.cdkj.gchf.bo.base.Paginable;
@@ -57,20 +56,6 @@ public class WorkerContractBOImpl extends PaginableBOImpl<WorkerContract>
     @Autowired
     private IWorkerContractBO workerContractBO;
 
-    @Autowired
-    private IProjectBO projectBO;
-
-    @Override
-    public String saveWorkerContract(WorkerContract workerContract) {
-        String code = null;
-        code = OrderNoGenerater
-            .generate(EGeneratePrefix.WorkerContract.getCode());
-        workerContract.setDeleteStatus(EDeleteStatus.NORMAL.getCode());
-        workerContract.setCode(code);
-        workerContractDAO.insert(workerContract);
-        return code;
-    }
-
     @Override
     public String saveWorkerContract(XN631673ReqData data,
             ProjectWorker projectWorker) {
@@ -91,23 +76,10 @@ public class WorkerContractBOImpl extends PaginableBOImpl<WorkerContract>
         if (StringUtils.isNotBlank(data.getStartDate())) {
             workerContract.setStartDate(DateUtil.strToDate(data.getStartDate(),
                 DateUtil.FRONT_DATE_FORMAT_STRING));
-                // Date strToDate = DateUtil.strToDate(data.getStartDate(),
-                // "yyyy/mm/dd");
-
-            // String format = new SimpleDateFormat("yyyy-MM-dd")
-            // .format(strToDate);
-            // Date toDate = DateUtil.strToDate(format, "yyyy-MM-dd");
-            // workerContract.setStartDate());
         }
         if (StringUtils.isNotBlank(data.getEndDate())) {
             workerContract.setEndDate(DateUtil.strToDate(data.getEndDate(),
                 DateUtil.FRONT_DATE_FORMAT_STRING));
-            // Date strToDate = DateUtil.strToDate(data.getStartDate(),
-            // "yyyy/mm/dd");
-            // String format = new SimpleDateFormat("yyyy-MM-dd")
-            // .format(strToDate);
-            // Date toDate = DateUtil.strToDate(format, "yyyy-MM-dd");
-            // workerContract.setEndDate(toDate);
         }
         if (StringUtils.isNotBlank(data.getContractPeriodType())) {
             workerContract.setContractPeriodType(
@@ -129,6 +101,64 @@ public class WorkerContractBOImpl extends PaginableBOImpl<WorkerContract>
     }
 
     @Override
+    public String saveWorkerContract(XN631670Req req) {
+        ProjectWorker projectWorker = projectWorkerBO
+            .getProjectWorker(req.getWorkerCode());
+        String code = null;
+        WorkerContract workerContract = new WorkerContract();
+        if (StringUtils.isNotBlank(req.getUnit())) {
+            workerContract.setUnit(Integer.parseInt(req.getUnit()));
+        }
+        if (StringUtils.isNotBlank(req.getContractPeriodType())) {
+            workerContract.setContractPeriodType(
+                Integer.parseInt(req.getContractPeriodType()));
+        }
+        if (StringUtils.isNotBlank(req.getUnitPrice())) {
+            workerContract.setUnitPrice(new BigDecimal(req.getUnitPrice()));
+        }
+        BeanUtils.copyProperties(projectWorker, workerContract);
+        BeanUtils.copyProperties(req, workerContract);
+        workerContract.setTeamName(projectWorker.getTeamName());
+        workerContract.setContractPeriodType(
+            Integer.parseInt(req.getContractPeriodType()));
+        workerContract.setCode(code);
+        Date startDate = DateUtil.strToDate(req.getStartDate(),
+            DateUtil.FRONT_DATE_FORMAT_STRING);
+        Date endDate = DateUtil.strToDate(req.getEndDate(),
+            DateUtil.FRONT_DATE_FORMAT_STRING);
+        code = OrderNoGenerater
+            .generate(EGeneratePrefix.WorkerContract.getCode());
+        workerContract.setCode(code);
+        workerContract.setStartDate(startDate);
+        workerContract.setEndDate(endDate);
+        workerContract
+            .setUploadStatus(EWorkerContractUploadStatus.TO_UPLOAD.getCode());
+        workerContract.setDeleteStatus(EDeleteStatus.NORMAL.getCode());
+        workerContractDAO.insert(workerContract);
+        return code;
+    }
+
+    @Override
+    public void fakeDeleteWorkerContract(String workerCode) {
+        WorkerContract workerContract = new WorkerContract();
+        workerContract.setWorkerCode(workerCode);
+        workerContract
+            .setUploadStatus(EWorkerContractUploadStatus.TO_UPLOAD.getCode());
+        workerContract.setDeleteStatus(EDeleteStatus.DELETED.getCode());
+        workerContractDAO.updateWorkerContractDeleteStatus(workerContract);
+    }
+
+    @Override
+    public void fakeDeleteWorkerContractByProjectCode(String projectCode) {
+        WorkerContract workerContract = new WorkerContract();
+        workerContract.setProjectCode(projectCode);
+        workerContract
+            .setUploadStatus(EWorkerContractUploadStatus.TO_UPLOAD.getCode());
+        workerContract.setDeleteStatus(EDeleteStatus.DELETED.getCode());
+        workerContractDAO.updateWorkerContractDeleteStatus(workerContract);
+    }
+
+    @Override
     public void removeWorkerContract(String userId, String code) {
         WorkerContract data = new WorkerContract();
         data.setCode(code);
@@ -139,6 +169,14 @@ public class WorkerContractBOImpl extends PaginableBOImpl<WorkerContract>
             throw new BizException("XN631671", "劳动合同已上传,无法删除");
         }
         workerContractDAO.delete(data);
+    }
+
+    @Override
+    public void refreshUploadStatus(String code, String status) {
+        WorkerContract workerContract = new WorkerContract();
+        workerContract.setCode(code);
+        workerContract.setUploadStatus(status);
+        workerContractDAO.updateWorkerContractStatus(workerContract);
     }
 
     @Override
@@ -265,72 +303,6 @@ public class WorkerContractBOImpl extends PaginableBOImpl<WorkerContract>
             }
         }
         return data;
-    }
-
-    @Override
-    public String saveWorkerContract(XN631670Req req) {
-        ProjectWorker projectWorker = projectWorkerBO
-            .getProjectWorker(req.getWorkerCode());
-        String code = null;
-        WorkerContract workerContract = new WorkerContract();
-        if (StringUtils.isNotBlank(req.getUnit())) {
-            workerContract.setUnit(Integer.parseInt(req.getUnit()));
-        }
-        if (StringUtils.isNotBlank(req.getContractPeriodType())) {
-            workerContract.setContractPeriodType(
-                Integer.parseInt(req.getContractPeriodType()));
-        }
-        if (StringUtils.isNotBlank(req.getUnitPrice())) {
-            workerContract.setUnitPrice(new BigDecimal(req.getUnitPrice()));
-        }
-        BeanUtils.copyProperties(projectWorker, workerContract);
-        BeanUtils.copyProperties(req, workerContract);
-        workerContract.setTeamName(projectWorker.getTeamName());
-        workerContract.setContractPeriodType(
-            Integer.parseInt(req.getContractPeriodType()));
-        workerContract.setCode(code);
-        Date startDate = DateUtil.strToDate(req.getStartDate(),
-            DateUtil.FRONT_DATE_FORMAT_STRING);
-        Date endDate = DateUtil.strToDate(req.getEndDate(),
-            DateUtil.FRONT_DATE_FORMAT_STRING);
-        code = OrderNoGenerater
-            .generate(EGeneratePrefix.WorkerContract.getCode());
-        workerContract.setCode(code);
-        workerContract.setStartDate(startDate);
-        workerContract.setEndDate(endDate);
-        workerContract
-            .setUploadStatus(EWorkerContractUploadStatus.TO_UPLOAD.getCode());
-        workerContract.setDeleteStatus(EDeleteStatus.NORMAL.getCode());
-        workerContractDAO.insert(workerContract);
-        return code;
-    }
-
-    @Override
-    public void refreshUploadStatus(String code, String status) {
-        WorkerContract workerContract = new WorkerContract();
-        workerContract.setCode(code);
-        workerContract.setUploadStatus(status);
-        workerContractDAO.updateWorkerContractStatus(workerContract);
-    }
-
-    @Override
-    public void fakeDeleteWorkerContract(String workerCode) {
-        WorkerContract workerContract = new WorkerContract();
-        workerContract.setWorkerCode(workerCode);
-        workerContract
-            .setUploadStatus(EWorkerContractUploadStatus.TO_UPLOAD.getCode());
-        workerContract.setDeleteStatus(EDeleteStatus.DELETED.getCode());
-        workerContractDAO.updateWorkerContractDeleteStatus(workerContract);
-    }
-
-    @Override
-    public void fakeDeleteWorkerContractByProjectCode(String projectCode) {
-        WorkerContract workerContract = new WorkerContract();
-        workerContract.setProjectCode(projectCode);
-        workerContract
-            .setUploadStatus(EWorkerContractUploadStatus.TO_UPLOAD.getCode());
-        workerContract.setDeleteStatus(EDeleteStatus.DELETED.getCode());
-        workerContractDAO.updateWorkerContractDeleteStatus(workerContract);
     }
 
     @Override

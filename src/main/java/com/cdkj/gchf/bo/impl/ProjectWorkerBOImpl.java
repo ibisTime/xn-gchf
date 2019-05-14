@@ -45,7 +45,6 @@ import com.cdkj.gchf.enums.EBankCardCodeType;
 import com.cdkj.gchf.enums.EDeleteStatus;
 import com.cdkj.gchf.enums.EGeneratePrefix;
 import com.cdkj.gchf.enums.EGovErrorMessage;
-import com.cdkj.gchf.enums.EIdCardType;
 import com.cdkj.gchf.enums.EIsNotType;
 import com.cdkj.gchf.enums.EOperateLogRefType;
 import com.cdkj.gchf.enums.EProjectWorkerUploadStatus;
@@ -157,16 +156,6 @@ public class ProjectWorkerBOImpl extends PaginableBOImpl<ProjectWorker>
     }
 
     @Override
-    public String saveProjectWorker(ProjectWorker projectWorker) {
-        String code = null;
-        code = OrderNoGenerater
-            .generate(EGeneratePrefix.ProjectWorker.getCode());
-        projectWorker.setCode(code);
-        projectWorkerDAO.insert(projectWorker);
-        return code;
-    }
-
-    @Override
     public String saveProjectWorker(WorkerInfo workerInfo, XN631693ReqData req,
             Project project, TeamMaster teamMaster, CorpBasicinfo corpBasic) {
         ProjectWorker projectWorker = new ProjectWorker();
@@ -192,32 +181,6 @@ public class ProjectWorkerBOImpl extends PaginableBOImpl<ProjectWorker>
         projectWorker.setIdcardNumber(req.getIdCardNumber());
         projectWorker.setIdcardType("01");
         projectWorkerDAO.insert(projectWorker);
-        return code;
-    }
-
-    @Override
-    public String saveProjectWorker(String workerCode, String workerName,
-            String idcardNumber, Project project) {
-        WorkerInfo workerInfo = workerInfoBO.getWorkerInfo(workerCode);
-
-        ProjectWorker projectWorker = new ProjectWorker();
-
-        String code = OrderNoGenerater
-            .generate(EGeneratePrefix.ProjectWorker.getCode());
-        projectWorker.setCode(code);
-        projectWorker.setProjectCode(project.getCode());
-        projectWorker.setProjectName(project.getName());
-        projectWorker.setWorkerCode(workerCode);
-
-        projectWorker.setWorkerName(workerName);
-        projectWorker.setIdcardType(EIdCardType.JUMIN.getCode());
-        projectWorker.setIdcardNumber(idcardNumber);
-        projectWorker.setCellPhone(workerInfo.getCellPhone());
-        projectWorker
-            .setUploadStatus(EProjectWorkerUploadStatus.TO_UPLOAD.getCode());
-        projectWorker.setDeleteStatus(EDeleteStatus.NORMAL.getCode());
-        projectWorkerDAO.insert(projectWorker);
-
         return code;
     }
 
@@ -269,11 +232,40 @@ public class ProjectWorkerBOImpl extends PaginableBOImpl<ProjectWorker>
     }
 
     @Override
+    public void fakeDeleteProjectWorker(String projectcode) {
+        ProjectWorker projectWorker = new ProjectWorker();
+        projectWorker
+            .setUploadStatus(EProjectWorkerUploadStatus.TO_UPLOAD.getCode());
+        projectWorker.setProjectCode(projectcode);
+        projectWorker.setDeleteStatus(EDeleteStatus.DELETED.getCode());
+        projectWorkerDAO.updateProjectWorkerDeleteStatus(projectWorker);
+    }
+
+    @Override
+    public void fakeDeleteProjectWorkerByTeamNo(String projectCode,
+            String teamMasterNo) {
+        ProjectWorker projectWorker = new ProjectWorker();
+        projectWorker.setProjectCode(projectCode);
+        projectWorker.setTeamSysNo(teamMasterNo);
+        projectWorker
+            .setUploadStatus(EProjectWorkerUploadStatus.TO_UPLOAD.getCode());
+        projectWorkerDAO.updateStatus(projectWorker);
+    }
+
+    @Override
     public void updateProjectWorkerDeleteStatus(String code, String status) {
         ProjectWorker projectWorker = new ProjectWorker();
         projectWorker.setDeleteStatus(status);
         projectWorker.setCode(code);
         projectWorkerDAO.updateProjectWorkerDeleteStatus(projectWorker);
+    }
+
+    @Override
+    public int updateProjectWorkerUploadStatus(String code, String status) {
+        ProjectWorker projectWorker = new ProjectWorker();
+        projectWorker.setCode(code);
+        projectWorker.setUploadStatus(status);
+        return projectWorkerDAO.updateProjectWorkerUploadStatus(projectWorker);
     }
 
     @Override
@@ -345,21 +337,6 @@ public class ProjectWorkerBOImpl extends PaginableBOImpl<ProjectWorker>
         projectWorkerDAO.updateProjectWorkerTeamName(condition);
     }
 
-    /**
-     * 
-     * <p>Title: refreshIdCardInfo</p>   
-     * <p>Description: 重新建档后-更新已存在的项目人员信息</p>   
-     */
-    @Override
-    public void refreshIdCardInfo(String oldIdCardNum, String newIdCardNum,
-            String name) {
-        // 项目人员
-
-        // 项目人员进退场
-
-        //
-    }
-
     @Override
     public void refreshUploadStatus(String code, String status) {
         ProjectWorker projectWorker = new ProjectWorker();
@@ -418,7 +395,7 @@ public class ProjectWorkerBOImpl extends PaginableBOImpl<ProjectWorker>
                 projectConfig.getProjectCode(), projectConfig.getSecret());
         } catch (BizException e) {
             e.printStackTrace();
-            updateProjectWorkerStatus(req.getCode(),
+            updateProjectWorkerUploadStatus(req.getCode(),
                 ETeamMasterUploadStatus.UPLOAD_UNUPDATE.getCode());
             throw e;
         }
@@ -540,6 +517,16 @@ public class ProjectWorkerBOImpl extends PaginableBOImpl<ProjectWorker>
     }
 
     @Override
+    public List<ProjectWorker> getProjectWorkers(String corpCode,
+            String teamMasterName, String workerName) {
+        ProjectWorker condition = new ProjectWorker();
+        condition.setTeamName(teamMasterName);
+        condition.setCorpCode(corpCode);
+        condition.setWorkerName(workerName);
+        return projectWorkerDAO.selectList(condition);
+    }
+
+    @Override
     public ProjectWorker getProjectWorkerByGuid(String personGuid,
             String deviceKey) {
         ProjectWorker condition = new ProjectWorker();
@@ -548,14 +535,6 @@ public class ProjectWorkerBOImpl extends PaginableBOImpl<ProjectWorker>
         condition.setDeviceKey(deviceKey);
 
         return projectWorkerDAO.select(condition);
-    }
-
-    @Override
-    public int updateProjectWorkerStatus(String code, String status) {
-        ProjectWorker projectWorker = new ProjectWorker();
-        projectWorker.setCode(code);
-        projectWorker.setUploadStatus(status);
-        return projectWorkerDAO.updateProjectWorkerUploadStatus(projectWorker);
     }
 
     @Override
@@ -674,27 +653,6 @@ public class ProjectWorkerBOImpl extends PaginableBOImpl<ProjectWorker>
         jsonArray.add(workerList);
         jsonObject.add("workerList", jsonArray);
         return jsonObject;
-    }
-
-    @Override
-    public void fakeDeleteProjectWorker(String projectcode) {
-        ProjectWorker projectWorker = new ProjectWorker();
-        projectWorker
-            .setUploadStatus(EProjectWorkerUploadStatus.TO_UPLOAD.getCode());
-        projectWorker.setProjectCode(projectcode);
-        projectWorker.setDeleteStatus(EDeleteStatus.DELETED.getCode());
-        projectWorkerDAO.updateProjectWorkerDeleteStatus(projectWorker);
-    }
-
-    @Override
-    public void fakeDeleteProjectWorkerByTeamNo(String projectCode,
-            String teamMasterNo) {
-        ProjectWorker projectWorker = new ProjectWorker();
-        projectWorker.setProjectCode(projectCode);
-        projectWorker.setTeamSysNo(teamMasterNo);
-        projectWorker
-            .setUploadStatus(EProjectWorkerUploadStatus.TO_UPLOAD.getCode());
-        projectWorkerDAO.updateStatus(projectWorker);
     }
 
 }

@@ -15,25 +15,51 @@ import com.cdkj.gchf.dto.req.XN631917Req;
 import com.google.gson.JsonObject;
 
 public interface IWorkerContractBO extends IPaginableBO<WorkerContract> {
-
-    public String saveWorkerContract(WorkerContract req);
-
+    /**
+     * 新增劳动合同 
+     */
     public String saveWorkerContract(XN631670Req req);
 
+    /**
+     * 新增劳动合同 
+     */
     public String saveWorkerContract(XN631673ReqData data,
             ProjectWorker projectWorker);
 
-    public void removeWorkerContract(String userId, String code);
-
-    public void refreshWorkerContract(XN631672Req data);
-
-    void updateWorkerContractDeleteStatus(String code, String status);
-
-    WorkerContract getWorkerContract(String projectCode, String workerCode);
-
+    /**
+     * 根据workercode假删
+     */
     void fakeDeleteWorkerContract(String workerCode);
 
+    /**
+     *根据项目编号假删 
+     */
     void fakeDeleteWorkerContractByProjectCode(String projectCode);
+
+    /**
+     * 根据code假删除 
+     */
+    public void removeWorkerContract(String userId, String code);
+
+    /**
+     * 修改劳动合同
+     */
+    public void refreshWorkerContract(XN631672Req data);
+
+    /**
+     * 修改上传状态
+     */
+    public void refreshUploadStatus(String code, String status);
+
+    /**
+     * 修改删除状态 
+     */
+    void updateWorkerContractDeleteStatus(String code, String status);
+
+    /**
+     * 查询项目人员劳动合同 
+     */
+    WorkerContract getWorkerContract(String projectCode, String workerCode);
 
     public List<WorkerContract> queryWorkerContractList(
             WorkerContract condition);
@@ -43,8 +69,9 @@ public interface IWorkerContractBO extends IPaginableBO<WorkerContract> {
 
     public WorkerContract getWorkerContract(String code);
 
-    public void refreshUploadStatus(String code, String status);
-
+    /**
+     * 获取上传json 
+     */
     JsonObject getRequestJson(WorkerContract workerContract,
             ProjectConfig projectConfig);
 

@@ -118,17 +118,7 @@
 		thf_pay_roll t
 		SET
 		delete_status = #{deleteStatus}
-		  <trim prefix="WHERE" prefixOverrides="AND | OR">
-            <if test="code != null and code != '' ">
-                AND t.code = #{code}
-            </if>
-            <if test="projectCode != null and projectCode != '' ">
-                AND t.project_code = #{projectCode}
-            </if>
-            <if test="teamSysNo != null and teamSysNo != '' ">
-                AND t.team_sys_no = #{teamSysNo}
-            </if>
-        </trim>
+		<include refid="where_condition"/>
 	</update>
 
 	<delete id="delete_payRoll" parameterType="payRoll">

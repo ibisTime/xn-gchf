@@ -40,6 +40,7 @@
 		<if test="province != null and province != '' and city != null and city != '' and area != null and area != '' ">
 			JOIN thf_supervise tsu ON t.organization_code = tsu.code
 		</if>
+		
 	</sql>
 	
 	<sql id="where_condition">
@@ -93,6 +94,9 @@
 			<if test="area != null and area != '' ">
 				AND tsu.area = #{area}
 			</if>
+			<if test="roleCode != null and roleCode != ''">
+            AND role_code = #{roleCode}
+            </if>
 			
 		</trim>
 	</sql>

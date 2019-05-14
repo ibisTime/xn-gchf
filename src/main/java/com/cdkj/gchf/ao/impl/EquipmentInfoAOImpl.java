@@ -58,23 +58,15 @@ public class EquipmentInfoAOImpl implements IEquipmentInfoAO {
         return equipmentInfoBO.saveEquipmentInfo(data);
     }
 
-    /**
-     * 
-     * <p>Title: addEquipmentInfo</p>   
-     * <p>Description: 添加考勤设备</p>   
-     */
     @Override
     public String addEquipmentInfo(XN631820Req req) {
         User user = userBO.getBriefUser(req.getUserId());
         // 是否已添加
-        if (equipmentInfoBO.getEquipmentInfoByKey(req.getDeviceKey(),
-            req.getProjectCode()) != null) {
+        if (equipmentInfoBO.getEquipmentInfoByKey(req.getDeviceKey()) != null) {
             throw new BizException("XN631820",
                 "序列号为【" + req.getDeviceKey() + "】的设备已添加");
         }
 
-        // 与之前应用解绑
-        device.delCloudDevice(req.getDeviceKey());
         // 添加设备到云端
         DeviceRes deviceCreation = device.deviceCreation(req.getDeviceKey(),
             req.getName(), req.getTag());
@@ -108,14 +100,6 @@ public class EquipmentInfoAOImpl implements IEquipmentInfoAO {
     }
 
     @Override
-    public int editEquipmentInfo(EquipmentInfo data) {
-        if (!equipmentInfoBO.isEquipmentInfoExist(data.getCode())) {
-            throw new BizException("xn0000", "记录编号不存在");
-        }
-        return equipmentInfoBO.refreshEquipmentInfo(data);
-    }
-
-    @Override
     public int dropEquipmentInfo(String code) {
         if (!equipmentInfoBO.isEquipmentInfoExist(code)) {
             throw new BizException("xn0000", "记录编号不存在");
@@ -124,11 +108,43 @@ public class EquipmentInfoAOImpl implements IEquipmentInfoAO {
     }
 
     @Override
+    public void modifyEquipment(XN631821Req req) {
+        EquipmentInfo equipmentInfo = equipmentInfoBO
+            .getEquipmentInfo(req.getCode());
+        device.EquipmentUpdate(equipmentInfo.getDeviceKey(), req.getName(),
+            req.getTag());
+        ResultMsg updateCloudDevice = device
+            .updateCloudDevice(equipmentInfo.getDeviceKey());
+        if (updateCloudDevice.getCode()
+            .equals(EEquipmentResponse.TONGBUCHENGGONG.getCode())) {
+            // 更新成功
+            equipmentInfo.setName(req.getName());
+            equipmentInfo.setTag(req.getTag());
+            equipmentInfo.setDirection(req.getDirection());
+            equipmentInfoBO.refreshEquipmentInfo(equipmentInfo);
+
+            // 刷新设备人员信息
+            EquipmentWorker condition = new EquipmentWorker();
+            condition.setDeviceKey(equipmentInfo.getDeviceKey());
+            List<EquipmentWorker> queryEquipmentWorkerList = equipmentWorkerBO
+                .queryEquipmentWorkerList(condition);
+            for (EquipmentWorker equipmentWorker : queryEquipmentWorkerList) {
+                equipmentWorker.setDeviceName(req.getName());
+                equipmentWorkerBO.refreshEquipmentWorker(equipmentWorker);
+            }
+
+        } else {
+            throw new BizException("XN631821",
+                EEquipResultMsg.parseValue(updateCloudDevice.getMsg()));
+        }
+
+    }
+
+    @Override
     public void enableEquipment(String deviceKey, String userId) {
-        User user = userBO.getBriefUser(userId);
 
         EquipmentInfo equipmentInfo = equipmentInfoBO
-            .getEquipmentInfoByKey(deviceKey, user.getOrganizationCode());
+            .getEquipmentInfoByKey(deviceKey);
         if (null != equipmentInfo) {
             if (EEquipNetStatus.OFFLINE.getCode()
                 .equals(equipmentInfo.getStatus())) {
@@ -142,10 +158,9 @@ public class EquipmentInfoAOImpl implements IEquipmentInfoAO {
 
     @Override
     public void disableEquipment(String deviceKey, String userId) {
-        User user = userBO.getBriefUser(userId);
 
         EquipmentInfo equipmentInfo = equipmentInfoBO
-            .getEquipmentInfoByKey(deviceKey, user.getOrganizationCode());
+            .getEquipmentInfoByKey(deviceKey);
         if (null != equipmentInfo) {
             if (EEquipNetStatus.OFFLINE.getCode()
                 .equals(equipmentInfo.getStatus())) {
@@ -182,23 +197,13 @@ public class EquipmentInfoAOImpl implements IEquipmentInfoAO {
 
     @Override
     public List<EquipmentInfo> queryEquipmentInfoList(EquipmentInfo condition) {
-        List<EquipmentInfo> list = new ArrayList<>();
 
         User user = userBO.getBriefUser(condition.getUserId());
         condition.setProjectCode(user.getOrganizationCode());
+        List<EquipmentInfo> queryEquipmentInfoList = equipmentInfoBO
+            .queryEquipmentInfoList(condition);
 
-        for (EquipmentInfo equipmentInfo : equipmentInfoBO
-            .queryEquipmentInfoList(condition)) {
-
-            DeviceQuery deviceQuery = device
-                .deviceQuery(equipmentInfo.getDeviceKey());
-            EquipmentInfo refreshEquipment = equipmentInfoBO.refreshEquipment(
-                equipmentInfo.getDeviceKey(), equipmentInfo.getProjectCode(),
-                deviceQuery.getData());
-
-            list.add(refreshEquipment);
-        }
-        return list;
+        return queryEquipmentInfoList;
     }
 
     @Override
@@ -211,39 +216,6 @@ public class EquipmentInfoAOImpl implements IEquipmentInfoAO {
         return equipmentInfoBO.refreshEquipment(equipmentInfo.getDeviceKey(),
             userBO.getBriefUser(userId).getOrganizationCode(),
             deviceQuery.getData());
-    }
-
-    @Override
-    public void modifyEquipment(XN631821Req req) {
-        EquipmentInfo equipmentInfo = equipmentInfoBO
-            .getEquipmentInfo(req.getCode());
-        device.EquipmentUpdate(equipmentInfo.getDeviceKey(), req.getName(),
-            req.getTag());
-        ResultMsg updateCloudDevice = device
-            .updateCloudDevice(equipmentInfo.getDeviceKey());
-        if (updateCloudDevice.getCode()
-            .equals(EEquipmentResponse.TONGBUCHENGGONG.getCode())) {
-            // 更新成功
-            equipmentInfo.setName(req.getName());
-            equipmentInfo.setTag(req.getTag());
-            equipmentInfo.setDirection(req.getDirection());
-            equipmentInfoBO.refreshEquipmentInfo(equipmentInfo);
-
-            // 刷新设备人员信息
-            EquipmentWorker condition = new EquipmentWorker();
-            condition.setDeviceKey(equipmentInfo.getDeviceKey());
-            List<EquipmentWorker> queryEquipmentWorkerList = equipmentWorkerBO
-                .queryEquipmentWorkerList(condition);
-            for (EquipmentWorker equipmentWorker : queryEquipmentWorkerList) {
-                equipmentWorker.setDeviceName(req.getName());
-                equipmentWorkerBO.refreshEquipmentWorker(equipmentWorker);
-            }
-
-        } else {
-            throw new BizException("XN631821",
-                EEquipResultMsg.parseValue(updateCloudDevice.getMsg()));
-        }
-
     }
 
 }

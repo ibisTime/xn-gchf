@@ -70,7 +70,7 @@
 			join thf_equipment_worker ew on ew.worker_code = t.code
 		</if>
 	</sql>
-	
+
 	<sql id="where_condition">
 		<trim prefix="WHERE" prefixOverrides="AND | OR">
 			<if test="code != null and code != '' ">
@@ -268,20 +268,7 @@
 		thf_project_worker t
 		SET
 		delete_status = #{deleteStatus}
-		<trim prefix="WHERE" prefixOverrides="AND | OR">
-			<if test="code != null and code != '' ">
-				AND t.code = #{code}
-			</if>
-			<if test="uploadStatus != null and uploadStatus != '' ">
-				AND t.upload_status = #{uploadStatus}
-			</if>
-			<if test="projectCode != null and projectCode != '' ">
-				AND t.project_code = #{projectCode}
-			</if>
-			<if test="teamSysNo != null and teamSysNo != '' ">
-				AND t.team_sys_no = #{teamSysNo}
-			</if>
-		</trim>
+		<include refid="where_condition" />
 
 	</update>
 	<update id="update_projectWorker_upload_status" parameterType="projectWorker">

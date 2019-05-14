@@ -29,14 +29,14 @@
 			<if test="deviceName != null and deviceName != '' ">
 				AND t.device_name like "%"#{deviceName}"%"
 			</if>
-			
+
 			<if test="workerName != null and workerName != '' ">
-                AND t.worker_name like "%"#{workerName}"%"
-            </if>
+				AND t.worker_name like "%"#{workerName}"%"
+			</if>
 
 			<if test="projectCode != null and projectCode != '' ">
-            	AND b.project_code = #{projectCode}
-        	</if>
+				AND b.project_code = #{projectCode}
+			</if>
 		</trim>
 	</sql>
 
@@ -46,38 +46,6 @@
 			on t.device_code = b.code
 		</if>
 	</sql>
-	<select id="select_EquipmentWorker" parameterType="equipmentWorker"
-		resultMap="EquipmentWorker_DB_Result">
-		SELECT
-		t.code
-		,t.device_code
-		,t.device_key
-		,t.device_name
-		,t.worker_code
-		,t.worker_name
-		,t.team_code
-		,t.team_name
-		,t.id_card_number
-		,t.status
-		,t.pass_times
-		,t.create_time
-		FROM
-		thf_equipment_worker t
-		<include refid="join_condition" />
-		<include refid="where_condition" />
-		<trim prefix="ORDER BY ">
-			<if test="order != null and order != '' ">
-				t.${order}
-			</if>
-		</trim>
-	</select>
-
-	<select id="select_EquipmentWorker_count" parameterType="equipmentWorker"
-		resultType="java.lang.Long">
-		SELECT count(1) FROM thf_equipment_worker t
-		<include refid="join_condition" />
-		<include refid="where_condition" />
-	</select>
 
 	<insert id="insert_EquipmentWorker" parameterType="equipmentWorker">
 		INSERT INTO
@@ -111,6 +79,47 @@
 		)
 	</insert>
 
+	<insert id="batch_insert">
+		INSERT INTO thf_equipment_worker
+		(
+		 code
+		,device_code
+		,device_key
+		,device_name
+		,worker_code
+		,worker_name
+		
+		,team_code
+		,team_name
+		,id_card_number
+		,status
+		,pass_times
+		,create_time
+		)
+		VALUES
+		<foreach collection="list" index="index" item="equipmentWorker"
+			open="(" separator="," close=") ">
+			 #{equipmentWorker.code}
+			,#{equipmentWorker.deviceCode}   
+			,#{equipmentWorker.deviceKey}
+			,#{equipmentWorker.deviceName}
+			,#{equipmentWorker.workerCode}
+			
+			,#{equipmentWorker.workerName}
+			,#{equipmentWorker.teamCode}
+			,#{equipmentWorker.teamName}
+			,#{equipmentWorker.idCardNumber}
+			,#{equipmentWorker.status}
+			,#{equipmentWorker.passTimes}
+			,#{equipmentWorker.createTime}
+		</foreach>
+	</insert>
+	<delete id="delete_EquipmentWorker" parameterType="equipmentWorker">
+		DELETE FROM
+		thf_equipment_worker
+		WHERE code = #{code}
+	</delete>
+
 	<update id="update_EquipmentWorker" parameterType="equipmentWorker">
 		UPDATE
 		thf_equipment_worker
@@ -132,9 +141,42 @@
 		#{code}
 	</update>
 
-	<delete id="delete_EquipmentWorker" parameterType="equipmentWorker">
-		DELETE FROM
-		thf_equipment_worker
-		WHERE code = #{code}
-	</delete>
+	<select id="select_EquipmentWorker" parameterType="equipmentWorker"
+		resultMap="EquipmentWorker_DB_Result">
+		SELECT
+		t.code
+		,t.device_code
+		,t.device_key
+		,t.device_name
+		,t.worker_code
+		,t.worker_name
+		,t.team_code
+		,t.team_name
+		,t.id_card_number
+		,t.status
+		,t.pass_times
+		,t.create_time
+		FROM
+		thf_equipment_worker t
+		<include refid="join_condition" />
+		<include refid="where_condition" />
+		<trim prefix="ORDER BY ">
+			<if test="order != null and order != '' ">
+				t.${order}
+			</if>
+		</trim>
+	</select>
+
+	<select id="select_EquipmentWorker_count" parameterType="equipmentWorker"
+		resultType="java.lang.Long">
+		SELECT count(1) FROM thf_equipment_worker t
+		<include refid="join_condition" />
+		<include refid="where_condition" />
+	</select>
+
+
+
+
+
+
 </mapper>

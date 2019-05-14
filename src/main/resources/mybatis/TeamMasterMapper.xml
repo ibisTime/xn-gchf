@@ -199,20 +199,7 @@
 		thf_team_master t
 		SET
 		delete_status = #{deleteStatus}
-		<trim prefix="WHERE" prefixOverrides="AND|OR">
-			<if test="code != null and code != '' ">
-				AND code = #{code }
-			</if>
-			<if test="uploadStatus != null and uploadStatus != '' ">
-				AND upload_status = #{uploadStatus }
-			</if>
-			<if test="projectCode != null and projectCode != '' ">
-				AND project_code = #{projectCode }
-			</if>
-			<if test="corpCode != null and corpCode != '' ">
-				AND corp_code = #{corpCode }
-			</if>
-		</trim>
+		<include refid="where_condition"/>
 	</update>
 
 	<update id="update_teamMasterTeamSysNo" parameterType="teamMaster">

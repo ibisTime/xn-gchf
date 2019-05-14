@@ -12,11 +12,11 @@ import com.cdkj.gchf.dto.req.XN631830Req;
 public interface IEquipmentWorkerAO {
     static final String DEFAULT_ORDER_COLUMN = "code";
 
-    public String addEquipmentWorker(EquipmentWorker data);
-
-    public int dropEquipmentWorker(String code);
-
-    public int editEquipmentWorker(EquipmentWorker data);
+    /**
+     * <p>Title: addEquipmentWorker</p>   
+     * <p>Description:添加设备人员 -> 单设备-多人员的情况</p>   
+     */
+    void addEquipmentWorker(XN631830Req req);
 
     public Paginable<EquipmentWorker> queryEquipmentWorkerPage(int start,
             int limit, EquipmentWorker condition);
@@ -26,5 +26,4 @@ public interface IEquipmentWorkerAO {
 
     public EquipmentWorker getEquipmentWorker(String code);
 
-    void addEquipmentWorker(XN631830Req req);
 }

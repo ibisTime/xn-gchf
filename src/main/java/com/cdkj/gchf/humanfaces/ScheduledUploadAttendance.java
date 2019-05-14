@@ -7,7 +7,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
-import com.cdkj.gchf.ao.IWorkerAttendanceAO;
 import com.cdkj.gchf.bo.IEquipmentInfoBO;
 import com.cdkj.gchf.bo.IProjectConfigBO;
 import com.cdkj.gchf.bo.IProjectWorkerBO;
@@ -42,9 +41,6 @@ public class ScheduledUploadAttendance {
 
     @Autowired
     private IWorkerEntryExitRecordBO workerEntryExitRecordBO;
-
-    @Autowired
-    private IWorkerAttendanceAO workerAttendanceAO;
 
     @Autowired
     private IWorkerAttendanceBO workerAttendanceBO;
@@ -91,10 +87,10 @@ public class ScheduledUploadAttendance {
                 }
                 EquipmentInfo morningEquipmentInfo = equipmentInfoBO
                     .getEquipmentInfoByKey(
-                        morningEntryExitRecord.getDeviceKey(), projectCode);
+                        morningEntryExitRecord.getDeviceKey());
                 EquipmentInfo afternoonEquipmentInfo = equipmentInfoBO
                     .getEquipmentInfoByKey(
-                        afternoonEntryExitRecord.getDeviceKey(), projectCode);
+                        afternoonEntryExitRecord.getDeviceKey());
 
                 workerAttendanceBO.addWorkerAttendace(morningEntryExitRecord,
                     morningEquipmentInfo, morningEntryExitRecord.getDate(),

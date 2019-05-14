@@ -117,10 +117,44 @@ public class ProjectWorkerEntryExitHistoryBOImpl
     }
 
     @Override
-    public void removeProjectWorkerEntryExitHistory(String code) {
-        ProjectWorkerEntryExitHistory data = new ProjectWorkerEntryExitHistory();
-        data.setCode(code);
-        projectWorkerEntryExitHistoryDAO.delete(data);
+    public void fakeDeleteProjectWorkerEntryHistoryByProject(
+            String projectCode) {
+        ProjectWorkerEntryExitHistory projectWorkerEntryExitHistory = new ProjectWorkerEntryExitHistory();
+        projectWorkerEntryExitHistory.setProjectCode(projectCode);
+        projectWorkerEntryExitHistory.setUploadStatus(
+            EProjectWorkerEntryExitUploadStatus.TO_UPLOAD.getCode());
+        projectWorkerEntryExitHistory
+            .setDeleteStatus(EDeleteStatus.DELETED.getCode());
+        projectWorkerEntryExitHistoryDAO
+            .updateProjectWorkerEntryHistoryDeleteStatus(
+                projectWorkerEntryExitHistory);
+    }
+
+    @Override
+    public void fakeDeleteProjectWorkerEntryHistory(String workerCode) {
+        ProjectWorkerEntryExitHistory projectWorkerEntryExitHistory = new ProjectWorkerEntryExitHistory();
+        projectWorkerEntryExitHistory.setWorkerCode(workerCode);
+        projectWorkerEntryExitHistory
+            .setDeleteStatus(EDeleteStatus.DELETED.getCode());
+        projectWorkerEntryExitHistory.setUploadStatus(
+            EProjectWorkerEntryExitUploadStatus.TO_UPLOAD.getCode());
+        projectWorkerEntryExitHistoryDAO
+            .updateProjectWorkerEntryHistoryDeleteStatus(
+                projectWorkerEntryExitHistory);
+    }
+
+    @Override
+    public void fakeDeleteProjectWorkerEntryHistoryByTeamMaster(
+            String teamMasterNo) {
+        ProjectWorkerEntryExitHistory projectWorkerEntryExitHistory = new ProjectWorkerEntryExitHistory();
+        projectWorkerEntryExitHistory.setTeamSysNo(teamMasterNo);
+        projectWorkerEntryExitHistory.setUploadStatus(
+            EProjectWorkerEntryExitUploadStatus.TO_UPLOAD.getCode());
+        projectWorkerEntryExitHistory
+            .setDeleteStatus(EDeleteStatus.DELETED.getCode());
+        projectWorkerEntryExitHistoryDAO
+            .updateProjectWorkerEntryHistoryDeleteStatus(
+                projectWorkerEntryExitHistory);
     }
 
     @Override
@@ -140,6 +174,15 @@ public class ProjectWorkerEntryExitHistoryBOImpl
     }
 
     @Override
+    public void refreshUploadStatus(String code, String status) {
+        ProjectWorkerEntryExitHistory projectWorkerEntryExitHistory = new ProjectWorkerEntryExitHistory();
+        projectWorkerEntryExitHistory.setCode(code);
+        projectWorkerEntryExitHistory.setUploadStatus(status);
+        projectWorkerEntryExitHistoryDAO.updateProjectWorkerEntryHistoryStatus(
+            projectWorkerEntryExitHistory);
+    }
+
+    @Override
     public void updateProjectWorkerEntryExitHistoryDeleteStatus(String code,
             String status) {
         ProjectWorkerEntryExitHistory projectWorkerEntryExitHistory = new ProjectWorkerEntryExitHistory();
@@ -148,45 +191,6 @@ public class ProjectWorkerEntryExitHistoryBOImpl
         projectWorkerEntryExitHistoryDAO
             .updateProjectWorkerEntryHistoryDeleteStatus(
                 projectWorkerEntryExitHistory);
-    }
-
-    @Override
-    public void doUpload(XN631914Req req, ProjectConfig projectConfig) {
-
-        List<XN631914ReqWorker> workerList = req.getWorkerList();
-        for (XN631914ReqWorker worker : workerList) {
-            worker.setIdCardNumber(AesUtils.encrypt(worker.getIdCardNumber(),
-                projectConfig.getSecret()));
-        }
-
-        String data = JSONObject.toJSONStringWithDateFormat(req, "yyyy-MM-dd")
-            .toString();
-
-        String resString = GovConnecter.getGovData("WorkerEntryExit.Add", data,
-            projectConfig.getProjectCode(), projectConfig.getSecret());
-
-        SerialHandler.handle(resString, projectConfig);
-    }
-
-    @Override
-    public Paginable<ProjectWorkerEntryExitHistory> doQuery(XN631915Req req,
-            ProjectConfig projectConfig) {
-        ProjectWorkerEntryExitHistory projectWorkerEntryExitHistory = new ProjectWorkerEntryExitHistory();
-        BeanUtils.copyProperties(req, projectWorkerEntryExitHistory);
-
-        String data = JSONObject.toJSON(projectWorkerEntryExitHistory)
-            .toString();
-
-        String queryString = GovConnecter.getGovData("WorkerEntryExit.Query",
-            data, projectConfig.getProjectCode(), projectConfig.getSecret());
-
-        Map<String, String> replaceMap = new HashMap<>();
-
-        Paginable<ProjectWorkerEntryExitHistory> page = GovUtil.parseGovPage(
-            req.getPageIndex(), req.getPageSize(), queryString, replaceMap,
-            ProjectWorkerEntryExitHistory.class);
-
-        return page;
     }
 
     @Override
@@ -258,26 +262,6 @@ public class ProjectWorkerEntryExitHistoryBOImpl
     }
 
     @Override
-    public String saveProjectWorkerEntryExitHistory(
-            ProjectWorkerEntryExitHistory entryExitHistory) {
-        String code = null;
-        code = OrderNoGenerater
-            .generate(EGeneratePrefix.ProjectWorkerEntryExitHistory.getCode());
-        entryExitHistory.setCode(code);
-        projectWorkerEntryExitHistoryDAO.insert(entryExitHistory);
-        return code;
-    }
-
-    @Override
-    public void refreshUploadStatus(String code, String status) {
-        ProjectWorkerEntryExitHistory projectWorkerEntryExitHistory = new ProjectWorkerEntryExitHistory();
-        projectWorkerEntryExitHistory.setCode(code);
-        projectWorkerEntryExitHistory.setUploadStatus(status);
-        projectWorkerEntryExitHistoryDAO.updateProjectWorkerEntryHistoryStatus(
-            projectWorkerEntryExitHistory);
-    }
-
-    @Override
     public ProjectWorkerEntryExitHistory getLastTimeEntryTime(
             String workerCode) {
         ProjectWorkerEntryExitHistory condition = new ProjectWorkerEntryExitHistory();
@@ -292,44 +276,42 @@ public class ProjectWorkerEntryExitHistoryBOImpl
     }
 
     @Override
-    public void fakeDeleteProjectWorkerEntryHistoryByProject(
-            String projectCode) {
-        ProjectWorkerEntryExitHistory projectWorkerEntryExitHistory = new ProjectWorkerEntryExitHistory();
-        projectWorkerEntryExitHistory.setProjectCode(projectCode);
-        projectWorkerEntryExitHistory.setUploadStatus(
-            EProjectWorkerEntryExitUploadStatus.TO_UPLOAD.getCode());
-        projectWorkerEntryExitHistory
-            .setDeleteStatus(EDeleteStatus.DELETED.getCode());
-        projectWorkerEntryExitHistoryDAO
-            .updateProjectWorkerEntryHistoryDeleteStatus(
-                projectWorkerEntryExitHistory);
+    public void doUpload(XN631914Req req, ProjectConfig projectConfig) {
+
+        List<XN631914ReqWorker> workerList = req.getWorkerList();
+        for (XN631914ReqWorker worker : workerList) {
+            worker.setIdCardNumber(AesUtils.encrypt(worker.getIdCardNumber(),
+                projectConfig.getSecret()));
+        }
+
+        String data = JSONObject.toJSONStringWithDateFormat(req, "yyyy-MM-dd")
+            .toString();
+
+        String resString = GovConnecter.getGovData("WorkerEntryExit.Add", data,
+            projectConfig.getProjectCode(), projectConfig.getSecret());
+
+        SerialHandler.handle(resString, projectConfig);
     }
 
     @Override
-    public void fakeDeleteProjectWorkerEntryHistory(String workerCode) {
+    public Paginable<ProjectWorkerEntryExitHistory> doQuery(XN631915Req req,
+            ProjectConfig projectConfig) {
         ProjectWorkerEntryExitHistory projectWorkerEntryExitHistory = new ProjectWorkerEntryExitHistory();
-        projectWorkerEntryExitHistory.setWorkerCode(workerCode);
-        projectWorkerEntryExitHistory
-            .setDeleteStatus(EDeleteStatus.DELETED.getCode());
-        projectWorkerEntryExitHistory.setUploadStatus(
-            EProjectWorkerEntryExitUploadStatus.TO_UPLOAD.getCode());
-        projectWorkerEntryExitHistoryDAO
-            .updateProjectWorkerEntryHistoryDeleteStatus(
-                projectWorkerEntryExitHistory);
-    }
+        BeanUtils.copyProperties(req, projectWorkerEntryExitHistory);
 
-    @Override
-    public void fakeDeleteProjectWorkerEntryHistoryByTeamMaster(
-            String teamMasterNo) {
-        ProjectWorkerEntryExitHistory projectWorkerEntryExitHistory = new ProjectWorkerEntryExitHistory();
-        projectWorkerEntryExitHistory.setTeamSysNo(teamMasterNo);
-        projectWorkerEntryExitHistory.setUploadStatus(
-            EProjectWorkerEntryExitUploadStatus.TO_UPLOAD.getCode());
-        projectWorkerEntryExitHistory
-            .setDeleteStatus(EDeleteStatus.DELETED.getCode());
-        projectWorkerEntryExitHistoryDAO
-            .updateProjectWorkerEntryHistoryDeleteStatus(
-                projectWorkerEntryExitHistory);
+        String data = JSONObject.toJSON(projectWorkerEntryExitHistory)
+            .toString();
+
+        String queryString = GovConnecter.getGovData("WorkerEntryExit.Query",
+            data, projectConfig.getProjectCode(), projectConfig.getSecret());
+
+        Map<String, String> replaceMap = new HashMap<>();
+
+        Paginable<ProjectWorkerEntryExitHistory> page = GovUtil.parseGovPage(
+            req.getPageIndex(), req.getPageSize(), queryString, replaceMap,
+            ProjectWorkerEntryExitHistory.class);
+
+        return page;
     }
 
 }

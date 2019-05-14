@@ -157,17 +157,7 @@
 		thf_worker_contract t
 		SET
 		t.delete_status = #{deleteStatus}
-		<trim prefix="WHERE" prefixOverrides="AND|OR">
-			<if test="code != null and code != '' ">
-				AND t.code = #{code}
-			</if>
-			<if test="projectCode != null and projectCode != '' ">
-				AND t.project_code = #{projectCode}
-			</if>
-			<if test="uploadStatus != null and uploadStatus != '' ">
-				AND t.upload_status = #{uploadStatus}
-			</if>
-		</trim>
+		<include refid="where_condition"/>
 
 	</update>
 

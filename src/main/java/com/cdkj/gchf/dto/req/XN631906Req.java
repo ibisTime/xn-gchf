@@ -51,6 +51,16 @@ public class XN631906Req {
     // 项目经理电话
     private String pmPhone;
 
+    public XN631906Req(String code, String userId) {
+        super();
+        this.code = code;
+        this.userId = userId;
+    }
+
+    public XN631906Req() {
+
+    }
+
     public String getCode() {
         return code;
     }

@@ -123,6 +123,111 @@ public class ProjectWorkerEntryExitHistoryAOImpl
 
     }
 
+    /**
+     * <p>Description: 导入人员进退场</p>   
+     */
+    @Transactional
+    @Override
+    public void importProjectWorkerEntryExitHistoryList(XN631733Req req) {
+        User user = userBO.getBriefUser(req.getUpdater());
+
+        for (XN631733ReqData data : req.getDateList()) {
+            // 校验数据字典类型数据
+            EEntryExitType.checkExists(String.valueOf(data.getType()));
+
+            TeamMaster teamMaster = teamMasterBO.getTeamMasterByProject(
+                req.getProjectCode(), data.getCorpCode(), data.getTeamName());
+            if (teamMaster == null) {
+                throw new BizException("XN631733",
+                    "项目班组【" + data.getTeamName() + "】未录入");
+            }
+
+            ProjectWorker infoByIdCardNumber = projectWorkerBO
+                .getProjectWorkerByIdentity(teamMaster.getCode(),
+                    data.getIdcardNumber());
+            if (infoByIdCardNumber == null) {
+                throw new BizException("XN631733",
+                    "项目人员【" + data.getIdcardNumber() + "】未录入");
+            }
+            String code = projectWorkerEntryExitHistoryBO
+                .saveProjectWorkerEntryExitHistory(teamMaster,
+                    infoByIdCardNumber, data);
+            operateLogBO.saveOperateLog(
+                EOperateLogRefType.WorkAttendance.getCode(), code, "导入人员进退场信息",
+                user, "导入人员进退场信息");
+        }
+    }
+
+    @Transactional
+    @Override
+    public void uploadProjectWorkerEntryExitHistoryList(String userId,
+            List<String> codeList) {
+        User briefUser = userBO.getBriefUser(userId);
+        for (String code : codeList) {
+            ProjectWorkerEntryExitHistory projectWorkerEntryExitHistory = projectWorkerEntryExitHistoryBO
+                .getProjectWorkerEntryExitHistory(code);
+            ProjectConfig projectConfigByLocal = projectConfigBO
+                .getProjectConfigByLocal(
+                    projectWorkerEntryExitHistory.getProjectCode());
+            // 校验项目配置
+            Project project = projectBO
+                .getProject(projectWorkerEntryExitHistory.getProjectCode());
+            if (projectConfigByLocal == null) {
+                throw new BizException("XN631734", "项目未配置" + project.getName());
+            }
+
+            // 校验项目人员是否上传
+
+            ProjectWorker projectWorker = projectWorkerBO.getProjectWorker(
+                projectWorkerEntryExitHistory.getWorkerCode());
+            if (!projectWorker.getUploadStatus()
+                .equals(EProjectWorkerUploadStatus.UPLOAD_UPDATE.getCode())
+                    && !projectWorker.getUploadStatus().equals(
+                        EProjectWorkerUploadStatus.UPLOAD_UNUPDATE.getCode())) {
+                throw new BizException("XN00000",
+                    "项目人员未上传【  " + projectWorker.getWorkerName() + " 】");
+            }
+
+            TeamMaster teamMaster = teamMasterBO
+                .getTeamMaster(projectWorkerEntryExitHistory.getTeamSysNo());
+            // 获取上传json
+            JsonObject requestJson = projectWorkerEntryExitHistoryBO
+                .getRequestJson(teamMaster, projectWorkerEntryExitHistory,
+                    projectConfigByLocal);
+            // 更新状态为上传中
+            projectWorkerEntryExitHistoryBO.refreshUploadStatus(code,
+                EProjectWorkerEntryExitUploadStatus.UPLOADING.getCode());
+
+            String resString;
+            try {
+                // 捕捉国家平台抛出的异常 更新数据状态为上传失败
+                resString = GovConnecter.getGovData("WorkerEntryExit.Add",
+                    requestJson.toString(),
+                    projectConfigByLocal.getProjectCode(),
+                    projectConfigByLocal.getSecret());
+            } catch (BizException e) {
+                projectWorkerBO.refreshUploadStatus(code,
+                    EProjectWorkerEntryExitUploadStatus.UPLOAD_FAIL.getCode());
+                e.printStackTrace();
+                throw e;
+            }
+
+            String operateLog = operateLogBO.saveOperateLog(
+                EOperateLogRefType.ProjectWorkerEntryExitHistory.getCode(),
+                code,
+                EOperateLogOperate.UploadProjectWorkerEntryExitHistory
+                    .getValue(),
+                briefUser,
+                EOperateLogOperate.UploadProjectWorkerEntryExitHistory
+                    .getValue());
+            AsyncQueueHolder.addSerial(resString, projectConfigByLocal,
+                "projectWorkerEntryExitHistoryBO", code,
+                EProjectWorkerEntryExitUploadStatus.UPLOAD_UNEDITABLE.getCode(),
+                operateLog, userId);
+
+        }
+    }
+
     @Override
     public void uploadProjectWorkerEntryExitHistory(XN631914Req req) {
         ProjectConfig projectConfig = projectConfigBO
@@ -244,116 +349,6 @@ public class ProjectWorkerEntryExitHistoryAOImpl
             .setTeamName(teamMaster.getTeamName());
 
         return queryProjectWorkerEntryExitHistory;
-    }
-
-    /**
-     * 
-     * <p>Title: uploadProjectWorkerEntryExitHistoryList</p>   
-     * <p>Description: 上传人员进退场</p>   
-     */
-    @Transactional
-    @Override
-    public void uploadProjectWorkerEntryExitHistoryList(String userId,
-            List<String> codeList) {
-        User briefUser = userBO.getBriefUser(userId);
-        for (String code : codeList) {
-            ProjectWorkerEntryExitHistory projectWorkerEntryExitHistory = projectWorkerEntryExitHistoryBO
-                .getProjectWorkerEntryExitHistory(code);
-            ProjectConfig projectConfigByLocal = projectConfigBO
-                .getProjectConfigByLocal(
-                    projectWorkerEntryExitHistory.getProjectCode());
-            // 校验项目配置
-            Project project = projectBO
-                .getProject(projectWorkerEntryExitHistory.getProjectCode());
-            if (projectConfigByLocal == null) {
-                throw new BizException("XN631734", "项目未配置" + project.getName());
-            }
-
-            // 校验项目人员是否上传
-
-            ProjectWorker projectWorker = projectWorkerBO.getProjectWorker(
-                projectWorkerEntryExitHistory.getWorkerCode());
-            if (!projectWorker.getUploadStatus()
-                .equals(EProjectWorkerUploadStatus.UPLOAD_UPDATE.getCode())
-                    && !projectWorker.getUploadStatus().equals(
-                        EProjectWorkerUploadStatus.UPLOAD_UNUPDATE.getCode())) {
-                throw new BizException("XN00000",
-                    "项目人员未上传【  " + projectWorker.getWorkerName() + " 】");
-            }
-
-            TeamMaster teamMaster = teamMasterBO
-                .getTeamMaster(projectWorkerEntryExitHistory.getTeamSysNo());
-            // 获取上传json
-            JsonObject requestJson = projectWorkerEntryExitHistoryBO
-                .getRequestJson(teamMaster, projectWorkerEntryExitHistory,
-                    projectConfigByLocal);
-            // 更新状态为上传中
-            projectWorkerEntryExitHistoryBO.refreshUploadStatus(code,
-                EProjectWorkerEntryExitUploadStatus.UPLOADING.getCode());
-
-            String resString;
-            try {
-                // 捕捉国家平台抛出的异常 更新数据状态为上传失败
-                resString = GovConnecter.getGovData("WorkerEntryExit.Add",
-                    requestJson.toString(),
-                    projectConfigByLocal.getProjectCode(),
-                    projectConfigByLocal.getSecret());
-            } catch (BizException e) {
-                projectWorkerBO.refreshUploadStatus(code,
-                    EProjectWorkerEntryExitUploadStatus.UPLOAD_FAIL.getCode());
-                e.printStackTrace();
-                throw e;
-            }
-
-            String operateLog = operateLogBO.saveOperateLog(
-                EOperateLogRefType.ProjectWorkerEntryExitHistory.getCode(),
-                code,
-                EOperateLogOperate.UploadProjectWorkerEntryExitHistory
-                    .getValue(),
-                briefUser,
-                EOperateLogOperate.UploadProjectWorkerEntryExitHistory
-                    .getValue());
-            AsyncQueueHolder.addSerial(resString, projectConfigByLocal,
-                "projectWorkerEntryExitHistoryBO", code,
-                EProjectWorkerEntryExitUploadStatus.UPLOAD_UNEDITABLE.getCode(),
-                operateLog, userId);
-
-        }
-    }
-
-    /**
-     * <p>Description: 导入人员进退场</p>   
-     */
-    @Transactional
-    @Override
-    public void importProjectWorkerEntryExitHistoryList(XN631733Req req) {
-        User user = userBO.getBriefUser(req.getUpdater());
-
-        for (XN631733ReqData data : req.getDateList()) {
-            // 校验数据字典类型数据
-            EEntryExitType.checkExists(String.valueOf(data.getType()));
-
-            TeamMaster teamMaster = teamMasterBO.getTeamMasterByProject(
-                req.getProjectCode(), data.getCorpCode(), data.getTeamName());
-            if (teamMaster == null) {
-                throw new BizException("XN631733",
-                    "项目班组【" + data.getTeamName() + "】未录入");
-            }
-
-            ProjectWorker infoByIdCardNumber = projectWorkerBO
-                .getProjectWorkerByIdentity(teamMaster.getCode(),
-                    data.getIdcardNumber());
-            if (infoByIdCardNumber == null) {
-                throw new BizException("XN631733",
-                    "项目人员【" + data.getIdcardNumber() + "】未录入");
-            }
-            String code = projectWorkerEntryExitHistoryBO
-                .saveProjectWorkerEntryExitHistory(teamMaster,
-                    infoByIdCardNumber, data);
-            operateLogBO.saveOperateLog(
-                EOperateLogRefType.WorkAttendance.getCode(), code, "导入人员进退场信息",
-                user, "导入人员进退场信息");
-        }
     }
 
 }

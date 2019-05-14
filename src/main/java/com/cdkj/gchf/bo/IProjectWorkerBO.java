@@ -19,23 +19,32 @@ import com.cdkj.gchf.dto.req.XN631913Req;
 import com.google.gson.JsonObject;
 
 public interface IProjectWorkerBO extends IPaginableBO<ProjectWorker> {
-
+    /**
+     * 保存项目人员 
+     */
     public String saveProjectWorker(XN631690Req req);
 
-    public String saveProjectWorker(ProjectWorker projectWorker);
-
+    /**
+     * 保存项目人员-导入
+     */
     String saveProjectWorker(WorkerInfo workerInfo, XN631693ReqData req,
             Project project, TeamMaster teamMaster, CorpBasicinfo corpBasic);
 
-    public String saveProjectWorker(String workerCode, String workerName,
-            String idcardNumber, Project project);
-
+    /**
+     * 保存项目人员-导入 
+     */
     String saveProjectWorker(String workerCode, Project project,
             CorpBasicinfo corpBasicinfo, TeamMaster teamName,
             XN631693ReqData req);
 
+    /**
+     * 删除项目人员 
+     */
     public void removeProjectWorker(String code);
 
+    /**
+     *修改项目人员 
+     */
     public void refreshProjectWorker(XN631692Req req, TeamMaster teamMaster);
 
     /**
@@ -44,19 +53,34 @@ public interface IProjectWorkerBO extends IPaginableBO<ProjectWorker> {
     void refreshWorkerIdCardNumber(String workerCode, String newIdCardNumber,
             String workerName);
 
+    /**
+     * 修改项目人员手机号 
+     */
     void refreshWorkerCelephone(String workerCode, String phone);
 
-    public void refreshProjectWorkerTeamName(String teamNO, String teamName);
+    /**
+     * 修改项目人员班组名称 
+     */
+    public void refreshProjectWorkerTeamName(String teamNo, String teamName);
 
-    void refreshIdCardInfo(String oldIdCardNum, String newIdCardNum,
-            String name);
-
+    /**
+     * 修改删除状态
+     */
     void updateProjectWorkerDeleteStatus(String code, String status);
 
+    /**
+     * 修改上传状态 
+     */
     public void refreshUploadStatus(String code, String status);
 
+    /**
+     * 假删除项目人员 
+     */
     void fakeDeleteProjectWorker(String projectcode);
 
+    /**
+     * 根据班组编号删除项目人员 
+     */
     void fakeDeleteProjectWorkerByTeamNo(String projectCode,
             String teamMasterNo);
 
@@ -75,16 +99,37 @@ public interface IProjectWorkerBO extends IPaginableBO<ProjectWorker> {
     public ProjectWorker getProjectWorker(String projectCode,
             String idcardNumber);
 
+    /**
+     * 查询项目人员 
+     */
+    List<ProjectWorker> getProjectWorkers(String corpCode,
+            String teamMasterName, String workerName);
+
+    /**
+     * 根据guid查询项目人员  
+     */
     ProjectWorker getProjectWorkerByGuid(String guid, String deviceKey);
 
-    public List<ProjectWorker> getProjectWorkerByProjectCode(String code,
+    /**
+     * 根据projectCode查询项目人员 
+     */
+    public List<ProjectWorker> getProjectWorkerByProjectCode(String projectCode,
             String uploadStatus);
 
-    int updateProjectWorkerStatus(String code, String status);
+    /**
+     * 修改项目人员上传状态 
+     */
+    int updateProjectWorkerUploadStatus(String code, String status);
 
+    /**
+     * 通过身份证号查询项目人员 
+     */
     public ProjectWorker getProjectWorkerByIdentity(String teamMasterNo,
             String idCardNumber);
 
+    /**
+     * 获取上传json 
+     */
     public JsonObject getProjectWorkerJson(TeamMaster teamMaster,
             ProjectWorker projectWorker, ProjectConfig projectConfig);
 

@@ -97,10 +97,23 @@ public class WorkerContractAOImpl implements IWorkerContractAO {
         return workerContractBO.saveWorkerContract(req);
     }
 
-    /**
-     * <p>Title: editWorkerContract</p>   
-     * <p>Description: 编辑劳动合同</p>   
-     */
+    @Override
+    public void dropWorkerContract(String userId, List<String> codeList) {
+        for (String code : codeList) {
+            WorkerContract workerContract = workerContractBO
+                .getWorkerContract(code);
+            if (workerContract == null) {
+                throw new BizException("XN631671", "项目合同不存在");
+            }
+            if (workerContract.getUploadStatus().equals(
+                EWorkerContractUploadStatus.UPLOAD_UNEDITABLE.getCode())) {
+                throw new BizException("XN631671", "项目已经上传 无法删除");
+            }
+            workerContractBO.updateWorkerContractDeleteStatus(code,
+                EDeleteStatus.DELETED.getCode());
+        }
+    }
+
     @Override
     public void editWorkerContract(XN631672Req req) {
         User user = userBO.getBriefUser(req.getUserId());
@@ -125,20 +138,95 @@ public class WorkerContractAOImpl implements IWorkerContractAO {
         workerContractBO.refreshWorkerContract(req);
     }
 
+    /**
+     * 
+     * <p>Title: uploadWorkContractList</p>   
+     * <p>Description: 上传劳动合同 </p>   
+     */
+    @Transactional
     @Override
-    public void dropWorkerContract(String userId, List<String> codeList) {
+    public void uploadWorkContractList(String userId, List<String> codeList) {
+        User briefUser = userBO.getBriefUser(userId);
+
         for (String code : codeList) {
             WorkerContract workerContract = workerContractBO
                 .getWorkerContract(code);
-            if (workerContract == null) {
-                throw new BizException("XN631671", "项目合同不存在");
+            ProjectConfig projectConfig = projectConfigBO
+                .getProjectConfigByLocal(workerContract.getProjectCode());
+            if (projectConfig == null) {
+                throw new BizException("XN631674", "该项目未配置，无法上传");
             }
-            if (workerContract.getUploadStatus().equals(
-                EWorkerContractUploadStatus.UPLOAD_UNEDITABLE.getCode())) {
-                throw new BizException("XN631671", "项目已经上传 无法删除");
+            // 判断人员是否上传
+            ProjectWorker projectWorker = projectWorkerBO
+                .getProjectWorker(workerContract.getWorkerCode());
+            if (!projectWorker.getUploadStatus()
+                .equals(EProjectWorkerUploadStatus.UPLOAD_UPDATE.getCode())
+                    && !projectWorker.getUploadStatus().equals(
+                        EProjectWorkerUploadStatus.UPLOAD_UNUPDATE.getCode())) {
+                // 不是已上传的人员
+                throw new BizException("XN00000",
+                    "项目人员未上传【 " + projectWorker.getWorkerName() + " 】");
+
             }
-            workerContractBO.updateWorkerContractDeleteStatus(code,
-                EDeleteStatus.DELETED.getCode());
+            // 请求json
+            JsonObject jsonObject = workerContractBO
+                .getRequestJson(workerContract, projectConfig);
+
+            workerContractBO.refreshUploadStatus(code,
+                EWorkerContractUploadStatus.UPLOADING.getCode());
+            // 上传到国家平台
+            String resString;
+            try {
+                resString = GovConnecter.getGovData("WorkerContract.Add",
+                    jsonObject.toString(), projectConfig.getProjectCode(),
+                    projectConfig.getSecret());
+            } catch (BizException e) {
+                e.printStackTrace();
+                workerContractBO.refreshUploadStatus(code,
+                    EWorkerContractUploadStatus.UPLOAD_FAIL.getCode());
+                throw e;
+            }
+            // 增加操作日志
+            String log = operateLogBO.saveOperateLog(
+                EOperateLogRefType.WorkContract.getCode(), code,
+                EOperateLogOperate.UploadWorkContract.getValue(), briefUser,
+                EOperateLogOperate.UploadWorkContract.getValue());
+            // 队列更新状态
+            AsyncQueueHolder.addSerial(resString, projectConfig,
+                "workerContractBO", code,
+                EWorkerContractUploadStatus.UPLOAD_UNEDITABLE.getCode(), log,
+                userId);
+        }
+    }
+
+    @Transactional
+    @Override
+    public void importWorkContractList(XN631673Req req) {
+        User user = userBO.getBriefUser(req.getUpdater());
+        Project project = projectBO.getProject(req.getProjectCode());
+        if (project == null) {
+            throw new BizException("XN631673", "请选择项目");
+        }
+        List<XN631673ReqData> workContractList = req.getDateList();
+        for (XN631673ReqData xn631673ReqData : workContractList) {
+
+            // 校验数据字典数据
+            EContractPeriodType
+                .checkExists(xn631673ReqData.getContractPeriodType());
+
+            // 取得个人信息
+            ProjectWorker projectWorker = projectWorkerBO.getProjectWorker(
+                req.getProjectCode(), xn631673ReqData.getIdCardNumber());
+            if (null == projectWorker) {
+                throw new BizException("XN631673",
+                    "项目人员不存在【" + xn631673ReqData.getIdCardNumber() + "】");
+            }
+            String code = workerContractBO.saveWorkerContract(xn631673ReqData,
+                projectWorker);
+
+            operateLogBO.saveOperateLog(
+                EOperateLogRefType.WorkContract.getCode(), code, "导入员工合同", user,
+                null);
         }
     }
 
@@ -219,109 +307,10 @@ public class WorkerContractAOImpl implements IWorkerContractAO {
         String workerCode = workerContract.getWorkerCode();
         ProjectWorker projectWorker = projectWorkerBO
             .getProjectWorker(workerCode);
-        projectWorker.getTeamName();
-        projectWorker.getIdcardNumber();
-        projectWorker.getWorkerName();
-        workerContract.getProjectName();
         workerContract.setTeamName(projectWorker.getWorkerName());
         workerContract.setIdcardNumber(projectWorker.getIdcardNumber());
         workerContract.setProjectName(projectWorker.getProjectName());
         return workerContract;
-    }
-
-    /**
-     * 
-     * <p>Title: uploadWorkContractList</p>   
-     * <p>Description: 上传劳动合同 </p>   
-     */
-    @Transactional
-    @Override
-    public void uploadWorkContractList(String userId, List<String> codeList) {
-        User briefUser = userBO.getBriefUser(userId);
-
-        for (String code : codeList) {
-            WorkerContract workerContract = workerContractBO
-                .getWorkerContract(code);
-            ProjectConfig projectConfig = projectConfigBO
-                .getProjectConfigByLocal(workerContract.getProjectCode());
-            if (projectConfig == null) {
-                throw new BizException("XN631674", "该项目未配置，无法上传");
-            }
-            // 判断人员是否上传
-            ProjectWorker projectWorker = projectWorkerBO
-                .getProjectWorker(workerContract.getWorkerCode());
-            if (!projectWorker.getUploadStatus()
-                .equals(EProjectWorkerUploadStatus.UPLOAD_UPDATE.getCode())
-                    && !projectWorker.getUploadStatus().equals(
-                        EProjectWorkerUploadStatus.UPLOAD_UNUPDATE.getCode())) {
-                // 不是已上传的人员
-                throw new BizException("XN00000",
-                    "项目人员未上传【 " + projectWorker.getWorkerName() + " 】");
-
-            }
-            // 请求json
-            JsonObject jsonObject = workerContractBO
-                .getRequestJson(workerContract, projectConfig);
-
-            workerContractBO.refreshUploadStatus(code,
-                EWorkerContractUploadStatus.UPLOADING.getCode());
-            // 上传到国家平台
-            String resString;
-            try {
-                resString = GovConnecter.getGovData("WorkerContract.Add",
-                    jsonObject.toString(), projectConfig.getProjectCode(),
-                    projectConfig.getSecret());
-            } catch (BizException e) {
-                e.printStackTrace();
-                workerContractBO.refreshUploadStatus(code,
-                    EWorkerContractUploadStatus.UPLOAD_FAIL.getCode());
-                throw e;
-            }
-            // 增加操作日志
-            String log = operateLogBO.saveOperateLog(
-                EOperateLogRefType.WorkContract.getCode(), code,
-                EOperateLogOperate.UploadWorkContract.getValue(), briefUser,
-                EOperateLogOperate.UploadWorkContract.getValue());
-            // 队列更新状态
-            AsyncQueueHolder.addSerial(resString, projectConfig,
-                "workerContractBO", code,
-                EWorkerContractUploadStatus.UPLOAD_UNEDITABLE.getCode(), log,
-                userId);
-        }
-    }
-
-    /**
-     * <p>Description:导入劳动合同 </p>   
-     */
-    @Transactional
-    @Override
-    public void importWorkContractList(XN631673Req req) {
-        User user = userBO.getBriefUser(req.getUpdater());
-        Project project = projectBO.getProject(req.getProjectCode());
-        if (project == null) {
-            throw new BizException("XN631673", "请选择项目");
-        }
-        List<XN631673ReqData> workContractList = req.getDateList();
-        for (XN631673ReqData xn631673ReqData : workContractList) {
-
-            // 校验数据字典数据
-            EContractPeriodType
-                .checkExists(xn631673ReqData.getContractPeriodType());
-
-            // 取得个人信息
-            ProjectWorker projectWorker = projectWorkerBO.getProjectWorker(
-                req.getProjectCode(), xn631673ReqData.getIdCardNumber());
-            if (null == projectWorker) {
-                throw new BizException("XN631673",
-                    "项目人员不存在【" + xn631673ReqData.getIdCardNumber() + "】");
-            }
-            String code = workerContractBO.saveWorkerContract(xn631673ReqData,
-                projectWorker);
-
-            operateLogBO.saveOperateLog(
-                EOperateLogRefType.WorkContract.getCode(), code, "导入员工合同", user,
-                null);
-        }
     }
 
 }

@@ -44,6 +44,12 @@ public interface IWorkerAttendanceBO extends IPaginableBO<WorkerAttendance> {
 
     public int removeWorkerAttendance(String code);
 
+    int deleteWorkAttendanceByProject(String projectCode);
+
+    int deleteWorkAttendanceByTeamMaster(String teamMasterNo);
+
+    int deleteWorkAttendanceByWorkerCode(String workerCode);
+
     void refreshUploadStatus(String code, String uploadStatus);
 
     public void refreshWorkerAttendance(XN631712Req data);
@@ -54,17 +60,14 @@ public interface IWorkerAttendanceBO extends IPaginableBO<WorkerAttendance> {
 
     void refreshWorkerAttendanceTeamName(String teamSysNo, String teamName);
 
-    int deleteWorkAttendanceByProject(String projectCode);
-
-    int deleteWorkAttendanceByTeamMaster(String teamMasterNo);
-
-    int deleteWorkAttendanceByWorkerCode(String workerCode);
-
     public List<WorkerAttendance> queryWorkerAttendanceList(
             WorkerAttendance condition);
 
     public WorkerAttendance getWorkerAttendance(String code);
 
+    /**
+     * 获取上传国家平台json 
+     */
     public JsonObject getRequestJson(TeamMaster teamMaster,
             WorkerAttendance workerAttendance,
             ProjectConfig projectConfigByLocal);

@@ -19,7 +19,6 @@ import com.cdkj.gchf.exception.BizException;
 import com.cdkj.gchf.humanfaces.res.DeviceInfo;
 import com.cdkj.gchf.humanfaces.res.DeviceQuery;
 
-//CHECK ��鲢��ע�� 
 @Component
 public class EquipmentInfoBOImpl extends PaginableBOImpl<EquipmentInfo>
         implements IEquipmentInfoBO {
@@ -108,6 +107,13 @@ public class EquipmentInfoBOImpl extends PaginableBOImpl<EquipmentInfo>
     }
 
     @Override
+    public List<EquipmentInfo> queryEquipmentList(String projectCode) {
+        EquipmentInfo equipmentInfo = new EquipmentInfo();
+        equipmentInfo.setProjectCode(projectCode);
+        return EquipmentInfoDAO.selectList(equipmentInfo);
+    }
+
+    @Override
     public EquipmentInfo getEquipmentInfo(String code) {
         EquipmentInfo data = null;
         if (StringUtils.isNotBlank(code)) {
@@ -122,18 +128,9 @@ public class EquipmentInfoBOImpl extends PaginableBOImpl<EquipmentInfo>
     }
 
     @Override
-    public EquipmentInfo getEquipmentInfo(String code, String projectCode) {
-        EquipmentInfo data = new EquipmentInfo();
-        data.setCode(code);
-        data.setProjectCode(projectCode);
-        return EquipmentInfoDAO.select(data);
-    }
-
-    @Override
     public EquipmentInfo refreshEquipment(String deviceKey, String projectCode,
             DeviceInfo info) {
-        EquipmentInfo equipmentInfoByKey = getEquipmentInfoByKey(deviceKey,
-            projectCode);
+        EquipmentInfo equipmentInfoByKey = getEquipmentInfoByKey(deviceKey);
         // 更新设备信息
         equipmentInfoByKey.setCreateTime(new Date(info.getCreateTime()));
         equipmentInfoByKey.setNeedUpgrade(info.getNeedUpgrade() ? 1 : 0);
@@ -152,20 +149,11 @@ public class EquipmentInfoBOImpl extends PaginableBOImpl<EquipmentInfo>
     }
 
     @Override
-    public EquipmentInfo getEquipmentInfoByKey(String deviceKey,
-            String projectCode) {
+    public EquipmentInfo getEquipmentInfoByKey(String deviceKey) {
         EquipmentInfo condition = new EquipmentInfo();
-        condition.setProjectCode(projectCode);
         condition.setDeviceKey(deviceKey);
         return EquipmentInfoDAO.select(condition);
 
-    }
-
-    @Override
-    public List<EquipmentInfo> getEquipmentList(String projectCode) {
-        EquipmentInfo condition = new EquipmentInfo();
-        condition.setProjectCode(projectCode);
-        return EquipmentInfoDAO.selectList(condition);
     }
 
     @Override

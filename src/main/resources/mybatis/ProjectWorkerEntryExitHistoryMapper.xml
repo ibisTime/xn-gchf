@@ -58,7 +58,9 @@
 				AND t.delete_status = #{deleteStatus}
 			</if>
 
-
+			<if test="teamSysNo != null and teamSysNo != '' ">
+				AND t.team_sys_no = #{teamSysNo}
+			</if>
 
 		</trim>
 	</sql>
@@ -142,27 +144,8 @@
 		parameterType="projectWorkerEntryExitHistory">
 		UPDATE thf_project_worker_entry_exit_history t
 		SET
-		delete_status =
-		#{deleteStatus}
-
-		<trim prefix="WHERE" prefixOverrides="AND|OR">
-
-			<if test="code != null and code != '' ">
-				AND t.code = #{code}
-			</if>
-
-			<if test=" projectCode != null and projectCode !='' ">
-				AND t.project_code = #{projectCode}
-			</if>
-
-			<if test="uploadStatus != null and uploadStatus != '' ">
-				AND t.upload_status = #{uploadStatus}
-			</if>
-			<if test="teamSysNo != null and teamSysNo != '' ">
-				AND t.team_sys_no = #{teamSysNo}
-			</if>
-
-		</trim>
+		delete_status = #{deleteStatus}
+		<include refid="where_condition" />
 	</update>
 	<select id="select_projectWorkerEntryExitHistory" parameterType="projectWorkerEntryExitHistory"
 		resultMap="projectWorkerEntryExitHistory_DB_Result">
@@ -188,11 +171,11 @@
 		,t.delete_status
 		FROM
 		thf_project_worker_entry_exit_history t
-		
+
 		<include refid="join_condition" />
 		<include refid="where_condition" />
 		<if test="teamName != null and teamName != '' ">
-			AND pw.team_name like "%"#{teamName}"%" 
+			AND pw.team_name like "%"#{teamName}"%"
 		</if>
 		<trim prefix="ORDER BY ">
 			<if test="order != null and order != '' ">

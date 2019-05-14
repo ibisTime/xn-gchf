@@ -147,21 +147,14 @@ public class ProjectCorpInfoAOImpl implements IProjectCorpInfoAO {
             workerAttendanceBO.deleteWorkAttendanceByProject(
                 projectCorpInfo.getProjectCode());
 
-            TeamMaster condition = new TeamMaster();
-            condition.setCorpCode(corpCode);
-            condition.setProjectCode(projectCode);
             for (TeamMaster teamMaster : teamMasterBO
-                .queryTeamMasterList(condition)) {
+                .queryTeamMasterByProject(projectCode, corpCode)) {
 
-                PayRoll payRollCondition = new PayRoll();
-                payRollCondition.setCorpCode(corpCode);
-                payRollCondition.setTeamSysNo(teamMaster.getCode());
-                payRollCondition.setProjectCode(projectCode);
+                List<PayRoll> queryPayRollList = payRollBO.queryPayRollList(
+                    projectCode, teamMaster.getCode(), corpCode);
 
-                List<PayRoll> queryPayRollList = payRollBO
-                    .queryPayRollList(payRollCondition);
                 for (PayRoll payRoll : queryPayRollList) {
-                    payRollDetailBO.FakeDeletePayRollDetailByPayRollCode(
+                    payRollDetailBO.fakeDeletePayRollDetailByPayRollCode(
                         payRoll.getCode());
                 }
                 payRollBO.updatePayRollDeleteStatus(projectCode,
@@ -246,6 +239,63 @@ public class ProjectCorpInfoAOImpl implements IProjectCorpInfoAO {
 
     @Override
     @Transactional
+    public void importProjectCorpInfo(XN631633Req req) {
+        User user = userBO.getBriefUser(req.getUserId());
+        List<XN631633ReqList> dateList = req.getDateList();
+        if (projectBO.getProject(req.getProjectCode()) == null) {
+            throw new BizException("XN631600", "请选择项目");
+        }
+
+        String repeatValue = ImportUtil.checkRepeat(req.getDateList(),
+            "corpCode");
+        if (StringUtils.isNotBlank(repeatValue)) {
+            throw new BizException("XN000000",
+                "导入数据中统一社会信用代码【" + repeatValue + "】存在重复");
+        }
+
+        for (XN631633ReqList data : dateList) {
+            // 数据字典类型数据检查
+            EProjectCorpType.checkExists(data.getCorpType());
+            EIdCardType.checkExists(data.getPmIDCardType());
+
+            if (corpBasicinfoBO
+                .getCorpBasicinfoByCorp(data.getCorpCode()) == null) {
+                throw new BizException("XN631600",
+                    "企业信用代码为" + data.getCorpCode() + "的企业信息不存在,请检查企业库");
+            }
+
+            ProjectCorpInfo projectCorpInfo = projectCorpInfoBO
+                .getProjectCorpInfo(req.getProjectCode(), data.getCorpCode());
+            if (projectCorpInfo != null) {
+                throw new BizException("XN631630",
+                    "参建单位【" + projectCorpInfo.getCorpName() + "】已添加");
+            }
+        }
+
+        for (XN631633ReqList data : req.getDateList()) {
+            Project project = projectBO.getProject(req.getProjectCode());
+            String projectCorpInfoCode = projectCorpInfoBO
+                .saveProjectCorpInfo(project, data);
+
+            if (StringUtils.isEmpty(project.getContractorCorpCode())
+                    && EProjectCorpType.ZONGCHENGBAO.getCode()
+                        .equals(data.getCorpType())) {
+                projectBO.refreshContractorCorp(project.getCode(),
+                    data.getCorpCode(), data.getCorpName());
+            }
+
+            // 操作日志
+            operateLogBO.saveOperateLog(
+                EOperateLogRefType.ProjectCorpinfo.getCode(),
+                projectCorpInfoCode,
+                EOperateLogOperate.ImportProjectCorpInfo.getValue(), user,
+                "批量导入参建单位信息" + projectCorpInfoCode);
+        }
+
+    }
+
+    @Override
+    @Transactional
     public void uploadProjectCorpInfo(String userId, List<String> codes) {
         User briefUser = userBO.getBriefUser(userId);
         for (String code : codes) {
@@ -275,8 +325,6 @@ public class ProjectCorpInfoAOImpl implements IProjectCorpInfoAO {
                 "yyyy-MM-dd HH:mm:ss").toString();
 
             // 更改状态为上传中
-            projectCorpInfo
-                .setUploadStatus(EProjectCorpUploadStatus.UPLOADING.getCode());
             projectCorpInfoBO.refreshUploadStatus(code,
                 EProjectCorpUploadStatus.UPLOADING.getCode());
             String resString = null;
@@ -308,10 +356,6 @@ public class ProjectCorpInfoAOImpl implements IProjectCorpInfoAO {
         }
     }
 
-    /**
-     * <p>Title: updatePlantformProjectCorpInfo</p>   
-     * <p>Description: 修改国家平台接口</p>   
-     */
     @Transactional
     @Override
     public void updatePlantformProjectCorpInfo(XN631635Req req) {
@@ -343,7 +387,7 @@ public class ProjectCorpInfoAOImpl implements IProjectCorpInfoAO {
                 }
             }
             // 请求国家平台刷新接口
-            XN631906Req xn631906Req = new XN631906Req();
+            XN631906Req xn631906Req = new XN631906Req(code, req.getUserId());
             BeanUtils.copyProperties(projectCorpInfo, xn631906Req);
             xn631906Req.setProjectCode(configByLocal.getProjectCode());
             if (projectCorpInfo.getEntryTime() != null) {
@@ -388,68 +432,6 @@ public class ProjectCorpInfoAOImpl implements IProjectCorpInfoAO {
         }
 
         projectCorpInfoBO.doUpdate(req, projectConfig);
-    }
-
-    /**
-     * 
-     * <p>Title: importProjectCorpInfo</p>   
-     * <p>Description: 导入参建单位信息 </p>   
-     */
-    @Override
-    @Transactional
-    public void importProjectCorpInfo(XN631633Req req) {
-        User user = userBO.getBriefUser(req.getUserId());
-        List<XN631633ReqList> dateList = req.getDateList();
-        if (projectBO.getProject(req.getProjectCode()) == null) {
-            throw new BizException("XN631600", "请选择项目");
-        }
-
-        String repeatValue = ImportUtil.checkRepeat(req.getDateList(),
-            "corpCode");
-        if (StringUtils.isNotBlank(repeatValue)) {
-            throw new BizException("XN000000",
-                "导入数据中统一社会信用代码【" + repeatValue + "】存在重复");
-        }
-
-        for (XN631633ReqList data : dateList) {
-            // 数据字典类型数据检查
-            EProjectCorpType.checkExists(data.getCorpType());
-            EIdCardType.checkExists(data.getPmIDCardType());
-
-            if (corpBasicinfoBO
-                .getCorpBasicinfoByCorp(data.getCorpCode()) == null) {
-                throw new BizException("XN631600",
-                    "企业信用代码为" + data.getCorpCode() + "的企业信息不存在,请检查企业库");
-            }
-
-            ProjectCorpInfo projectCorpInfo = projectCorpInfoBO
-                .getProjectCorpInfo(req.getProjectCode(), data.getCorpCode());
-            if (projectCorpInfo != null) {
-                throw new BizException("XN631630",
-                    "参建单位【" + projectCorpInfo.getCorpName() + "】已添加");
-            }
-        }
-
-        for (XN631633ReqList data : req.getDateList()) {
-            Project project = projectBO.getProject(req.getProjectCode());
-            String projectCorpInfoCode = projectCorpInfoBO
-                .saveProjectCorpInfo(project, data);
-
-            if (StringUtils.isEmpty(project.getContractorCorpCode())
-                    && EProjectCorpType.ZONGCHENGBAO.getCode()
-                        .equals(data.getCorpType())) {
-                projectBO.refreshcontractorCorp(project.getCode(),
-                    data.getCorpCode(), data.getCorpName());
-            }
-
-            // 操作日志
-            operateLogBO.saveOperateLog(
-                EOperateLogRefType.ProjectCorpinfo.getCode(),
-                projectCorpInfoCode,
-                EOperateLogOperate.ImportProjectCorpInfo.getValue(), user,
-                "批量导入参建单位信息" + projectCorpInfoCode);
-        }
-
     }
 
     @Override

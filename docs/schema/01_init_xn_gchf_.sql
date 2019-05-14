@@ -926,12 +926,11 @@ INSERT INTO `tsys_dict`(`id`, `type`, `parent_key`, `dkey`, `dvalue`, `updater`,
 INSERT INTO `tsys_dict`(`id`, `type`, `parent_key`, `dkey`, `dvalue`, `updater`, `update_datetime`, `remark`) VALUES (1709, '1', 'attend_type', '0', '时间段内', 'admin', '2018-07-27 03:07:37', NULL);
 INSERT INTO `tsys_dict`(`id`, `type`, `parent_key`, `dkey`, `dvalue`, `updater`, `update_datetime`, `remark`) VALUES (1710, '1', 'attend_type', '1', '时间段外', 'admin', '2018-07-27 03:07:37', NULL);
 INSERT INTO `tsys_dict`(`id`, `type`, `parent_key`, `dkey`, `dvalue`, `updater`, `update_datetime`, `remark`) VALUES (1711, '1', 'attend_type', '2', '陌生人', 'admin', '2018-07-27 03:07:37', NULL);
-
 /*
 -- Query: SELECT * FROM dev_xn_gchf_gov.tsys_menu
 LIMIT 0, 2000
 
--- Date: 2019-05-10 14:51
+-- Date: 2019-05-10 19:00
 */
 INSERT INTO `tsys_menu` (`code`,`name`,`type`,`system_code`,`url`,`order_no`,`updater`,`update_datetime`,`remark`,`parent_code`) VALUES ('GCHFOSM201800000000000000','根目录','1','O','#','1','admin','2018-08-20 09:09:17','','');
 INSERT INTO `tsys_menu` (`code`,`name`,`type`,`system_code`,`url`,`order_no`,`updater`,`update_datetime`,`remark`,`parent_code`) VALUES ('GCHFPSM201800000000000000','根目录','1','P','#','1','admin','2018-08-20 09:09:17','','');
@@ -1166,8 +1165,8 @@ INSERT INTO `tsys_menu` (`code`,`name`,`type`,`system_code`,`url`,`order_no`,`up
 INSERT INTO `tsys_menu` (`code`,`name`,`type`,`system_code`,`url`,`order_no`,`updater`,`update_datetime`,`remark`,`parent_code`) VALUES ('SM201905061516461525471','详情','2','P','/detail','3','USYS201800000000001','2019-05-06 15:16:46','','SM201905061514057971391');
 INSERT INTO `tsys_menu` (`code`,`name`,`type`,`system_code`,`url`,`order_no`,`updater`,`update_datetime`,`remark`,`parent_code`) VALUES ('SM201905061517042254520','导出','2','P','/export','4','USYS201800000000001','2019-05-06 15:17:04','','SM201905061514057971391');
 INSERT INTO `tsys_menu` (`code`,`name`,`type`,`system_code`,`url`,`order_no`,`updater`,`update_datetime`,`remark`,`parent_code`) VALUES ('SM201905061615039852106','重置密码','2','P','/resetPaw','1','USYS201800000000001','2019-05-06 16:15:03','','SM201807251132224253480');
-INSERT INTO `tsys_menu` (`code`,`name`,`type`,`system_code`,`url`,`order_no`,`updater`,`update_datetime`,`remark`,`parent_code`) VALUES ('SM201905071342361717463','闸机管理','1','O','/brakeMachine.htm','1','U201905051327599775317','2019-05-07 13:59:30','','SM201905051530335012597');
-INSERT INTO `tsys_menu` (`code`,`name`,`type`,`system_code`,`url`,`order_no`,`updater`,`update_datetime`,`remark`,`parent_code`) VALUES ('SM201905071343455294836','闸机人员管理','1','O','/brakeMachine_per.htm','2','U201905051327599775317','2019-05-07 14:33:24','','SM201905051530335012597');
+INSERT INTO `tsys_menu` (`code`,`name`,`type`,`system_code`,`url`,`order_no`,`updater`,`update_datetime`,`remark`,`parent_code`) VALUES ('SM201905071342361717463','人脸机管理','1','O','/brakeMachine.htm','1','U201905081354559846697','2019-05-10 17:49:30','','SM201905051530335012597');
+INSERT INTO `tsys_menu` (`code`,`name`,`type`,`system_code`,`url`,`order_no`,`updater`,`update_datetime`,`remark`,`parent_code`) VALUES ('SM201905071343455294836','人脸机人员管理','1','O','/brakeMachine_per.htm','2','U201905081354559846697','2019-05-10 17:49:46','','SM201905051530335012597');
 INSERT INTO `tsys_menu` (`code`,`name`,`type`,`system_code`,`url`,`order_no`,`updater`,`update_datetime`,`remark`,`parent_code`) VALUES ('SM201905071345113496573','创建','2','O','/add','1','U201905051327599775317','2019-05-07 13:45:11','','SM201905071342361717463');
 INSERT INTO `tsys_menu` (`code`,`name`,`type`,`system_code`,`url`,`order_no`,`updater`,`update_datetime`,`remark`,`parent_code`) VALUES ('SM201905071345343148363','修改','2','O','/edit','2','U201905051327599775317','2019-05-07 13:45:34','','SM201905071342361717463');
 INSERT INTO `tsys_menu` (`code`,`name`,`type`,`system_code`,`url`,`order_no`,`updater`,`update_datetime`,`remark`,`parent_code`) VALUES ('SM201905071346001122511','导出','2','O','/export','5','U201905081145595735450','2019-05-09 10:57:39','','SM201905071342361717463');
@@ -1176,8 +1175,8 @@ INSERT INTO `tsys_menu` (`code`,`name`,`type`,`system_code`,`url`,`order_no`,`up
 INSERT INTO `tsys_menu` (`code`,`name`,`type`,`system_code`,`url`,`order_no`,`updater`,`update_datetime`,`remark`,`parent_code`) VALUES ('SM201905071513156186958','本地人员库','1','P','#','1','USYS201800000000001','2019-05-07 15:13:15','','SM201807201131571203094');
 INSERT INTO `tsys_menu` (`code`,`name`,`type`,`system_code`,`url`,`order_no`,`updater`,`update_datetime`,`remark`,`parent_code`) VALUES ('SM201905071613064932313','新增','2','P','/add','1','USYS201800000000001','2019-05-07 16:13:06','','SM201905061107547418206');
 INSERT INTO `tsys_menu` (`code`,`name`,`type`,`system_code`,`url`,`order_no`,`updater`,`update_datetime`,`remark`,`parent_code`) VALUES ('SM201905071613238685506','修改','2','P','/edit','2','USYS201800000000001','2019-05-07 16:13:23','','SM201905061107547418206');
-INSERT INTO `tsys_menu` (`code`,`name`,`type`,`system_code`,`url`,`order_no`,`updater`,`update_datetime`,`remark`,`parent_code`) VALUES ('SM201905091056395451029','启用设备','2','O','/enable','3','U201905081145595735450','2019-05-09 10:56:39','','SM201905071342361717463');
-INSERT INTO `tsys_menu` (`code`,`name`,`type`,`system_code`,`url`,`order_no`,`updater`,`update_datetime`,`remark`,`parent_code`) VALUES ('SM201905091057250012098','禁用设备','2','O','/disable','4','U201905081145595735450','2019-05-09 10:57:25','','SM201905071342361717463');
+INSERT INTO `tsys_menu` (`code`,`name`,`type`,`system_code`,`url`,`order_no`,`updater`,`update_datetime`,`remark`,`parent_code`) VALUES ('SM201905091056395451029','启用人脸设备','2','O','/enable','3','U201905081354559846697','2019-05-10 17:50:07','','SM201905071342361717463');
+INSERT INTO `tsys_menu` (`code`,`name`,`type`,`system_code`,`url`,`order_no`,`updater`,`update_datetime`,`remark`,`parent_code`) VALUES ('SM201905091057250012098','禁用人脸设备','2','O','/disable','4','U201905081354559846697','2019-05-10 17:50:19','','SM201905071342361717463');
 INSERT INTO `tsys_menu` (`code`,`name`,`type`,`system_code`,`url`,`order_no`,`updater`,`update_datetime`,`remark`,`parent_code`) VALUES ('SM201905091154471662907','档案详情','2','O','/archivesDetail','10','U201905081145595735450','2019-05-09 11:54:47','','SM201904131541370286612');
 INSERT INTO `tsys_menu` (`code`,`name`,`type`,`system_code`,`url`,`order_no`,`updater`,`update_datetime`,`remark`,`parent_code`) VALUES ('SM201905091437445912288','进出记录','1','O','/project/outInto.htm','3','U201905081145595735450','2019-05-09 15:06:14','','SM201905051530335012597');
 INSERT INTO `tsys_menu` (`code`,`name`,`type`,`system_code`,`url`,`order_no`,`updater`,`update_datetime`,`remark`,`parent_code`) VALUES ('SM201905091516404202455','详情','2','O','/detail','1','U201905081145595735450','2019-05-09 15:16:40','','SM201905091437445912288');
@@ -1186,7 +1185,7 @@ INSERT INTO `tsys_menu` (`code`,`name`,`type`,`system_code`,`url`,`order_no`,`up
 -- Query: SELECT * FROM dev_xn_gchf_gov.tsys_menu_role
 LIMIT 0, 2000
 
--- Date: 2019-05-10 14:51
+-- Date: 2019-05-10 19:00
 */
 INSERT INTO `tsys_menu_role` (`id`,`role_code`,`menu_code`,`updater`,`update_datetime`,`remark`) VALUES (4412,'SR201808101401167395662','SM201807241751172466144','U201808101400195147701','2018-08-10 14:03:31',NULL);
 INSERT INTO `tsys_menu_role` (`id`,`role_code`,`menu_code`,`updater`,`update_datetime`,`remark`) VALUES (4413,'SR201808101401167395662','SM201807241857310508573','U201808101400195147701','2018-08-10 14:03:31',NULL);

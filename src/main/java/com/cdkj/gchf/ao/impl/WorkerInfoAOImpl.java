@@ -89,10 +89,9 @@ public class WorkerInfoAOImpl implements IWorkerInfoAO {
             // 重新建档
             WorkerInfo workerInfo = workerInfoBO.getWorkerInfo(req.getCode());
             XN631793Req xn631791Req = new XN631793Req();
-            WorkerInfo workerInfoByIdCardNumber = workerInfoBO.getWorkerInfoByIdCardNumber(req.getIdCardNumber());
-            if (workerInfoByIdCardNumber != null) {
-                throw new BizException("XN000000","人员库中已存在身份证号为:"+req.getIdCardNumber()+"的人员");
-            }
+
+            checkIsExist(req);
+
             xn631791Req.setCode(req.getCode());
             BeanUtils.copyProperties(req, xn631791Req);
 
@@ -300,10 +299,8 @@ public class WorkerInfoAOImpl implements IWorkerInfoAO {
     public void readdWorkerInfo(XN631793Req req) {
         User user = userBO.getBriefUser(req.getUserId());
 
-        WorkerInfo workerInfoByIdCardNumber = workerInfoBO.getWorkerInfoByIdCardNumber(req.getIdCardNumber());
-        if (workerInfoByIdCardNumber != null) {
-            throw new BizException("XN000000","人员库中已存在身份证号为:"+req.getIdCardNumber()+"的人员");
-        }
+        checkIsExist(req);
+
 
         workerInfoBO.refreshWorkerInfo(req);
 
@@ -312,6 +309,20 @@ public class WorkerInfoAOImpl implements IWorkerInfoAO {
 
         operateLogBO.saveOperateLog(EOperateLogRefType.WorkerInfo.getCode(),
             req.getCode(), "重新建档人员实名制信息", user, null);
+    }
+
+    private void checkIsExist(XN631793Req req) {
+        WorkerInfo workerInfoByIdCardNumber = workerInfoBO.getWorkerInfoByIdCardNumber(req.getIdCardNumber());
+        if (workerInfoByIdCardNumber != null && !req.getIdCardNumber().equals(workerInfoByIdCardNumber.getIdCardNumber())) {
+            throw new BizException("XN0000", "项目中已存在身份证号为" + req.getIdCardNumber() + "的人员信息");
+        }
+    }
+
+    private void checkIsExist(XN631790Req req) {
+        WorkerInfo workerInfoByIdCardNumber = workerInfoBO.getWorkerInfoByIdCardNumber(req.getIdCardNumber());
+        if (workerInfoByIdCardNumber != null && !req.getIdCardNumber().equals(workerInfoByIdCardNumber.getIdCardNumber())) {
+            throw new BizException("XN0000", "项目中已存在身份证号为" + req.getIdCardNumber() + "的人员信息");
+        }
     }
 
 }

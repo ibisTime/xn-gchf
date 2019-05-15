@@ -4,14 +4,13 @@ import com.cdkj.gchf.common.DateUtil;
 import com.cdkj.gchf.common.MD5Util;
 import com.cdkj.gchf.humanfaces.res.ResultMsg;
 import com.google.gson.Gson;
+
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
-import org.junit.jupiter.api.Test;
-
 /**
  * @author old3
  */
@@ -109,7 +108,7 @@ public class AppConfig {
         }
     }
 
-    @Test
+    //    @Test
     public void test() {
         // getToken();
         System.out.println(getToken());

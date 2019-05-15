@@ -17,7 +17,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
-import org.junit.jupiter.api.Test;
+//import org.junit.jupiter.api.Test;
 import org.springframework.web.bind.annotation.RequestMethod;
 /**
  * @author old3
@@ -113,7 +113,7 @@ public class HttpRequest {
         return null;
     }
 
-    @Test
+    //    @Test
     public void test1() {
 
         String url = AppConfig.getBaseUrl() + "/Api/Device/Authentication";

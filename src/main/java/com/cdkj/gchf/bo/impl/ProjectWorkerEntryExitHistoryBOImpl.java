@@ -1,11 +1,11 @@
 package com.cdkj.gchf.bo.impl;
 
 import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
+import com.cdkj.gchf.bo.IOperateLogBO;
+import com.cdkj.gchf.domain.*;
+import com.cdkj.gchf.enums.EOperateLogRefType;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;
@@ -21,10 +21,6 @@ import com.cdkj.gchf.common.AesUtils;
 import com.cdkj.gchf.common.DateUtil;
 import com.cdkj.gchf.core.OrderNoGenerater;
 import com.cdkj.gchf.dao.IProjectWorkerEntryExitHistoryDAO;
-import com.cdkj.gchf.domain.ProjectConfig;
-import com.cdkj.gchf.domain.ProjectWorker;
-import com.cdkj.gchf.domain.ProjectWorkerEntryExitHistory;
-import com.cdkj.gchf.domain.TeamMaster;
 import com.cdkj.gchf.dto.req.XN631730Req;
 import com.cdkj.gchf.dto.req.XN631732Req;
 import com.cdkj.gchf.dto.req.XN631733ReqData;
@@ -51,6 +47,9 @@ public class ProjectWorkerEntryExitHistoryBOImpl
 
     @Autowired
     private IProjectWorkerBO projectWorkerBO;
+
+    @Autowired
+    private IOperateLogBO operateLogBO;
 
     @Override
     public String saveProjectWorkerEntryExitHistory(XN631730Req req) {
@@ -114,6 +113,48 @@ public class ProjectWorkerEntryExitHistoryBOImpl
         projectWorkerEntryExitHistoryDAO.insert(entryExitHistory);
 
         return code;
+    }
+
+    @Override
+    public void batchInsertWorkerEntryExitHistory(User user,List<XN631733ReqData> dataList, List<TeamMaster> teamMasterList, List<ProjectWorker> projectWorkerList) {
+        List<ProjectWorkerEntryExitHistory> projectWorkerEntryExitHistories = new ArrayList<>();
+        for (int i = 0; i < dataList.size(); i++) {
+            XN631733ReqData data = dataList.get(i);
+            TeamMaster teamMaster = teamMasterList.get(i);
+            ProjectWorker projectWorker = projectWorkerList.get(i);
+
+            String code;
+            ProjectWorkerEntryExitHistory entryExitHistory = new ProjectWorkerEntryExitHistory();
+
+            entryExitHistory.setProjectCode(teamMaster.getProjectCode());
+            entryExitHistory.setCorpCode(teamMaster.getCorpCode());
+            entryExitHistory.setCorpName(teamMaster.getCorpName());
+            entryExitHistory.setWorkerCode(projectWorker.getCode());
+            entryExitHistory.setWorkerName(projectWorker.getWorkerName());
+
+            entryExitHistory.setPosition(projectWorker.getWorkType());
+            entryExitHistory.setJoinDatetime(projectWorker.getJoinedTime());
+            entryExitHistory.setIdcardType("01");
+            entryExitHistory.setIdcardNumber(data.getIdcardNumber());
+
+            entryExitHistory.setDate(DateUtil.strToDate(data.getDate(),
+                    DateUtil.FRONT_DATE_FORMAT_STRING));
+            entryExitHistory.setType(Integer.parseInt(data.getType()));
+            entryExitHistory.setUploadStatus(
+                    EProjectWorkerEntryExitUploadStatus.TO_UPLOAD.getCode());
+            entryExitHistory.setDeleteStatus(EDeleteStatus.NORMAL.getCode());
+
+            code = OrderNoGenerater
+                    .generate(EGeneratePrefix.ProjectWorkerEntryExitHistory.getCode());
+            entryExitHistory.setCode(code);
+            entryExitHistory.setTeamSysNo(teamMaster.getCode());
+            projectWorkerEntryExitHistories.add(entryExitHistory);
+            operateLogBO.saveOperateLog(
+                    EOperateLogRefType.WorkAttendance.getCode(), code, "导入人员进退场信息",
+                    user, "导入人员进退场信息");
+
+        }
+        projectWorkerEntryExitHistoryDAO.batchInsert(projectWorkerEntryExitHistories);
     }
 
     @Override

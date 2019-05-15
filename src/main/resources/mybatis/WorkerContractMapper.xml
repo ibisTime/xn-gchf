@@ -138,6 +138,66 @@
 		)
 	</insert>
 
+	<insert id="batch_insert">
+
+		INSERT INTO
+		thf_worker_contract(
+		code
+		,project_code
+		,project_name
+		,corp_code
+		,corp_name
+
+		,idcard_type
+		,idcard_number
+		,worker_code
+		,worker_name
+		,worker_mobile
+		,contract_code
+
+		,contract_period_type
+		,start_date
+		,end_date
+		,unit
+		,unit_price
+		,content_pic
+		,updater
+		,update_datetime
+
+		,remark
+		,upload_status
+		,delete_status
+		)
+		VALUES
+		<foreach collection="list" index="index" open="(" separator="," close=")" item="workerContract">
+			#{workerContract.code}
+			,#{workerContract.projectCode}
+			,#{workerContract.projectName}
+			,#{workerContract.corpCode}
+			,#{workerContract.corpName}
+			,#{workerContract.idcardType}
+
+			,#{workerContract.idcardNumber}
+			,#{workerContract.workerCode}
+			,#{workerContract.workerName}
+			,#{workerContract.workerMobile}
+			,#{workerContract.contractCode}
+			,#{workerContract.contractPeriodType}
+
+			,#{workerContract.startDate}
+			,#{workerContract.endDate}
+			,#{workerContract.unit}
+			,#{workerContract.unitPrice}
+			,#{workerContract.contentPic}
+			,#{workerContract.updater}
+
+			,#{workerContract.updateDatetime}
+			,#{workerContract.remark}
+			,#{workerContract.uploadStatus}
+			,#{workerContract.deleteStatus}
+		</foreach>
+
+	</insert>
 	<delete id="delete_workerContract" parameterType="workerContract">
 		DELETE from
 		thf_worker_contract WHERE code = #{code}

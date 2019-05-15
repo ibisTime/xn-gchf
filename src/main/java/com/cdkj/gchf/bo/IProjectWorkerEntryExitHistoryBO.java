@@ -4,10 +4,7 @@ import java.util.List;
 
 import com.cdkj.gchf.bo.base.IPaginableBO;
 import com.cdkj.gchf.bo.base.Paginable;
-import com.cdkj.gchf.domain.ProjectConfig;
-import com.cdkj.gchf.domain.ProjectWorker;
-import com.cdkj.gchf.domain.ProjectWorkerEntryExitHistory;
-import com.cdkj.gchf.domain.TeamMaster;
+import com.cdkj.gchf.domain.*;
 import com.cdkj.gchf.dto.req.XN631730Req;
 import com.cdkj.gchf.dto.req.XN631732Req;
 import com.cdkj.gchf.dto.req.XN631733ReqData;
@@ -28,6 +25,14 @@ public interface IProjectWorkerEntryExitHistoryBO
     String saveProjectWorkerEntryExitHistory(TeamMaster master,
             ProjectWorker projectWorker, XN631733ReqData datas);
 
+    /**
+     * 批量插入人员进退场
+     * @param user 用户 用于保存日志
+     * @param dataList 具体数据
+     * @param teamMasterList 班组列表
+     * @param projectWorkerList 项目人员列表
+     */
+    void batchInsertWorkerEntryExitHistory(User user, List<XN631733ReqData> dataList , List<TeamMaster>  teamMasterList, List<ProjectWorker> projectWorkerList);
     /**
      * 查询最后一次进退场信息
      */

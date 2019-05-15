@@ -118,6 +118,55 @@
 		)
 	</insert>
 
+	<insert id="batch_insert">
+		INSERT INTO
+		thf_project_worker_entry_exit_history(
+		code
+		,project_code
+		,corp_code
+		,corp_name
+		,team_sys_no
+		,worker_code
+		,worker_name
+
+		,position
+		,join_datetime
+		,leaving_datetime
+		,idcard_type
+		,idcard_number
+		,date
+		,type
+
+		,voucher_url
+		,upload_status
+		,delete_status
+		)
+		VALUES
+		<foreach collection="list" index="index" open="(" item="projectWorkerEntryExitHistory" close=")" separator=",">
+			#{projectWorkerEntryExitHistory.code}
+			,#{projectWorkerEntryExitHistory.projectCode}
+			,#{projectWorkerEntryExitHistory.corpCode}
+			,#{projectWorkerEntryExitHistory.corpName}
+			,#{projectWorkerEntryExitHistory.teamSysNo}
+			,#{projectWorkerEntryExitHistory.workerCode}
+
+			,#{projectWorkerEntryExitHistory.workerName}
+			,#{projectWorkerEntryExitHistory.position}
+			,#{projectWorkerEntryExitHistory.joinDatetime}
+			,#{projectWorkerEntryExitHistory.leavingDatetime}
+			,#{projectWorkerEntryExitHistory.idcardType}
+			,#{projectWorkerEntryExitHistory.idcardNumber}
+
+			,#{projectWorkerEntryExitHistory.date}
+			,#{projectWorkerEntryExitHistory.type}
+			,#{projectWorkerEntryExitHistory.voucherUrl}
+			,#{projectWorkerEntryExitHistory.uploadStatus}
+			,#{projectWorkerEntryExitHistory.deleteStatus}
+		</foreach>
+
+
+	</insert>
+
 	<delete id="delete_projectWorkerEntryExitHistory" parameterType="projectWorkerEntryExitHistory">
 		DELETE from thf_project_worker_entry_exit_history WHERE code = #{code}
 	</delete>

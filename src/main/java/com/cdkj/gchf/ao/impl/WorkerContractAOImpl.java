@@ -1,5 +1,6 @@
 package com.cdkj.gchf.ao.impl;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.commons.collections.CollectionUtils;
@@ -208,6 +209,7 @@ public class WorkerContractAOImpl implements IWorkerContractAO {
             throw new BizException("XN631673", "请选择项目");
         }
         List<XN631673ReqData> workContractList = req.getDateList();
+        List<ProjectWorker> projectWorkers = new ArrayList<>();
         for (XN631673ReqData xn631673ReqData : workContractList) {
 
             // 校验数据字典数据
@@ -221,13 +223,9 @@ public class WorkerContractAOImpl implements IWorkerContractAO {
                 throw new BizException("XN631673",
                     "项目人员不存在【" + xn631673ReqData.getIdCardNumber() + "】");
             }
-            String code = workerContractBO.saveWorkerContract(xn631673ReqData,
-                projectWorker);
-
-            operateLogBO.saveOperateLog(
-                EOperateLogRefType.WorkContract.getCode(), code, "导入员工合同", user,
-                null);
+            projectWorkers.add(projectWorker);
         }
+        workerContractBO.batchSaveWorkerContract(user,projectWorkers,req.getDateList());
     }
 
     @Override

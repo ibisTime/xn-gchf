@@ -1,5 +1,6 @@
 package com.cdkj.gchf.ao.impl;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.commons.collections.CollectionUtils;
@@ -131,6 +132,8 @@ public class ProjectWorkerEntryExitHistoryAOImpl
     public void importProjectWorkerEntryExitHistoryList(XN631733Req req) {
         User user = userBO.getBriefUser(req.getUpdater());
 
+        List<ProjectWorker > projectWorkers = new ArrayList<>();
+        List<TeamMaster> teamMasters = new ArrayList<>();
         for (XN631733ReqData data : req.getDateList()) {
             // 校验数据字典类型数据
             EEntryExitType.checkExists(String.valueOf(data.getType()));
@@ -149,13 +152,11 @@ public class ProjectWorkerEntryExitHistoryAOImpl
                 throw new BizException("XN631733",
                     "项目人员【" + data.getIdcardNumber() + "】未录入");
             }
-            String code = projectWorkerEntryExitHistoryBO
-                .saveProjectWorkerEntryExitHistory(teamMaster,
-                    infoByIdCardNumber, data);
-            operateLogBO.saveOperateLog(
-                EOperateLogRefType.WorkAttendance.getCode(), code, "导入人员进退场信息",
-                user, "导入人员进退场信息");
+            teamMasters.add(teamMaster);
+            projectWorkers.add(infoByIdCardNumber);
         }
+
+        projectWorkerEntryExitHistoryBO.batchInsertWorkerEntryExitHistory(user,req.getDateList(),teamMasters,projectWorkers);
     }
 
     @Transactional

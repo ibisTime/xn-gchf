@@ -6,6 +6,7 @@ import com.cdkj.gchf.bo.base.IPaginableBO;
 import com.cdkj.gchf.bo.base.Paginable;
 import com.cdkj.gchf.domain.ProjectConfig;
 import com.cdkj.gchf.domain.ProjectWorker;
+import com.cdkj.gchf.domain.User;
 import com.cdkj.gchf.domain.WorkerContract;
 import com.cdkj.gchf.dto.req.XN631670Req;
 import com.cdkj.gchf.dto.req.XN631672Req;
@@ -20,6 +21,8 @@ public interface IWorkerContractBO extends IPaginableBO<WorkerContract> {
      */
     public String saveWorkerContract(XN631670Req req);
 
+
+    void batchSaveWorkerContract(User user,List<ProjectWorker> projectWorkerList , List<XN631673ReqData> dataList);
     /**
      * 新增劳动合同 
      */

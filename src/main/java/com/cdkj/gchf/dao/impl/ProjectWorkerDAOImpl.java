@@ -18,6 +18,11 @@ public class ProjectWorkerDAOImpl extends AMybatisTemplate
     }
 
     @Override
+    public void batchInsertProjectWorker(List<ProjectWorker> projectWorkerList) {
+        super.insertBatch(NAMESPACE.concat("batch_insert"), projectWorkerList);
+    }
+
+    @Override
     public int delete(ProjectWorker data) {
         return super.delete(NAMESPACE.concat("delete_projectWorker"), data);
     }

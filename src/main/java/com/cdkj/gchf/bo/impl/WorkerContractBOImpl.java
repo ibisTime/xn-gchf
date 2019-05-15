@@ -2,11 +2,11 @@ package com.cdkj.gchf.bo.impl;
 
 import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
+import com.cdkj.gchf.bo.IOperateLogBO;
+import com.cdkj.gchf.domain.User;
+import com.cdkj.gchf.enums.EOperateLogRefType;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -43,6 +43,9 @@ import com.cdkj.gchf.gov.SerialHandler;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 
+/**
+ * @author old3
+ */
 @Component
 public class WorkerContractBOImpl extends PaginableBOImpl<WorkerContract>
         implements IWorkerContractBO {
@@ -54,14 +57,14 @@ public class WorkerContractBOImpl extends PaginableBOImpl<WorkerContract>
     private IProjectWorkerBO projectWorkerBO;
 
     @Autowired
-    private IWorkerContractBO workerContractBO;
+    private IOperateLogBO operateLogBO;
 
     @Override
     public String saveWorkerContract(XN631673ReqData data,
-            ProjectWorker projectWorker) {
-        String code = null;
+                                     ProjectWorker projectWorker) {
+        String code;
         WorkerContract workerContract = new WorkerContract();
-
+        code = OrderNoGenerater.generate(EGeneratePrefix.WorkerContract.getCode());
         workerContract.setCode(code);
         BeanUtils.copyProperties(data, workerContract);
         BeanUtils.copyProperties(projectWorker, workerContract);
@@ -75,26 +78,26 @@ public class WorkerContractBOImpl extends PaginableBOImpl<WorkerContract>
 
         if (StringUtils.isNotBlank(data.getStartDate())) {
             workerContract.setStartDate(DateUtil.strToDate(data.getStartDate(),
-                DateUtil.FRONT_DATE_FORMAT_STRING));
+                    DateUtil.FRONT_DATE_FORMAT_STRING));
         }
         if (StringUtils.isNotBlank(data.getEndDate())) {
             workerContract.setEndDate(DateUtil.strToDate(data.getEndDate(),
-                DateUtil.FRONT_DATE_FORMAT_STRING));
+                    DateUtil.FRONT_DATE_FORMAT_STRING));
         }
         if (StringUtils.isNotBlank(data.getContractPeriodType())) {
             workerContract.setContractPeriodType(
-                Integer.parseInt(data.getContractPeriodType()));
+                    Integer.parseInt(data.getContractPeriodType()));
         }
         if (StringUtils.isNotBlank(data.getUnitPrice())) {
             workerContract.setUnitPrice(new BigDecimal(data.getUnitPrice()));
         }
         code = OrderNoGenerater
-            .generate(EGeneratePrefix.WorkerContract.getCode());
+                .generate(EGeneratePrefix.WorkerContract.getCode());
         workerContract.setCode(code);
 
         // 录入数据
         workerContract
-            .setUploadStatus(EWorkerContractUploadStatus.TO_UPLOAD.getCode());
+                .setUploadStatus(EWorkerContractUploadStatus.TO_UPLOAD.getCode());
         workerContract.setDeleteStatus(EDeleteStatus.NORMAL.getCode());
         workerContractDAO.insert(workerContract);
         return code;
@@ -103,7 +106,7 @@ public class WorkerContractBOImpl extends PaginableBOImpl<WorkerContract>
     @Override
     public String saveWorkerContract(XN631670Req req) {
         ProjectWorker projectWorker = projectWorkerBO
-            .getProjectWorker(req.getWorkerCode());
+                .getProjectWorker(req.getWorkerCode());
         String code = null;
         WorkerContract workerContract = new WorkerContract();
         if (StringUtils.isNotBlank(req.getUnit())) {
@@ -111,7 +114,7 @@ public class WorkerContractBOImpl extends PaginableBOImpl<WorkerContract>
         }
         if (StringUtils.isNotBlank(req.getContractPeriodType())) {
             workerContract.setContractPeriodType(
-                Integer.parseInt(req.getContractPeriodType()));
+                    Integer.parseInt(req.getContractPeriodType()));
         }
         if (StringUtils.isNotBlank(req.getUnitPrice())) {
             workerContract.setUnitPrice(new BigDecimal(req.getUnitPrice()));
@@ -120,22 +123,49 @@ public class WorkerContractBOImpl extends PaginableBOImpl<WorkerContract>
         BeanUtils.copyProperties(req, workerContract);
         workerContract.setTeamName(projectWorker.getTeamName());
         workerContract.setContractPeriodType(
-            Integer.parseInt(req.getContractPeriodType()));
+                Integer.parseInt(req.getContractPeriodType()));
         workerContract.setCode(code);
         Date startDate = DateUtil.strToDate(req.getStartDate(),
-            DateUtil.FRONT_DATE_FORMAT_STRING);
+                DateUtil.FRONT_DATE_FORMAT_STRING);
         Date endDate = DateUtil.strToDate(req.getEndDate(),
-            DateUtil.FRONT_DATE_FORMAT_STRING);
+                DateUtil.FRONT_DATE_FORMAT_STRING);
         code = OrderNoGenerater
-            .generate(EGeneratePrefix.WorkerContract.getCode());
+                .generate(EGeneratePrefix.WorkerContract.getCode());
         workerContract.setCode(code);
         workerContract.setStartDate(startDate);
         workerContract.setEndDate(endDate);
         workerContract
-            .setUploadStatus(EWorkerContractUploadStatus.TO_UPLOAD.getCode());
+                .setUploadStatus(EWorkerContractUploadStatus.TO_UPLOAD.getCode());
         workerContract.setDeleteStatus(EDeleteStatus.NORMAL.getCode());
         workerContractDAO.insert(workerContract);
         return code;
+    }
+
+    @Override
+    public void batchSaveWorkerContract(User user,List<ProjectWorker> projectWorkerList, List<XN631673ReqData> dataList) {
+        List<WorkerContract> workerContractList = new ArrayList<>();
+        for (int i = 0; i < projectWorkerList.size(); i++) {
+            ProjectWorker projectWorker = projectWorkerList.get(i);
+            XN631673ReqData data = dataList.get(i);
+            String code;
+            WorkerContract workerContract = new WorkerContract();
+            code = OrderNoGenerater.generate(EGeneratePrefix.WorkerContract.getCode());
+            workerContract.setCode(code);
+            BeanUtils.copyProperties(data, workerContract);
+            BeanUtils.copyProperties(projectWorker, workerContract);
+            workerContract.setWorkerCode(projectWorker.getCode());
+            workerContract.setIdcardType("01");
+            workerContract.setWorkerName(data.getWorkerName());
+            workerContract.setWorkerCode(projectWorker.getCode());
+            if (StringUtils.isNotBlank(data.getUnit())) {
+                workerContract.setUnit(Integer.parseInt(data.getUnit()));
+            }
+            operateLogBO.saveOperateLog(
+                EOperateLogRefType.WorkContract.getCode(), code, "导入员工合同", user,
+                null);
+            workerContractList.add(workerContract);
+        }
+        workerContractDAO.batchInsert(workerContractList);
     }
 
     @Override
@@ -143,7 +173,7 @@ public class WorkerContractBOImpl extends PaginableBOImpl<WorkerContract>
         WorkerContract workerContract = new WorkerContract();
         workerContract.setWorkerCode(workerCode);
         workerContract
-            .setUploadStatus(EWorkerContractUploadStatus.TO_UPLOAD.getCode());
+                .setUploadStatus(EWorkerContractUploadStatus.TO_UPLOAD.getCode());
         workerContract.setDeleteStatus(EDeleteStatus.DELETED.getCode());
         workerContractDAO.updateWorkerContractDeleteStatus(workerContract);
     }
@@ -153,7 +183,7 @@ public class WorkerContractBOImpl extends PaginableBOImpl<WorkerContract>
         WorkerContract workerContract = new WorkerContract();
         workerContract.setProjectCode(projectCode);
         workerContract
-            .setUploadStatus(EWorkerContractUploadStatus.TO_UPLOAD.getCode());
+                .setUploadStatus(EWorkerContractUploadStatus.TO_UPLOAD.getCode());
         workerContract.setDeleteStatus(EDeleteStatus.DELETED.getCode());
         workerContractDAO.updateWorkerContractDeleteStatus(workerContract);
     }
@@ -173,12 +203,12 @@ public class WorkerContractBOImpl extends PaginableBOImpl<WorkerContract>
         BeanUtils.copyProperties(req, workerContract);
         if (StringUtils.isNotBlank(req.getStartDate())) {
             Date startDate = DateUtil.strToDate(req.getStartDate(),
-                DateUtil.FRONT_DATE_FORMAT_STRING);
+                    DateUtil.FRONT_DATE_FORMAT_STRING);
             workerContract.setStartDate(startDate);
         }
         if (StringUtils.isNotBlank(req.getEndDate())) {
             Date endDate = DateUtil.strToDate(req.getEndDate(),
-                DateUtil.FRONT_DATE_FORMAT_STRING);
+                    DateUtil.FRONT_DATE_FORMAT_STRING);
             workerContract.setEndDate(endDate);
         }
         if (StringUtils.isNotBlank(req.getUnit())) {
@@ -195,11 +225,11 @@ public class WorkerContractBOImpl extends PaginableBOImpl<WorkerContract>
         }
         if (StringUtils.isNotBlank(req.getContractPeriodType())) {
             workerContract.setContractPeriodType(
-                Integer.parseInt(req.getContractPeriodType()));
+                    Integer.parseInt(req.getContractPeriodType()));
         }
         workerContract.setDeleteStatus(EDeleteStatus.NORMAL.getCode());
         workerContract
-            .setUploadStatus(EWorkerContractUploadStatus.TO_UPLOAD.getCode());
+                .setUploadStatus(EWorkerContractUploadStatus.TO_UPLOAD.getCode());
 
         workerContractDAO.update(workerContract);
     }
@@ -214,7 +244,7 @@ public class WorkerContractBOImpl extends PaginableBOImpl<WorkerContract>
 
     @Override
     public WorkerContract getWorkerContract(String projectCode,
-            String workerCode) {
+                                            String workerCode) {
         WorkerContract workerContract = new WorkerContract();
         workerContract.setProjectCode(projectCode);
         workerContract.setWorkerCode(workerCode);
@@ -229,35 +259,35 @@ public class WorkerContractBOImpl extends PaginableBOImpl<WorkerContract>
         List<XN631916ReqContract> contractList = req.getContractList();
         for (XN631916ReqContract contract : contractList) {
             contract.setIdCardNumber(AesUtils.encrypt(
-                contract.getIdCardNumber(), projectConfig.getSecret()));
+                    contract.getIdCardNumber(), projectConfig.getSecret()));
         }
         JSON.DEFFAULT_DATE_FORMAT = "yyyy-MM-dd";
         String data = JSONObject.toJSONString(req,
-            SerializeFilterHolder.XN631916Filter(),
-            SerializerFeature.WriteDateUseDateFormat);
+                SerializeFilterHolder.XN631916Filter(),
+                SerializerFeature.WriteDateUseDateFormat);
 
         String resString = GovConnecter.getGovData("WorkerContract.Add", data,
-            projectConfig.getProjectCode(), projectConfig.getSecret());
+                projectConfig.getProjectCode(), projectConfig.getSecret());
 
         SerialHandler.handle(resString, projectConfig);
     }
 
     @Override
     public Paginable<WorkerContract> doQuery(XN631917Req req,
-            ProjectConfig projectConfig) {
+                                             ProjectConfig projectConfig) {
         WorkerContract workerContract = new WorkerContract();
         BeanUtils.copyProperties(req, workerContract);
 
         String data = JSONObject.toJSON(workerContract).toString();
 
         String queryString = GovConnecter.getGovData("WorkerContract.Query",
-            data, projectConfig.getProjectCode(), projectConfig.getSecret());
+                data, projectConfig.getProjectCode(), projectConfig.getSecret());
 
         Map<String, String> replaceMap = new HashMap<>();
 
         Paginable<WorkerContract> page = GovUtil.parseGovPage(
-            req.getPageIndex(), req.getPageSize(), queryString, replaceMap,
-            WorkerContract.class);
+                req.getPageIndex(), req.getPageSize(), queryString, replaceMap,
+                WorkerContract.class);
 
         return page;
     }
@@ -285,7 +315,7 @@ public class WorkerContractBOImpl extends PaginableBOImpl<WorkerContract>
 
     @Override
     public JsonObject getRequestJson(WorkerContract workerContract,
-            ProjectConfig projectConfig) {
+                                     ProjectConfig projectConfig) {
         JsonObject jsonObject = new JsonObject();
         jsonObject.addProperty("projectCode", projectConfig.getProjectCode());
         JsonObject childJson = new JsonObject();
@@ -295,14 +325,14 @@ public class WorkerContractBOImpl extends PaginableBOImpl<WorkerContract>
 
         workerContract.setProjectCode(projectConfig.getProjectCode());
         String encrypt = AesUtils.encrypt(workerContract.getIdcardNumber(),
-            projectConfig.getSecret());
+                projectConfig.getSecret());
         childJson.addProperty("idCardNumber", encrypt);
         childJson.addProperty("contractPeriodType",
-            workerContract.getContractPeriodType());
+                workerContract.getContractPeriodType());
         childJson.addProperty("startDate", new SimpleDateFormat("yyyy-MM-dd")
-            .format(workerContract.getStartDate()));
+                .format(workerContract.getStartDate()));
         childJson.addProperty("endDate", new SimpleDateFormat("yyyy-MM-dd")
-            .format(workerContract.getEndDate()));
+                .format(workerContract.getEndDate()));
         if (workerContract.getUnit() != null) {
             childJson.addProperty("unit", workerContract.getUnit());
         }

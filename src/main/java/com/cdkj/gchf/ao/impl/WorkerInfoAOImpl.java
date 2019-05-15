@@ -89,6 +89,10 @@ public class WorkerInfoAOImpl implements IWorkerInfoAO {
             // 重新建档
             WorkerInfo workerInfo = workerInfoBO.getWorkerInfo(req.getCode());
             XN631793Req xn631791Req = new XN631793Req();
+            WorkerInfo workerInfoByIdCardNumber = workerInfoBO.getWorkerInfoByIdCardNumber(req.getIdCardNumber());
+            if (workerInfoByIdCardNumber != null) {
+                throw new BizException("XN000000","人员库中已存在身份证号为:"+req.getIdCardNumber()+"的人员");
+            }
             xn631791Req.setCode(req.getCode());
             BeanUtils.copyProperties(req, xn631791Req);
 
@@ -295,6 +299,11 @@ public class WorkerInfoAOImpl implements IWorkerInfoAO {
     @Override
     public void readdWorkerInfo(XN631793Req req) {
         User user = userBO.getBriefUser(req.getUserId());
+
+        WorkerInfo workerInfoByIdCardNumber = workerInfoBO.getWorkerInfoByIdCardNumber(req.getIdCardNumber());
+        if (workerInfoByIdCardNumber != null) {
+            throw new BizException("XN000000","人员库中已存在身份证号为:"+req.getIdCardNumber()+"的人员");
+        }
 
         workerInfoBO.refreshWorkerInfo(req);
 

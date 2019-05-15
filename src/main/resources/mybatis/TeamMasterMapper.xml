@@ -160,6 +160,65 @@
 		)
 	</insert>
 
+	<insert id="batch_insert">
+		insert  into thf_team_master
+		(code
+		,team_sys_no
+		,project_code
+		,corp_code
+		,corp_name
+		,team_name
+
+		,team_leader_name
+		,team_leader_phone
+		,team_leader_idcard_type
+		,team_leader_id_number
+		,responsible_person_name
+
+		,responsible_person_phone
+		,responsible_person_idcard_type
+		,responsible_person_id_number
+		,remark
+		,entry_time
+
+		,exit_time
+		,parent_code
+		,upload_status
+		,delete_status
+		)
+		VALUES
+		<foreach collection="list" index="index" close=")" item="teamMaster" open="(" separator="," >
+			#{teamMaster.code}
+			,#{teamMaster.teamSysNo}
+			,#{teamMaster.projectCode}
+			,#{teamMaster.corpCode}
+			,#{teamMaster.corpName}
+			,#{teamMaster.teamName}
+
+			,#{teamMaster.teamLeaderName}
+			,#{teamMaster.teamLeaderPhone}
+			,#{teamMaster.teamLeaderIdcardType}
+			,#{teamMaster.teamLeaderIdNumber}
+			,#{teamMaster.responsiblePersonName}
+
+			,#{teamMaster.responsiblePersonPhone}
+			,#{teamMaster.responsiblePersonIdcardType}
+			,#{teamMaster.responsiblePersonIdNumber}
+			,#{teamMaster.remark}
+			,#{teamMaster.entryTime}
+
+			,#{teamMaster.exitTime}
+			,#{teamMaster.parentCode}
+			,#{teamMaster.uploadStatus}
+			,#{teamMaster.deleteStatus}
+
+		</foreach>
+
+
+
+
+	</insert>
+
 	<update id="update_teamMaster" parameterType="teamMaster">
 		UPDATE
 		thf_team_master

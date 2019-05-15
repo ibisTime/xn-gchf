@@ -241,6 +241,127 @@
 		,#{deleteStatus}
 		)
 	</insert>
+
+	<insert id="batch_insert">
+		INSERT INTO
+		thf_project_worker(
+		code
+		,project_code
+		,project_name
+		,corp_code
+		,corp_name
+
+		,team_sys_no
+		,team_name
+		,worker_code
+		,worker_name
+		,worker_mobile
+
+		,is_team_leader
+		,idcard_type
+		,idcard_number
+		,work_type
+		,work_role
+
+		,type
+		,entry_time
+		,exit_time
+		,entry_attachment_url
+		,exit_attachment_url
+
+		,issue_card_date
+		,issue_card_pic_url
+		,card_number
+		,pay_roll_bank_card_number
+		,pay_roll_bank_name
+
+		,pay_roll_top_bank_name
+		,bank_name
+		,bank_link_number
+		,pay_roll_top_bank_code
+		,has_contract
+		,has_buy_insurance
+
+		,position
+		,salary
+		,cut_amount
+		,status
+		,salary_status
+		,join_datetime
+
+		,leaving_datetime
+		,start_datetime
+		,last_leaving_days
+		,end_datetime
+		,total_leaving_days
+
+		,updater
+		,update_datetime
+		,remark
+		,upload_status
+		,delete_status
+		)
+		VALUES
+		<foreach collection="list" separator="," open="(" item="projectWorker" close=")" index="index">
+			#{projectWorker.code}
+			,#{projectWorker.projectCode}
+			,#{projectWorker.projectName}
+			,#{projectWorker.corpCode}
+			,#{projectWorker.corpName}
+			,#{projectWorker.teamSysNo}
+
+			,#{projectWorker.teamName}
+			,#{projectWorker.workerCode}
+			,#{projectWorker.workerName}
+			,#{projectWorker.workerMobile}
+			,#{projectWorker.isTeamLeader}
+			,#{projectWorker.idcardType}
+			,#{projectWorker.idcardNumber}
+
+			,#{projectWorker.workType}
+			,#{projectWorker.workRole}
+			,#{projectWorker.type}
+			,#{projectWorker.entryTime}
+			,#{projectWorker.exitTime}
+			,#{projectWorker.entryAttachmentUrl}
+
+			,#{projectWorker.exitAttachmentUrl}
+			,#{projectWorker.issueCardDate}
+			,#{projectWorker.issueCardPicUrl}
+			,#{projectWorker.cardNumber}
+			,#{projectWorker.payRollBankCardNumber}
+
+			,#{projectWorker.payRollBankName}
+			,#{projectWorker.payRollTopBankName}
+			,#{projectWorker.bankName}
+			,#{projectWorker.bankLinkNumber}
+			,#{projectWorker.payRollTopBankCode}
+			,#{projectWorker.hasContract}
+
+			,#{projectWorker.hasBuyInsurance}
+			,#{projectWorker.position}
+			,#{projectWorker.salary}
+			,#{projectWorker.cutAmount}
+			,#{projectWorker.status}
+
+			,#{projectWorker.salaryStatus}
+			,#{projectWorker.joinDatetime}
+			,#{projectWorker.leavingDatetime}
+			,#{projectWorker.startDatetime}
+			,#{projectWorker.lastLeavingDays}
+
+			,#{projectWorker.endDatetime}
+			,#{projectWorker.totalLeavingDays}
+			,#{projectWorker.updater}
+			,#{projectWorker.updateDatetime}
+			,#{projectWorker.remark}
+			,#{projectWorker.uploadStatus}
+			,#{projectWorker.deleteStatus}
+
+		</foreach>
+
+
+	</insert>
 	<delete id="delete_projectWorker" parameterType="projectWorker">
 		delete from
 		thf_project_worker WHERE code = #{code}

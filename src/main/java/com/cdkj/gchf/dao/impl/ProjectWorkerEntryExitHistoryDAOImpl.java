@@ -56,6 +56,12 @@ public class ProjectWorkerEntryExitHistoryDAOImpl extends AMybatisTemplate
     }
 
     @Override
+    public void batchInsert(List<ProjectWorkerEntryExitHistory> projectWorkerEntryExitHistoryList) {
+        super.insertBatch(
+                NAMESPACE.concat("batch_insert"), projectWorkerEntryExitHistoryList);
+    }
+
+    @Override
     public int update(
             ProjectWorkerEntryExitHistory projectWorkerEntryExitHistory) {
         return super.update(

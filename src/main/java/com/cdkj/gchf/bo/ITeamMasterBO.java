@@ -28,6 +28,13 @@ public interface ITeamMasterBO extends IPaginableBO<TeamMaster> {
     String saveTeamMaster(XN631653ReqData data, String corpName,
                           XN631653Req req);
 
+    /**
+     * 批量插入班组
+     * @param data data
+     * @param corpName 企业名称list
+     * @param req req
+     */
+    void batchSaveTeamMaster(List<XN631653ReqData> data,List<String> corpName,XN631653Req req);
 
     /**
      * 假删除班组信息

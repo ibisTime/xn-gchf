@@ -1,9 +1,6 @@
 package com.cdkj.gchf.bo.impl;
 
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -68,19 +65,19 @@ public class TeamMasterBOImpl extends PaginableBOImpl<TeamMaster>
 
     @Override
     public String saveTeamMaster(XN631653ReqData data, String corpName,
-            XN631653Req req) {
+                                 XN631653Req req) {
         TeamMaster teamMaster = new TeamMaster();
         BeanUtils.copyProperties(data, teamMaster);
         String code = OrderNoGenerater
-            .generate(EGeneratePrefix.TeamMaster.getCode());
+                .generate(EGeneratePrefix.TeamMaster.getCode());
         if (StringUtils.isNotBlank(data.getEntryTime())) {
             Date strToDate = DateUtil.strToDate(data.getEntryTime(),
-                DateUtil.FRONT_DATE_FORMAT_STRING);
+                    DateUtil.FRONT_DATE_FORMAT_STRING);
             teamMaster.setEntryTime(strToDate);
         }
         if (StringUtils.isNotBlank(data.getExitTime())) {
             Date strToDate = DateUtil.strToDate(data.getExitTime(),
-                DateUtil.FRONT_DATE_FORMAT_STRING);
+                    DateUtil.FRONT_DATE_FORMAT_STRING);
             teamMaster.setExitTime(strToDate);
         }
         teamMaster.setProjectCode(req.getProjectCode());
@@ -94,42 +91,74 @@ public class TeamMasterBOImpl extends PaginableBOImpl<TeamMaster>
 
     @Override
     public String saveTeamMaster(XN631650Req data,
-            CorpBasicinfo corpBasicinfo) {
+                                 CorpBasicinfo corpBasicinfo) {
         TeamMaster teamMasterInfo = new TeamMaster();
         BeanUtils.copyProperties(data, teamMasterInfo);
         if (StringUtils.isNotBlank(data.getEntryTime())) {
             Date enrtyTime = DateUtil.strToDate(data.getEntryTime(),
-                DateUtil.FRONT_DATE_FORMAT_STRING);
+                    DateUtil.FRONT_DATE_FORMAT_STRING);
             teamMasterInfo.setEntryTime(enrtyTime);
         }
         if (StringUtils.isNotBlank(data.getExitTime())) {
             Date exitTime = DateUtil.strToDate(data.getExitTime(),
-                DateUtil.FRONT_DATE_FORMAT_STRING);
+                    DateUtil.FRONT_DATE_FORMAT_STRING);
             teamMasterInfo.setExitTime(exitTime);
         }
         if (StringUtils.isNotBlank(data.getResponsiblePersonIdcardType())) {
             EIdCardType.checkExists(data.getResponsiblePersonIdcardType());
             teamMasterInfo.setResponsiblePersonIdcardType(
-                data.getResponsiblePersonIdcardType());
+                    data.getResponsiblePersonIdcardType());
         }
         if (StringUtils.isNotBlank(data.getTeamLeaderIdcardType())) {
             EIdCardType.checkExists(data.getTeamLeaderIdcardType());
             teamMasterInfo
-                .setTeamLeaderIdcardType(data.getTeamLeaderIdcardType());
+                    .setTeamLeaderIdcardType(data.getTeamLeaderIdcardType());
         }
 
         String code = OrderNoGenerater
-            .generate(EGeneratePrefix.TeamMaster.getCode());
+                .generate(EGeneratePrefix.TeamMaster.getCode());
         teamMasterInfo.setCode(code);
         teamMasterInfo.setCorpName(corpBasicinfo.getCorpName());
         teamMasterInfo
-            .setUploadStatus(ETeamMasterUploadStatus.TO_UPLOAD.getCode());
+                .setUploadStatus(ETeamMasterUploadStatus.TO_UPLOAD.getCode());
         teamMasterInfo.setDeleteStatus(EDeleteStatus.NORMAL.getCode());
         teamMasterDAO.insert(teamMasterInfo);
         return code;
     }
 
 
+    @Override
+    public void batchSaveTeamMaster(List<XN631653ReqData> datas, List<String> corpNames, XN631653Req req) {
+        List<TeamMaster> teamMasters = new ArrayList<>();
+        for (int i = 0; i < datas.size(); i++) {
+            XN631653ReqData data = datas.get(i);
+            String corpName = corpNames.get(i);
+            TeamMaster teamMaster = new TeamMaster();
+            BeanUtils.copyProperties(data, teamMaster);
+            String code = OrderNoGenerater
+                    .generate(EGeneratePrefix.TeamMaster.getCode());
+            if (StringUtils.isNotBlank(data.getEntryTime())) {
+                Date strToDate = DateUtil.strToDate(data.getEntryTime(),
+                        DateUtil.FRONT_DATE_FORMAT_STRING);
+                teamMaster.setEntryTime(strToDate);
+            }
+            if (StringUtils.isNotBlank(data.getExitTime())) {
+                Date strToDate = DateUtil.strToDate(data.getExitTime(),
+                        DateUtil.FRONT_DATE_FORMAT_STRING);
+                teamMaster.setExitTime(strToDate);
+            }
+            teamMaster.setProjectCode(req.getProjectCode());
+            teamMaster.setCorpName(corpName);
+            teamMaster.setResponsiblePersonIdcardType("01");
+            teamMaster.setUploadStatus(ETeamMasterUploadStatus.TO_UPLOAD.getCode());
+            teamMaster.setDeleteStatus(EDeleteStatus.NORMAL.getCode());
+            teamMaster.setCode(code);
+            teamMasters.add(teamMaster);
+        }
+        //批量插入
+        teamMasterDAO.batchInsert(teamMasters);
+
+    }
 
     @Override
     public void fakeDeleteTeamMaster(String projectCode, String corpCode) {
@@ -148,22 +177,22 @@ public class TeamMasterBOImpl extends PaginableBOImpl<TeamMaster>
 
         if (StringUtils.isNotBlank(data.getEntryTime())) {
             Date entryTime = DateUtil.strToDate(data.getEntryTime(),
-                DateUtil.FRONT_DATE_FORMAT_STRING);
+                    DateUtil.FRONT_DATE_FORMAT_STRING);
             teamMaster.setEntryTime(entryTime);
         }
         if (StringUtils.isNotBlank(data.getExitTime())) {
             Date exitTime = DateUtil.strToDate(data.getExitTime(),
-                DateUtil.FRONT_DATE_FORMAT_STRING);
+                    DateUtil.FRONT_DATE_FORMAT_STRING);
             teamMaster.setExitTime(exitTime);
         }
         if (StringUtils.isNotBlank(data.getResponsiblePersonIdcardType())) {
             EIdCardType.checkExists(data.getResponsiblePersonIdcardType());
             teamMaster.setResponsiblePersonIdcardType(
-                data.getResponsiblePersonIdcardType());
+                    data.getResponsiblePersonIdcardType());
         }
         teamMaster.setRemark(data.getRemark());
         teamMaster
-            .setResponsiblePersonIdNumber(data.getResponsiblePersonIdNumber());
+                .setResponsiblePersonIdNumber(data.getResponsiblePersonIdNumber());
 
         teamMasterDAO.update(teamMaster);
     }
@@ -176,7 +205,7 @@ public class TeamMasterBOImpl extends PaginableBOImpl<TeamMaster>
         teamMaster.setUploadStatus(ETeamMasterUploadStatus.TO_UPLOAD.getCode());
         teamMasterDAO.updateDeleteStatus(teamMaster);
         teamMaster
-            .setUploadStatus(ETeamMasterUploadStatus.UPLOAD_FAIL.getCode());
+                .setUploadStatus(ETeamMasterUploadStatus.UPLOAD_FAIL.getCode());
         teamMasterDAO.updateDeleteStatus(teamMaster);
     }
 
@@ -203,7 +232,7 @@ public class TeamMasterBOImpl extends PaginableBOImpl<TeamMaster>
 
         // 项目人员考勤
         workerAttendanceBO.refreshWorkerAttendanceTeamName(localTeamNO,
-            teamName);
+                teamName);
 
     }
 
@@ -224,17 +253,17 @@ public class TeamMasterBOImpl extends PaginableBOImpl<TeamMaster>
 
     @Override
     public String getRequestJson(TeamMaster teamMaster,
-            ProjectConfig projectConfig) {
+                                 ProjectConfig projectConfig) {
         if (StringUtils.isNotBlank(teamMaster.getResponsiblePersonIdNumber())) {
             String encryptIdCardNumber = AesUtils.encrypt(
-                teamMaster.getResponsiblePersonIdNumber(),
-                projectConfig.getSecret());
+                    teamMaster.getResponsiblePersonIdNumber(),
+                    projectConfig.getSecret());
             teamMaster.setResponsiblePersonIdNumber(encryptIdCardNumber);
         }
         teamMaster.setProjectCode(projectConfig.getProjectCode());
         // 上传班组信息
         String teamMasterInfo = JSONObject
-            .toJSONStringWithDateFormat(teamMaster, "yyyy-MM-dd");
+                .toJSONStringWithDateFormat(teamMaster, "yyyy-MM-dd");
         return teamMasterInfo;
     }
 
@@ -260,7 +289,7 @@ public class TeamMasterBOImpl extends PaginableBOImpl<TeamMaster>
 
     @Override
     public TeamMaster getTeamMasterByProject(String projectCode,
-            String corpCode, String teamMasterName) {
+                                             String corpCode, String teamMasterName) {
         TeamMaster condition = new TeamMaster();
 
         condition.setProjectCode(projectCode);
@@ -274,7 +303,7 @@ public class TeamMasterBOImpl extends PaginableBOImpl<TeamMaster>
 
     @Override
     public List<TeamMaster> queryTeamMasterByProject(String projectCode,
-            String corpCode) {
+                                                     String corpCode) {
         TeamMaster condition = new TeamMaster();
         condition.setCorpCode(corpCode);
         condition.setProjectCode(projectCode);
@@ -286,19 +315,19 @@ public class TeamMasterBOImpl extends PaginableBOImpl<TeamMaster>
 
         if (StringUtils.isNotBlank(req.getResponsiblePersonIdNumber())) {
             req.setResponsiblePersonIdNumber(AesUtils.encrypt(
-                req.getResponsiblePersonIdNumber(), projectConfig.getSecret()));
+                    req.getResponsiblePersonIdNumber(), projectConfig.getSecret()));
         }
 
         if (StringUtils.isNotBlank(req.getTeamLeaderIdNumber())) {
             req.setTeamLeaderIdNumber(AesUtils.encrypt(
-                req.getTeamLeaderIdNumber(), projectConfig.getSecret()));
+                    req.getTeamLeaderIdNumber(), projectConfig.getSecret()));
         }
 
         String data = JSONObject.toJSONStringWithDateFormat(req, "yyyy-MM-dd")
-            .toString();
+                .toString();
 
         String resString = GovConnecter.getGovData("Team.Add", data,
-            projectConfig.getProjectCode(), projectConfig.getSecret());
+                projectConfig.getProjectCode(), projectConfig.getSecret());
 
         SerialHandler.handle(resString, projectConfig);
     }
@@ -309,52 +338,52 @@ public class TeamMasterBOImpl extends PaginableBOImpl<TeamMaster>
         User user = userBO.getBriefUser(req.getUserId());
         if (StringUtils.isNotBlank(req.getResponsiblePersonIDNumber())) {
             req.setResponsiblePersonIDNumber(AesUtils.encrypt(
-                req.getResponsiblePersonIDNumber(), projectConfig.getSecret()));
+                    req.getResponsiblePersonIDNumber(), projectConfig.getSecret()));
         }
         String data = JSONObject.toJSONStringWithDateFormat(req, "yyyy-MM-dd")
-            .toString();
+                .toString();
         System.out.println("===" + data);
         String operateLog = operateLogBO.saveOperateLog(
-            EOperateLogRefType.TeamMaster.getCode(), req.getCode(),
-            "修改国家平台班组信息", user, "修改国家平台班组信息");
+                EOperateLogRefType.TeamMaster.getCode(), req.getCode(),
+                "修改国家平台班组信息", user, "修改国家平台班组信息");
         String resString = null;
         try {
             resString = GovConnecter.getGovData("Team.Update", data,
-                projectConfig.getProjectCode(), projectConfig.getSecret());
+                    projectConfig.getProjectCode(), projectConfig.getSecret());
         } catch (BizException e) {
             e.printStackTrace();
             refreshUploadStatus(req.getCode(),
-                ETeamMasterUploadStatus.UPLOAD_UNUPDATE.getCode());
+                    ETeamMasterUploadStatus.UPLOAD_UNUPDATE.getCode());
             throw e;
         }
         AsyncQueueHolder.addSerial(resString, projectConfig, "teamMasterBO",
-            req.getCode(), ETeamMasterUploadStatus.UPLOAD_UPDATE.getCode(),
-            operateLog, req.getUserId());
+                req.getCode(), ETeamMasterUploadStatus.UPLOAD_UPDATE.getCode(),
+                operateLog, req.getUserId());
     }
 
     @Override
     public Paginable<TeamMaster> doQuery(XN631910Req req,
-            ProjectConfig projectConfig) {
+                                         ProjectConfig projectConfig) {
         TeamMaster teamMaster = new TeamMaster();
         BeanUtils.copyProperties(req, teamMaster);
 
         String data = JSONObject.toJSON(teamMaster).toString();
 
         String queryString = GovConnecter.getGovData("Team.Query", data,
-            projectConfig.getProjectCode(), projectConfig.getSecret());
+                projectConfig.getProjectCode(), projectConfig.getSecret());
 
         Map<String, String> replaceMap = new HashMap<>();
 
         Paginable<TeamMaster> page = GovUtil.parseGovPage(req.getPageIndex(),
-            req.getPageSize(), queryString, replaceMap, TeamMaster.class);
+                req.getPageSize(), queryString, replaceMap, TeamMaster.class);
 
         if (null != page && CollectionUtils.isNotEmpty(page.getList())) {
             for (TeamMaster master : page.getList()) {
                 if (StringUtils
-                    .isNotBlank(master.getResponsiblePersonIdNumber())) {
+                        .isNotBlank(master.getResponsiblePersonIdNumber())) {
                     master.setResponsiblePersonIdNumber(
-                        AesUtils.decrypt(master.getResponsiblePersonIdNumber(),
-                            projectConfig.getSecret()));
+                            AesUtils.decrypt(master.getResponsiblePersonIdNumber(),
+                                    projectConfig.getSecret()));
                 }
             }
         }

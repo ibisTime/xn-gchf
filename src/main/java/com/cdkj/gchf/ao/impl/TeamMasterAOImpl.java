@@ -1,5 +1,6 @@
 package com.cdkj.gchf.ao.impl;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -224,6 +225,8 @@ public class TeamMasterAOImpl implements ITeamMasterAO {
                 "导入数据中班组名称【" + repeatTeamName + "】存在重复");
         }
 
+        List<String> corpNames = new ArrayList<>();
+        List<XN631653ReqData> dataList = new ArrayList<>();
         for (XN631653ReqData reqData : req.getDateList()) {
 
             CorpBasicinfo corpBasicinfo = corpBasicinfoBO
@@ -240,12 +243,14 @@ public class TeamMasterAOImpl implements ITeamMasterAO {
                 throw new BizException("XN631650",
                     "班组名称【" + reqData.getTeamName() + "】已存在，请重新输入");
             }
-
-            String code = teamMasterBO.saveTeamMaster(reqData,
-                corpBasicinfo.getCorpName(), req);
-            operateLogBO.saveOperateLog(EOperateLogRefType.TeamMaster.getCode(),
-                code, "导入班组信息", user, null);
+            corpNames.add(corpBasicinfo.getCorpName());
+            dataList.add(reqData);
+//            String code = teamMasterBO.saveTeamMaster(reqData,
+//                corpBasicinfo.getCorpName(), req);
+//            operateLogBO.saveOperateLog(EOperateLogRefType.TeamMaster.getCode(),
+//                code, "导入班组信息", user, null);
         }
+        teamMasterBO.batchSaveTeamMaster(dataList,corpNames,req);
 
     }
 

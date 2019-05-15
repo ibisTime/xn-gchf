@@ -2,10 +2,11 @@ package com.cdkj.gchf.humanfaces;
 
 import com.cdkj.gchf.common.DateUtil;
 import com.cdkj.gchf.common.MD5Util;
-import org.junit.jupiter.api.Test;
-import org.springframework.web.bind.annotation.RequestMethod;
-
-import java.io.*;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -16,7 +17,8 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
-
+import org.junit.Test;
+import org.springframework.web.bind.annotation.RequestMethod;
 /**
  * @author old3
  */

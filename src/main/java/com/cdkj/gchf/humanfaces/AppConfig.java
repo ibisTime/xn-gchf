@@ -1,19 +1,16 @@
 package com.cdkj.gchf.humanfaces;
 
+import com.cdkj.gchf.common.DateUtil;
+import com.cdkj.gchf.common.MD5Util;
+import com.cdkj.gchf.humanfaces.res.ResultMsg;
+import com.google.gson.Gson;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
-
-
-import com.cdkj.gchf.common.DateUtil;
-import com.cdkj.gchf.common.MD5Util;
-import com.cdkj.gchf.humanfaces.res.ResultMsg;
-import com.google.gson.Gson;
-import org.junit.jupiter.api.Test;
-
+import org.junit.Test;
 /**
  * @author old3
  */

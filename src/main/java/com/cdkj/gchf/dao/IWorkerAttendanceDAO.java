@@ -10,6 +10,8 @@ public interface IWorkerAttendanceDAO extends IBaseDAO<WorkerAttendance> {
 
     void deleteWorkerAttendance(WorkerAttendance workerAttendance);
 
+    void deleteWorkerAttendanceByWorkerCode(WorkerAttendance workerAttendance);
+
     /**
      * 批量删除考勤
      *

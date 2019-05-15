@@ -177,7 +177,8 @@
 	</insert>
 
 	<delete id="delete_teamMaster" parameterType="teamMaster">
-		delete from
+		delete
+		FROM
 		thf_team_master WHERE code = #{code}
 	</delete>
 
@@ -216,7 +217,14 @@
 		thf_team_master t
 		SET
 		t.delete_status = #{deleteStatus}
-		<include refid="where_condition"/>
+		<trim>
+			<if test="code != null and code != '' ">
+				AND t.code = #{code}
+			</if>
+			<if test="teamSysNo != null and teamSysNo != '' ">
+				AND t.team_sys_no = #{teamSysNo}
+			</if>
+		</trim>
 	</update>
 
 	<update id="update_teamMasterTeamSysNo" parameterType="teamMaster">

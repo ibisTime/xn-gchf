@@ -303,8 +303,9 @@ public class ProjectCorpInfoAOImpl implements IProjectCorpInfoAO {
                 .getProjectCorpInfo(code);
 
             if (EProjectCorpUploadStatus.UPLOAD_UPDATE.getCode()
-                .equals(projectCorpInfo.getUploadStatus()))
+                    .equals(projectCorpInfo.getUploadStatus())) {
                 continue;
+            }
             // 调用国家平台上传数据
             ProjectConfig projectConfig = projectConfigBO
                 .getProjectConfigByLocal(projectCorpInfo.getProjectCode());

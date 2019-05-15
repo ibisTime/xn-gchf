@@ -1,7 +1,11 @@
 package com.cdkj.gchf.enums;
 
-public enum EDeleteStatus {
+/**
+ * @author old3
+ */
 
+public enum EDeleteStatus {
+    //删除状态
     DELETED("1", "已删除"),
 
     NORMAL("0", "正常");

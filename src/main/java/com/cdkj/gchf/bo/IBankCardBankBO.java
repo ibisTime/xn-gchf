@@ -69,6 +69,16 @@ public interface IBankCardBankBO extends IPaginableBO<BankCardInfo> {
     BankCardInfo getBankCardByIdCardNumBankNum(String idCardNumber,
             String bankNum);
 
+
+    /**
+     * 按照业务类型查询银行卡类别
+     *
+     * @param bussinessType 业务类型 ，参考 EBankCardBussinessType ：001 参建单位 / 002 个人用户
+     * @param bussinessCode 参建单位：参建单位主键code ,个人用户：项目人员主键code
+     * @return 银行卡列表
+     */
+    List<BankCardInfo> getBankCardByByssinessCode(String bussinessType, String bussinessCode);
+
     public List<BankCardInfo> queryBankCardInfoList(String businessSysNo,
             String status);
 

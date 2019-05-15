@@ -30,6 +30,8 @@ public interface IWorkerAttendanceBO extends IPaginableBO<WorkerAttendance> {
 
     void deleteWorkerAttendance(String code);
 
+
+    void deleteWorkerAttendaceByWorkerCode(String workerCode);
     /**
      * 批量删除人员考勤
      *

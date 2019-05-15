@@ -33,11 +33,11 @@ public class BankCardBankBOImpl extends PaginableBOImpl<BankCardInfo>
         String code = null;
         BankCardInfo bankCardInfo = new BankCardInfo();
         code = OrderNoGenerater
-            .generate(EGeneratePrefix.BankCardInfo.getCode());
+                .generate(EGeneratePrefix.BankCardInfo.getCode());
         bankCardInfo.setCode(code);
         BeanUtils.copyProperties(req, bankCardInfo);
         bankCardInfo.setBankName(
-            EBankCardCodeType.getBankCardType(req.getBankCode()).getValue());
+                EBankCardCodeType.getBankCardType(req.getBankCode()).getValue());
         // bankCardInfo.setUploadStatus(EUploadStatus.TO_UPLOAD.getCode());
         bankCardInfo.setUpdateDatetime(new Date(System.currentTimeMillis()));
         bankCardInfo.setStatus(EBankCardStatus.Normal.getCode());
@@ -51,16 +51,16 @@ public class BankCardBankBOImpl extends PaginableBOImpl<BankCardInfo>
 
     @Override
     public String saveBankCardInfo(XN631770ReqDetail data,
-            ProjectWorker projectWorker) {
+                                   ProjectWorker projectWorker) {
         BankCardInfo bankCardInfo = new BankCardInfo();
 
         String code = OrderNoGenerater
-            .generate(EGeneratePrefix.BankCardInfo.getCode());
+                .generate(EGeneratePrefix.BankCardInfo.getCode());
         bankCardInfo.setBankNumber(data.getPayRollBankCardNumber());
         bankCardInfo.setCode(code);
         bankCardInfo.setBankCode(data.getPayRollBankCode());
         bankCardInfo.setBankName(EBankCardCodeType
-            .getBankCardType(data.getPayRollBankCode()).getValue());
+                .getBankCardType(data.getPayRollBankCode()).getValue());
 
         bankCardInfo.setSubranch(data.getPayRollBankName());
         bankCardInfo.setBusinessSysNo(projectWorker.getCode());
@@ -83,7 +83,7 @@ public class BankCardBankBOImpl extends PaginableBOImpl<BankCardInfo>
         if (StringUtils.isNotEmpty(req.getBankCode())) {
             condition.setBankCode(req.getBankCode());
             condition.setBankName(EBankCardCodeType
-                .getBankCardType(req.getBankCode()).getValue());
+                    .getBankCardType(req.getBankCode()).getValue());
         }
 
         if (StringUtils.isNotBlank(req.getBankNumber())) {
@@ -110,7 +110,7 @@ public class BankCardBankBOImpl extends PaginableBOImpl<BankCardInfo>
 
     @Override
     public BankCardInfo getBankCardByIdCardNumBankNum(String idCardNumber,
-            String bankNum) {
+                                                      String bankNum) {
         BankCardInfo bankCardInfo = new BankCardInfo();
         bankCardInfo.setBankNumber(bankNum);
         bankCardInfo.setIdcardNumber(idCardNumber);
@@ -120,7 +120,7 @@ public class BankCardBankBOImpl extends PaginableBOImpl<BankCardInfo>
 
     @Override
     public List<BankCardInfo> getOwnerBankCardInfo(String workerName,
-            String status, String bussinessNo) {
+                                                   String status, String bussinessNo) {
         BankCardInfo bankCardInfo = new BankCardInfo();
         if (StringUtils.isNotBlank(workerName)) {
             bankCardInfo.setBusinessName(workerName);
@@ -140,8 +140,16 @@ public class BankCardBankBOImpl extends PaginableBOImpl<BankCardInfo>
     }
 
     @Override
+    public List<BankCardInfo> getBankCardByByssinessCode(String bussinessType, String bussinessCode) {
+        BankCardInfo bankCardInfo = new BankCardInfo();
+        bankCardInfo.setBusinessType(bussinessType);
+        bankCardInfo.setBusinessSysNo(bussinessCode);
+        return bankCardInfoDAO.selectList(bankCardInfo);
+    }
+
+    @Override
     public List<BankCardInfo> queryBankCardInfoList(String businessSysNo,
-            String status) {
+                                                    String status) {
         BankCardInfo bankCardInfo = new BankCardInfo();
 
         bankCardInfo.setBusinessSysNo(businessSysNo);
@@ -166,7 +174,7 @@ public class BankCardBankBOImpl extends PaginableBOImpl<BankCardInfo>
             if (select.getStatus().equals(EBankCardStatus.Normal.getCode())) {
                 select.setStatus(EBankCardStatus.Freeze.getCode());
             } else if (select.getStatus()
-                .equals(EBankCardStatus.Freeze.getCode())) {
+                    .equals(EBankCardStatus.Freeze.getCode())) {
                 select.setStatus(EBankCardStatus.Normal.getCode());
             }
         }

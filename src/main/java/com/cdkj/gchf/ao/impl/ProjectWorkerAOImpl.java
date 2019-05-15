@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import com.cdkj.gchf.bo.*;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;
@@ -14,19 +15,6 @@ import org.springframework.transaction.annotation.Transactional;
 import com.cdkj.gchf.ao.IEquipmentWorkerAO;
 import com.cdkj.gchf.ao.IProjectWorkerAO;
 import com.cdkj.gchf.api.impl.XN631693ReqData;
-import com.cdkj.gchf.bo.ICorpBasicinfoBO;
-import com.cdkj.gchf.bo.IOperateLogBO;
-import com.cdkj.gchf.bo.IPayRollBO;
-import com.cdkj.gchf.bo.IPayRollDetailBO;
-import com.cdkj.gchf.bo.IProjectBO;
-import com.cdkj.gchf.bo.IProjectConfigBO;
-import com.cdkj.gchf.bo.IProjectWorkerBO;
-import com.cdkj.gchf.bo.IProjectWorkerEntryExitHistoryBO;
-import com.cdkj.gchf.bo.ITeamMasterBO;
-import com.cdkj.gchf.bo.IUserBO;
-import com.cdkj.gchf.bo.IWorkerAttendanceBO;
-import com.cdkj.gchf.bo.IWorkerContractBO;
-import com.cdkj.gchf.bo.IWorkerInfoBO;
 import com.cdkj.gchf.bo.base.Paginable;
 import com.cdkj.gchf.common.ImportUtil;
 import com.cdkj.gchf.domain.CorpBasicinfo;
@@ -104,7 +92,7 @@ public class ProjectWorkerAOImpl implements IProjectWorkerAO {
     private IProjectWorkerEntryExitHistoryBO projectWorkerEntryExitHistoryBO;
 
     @Autowired
-    private IEquipmentWorkerAO equipmentWorkerAO;
+    private IEquipmentWorkerBO equipmentWorkerBO;
 
     @Override
     public String addProjectWorker(XN631690Req req) {
@@ -476,7 +464,7 @@ public class ProjectWorkerAOImpl implements IProjectWorkerAO {
             // 查询设备人员(已授权)
             EquipmentWorker tempEquipMentWorker = new EquipmentWorker();
             tempEquipMentWorker.setDeviceKey(condition.getDeviceKey());
-            List<EquipmentWorker> queryEquipmentWorkerList = equipmentWorkerAO
+            List<EquipmentWorker> queryEquipmentWorkerList = equipmentWorkerBO
                 .queryEquipmentWorkerList(tempEquipMentWorker);
             List<ProjectWorker> hasAuthorization = new ArrayList<>();
             List<ProjectWorker> tempList = new ArrayList<>();

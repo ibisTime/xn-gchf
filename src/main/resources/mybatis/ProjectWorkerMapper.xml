@@ -372,8 +372,7 @@
 		UPDATE
 		thf_project_worker
 		SET upload_status = #{uploadStatus}
-		WHERE code =
-		#{code}
+		WHERE code = #{code}
 	</update>
 
 	<update id="update_projectWorker_team_name" parameterType="projectWorker">
@@ -389,8 +388,18 @@
 		UPDATE
 		thf_project_worker t
 		SET
-		delete_status = #{deleteStatus}
-		<include refid="where_condition" />
+		t.delete_status = #{deleteStatus}
+		<trim prefix="WHERE" prefixOverrides="AND | OR">
+			<if test="teamSysNo != null and teamSysNo != '' ">
+				AND t.team_sys_no = #{teamSysNo}
+			</if>
+			<if test="workerCode != null and workerCode != '' ">
+				AND t.worker_code = #{workerCode}
+			</if>
+			<if test="code != null and code != '' ">
+				AND t.code = #{code}
+			</if>
+		</trim>
 
 	</update>
 	<update id="update_projectWorker_upload_status" parameterType="projectWorker">

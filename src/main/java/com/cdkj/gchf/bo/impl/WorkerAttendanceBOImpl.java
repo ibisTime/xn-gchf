@@ -166,6 +166,13 @@ public class WorkerAttendanceBOImpl extends PaginableBOImpl<WorkerAttendance>
     }
 
     @Override
+    public void deleteWorkerAttendaceByWorkerCode(String workerCode) {
+        WorkerAttendance workerAttendance = new WorkerAttendance();
+        workerAttendance.setWorkerCode(workerCode);
+        workerAttendanceDAO.deleteWorkerAttendanceByWorkerCode(workerAttendance);
+    }
+
+    @Override
     public void batchDeleteWorkerAttendance(List<String> codes) {
         workerAttendanceDAO.batchDeleteWorkerAttendacne(codes);
     }
@@ -297,6 +304,7 @@ public class WorkerAttendanceBOImpl extends PaginableBOImpl<WorkerAttendance>
     public int deleteWorkAttendanceByWorkerCode(String workerCode) {
         WorkerAttendance workerAttendance = new WorkerAttendance();
         workerAttendance.setWorkerCode(workerCode);
+
         return workerAttendanceDAO.delete(workerAttendance);
     }
 

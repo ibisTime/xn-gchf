@@ -7,6 +7,7 @@ import com.cdkj.gchf.bo.base.Paginable;
 import com.cdkj.gchf.domain.CorpBasicinfo;
 import com.cdkj.gchf.domain.ProjectConfig;
 import com.cdkj.gchf.domain.TeamMaster;
+import com.cdkj.gchf.domain.User;
 import com.cdkj.gchf.dto.req.XN631650Req;
 import com.cdkj.gchf.dto.req.XN631652Req;
 import com.cdkj.gchf.dto.req.XN631653Req;
@@ -34,7 +35,7 @@ public interface ITeamMasterBO extends IPaginableBO<TeamMaster> {
      * @param corpName 企业名称list
      * @param req req
      */
-    void batchSaveTeamMaster(List<XN631653ReqData> data,List<String> corpName,XN631653Req req);
+    void batchSaveTeamMaster(User user, List<XN631653ReqData> data, List<String> corpName, XN631653Req req);
 
     /**
      * 假删除班组信息

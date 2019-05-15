@@ -302,7 +302,8 @@
 		,delete_status
 		)
 		VALUES
-		<foreach collection="list" separator="," open="(" item="projectWorker" close=")" index="index">
+		<foreach collection="list" separator="," open="" item="projectWorker" close="" index="index">
+			(
 			#{projectWorker.code}
 			,#{projectWorker.projectCode}
 			,#{projectWorker.projectName}
@@ -357,7 +358,7 @@
 			,#{projectWorker.remark}
 			,#{projectWorker.uploadStatus}
 			,#{projectWorker.deleteStatus}
-
+			)
 		</foreach>
 
 

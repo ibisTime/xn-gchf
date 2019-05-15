@@ -128,7 +128,7 @@ public class TeamMasterBOImpl extends PaginableBOImpl<TeamMaster>
 
 
     @Override
-    public void batchSaveTeamMaster(List<XN631653ReqData> datas, List<String> corpNames, XN631653Req req) {
+    public void batchSaveTeamMaster(User user, List<XN631653ReqData> datas, List<String> corpNames, XN631653Req req) {
         List<TeamMaster> teamMasters = new ArrayList<>();
         for (int i = 0; i < datas.size(); i++) {
             XN631653ReqData data = datas.get(i);
@@ -154,6 +154,7 @@ public class TeamMasterBOImpl extends PaginableBOImpl<TeamMaster>
             teamMaster.setDeleteStatus(EDeleteStatus.NORMAL.getCode());
             teamMaster.setCode(code);
             teamMasters.add(teamMaster);
+            operateLogBO.saveOperateLog(EOperateLogRefType.TeamMaster.getCode(), code, EOperateLogOperate.IMPORT_TEAMMASTER.getCode(), user, null);
         }
         //批量插入
         teamMasterDAO.batchInsert(teamMasters);
@@ -202,10 +203,6 @@ public class TeamMasterBOImpl extends PaginableBOImpl<TeamMaster>
         TeamMaster teamMaster = new TeamMaster();
         teamMaster.setDeleteStatus(status);
         teamMaster.setCode(code);
-        teamMaster.setUploadStatus(ETeamMasterUploadStatus.TO_UPLOAD.getCode());
-        teamMasterDAO.updateDeleteStatus(teamMaster);
-        teamMaster
-                .setUploadStatus(ETeamMasterUploadStatus.UPLOAD_FAIL.getCode());
         teamMasterDAO.updateDeleteStatus(teamMaster);
     }
 

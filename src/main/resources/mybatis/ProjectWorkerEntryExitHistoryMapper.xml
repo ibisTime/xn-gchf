@@ -142,7 +142,8 @@
 		,delete_status
 		)
 		VALUES
-		<foreach collection="list" index="index" open="(" item="projectWorkerEntryExitHistory" close=")" separator=",">
+		<foreach collection="list" index="index" open="" item="projectWorkerEntryExitHistory" close="" separator=",">
+			(
 			#{projectWorkerEntryExitHistory.code}
 			,#{projectWorkerEntryExitHistory.projectCode}
 			,#{projectWorkerEntryExitHistory.corpCode}
@@ -162,6 +163,7 @@
 			,#{projectWorkerEntryExitHistory.voucherUrl}
 			,#{projectWorkerEntryExitHistory.uploadStatus}
 			,#{projectWorkerEntryExitHistory.deleteStatus}
+			)
 		</foreach>
 
 

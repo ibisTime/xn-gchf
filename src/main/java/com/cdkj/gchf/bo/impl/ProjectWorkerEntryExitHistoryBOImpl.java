@@ -5,7 +5,7 @@ import java.util.*;
 
 import com.cdkj.gchf.bo.IOperateLogBO;
 import com.cdkj.gchf.domain.*;
-import com.cdkj.gchf.enums.EOperateLogRefType;
+import com.cdkj.gchf.enums.*;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;
@@ -27,9 +27,6 @@ import com.cdkj.gchf.dto.req.XN631733ReqData;
 import com.cdkj.gchf.dto.req.XN631914Req;
 import com.cdkj.gchf.dto.req.XN631914ReqWorker;
 import com.cdkj.gchf.dto.req.XN631915Req;
-import com.cdkj.gchf.enums.EDeleteStatus;
-import com.cdkj.gchf.enums.EGeneratePrefix;
-import com.cdkj.gchf.enums.EProjectWorkerEntryExitUploadStatus;
 import com.cdkj.gchf.exception.BizException;
 import com.cdkj.gchf.gov.GovConnecter;
 import com.cdkj.gchf.gov.GovUtil;
@@ -150,8 +147,8 @@ public class ProjectWorkerEntryExitHistoryBOImpl
             entryExitHistory.setTeamSysNo(teamMaster.getCode());
             projectWorkerEntryExitHistories.add(entryExitHistory);
             operateLogBO.saveOperateLog(
-                    EOperateLogRefType.WorkAttendance.getCode(), code, "导入人员进退场信息",
-                    user, "导入人员进退场信息");
+                    EOperateLogRefType.WorkAttendance.getCode(), code, EOperateLogOperate.IMPORT_WORKER_ENTRYEXIT.getCode(),
+                    user, null);
 
         }
         projectWorkerEntryExitHistoryDAO.batchInsert(projectWorkerEntryExitHistories);

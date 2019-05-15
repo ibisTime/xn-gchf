@@ -124,7 +124,7 @@ public class TeamMasterAOImpl implements ITeamMasterAO {
                 throw new BizException("XN631651", "班组信息已上传,无法删除");
             }
             // 向下假删除所有的数据
-            teamMasterBO.updateTeamMasterDeleteStatus(code,
+            teamMasterBO.updateTeamMasterDeleteStatus(teamMaster.getCode(),
                 EDeleteStatus.DELETED.getCode());
 
             projectWorkerBO.fakeDeleteProjectWorkerByTeamNo(
@@ -245,12 +245,8 @@ public class TeamMasterAOImpl implements ITeamMasterAO {
             }
             corpNames.add(corpBasicinfo.getCorpName());
             dataList.add(reqData);
-//            String code = teamMasterBO.saveTeamMaster(reqData,
-//                corpBasicinfo.getCorpName(), req);
-//            operateLogBO.saveOperateLog(EOperateLogRefType.TeamMaster.getCode(),
-//                code, "导入班组信息", user, null);
         }
-        teamMasterBO.batchSaveTeamMaster(dataList,corpNames,req);
+        teamMasterBO.batchSaveTeamMaster(user, dataList, corpNames, req);
 
     }
 

@@ -56,44 +56,6 @@
 		</trim>
 	</sql>
 
-	<select id="select_projectCorpInfo" parameterType="projectCorpInfo"
-		resultMap="projectCorpInfo_DB_Result">
-		SELECT
-		t.code
-		,t.project_code
-		,t.project_name
-		,t.corp_code
-		,t.corp_name
-
-		,t.corp_type
-		,t.entry_time
-		,t.exit_time
-		,t.pm_name
-		,t.pm_idcard_type
-
-		,t.pm_idcard_number
-		,t.pm_phone
-		,t.upload_status
-		,t.delete_status
-		FROM
-		thf_project_corp_info t
-		<include refid="join_condition" />
-		<include refid="where_condition" />
-		<if test="corpBasicType != null and corpBasicType != '' ">
-			AND tu.corp_type = #{corpBasicType}
-		</if>
-		<trim prefix="ORDER BY ">
-			<if test="order != null and order != '' ">
-				t.${order}
-			</if>
-		</trim>
-	</select>
-
-	<select id="select_projectCorpInfo_count" parameterType="projectCorpInfo"
-		resultType="java.lang.Long">
-		SELECT count(1) FROM thf_project_corp_info t
-		<include refid="where_condition" />
-	</select>
 
 	<insert id="insert_projectCorpInfo" parameterType="projectCorpInfo">
 		INSERT INTO
@@ -135,6 +97,55 @@
 		)
 	</insert>
 
+	<insert id="batch_insert">
+		INSERT INTO
+		thf_project_corp_info(
+		code
+		,project_code
+		,project_name
+		,corp_code
+		,corp_name
+
+		,corp_type
+		,entry_time
+		,exit_time
+		,pm_name
+		,pm_idcard_type
+
+		,pm_idcard_number
+		,pm_phone
+		,upload_status
+		,delete_status
+		)
+		VALUES
+		<foreach collection="list" index="index" close="" separator="," open="" item="projectCorpInfo">
+			(
+			#{projectCorpInfo.code}
+			,#{projectCorpInfo.projectCode}
+			,#{projectCorpInfo.projectName}
+			,#{projectCorpInfo.corpCode}
+			,#{projectCorpInfo.corpName}
+
+			,#{projectCorpInfo.corpType}
+			,#{projectCorpInfo.entryTime}
+			,#{projectCorpInfo.exitTime}
+			,#{projectCorpInfo.pmName}
+			,#{projectCorpInfo.pmIDCardType}
+
+			,#{projectCorpInfo.pmIDCardNumber}
+			,#{projectCorpInfo.pmPhone}
+			,#{projectCorpInfo.uploadStatus}
+			,#{projectCorpInfo.deleteStatus}
+			)
+		</foreach>
+
+	</insert>
+
+	<delete id="delete_projectCorpInfo" parameterType="string">
+		DELETE from
+		thf_project_corp_info where code = #{code}
+	</delete>
+
 	<update id="update_projectCorpInfo" parameterType="projectCorpInfo">
 		UPDATE
 		thf_project_corp_info
@@ -171,9 +182,43 @@
 		t.code = #{code}
 	</update>
 
-	<delete id="delete_projectCorpInfo" parameterType="string">
-		DELETE from
-		thf_project_corp_info where code = #{code}
-	</delete>
 
+	<select id="select_projectCorpInfo" parameterType="projectCorpInfo"
+			resultMap="projectCorpInfo_DB_Result">
+		SELECT
+		t.code
+		,t.project_code
+		,t.project_name
+		,t.corp_code
+		,t.corp_name
+
+		,t.corp_type
+		,t.entry_time
+		,t.exit_time
+		,t.pm_name
+		,t.pm_idcard_type
+
+		,t.pm_idcard_number
+		,t.pm_phone
+		,t.upload_status
+		,t.delete_status
+		FROM
+		thf_project_corp_info t
+		<include refid="join_condition"/>
+		<include refid="where_condition"/>
+		<if test="corpBasicType != null and corpBasicType != '' ">
+			AND tu.corp_type = #{corpBasicType}
+		</if>
+		<trim prefix="ORDER BY ">
+			<if test="order != null and order != '' ">
+				t.${order}
+			</if>
+		</trim>
+	</select>
+
+	<select id="select_projectCorpInfo_count" parameterType="projectCorpInfo"
+			resultType="java.lang.Long">
+		SELECT count(1) FROM thf_project_corp_info t
+		<include refid="where_condition"/>
+	</select>
 </mapper>

@@ -5,8 +5,9 @@ import java.text.SimpleDateFormat;
 import java.util.*;
 
 import com.cdkj.gchf.bo.IOperateLogBO;
+import com.cdkj.gchf.common.StringUtil;
 import com.cdkj.gchf.domain.User;
-import com.cdkj.gchf.enums.EOperateLogRefType;
+import com.cdkj.gchf.enums.*;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,9 +34,6 @@ import com.cdkj.gchf.dto.req.XN631673ReqData;
 import com.cdkj.gchf.dto.req.XN631916Req;
 import com.cdkj.gchf.dto.req.XN631916ReqContract;
 import com.cdkj.gchf.dto.req.XN631917Req;
-import com.cdkj.gchf.enums.EDeleteStatus;
-import com.cdkj.gchf.enums.EGeneratePrefix;
-import com.cdkj.gchf.enums.EWorkerContractUploadStatus;
 import com.cdkj.gchf.exception.BizException;
 import com.cdkj.gchf.gov.GovConnecter;
 import com.cdkj.gchf.gov.GovUtil;
@@ -160,8 +158,20 @@ public class WorkerContractBOImpl extends PaginableBOImpl<WorkerContract>
             if (StringUtils.isNotBlank(data.getUnit())) {
                 workerContract.setUnit(Integer.parseInt(data.getUnit()));
             }
+            if (null != data.getContractPeriodType()) {
+                workerContract.setContractPeriodType(Integer.parseInt(data.getContractPeriodType()));
+            }
+            if (StringUtils.isNotBlank(data.getStartDate())) {
+                workerContract.setStartDate(DateUtil.strToDate(data.getStartDate(), DateUtil.FRONT_DATE_FORMAT_STRING));
+            }
+            if (StringUtils.isNotBlank(data.getEndDate())) {
+                workerContract.setEndDate(DateUtil.strToDate(data.getStartDate(), DateUtil.FRONT_DATE_FORMAT_STRING));
+            }
+            workerContract.setDeleteStatus(EDeleteStatus.NORMAL.getCode());
+            workerContract.setUploadStatus(EWorkerContractUploadStatus.TO_UPLOAD.getCode());
+
             operateLogBO.saveOperateLog(
-                EOperateLogRefType.WorkContract.getCode(), code, "导入员工合同", user,
+                    EOperateLogRefType.WorkContract.getCode(), code, EOperateLogOperate.IMPORT_WORKER_CONTRACT.getCode(), user,
                 null);
             workerContractList.add(workerContract);
         }

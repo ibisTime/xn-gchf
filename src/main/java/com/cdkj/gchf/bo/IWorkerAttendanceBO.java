@@ -21,15 +21,24 @@ import com.google.gson.JsonObject;
 
 public interface IWorkerAttendanceBO extends IPaginableBO<WorkerAttendance> {
 
-    public String saveWorkerAttendance(XN631710Req data, TeamMaster teamMaster);
+    String saveWorkerAttendance(XN631710Req data, TeamMaster teamMaster);
 
-    public String saveWorkerAttendance(WorkerAttendance workerAttendance);
+    String saveWorkerAttendance(WorkerAttendance workerAttendance);
 
-    public String saveWorkerAttendance(String projectCode, XN631713ReqData data,
-            ProjectWorker projectWorker, WorkerAttendance workerAttendance);
+    String saveWorkerAttendance(String projectCode, XN631713ReqData data,
+                                ProjectWorker projectWorker, WorkerAttendance workerAttendance);
+
+    void deleteWorkerAttendance(String code);
+
+    /**
+     * 批量删除人员考勤
+     *
+     * @param codes 主键列表
+     */
+    void batchDeleteWorkerAttendance(List<String> codes);
 
     // 每日自动上传的考勤记录
-    public String addWorkerAttendace(
+    String addWorkerAttendace(
             WorkerEntryExitRecord workerEntryExitRecord,
             EquipmentInfo equipmentInfo, Date time, String photoUrl,
             String type);

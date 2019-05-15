@@ -172,6 +172,13 @@ public class TeamMasterBOImpl extends PaginableBOImpl<TeamMaster>
     }
 
     @Override
+    public void deleteTeamMaster(String code) {
+        TeamMaster teamMaster = new TeamMaster();
+        teamMaster.setCode(code);
+        teamMasterDAO.delete(teamMaster);
+    }
+
+    @Override
     public void refreshTeamMaster(XN631652Req data) {
         TeamMaster teamMaster = new TeamMaster();
         BeanUtils.copyProperties(data, teamMaster);

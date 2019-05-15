@@ -149,10 +149,21 @@
 		,#{deleteStatus}
 		)
 	</insert>
+
+
 	<delete id="delete_workerAttendance" parameterType="workerAttendance">
 		DELETE from
 		thf_worker_attendance WHERE code = #{code}
 	</delete>
+
+	<delete id="batch_delete_workerAttendance" parameterType="String">
+		DELETE from thf_worker_attendance
+		WHERE code IN
+		<foreach collection="list" item="workerAttendance" open="(" separator="," close=")" index="index">
+			#{index}
+		</foreach>
+	</delete>
+
 
 	<update id="update_workerAttendance" parameterType="workerAttendance">
 		UPDATE

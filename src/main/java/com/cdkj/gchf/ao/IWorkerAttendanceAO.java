@@ -25,8 +25,10 @@ public interface IWorkerAttendanceAO {
      */
     String addWorkerAttendance(XN631710Req data);
 
+
     /**
-     * 删除 
+     * 根据传来的考勤主键列表 批量删除考勤
+     * @param codeList 主键列表
      */
     void dropWorkerAttendance(List<String> codeList);
 

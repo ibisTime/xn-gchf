@@ -4,10 +4,7 @@ import java.util.List;
 
 import com.cdkj.gchf.bo.base.IPaginableBO;
 import com.cdkj.gchf.bo.base.Paginable;
-import com.cdkj.gchf.domain.CorpBasicinfo;
-import com.cdkj.gchf.domain.Project;
-import com.cdkj.gchf.domain.ProjectConfig;
-import com.cdkj.gchf.domain.ProjectCorpInfo;
+import com.cdkj.gchf.domain.*;
 import com.cdkj.gchf.dto.req.XN631630Req;
 import com.cdkj.gchf.dto.req.XN631632Req;
 import com.cdkj.gchf.dto.req.XN631633ReqList;
@@ -21,6 +18,8 @@ public interface IProjectCorpInfoBO extends IPaginableBO<ProjectCorpInfo> {
      */
     public String saveProjectCorpInfo(XN631630Req req, Project project);
 
+
+    void batchSaveProjectCorpInfo(User user, List<XN631633ReqList> datas, List<String> projectCodes);
     /**
      * 保存参建单位 
      */

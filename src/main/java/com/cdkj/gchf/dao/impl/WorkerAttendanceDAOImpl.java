@@ -48,6 +48,16 @@ public class WorkerAttendanceDAOImpl extends AMybatisTemplate
     }
 
     @Override
+    public void deleteWorkerAttendance(WorkerAttendance workerAttendance) {
+        super.delete(NAMESPACE.concat("delete_workerAttendance"), workerAttendance);
+    }
+
+    @Override
+    public void batchDeleteWorkerAttendacne(List<String> codes) {
+        super.deleteBatch(NAMESPACE.concat("batch_delete_workerAttendance"), codes);
+    }
+
+    @Override
     public int update(WorkerAttendance workerAttendance) {
         return super.update(NAMESPACE.concat("update_workerAttendance"),
             workerAttendance);

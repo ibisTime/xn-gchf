@@ -198,6 +198,7 @@
 		delete_status = #{deleteStatus}
 		<include refid="where_condition" />
 	</update>
+
 	<select id="select_projectWorkerEntryExitHistory" parameterType="projectWorkerEntryExitHistory"
 		resultMap="projectWorkerEntryExitHistory_DB_Result">
 		SELECT

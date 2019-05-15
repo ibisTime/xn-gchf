@@ -139,11 +139,34 @@ public class WorkerContractAOImpl implements IWorkerContractAO {
         workerContractBO.refreshWorkerContract(req);
     }
 
-    /**
-     * 
-     * <p>Title: uploadWorkContractList</p>   
-     * <p>Description: 上传劳动合同 </p>   
-     */
+    @Transactional
+    @Override
+    public void importWorkContractList(XN631673Req req) {
+        User user = userBO.getBriefUser(req.getUpdater());
+        Project project = projectBO.getProject(req.getProjectCode());
+        if (project == null) {
+            throw new BizException("XN631673", "请选择项目");
+        }
+        List<XN631673ReqData> workContractList = req.getDateList();
+        List<ProjectWorker> projectWorkers = new ArrayList<>();
+        for (XN631673ReqData xn631673ReqData : workContractList) {
+
+            // 校验数据字典数据
+            EContractPeriodType
+                    .checkExists(xn631673ReqData.getContractPeriodType());
+            // 取得个人信息
+            ProjectWorker projectWorker = projectWorkerBO.getProjectWorker(
+                    req.getProjectCode(), xn631673ReqData.getIdCardNumber());
+            if (null == projectWorker) {
+                throw new BizException("XN631673",
+                        "项目人员不存在【" + xn631673ReqData.getIdCardNumber() + "】");
+            }
+            projectWorkers.add(projectWorker);
+        }
+        workerContractBO.batchSaveWorkerContract(user, projectWorkers, req.getDateList());
+    }
+
+
     @Transactional
     @Override
     public void uploadWorkContractList(String userId, List<String> codeList) {
@@ -198,34 +221,6 @@ public class WorkerContractAOImpl implements IWorkerContractAO {
                 EWorkerContractUploadStatus.UPLOAD_UNEDITABLE.getCode(), log,
                 userId);
         }
-    }
-
-    @Transactional
-    @Override
-    public void importWorkContractList(XN631673Req req) {
-        User user = userBO.getBriefUser(req.getUpdater());
-        Project project = projectBO.getProject(req.getProjectCode());
-        if (project == null) {
-            throw new BizException("XN631673", "请选择项目");
-        }
-        List<XN631673ReqData> workContractList = req.getDateList();
-        List<ProjectWorker> projectWorkers = new ArrayList<>();
-        for (XN631673ReqData xn631673ReqData : workContractList) {
-
-            // 校验数据字典数据
-            EContractPeriodType
-                .checkExists(xn631673ReqData.getContractPeriodType());
-
-            // 取得个人信息
-            ProjectWorker projectWorker = projectWorkerBO.getProjectWorker(
-                req.getProjectCode(), xn631673ReqData.getIdCardNumber());
-            if (null == projectWorker) {
-                throw new BizException("XN631673",
-                    "项目人员不存在【" + xn631673ReqData.getIdCardNumber() + "】");
-            }
-            projectWorkers.add(projectWorker);
-        }
-        workerContractBO.batchSaveWorkerContract(user,projectWorkers,req.getDateList());
     }
 
     @Override

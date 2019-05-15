@@ -76,69 +76,6 @@
 		</trim>
 	</sql>
 
-	<select id="select_project" parameterType="project" resultMap="project_DB_Result">
-		SELECT
-		t.code
-		,t.contractor_corp_code
-		,t.contractor_corp_name
-		,t.name
-		,t.description
-
-		,t.category
-		,t.build_corp_name
-		,t.build_corp_code
-		,t.build_plan_num
-		,t.prj_plan_num
-
-		,t.area_code
-		,t.invest
-		,t.building_area
-		,t.building_length
-		,t.start_date
-
-		,t.complete_date
-		,t.link_man
-		,t.link_phone
-		,t.prj_status
-		,t.lng
-
-		,t.lat
-		,t.province
-		,t.city
-		,t.area
-
-		,t.address
-		,t.approval_num
-		,t.approval_level_num
-		,t.prj_size
-		,t.property_num
-
-		,t.prj_num
-		,t.nation_num
-		,t.attendance_starttime
-		,t.attendance_endtime
-		,t.pay_roll_create_datetime
-
-		,t.pay_roll_datetime
-		,t.pay_roll_delay_days
-		,t.charge_email
-		,t.third_party_project_code
-		,t.secret_status
-		FROM
-		thf_project t
-		<include refid="where_condition" />
-		<trim prefix="ORDER BY ">
-			<if test="order != null and order != '' ">
-				t.${order}
-			</if>
-		</trim>
-	</select>
-
-	<select id="select_project_count" parameterType="project"
-		resultType="java.lang.Long">
-		SELECT count(1) FROM thf_project t
-		<include refid="where_condition" />
-	</select>
 
 	<insert id="insert_project" parameterType="project">
 		INSERT INTO
@@ -305,5 +242,70 @@
 		,contractor_corp_name = #{contractorCorpName}
 		WHERE code = #{code}
 	</update>
+
+    <select id="select_project" parameterType="project" resultMap="project_DB_Result">
+        SELECT
+        t.code
+        ,t.contractor_corp_code
+        ,t.contractor_corp_name
+        ,t.name
+        ,t.description
+
+        ,t.category
+        ,t.build_corp_name
+        ,t.build_corp_code
+        ,t.build_plan_num
+        ,t.prj_plan_num
+
+        ,t.area_code
+        ,t.invest
+        ,t.building_area
+        ,t.building_length
+        ,t.start_date
+
+        ,t.complete_date
+        ,t.link_man
+        ,t.link_phone
+        ,t.prj_status
+        ,t.lng
+
+        ,t.lat
+        ,t.province
+        ,t.city
+        ,t.area
+
+        ,t.address
+        ,t.approval_num
+        ,t.approval_level_num
+        ,t.prj_size
+        ,t.property_num
+
+        ,t.prj_num
+        ,t.nation_num
+        ,t.attendance_starttime
+        ,t.attendance_endtime
+        ,t.pay_roll_create_datetime
+
+        ,t.pay_roll_datetime
+        ,t.pay_roll_delay_days
+        ,t.charge_email
+        ,t.third_party_project_code
+        ,t.secret_status
+        FROM
+        thf_project t
+        <include refid="where_condition"/>
+        <trim prefix="ORDER BY ">
+            <if test="order != null and order != '' ">
+                t.${order}
+            </if>
+        </trim>
+    </select>
+
+    <select id="select_project_count" parameterType="project"
+            resultType="java.lang.Long">
+        SELECT count(1) FROM thf_project t
+        <include refid="where_condition"/>
+    </select>
+
 
 </mapper>

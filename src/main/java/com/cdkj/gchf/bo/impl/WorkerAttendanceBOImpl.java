@@ -158,10 +158,18 @@ public class WorkerAttendanceBOImpl extends PaginableBOImpl<WorkerAttendance>
         return code;
     }
 
-    /**
-     * <p>Title: addWorkerAttendace</p>
-     * <p>Description:保存进出记录生成的人员考勤</p>
-     */
+    @Override
+    public void deleteWorkerAttendance(String code) {
+        WorkerAttendance workerAttendance = new WorkerAttendance();
+        workerAttendance.setCode(code);
+        workerAttendanceDAO.deleteWorkerAttendance(workerAttendance);
+    }
+
+    @Override
+    public void batchDeleteWorkerAttendance(List<String> codes) {
+        workerAttendanceDAO.batchDeleteWorkerAttendacne(codes);
+    }
+
     @Override
     public String addWorkerAttendace(
             WorkerEntryExitRecord workerEntryExitRecord,

@@ -42,6 +42,13 @@ public interface ITeamMasterBO extends IPaginableBO<TeamMaster> {
      */
     void fakeDeleteTeamMaster(String projectCode, String corpCode);
 
+
+    /**
+     * 根据code 删除班组
+     *
+     * @param code 主键code
+     */
+    void deleteTeamMaster(String code);
     /**
      * 修改项目班组
      */

@@ -124,8 +124,7 @@ public class TeamMasterAOImpl implements ITeamMasterAO {
                 throw new BizException("XN631651", "班组信息已上传,无法删除");
             }
             // 向下假删除所有的数据
-            teamMasterBO.updateTeamMasterDeleteStatus(teamMaster.getCode(),
-                EDeleteStatus.DELETED.getCode());
+            teamMasterBO.deleteTeamMaster(teamMaster.getCode());
 
             projectWorkerBO.fakeDeleteProjectWorkerByTeamNo(
                 teamMaster.getProjectCode(), teamMaster.getCode());

@@ -1,5 +1,6 @@
 package com.cdkj.gchf.ao.impl;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -90,6 +91,7 @@ public class WorkerAttendanceAOImpl implements IWorkerAttendanceAO {
 
     @Override
     public void dropWorkerAttendance(List<String> codeList) {
+        List<String> workerAttendances = new ArrayList<>();
         for (String code : codeList) {
             WorkerAttendance workerAttendance = workerAttendanceBO
                 .getWorkerAttendance(code);
@@ -97,9 +99,10 @@ public class WorkerAttendanceAOImpl implements IWorkerAttendanceAO {
                 EWorkerAttendanceUploadStatus.UPLOAD_UNEDITABLE.getCode())) {
                 throw new BizException("XN631711", "人员考勤已上传，不可删除");
             }
-            workerAttendanceBO.updateWorkerAttendanceDeleteStatus(code,
-                EDeleteStatus.DELETED.getCode());
+            workerAttendances.add(workerAttendance.getCode());
         }
+        workerAttendanceBO.batchDeleteWorkerAttendance(workerAttendances);
+
     }
 
     @Override

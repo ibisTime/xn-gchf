@@ -48,6 +48,12 @@ public class ProjectCorpInfoDAOImpl extends AMybatisTemplate
     }
 
     @Override
+    public void batchInsert(List<ProjectCorpInfo> projectCorpInfoList) {
+        super.insertBatch(NAMESPACE.concat("batch_insert"),
+                projectCorpInfoList);
+    }
+
+    @Override
     public int update(ProjectCorpInfo projectCorpInfo) {
         return super.update(NAMESPACE.concat("update_projectCorpInfo"),
             projectCorpInfo);

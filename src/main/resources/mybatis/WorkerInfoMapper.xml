@@ -2,7 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.cdkj.gchf.dao.IWorkerInfoDAO">
-	<resultMap id="WorkerInfo_DB_Result" type="workerInfo">
+    <resultMap id="WorkerInfo_DB_Result" type="workerInfo">
 		<result column="code" property="code" />
 		<result column="name" property="name" />
 		<result column="id_card_type" property="idCardType" />
@@ -36,6 +36,13 @@
 		<result column="start_date" property="startDate" />
 		<result column="expiry_date" property="expiryDate" />
 		<result column="create_datetime" property="createDatetime" />
+        <result column="attendance_picture" property="attendancePicture"/>
+        <result column="worker_guid" property="workerGuid"/>
+        <result column="worker_attendance_pic_guid" property="workerAttendancePicGuid"/>
+        <result column="worker_pic_upload_status" property="workerPicUploadStatus"/>
+        <result column="worker_upload_status" property="workerUploadStatus"/>
+
+        <result column="id_card_number" property="businessIdCardNumber"/>
 	</resultMap>
 	<sql id="where_condition">
 		<trim prefix="WHERE" prefixOverrides="AND | OR">
@@ -43,11 +50,15 @@
 				AND t.code = #{code}
 			</if>
 			<if test="idCardNumber != null and idCardNumber != '' ">
-				AND t.id_card_number = #{idCardNumber}
+                AND t.id_card_number like "%"#{idCardNumber}"%"
 			</if>
 			<if test="idCardType != null and idCardType != '' ">
 				AND t.id_card_type = #{idCardType}
 			</if>
+
+            <if test="businessIdCardNumber != null and businessIdCardNumber != '' ">
+                AND t.id_card_number = #{businessIdCardNumber}
+            </if>
 			<if test="cellPhone != null and cellPhone != '' ">
 				AND t.cell_phone = #{cellPhone}
 			</if>
@@ -90,6 +101,11 @@
 		,marital_status
 		,hand_id_card_image_url
 		,culture_level_type
+		,attendance_picture
+		,worker_guid
+		,worker_attendance_pic_guid
+		,worker_pic_upload_status
+		,worker_upload_status
 		)
 		VALUES(
 		#{code}
@@ -118,6 +134,11 @@
 		,#{maritalStatus}
 		,#{handIdCardImageUrl}
 		,#{cultureLevelType}
+		,#{attendancePicture}
+		,#{workerGuid}
+		,#{workerAttendancePicGuid}
+		,#{workerPicUploadStatus}
+		,#{workerUploadStatus}
 		)
 	</insert>
 
@@ -134,38 +155,43 @@
 		,id_card_type = #{idCardType}
 		,id_card_number = #{idCardNumber}
 		,gender = #{gender}
-		,nation = #{nation}
+		,nation =
+		#{nation}
 		,edu_level = #{eduLevel}
 		,politics_type = #{politicsType}
 		,degree = #{degree}
 		,worker_type = #{workerType}
-		
+
 		,birthday = #{birthday}
 		,birth_place_code = #{birthPlaceCode}
-		,address = #{address}
+		,address =
+		#{address}
 		,head_image_url = #{headImageUrl}
 		,is_joined = #{isJoined}
-		,joined_time = #{joinedTime}
+		,joined_time
+		= #{joinedTime}
 		,culture_level_type = #{cultureLevelType}
-		,specialty = #{specialty}
+		,specialty =
+		#{specialty}
 
 		,has_bad_medical_history =
 		#{hasBadMedicalHistory}
-		,work_type_code =
-		#{workTypeCode}
+		,work_type_code = #{workTypeCode}
 		,work_corp_name = #{workCorpName}
-		,work_date =
-		#{workDate}
+		,work_date = #{workDate}
 		,marital_status = #{maritalStatus}
 
 		,grant_org =
 		#{grantOrg}
-		,start_date =
-		#{startDate}
+		,start_date
+		= #{startDate}
 		,expiry_date = #{expiryDate}
 		,create_datetime =
 		#{createDatetime}
-		WHERE code = #{code}
+		,attendance_picture =
+		#{attendancePicture}
+		WHERE code
+		= #{code}
 	</update>
 
 	<update id="update_WorkerInfoAboutIdcard" parameterType="workerInfo">
@@ -175,6 +201,18 @@
 		hand_id_card_image_url = #{handIdCardImageUrl}
 		,positive_id_card_image_url = #{positiveIdCardImageUrl}
 		,negative_id_card_image_url = #{negativeIdCardImageUrl}
+		,attendance_picture = #{attendancePicture}
+		WHERE code =
+		#{code}
+	</update>
+
+    <update id="update_WorkerInfoAboutAttendance" parameterType="workerInfo">
+		UPDATE
+		thf_worker_info
+		SET
+		worker_guid = #{workerGuid}
+		,worker_attendance_pic_guid = #{workerAttendancePicGuid}
+
 		WHERE code =
 		#{code}
 	</update>
@@ -193,7 +231,20 @@
 		code = #{code}
 	</update>
 
-	<select id="select_WorkerInfo" parameterType="workerInfo"
+    <update id="update_attendancePic" parameterType="workerInfo">
+		UPDATE
+		thf_worker_info
+		SET
+		attendance_picture = #{attendancePicture}
+		,worker_upload_status = #{workerUploadStatus}
+		,worker_pic_upload_status = #{workerPicUploadStatus}
+		
+		WHERE
+		code =
+		#{code}
+	</update>
+
+    <select id="select_WorkerInfo" parameterType="workerInfo"
 		resultMap="WorkerInfo_DB_Result">
 		SELECT
 		t.code
@@ -204,24 +255,28 @@
 		,t.nation
 		,t.edu_level
 		,t.degree
+
 		,t.worker_type
 		,t.birthday
 		,t.birth_place_code
 		,t.address
 		,t.head_image_url
 		,t.politics_type
+
 		,t.is_joined
 		,t.joined_time
 		,t.cell_phone
 		,t.culture_level_type
 		,t.specialty
 		,t.has_bad_medical_history
+
 		,t.urgent_link_man
 		,t.urgent_link_man_phone
 		,t.work_type_code
 		,t.work_corp_name
 		,t.work_date
 		,t.marital_status
+
 		,t.grant_org
 		,t.positive_id_card_image_url
 		,t.negative_id_card_image_url
@@ -229,8 +284,16 @@
 		,t.start_date
 		,t.expiry_date
 		,t.create_datetime
+
+
+        ,t.attendance_picture
+        ,t.worker_guid
+        ,t.worker_attendance_pic_guid
+        ,t.worker_pic_upload_status
+        ,t.worker_upload_status
 		FROM
-		thf_worker_info t
+        thf_worker_info
+        t
 		<include refid="where_condition" />
 		<trim prefix="ORDER BY ">
 			<if test="order != null and order != '' ">
@@ -244,8 +307,41 @@
 		SELECT
 		t.code
 		,t.name
+        ,t.id_card_type
 		,t.id_card_number
+        ,t.gender
+        ,t.nation
+        ,t.edu_level
+        ,t.degree
+
+        ,t.worker_type
+        ,t.birthday
+        ,t.birth_place_code
+        ,t.address
+        ,t.politics_type
+
+        ,t.is_joined
+        ,t.joined_time
+        ,t.cell_phone
+        ,t.culture_level_type
+        ,t.specialty
+        ,t.has_bad_medical_history
+
+        ,t.urgent_link_man
+        ,t.urgent_link_man_phone
+        ,t.work_type_code
+        ,t.work_corp_name
+        ,t.work_date
+        ,t.marital_status
+
+        ,t.grant_org
+        ,t.start_date
+        ,t.expiry_date
 		,t.create_datetime
+        ,t.worker_guid
+        ,t.worker_attendance_pic_guid
+        ,t.worker_pic_upload_status
+        ,t.worker_upload_status
 		FROM
 		thf_worker_info t
 		<include refid="where_condition" />
@@ -255,6 +351,12 @@
 		resultType="java.lang.Long">
 		SELECT count(1) FROM thf_worker_info t
 		<include refid="where_condition" />
+	</select>
+
+    <select id="select_WorkerInfo_guid" parameterType="java.lang.String"
+            resultMap="WorkerInfo_DB_Result">
+		SELECT * from thf_worker_info t
+		where worker_guid = #{0}
 	</select>
 
 </mapper>

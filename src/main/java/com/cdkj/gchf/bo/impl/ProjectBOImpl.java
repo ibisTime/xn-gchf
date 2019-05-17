@@ -19,7 +19,6 @@ import com.cdkj.gchf.dto.req.XN631600Req;
 import com.cdkj.gchf.dto.req.XN631602Req;
 import com.cdkj.gchf.enums.EGeneratePrefix;
 import com.cdkj.gchf.enums.ESecretStatus;
-import com.cdkj.gchf.exception.BizException;
 
 @Component
 public class ProjectBOImpl extends PaginableBOImpl<Project>
@@ -29,30 +28,18 @@ public class ProjectBOImpl extends PaginableBOImpl<Project>
     private IProjectDAO projectDAO;
 
     @Override
-    public String saveProject(String name) {
-        Project project = new Project();
-
-        String code = OrderNoGenerater
-            .generate(EGeneratePrefix.Project.getCode());
-        project.setCode(code);
-        project.setName(name);
-        project.setSecretStatus(ESecretStatus.NO.getCode());
-
-        projectDAO.insert(project);
-
-        return code;
-    }
-
-    @Override
-    public String saveProject(XN631600Req req, CorpBasicinfo contractorCorpInfo,
-            String buildCorpName) {
+    public Project saveProject(XN631600Req req,
+                               CorpBasicinfo contractorCorpInfo) {
         Project project = new Project();
         BeanUtils.copyProperties(req, project);
 
         String code = OrderNoGenerater
             .generate(EGeneratePrefix.Project.getCode());
         project.setCode(code);
-        project.setContractorCorpName(contractorCorpInfo.getCorpName());
+        if (contractorCorpInfo != null
+                && StringUtils.isNotBlank(contractorCorpInfo.getCorpName())) {
+            project.setContractorCorpName(contractorCorpInfo.getCorpName());
+        }
         if (StringUtils.isNotBlank(req.getInvest())) {
             project.setInvest(
                 new BigDecimal(Integer.parseInt(req.getInvest()) * 10000));
@@ -77,15 +64,16 @@ public class ProjectBOImpl extends PaginableBOImpl<Project>
         if (StringUtils.isNotBlank(req.getLng())) {
             project.setLng(new BigDecimal(req.getLng()));
         }
-        project.setBuildCorpName(buildCorpName);
+        project.setBuildCorpName(req.getBuildCorpName());
+        project.setSecretStatus(ESecretStatus.NO.getCode());
         projectDAO.insert(project);
 
-        return code;
+        return project;
     }
 
     @Override
     public void refreshProject(XN631602Req req,
-            CorpBasicinfo contractorCorpInfo, CorpBasicinfo buildCorpInfo) {
+                               CorpBasicinfo contractorCorpInfo) {
 
         Project project = new Project();
         BeanUtils.copyProperties(req, project);
@@ -116,9 +104,7 @@ public class ProjectBOImpl extends PaginableBOImpl<Project>
             project.setLng(new BigDecimal(req.getLng()));
         }
 
-        if (null != buildCorpInfo) {
-            project.setBuildCorpName(buildCorpInfo.getCorpName());
-        }
+        project.setBuildCorpName(req.getBuildCorpName());
 
         projectDAO.update(project);
     }
@@ -145,9 +131,6 @@ public class ProjectBOImpl extends PaginableBOImpl<Project>
             Project condition = new Project();
             condition.setCode(code);
             data = projectDAO.select(condition);
-            if (data == null) {
-                throw new BizException("xn0000", "项目编号不存在");
-            }
         }
         return data;
     }
@@ -158,6 +141,18 @@ public class ProjectBOImpl extends PaginableBOImpl<Project>
         project.setFullName(fullName);
 
         return projectDAO.select(project);
+    }
+
+    @Override
+    public void refreshContractorCorp(String code, String contractorCorpCode,
+                                      String contractorCorpName) {
+        Project project = new Project();
+
+        project.setCode(code);
+        project.setContractorCorpCode(contractorCorpCode);
+        project.setContractorCorpName(contractorCorpName);
+
+        projectDAO.updateContractorCorp(project);
     }
 
 }

@@ -59,6 +59,13 @@ public class WorkerInfoDAOImpl extends AMybatisTemplate
     }
 
     @Override
+    public List<WorkerInfo> selectBrifeList(WorkerInfo condition, int start,
+                                            int count) {
+        return super.selectList(NAMESPACE.concat("select_BrifeWorkerInfo"),
+                start, count, condition, WorkerInfo.class);
+    }
+
+    @Override
     public int updateWorkerInfoAboutPhone(WorkerInfo condition) {
         return super.update(NAMESPACE.concat("update_WorkerInfoAboutPhone"),
             condition);
@@ -68,6 +75,24 @@ public class WorkerInfoDAOImpl extends AMybatisTemplate
     public WorkerInfo selectBriefWorkerInfo(WorkerInfo condition) {
         return super.select(NAMESPACE.concat("select_BrifeWorkerInfo"),
             condition, WorkerInfo.class);
+    }
+
+    @Override
+    public int updateWorkerInfoAttendance(WorkerInfo condition) {
+        return super.update(
+                NAMESPACE.concat("update_WorkerInfoAboutAttendance"), condition);
+    }
+
+    @Override
+    public int updateWorkerInfoAttendancePic(WorkerInfo condition) {
+        return super.update(NAMESPACE.concat("update_attendancePic"),
+                condition);
+    }
+
+    @Override
+    public WorkerInfo selectWorkerInfo(String guid) {
+        return super.select(NAMESPACE.concat("update_attendancePic"), guid,
+                WorkerInfo.class);
     }
 
 }

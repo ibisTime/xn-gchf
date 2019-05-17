@@ -75,4 +75,44 @@ public abstract class ABaseDO implements Serializable {
     public void setPageSize(Integer pageSize) {
         this.pageSize = pageSize;
     }
+
+    @Override
+    public int hashCode() {
+        final int prime = 31;
+        int result = 1;
+        result = prime * result + ((order == null) ? 0 : order.hashCode());
+        result = prime * result
+                + ((pageIndex == null) ? 0 : pageIndex.hashCode());
+        result = prime * result
+                + ((pageSize == null) ? 0 : pageSize.hashCode());
+        return result;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj)
+            return true;
+        if (obj == null)
+            return false;
+        if (getClass() != obj.getClass())
+            return false;
+        ABaseDO other = (ABaseDO) obj;
+        if (order == null) {
+            if (other.order != null)
+                return false;
+        } else if (!order.equals(other.order))
+            return false;
+        if (pageIndex == null) {
+            if (other.pageIndex != null)
+                return false;
+        } else if (!pageIndex.equals(other.pageIndex))
+            return false;
+        if (pageSize == null) {
+            if (other.pageSize != null)
+                return false;
+        } else if (!pageSize.equals(other.pageSize))
+            return false;
+        return true;
+    }
+
 }

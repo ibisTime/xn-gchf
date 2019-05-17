@@ -42,43 +42,60 @@ public class ProjectConfigAOImpl implements IProjectConfigAO {
     @Transactional
     public String addProjectConfig(XN631620Req req) {
 
-        // if (null != projectConfigBO
-        // .getProjectConfigByLocal(req.getLocalProjectCode())) {
-        // throw new BizException("XN631620", "该项目已添加配置，无法再次添加");
-        // }
-
-        if (null != projectConfigBO
-            .getProjectConfigByProject(req.getProjectCode())) {
-            throw new BizException("XN631620", "该项目已添加配置，无法再次添加");
+        ProjectConfig configByProject = projectConfigBO
+                .getProjectConfigByLocal(req.getProjectCode());
+        if (null != configByProject) {
+            throw new BizException("XN631620", "该项目已添加配置,无法再次添加");
         }
 
-        Project project = projectBO.getProjectByFullName(req.getProjectName());
-        if (null == project) {
-            throw new BizException("XN631620",
-                "项目【" + req.getProjectName() + "】不存在，无法添加配置");
-        }
+        projectConfigBO.checkProjectConfigBySecret(req.getProjectCode(),
+                req.getSecret());
+
+        Project project = projectBO.getProject(req.getLocalProjectCode());
 
         projectBO.refreshSecretStatus(project.getCode(),
             ESecretStatus.YES.getCode());
 
-        return projectConfigBO.saveProjectConfig(project.getCode(), req);
+        return projectConfigBO.saveProjectConfig(project, req);
     }
 
     @Override
     @Transactional
     public void editProjectConfig(XN631622Req req) {
+
         ProjectConfig projectConfig = projectConfigBO
             .getProjectConfigByLocal(req.getLocalProjectCode());
 
         if (null == projectConfig) {
 
-            projectConfigBO.saveProjectConfig(req);
+            ProjectConfig configByProject = projectConfigBO
+                    .getProjectConfigByProject(req.getProjectCode());
+            if (null != configByProject) {
+                throw new BizException("XN631620", "该项目配置已添加,无法再次添加");
+            }
+
+            Project project = projectBO.getProject(req.getLocalProjectCode());
+            projectConfigBO.saveProjectConfig(project, req);
 
             projectBO.refreshSecretStatus(req.getLocalProjectCode(),
                 ESecretStatus.YES.getCode());
 
         } else {
+
+            ProjectConfig configByProject = projectConfigBO
+                    .getProjectConfigByProject(req.getProjectCode());
+            if (null != configByProject && !req.getProjectCode()
+                    .equals(configByProject.getProjectCode())) {
+                throw new BizException("XN631620", "该项目配置已添加,无法再次添加");
+            }
+
+            if (!projectConfig.getSecret().equals(req.getSecret())) {
+                projectConfigBO.checkProjectConfigBySecret(req.getProjectCode(),
+                        req.getSecret());
+            }
+
             projectConfigBO.refreshProjectConfig(projectConfig.getCode(), req);
+
         }
 
     }

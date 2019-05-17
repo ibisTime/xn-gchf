@@ -20,6 +20,7 @@ import com.cdkj.gchf.dao.IUserDAO;
 import com.cdkj.gchf.domain.Subbranch;
 import com.cdkj.gchf.domain.Supervise;
 import com.cdkj.gchf.domain.User;
+import com.cdkj.gchf.dto.req.XN631600Req;
 import com.cdkj.gchf.enums.EUserKind;
 import com.cdkj.gchf.enums.EUserStatus;
 import com.cdkj.gchf.exception.BizException;
@@ -130,17 +131,16 @@ public class UserBOImpl extends PaginableBOImpl<User> implements IUserBO {
     }
 
     @Override
-    public void saveProjectAdmin(String projectCode, String projectName,
-            String linkManName, String mobile) {
+    public void saveProjectAdmin(String projectCode, XN631600Req req) {
+
         User user = new User();
         String userId = OrderNoGenerater.generate("U");
         user.setUserId(userId);
         user.setOrganizationCode(projectCode);
         user.setType(EUserKind.Owner.getCode());
-        user.setRealName(linkManName);
-        // user.setLoginName(linkManName);
-        user.setLoginName(projectName.concat("管理员"));
-        user.setMobile(mobile);
+        user.setRealName(req.getLinkMan());
+        user.setLoginName(req.getName() + "管理员");
+        user.setMobile(req.getLinkPhone());
 
         user.setLoginPwd(MD5Util.md5("888888"));
         user.setLoginPwdStrength(PwdUtil.calculateSecurityLevel("888888"));
@@ -261,6 +261,21 @@ public class UserBOImpl extends PaginableBOImpl<User> implements IUserBO {
             data.setBankName(subbranch.getBankName());
             data.setSubbranch(subbranch.getSubbranchName());
         }
+    }
+
+    @Override
+    public boolean checkMobile(String mobile) {
+        if (StringUtils.isNotBlank(mobile)) {
+            // 判断格式
+            PhoneUtil.checkMobile(mobile);
+            User condition = new User();
+            condition.setMobile(mobile);
+            long count = getTotalCount(condition);
+            if (count > 0) {
+                return true;
+            }
+        }
+        return false;
     }
 
 }

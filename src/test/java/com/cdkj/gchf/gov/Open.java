@@ -19,15 +19,14 @@ public class Open {
     public void AsyncHandleResultQuery() {
 
         Map<String, String> dataMap = new HashMap<String, String>();
-        dataMap.put("requestSerialCode",
-            "projectworker-update-2019032822-4-0001");
+        dataMap.put("requestSerialCode", "projectworker-add-2019050517-4-0004");
 
         String data = JSONObject.toJSON(dataMap).toString();
 
         System.out.println(data);
 
         GovConnecter.getGovData("AsyncHandleResult.Query", data,
-            "33112220190310002", "24484b262dd63dd584902a266bdbdca0");
+                "33112220190310003", "e0de7f1924d62d04ff0d4b64cff27370");
 
     }
 }

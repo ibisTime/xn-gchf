@@ -32,9 +32,6 @@ public class TeamMaster extends ABaseDO {
     // 模糊查班组名称
     private String teamName;
 
-    // 准确查班组名称
-    private String realTeamName;
-
     // 班组长姓名
     private String teamLeaderName;
 
@@ -80,6 +77,9 @@ public class TeamMaster extends ABaseDO {
     /****DB Properties****/
 
     private String projectName;
+
+    // 准确查班组名称
+    private String realTeamName;
 
     private String userId;
 

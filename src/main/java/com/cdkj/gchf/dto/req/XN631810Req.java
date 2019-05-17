@@ -25,6 +25,9 @@ public class XN631810Req {
     @NotBlank(message = "是否补发必填")
     private String isBackPay;
 
+    // 补发日期
+    private String backPayMonth;
+
     // 发放日期
     @NotBlank(message = "发放日期必填")
     private String balanceDate;
@@ -66,6 +69,14 @@ public class XN631810Req {
 
     public void setDays(String days) {
         this.days = days;
+    }
+
+    public String getBackPayMonth() {
+        return backPayMonth;
+    }
+
+    public void setBackPayMonth(String backPayMonth) {
+        this.backPayMonth = backPayMonth;
     }
 
     public String getWorkHours() {

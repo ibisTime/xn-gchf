@@ -1,0 +1,178 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cdkj.gchf.dao.IEquipmentWorkerDAO">
+    <resultMap id="EquipmentWorker_DB_Result" type="equipmentWorker">
+        <result column="code" property="code"/>
+        <result column="device_code" property="deviceCode"/>
+        <result column="device_key" property="deviceKey"/>
+        <result column="device_name" property="deviceName"/>
+        <result column="worker_code" property="workerCode"/>
+        <result column="worker_name" property="workerName"/>
+        <result column="team_code" property="teamCode"/>
+        <result column="team_name" property="teamName"/>
+        <result column="id_card_number" property="idCardNumber"/>
+        <result column="status" property="status"/>
+        <result column="pass_times" property="passTimes"/>
+        <result column="create_time" property="createTime"/>
+
+
+    </resultMap>
+    <sql id="where_condition">
+        <trim prefix="WHERE" prefixOverrides="AND | OR">
+            <if test="code != null and code != '' ">
+                AND t.code = #{code}
+            </if>
+            <if test="deviceKey != null and deviceKey != '' ">
+                AND t.device_key = #{deviceKey}
+            </if>
+            <if test="deviceName != null and deviceName != '' ">
+                AND t.device_name like "%"#{deviceName}"%"
+            </if>
+
+            <if test="workerName != null and workerName != '' ">
+                AND t.worker_name like "%"#{workerName}"%"
+            </if>
+
+            <if test="projectCode != null and projectCode != '' ">
+                AND b.project_code = #{projectCode}
+            </if>
+        </trim>
+    </sql>
+
+    <sql id="join_condition">
+        <if test="projectCode != null and projectCode != '' ">
+            LEFT JOIN thf_equipment_info b
+            on t.device_code = b.code
+        </if>
+    </sql>
+
+    <insert id="insert_EquipmentWorker" parameterType="equipmentWorker">
+		INSERT INTO
+		thf_equipment_worker(
+		code
+		,device_code
+		,device_key
+		,device_name
+		,worker_code
+		,worker_name
+		,team_code
+		,team_name
+		,id_card_number
+		,status
+		,pass_times
+		,create_time
+		)
+		VALUES(
+		#{code}
+		,#{deviceCode}
+		,#{deviceKey}
+		,#{deviceName}
+		,#{workerCode}
+		,#{workerName}
+		,#{teamCode}
+		,#{teamName}
+		,#{idCardNumber}
+		,#{status}
+		,#{passTimes}
+		,#{createTime}
+		)
+	</insert>
+
+    <insert id="batch_insert">
+        INSERT INTO thf_equipment_worker
+        (
+        code
+        ,device_code
+        ,device_key
+        ,device_name
+        ,worker_code
+        ,worker_name
+
+        ,team_code
+        ,team_name
+        ,id_card_number
+        ,status
+        ,pass_times
+        ,create_time
+        )
+        VALUES
+        <foreach collection="list" index="index" item="equipmentWorker"
+                 open="(" separator="," close=") ">
+            #{equipmentWorker.code}
+            ,#{equipmentWorker.deviceCode}
+            ,#{equipmentWorker.deviceKey}
+            ,#{equipmentWorker.deviceName}
+            ,#{equipmentWorker.workerCode}
+
+            ,#{equipmentWorker.workerName}
+            ,#{equipmentWorker.teamCode}
+            ,#{equipmentWorker.teamName}
+            ,#{equipmentWorker.idCardNumber}
+            ,#{equipmentWorker.status}
+            ,#{equipmentWorker.passTimes}
+            ,#{equipmentWorker.createTime}
+        </foreach>
+    </insert>
+    <delete id="delete_EquipmentWorker" parameterType="equipmentWorker">
+		DELETE FROM
+		thf_equipment_worker
+		WHERE code = #{code}
+	</delete>
+
+    <update id="update_EquipmentWorker" parameterType="equipmentWorker">
+		UPDATE
+		thf_equipment_worker
+		SET
+		device_code = #{deviceCode}
+		,device_key =
+		#{deviceKey}
+		,device_name = #{deviceName}
+		,worker_code = #{workerCode}
+		,worker_name = #{workerName}
+		,team_code = #{teamCode}
+		,team_name =
+		#{teamName}
+		,id_card_number = #{idCardNumber}
+		,status = #{status}
+		,pass_times = #{passTimes}
+		,create_time = #{createTime}
+		WHERE code =
+		#{code}
+	</update>
+
+    <select id="select_EquipmentWorker" parameterType="equipmentWorker"
+            resultMap="EquipmentWorker_DB_Result">
+        SELECT
+        t.code
+        ,t.device_code
+        ,t.device_key
+        ,t.device_name
+        ,t.worker_code
+        ,t.worker_name
+        ,t.team_code
+        ,t.team_name
+        ,t.id_card_number
+        ,t.status
+        ,t.pass_times
+        ,t.create_time
+        FROM
+        thf_equipment_worker t
+        <include refid="join_condition"/>
+        <include refid="where_condition"/>
+        <trim prefix="ORDER BY ">
+            <if test="order != null and order != '' ">
+                t.${order}
+            </if>
+        </trim>
+    </select>
+
+    <select id="select_EquipmentWorker_count" parameterType="equipmentWorker"
+            resultType="java.lang.Long">
+        SELECT count(1) FROM thf_equipment_worker t
+        <include refid="join_condition"/>
+        <include refid="where_condition"/>
+    </select>
+
+
+</mapper>

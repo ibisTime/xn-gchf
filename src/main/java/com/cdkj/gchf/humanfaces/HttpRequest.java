@@ -1,5 +1,7 @@
 package com.cdkj.gchf.humanfaces;
 
+import com.cdkj.gchf.common.DateUtil;
+import com.cdkj.gchf.common.MD5Util;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
@@ -9,56 +11,77 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLConnection;
-import java.sql.Timestamp;
+import java.nio.charset.StandardCharsets;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
+//import org.junit.jupiter.api.Test;
+import org.springframework.web.bind.annotation.RequestMethod;
 
-import org.apache.commons.codec.digest.Md5Crypt;
-import org.junit.Test;
-
+/**
+ * @author old3
+ */
 public class HttpRequest {
-    private InputStream ins = null;
+    private static InputStream ins = null;
 
-    private OutputStream ous = null;
+    private static OutputStream ous = null;
 
-    private String res = "";
+    private static String res = "";
 
-    private InputStreamReader inputStreamReader = null;
+    private static InputStreamReader inputStreamReader = null;
 
-    private BufferedReader bufferedReader = null;
+    private static BufferedReader bufferedReader = null;
 
-    private HttpURLConnection httpURLConnection = null;
+    private static HttpURLConnection httpURLConnection = null;
 
-    public String doRequest(String url, String method,
+
+    public static synchronized String doRequest(String url, String method,
             Map<String, String> req) {
-        URL localURL = null;
+        URL localURL;
         try {
+            if (RequestMethod.GET.name().equals(method)) {
+                url += "?";
+                for (Entry<String, String> entry : req.entrySet()) {
+                    url += entry.getKey() + "=" + entry.getValue() + "&";
+                }
+                url.substring(0, url.length() - 1);
+                System.out.println(url);
+            }
             localURL = new URL(url);
             URLConnection connection = (URLConnection) localURL
                 .openConnection();
             httpURLConnection = (HttpURLConnection) connection;
             httpURLConnection.setRequestMethod(method);
-            // 添加参数
-            if (null != req) {
+            // 维持长连接
+            httpURLConnection.setRequestProperty("Connection", "Keep-Alive");
+            httpURLConnection.setRequestProperty("Charset", "UTF-8");
+            StringBuffer sb = new StringBuffer();
+            if (RequestMethod.POST.name().equals(method)) {
+                httpURLConnection.setRequestProperty("Content-Type",
+                        "application/x-www-form-urlencoded");
+                httpURLConnection.setDoOutput(true);
+                httpURLConnection.setUseCaches(false);
+                httpURLConnection.setDoInput(true);
+
                 Set<Entry<String, String>> entrySet = req.entrySet();
                 for (Entry<String, String> entry : entrySet) {
-                    httpURLConnection.addRequestProperty(entry.getKey(),
-                        entry.getValue());
+                    sb.append(entry.getKey() + "=" + entry.getValue() + "&");
                 }
+                httpURLConnection.connect();
+                ous = httpURLConnection.getOutputStream();
+                ous.write(
+                        sb.substring(0, sb.length() - 1).getBytes());
+                ous.flush();
             }
-            httpURLConnection.setDoOutput(true);
-            httpURLConnection.setDoInput(true);
             ins = httpURLConnection.getInputStream();
-            String resString = null;
-            inputStreamReader = new InputStreamReader(ins, "utf-8");
+            String resString;
+            inputStreamReader = new InputStreamReader(ins, StandardCharsets.UTF_8);
             bufferedReader = new BufferedReader(inputStreamReader);
             while ((resString = bufferedReader.readLine()) != null) {
                 res += resString;
             }
-            System.out.println("res:" + res);
-
             return res;
         } catch (MalformedURLException e) {
             e.printStackTrace();
@@ -81,6 +104,8 @@ public class HttpRequest {
                 if (ous != null) {
                     ous.close();
                 }
+                res = "";
+
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -88,33 +113,22 @@ public class HttpRequest {
         return null;
     }
 
-    @Test
+    //    @Test
     public void test1() {
 
-        String url = AppConfig.getBaseUrl() + "/Device/Authentication";
-        System.out.println(url);
+        String url = AppConfig.getBaseUrl() + "/Api/Device/Authentication";
         Map<String, String> reqParameter = new HashMap<>();
-        reqParameter.put("appId", AppConfig.getAppId());
+        reqParameter.put("appid", AppConfig.getAppid());
         reqParameter.put("appKey", AppConfig.getAppKey());
-        Timestamp timestamp = new Timestamp(System.currentTimeMillis());
-        reqParameter.put("timestamp", timestamp.toString());
-        reqParameter
-            .put("sign",
-                Md5Crypt
-                    .md5Crypt((AppConfig.getAppKey() + timestamp.toString()
-                            + AppConfig.getAppSecret()).getBytes())
-                .toLowerCase());
+        Date time = DateUtil.strToDate(AppConfig.getTimestamp(),
+                DateUtil.DATA_TIME_PATTERN_1);
+        reqParameter.put("timestamp", String.valueOf(time.getTime()));
+        String md5 = MD5Util.md5(AppConfig.getAppKey()
+                + time.getTime() + AppConfig.getAppSecret());
+        reqParameter.put("sign", md5.toLowerCase());
         String doRequest = doRequest(url, "POST", reqParameter);
-        System.out.println(timestamp.toString());
-        System.out
-            .println(
-                Md5Crypt
-                    .md5Crypt((AppConfig.getAppKey() + timestamp.toString()
-                            + AppConfig.getAppSecret()).getBytes())
-                .toLowerCase());
-
-        // System.out.println(timestamp.toString());
         System.out.println(doRequest);
 
     }
+
 }

@@ -24,6 +24,7 @@
 		<result column="lng" property="lng" />
 		<result column="lat" property="lat" />
 		<result column="create_datetime" property="createDatetime" />
+        <result column="source" property="source"/>
 		<result column="start_datetime" property="startDatetime" />
 		<result column="end_datetime" property="endDatetime" />
 
@@ -33,15 +34,16 @@
 		<result column="remark" property="remark" />
 		<result column="upload_status" property="uploadStatus" />
 		<result column="delete_status" property="deleteStatus" />
+        <result column="corp_name" property="corpName"/>
 	</resultMap>
 
     <sql id="join_condition">
-        <if test="corpCode != null and corpCode != '' ">
-        	join thf_team_master tm on tm.code = t.team_sys_no 
+        <if test="corpName != null and corpName != '' ">
+            join thf_team_master tm on tm.code = t.team_sys_no
         </if>
     </sql>
-    
-	<sql id="where_condition">
+
+    <sql id="where_condition">
 		<trim prefix="WHERE" prefixOverrides="AND | OR">
 			<if test="code != null and code != '' ">
 				AND t.code = #{code}
@@ -54,11 +56,14 @@
 			</if>
 			<if test="status != null and status != '' ">
 				AND t.status = #{status}
-			</if>
+            </if>
+            <if test="workerCode != null and workerCode != '' ">
+                AND t.worker_code = #{workerCode}
+            </if>
 			<if test="workerName != null and workerName != '' ">
-				AND t.worker_name = #{workerName}
+                AND t.worker_name like "%"#{workerName}"%"
 			</if>
-			<if test="date != null and date != '' ">
+            <if test="date != null  ">
 				AND t.date = #{date}
 			</if>
 			<if test="uploadStatus != null and uploadStatus != '' ">
@@ -68,8 +73,14 @@
 				AND t.delete_status = #{deleteStatus}
 			</if>
 			<if test="corpCode != null and corpCode != '' ">
-            	AND tm.corp_code = #{corpCode}
-        	</if>
+                AND tm.corp_code = #{corpCode}
+            </if>
+            <if test="source != null and source != '' ">
+                AND t.source = #{source}
+            </if>
+            <if test="teamSysNo != null and teamSysNo != '' ">
+                AND t.team_sys_no = #{teamSysNo}
+            </if>
 		</trim>
 	</sql>
 
@@ -96,6 +107,7 @@
 		,lng
 		,lat
 		,create_datetime
+		,source
 		,start_datetime
 		,end_datetime
 
@@ -128,6 +140,7 @@
 		,#{lat}
 
 		,#{createDatetime}
+		,#{source}
 		,#{startDatetime}
 		,#{endDatetime}
 		,#{settleDatetime}
@@ -139,12 +152,24 @@
 		,#{deleteStatus}
 		)
 	</insert>
-	<delete id="delete_workerAttendance" parameterType="workerAttendance">
+
+
+    <delete id="delete_workerAttendance" parameterType="workerAttendance">
 		DELETE from
 		thf_worker_attendance WHERE code = #{code}
 	</delete>
 
-	<update id="update_workerAttendance" parameterType="workerAttendance">
+
+    <delete id="batch_delete_workerAttendance" parameterType="String">
+        DELETE from thf_worker_attendance
+        WHERE code IN
+        <foreach collection="list" item="workerAttendance" open="(" separator="," close=")" index="index">
+            #{index}
+        </foreach>
+    </delete>
+
+
+    <update id="update_workerAttendance" parameterType="workerAttendance">
 		UPDATE
 		thf_worker_attendance
 		SET
@@ -194,26 +219,23 @@
 		code = #{code}
 	</update>
 
+    <update id="update_workerAttendance_team_name" parameterType="workerAttendance">
+		UPDATE
+		thf_worker_attendance
+		SET
+		team_name = #{teamName}
+		WHERE
+		team_sys_no
+		= #{teamSysNo}
+	</update>
+
 	<update id="update_workerAttendance_delete_status"
 		parameterType="workerAttendance">
 		UPDATE
 		thf_worker_attendance t
 		SET
 		t.delete_status = #{deleteStatus}
-		<trim prefix="WHERE" prefixOverrides="AND|OR">
-			<if test="code != null and code != '' ">
-				AND t.code = #{code}
-			</if>
-			<if test="uploadStatus != null and uploadStatus != '' ">
-				AND t.upload_status = #{uploadStatus}
-			</if>
-			<if test="projectCode != null and projectCode != '' ">
-				AND t.project_code = #{projectCode}
-			</if>
-			<if test="teamSysNo != null and teamSysNo != '' ">
-				AND t.team_sys_no = #{teamSysNo}
-			</if>
-		</trim>
+        <include refid="join_condition"/>
 	</update>
 
 	<select id="select_workerAttendance" parameterType="workerAttendance"
@@ -240,6 +262,7 @@
 		,t.lat
 
 		,t.create_datetime
+        ,t.source
 		,t.start_datetime
 		,t.end_datetime
 		,t.settle_datetime
@@ -253,6 +276,9 @@
 		thf_worker_attendance t
 		<include refid="join_condition" />
 		<include refid="where_condition" />
+        <if test="corpName != null and corpName != '' ">
+            AND tm.corp_name like "%"#{corpName}"%"
+        </if>
 		<trim prefix="ORDER BY ">
 			<if test="order != null and order != '' ">
 				t.${order}
@@ -266,6 +292,10 @@
 		<include refid="join_condition" />
 		<include refid="where_condition" />
 	</select>
+    <delete id="deleteWorkerAttendanceByWorkerCode" parameterType="workerAttendance">
+		DELETE FROM thf_worker_attendance
+		WHERE worker_code = #{workerCode}
+	</delete>
 
 
 </mapper>

@@ -6,6 +6,7 @@ import com.cdkj.gchf.bo.base.IPaginableBO;
 import com.cdkj.gchf.bo.base.Paginable;
 import com.cdkj.gchf.domain.ProjectConfig;
 import com.cdkj.gchf.domain.ProjectWorker;
+import com.cdkj.gchf.domain.User;
 import com.cdkj.gchf.domain.WorkerContract;
 import com.cdkj.gchf.dto.req.XN631670Req;
 import com.cdkj.gchf.dto.req.XN631672Req;
@@ -15,31 +16,60 @@ import com.cdkj.gchf.dto.req.XN631917Req;
 import com.google.gson.JsonObject;
 
 public interface IWorkerContractBO extends IPaginableBO<WorkerContract> {
-
-    public String saveWorkerContract(WorkerContract req);
-
+    /**
+     * 新增劳动合同
+     */
     public String saveWorkerContract(XN631670Req req);
 
+
+    void batchSaveWorkerContract(User user, List<ProjectWorker> projectWorkerList, List<XN631673ReqData> dataList);
+
+    /**
+     * 新增劳动合同
+     */
     public String saveWorkerContract(XN631673ReqData data,
-            ProjectWorker projectWorker);
+                                     ProjectWorker projectWorker);
 
-    public void removeWorkerContract(String userId, String code);
-
-    public void refreshWorkerContract(XN631672Req data);
-
-    void updateWorkerContractDeleteStatus(String code, String status);
-
+    /**
+     * 根据workercode假删
+     */
     void fakeDeleteWorkerContract(String workerCode);
 
+    /**
+     * 根据项目编号假删
+     */
     void fakeDeleteWorkerContractByProjectCode(String projectCode);
+
+
+    /**
+     * 修改劳动合同
+     */
+    public void refreshWorkerContract(XN631672Req data);
+
+    /**
+     * 修改上传状态
+     */
+    public void refreshUploadStatus(String code, String status);
+
+    /**
+     * 修改删除状态
+     */
+    void updateWorkerContractDeleteStatus(String code, String status);
+
+    /**
+     * 查询项目人员劳动合同
+     */
+    WorkerContract getWorkerContract(String projectCode, String workerCode);
 
     public List<WorkerContract> queryWorkerContractList(
             WorkerContract condition);
 
+
     public WorkerContract getWorkerContract(String code);
 
-    public void refreshUploadStatus(String code, String status);
-
+    /**
+     * 获取上传json
+     */
     JsonObject getRequestJson(WorkerContract workerContract,
             ProjectConfig projectConfig);
 

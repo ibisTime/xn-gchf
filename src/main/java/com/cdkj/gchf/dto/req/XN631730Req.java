@@ -1,7 +1,5 @@
 package com.cdkj.gchf.dto.req;
 
-import java.util.Date;
-
 import org.hibernate.validator.constraints.NotBlank;
 
 public class XN631730Req {
@@ -14,10 +12,10 @@ public class XN631730Req {
     private String workerCode;
 
     // 日期
-    private Date date;
+    private String date;
 
     // 类型
-    private Integer type;
+    private String type;
 
     private String voucherUrl;
 
@@ -37,19 +35,19 @@ public class XN631730Req {
         this.workerCode = workerCode;
     }
 
-    public Date getDate() {
+    public String getDate() {
         return date;
     }
 
-    public void setDate(Date date) {
+    public void setDate(String date) {
         this.date = date;
     }
 
-    public Integer getType() {
+    public String getType() {
         return type;
     }
 
-    public void setType(Integer type) {
+    public void setType(String type) {
         this.type = type;
     }
 

@@ -45,10 +45,6 @@ public class XN631815 extends AProcessor {
             payRollDetail.setBalanceDate(DateUtil.strToDate(
                 req.getBalanceDate(), DateUtil.FRONT_DATE_FORMAT_STRING));
         }
-        if (StringUtils.isNotBlank(req.getPayMonth())) {
-            payRollDetail.setBalanceDate(
-                DateUtil.strToDate(req.getPayMonth(), "yyyy-MM"));
-        }
         payRollDetail.setOrder(orderColumn, req.getOrderDir());
         return payRollDetailAO.queryPayRollDetailPage(start, limit,
             payRollDetail);

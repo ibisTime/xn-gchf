@@ -13,7 +13,6 @@ import org.hibernate.validator.constraints.NotBlank;
 public class XN631600Req {
 
     // 总承包单位统一社会信用代码
-    @NotBlank
     private String contractorCorpCode;
 
     // 总承包单位名称
@@ -23,12 +22,20 @@ public class XN631600Req {
     @NotBlank
     private String name;
 
-    // 项目简介
-    private String description;
+    // 项目所在地
+    @NotBlank
+    private String areaCode;
 
     // 项目分类
     @NotBlank
     private String category;
+
+    // 项目状态
+    @NotBlank
+    private String prjStatus;
+
+    // 项目简介
+    private String description;
 
     // 建设单位统一社会信用代码
     private String buildCorpCode;
@@ -41,10 +48,6 @@ public class XN631600Req {
 
     // 建设工程规划许可证编号
     private String prjPlanNum;
-
-    // 项目所在地
-    @NotBlank
-    private String areaCode;
 
     // 总投资
     private String invest;
@@ -66,10 +69,6 @@ public class XN631600Req {
 
     // 联系人电话
     private String linkPhone;
-
-    // 项目状态
-    @NotBlank
-    private String prjStatus;
 
     // 经度
     private String lng;
@@ -124,6 +123,9 @@ public class XN631600Req {
 
     // 薪资发放时间
     private String payRollDatetime;
+
+    // 薪资发放可延迟天数
+    private String payRollDelayDays;
 
     // 项目实名制负责人邮箱地址
     private String chargeEmail;
@@ -445,6 +447,14 @@ public class XN631600Req {
 
     public void setArea(String area) {
         this.area = area;
+    }
+
+    public String getPayRollDelayDays() {
+        return payRollDelayDays;
+    }
+
+    public void setPayRollDelayDays(String payRollDelayDays) {
+        this.payRollDelayDays = payRollDelayDays;
     }
 
 }

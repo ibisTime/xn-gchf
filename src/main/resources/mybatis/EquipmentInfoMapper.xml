@@ -1,0 +1,209 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cdkj.gchf.dao.IEquipmentInfoDAO">
+    <resultMap id="EquipmentInfo_DB_Result" type="equipmentInfo">
+        <result column="code" property="code"/>
+        <result column="device_key" property="deviceKey"/>
+        <result column="name" property="name"/>
+        <result column="tag" property="tag"/>
+        <result column="tag_encreapt" property="tagEncreapt"/>
+        <result column="scene_guid" property="sceneGuid"/>
+        <result column="state" property="state"/>
+        <result column="status" property="status"/>
+        <result column="client_id" property="clientId"/>
+        <result column="c_id" property="cId"/>
+        <result column="version_no" property="versionNo"/>
+        <result column="system_version_no" property="systemVersionNo"/>
+        <result column="reg_num" property="regNum"/>
+        <result column="need_upgrade_app" property="needUpgradeApp"/>
+        <result column="need_upgrade" property="needUpgrade"/>
+        <result column="create_time" property="createTime"/>
+        <result column="expired" property="expired"/>
+        <result column="device_status" property="deviceStatus"/>
+        <result column="project_code" property="projectCode"/>
+        <result column="project_name" property="projectName"/>
+        <result column="direction" property="direction"/>
+        <result column="pass_times" property="passTimes"/>
+    </resultMap>
+    <sql id="where_condition">
+        <trim prefix="WHERE" prefixOverrides="AND | OR">
+            <if test="code != null and code != '' ">
+                AND t.code = #{code}
+            </if>
+
+            <if test="name != null and name != '' ">
+                AND t.name like "%"#{name}"%"
+            </if>
+
+            <if test="deviceName != null and deviceName != '' ">
+                AND t.name like "%"#{deviceName}"%"
+            </if>
+
+            <if test="projectCode != null and projectCode != '' ">
+                AND t.project_code = #{projectCode}
+            </if>
+
+            <if test="deviceKey != null and deviceKey != '' ">
+                AND t.device_key = #{deviceKey}
+            </if>
+
+            <if test="state != null and state != '' ">
+                AND t.state = #{state}
+            </if>
+        </trim>
+    </sql>
+    <select id="select_EquipmentInfo" parameterType="equipmentInfo"
+            resultMap="EquipmentInfo_DB_Result">
+        SELECT
+        t.code
+        ,t.device_key
+        ,t.name
+        ,t.tag
+        ,t.tag_encreapt
+        ,t.scene_guid
+        ,t.state
+        ,t.status
+        ,t.client_id
+        ,t.c_id
+        ,t.version_no
+        ,t.system_version_no
+        ,t.reg_num
+        ,t.need_upgrade_app
+        ,t.need_upgrade
+        ,t.create_time
+        ,t.expired
+        ,t.device_status
+        ,t.project_code
+        ,t.project_name
+        ,t.direction
+        ,t.pass_times
+        FROM
+        thf_equipment_info t
+        <include refid="where_condition"/>
+        <trim prefix="ORDER BY ">
+            <if test="order != null and order != '' ">
+                t.${order}
+            </if>
+        </trim>
+    </select>
+
+    <select id="select_EquipmentInfo_count" parameterType="equipmentInfo"
+            resultType="java.lang.Long">
+        SELECT count(1) FROM thf_equipment_info t
+        <include refid="where_condition"/>
+    </select>
+
+    <insert id="insert_EquipmentInfo" parameterType="equipmentInfo">
+		INSERT INTO
+		thf_equipment_info(
+		code
+		,device_key
+		,name
+		,tag
+		,tag_encreapt
+		,scene_guid
+		,state
+		,status
+		,client_id
+		,c_id
+		,version_no
+		,system_version_no
+		,reg_num
+		,need_upgrade_app
+		,need_upgrade
+		,create_time
+		,expired
+		,device_status
+		,project_code
+		,project_name
+		,direction
+		,pass_times
+		)
+		VALUES(
+		#{code}
+		,#{deviceKey}
+		,#{name}
+		,#{tag}
+		
+		,#{tagEncreapt}
+		,#{sceneGuid}
+		,#{state}
+		,#{status}
+		,#{clientId}
+		,#{cId}
+		
+		,#{versionNo}
+		,#{systemVersionNo}
+		,#{regNum}
+		,#{needUpgradeApp}
+		,#{needUpgrade}
+		,#{createTime}
+		
+		,#{expired}
+		,#{deviceStatus}
+		,#{projectCode}
+		,#{projectName}
+		,#{direction}
+		,#{passTimes}
+		)
+	</insert>
+
+    <delete id="delete_EquipmentInfo" parameterType="equipmentInfo">
+		DELETE FROM
+		thf_equipment_info
+		WHERE code = #{code}
+	</delete>
+
+    <update id="update_EquipmentInfo" parameterType="equipmentInfo">
+		UPDATE
+		thf_equipment_info
+		SET
+		name = #{name}
+		,tag = #{tag}
+		,tag_encreapt =#{tagEncreapt}
+		,direction = #{direction}
+		,pass_times = #{passTimes}
+
+		WHERE code = #{code}
+	</update>
+
+    <update id="update_EquipmentInfo_passTimes" parameterType="equipmentInfo">
+       UPDATE 
+       thf_equipment_info
+       SET
+       pass_times = #{passTimes}
+       WHERE code = #{code}
+    </update>
+
+    <update id="update_EquipmentInfo_cloud" parameterType="equipmentInfo">
+		UPDATE
+		thf_equipment_info
+		SET
+		name = #{name}
+		,tag = #{tag}
+		,tag_encreapt =
+		#{tagEncreapt}
+		,scene_guid = #{sceneGuid}
+		,state = #{state}
+
+		,status = #{status}
+		,client_id = #{clientId}
+		,c_id = #{cId}
+		,version_no =
+		#{versionNo}
+		,system_version_no = #{systemVersionNo}
+
+		,reg_num = #{regNum}
+		,need_upgrade_app = #{needUpgradeApp}
+		,need_upgrade =
+		#{needUpgrade}
+		,create_time = #{createTime}
+		,expired = #{expired}
+		,device_status = #{deviceStatus}
+		,direction = #{direction}
+		WHERE code = #{code}
+	</update>
+
+
+</mapper>

@@ -12,35 +12,67 @@ import com.cdkj.gchf.dto.req.XN631733Req;
 import com.cdkj.gchf.dto.req.XN631914Req;
 import com.cdkj.gchf.dto.req.XN631915Req;
 
+/**
+ * @author old3
+ */
 @Component
 public interface IProjectWorkerEntryExitHistoryAO {
-    static final String DEFAULT_ORDER_COLUMN = "code";
+    String DEFAULT_ORDER_COLUMN = "code";
 
-    public String addProjectWorkerEntryExitHistory(XN631730Req data);
+    /**
+     * 新增进退场
+     */
+    String addProjectWorkerEntryExitHistory(XN631730Req data);
 
-    public void dropProjectWorkerEntryExitHistory(List<String> codeList);
+    /**
+     * 删除进退场
+     */
+    void dropProjectWorkerEntryExitHistory(List<String> codeList);
 
-    public void editProjectWorkerEntryExitHistory(XN631732Req data);
+    /**
+     * 修改进退场
+     */
+    void editProjectWorkerEntryExitHistory(XN631732Req data);
 
-    public Object queryProjectWorkerEntryExitHistory(String code);
+    /**
+     * 导入进退场
+     */
+    void importProjectWorkerEntryExitHistoryList(XN631733Req req);
 
-    public Paginable<ProjectWorkerEntryExitHistory> queryProjectWorkerEntryExitHistoryPage(
+    /**
+     * <p>Title: uploadProjectWorkerEntryExitHistoryList</p>
+     * <p>Description: 上传人员进退场</p>
+     */
+    void uploadProjectWorkerEntryExitHistoryList(String userId,
+                                                 List<String> codeList);
+
+    /**
+     * 根据code查
+     */
+    Object queryProjectWorkerEntryExitHistory(String code);
+
+    /**
+     * 分页查
+     */
+    Paginable<ProjectWorkerEntryExitHistory> queryProjectWorkerEntryExitHistoryPage(
             int start, int limit, ProjectWorkerEntryExitHistory condition);
 
-    public List<ProjectWorkerEntryExitHistory> queryProjectWorkerEntryExitHistoryList(
+    /**
+     * 条件查
+     */
+    List<ProjectWorkerEntryExitHistory> queryProjectWorkerEntryExitHistoryList(
             ProjectWorkerEntryExitHistory condition);
 
-    public ProjectWorkerEntryExitHistory getProjectWorkerEntryExitHistory(
-            String code);
-
-    public void uploadProjectWorkerEntryExitHistoryList(String userId,
-            List<String> codeList);
-
-    public void importProjectWorkerEntryExitHistoryList(XN631733Req req);
 
     /****国家平台接口****/
-    public void uploadProjectWorkerEntryExitHistory(XN631914Req data);
+    void uploadProjectWorkerEntryExitHistory(XN631914Req data);
 
-    public Paginable<ProjectWorkerEntryExitHistory> queryProjectWorkerEntryExitHistory(
+    /**
+     * 查询国家平台人员进退场
+     *
+     * @param req
+     * @return
+     */
+    Paginable<ProjectWorkerEntryExitHistory> queryProjectWorkerEntryExitHistory(
             XN631915Req req);
 }

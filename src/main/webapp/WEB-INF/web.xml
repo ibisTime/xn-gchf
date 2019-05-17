@@ -65,7 +65,18 @@
       <param-value>true</param-value>
     </init-param>
   </filter>
-  <filter-mapping>
+
+    <!--   <filter> -->
+    <!--       <filter-name>post-data-dumper-filter</filter-name> -->
+    <!--       <filter-class>com.cdkj.gchf.PostFilter</filter-class> -->
+    <!--   </filter> -->
+
+    <!--   <filter-mapping> -->
+    <!--       <filter-name>post-data-dumper-filter</filter-name> -->
+    <!--       <url-pattern>/*</url-pattern> -->
+    <!--   </filter-mapping> -->
+
+    <filter-mapping>
     <filter-name>characterEncodingFilter</filter-name>
     <url-pattern>/*</url-pattern>
   </filter-mapping>

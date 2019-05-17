@@ -3,9 +3,15 @@ package com.cdkj.gchf.dto.req;
 import org.hibernate.validator.constraints.NotBlank;
 
 public class XN631770ReqDetail {
+
     // 证件类型
-    @NotBlank
     private String idCardType;
+
+    // 证件号码
+    private String idCardNumber;
+
+    // 人员编号
+    private String workerCode;
 
     // 出勤天数
     private String days;
@@ -14,7 +20,7 @@ public class XN631770ReqDetail {
     private String workHours;
 
     // 工人工资卡号
-    @NotBlank
+    @NotBlank(message = "项目人员银行卡号不能为空")
     private String payRollBankCardNumber;
 
     // 工人工资卡银行代码
@@ -37,7 +43,7 @@ public class XN631770ReqDetail {
     private String payBankName;
 
     // 应发金额
-    @NotBlank
+    @NotBlank(message = "应发金额不能为空")
     private String totalPayAmount;
 
     // 实发金额
@@ -47,7 +53,7 @@ public class XN631770ReqDetail {
     private String isBackPay;
 
     // 发放日期
-    @NotBlank
+    @NotBlank(message = "发放日期不能为空")
     private String balanceDate;
 
     // 补发月份
@@ -63,6 +69,14 @@ public class XN631770ReqDetail {
 
     public void setIdCardType(String idCardType) {
         this.idCardType = idCardType;
+    }
+
+    public String getIdCardNumber() {
+        return idCardNumber;
+    }
+
+    public void setIdCardNumber(String idCardNumber) {
+        this.idCardNumber = idCardNumber;
     }
 
     public String getDays() {
@@ -175,6 +189,14 @@ public class XN631770ReqDetail {
 
     public void setThirdPayRollCode(String thirdPayRollCode) {
         this.thirdPayRollCode = thirdPayRollCode;
+    }
+
+    public String getWorkerCode() {
+        return workerCode;
+    }
+
+    public void setWorkerCode(String workerCode) {
+        this.workerCode = workerCode;
     }
 
 }

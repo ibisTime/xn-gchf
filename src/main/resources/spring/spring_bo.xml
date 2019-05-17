@@ -104,8 +104,20 @@
 	<bean id="operateLogBO" class="com.cdkj.gchf.bo.impl.OperateLogBOImpl">
 		<property name="paginableDAO" ref="operateLogDAOImpl" />
 	</bean>
-	
+
 	<bean id="workerInfoBO" class="com.cdkj.gchf.bo.impl.WorkerInfoBOImpl">
 		<property name="paginableDAO" ref="workerInfoDAOImpl" />
 	</bean>
+
+    <bean id="equipmentInfoBO" class="com.cdkj.gchf.bo.impl.EquipmentInfoBOImpl">
+        <property name="paginableDAO" ref="equipmentInfoDAOImpl"/>
+    </bean>
+
+    <bean id="equipmentWorkerBO" class="com.cdkj.gchf.bo.impl.EquipmentWorkerBOImpl">
+        <property name="paginableDAO" ref="equipmentWorkerDAOImpl"/>
+    </bean>
+
+    <bean id="workerEntryExitRecordBO" class="com.cdkj.gchf.bo.impl.WorkerEntryExitRecordBOImpl">
+        <property name="paginableDAO" ref="workerEntryExitRecordDAOImpl"/>
+    </bean>
 </beans>

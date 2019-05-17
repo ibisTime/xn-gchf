@@ -23,6 +23,12 @@ public class XN631745Req extends APageReq {
     // 工人姓名
     private String workerName;
 
+    // 班组名称
+    private String teamName;
+
+    // 班组所在企业名称
+    private String corpName;
+
     @NotBlank
     private String userId;
 
@@ -72,6 +78,22 @@ public class XN631745Req extends APageReq {
 
     public void setWorkerName(String workerName) {
         this.workerName = workerName;
+    }
+
+    public String getTeamName() {
+        return teamName;
+    }
+
+    public void setTeamName(String teamName) {
+        this.teamName = teamName;
+    }
+
+    public String getCorpName() {
+        return corpName;
+    }
+
+    public void setCorpName(String corpName) {
+        this.corpName = corpName;
     }
 
 }

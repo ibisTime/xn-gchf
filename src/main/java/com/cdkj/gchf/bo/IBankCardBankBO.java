@@ -4,33 +4,94 @@ import java.util.List;
 
 import com.cdkj.gchf.bo.base.IPaginableBO;
 import com.cdkj.gchf.domain.BankCardInfo;
+import com.cdkj.gchf.domain.ProjectWorker;
 import com.cdkj.gchf.dto.req.XN631750Req;
 import com.cdkj.gchf.dto.req.XN631752Req;
+import com.cdkj.gchf.dto.req.XN631770ReqDetail;
 
+/**
+ * @author
+ */
 public interface IBankCardBankBO extends IPaginableBO<BankCardInfo> {
 
-    public String saveBankCardInfo(XN631750Req req);
+    /**
+     * 保存银行卡信息
+     *
+     * @param req
+     * @return
+     */
+    String saveBankCardInfo(XN631750Req req);
 
-    public void removeBankCardInfo(String code);
 
-    public void refreshBankCardInfo(XN631752Req req);
+    /**
+     * 保存银行卡信息
+     *
+     * @param data
+     * @param projectWorker
+     * @return
+     */
+    String saveBankCardInfo(XN631770ReqDetail data,
+                            ProjectWorker projectWorker);
 
-    public int updateBankCardInfoStatus(String code);
 
-    public void refreshStatus(String businessSysNo, String status);
+    /**
+     * 编辑银行卡
+     *
+     * @param req
+     */
+    void refreshBankCardInfo(XN631752Req req);
 
+    /**
+     * 修改银行卡状态： ①启用->冻结 、②冻结->启用
+     *
+     * @param code
+     * @return
+     */
+    int updateBankCardInfoStatus(String code);
+
+
+    /**
+     * 通过银行卡账号查询银行卡信息
+     *
+     * @param payRollBankCardNumber 银行卡号
+     * @return BankCardInfo
+     */
     BankCardInfo getBankCardInfoByNum(String payRollBankCardNumber);
 
+    /**
+     * 查询平台段银行卡信息
+     *
+     * @param workerName
+     * @param status
+     * @param bussinessNo
+     * @return
+     */
+    List<BankCardInfo> getOwnerBankCardInfo(String workerName, String status,
+                                            String bussinessNo);
+
+    /**
+     * @Description: 通过身份证号和银行卡号查询银行卡信息
+     */
+    BankCardInfo getBankCardByIdCardNumBankNum(String idCardNumber,
+                                               String bankNum);
+
+
+    /**
+     * 按照业务类型查询银行卡类别
+     *
+     * @param bussinessType 业务类型 ，参考 EBankCardBussinessType ：001 参建单位 / 002 个人用户
+     * @param bussinessCode 参建单位：参建单位主键code ,个人用户：项目人员主键code
+     * @return 银行卡列表
+     */
+    List<BankCardInfo> getBankCardByByssinessCode(String bussinessType, String bussinessCode);
+
     public List<BankCardInfo> queryBankCardInfoList(String businessSysNo,
-            String status);
+                                                    String status);
 
     public List<BankCardInfo> queryBankCardInfoList(BankCardInfo condition);
 
-    public BankCardInfo getBankCardInfo(Long id);
 
     public BankCardInfo getBankCardInfo(String bankCode);
 
-    List<BankCardInfo> queryBankCardInfoListByIdcardNumber(
-            List<String> idCardNumbers);
 
 }

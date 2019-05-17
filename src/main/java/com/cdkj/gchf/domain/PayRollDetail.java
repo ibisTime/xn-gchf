@@ -73,7 +73,7 @@ public class PayRollDetail extends ABaseDO {
     private String thirdPayRollCode;
 
     // 补发日期
-    private String backPayMonth;
+    private Date backPayMonth;
 
     /****DB Properties****/
     // 项目名称
@@ -95,6 +95,9 @@ public class PayRollDetail extends ABaseDO {
 
     private String userId;
 
+    // 业主端查询
+    private String ownerProjectCode;
+
     // 发放月份
     private Date payMonth;
 
@@ -112,6 +115,14 @@ public class PayRollDetail extends ABaseDO {
 
     public void setPayRollCode(String payRollCode) {
         this.payRollCode = payRollCode;
+    }
+
+    public String getProjectCode() {
+        return projectCode;
+    }
+
+    public void setProjectCode(String projectCode) {
+        this.projectCode = projectCode;
     }
 
     public String getWorkerName() {
@@ -242,27 +253,11 @@ public class PayRollDetail extends ABaseDO {
         this.thirdPayRollCode = thirdPayRollCode;
     }
 
-    public String getProjectCode() {
-        return projectCode;
-    }
-
-    public void setProjectCode(String projectCode) {
-        this.projectCode = projectCode;
-    }
-
-    public String getUploadStatus() {
-        return uploadStatus;
-    }
-
-    public void setUploadStatus(String uploadStatus) {
-        this.uploadStatus = uploadStatus;
-    }
-
-    public String getBackPayMonth() {
+    public Date getBackPayMonth() {
         return backPayMonth;
     }
 
-    public void setBackPayMonth(String backPayMonth) {
+    public void setBackPayMonth(Date backPayMonth) {
         this.backPayMonth = backPayMonth;
     }
 
@@ -298,6 +293,14 @@ public class PayRollDetail extends ABaseDO {
         this.corpCode = corpCode;
     }
 
+    public String getUploadStatus() {
+        return uploadStatus;
+    }
+
+    public void setUploadStatus(String uploadStatus) {
+        this.uploadStatus = uploadStatus;
+    }
+
     public String getDeleteStatus() {
         return deleteStatus;
     }
@@ -320,6 +323,14 @@ public class PayRollDetail extends ABaseDO {
 
     public void setPayMonth(Date payMonth) {
         this.payMonth = payMonth;
+    }
+
+    public String getOwnerProjectCode() {
+        return ownerProjectCode;
+    }
+
+    public void setOwnerProjectCode(String ownerProjectCode) {
+        this.ownerProjectCode = ownerProjectCode;
     }
 
 }

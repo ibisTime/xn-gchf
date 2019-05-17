@@ -534,4 +534,194 @@ ADD COLUMN `city` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL D
 ALTER TABLE `thf_project` 
 ADD COLUMN `area` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '区';
 
+## 220 v1
+DROP TABLE IF EXISTS `thf_leave`
+CREATE TABLE `thf_leave` (
+  `code` varchar(32) NOT NULL COMMENT '编号',
+  `employ_code` varchar(32) DEFAULT NULL COMMENT '雇佣编号',
+  `staff_code` varchar(32) DEFAULT NULL COMMENT '员工编号',
+  `project_code` varchar(32) DEFAULT NULL COMMENT '项目编号',
+  `staff_name` varchar(32) DEFAULT NULL COMMENT '员工姓名',
+  `project_name` varchar(255) DEFAULT NULL COMMENT '项目名称',
+  `start_datetime` datetime DEFAULT NULL COMMENT '请假开始日期（包括当天）',
+  `end_datetime` datetime DEFAULT NULL COMMENT '请假结束日期',
+  `leave_days` int(11) DEFAULT NULL COMMENT '请假天数',
+  `status` varchar(4) DEFAULT NULL COMMENT '状态',
+  `updater` varchar(32) DEFAULT NULL COMMENT '更新人',
+  `update_datetime` datetime DEFAULT NULL COMMENT '更新时间',
+  `remark` varchar(255) DEFAULT NULL COMMENT '备注',
+  PRIMARY KEY (`code`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
+DROP TABLE IF EXISTS `thf_message`
+CREATE TABLE `thf_message` (
+  `code` varchar(32) NOT NULL COMMENT '编号',
+  `project_code` varchar(32) DEFAULT NULL COMMENT '项目编号',
+  `project_name` varchar(255) DEFAULT NULL COMMENT '项目名称',
+  `bank_code` varchar(32) DEFAULT NULL COMMENT '银行行别',
+  `bank_name` varchar(255) DEFAULT NULL COMMENT '银行名称',
+  `subbranch` text COMMENT '开户行',
+  `bankcard_number` varchar(64) DEFAULT NULL COMMENT '银行卡号',
+  `month` varchar(32) DEFAULT NULL COMMENT '工资所属月份',
+  `total_amount` bigint(20) DEFAULT '0' COMMENT '本月累计发薪',
+  `number` int(11) DEFAULT '0' COMMENT '领薪人数',
+  `total_cut_amount` bigint(20) DEFAULT '0' COMMENT '本月累计扣款',
+  `total_tax` bigint(20) DEFAULT '0' COMMENT '本月累计税费',
+  `title` text COMMENT '标题',
+  `create_datetime` datetime DEFAULT NULL COMMENT '创建时间',
+  `download` int(11) DEFAULT '0' COMMENT '下载次数',
+  `back_download` int(11) DEFAULT '0' COMMENT '反馈下载次数',
+  `status` varchar(4) DEFAULT NULL COMMENT '状态',
+  `sender` varchar(32) DEFAULT NULL COMMENT '发送人',
+  `send_datetime` datetime DEFAULT NULL COMMENT '发送时间',
+  `send_note` text COMMENT '发送说明',
+  `handler` varchar(32) DEFAULT NULL COMMENT '处理人',
+  `handle_datetime` datetime DEFAULT NULL COMMENT '处理时间',
+  `handle_note` text COMMENT '处理说明',
+  PRIMARY KEY (`code`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+DROP TABLE IF EXISTS `thf_query_log`
+CREATE TABLE `thf_query_log` (
+  `code` varchar(32) NOT NULL COMMENT '编号',
+  `user_id` varchar(32) DEFAULT NULL COMMENT '用户id',
+  `staff_code` varchar(32) DEFAULT NULL COMMENT '员工编号',
+  `staff_name` varchar(64) DEFAULT NULL COMMENT '员工名称',
+  `id_no` varchar(64) DEFAULT NULL COMMENT '身份证号',
+  `pic1` mediumtext COMMENT '身份证头像',
+  PRIMARY KEY (`code`),
+  KEY `staff_code` (`staff_code`),
+  KEY `user_id` (`user_id`),
+  CONSTRAINT `staff_code` FOREIGN KEY (`staff_code`) REFERENCES `thf_worker_info` (`code`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `user_id` FOREIGN KEY (`user_id`) REFERENCES `thf_user` (`user_id`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+DROP TABLE IF EXISTS `thf_report`
+CREATE TABLE `thf_report` (
+  `code` varchar(32) NOT NULL COMMENT '编号',
+  `project_code` varchar(32) DEFAULT NULL COMMENT '项目编号',
+  `project_name` varchar(255) DEFAULT NULL COMMENT '项目名称',
+  `today_days` int(11) DEFAULT '0' COMMENT '今日上工人数',
+  `last_month_salary` bigint(20) DEFAULT '0' COMMENT '上月实际发薪金额',
+  `next_month_salary` bigint(20) DEFAULT '0' COMMENT '下月预计发薪金额',
+  `total_salary` bigint(20) DEFAULT '0' COMMENT '累计发薪金额',
+  `staff_on` bigint(11) DEFAULT '0' COMMENT '目前在职人数',
+  `staff_in` bigint(11) DEFAULT '0' COMMENT '累计入职人数',
+  `staff_out` bigint(11) DEFAULT '0' COMMENT '累计离职人数',
+  `leaving_days` int(11) DEFAULT '0' COMMENT '累计请假人次',
+  `working_days` int(11) DEFAULT '0' COMMENT '累计出工人次',
+  `remark` text COMMENT '备注',
+  PRIMARY KEY (`code`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+DROP TABLE IF EXISTS `thf_skill`
+CREATE TABLE `thf_skill` (
+  `code` varchar(32) NOT NULL COMMENT '编号',
+  `staff_code` varchar(32) DEFAULT NULL COMMENT '员工编号',
+  `staff_name` varchar(64) DEFAULT NULL COMMENT '员工姓名',
+  `name` varchar(64) DEFAULT NULL COMMENT '技能名称',
+  `pdf` varchar(255) DEFAULT NULL COMMENT '技能证书',
+  `score` int(11) DEFAULT NULL COMMENT '技能评分',
+  PRIMARY KEY (`code`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- 以下为220 第一版修改
+ALTER TABLE `thf_worker_info` 
+ADD COLUMN `attendance_picture` longtext NULL COMMENT '人员考勤照片' AFTER `create_datetime`,
+ADD COLUMN `worker_guid` varchar(32) NULL COMMENT '人员guid' AFTER `attendance_picture`,
+ADD COLUMN `worker_attendance_pic_guid` varchar(32) NULL COMMENT '人员考勤照片guid' AFTER `worker_guid`,
+ADD COLUMN `worker_pic_upload_status` tinyint(1) NULL COMMENT '人脸上传状态' AFTER `worker_attendance_pic_guid`,
+ADD COLUMN `worker_upload_status` tinyint(1) NULL COMMENT '考勤人员上传状态' AFTER `worker_pic_upload_status`;
+
+alter table thf_pay_roll_detail add COLUMN `back_pay_month` datetime 
+  COMMENT '补发日期';
+  
+-- 人脸识别设备表
+DROP TABLE IF EXISTS `thf_equipment_info`;
+    CREATE TABLE `thf_equipment_info` (
+    `code` VARCHAR ( 32 ) NOT NULL PRIMARY KEY COMMENT '主键',
+    `device_key` VARCHAR ( 64 ) NOT NULL COMMENT '人脸识别设备序列号',
+    `name` VARCHAR ( 32 ) NOT NULL COMMENT '设备名称',
+    `tag` VARCHAR ( 32 ) DEFAULT NULL COMMENT '设备标签',
+    `tag_encreapt` VARCHAR ( 32 ) DEFAULT NULL COMMENT '加密tag标签',
+    `scene_guid` VARCHAR ( 32 ) DEFAULT NULL COMMENT '设备场景guid',
+    `state` TINYINT ( 2 ) NOT NULL COMMENT '设备状态',
+    `status` TINYINT ( 2 ) DEFAULT NULL COMMENT '设备网络状态',
+    `client_id` VARCHAR ( 32 ) DEFAULT NULL COMMENT '设备客户端id',
+    `c_id` VARCHAR ( 32 ) DEFAULT NULL COMMENT '设备客户端 id（个推）',
+    `version_no` VARCHAR ( 10 ) DEFAULT NULL COMMENT '设备应用版本号',
+    `system_version_no` VARCHAR ( 10 ) DEFAULT NULL COMMENT '设备系统版本号',
+    `reg_num` INTEGER DEFAULT NULL COMMENT '设备总识别次数',
+    `need_upgrade_app` VARCHAR ( 50 ) COMMENT '是否需要升级app',
+    `need_upgrade` VARCHAR ( 50 ) COMMENT '是否需要升级app和系统',
+    `create_time` TIMESTAMP NULL DEFAULT CURRENT_TIMESTAMP COMMENT '设备添加时间',
+    `expired` VARCHAR ( 10 ) DEFAULT NULL COMMENT '人脸识别设备是否禁用',
+    `device_status` VARCHAR ( 10 ) DEFAULT NULL COMMENT '人脸识别设备状态',
+    `project_code` VARCHAR ( 32 ) DEFAULT NULL COMMENT '项目编码',
+    `project_name` VARCHAR ( 512 ) DEFAULT NULL COMMENT '项目名称' 
+    ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='考勤设备';
+-- 设备人员信息表
+DROP TABLE IF EXISTS `thf_equipment_worker`;
+    CREATE TABLE `thf_equipment_worker` (
+    `code`   varchar(32) NOT NULL COMMENT '主键',
+    `device_code` varchar(64)    NOT NULL COMMENT '人脸识别设备编号' ,
+    `device_key` varchar(64)     NOT NULL COMMENT '人脸识别设备序列号',
+    `device_name` varchar(64)    NOT NULL COMMENT '人脸识别设备名称',
+    `worker_code` varchar(32)    NOT NULL COMMENT '项目人员编号',
+    `worker_name` varchar(32)    NOT NULL COMMENT '项目人员姓名',
+    `team_code` varchar(32)  DEFAULT NULL COMMENT '班组编号',
+    `team_name` varchar(32)  DEFAULT NULL COMMENT '班组名称',
+    `id_card_number` varchar(32)     DEFAULT NULL COMMENT '员工身份证件号',
+    `status` varchar(10)      DEFAULT NULL COMMENT '状态',
+    `pass_times` varchar(255)    DEFAULT NULL COMMENT '每日允许进入' ,
+    `create_time` datetime DEFAULT NULL COMMENT '添加时间'
+    )ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='考勤设备人员';
+    
+ALTER TABLE `tqy_corp_basicinfo` 
+CHANGE COLUMN `corp_code` `corp_code` VARCHAR(255) NULL DEFAULT NULL COMMENT '统一社会信用代码' ;
+
+
+
+ALTER TABLE `thf_worker_attendance` 
+MODIFY COLUMN `image` varchar(300) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '刷卡近照' AFTER `direction`;
+
+ALTER TABLE `thf_equipment_worker` 
+ADD PRIMARY KEY (`code`);
+
+-- 以下为220 第二版修改
+ALTER TABLE `thf_worker_attendance` 
+ADD COLUMN `source` VARCHAR(4) NULL COMMENT '来源（系统生成/实时数据）' AFTER `create_datetime`;
+
+ALTER TABLE `thf_equipment_info` 
+ADD COLUMN `direction` varchar(10) NULL DEFAULT NULL COMMENT '考勤设备方向' AFTER `project_name`;
+
+
+
+
+ALTER TABLE `thf_worker_info` 
+MODIFY COLUMN `worker_pic_upload_status` varchar(4) NULL DEFAULT NULL COMMENT '人脸上传状态' AFTER `worker_attendance_pic_guid`,
+MODIFY COLUMN `worker_upload_status` varchar(4) NULL DEFAULT NULL COMMENT '考勤人员上传状态' AFTER `worker_pic_upload_status`;
+
+DROP TABLE IF EXISTS `thf_worker_entry_exit_record`;
+CREATE TABLE `thf_worker_entry_exit_record` (
+  `code` varchar(32) NOT NULL COMMENT '编号',
+  `project_code` varchar(32) DEFAULT NULL COMMENT '项目编码',
+  `project_name` varchar(512) DEFAULT NULL COMMENT '项目名称',
+  `device_code` varchar(32) DEFAULT NULL COMMENT '设备编号',
+  `device_key` varchar(50) DEFAULT NULL COMMENT '设备序列号',
+  `device_name` varchar(50) DEFAULT NULL COMMENT '设备名称',
+  `team_code` varchar(32) DEFAULT NULL COMMENT '班组编号',
+  `team_name` varchar(200) DEFAULT NULL COMMENT '班组名称',
+  `worker_code` varchar(32) DEFAULT NULL COMMENT '员工编号',
+  `worker_name` varchar(50) DEFAULT NULL COMMENT '员工名称',
+  `idcard_number` varchar(30) DEFAULT NULL COMMENT '证件号码',
+  `date` datetime DEFAULT NULL COMMENT '考勤时间',
+  `direction` varchar(2) DEFAULT NULL COMMENT '进出方向',
+  `image` varchar(512) DEFAULT NULL COMMENT '刷卡近照',
+  `rec_mode` varchar(4) DEFAULT NULL COMMENT '识别模式(1:刷脸，2:刷卡，3:双重认证， 4:人证比对)',
+  `attend_type` varchar(4) DEFAULT NULL COMMENT '识别出的人员类型(0:时间段内，1:时间段外，2:陌生人)',
+  `delete_status` varchar(4) DEFAULT NULL COMMENT '删除状态',
+  PRIMARY KEY (`code`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='人员进出记录';
+
+ALTER TABLE `thf_equipment_info` 
+ADD COLUMN `pass_times` datetime NULL COMMENT '进退场时间' AFTER `direction`;

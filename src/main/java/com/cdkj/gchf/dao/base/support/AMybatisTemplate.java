@@ -127,7 +127,7 @@ public abstract class AMybatisTemplate {
      * @param statement
      * @param list
      */
-    protected void insertBatch(String statement, List<Object> list) {
+    protected <M> void insertBatch(String statement, List<M> list) {
         writeDao.insertBatch(statement, list);
     }
 
@@ -178,7 +178,7 @@ public abstract class AMybatisTemplate {
      * @param statement
      * @param list
      */
-    protected void deleteBatch(String statement, List<Object> list) {
+    protected <T> void deleteBatch(String statement, List<T> list) {
         writeDao.deleteBatch(statement, list);
     }
 

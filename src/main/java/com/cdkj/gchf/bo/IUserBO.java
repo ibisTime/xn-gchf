@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.cdkj.gchf.bo.base.IPaginableBO;
 import com.cdkj.gchf.domain.User;
+import com.cdkj.gchf.dto.req.XN631600Req;
 import com.cdkj.gchf.enums.EUserStatus;
 
 public interface IUserBO extends IPaginableBO<User> {
@@ -21,13 +22,14 @@ public interface IUserBO extends IPaginableBO<User> {
 
     public void isMobileExist(String mobile);
 
+    public boolean checkMobile(String mobile);
+
     public boolean isUserExist(String code);
 
     public void saveUser(User data);
 
     // 添加业主端管理员
-    public void saveProjectAdmin(String projectCode, String projectName,
-            String linkManName, String mobile);
+    public void saveProjectAdmin(String projectCode, XN631600Req req);
 
     public List<User> queryUserList(User condition);
 

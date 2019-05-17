@@ -17,6 +17,9 @@ public class XN631725Req extends APageReq {
     // 企业唯一信用编码
     private String corpCode;
 
+    // 企业名称
+    private String corpName;
+
     // 班组编号（本地）
     private String teamSysNo;
 
@@ -25,6 +28,9 @@ public class XN631725Req extends APageReq {
 
     // 工人姓名
     private String workerName;
+
+    // 来源
+    private String source;
 
     // 用户id
     @NotBlank
@@ -62,6 +68,14 @@ public class XN631725Req extends APageReq {
         this.corpCode = corpCode;
     }
 
+    public String getCorpName() {
+        return corpName;
+    }
+
+    public void setCorpName(String corpName) {
+        this.corpName = corpName;
+    }
+
     public String getTeamSysNo() {
         return teamSysNo;
     }
@@ -84,6 +98,14 @@ public class XN631725Req extends APageReq {
 
     public void setWorkerName(String workerName) {
         this.workerName = workerName;
+    }
+
+    public String getSource() {
+        return source;
+    }
+
+    public void setSource(String source) {
+        this.source = source;
     }
 
 }

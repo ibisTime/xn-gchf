@@ -94,6 +94,8 @@ public class CorpBasicinfo extends ABaseDO {
     // 资本币种
     private String capitalCurrencyTypeName;
 
+    private String totalCorpCode;
+
     public String getCode() {
         return code;
     }
@@ -300,6 +302,14 @@ public class CorpBasicinfo extends ABaseDO {
 
     public void setUploadStatus(String uploadStatus) {
         this.uploadStatus = uploadStatus;
+    }
+
+    public String getTotalCorpCode() {
+        return totalCorpCode;
+    }
+
+    public void setTotalCorpCode(String totalCorpCode) {
+        this.totalCorpCode = totalCorpCode;
     }
 
 }

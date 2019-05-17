@@ -12,31 +12,58 @@ import com.cdkj.gchf.dto.req.XN631673Req;
 import com.cdkj.gchf.dto.req.XN631916Req;
 import com.cdkj.gchf.dto.req.XN631917Req;
 
+/**
+ * @author old3
+ */
 @Component
 public interface IWorkerContractAO {
-    static final String DEFAULT_ORDER_COLUMN = "code";
+    String DEFAULT_ORDER_COLUMN = "code";
 
-    public String addWorkerContract(XN631670Req req);
+    /**
+     * 新增劳动合同
+     */
+    String addWorkerContract(XN631670Req req);
 
-    public void dropWorkerContract(String userId, List<String> codeList);
+    /**
+     * 删除劳动合同
+     */
+    void dropWorkerContract(String userId, List<String> codeList);
 
-    public void editWorkerContract(XN631672Req data);
+    /**
+     * 修改劳动合同
+     */
+    void editWorkerContract(XN631672Req data);
 
-    public Paginable<WorkerContract> queryWorkerContractPage(int start,
-            int limit, WorkerContract condition);
+    /**
+     * 分页查劳动合同
+     */
+    Paginable<WorkerContract> queryWorkerContractPage(int start,
+                                                      int limit, WorkerContract condition);
 
-    public List<WorkerContract> queryWorkerContractList(
+    /**
+     * 列表查劳动合同
+     */
+    List<WorkerContract> queryWorkerContractList(
             WorkerContract condition);
 
-    public WorkerContract getWorkerContract(String code);
+    /**
+     * code查劳动合同
+     */
+    WorkerContract getWorkerContract(String code);
 
-    public void importWorkContractList(XN631673Req req);
+    /**
+     * 导入劳动合同
+     */
+    void importWorkContractList(XN631673Req req);
 
-    public void uploadWorkContractList(String userId, List<String> codeList);
+    /**
+     * 上传劳动合同
+     */
+    void uploadWorkContractList(String userId, List<String> codeList);
 
     /****国家平台接口****/
-    public void uploadWorkerContract(XN631916Req req);
+    void uploadWorkerContract(XN631916Req req);
 
-    public Paginable<WorkerContract> queryWorkerContract(XN631917Req req);
+    Paginable<WorkerContract> queryWorkerContract(XN631917Req req);
 
 }

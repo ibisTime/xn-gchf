@@ -48,7 +48,8 @@ public final class MybatisWriteDAO {
      * @param statement
      * @param list
      */
-    public void insertBatch(String statement, List<Object> list) {
+
+    public <M> void insertBatch(String statement, List<M> list) {
         SqlSession session = writeSqlSessionTemplate.getSqlSessionFactory()
             .openSession(ExecutorType.BATCH, false);
         try {
@@ -117,7 +118,7 @@ public final class MybatisWriteDAO {
      * @param statement
      * @param list
      */
-    public void deleteBatch(String statement, List<Object> list) {
+    public <T> void deleteBatch(String statement, List<T> list) {
         SqlSession session = writeSqlSessionTemplate.getSqlSessionFactory()
             .openSession(ExecutorType.BATCH, false);
         try {

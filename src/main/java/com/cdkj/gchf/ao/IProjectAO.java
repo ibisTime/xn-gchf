@@ -9,19 +9,53 @@ import com.cdkj.gchf.domain.Project;
 import com.cdkj.gchf.dto.req.XN631600Req;
 import com.cdkj.gchf.dto.req.XN631602Req;
 
+/**
+ * @author silver
+ */
 @Component
 public interface IProjectAO {
-    static final String DEFAULT_ORDER_COLUMN = "code";
+    String DEFAULT_ORDER_COLUMN = "code";
 
-    public String addProject(XN631600Req req);
+    /**
+     * 添加项目，入参有项目施工许可证时同时添加项目许可证
+     *
+     * @param req
+     * @return
+     */
+    String addProject(XN631600Req req);
 
-    public void editProject(XN631602Req req);
+    /**
+     * 修改项目
+     *
+     * @param req req
+     */
+    void editProject(XN631602Req req);
 
-    public Paginable<Project> queryProjectPage(int start, int limit,
-            Project condition);
+    /**
+     * 根据code查项目
+     *
+     * @param code 项目主键code
+     * @return project
+     */
+    Project getProject(String code);
 
-    public List<Project> queryProjectList(Project condition);
+    /**
+     * 分页查询项目
+     *
+     * @param start     开始页数
+     * @param limit     每页记录数
+     * @param condition 条件
+     * @return 项目列表
+     */
+    Paginable<Project> queryProjectPage(int start, int limit,
+                                        Project condition);
 
-    public Project getProject(String code);
+    /**
+     * 列表查项目信息
+     *
+     * @param condition 条件
+     * @return
+     */
+    List<Project> queryProjectList(Project condition);
 
 }

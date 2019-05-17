@@ -1,0 +1,167 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cdkj.gchf.dao.IWorkerEntryExitRecordDAO">
+    <resultMap id="workerEntryExitRecord_DB_Result" type="workerEntryExitRecord">
+        <result column="code" property="code"/>
+        <result column="project_code" property="projectCode"/>
+        <result column="project_name" property="projectName"/>
+        <result column="device_code" property="deviceCode"/>
+        <result column="device_key" property="deviceKey"/>
+
+        <result column="device_name" property="deviceName"/>
+        <result column="team_code" property="teamCode"/>
+        <result column="team_name" property="teamName"/>
+        <result column="worker_code" property="workerCode"/>
+        <result column="worker_name" property="workerName"/>
+
+        <result column="idcard_number" property="idcardNumber"/>
+        <result column="date" property="date"/>
+        <result column="direction" property="direction"/>
+        <result column="image" property="image"/>
+        <result column="rec_mode" property="recMode"/>
+
+        <result column="attend_type" property="attendType"/>
+        <result column="delete_status" property="deleteStatus"/>
+    </resultMap>
+
+    <sql id="where_condition">
+        <trim prefix="WHERE" prefixOverrides="AND | OR">
+            <if test="code != null and code != '' ">
+                AND t.code = #{code}
+            </if>
+            <if test="projectCode != null and projectCode != '' ">
+                AND t.project_code = #{projectCode}
+            </if>
+            <if test="deviceCode != null and deviceCode != '' ">
+                AND t.device_code = #{deviceCode}
+            </if>
+            <if test="deviceKey != null and deviceKey != '' ">
+                AND t.device_key = #{deviceKey}
+            </if>
+            <if test="teamCode != null and teamCode != '' ">
+                AND t.team_code = #{teamCode}
+            </if>
+            <if test="workerCode != null and workerCode != '' ">
+                AND t.worker_code = #{workerCode}
+            </if>
+            <if test="workerName != null and workerName != '' ">
+                AND t.worker_name like "%"#{workerName}"%"
+            </if>
+            <if test="direction != null and direction != '' ">
+                AND t.direction = #{direction}
+            </if>
+            <if test="deleteStatus != null and deleteStatus != '' ">
+                AND t.delete_status = #{deleteStatus}
+            </if>
+        </trim>
+    </sql>
+
+    <select id="select_workerEntryExitRecord" parameterType="workerEntryExitRecord"
+            resultMap="workerEntryExitRecord_DB_Result">
+        SELECT
+        t.code
+        ,t.project_code
+        ,t.project_name
+        ,t.device_code
+        ,t.device_key
+
+        ,t.device_name
+        ,t.team_code
+        ,t.team_name
+        ,t.worker_code
+        ,t.worker_name
+
+        ,t.idcard_number
+        ,t.date
+        ,t.direction
+        ,t.image
+        ,t.rec_mode
+
+        ,t.attend_type
+        ,t.delete_status
+        FROM
+        thf_worker_entry_exit_record t
+        <include refid="where_condition"/>
+        <trim prefix="ORDER BY ">
+            <if test="order != null and order != '' ">
+                t.${order}
+            </if>
+        </trim>
+    </select>
+
+    <select id="select_workerEntryExitRecord_count" parameterType="workerEntryExitRecord"
+            resultType="java.lang.Long">
+        SELECT count(1) FROM thf_worker_entry_exit_record t
+        <include refid="where_condition"/>
+    </select>
+
+    <insert id="insert_workerEntryExitRecord" parameterType="workerEntryExitRecord">
+		INSERT INTO
+		thf_worker_entry_exit_record(
+		code
+		,project_code
+		,project_name
+		,device_code
+		,device_key
+		
+		,device_name
+		,team_code
+		,team_name
+		,worker_code
+		,worker_name
+		
+		,idcard_number
+		,date
+		,direction
+		,image
+		,rec_mode
+		
+		,attend_type
+		,delete_status
+		)
+		VALUES(
+		#{code}
+		,#{projectCode}
+		,#{projectName}
+		,#{deviceCode}
+		,#{deviceKey}
+		
+		,#{deviceName}
+		,#{teamCode}
+		,#{teamName}
+		,#{workerCode}
+		,#{workerName}
+		
+		,#{idcardNumber}
+		,#{date}
+		,#{direction}
+		,#{image}
+		,#{recMode}
+		
+		,#{attendType}
+		,#{deleteStatus}
+		)
+	</insert>
+
+    <select id="select_morning_recorder" parameterType="workerEntryExitRecord"
+            resultMap="workerEntryExitRecord_DB_Result">
+	SELECT * from thf_worker_entry_exit_record 
+	WHERE project_code = #{projectCode}
+	AND  worker_code = #{workerCode}
+	AND TO_DAYS(date) = TO_DAYS(NOW())
+	AND direction = '01'
+    order by date asc LIMIT 0,1 
+	</select>
+
+    <select id="select_afternoon_recorder" parameterType="workerEntryExitRecord"
+            resultMap="workerEntryExitRecord_DB_Result">
+	SELECT * from thf_worker_entry_exit_record 
+	WHERE project_code = #{projectCode} 
+	AND  worker_code = #{workerCode}
+	AND TO_DAYS(date) = TO_DAYS(NOW())
+	AND direction = '02'
+    order by date desc LIMIT 0,1 
+	</select>
+
+</mapper>

@@ -9,6 +9,8 @@ public class XN631808Req extends AListReq {
     @NotBlank
     private String idCardNumber;
 
+    // private String userId;
+
     public String getIdCardNumber() {
         return idCardNumber;
     }
@@ -16,5 +18,13 @@ public class XN631808Req extends AListReq {
     public void setIdCardNumber(String idCardNumber) {
         this.idCardNumber = idCardNumber;
     }
+
+    // public String getUserId() {
+    // return userId;
+    // }
+    //
+    // public void setUserId(String userId) {
+    // this.userId = userId;
+    // }
 
 }

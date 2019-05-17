@@ -95,7 +95,6 @@
 		UPDATE thf_project_config
 		SET
 		project_code = #{projectCode}
-		,project_name = #{projectName}
 		,password = #{password}
 		,secret = #{secret}
 		WHERE code = #{code}

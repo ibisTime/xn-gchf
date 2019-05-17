@@ -13,34 +13,64 @@ import com.cdkj.gchf.dto.req.XN631713Req;
 import com.cdkj.gchf.dto.req.XN631918Req;
 import com.cdkj.gchf.dto.req.XN631919Req;
 
+/**
+ * @author old3
+ */
 @Component
 public interface IWorkerAttendanceAO {
-    static final String DEFAULT_ORDER_COLUMN = "code";
+    String DEFAULT_ORDER_COLUMN = "code";
 
-    public String addWorkerAttendance(XN631710Req data);
+    /**
+     * 新增
+     */
+    String addWorkerAttendance(XN631710Req data);
 
-    public void dropWorkerAttendance(List<String> codeList);
 
-    public void editWorkerAttendance(XN631712Req data);
+    /**
+     * 根据传来的考勤主键列表 批量删除考勤
+     *
+     * @param codeList 主键列表
+     */
+    void dropWorkerAttendance(List<String> codeList);
 
-    public void batchCreateAttandance(String projectCode, String teamMasterNo,
-            String direction, Date startDatetime, Date endDatetime);
+    /**
+     * 修改
+     */
+    void editWorkerAttendance(XN631712Req data);
 
-    public Paginable<WorkerAttendance> queryWorkerAttendancePage(int start,
-            int limit, WorkerAttendance condition);
+    /**
+     * 批量生成考勤
+     */
+    void batchCreateAttandance(String projectCode, String teamMasterNo,
+                               String direction, Date startDatetime, Date endDatetime);
 
-    public List<WorkerAttendance> queryWorkerAttendanceList(
+    /**
+     * 导入人员考勤
+     */
+    void importWorkerAttendanceList(XN631713Req req);
+
+    /**
+     * 上传人员考勤
+     */
+    void uploadWorkerAttendanceList(String userId,
+                                    List<String> codeList);
+
+    /**
+     * 分页查
+     */
+    Paginable<WorkerAttendance> queryWorkerAttendancePage(int start,
+                                                          int limit, WorkerAttendance condition);
+
+    List<WorkerAttendance> queryWorkerAttendanceList(
             WorkerAttendance condition);
 
-    public WorkerAttendance getWorkerAttendance(String code);
-
-    public void importWorkerAttendanceList(XN631713Req req);
-
-    public void uploadWorkerAttendanceList(String userId,
-            List<String> codeList);
+    /**
+     * 根据code查
+     */
+    WorkerAttendance getWorkerAttendance(String code);
 
     /****国家平台接口****/
-    public void uploadWorkerAttendance(XN631918Req data);
+    void uploadWorkerAttendance(XN631918Req data);
 
-    public Paginable<WorkerAttendance> queryWorkerAttendance(XN631919Req req);
+    Paginable<WorkerAttendance> queryWorkerAttendance(XN631919Req req);
 }

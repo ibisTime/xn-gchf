@@ -38,7 +38,15 @@ public enum EOperateLogOperate {
 
     UpdateProjectCorpInfo("15", "更新国家平台参建单位信息"),
 
-    UpdateTeamMaster("16", "更新国家平台参建单位信息");
+    UpdateTeamMaster("16", "更新国家平台参建单位信息"),
+
+    AddEquipment("17", "添加考勤设备"),
+
+    IMPORT_TEAMMASTER("18", "导入项目班组"),
+
+    IMPORT_WORKER_ENTRYEXIT("19", "导入人员进退场"),
+
+    IMPORT_WORKER_CONTRACT("20", "导入劳动合同");
 
     EOperateLogOperate(String code, String value) {
         this.code = code;

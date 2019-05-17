@@ -41,15 +41,6 @@ public class WorkerInfoBOImpl extends PaginableBOImpl<WorkerInfo>
     @Autowired
     private IWorkerInfoDAO workerInfoDAO;
 
-    @Override
-    public boolean isWorkerInfoExist(String code) {
-        WorkerInfo condition = new WorkerInfo();
-        condition.setCode(code);
-        if (workerInfoDAO.selectTotalCount(condition) > 0) {
-            return true;
-        }
-        return false;
-    }
 
     @Override
     public String saveWorkerInfo(XN631790Req req) {
@@ -90,16 +81,6 @@ public class WorkerInfoBOImpl extends PaginableBOImpl<WorkerInfo>
         return code;
     }
 
-    @Override
-    public int removeWorkerInfo(String code) {
-        int count = 0;
-        if (StringUtils.isNotBlank(code)) {
-            WorkerInfo data = new WorkerInfo();
-            data.setCode(code);
-            count = workerInfoDAO.delete(data);
-        }
-        return count;
-    }
 
     @Override
     public Paginable<WorkerInfo> doQuery(String idCardNumber,
@@ -127,6 +108,17 @@ public class WorkerInfoBOImpl extends PaginableBOImpl<WorkerInfo>
         return workerInfoDAO.selectList(condition);
     }
 
+    // 回写实名制考勤相关信息
+    @Override
+    public void updateWorkerInfoAttendance(String code, String workerGuid,
+                                           String picGuid) {
+        WorkerInfo workerInfo = new WorkerInfo();
+        workerInfo.setCode(code);
+        workerInfo.setWorkerGuid(workerGuid);
+        workerInfo.setWorkerAttendancePicGuid(picGuid);
+        workerInfoDAO.updateWorkerInfoAttendance(workerInfo);
+    }
+
     @Override
     public WorkerInfo getWorkerInfo(String code) {
         WorkerInfo data = null;
@@ -139,17 +131,7 @@ public class WorkerInfoBOImpl extends PaginableBOImpl<WorkerInfo>
         return data;
     }
 
-    @Override
-    public WorkerInfo getWorkerInfoByCondition(WorkerInfo workerInfo) {
-        return workerInfoDAO.select(workerInfo);
-    }
 
-    @Override
-    public WorkerInfo getWorkerInfoByCelephone(String phone) {
-        WorkerInfo workerInfo = new WorkerInfo();
-        workerInfo.setCellPhone(phone);
-        return workerInfoDAO.select(workerInfo);
-    }
 
     @Override
     public WorkerInfo getBriefWorkerInfo(String code) {
@@ -161,18 +143,23 @@ public class WorkerInfoBOImpl extends PaginableBOImpl<WorkerInfo>
     @Override
     public WorkerInfo getWorkerInfoByIdCardNumber(String idCardNumber) {
         WorkerInfo workerInfo = new WorkerInfo();
-        workerInfo.setIdCardNumber(idCardNumber);
+        // workerInfo.setIdCardNumber(idCardNumber);
+        workerInfo.setBusinessIdCardNumber(idCardNumber);
         return workerInfoDAO.select(workerInfo);
     }
 
+
     @Override
-    public String saveWorkerInfo(WorkerInfo workerInfo) {
-        String code = null;
-        code = OrderNoGenerater.generate(EGeneratePrefix.WorkerInfo.getCode());
-        workerInfo.setCode(code);
-        workerInfoDAO.insert(workerInfo);
-        return code;
+    public List<WorkerInfo> queryStaffListBrief(WorkerInfo condition, int start,
+                                                int count) {
+        return workerInfoDAO.selectBrifeList(condition, start, count);
     }
+
+    @Override
+    public long queryTotalCount(WorkerInfo condition) {
+        return workerInfoDAO.selectTotalCount(condition);
+    }
+
 
     @Override
     public int refreshWorkerInfo(XN631791Req req) {
@@ -187,6 +174,18 @@ public class WorkerInfoBOImpl extends PaginableBOImpl<WorkerInfo>
         workerInfo.setCode(req.getCode());
         BeanUtils.copyProperties(req, workerInfo);
         return workerInfoDAO.updateWorkerInfoAboutPhone(workerInfo);
+    }
+
+    @Override
+    public void refreshAttendancePic(String code, String attendancePicture,
+                                     String workerUploadStatus, String attendancePicUploadStatus) {
+        WorkerInfo workerInfo = new WorkerInfo();
+        workerInfo.setCode(code);
+        workerInfo.setAttendancePicture(attendancePicture);
+        // 更新状态
+        workerInfo.setWorkerUploadStatus(workerUploadStatus);
+        workerInfo.setWorkerPicUploadStatus(attendancePicUploadStatus);
+        workerInfoDAO.updateWorkerInfoAttendancePic(workerInfo);
     }
 
     @Override
@@ -207,10 +206,18 @@ public class WorkerInfoBOImpl extends PaginableBOImpl<WorkerInfo>
             workerInfo.setHasBadMedicalHistory(
                 Integer.parseInt(req.getHasBadMedicalHistory()));
         }
-        if (StringUtils.isNotBlank(req.getJoinedTime())) {
-            workerInfo.setJoinedTime(DateUtil.strToDate(req.getJoinedTime(),
-                DateUtil.FRONT_DATE_FORMAT_STRING));
+        if (StringUtils.isNotBlank(req.getIsJoined())) {
+            if (req.getIsJoined().equals(EIsNotType.IS.getCode())
+                    && StringUtils.isNotBlank(req.getJoinedTime())) {
+                workerInfo.setJoinedTime(DateUtil.strToDate(req.getJoinedTime(),
+                        DateUtil.FRONT_DATE_FORMAT_STRING));
+            } else {
+                workerInfo.setIsJoined(0);
+                workerInfo.setJoinedTime(null);
+
+            }
         }
+
         if (StringUtils.isNotBlank(req.getStartDate())) {
             workerInfo.setStartDate(DateUtil.strToDate(req.getStartDate(),
                 DateUtil.FRONT_DATE_FORMAT_STRING));
@@ -262,6 +269,8 @@ public class WorkerInfoBOImpl extends PaginableBOImpl<WorkerInfo>
                     "yyyy-MM-dd");
                 workerInfo.setExpiryDate(toDate);
             }
+            workerInfo.setCreateDatetime(new Date(System.currentTimeMillis()));
+            workerInfo.setIdCardType("01");
             workerInfoDAO.insert(workerInfo);
 
         } catch (ParseException e) {

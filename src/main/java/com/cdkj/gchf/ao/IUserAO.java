@@ -8,6 +8,9 @@ import com.cdkj.gchf.bo.base.Paginable;
 import com.cdkj.gchf.domain.User;
 import com.cdkj.gchf.dto.req.XN631070Req;
 
+/**
+ * @author old3
+ */
 @Component
 public interface IUserAO {
 
@@ -21,7 +24,7 @@ public interface IUserAO {
 
     // 设置角色
     public void doRoleUser(String userId, String roleCode, String updater,
-            String remark);
+                           String remark);
 
     // 重置登录密码
     public void resetAdminLoginPwd(String userId, String newLoginPwd);
@@ -31,19 +34,19 @@ public interface IUserAO {
 
     // 根据手机号修改登录密码
     public void doResetLoginPwd(String mobile, String smsCaptcha,
-            String newLoginPwd);
+                                String newLoginPwd);
 
     // 更换手机号
     public void doChangeMoblie(String userId, String newMobile, String updater,
-            String remark);
+                               String remark);
 
     // 修改登录密码
     public void doModifyLoginPwd(String userId, String oldLoginPwd,
-            String newLoginPwd);
+                                 String newLoginPwd);
 
     // 管理员重置用户密码
     public void doResetLoginPwdByOss(String userId, String newLoginPwd,
-            String updater, String remark);
+                                     String updater, String remark);
 
     public Paginable<User> queryUserPage(int start, int limit, User condition);
 

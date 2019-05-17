@@ -9,7 +9,6 @@ import com.alibaba.fastjson.JSONObject;
 import com.cdkj.gchf.ao.ICorpBasicinfoAO;
 import com.cdkj.gchf.bo.ICorpBasicinfoBO;
 import com.cdkj.gchf.bo.IOperateLogBO;
-import com.cdkj.gchf.bo.IProjectBO;
 import com.cdkj.gchf.bo.IProjectConfigBO;
 import com.cdkj.gchf.bo.IUserBO;
 import com.cdkj.gchf.bo.base.Paginable;
@@ -21,9 +20,9 @@ import com.cdkj.gchf.dto.req.XN631250Req;
 import com.cdkj.gchf.dto.req.XN631251Req;
 import com.cdkj.gchf.dto.req.XN631900Req;
 import com.cdkj.gchf.dto.req.XN631901Req;
+import com.cdkj.gchf.enums.ECorpBasicUploadStatus;
 import com.cdkj.gchf.enums.EOperateLogOperate;
 import com.cdkj.gchf.enums.EOperateLogRefType;
-import com.cdkj.gchf.enums.EUploadStatus;
 import com.cdkj.gchf.exception.BizException;
 import com.cdkj.gchf.gov.AsyncQueueHolder;
 import com.cdkj.gchf.gov.GovConnecter;
@@ -43,37 +42,9 @@ public class CorpBasicinfoAOImpl implements ICorpBasicinfoAO {
     @Autowired
     private IUserBO userBO;
 
-    @Autowired
-    private IProjectBO projectBO;
-
     @Override
     public String addCorpBasicinfo(XN631250Req req) {
 
-        String userId = req.getUserId();
-        User briefUser = userBO.getBriefUser(userId);
-        // if (briefUser.getType().equals(EUserKind.Owner.getCode())) {
-        // CorpBasicinfo corpBasicInfoByCorpProject = corpBasicinfoBO
-        // .getCorpBasicInfoByCorpProject(briefUser.getOrganizationCode(),
-        // req.getCorpCode());
-        //
-        // if (corpBasicInfoByCorpProject == null) {
-        // CorpBasicinfo corpBasicinfoByCorp = corpBasicinfoBO
-        // .getCorpBasicinfoByCorp(req.getCorpCode());
-        // corpBasicinfoByCorp
-        // .setProjectCode(briefUser.getOrganizationCode());
-        // String code = OrderNoGenerater
-        // .generate(EGeneratePrefix.CorpBasicinfo.getCode());
-        // corpBasicinfoByCorp.setCode(code);
-        // Project project = projectBO
-        // .getProject(briefUser.getOrganizationCode());
-        // corpBasicinfoByCorp.setProjectName(project.getName());
-        // corpBasicinfoBO.insertCorpBasicinfo(corpBasicinfoByCorp);
-        // return code;
-        // } else {
-        // throw new BizException("XN631250", "企业基本信息已存在，请勿重复添加");
-        // }
-        //
-        // }
         if (null != corpBasicinfoBO.getCorpBasicinfoByCorp(req.getCorpCode())) {
             throw new BizException("XN631250", "企业基本信息已存在，请勿重复添加");
         }
@@ -88,7 +59,7 @@ public class CorpBasicinfoAOImpl implements ICorpBasicinfoAO {
         CorpBasicinfo corpBasicinfo = corpBasicinfoBO
             .getCorpBasicinfo(req.getCode());
 
-        if (EUploadStatus.UPLOAD_UNEDITABLE.getCode()
+        if (ECorpBasicUploadStatus.UPLOAD_UNEDITABLE.getCode()
             .equals(corpBasicinfo.getUploadStatus())) {
             throw new BizException("XN631251", "当前状态下不可修改");
         }
@@ -106,7 +77,7 @@ public class CorpBasicinfoAOImpl implements ICorpBasicinfoAO {
     public int dropCorpBasicinfo(String code) {
         CorpBasicinfo corpBasicinfo = corpBasicinfoBO.getCorpBasicinfo(code);
 
-        if (EUploadStatus.UPLOAD_UNEDITABLE.getCode()
+        if (ECorpBasicUploadStatus.UPLOAD_UNEDITABLE.getCode()
             .equals(corpBasicinfo.getUploadStatus())) {
             throw new BizException("XN631250", "当前状态下不可删除");
         }
@@ -129,21 +100,32 @@ public class CorpBasicinfoAOImpl implements ICorpBasicinfoAO {
             CorpBasicinfo corpBasicinfo = corpBasicinfoBO
                 .getCorpBasicinfo(codeReq);
 
-            if (EUploadStatus.UPLOAD_UNEDITABLE.getCode()
-                .equals(corpBasicinfo.getUploadStatus()))
+            if (ECorpBasicUploadStatus.UPLOAD_UNEDITABLE.getCode()
+                    .equals(corpBasicinfo.getUploadStatus())) {
                 continue;
+            }
 
             corpBasicinfo.setLegalManIdcardNumber(
                 AesUtils.encrypt(corpBasicinfo.getLegalManIdcardNumber(),
                     defaultProjectConfig.getSecret()));
             System.out.println(corpBasicinfo.getLegalManIdcardNumber());
             // 上传企业信息
-            String resString = GovConnecter.getGovData("Corp.Upload",
-                JSONObject
-                    .toJSONStringWithDateFormat(corpBasicinfo, "yyyy-MM-dd")
-                    .toString(),
-                defaultProjectConfig.getProjectCode(),
-                defaultProjectConfig.getSecret());
+            corpBasicinfoBO.refreshUploadStatus(codeReq,
+                    ECorpBasicUploadStatus.UPLOADING.getCode());
+            String resString;
+            try {
+                resString = GovConnecter
+                        .getGovData("Corp.Upload",
+                                JSONObject.toJSONStringWithDateFormat(corpBasicinfo,
+                                        "yyyy-MM-dd").toString(),
+                                defaultProjectConfig.getProjectCode(),
+                                defaultProjectConfig.getSecret());
+            } catch (Exception e) {
+                corpBasicinfoBO.refreshUploadStatus(codeReq,
+                        ECorpBasicUploadStatus.UPLOAD_FAIL.getCode());
+                e.printStackTrace();
+                throw e;
+            }
 
             // 添加操作日志
             String logCode = operateLogBO.saveOperateLog(
@@ -155,7 +137,8 @@ public class CorpBasicinfoAOImpl implements ICorpBasicinfoAO {
             // 添加到上传状态更新队列
             AsyncQueueHolder.addSerial(resString, defaultProjectConfig,
                 "corpBasicinfoBO", corpBasicinfo.getCode(),
-                EUploadStatus.UPLOAD_UNEDITABLE.getCode(), logCode);
+                    ECorpBasicUploadStatus.UPLOAD_UNEDITABLE.getCode(), logCode,
+                    userId);
 
         }
     }
@@ -187,16 +170,6 @@ public class CorpBasicinfoAOImpl implements ICorpBasicinfoAO {
     @Override
     public Paginable<CorpBasicinfo> queryCorpBasicinfoPage(String userId,
             int start, int limit, CorpBasicinfo condition) {
-        // User briefUser = userBO.getBriefUser(userId);
-        // if (briefUser != null) {
-        // if (briefUser.getType().equals(EUserKind.Owner.getCode())) {
-        // // 业主端
-        // String organizationCode = briefUser.getOrganizationCode();
-        // condition.setProjectCode(organizationCode);
-        // condition.setGroupBycorpcode(null);
-        // }
-        //
-        // }
 
         return corpBasicinfoBO.getPaginable(start, limit, condition);
     }
@@ -211,23 +184,4 @@ public class CorpBasicinfoAOImpl implements ICorpBasicinfoAO {
         return corpBasicinfoBO.getCorpBasicinfo(code);
     }
 
-    // @Override
-    // public void bindingProject(XN631254Req req) {
-    // CorpBasicinfo corpBasicinfo = corpBasicinfoBO
-    // .getCorpBasicinfo(req.getCode());
-    // List<String> projectCode = req.getProjectCodeList();
-    // for (String projectcode : projectCode) {
-    // if (corpBasicinfo.getProjectCode() != null
-    // && corpBasicinfo.getProjectCode().equals(projectcode)) {
-    // continue;
-    // }
-    // CorpBasicinfo copyCorpBasicinfo = corpBasicinfo;
-    // copyCorpBasicinfo.setCode(OrderNoGenerater
-    // .generate(EGeneratePrefix.CorpBasicinfo.getCode()));
-    // copyCorpBasicinfo.setProjectCode(projectcode);
-    // Project project = projectBO.getProject(projectcode);
-    // copyCorpBasicinfo.setProjectName(project.getName());
-    // corpBasicinfoBO.insertCorpBasicinfo(copyCorpBasicinfo);
-    // }
-    // }
 }

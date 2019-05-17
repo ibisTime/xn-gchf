@@ -1,6 +1,7 @@
 package com.cdkj.gchf.domain;
 
 import java.util.Date;
+import java.util.List;
 
 import com.cdkj.gchf.dao.base.ABaseDO;
 
@@ -153,6 +154,8 @@ public class ProjectWorker extends ABaseDO {
     private String remark;
 
     /****DB Properties****/
+    // 是否关联
+    private String isLink;
 
     // 民族
     private String nation;
@@ -218,6 +221,15 @@ public class ProjectWorker extends ABaseDO {
 
     // 建档时间
     private Date archiveDatetime;
+
+    private WorkerInfo workerInfo;
+
+    private List<String> uploadStatusList;
+
+    private String deviceKey;
+
+    // 实名制人员guid
+    private String personGuid;
 
     /**
      * DB properties
@@ -774,6 +786,85 @@ public class ProjectWorker extends ABaseDO {
 
     public void setRealTeamMasterName(String realTeamMasterName) {
         this.realTeamMasterName = realTeamMasterName;
+    }
+
+    public WorkerInfo getWorkerInfo() {
+        return workerInfo;
+    }
+
+    public void setWorkerInfo(WorkerInfo workerInfo) {
+        this.workerInfo = workerInfo;
+    }
+
+    public List<String> getUploadStatusList() {
+        return uploadStatusList;
+    }
+
+    public void setUploadStatusList(List<String> uploadStatusList) {
+        this.uploadStatusList = uploadStatusList;
+    }
+
+    public String getDeviceKey() {
+        return deviceKey;
+    }
+
+    public void setDeviceKey(String deviceKey) {
+        this.deviceKey = deviceKey;
+    }
+
+    public String getPersonGuid() {
+        return personGuid;
+    }
+
+    public void setPersonGuid(String personGuid) {
+        this.personGuid = personGuid;
+    }
+
+    public String getIsLink() {
+        return isLink;
+    }
+
+    public void setIsLink(String isLink) {
+        this.isLink = isLink;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 31;
+        int result = super.hashCode();
+        result = prime * result + ((code == null) ? 0 : code.hashCode());
+        result = prime * result
+                + ((projectName == null) ? 0 : projectName.hashCode());
+        result = prime * result
+                + ((workerCode == null) ? 0 : workerCode.hashCode());
+        return result;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj)
+            return true;
+        if (!super.equals(obj))
+            return false;
+        if (getClass() != obj.getClass())
+            return false;
+        ProjectWorker other = (ProjectWorker) obj;
+        if (code == null) {
+            if (other.code != null)
+                return false;
+        } else if (!code.equals(other.code))
+            return false;
+        if (projectName == null) {
+            if (other.projectName != null)
+                return false;
+        } else if (!projectName.equals(other.projectName))
+            return false;
+        if (workerCode == null) {
+            if (other.workerCode != null)
+                return false;
+        } else if (!workerCode.equals(other.workerCode))
+            return false;
+        return true;
     }
 
 }

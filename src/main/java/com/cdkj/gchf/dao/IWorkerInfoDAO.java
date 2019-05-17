@@ -1,5 +1,7 @@
 package com.cdkj.gchf.dao;
 
+import java.util.List;
+
 import com.cdkj.gchf.dao.base.IBaseDAO;
 import com.cdkj.gchf.domain.WorkerInfo;
 
@@ -15,4 +17,12 @@ public interface IWorkerInfoDAO extends IBaseDAO<WorkerInfo> {
 
     WorkerInfo selectBriefWorkerInfo(WorkerInfo condition);
 
+    int updateWorkerInfoAttendance(WorkerInfo condition);
+
+    int updateWorkerInfoAttendancePic(WorkerInfo condition);
+
+    public List<WorkerInfo> selectBrifeList(WorkerInfo condition, int start,
+                                            int count);
+
+    WorkerInfo selectWorkerInfo(String guid);
 }

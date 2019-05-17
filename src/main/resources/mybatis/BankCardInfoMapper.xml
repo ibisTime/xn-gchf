@@ -17,7 +17,6 @@
 		<result column="updater" property="updater" />
 		<result column="status" property="status" />
 
-		<result column="upload_status" property="uploadStatus" />
 	</resultMap>
 
 	<sql id="where_condition">
@@ -37,9 +36,6 @@
 			<if test="bankNumber != null and bankNumber != '' ">
 				AND t.bank_number = #{bankNumber}
 			</if>
-			<if test="uploadStatus != null and uploadStatus != '' ">
-				AND t.upload_status = #{uploadStatus}
-			</if>
 			<if test="status != null and status != '' ">
 				AND t.status = #{status}
 			</if>
@@ -49,6 +45,9 @@
 			<if test="businessName != null and businessName != '' ">
 				AND t.business_name like "%"#{businessName}"%"
 			</if>
+            <if test="bankCode != null and bankCode != '' ">
+                AND t.bank_code = #{bankCode}
+            </if>
 
 		</trim>
 	</sql>
@@ -68,7 +67,6 @@
 		,create_datetime
 		,update_datetime
 		,status
-		,upload_status
 		)
 		VALUES(
 		#{code}
@@ -83,7 +81,6 @@
 		,#{createDatetime}
 		,#{updateDatetime}
 		,#{status}
-		,#{uploadStatus}
 		)
 	</insert>
 
@@ -109,7 +106,8 @@
 		thf_bank_card_info
 		SET
 		status = #{status}
-		,update_datetime = #{updateDatetime}
+		,update_datetime =
+		#{updateDatetime}
 		WHERE code = #{code}
 	</update>
 
@@ -130,7 +128,6 @@
 		,t.updater
 		,t.update_datetime
 		,t.status
-		,t.upload_status
 		FROM
 		thf_bank_card_info t
 		<include refid="where_condition" />
@@ -143,7 +140,7 @@
 
 	<select id="select_bankCardInfo_count" parameterType="bankCardInfo"
 		resultType="java.lang.Long">
-		SELECT count(1) FROM tqy_corp_basicinfo t
+        SELECT count(1) FROM thf_bank_card_info t
 		<include refid="where_condition" />
 	</select>
 

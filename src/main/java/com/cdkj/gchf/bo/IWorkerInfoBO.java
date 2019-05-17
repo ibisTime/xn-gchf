@@ -14,33 +14,40 @@ import com.cdkj.gchf.dto.req.XN631793Req;
 
 public interface IWorkerInfoBO extends IPaginableBO<WorkerInfo> {
 
-    public boolean isWorkerInfoExist(String code);
 
-    public String saveWorkerInfo(XN631790Req req);
+    String saveWorkerInfo(XN631790Req req);
 
-    public String saveWorkerInfo(WorkerInfo workerInfo);
 
     String saveWorkerInfoByImport(XN631693ReqData data);
 
-    public int removeWorkerInfo(String code);
 
-    public int refreshWorkerInfo(XN631791Req req);
+    int refreshWorkerInfo(XN631791Req req);
 
-    public int refreshWorkerInfo(XN631792Req req);
+    int refreshWorkerInfo(XN631792Req req);
 
-    public int refreshWorkerInfo(XN631793Req req);
+    int refreshWorkerInfo(XN631793Req req);
 
-    public WorkerInfo getWorkerInfoByCelephone(String phone);
+    void refreshAttendancePic(String code, String attendancePicture,
+                              String workerUploadStatus, String attendancePicUploadStatus);
+
 
     public WorkerInfo getWorkerInfo(String code);
 
     public WorkerInfo getBriefWorkerInfo(String code);
 
-    public WorkerInfo getWorkerInfoByCondition(WorkerInfo workerInfo);
 
     public WorkerInfo getWorkerInfoByIdCardNumber(String idCardNumber);
 
+
     public List<WorkerInfo> queryWorkerInfoList(WorkerInfo condition);
+
+    void updateWorkerInfoAttendance(String code, String workerGuid,
+                                    String picGuid);
+
+    public List<WorkerInfo> queryStaffListBrief(WorkerInfo condition, int start,
+                                                int count);
+
+    public long queryTotalCount(WorkerInfo condition);
 
     /****国家平台接口****/
     public Paginable<WorkerInfo> doQuery(String idCardNumber,

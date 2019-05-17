@@ -15,33 +15,72 @@ import com.cdkj.gchf.dto.req.XN631908Req;
 import com.cdkj.gchf.dto.req.XN631909Req;
 import com.cdkj.gchf.dto.req.XN631910Req;
 
+/**
+ * @author old3
+ */
 @Component
 public interface ITeamMasterAO {
-    static final String DEFAULT_ORDER_COLUMN = "code";
+    String DEFAULT_ORDER_COLUMN = "code";
 
-    public String addTeamMaster(XN631650Req data);
+    /**
+     * 添加项目班组
+     */
+    String addTeamMaster(XN631650Req data);
 
-    public void dropTeamMaster(XN631651Req req);
+    /**
+     * 删除项目班组
+     */
+    void dropTeamMaster(XN631651Req req);
 
-    public void editTeamMaster(XN631652Req data);
+    /**
+     * 修改项目班组
+     */
+    void editTeamMaster(XN631652Req data);
 
-    public void uploadTeamMaster(List<String> codeList, String userId);
+    /**
+     * 导入项目班组
+     */
+    void importTeamMaster(XN631653Req req);
 
+    /**
+     * 上传项目班组
+     */
+    void uploadTeamMaster(List<String> codeList, String userId);
+
+    /**
+     * 修改平台项目班组信息
+     */
     void updatePlantformTeamMaster(XN631655Req req);
 
-    public Paginable<TeamMaster> queryTeamMasterPage(int start, int limit,
-            TeamMaster condition);
+    /**
+     * 上传项目班组
+     */
+    void uploadTeamMaster(XN631908Req data);
 
-    public List<TeamMaster> queryTeamMasterList(TeamMaster condition);
+    /**
+     * 修改国家平台项目班组
+     */
+    void updateTeamMaster(XN631909Req req);
 
-    public TeamMaster getTeamMaster(String code);
+    /**
+     * 分页查询国家平台项目班组
+     */
+    Paginable<TeamMaster> queryTeamMaster(XN631910Req req);
 
-    public void importTeamMaster(XN631653Req req);
+    /**
+     * 分页查
+     */
+    Paginable<TeamMaster> queryTeamMasterPage(int start, int limit,
+                                              TeamMaster condition);
 
-    /****国家平台接口****/
-    public void uploadTeamMaster(XN631908Req data);
+    /**
+     * 列表查
+     */
+    List<TeamMaster> queryTeamMasterList(TeamMaster condition);
 
-    public void updateTeamMaster(XN631909Req req);
+    /**
+     * code查
+     */
+    TeamMaster getTeamMaster(String code);
 
-    public Paginable<TeamMaster> queryTeamMaster(XN631910Req req);
 }

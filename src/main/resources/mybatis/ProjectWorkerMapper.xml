@@ -62,6 +62,15 @@
 		<result column="team_name" property="realTeamMasterName" />
 	</resultMap>
 
+	<sql id="join_condition">
+		<if test=" personGuid != null and personGuid != '' ">
+			join thf_worker_info wi on t.worker_code = wi.code
+		</if>
+		<if test=" deviceKey != null and personGuid != '' ">
+			join thf_equipment_worker ew on ew.worker_code = t.code
+		</if>
+	</sql>
+
 	<sql id="where_condition">
 		<trim prefix="WHERE" prefixOverrides="AND | OR">
 			<if test="code != null and code != '' ">
@@ -72,6 +81,9 @@
 			</if>
 			<if test="corpCode != null and corpCode != '' ">
 				AND t.corp_code = #{corpCode}
+			</if>
+			<if test="corpName != null and corpName != '' ">
+				AND t.corp_name like "%"#{corpName}"%"
 			</if>
 			<if test="teamSysNo != null and teamSysNo != '' ">
 				AND t.team_sys_no = #{teamSysNo}
@@ -97,9 +109,21 @@
 			<if test="realTeamMasterName != null and realTeamMasterName != '' ">
 				AND t.team_name = #{realTeamMasterName}
 			</if>
+			<if test="uploadStatusList != null and uploadStatusList.size() != 0 ">
+				AND t.upload_status in
+				<foreach item="item" index="index" collection="uploadStatusList"
+						 open="(" separator="," close=")">
+					#{item}
+				</foreach>
+			</if>
+			<if test=" personGuid != null and personGuid != '' ">
+				AND wi.worker_guid = #{personGuid}
+			</if>
+			<if test="deviceKey != null and deviceKey != '' ">
+				AND ew.device_key = #{deviceKey}
+			</if>
 		</trim>
 	</sql>
-
 
 	<insert id="insert_projectWorker" parameterType="projectWorker">
 		INSERT INTO
@@ -217,36 +241,164 @@
 		,#{deleteStatus}
 		)
 	</insert>
+
+	<insert id="batch_insert">
+		INSERT INTO
+		thf_project_worker(
+		code
+		,project_code
+		,project_name
+		,corp_code
+		,corp_name
+
+		,team_sys_no
+		,team_name
+		,worker_code
+		,worker_name
+		,worker_mobile
+
+		,is_team_leader
+		,idcard_type
+		,idcard_number
+		,work_type
+		,work_role
+
+		,type
+		,entry_time
+		,exit_time
+		,entry_attachment_url
+		,exit_attachment_url
+
+		,issue_card_date
+		,issue_card_pic_url
+		,card_number
+		,pay_roll_bank_card_number
+		,pay_roll_bank_name
+
+		,pay_roll_top_bank_name
+		,bank_name
+		,bank_link_number
+		,pay_roll_top_bank_code
+		,has_contract
+		,has_buy_insurance
+
+		,position
+		,salary
+		,cut_amount
+		,status
+		,salary_status
+		,join_datetime
+
+		,leaving_datetime
+		,start_datetime
+		,last_leaving_days
+		,end_datetime
+		,total_leaving_days
+
+		,updater
+		,update_datetime
+		,remark
+		,upload_status
+		,delete_status
+		)
+		VALUES
+		<foreach collection="list" separator="," open="" item="projectWorker" close="" index="index">
+			(
+			#{projectWorker.code}
+			,#{projectWorker.projectCode}
+			,#{projectWorker.projectName}
+			,#{projectWorker.corpCode}
+			,#{projectWorker.corpName}
+			,#{projectWorker.teamSysNo}
+
+			,#{projectWorker.teamName}
+			,#{projectWorker.workerCode}
+			,#{projectWorker.workerName}
+			,#{projectWorker.workerMobile}
+			,#{projectWorker.isTeamLeader}
+			,#{projectWorker.idcardType}
+			,#{projectWorker.idcardNumber}
+
+			,#{projectWorker.workType}
+			,#{projectWorker.workRole}
+			,#{projectWorker.type}
+			,#{projectWorker.entryTime}
+			,#{projectWorker.exitTime}
+			,#{projectWorker.entryAttachmentUrl}
+
+			,#{projectWorker.exitAttachmentUrl}
+			,#{projectWorker.issueCardDate}
+			,#{projectWorker.issueCardPicUrl}
+			,#{projectWorker.cardNumber}
+			,#{projectWorker.payRollBankCardNumber}
+
+			,#{projectWorker.payRollBankName}
+			,#{projectWorker.payRollTopBankName}
+			,#{projectWorker.bankName}
+			,#{projectWorker.bankLinkNumber}
+			,#{projectWorker.payRollTopBankCode}
+			,#{projectWorker.hasContract}
+
+			,#{projectWorker.hasBuyInsurance}
+			,#{projectWorker.position}
+			,#{projectWorker.salary}
+			,#{projectWorker.cutAmount}
+			,#{projectWorker.status}
+
+			,#{projectWorker.salaryStatus}
+			,#{projectWorker.joinDatetime}
+			,#{projectWorker.leavingDatetime}
+			,#{projectWorker.startDatetime}
+			,#{projectWorker.lastLeavingDays}
+
+			,#{projectWorker.endDatetime}
+			,#{projectWorker.totalLeavingDays}
+			,#{projectWorker.updater}
+			,#{projectWorker.updateDatetime}
+			,#{projectWorker.remark}
+			,#{projectWorker.uploadStatus}
+			,#{projectWorker.deleteStatus}
+			)
+		</foreach>
+
+
+	</insert>
 	<delete id="delete_projectWorker" parameterType="projectWorker">
 		delete from
 		thf_project_worker WHERE code = #{code}
 	</delete>
+
 	<update id="update_projectWorker_status" parameterType="projectWorker">
 		UPDATE
 		thf_project_worker
 		SET upload_status = #{uploadStatus}
-		WHERE code =
-		#{code}
+		WHERE code = #{code}
 	</update>
+
+	<update id="update_projectWorker_team_name" parameterType="projectWorker">
+		UPDATE
+		thf_project_worker
+		SET team_name = #{teamName}
+		WHERE team_sys_no =
+		#{teamSysNo}
+	</update>
+
 
 	<update id="update_projectWorker_delete_status" parameterType="projectWorker">
 		UPDATE
 		thf_project_worker t
 		SET
-		delete_status = #{deleteStatus}
+		t.delete_status = #{deleteStatus}
 		<trim prefix="WHERE" prefixOverrides="AND | OR">
+			<if test="teamSysNo != null and teamSysNo != '' ">
+				AND t.team_sys_no = #{teamSysNo}
+			</if>
+			<if test="workerCode != null and workerCode != '' ">
+				AND t.worker_code = #{workerCode}
+			</if>
 			<if test="code != null and code != '' ">
 				AND t.code = #{code}
 			</if>
-			<if test="uploadStatus != null and uploadStatus != '' ">
-				AND t.upload_status = #{uploadStatus}
-			</if>
-			<if test="projectCode != null and projectCode != '' ">
-				AND t.project_code = #{projectCode}
-			</if>
-             <if test="teamSysNo != null and teamSysNo != '' ">
-                AND t.team_sys_no = #{teamSysNo}
-            </if>   
 		</trim>
 
 	</update>
@@ -256,35 +408,66 @@
 		SET
 		upload_status = #{uploadStatus}
 		where
-		code = #{code}
+		code
+		= #{code}
 
+	</update>
+
+	<update id="update_projectWorker_worker_info">
+		UPDATE
+		thf_project_worker
+		SET
+		worker_name =
+		#{workerName}
+		,worker_mobile = #{workerMobile}
+		,idcard_type =
+		#{idcardType}
+		,idcard_number = #{idcardNumber}
+		where worker_code =
+		#{workerCode}
+	</update>
+
+	<update id="update_projectWorker_worker_info_phone">
+		UPDATE
+		thf_project_worker
+		SET
+		worker_mobile =
+		#{workerMobile}
+		where worker_code = #{workerCode}
 	</update>
 
 	<update id="update_projectWorker" parameterType="projectWorker">
 		UPDATE
 		thf_project_worker
 		SET
-		is_team_leader = #{isTeamLeader}
+		corp_code = #{corpCode}
+		,corp_name = #{corpName}
+		,is_team_leader = #{isTeamLeader}
 		,work_type = #{workType}
-		,work_role = #{workRole}
+		,work_role =
+		#{workRole}
 		,issue_card_date = #{issueCardDate}
-		,issue_card_pic_url = #{issueCardPicUrl}
-		
+		,issue_card_pic_url =
+		#{issueCardPicUrl}
+
 		,team_sys_no = #{teamSysNo}
 		,team_name = #{teamName}
 		,card_number = #{cardNumber}
-		,pay_roll_bank_card_number = #{payRollBankCardNumber}
+		,pay_roll_bank_card_number =
+		#{payRollBankCardNumber}
 		,pay_roll_bank_name = #{payRollBankName}
-		
+
 		,pay_roll_top_bank_name = #{payRollTopBankName}
-		,bank_link_number = #{bankLinkNumber}
+		,bank_link_number =
+		#{bankLinkNumber}
 		,pay_roll_top_bank_code = #{payRollTopBankCode}
 		,has_buy_insurance = #{hasBuyInsurance}
-        ,work_date = #{workDate}
-        
+		,work_date = #{workDate}
+
 		,join_datetime = #{joinDatetime}
 		,bank_name = #{bankName}
-		WHERE code = #{code}
+		WHERE code =
+		#{code}
 	</update>
 	<select id="select_projectWorker" parameterType="projectWorker"
 		resultMap="projectWorker_DB_Result">
@@ -347,6 +530,7 @@
 		,t.bank_name
 		FROM
 		thf_project_worker t
+		<include refid="join_condition"/>
 		<include refid="where_condition" />
 		<trim prefix="ORDER BY ">
 			<if test="order != null and order != '' ">
@@ -358,6 +542,7 @@
 	<select id="select_projectWorker_count" parameterType="projectWorker"
 		resultType="java.lang.Long">
 		SELECT count(1) FROM thf_project_worker t
+		<include refid="join_condition"/>
 		<include refid="where_condition" />
 	</select>
 

@@ -43,6 +43,9 @@
 			<if test="corpCode != null and corpCode != '' ">
 				AND t.corp_code = #{corpCode}
 			</if>
+            <if test="corpName != null and corpName != '' ">
+                AND t.corp_name like "%"#{corpName}"%"
+            </if>
 			<if test="teamName != null and teamName != '' ">
 				AND t.team_name LIKE CONCAT('%', #{teamName}, '%')
 			</if>
@@ -60,48 +63,6 @@
 			</if>
 		</trim>
 	</sql>
-
-	<select id="select_teamMaster" parameterType="teamMaster"
-		resultMap="teamMaster_DB_Result">
-		SELECT
-		t.code
-		,t.team_sys_no
-		,t.project_code
-		,t.corp_code
-		,t.corp_name
-		,t.team_name
-		,t.team_leader_name
-
-		,t.team_leader_phone
-		,t.team_leader_idcard_type
-		,t.team_leader_id_number
-		,t.responsible_person_name
-		,t.responsible_person_phone
-
-		,t.responsible_person_idcard_type
-		,t.responsible_person_id_number
-		,t.remark
-		,t.entry_time
-		,t.exit_time
-
-		,t.parent_code
-		,t.upload_status
-		,t.delete_status
-		FROM
-		thf_team_master t
-		<include refid="where_condition" />
-		<trim prefix="ORDER BY ">
-			<if test="order != null and order != '' ">
-				t.${order}
-			</if>
-		</trim>
-	</select>
-
-	<select id="select_teamMaster_count" parameterType="teamMaster"
-		resultType="java.lang.Long">
-		SELECT count(1) FROM thf_team_master t
-		<include refid="where_condition" />
-	</select>
 
 	<insert id="insert_teamMaster" parameterType="teamMaster">
 		INSERT INTO
@@ -157,29 +118,89 @@
 		)
 	</insert>
 
-	<update id="update_teamMaster" parameterType="teamMaster">
+    <insert id="batch_insert">
+        INSERT INTO
+        thf_team_master(
+        code
+        ,team_sys_no
+        ,project_code
+        ,corp_code
+        ,corp_name
+        ,team_name
+
+        ,team_leader_name
+        ,team_leader_phone
+        ,team_leader_idcard_type
+        ,team_leader_id_number
+        ,responsible_person_name
+
+        ,responsible_person_phone
+        ,responsible_person_idcard_type
+        ,responsible_person_id_number
+        ,remark
+        ,entry_time
+
+        ,exit_time
+        ,parent_code
+        ,upload_status
+        ,delete_status
+        )
+        VALUES
+        <foreach collection="list" item="teamMaster" open="" separator="," close="" index="index">
+            (#{teamMaster.code}
+            ,#{teamMaster.teamSysNo}
+            ,#{teamMaster.projectCode}
+            ,#{teamMaster.corpCode}
+            ,#{teamMaster.corpName}
+            ,#{teamMaster.teamName}
+
+            ,#{teamMaster.teamLeaderName}
+            ,#{teamMaster.teamLeaderPhone}
+            ,#{teamMaster.teamLeaderIdcardType}
+            ,#{teamMaster.teamLeaderIdNumber}
+            ,#{teamMaster.responsiblePersonName}
+
+            ,#{teamMaster.responsiblePersonPhone}
+            ,#{teamMaster.responsiblePersonIdcardType}
+            ,#{teamMaster.responsiblePersonIdNumber}
+            ,#{teamMaster.remark}
+            ,#{teamMaster.entryTime}
+
+            ,#{teamMaster.exitTime}
+            ,#{teamMaster.parentCode}
+            ,#{teamMaster.uploadStatus}
+            ,#{teamMaster.deleteStatus}
+            )
+        </foreach>
+
+
+    </insert>
+
+    <delete id="delete_teamMaster" parameterType="teamMaster">
+		delete
+		FROM
+		thf_team_master WHERE code = #{code}
+	</delete>
+
+    <update id="update_teamMaster" parameterType="teamMaster">
 		UPDATE
 		thf_team_master
 		SET
 		team_name = #{teamName}
-		,responsible_person_name =
-		#{responsiblePersonName}
-		,responsible_person_phone =
-		#{responsiblePersonPhone}
+		,responsible_person_name = #{responsiblePersonName}
+		,responsible_person_phone = #{responsiblePersonPhone}
 		,responsible_person_idcard_type =
 		#{responsiblePersonIdcardType}
-		,responsible_person_id_number =
-		#{responsiblePersonIdNumber}
+		,responsible_person_id_number = #{responsiblePersonIdNumber}
 		,entry_time = #{entryTime}
 		,team_leader_name = #{teamLeaderName}
-		,team_leader_phone =
-		#{teamLeaderPhone}
+
+		,team_leader_phone = #{teamLeaderPhone}
 		,team_leader_idcard_type = #{teamLeaderIdcardType}
 		,team_leader_id_number = #{teamLeaderIdNumber}
 		,exit_time = #{exitTime}
 		,remark = #{remark}
-		WHERE code
-		= #{code}
+		WHERE code = #{code}
 	</update>
 
 	<update id="update_teamMasterUploadStatus" parameterType="teamMaster">
@@ -195,35 +216,66 @@
 		UPDATE
 		thf_team_master t
 		SET
-		delete_status = #{deleteStatus}
-		<trim prefix="WHERE" prefixOverrides="AND|OR">
+        t.delete_status = #{deleteStatus}
+        <trim>
 			<if test="code != null and code != '' ">
-				AND code = #{code }
+                AND t.code = #{code}
 			</if>
-			<if test="uploadStatus != null and uploadStatus != '' ">
-				AND upload_status = #{uploadStatus }
-			</if>
-			<if test="projectCode != null and projectCode != '' ">
-				AND project_code = #{projectCode }
-			</if>
-			<if test="corpCode != null and corpCode != '' ">
-				AND corp_code = #{corpCode }
+            <if test="teamSysNo != null and teamSysNo != '' ">
+                AND t.team_sys_no = #{teamSysNo}
 			</if>
 		</trim>
 	</update>
 
 	<update id="update_teamMasterTeamSysNo" parameterType="teamMaster">
 		UPDATE
-		thf_team_master
+		thf_team_master  t
 		SET
-		team_sys_no = #{teamSysNo}
+		t.team_sys_no = #{teamSysNo}
 		WHERE code = #{code}
 	</update>
 
-	<delete id="delete_teamMaster" parameterType="teamMaster">
-		delete from
-		thf_team_master WHERE code = #{code}
-	</delete>
+    <select id="select_teamMaster" parameterType="teamMaster"
+            resultMap="teamMaster_DB_Result">
+        SELECT
+        t.code
+        ,t.team_sys_no
+        ,t.project_code
+        ,t.corp_code
+        ,t.corp_name
+        ,t.team_name
+        ,t.team_leader_name
+
+        ,t.team_leader_phone
+        ,t.team_leader_idcard_type
+        ,t.team_leader_id_number
+        ,t.responsible_person_name
+        ,t.responsible_person_phone
+
+        ,t.responsible_person_idcard_type
+        ,t.responsible_person_id_number
+        ,t.remark
+        ,t.entry_time
+        ,t.exit_time
+
+        ,t.parent_code
+        ,t.upload_status
+        ,t.delete_status
+        FROM
+        thf_team_master t
+        <include refid="where_condition"/>
+        <trim prefix="ORDER BY ">
+            <if test="order != null and order != '' ">
+                t.${order}
+            </if>
+        </trim>
+    </select>
+
+    <select id="select_teamMaster_count" parameterType="teamMaster"
+            resultType="java.lang.Long">
+        SELECT count(1) FROM thf_team_master t
+        <include refid="where_condition"/>
+    </select>
 
 
 </mapper>

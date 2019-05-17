@@ -13,25 +13,30 @@ import com.cdkj.gchf.dto.req.XN631901Req;
 
 public interface ICorpBasicinfoBO extends IPaginableBO<CorpBasicinfo> {
 
-    public String saveCorpBasicinfo(XN631250Req req);
+    String saveCorpBasicinfo(XN631250Req req);
 
-    String insertCorpBasicinfo(CorpBasicinfo corpBasicinfo);
 
-    public int removeCorpBasicinfo(String code);
+    int removeCorpBasicinfo(String code);
 
-    public void refreshCorpBasicinfo(XN631251Req data);
+    void refreshCorpBasicinfo(XN631251Req data);
 
+    /**
+     * 修改企业基本信息上传状态
+     *
+     * @param code         主键code
+     * @param uploadStatus 上传状态
+     */
     void refreshUploadStatus(String code, String uploadStatus);
 
-    public List<CorpBasicinfo> queryCorpBasicinfoList(CorpBasicinfo condition);
+    List<CorpBasicinfo> queryCorpBasicinfoList(CorpBasicinfo condition);
 
-    public CorpBasicinfo getCorpBasicinfo(String code);
+    CorpBasicinfo getCorpBasicinfo(String code);
 
-    public CorpBasicinfo getCorpBasicinfoByCorp(String corpCode);
+    CorpBasicinfo getCorpBasicinfoByCorp(String corpCode);
 
     /****国家平台接口****/
-    public void doUpload(XN631900Req req, ProjectConfig projectConfig);
+    void doUpload(XN631900Req req, ProjectConfig projectConfig);
 
-    public Paginable<CorpBasicinfo> doQuery(XN631901Req req,
-            ProjectConfig projectConfig);
+    Paginable<CorpBasicinfo> doQuery(XN631901Req req,
+                                     ProjectConfig projectConfig);
 }

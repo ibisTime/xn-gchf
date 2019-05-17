@@ -23,6 +23,9 @@ public class XN631791Req {
     @NotBlank
     private String negativeIdCardImageUrl;
 
+    // 考勤照片
+    private String attendancePicture;
+
     public String getUserId() {
         return userId;
     }
@@ -61,6 +64,14 @@ public class XN631791Req {
 
     public void setHandIdCardImageUrl(String handIdCardImageUrl) {
         this.handIdCardImageUrl = handIdCardImageUrl;
+    }
+
+    public String getAttendancePicture() {
+        return attendancePicture;
+    }
+
+    public void setAttendancePicture(String attendancePicture) {
+        this.attendancePicture = attendancePicture;
     }
 
 }

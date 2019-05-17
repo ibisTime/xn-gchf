@@ -23,6 +23,7 @@ import com.cdkj.gchf.common.AesUtils;
 import com.cdkj.gchf.common.DateUtil;
 import com.cdkj.gchf.core.OrderNoGenerater;
 import com.cdkj.gchf.dao.IPayRollDAO;
+import com.cdkj.gchf.domain.CorpBasicinfo;
 import com.cdkj.gchf.domain.PayRoll;
 import com.cdkj.gchf.domain.PayRollDetail;
 import com.cdkj.gchf.domain.ProjectConfig;
@@ -51,7 +52,7 @@ public class PayRollBOImpl extends PaginableBOImpl<PayRoll>
     private ITeamMasterBO teamMasterBO;
 
     @Override
-    public String savePayRoll(XN631770Req data) {
+    public String savePayRoll(XN631770Req data, CorpBasicinfo corpBasicInfo) {
         PayRoll payRoll = new PayRoll();
 
         BeanUtils.copyProperties(data, payRoll);
@@ -62,7 +63,27 @@ public class PayRollBOImpl extends PaginableBOImpl<PayRoll>
             Date payMonth = DateUtil.strToDate(data.getPayMonth(), "yyyy-MM");
             payRoll.setPayMonth(payMonth);
         }
+        payRoll.setCorpName(corpBasicInfo.getCorpName());
+        payRoll.setDeleteStatus(EDeleteStatus.NORMAL.getCode());
         payRollDAO.insert(payRoll);
+        return code;
+    }
+
+    @Override
+    public String savePayRoll(String corpCode, String projectCode,
+                              String corpName, String teamMasterNo, String payMonth) {
+        PayRoll payRollcondition = new PayRoll();
+        payRollcondition.setCorpCode(corpCode);
+        payRollcondition.setCorpName(corpName);
+        payRollcondition.setTeamSysNo(teamMasterNo);
+        Date toDate = DateUtil.strToDate(payMonth, "yyyy-MM");
+        payRollcondition.setProjectCode(projectCode);
+        payRollcondition.setDeleteStatus(EDeleteStatus.NORMAL.getCode());
+        payRollcondition.setPayMonth(toDate);
+        String code = OrderNoGenerater
+                .generate(EGeneratePrefix.PayRoll.getCode());
+        payRollcondition.setCode(code);
+        payRollDAO.insert(payRollcondition);
         return code;
     }
 
@@ -197,6 +218,16 @@ public class PayRollBOImpl extends PaginableBOImpl<PayRoll>
     }
 
     @Override
+    public List<PayRoll> queryPayRollList(String projectCode,
+                                          String teamMasterNo, String corpCode) {
+        PayRoll payRollCondition = new PayRoll();
+        payRollCondition.setCorpCode(corpCode);
+        payRollCondition.setTeamSysNo(teamMasterNo);
+        payRollCondition.setProjectCode(projectCode);
+        return payRollDAO.selectList(payRollCondition);
+    }
+
+    @Override
     public PayRoll getPayRoll(String code) {
         PayRoll data = null;
         PayRoll condition = new PayRoll();
@@ -209,6 +240,14 @@ public class PayRollBOImpl extends PaginableBOImpl<PayRoll>
     }
 
     @Override
+    public List<PayRoll> getPayRollList(String payRollCode) {
+        PayRoll payRoll = new PayRoll();
+        payRoll.setPayRollCode(payRollCode);
+        payRoll.setDeleteStatus(EDeleteStatus.NORMAL.getCode());
+        return payRollDAO.selectList(payRoll);
+    }
+
+    @Override
     public PayRoll getPayRollByCondition(PayRoll condition) {
         return payRollDAO.select(condition);
     }
@@ -218,6 +257,7 @@ public class PayRollBOImpl extends PaginableBOImpl<PayRoll>
         String code = null;
         code = OrderNoGenerater.generate(EGeneratePrefix.PayRoll.getCode());
         payRoll.setCode(code);
+        payRoll.setDeleteStatus(EDeleteStatus.NORMAL.getCode());
         payRollDAO.insert(payRoll);
         return code;
     }
@@ -247,8 +287,11 @@ public class PayRollBOImpl extends PaginableBOImpl<PayRoll>
         payRoll.setTeamSysNo(teamMasterSysNo);
         payRoll.setCorpCode(corpCode);
         payRoll.setProjectCode(projectCode);
-        payRoll.setPayMonth(DateUtil.strToDate(payMonth, "yyyy-MM"));
-
+        Date payM = DateUtil.strToDate(payMonth, "yyyy-MM");
+        payRoll.setPayMonth(payM);
+        if (payM == null) {
+            throw new BizException("XN000000", "发放工资参数异常,请联系管理员");
+        }
         return payRollDAO.select(payRoll);
     }
 

@@ -113,6 +113,21 @@ public class WorkerInfo extends ABaseDO {
     // 建档时间
     private Date createDatetime;
 
+    // 人脸考勤照片
+    private String attendancePicture;
+
+    // 人员guid
+    private String workerGuid;
+
+    // 考勤照片guid
+    private String workerAttendancePicGuid;
+
+    // 人脸上传状态
+    private String workerPicUploadStatus;
+
+    // 考勤人员上传状态
+    private String workerUploadStatus;
+
     /****DB Properties****/
 
     // 建档开始时间
@@ -120,6 +135,9 @@ public class WorkerInfo extends ABaseDO {
 
     // 建档结束时间
     private Date createDatetimeEnd;
+
+    // 项目端人员身份证号
+    private String businessIdCardNumber;
 
     public String getCode() {
         return code;
@@ -385,6 +403,46 @@ public class WorkerInfo extends ABaseDO {
         this.createDatetime = createDatetime;
     }
 
+    public String getAttendancePicture() {
+        return attendancePicture;
+    }
+
+    public void setAttendancePicture(String attendancePicture) {
+        this.attendancePicture = attendancePicture;
+    }
+
+    public String getWorkerGuid() {
+        return workerGuid;
+    }
+
+    public void setWorkerGuid(String workerGuid) {
+        this.workerGuid = workerGuid;
+    }
+
+    public String getWorkerAttendancePicGuid() {
+        return workerAttendancePicGuid;
+    }
+
+    public void setWorkerAttendancePicGuid(String workerAttendancePicGuid) {
+        this.workerAttendancePicGuid = workerAttendancePicGuid;
+    }
+
+    public String getWorkerPicUploadStatus() {
+        return workerPicUploadStatus;
+    }
+
+    public void setWorkerPicUploadStatus(String workerPicUploadStatus) {
+        this.workerPicUploadStatus = workerPicUploadStatus;
+    }
+
+    public String getWorkerUploadStatus() {
+        return workerUploadStatus;
+    }
+
+    public void setWorkerUploadStatus(String workerUploadStatus) {
+        this.workerUploadStatus = workerUploadStatus;
+    }
+
     public Date getCreateDatetimeStart() {
         return createDatetimeStart;
     }
@@ -399,6 +457,14 @@ public class WorkerInfo extends ABaseDO {
 
     public void setCreateDatetimeEnd(Date createDatetimeEnd) {
         this.createDatetimeEnd = createDatetimeEnd;
+    }
+
+    public String getBusinessIdCardNumber() {
+        return businessIdCardNumber;
+    }
+
+    public void setBusinessIdCardNumber(String businessIdCardNumber) {
+        this.businessIdCardNumber = businessIdCardNumber;
     }
 
 }

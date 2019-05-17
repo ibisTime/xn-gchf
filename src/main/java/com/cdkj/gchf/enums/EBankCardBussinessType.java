@@ -7,7 +7,7 @@ import com.cdkj.gchf.exception.BizException;
 
 public enum EBankCardBussinessType {
 
-    CORP("001", "参见单位"),
+    CORP("001", "参建单位"),
 
     USER("002", "个人用户");
 

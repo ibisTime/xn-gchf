@@ -48,6 +48,21 @@ public class WorkerAttendanceDAOImpl extends AMybatisTemplate
     }
 
     @Override
+    public void deleteWorkerAttendance(WorkerAttendance workerAttendance) {
+        super.delete(NAMESPACE.concat("delete_workerAttendance"), workerAttendance);
+    }
+
+    @Override
+    public void deleteWorkerAttendanceByWorkerCode(WorkerAttendance workerAttendance) {
+        super.delete(NAMESPACE.concat("deleteWorkerAttendanceByWorkerCode"), workerAttendance);
+    }
+
+    @Override
+    public void batchDeleteWorkerAttendacne(List<String> codes) {
+        super.deleteBatch(NAMESPACE.concat("batch_delete_workerAttendance"), codes);
+    }
+
+    @Override
     public int update(WorkerAttendance workerAttendance) {
         return super.update(NAMESPACE.concat("update_workerAttendance"),
             workerAttendance);
@@ -65,6 +80,14 @@ public class WorkerAttendanceDAOImpl extends AMybatisTemplate
         return super.update(
             NAMESPACE.concat("update_workerAttendance_delete_status"),
             workerAttendance);
+    }
+
+    @Override
+    public int updateWorkerAttendanceTeamName(
+            WorkerAttendance workerAttendance) {
+        return super.update(
+                NAMESPACE.concat("update_workerAttendance_team_name"),
+                workerAttendance);
     }
 
 }

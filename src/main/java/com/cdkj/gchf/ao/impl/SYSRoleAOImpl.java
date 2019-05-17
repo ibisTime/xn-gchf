@@ -103,7 +103,9 @@ public class SYSRoleAOImpl implements ISYSRoleAO {
         if (user != null) {
             name = EUser.ADMIN.getCode();
             if (!EUser.ADMIN.getCode().equals(user.getLoginName())) {
-                name = user.getRealName();
+                // name = user.getRealName();
+                name = user.getLoginName();
+
             }
         }
         return name;

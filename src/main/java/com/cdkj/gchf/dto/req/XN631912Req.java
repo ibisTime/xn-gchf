@@ -14,6 +14,10 @@ import org.hibernate.validator.constraints.NotBlank;
  */
 public class XN631912Req {
 
+    private String userId;
+
+    private String code;
+
     // 项目编码
     @NotBlank
     private String projectCode;
@@ -148,6 +152,22 @@ public class XN631912Req {
 
     // 证件有效期结束日期
     private String expiryDate;
+
+    public String getUserId() {
+        return userId;
+    }
+
+    public void setUserId(String userId) {
+        this.userId = userId;
+    }
+
+    public String getCode() {
+        return code;
+    }
+
+    public void setCode(String code) {
+        this.code = code;
+    }
 
     public String getProjectCode() {
         return projectCode;

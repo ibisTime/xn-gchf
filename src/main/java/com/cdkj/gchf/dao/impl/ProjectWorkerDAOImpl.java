@@ -18,6 +18,11 @@ public class ProjectWorkerDAOImpl extends AMybatisTemplate
     }
 
     @Override
+    public void batchInsertProjectWorker(List<ProjectWorker> projectWorkerList) {
+        super.insertBatch(NAMESPACE.concat("batch_insert"), projectWorkerList);
+    }
+
+    @Override
     public int delete(ProjectWorker data) {
         return super.delete(NAMESPACE.concat("delete_projectWorker"), data);
     }
@@ -77,6 +82,27 @@ public class ProjectWorkerDAOImpl extends AMybatisTemplate
         return super.update(
             NAMESPACE.concat("update_projectWorker_upload_status"),
             projectWorker);
+    }
+
+    @Override
+    public int updateProjectWorkerTeamName(ProjectWorker projectWorker) {
+
+        return super.update(NAMESPACE.concat("update_projectWorker_team_name"),
+                projectWorker);
+    }
+
+    @Override
+    public int updateProjectWorkerWorkerInfo(ProjectWorker projectWorker) {
+        return super.update(
+                NAMESPACE.concat("update_projectWorker_worker_info"),
+                projectWorker);
+    }
+
+    @Override
+    public int updateProjectWorkerWorkerPhone(ProjectWorker projectWorker) {
+        return super.update(
+                NAMESPACE.concat("update_projectWorker_worker_info_phone"),
+                projectWorker);
     }
 
 }

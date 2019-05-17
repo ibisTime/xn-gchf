@@ -48,6 +48,11 @@ public class WorkerContractDAOImpl extends AMybatisTemplate
     }
 
     @Override
+    public void batchInsert(List<WorkerContract> workerContractList) {
+        super.insertBatch(NAMESPACE.concat("batch_insert"), workerContractList);
+    }
+
+    @Override
     public int update(WorkerContract workerContract) {
         return super.update(NAMESPACE.concat("update_workerContract"),
             workerContract);

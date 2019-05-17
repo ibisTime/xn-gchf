@@ -26,12 +26,12 @@ public class AesUtils {
 
         // 密钥
         String sessionKey = "24484b262dd63dd584902a266bdbdca0";
-
+        String data2 = "1Pi22MPIWWbnHS0KxCnvlWkykQucReeUqvtRGwOtcvM=";
         // 获取加密数据
         String encryptedData = encrypt(data, sessionKey);
         System.out.println(encryptedData);
 
-        System.out.println(decrypt(encryptedData, sessionKey));
+        System.out.println("data2:" + decrypt(data2, sessionKey));
         System.out.println(decrypt(encryptedData, sessionKey));
     }
 

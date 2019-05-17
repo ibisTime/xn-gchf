@@ -15,28 +15,58 @@ import com.cdkj.gchf.dto.req.XN631812ReqData;
 import com.google.gson.JsonObject;
 
 public interface IPayRollDetailBO extends IPaginableBO<PayRollDetail> {
+    /**
+     * 保存工资明细
+     */
+    public void savePayRollDetail(String payRollCode, String teamSysNo,
+                                  String projectCode, String getPayMonth,
+                                  List<XN631770ReqDetail> data);
 
-    public void savePayRollDetail(String payRollCode, String projectCode,
-            String getPayMonth, List<XN631770ReqDetail> data);
-
+    /**
+     * 保存工资明细
+     */
     public String savePayRollDetail(PayRollDetail payRollDetail);
 
+    /**
+     * 保存工资明细
+     */
     public String savePayRollDetail(ProjectWorker projectWorker,
-            String payRollcode, XN631812ReqData xn631773ReqData);
+                                    String payRollcode, XN631812ReqData xn631773ReqData);
 
-    public int deletePayRollDetailByPayRollCode(String payRollCode);
+    /**
+     * 根据工资单编号删除工资单明细
+     */
+    int fakeDeletePayRollDetailByPayRollCode(String payRollCode);
 
-    int FakeDeletePayRollDetailByPayRollCode(String payRollCode);
-
+    /**
+     * 根据身份证号删除工资单明细
+     */
     int fakeDeletePayRollDetail(String idCardType, String idCardNumber,
             String projectCode);
 
+    /**
+     * 删除
+     */
     public int deletePayRollDetail(String code);
 
+    /**
+     * 修改工资明细
+     */
     public int updatePayRollDetail(XN631772Req req);
 
+    /**
+     * 修改工资明细
+     */
     public int updatePayRollDetail(XN631810Req data);
 
+    /**
+     * 修改工资上传状态
+     */
+    void refreshUploadStatus(String code, String uploadStatus);
+
+    /**
+     * 修改删除状态
+     */
     int updatePayRollDetailDeleteStatus(String code, String status);
 
     public List<PayRollDetail> queryList(PayRollDetail condition);
@@ -45,13 +75,14 @@ public interface IPayRollDetailBO extends IPaginableBO<PayRollDetail> {
 
     public PayRollDetail getPayRollDetail(String code);
 
-    void refreshUploadStatus(String code, String uploadStatus);
-
     public List<PayRollDetail> getPayRollDetailByPayRollCode(
             String payRollCode);
 
+    /**
+     * 获取上传国家平台的json
+     */
     public JsonObject getUploadRequestJsontoPlantform(PayRoll payRollData,
-            TeamMaster teamMasterData, ProjectConfig projectConfigData,
-            PayRollDetail payRollDetailData);
+                                                      TeamMaster teamMasterData, ProjectConfig projectConfigData,
+                                                      PayRollDetail payRollDetailData);
 
 }

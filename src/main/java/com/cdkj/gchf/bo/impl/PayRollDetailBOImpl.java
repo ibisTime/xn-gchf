@@ -16,6 +16,7 @@ import com.cdkj.gchf.bo.IProjectWorkerBO;
 import com.cdkj.gchf.bo.base.PaginableBOImpl;
 import com.cdkj.gchf.common.AesUtils;
 import com.cdkj.gchf.common.DateUtil;
+import com.cdkj.gchf.common.StringUtil;
 import com.cdkj.gchf.core.OrderNoGenerater;
 import com.cdkj.gchf.dao.impl.PayRollDetailDAOImpl;
 import com.cdkj.gchf.domain.BankCardInfo;
@@ -28,9 +29,11 @@ import com.cdkj.gchf.dto.req.XN631770ReqDetail;
 import com.cdkj.gchf.dto.req.XN631772Req;
 import com.cdkj.gchf.dto.req.XN631810Req;
 import com.cdkj.gchf.dto.req.XN631812ReqData;
+import com.cdkj.gchf.enums.EBankCardCodeType;
 import com.cdkj.gchf.enums.EDeleteStatus;
 import com.cdkj.gchf.enums.EGeneratePrefix;
-import com.cdkj.gchf.enums.EUploadStatus;
+import com.cdkj.gchf.enums.EIsNotType;
+import com.cdkj.gchf.enums.EPayRollUploadStatus;
 import com.cdkj.gchf.exception.BizException;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
@@ -48,82 +51,177 @@ public class PayRollDetailBOImpl extends PaginableBOImpl<PayRollDetail>
     private IBankCardBankBO bankCardBankBO;
 
     @Override
-    public void savePayRollDetail(String payRollCode, String projectCode,
-            String getPayMonth, List<XN631770ReqDetail> data) {
+    public String savePayRollDetail(PayRollDetail payRollDetail) {
+        String code = null;
+        code = OrderNoGenerater
+                .generate(EGeneratePrefix.PayRollDetail.getCode());
+        payRollDetail.setCode(code);
+        payRollDetail.setDeleteStatus(EDeleteStatus.NORMAL.getCode());
+        payRollDetailDAO.insert(payRollDetail);
+        return code;
+    }
+
+    @Override
+    public void savePayRollDetail(String payRollCode, String teamSysNo,
+                                  String projectCode, String getPayMonth,
+                                  List<XN631770ReqDetail> data) {
 
         for (XN631770ReqDetail detail : data) {
-            String code = OrderNoGenerater
-                .generate(EGeneratePrefix.PayRollDetail.getCode());
             PayRollDetail payRollDetail = new PayRollDetail();
-            payRollDetail.setPayRollCode(payRollCode);
+            if (!StringUtil.isNumber(detail.getActualAmount())) {
+                throw new BizException("XN631770", "实发金额不是数字类型");
+            }
+            if (!StringUtil.isNumber(detail.getTotalPayAmount())) {
+                throw new BizException("XN631770", "实发金额不是数字类型");
+            }
+
+            ProjectWorker projectWorker = projectWorkerBO
+                    .getProjectWorker(detail.getWorkerCode());
+
+            // 在校验项目人员银行卡信息
+            BankCardInfo bankCardInfoByNum = bankCardBankBO
+                    .getBankCardByIdCardNumBankNum(detail.getIdCardNumber(),
+                            detail.getPayRollBankCardNumber());
+            // 没有银行卡信息 新增
+            if (bankCardInfoByNum == null) {
+                bankCardBankBO.saveBankCardInfo(detail, projectWorker);
+            }
+            // 插入数据
             BeanUtils.copyProperties(detail, payRollDetail);
-            payRollDetail.setCode(code);
+            // 银行卡信息
+            payRollDetail
+                    .setPayRollBankCardNumber(detail.getPayRollBankCardNumber());
+            payRollDetail.setPayRollBankCode(detail.getPayRollBankCode());
+            payRollDetail.setPayRollBankName(detail.getPayRollBankName());
+            payRollDetail.setPayBankCode(detail.getPayBankCode());
+            payRollDetail.setPayBankName(detail.getPayBankName());
+
+            // 员工信息
+            payRollDetail.setWorkerName(projectWorker.getWorkerName());
+            payRollDetail.setIdcardNumber(projectWorker.getIdcardNumber());
+            payRollDetail.setIdcardType("01");
+            payRollDetail.setPayRollCode(payRollCode);
+            payRollDetail.setCode(OrderNoGenerater
+                    .generate(EGeneratePrefix.PayRollDetail.getCode()));
             if (StringUtils.isNotBlank(detail.getDays())) {
                 payRollDetail.setDays(Integer.parseInt(detail.getDays()));
             }
-
             if (StringUtils.isNotBlank(detail.getWorkHours())) {
                 payRollDetail
-                    .setWorkHours(new BigDecimal(detail.getWorkHours()));
+                        .setWorkHours(new BigDecimal(detail.getWorkHours()));
             }
-            String payRollBankCardNumber = detail.getPayRollBankCardNumber();
-            BankCardInfo bankCardInfoByNum = bankCardBankBO
-                .getBankCardInfoByNum(detail.getPayRollBankCardNumber());
-            if (payRollBankCardNumber == null) {
-                throw new BizException("XN631770", "项目银行卡号不能为空");
-            }
-            if (bankCardInfoByNum == null) {
-                ProjectWorker projectWorker = projectWorkerBO
-                    .getProjectWorker(payRollBankCardNumber);
+            payRollDetail
+                    .setActualAmount(new BigDecimal(detail.getActualAmount()));
+            if (StringUtils.isNotBlank(detail.getIsBackPay())) {
 
-                throw new BizException("XN631770",
-                    "员工银行卡未绑定【" + projectWorker.getWorkerName() + "】");
+                if (detail.getIsBackPay().equals(EIsNotType.IS.getCode())) {
+                    payRollDetail.setBackPayMonth(DateUtil
+                            .strToDate(detail.getBackPayMonth(), "yyyy-MM"));
+                }
+                payRollDetail
+                        .setIsBackPay(Integer.parseInt(detail.getIsBackPay()));
             }
-            String workerCode = bankCardInfoByNum.getBusinessSysNo();
-            ProjectWorker workerByBankCard = projectWorkerBO
-                .getProjectWorker(workerCode);
-            if (null == workerByBankCard) {
-                throw new BizException("XN631733", "项目人员银行卡信息未绑定【"
-                        + bankCardInfoByNum.getBusinessSysNo() + "】");
-            }
-            payRollDetail.setWorkerName(workerByBankCard.getWorkerName());
-            payRollDetail.setIdcardNumber(workerByBankCard.getIdcardNumber());
-            payRollDetail.setIdcardType("01");
-
+            payRollDetail
+                    .setTotalPayAmount(new BigDecimal(detail.getTotalPayAmount()));
             Date toDate;
             try {
                 toDate = DateUtil.strToDate(detail.getBalanceDate(),
-                    "yyyy-MM-dd");
+                        "yyyy-MM-dd");
 
             } catch (Exception e) {
                 Date strToDate = DateUtil.strToDate(detail.getBalanceDate(),
-                    "yyyy/mm/dd");
+                        "yyyy/mm/dd");
                 String format = new SimpleDateFormat("yyyy-MM-dd")
-                    .format(strToDate);
+                        .format(strToDate);
                 toDate = DateUtil.strToDate(format, "yyyy-MM-dd");
             }
-            payRollDetail.setBalanceDate(toDate);
-
             payRollDetail
-                .setActualAmount(new BigDecimal(detail.getActualAmount()));
-            if (StringUtils.isNotBlank(detail.getIsBackPay())) {
-                payRollDetail
-                    .setIsBackPay(Integer.parseInt(detail.getIsBackPay()));
-            }
-            payRollDetail
-                .setTotalPayAmount(new BigDecimal(detail.getTotalPayAmount()));
-            payRollDetail.setUploadStatus(EUploadStatus.TO_UPLOAD.getCode());
+                    .setUploadStatus(EPayRollUploadStatus.TO_UPLOAD.getCode());
             payRollDetail.setDeleteStatus(EDeleteStatus.NORMAL.getCode());
-
+            payRollDetail.setBalanceDate(toDate);
             payRollDetailDAO.insert(payRollDetail);
         }
     }
 
     @Override
-    public int deletePayRollDetailByPayRollCode(String payRollcode) {
+    public String savePayRollDetail(ProjectWorker projectWorker,
+                                    String payRollcode, XN631812ReqData data) {
+        String code = null;
         PayRollDetail payRollDetail = new PayRollDetail();
         payRollDetail.setPayRollCode(payRollcode);
-        return payRollDetailDAO.delete(payRollDetail);
+        BeanUtils.copyProperties(data, payRollDetail);
+        if (StringUtils.isNotBlank(data.getDays())) {
+            payRollDetail.setDays(Integer.parseInt(data.getDays()));
+        }
+        if (StringUtils.isNotBlank(data.getWorkHours())) {
+            payRollDetail.setWorkHours(new BigDecimal(data.getWorkHours()));
+        }
+        if (StringUtils.isNotBlank(data.getTotalPayAmount())) {
+            payRollDetail
+                    .setTotalPayAmount(new BigDecimal(data.getTotalPayAmount()));
+        }
+        if (StringUtils.isNotBlank(data.getActualAmount())) {
+            payRollDetail
+                    .setActualAmount(new BigDecimal(data.getActualAmount()));
+        }
+        if (StringUtils.isNotBlank(data.getIsBackPay())) {
+            payRollDetail.setIsBackPay(Integer.parseInt(data.getIsBackPay()));
+
+        }
+        if (StringUtils.isNotBlank(data.getDays())) {
+            payRollDetail.setDays(Integer.parseInt(data.getDays()));
+        }
+        if (StringUtils.isNotBlank(data.getBackPayMonth())) {
+            payRollDetail.setBackPayMonth(
+                    DateUtil.strToDate(data.getBackPayMonth(), "yyyy-MM"));
+
+        }
+
+        payRollDetail.setBalanceDate(DateUtil.strToDate(data.getBalanceDate(),
+                DateUtil.FRONT_DATE_FORMAT_STRING));
+        payRollDetail.setIdcardType("01");
+        payRollDetail.setWorkerName(projectWorker.getWorkerName());
+        payRollDetail.setIdcardNumber(projectWorker.getIdcardNumber());
+        if (StringUtils.isNotBlank(data.getPayRollBankCode())) {
+            payRollDetail.setPayRollBankCode(data.getPayBankCode());
+            payRollDetail.setPayRollBankName(EBankCardCodeType
+                    .getBankCardType(data.getPayBankCode()).getValue());
+
+        }
+        code = OrderNoGenerater
+                .generate(EGeneratePrefix.PayRollDetail.getCode());
+        payRollDetail.setUploadStatus(EPayRollUploadStatus.TO_UPLOAD.getCode());
+        payRollDetail.setDeleteStatus(EDeleteStatus.NORMAL.getCode());
+        payRollDetail.setCode(code);
+        payRollDetailDAO.insert(payRollDetail);
+        return code;
+    }
+
+    @Override
+    public int fakeDeletePayRollDetail(String idCardType, String idCardNumber,
+                                       String projectCode) {
+        PayRollDetail payRollDetail = new PayRollDetail();
+        payRollDetail.setProjectCode(projectCode);
+        payRollDetail.setIdcardNumber(idCardNumber);
+        payRollDetail.setIdcardType("01");
+        payRollDetail.setUploadStatus(EPayRollUploadStatus.TO_UPLOAD.getCode());
+        return payRollDetailDAO.updatePayRollDetailDeleteStatus(payRollDetail);
+    }
+
+    @Override
+    public int fakeDeletePayRollDetailByPayRollCode(String payRollCode) {
+        PayRollDetail payRollDetail = new PayRollDetail();
+        payRollDetail.setPayRollCode(payRollCode);
+        payRollDetail.setUploadStatus(EPayRollUploadStatus.TO_UPLOAD.getCode());
+        payRollDetail.setDeleteStatus(EDeleteStatus.DELETED.getCode());
+        return payRollDetailDAO.updatePayRollDetailDeleteStatus(payRollDetail);
+    }
+
+    @Override
+    public int deletePayRollDetail(String code) {
+        PayRollDetail data = new PayRollDetail();
+        data.setCode(code);
+        return payRollDetailDAO.delete(data);
     }
 
     @Override
@@ -132,6 +230,49 @@ public class PayRollDetailBOImpl extends PaginableBOImpl<PayRollDetail>
         payRollDetail.setCode(code);
         payRollDetail.setDeleteStatus(EDeleteStatus.DELETED.getCode());
         return payRollDetailDAO.updatePayRollDetailDeleteStatus(payRollDetail);
+    }
+
+    @Override
+    public int updatePayRollDetail(XN631810Req data) {
+        PayRollDetail condition = new PayRollDetail();
+        condition.setCode(data.getCode());
+        BeanUtils.copyProperties(data, condition);
+        if (StringUtils.isNotBlank(data.getActualAmount())) {
+            condition.setActualAmount(new BigDecimal(data.getActualAmount()));
+        }
+        if (StringUtils.isNotEmpty(data.getWorkHours())) {
+            condition.setWorkHours(new BigDecimal(data.getWorkHours()));
+        }
+        if (StringUtils.isNotBlank(data.getBalanceDate())) {
+            Date balanceDate = DateUtil.strToDate(data.getBalanceDate(),
+                    DateUtil.FRONT_DATE_FORMAT_STRING);
+            condition.setBalanceDate(balanceDate);
+        }
+        if (StringUtils.isNotBlank(data.getIsBackPay())) {
+            condition.setIsBackPay(Integer.parseInt(data.getIsBackPay()));
+        }
+        if (StringUtils.isNotBlank(data.getTotalPayAmount())) {
+            condition
+                    .setTotalPayAmount(new BigDecimal(data.getTotalPayAmount()));
+        }
+        if (StringUtils.isNotBlank(data.getBackPayMonth())) {
+            condition.setBackPayMonth(
+                    DateUtil.strToDate(data.getBackPayMonth(), "yyyy-MM"));
+        }
+        if (StringUtils.isNotBlank(data.getDays())) {
+            condition.setDays(Integer.parseInt(data.getDays()));
+        }
+        condition.setDeleteStatus(EDeleteStatus.NORMAL.getCode());
+        condition.setUploadStatus(EPayRollUploadStatus.TO_UPLOAD.getCode());
+        return payRollDetailDAO.update(condition);
+    }
+
+    @Override
+    public void refreshUploadStatus(String code, String uploadStatus) {
+        PayRollDetail payRollDetail = new PayRollDetail();
+        payRollDetail.setCode(code);
+        payRollDetail.setUploadStatus(uploadStatus);
+        payRollDetailDAO.updateStatus(payRollDetail);
     }
 
     @Override
@@ -232,129 +373,8 @@ public class PayRollDetailBOImpl extends PaginableBOImpl<PayRollDetail>
     }
 
     @Override
-    public int deletePayRollDetail(String code) {
-        PayRollDetail data = new PayRollDetail();
-        data.setCode(code);
-        return payRollDetailDAO.delete(data);
-    }
-
-    @Override
-    public String savePayRollDetail(PayRollDetail payRollDetail) {
-        String code = null;
-        code = OrderNoGenerater
-            .generate(EGeneratePrefix.PayRollDetail.getCode());
-        payRollDetail.setCode(code);
-        payRollDetail.setDeleteStatus(EDeleteStatus.NORMAL.getCode());
-        payRollDetailDAO.insert(payRollDetail);
-        return code;
-    }
-
-    @Override
     public List<PayRollDetail> queryList(PayRollDetail condition) {
         return payRollDetailDAO.selectList(condition);
-    }
-
-    @Override
-    public int updatePayRollDetail(XN631810Req data) {
-        PayRollDetail condition = new PayRollDetail();
-        condition.setCode(data.getCode());
-        BeanUtils.copyProperties(data, condition);
-        if (StringUtils.isNotBlank(data.getActualAmount())) {
-            condition.setActualAmount(new BigDecimal(data.getActualAmount()));
-        }
-        if (StringUtils.isNotEmpty(data.getWorkHours())) {
-            condition.setWorkHours(new BigDecimal(data.getWorkHours()));
-        }
-        if (StringUtils.isNotBlank(data.getBalanceDate())) {
-            Date balanceDate = DateUtil.strToDate(data.getBalanceDate(),
-                DateUtil.FRONT_DATE_FORMAT_STRING);
-            condition.setBalanceDate(balanceDate);
-        }
-        if (StringUtils.isNotBlank(data.getIsBackPay())) {
-            condition.setIsBackPay(Integer.parseInt(data.getIsBackPay()));
-        }
-        if (StringUtils.isNotBlank(data.getTotalPayAmount())) {
-            condition
-                .setTotalPayAmount(new BigDecimal(data.getTotalPayAmount()));
-        }
-        if (StringUtils.isNotBlank(data.getDays())) {
-            condition.setDays(Integer.parseInt(data.getDays()));
-        }
-        condition.setDeleteStatus(EDeleteStatus.NORMAL.getCode());
-        condition.setUploadStatus(EUploadStatus.TO_UPLOAD.getCode());
-        return payRollDetailDAO.update(condition);
-    }
-
-    @Override
-    public void refreshUploadStatus(String code, String uploadStatus) {
-        PayRollDetail payRollDetail = new PayRollDetail();
-        payRollDetail.setCode(code);
-        payRollDetail.setUploadStatus(uploadStatus);
-        payRollDetailDAO.updateStatus(payRollDetail);
-    }
-
-    @Override
-    public String savePayRollDetail(ProjectWorker projectWorker,
-            String payRollcode, XN631812ReqData data) {
-        String code = null;
-        PayRollDetail payRollDetail = new PayRollDetail();
-        payRollDetail.setPayRollCode(payRollcode);
-        BeanUtils.copyProperties(data, payRollDetail);
-        if (StringUtils.isNotBlank(data.getDays())) {
-            payRollDetail.setDays(Integer.parseInt(data.getDays()));
-        }
-        if (StringUtils.isNotBlank(data.getWorkHours())) {
-            payRollDetail.setWorkHours(new BigDecimal(data.getWorkHours()));
-        }
-        if (StringUtils.isNotBlank(data.getTotalPayAmount())) {
-            payRollDetail
-                .setTotalPayAmount(new BigDecimal(data.getTotalPayAmount()));
-        }
-        if (StringUtils.isNotBlank(data.getActualAmount())) {
-            payRollDetail
-                .setActualAmount(new BigDecimal(data.getActualAmount()));
-        }
-        if (StringUtils.isNotBlank(data.getIsBackPay())) {
-            payRollDetail.setIsBackPay(Integer.parseInt(data.getIsBackPay()));
-
-        }
-        if (StringUtils.isNotBlank(data.getDays())) {
-            payRollDetail.setDays(Integer.parseInt(data.getDays()));
-        }
-
-        payRollDetail.setBalanceDate(DateUtil.strToDate(data.getBalanceDate(),
-            DateUtil.FRONT_DATE_FORMAT_STRING));
-        payRollDetail.setIdcardType("01");
-        payRollDetail.setWorkerName(projectWorker.getWorkerName());
-        payRollDetail.setIdcardNumber(projectWorker.getIdcardNumber());
-
-        code = OrderNoGenerater
-            .generate(EGeneratePrefix.PayRollDetail.getCode());
-        payRollDetail.setUploadStatus(EUploadStatus.TO_UPLOAD.getCode());
-        payRollDetail.setDeleteStatus(EDeleteStatus.NORMAL.getCode());
-        payRollDetail.setCode(code);
-        payRollDetailDAO.insert(payRollDetail);
-        return code;
-    }
-
-    @Override
-    public int fakeDeletePayRollDetail(String idCardType, String idCardNumber,
-            String projectCode) {
-        PayRollDetail payRollDetail = new PayRollDetail();
-        payRollDetail.setProjectCode(projectCode);
-        payRollDetail.setIdcardNumber(idCardNumber);
-        payRollDetail.setIdcardType("01");
-        payRollDetail.setUploadStatus(EUploadStatus.TO_UPLOAD.getCode());
-        return payRollDetailDAO.updatePayRollDetailDeleteStatus(payRollDetail);
-    }
-
-    @Override
-    public int FakeDeletePayRollDetailByPayRollCode(String payRollCode) {
-        PayRollDetail payRollDetail = new PayRollDetail();
-        payRollDetail.setPayRollCode(payRollCode);
-        payRollDetail.setUploadStatus(EUploadStatus.TO_UPLOAD.getCode());
-        payRollDetail.setDeleteStatus(EDeleteStatus.DELETED.getCode());
-        return payRollDetailDAO.updatePayRollDetailDeleteStatus(payRollDetail);
     }
 
 }

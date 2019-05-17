@@ -3,7 +3,6 @@ package com.cdkj.gchf.dto.req;
 import java.util.List;
 
 import org.hibernate.validator.constraints.NotBlank;
-import org.hibernate.validator.constraints.NotEmpty;
 
 /**
  * 修改项目基本信息
@@ -18,7 +17,6 @@ public class XN631602Req {
     private String code;
 
     // 总承包单位统一社会信用代码
-    @NotBlank
     private String contractorCorpCode;
 
     // 总承包单位名称
@@ -135,7 +133,6 @@ public class XN631602Req {
     private String userId;
 
     // 施工许可证
-    @NotEmpty
     private List<XN631600ReqLicenses> builderLicenses;
 
     public String getContractorCorpCode() {

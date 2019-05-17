@@ -1,8 +1,6 @@
 package com.cdkj.gchf.ao.impl;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 import org.apache.commons.collections.CollectionUtils;
@@ -13,21 +11,18 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.cdkj.gchf.ao.IPayRollAO;
-import com.cdkj.gchf.bo.IBankCardBankBO;
 import com.cdkj.gchf.bo.ICorpBasicinfoBO;
 import com.cdkj.gchf.bo.IOperateLogBO;
 import com.cdkj.gchf.bo.IPayRollBO;
 import com.cdkj.gchf.bo.IPayRollDetailBO;
 import com.cdkj.gchf.bo.IProjectBO;
 import com.cdkj.gchf.bo.IProjectConfigBO;
-import com.cdkj.gchf.bo.IProjectCorpInfoBO;
 import com.cdkj.gchf.bo.IProjectWorkerBO;
 import com.cdkj.gchf.bo.ITeamMasterBO;
 import com.cdkj.gchf.bo.IUserBO;
 import com.cdkj.gchf.bo.base.Paginable;
 import com.cdkj.gchf.common.AesUtils;
 import com.cdkj.gchf.common.DateUtil;
-import com.cdkj.gchf.domain.BankCardInfo;
 import com.cdkj.gchf.domain.CorpBasicinfo;
 import com.cdkj.gchf.domain.PayRoll;
 import com.cdkj.gchf.domain.PayRollDetail;
@@ -42,10 +37,11 @@ import com.cdkj.gchf.dto.req.XN631812Req;
 import com.cdkj.gchf.dto.req.XN631812ReqData;
 import com.cdkj.gchf.dto.req.XN631920Req;
 import com.cdkj.gchf.dto.req.XN631921Req;
-import com.cdkj.gchf.enums.EDeleteStatus;
+import com.cdkj.gchf.enums.EIsNotType;
 import com.cdkj.gchf.enums.EOperateLogOperate;
 import com.cdkj.gchf.enums.EOperateLogRefType;
-import com.cdkj.gchf.enums.EUploadStatus;
+import com.cdkj.gchf.enums.EPayRollUploadStatus;
+import com.cdkj.gchf.enums.EProjectWorkerUploadStatus;
 import com.cdkj.gchf.exception.BizException;
 import com.cdkj.gchf.gov.AsyncQueueHolder;
 import com.cdkj.gchf.gov.GovConnecter;
@@ -66,9 +62,6 @@ public class PayRollAOImpl implements IPayRollAO {
     private IProjectConfigBO projectConfigBO;
 
     @Autowired
-    private IProjectCorpInfoBO projectCorpInfoBO;
-
-    @Autowired
     private IUserBO userBO;
 
     @Autowired
@@ -84,42 +77,34 @@ public class PayRollAOImpl implements IPayRollAO {
     private IProjectBO projectBO;
 
     @Autowired
-    private IBankCardBankBO bankCardBankBO;
-
-    @Autowired
     private IProjectWorkerBO projectWorkerBO;
 
     @Transactional
     @Override
     public String addPayRoll(XN631770Req data) {
-        TeamMaster teamMaster = teamMasterBO.getTeamMaster(data.getTeamSysNo());
-        if (teamMaster == null) {
-            throw new BizException("XN631700", "所在班组不存在");
+
+        if (projectBO.getProject(data.getProjectCode()) == null) {
+            throw new BizException("XN631700", "请选择项目");
+        }
+        if (teamMasterBO.getTeamMaster(data.getTeamSysNo()) == null) {
+            throw new BizException("XN631700", "请选择班组");
         }
         CorpBasicinfo basicinfoByCorp = corpBasicinfoBO
             .getCorpBasicinfoByCorp(data.getCorpCode());
         if (basicinfoByCorp == null) {
             throw new BizException("XN631700", "企业信息不存在");
         }
-
-        String code = payRollBO.savePayRoll(data);
-        payRollDetailBO.savePayRollDetail(code, data.getProjectCode(),
-            data.getPayMonth(), data.getDetailList());
+        // 保存工资单信息
+        String code = payRollBO.savePayRoll(data, basicinfoByCorp);
+        // 保存明细信息
+        payRollDetailBO.savePayRollDetail(code, data.getTeamSysNo(),
+                data.getProjectCode(), data.getPayMonth(), data.getDetailList());
 
         User briefUser = userBO.getBriefUser(data.getUserId());
         operateLogBO.saveOperateLog(EOperateLogRefType.PayRoll.getCode(), code,
             EOperateLogRefType.PayRoll.getValue(), briefUser, "新增工资单" + code);
 
         return code;
-    }
-
-    @Override
-    public int editPayRoll(XN631772Req req) {
-        PayRoll payRoll = payRollBO.getPayRoll(req.getCode());
-        if (payRoll == null) {
-            throw new BizException("XN631772", "工资单不存在");
-        }
-        return payRollBO.updatePayRollDetail(req);
     }
 
     @Transactional
@@ -134,7 +119,7 @@ public class PayRollAOImpl implements IPayRollAO {
         for (PayRollDetail detail : queryListByPayRollDetail) {
             // 删除工资单详情
             if (detail.getUploadStatus() != null & detail.getUploadStatus()
-                .equals(EUploadStatus.UPLOAD_UNEDITABLE.getCode())) {
+                    .equals(EPayRollUploadStatus.UPLOAD_UNEDITABLE.getCode())) {
                 uploadedNationPlantformCodes.add(detail.getCode());
                 continue;
             }
@@ -150,6 +135,80 @@ public class PayRollAOImpl implements IPayRollAO {
     }
 
     @Override
+    public int editPayRoll(XN631772Req req) {
+        PayRoll payRoll = payRollBO.getPayRoll(req.getCode());
+        if (payRoll == null) {
+            throw new BizException("XN631772", "工资单不存在");
+        }
+        return payRollBO.updatePayRollDetail(req);
+    }
+
+    @Override
+    public void refreshPayRollCodeByLocal(String code, String payRollCode) {
+        PayRoll payRoll = new PayRoll();
+        payRoll.setCode(code);
+        payRoll.setPayRollCode(payRollCode);
+        payRollBO.refreshPayRoll(payRoll);
+    }
+
+    @Transactional
+    @Override
+    public void importPayRollCodeList(XN631812Req req) {
+        User user = userBO.getBriefUser(req.getUpdater());
+        Project project = projectBO.getProject(req.getProjectCode());
+
+        if (project == null) {
+            throw new BizException("XN631773", "项目不存在");
+        }
+        // excel字段中有工资单信息和明细信息 两张表操作
+        List<XN631812ReqData> dateList = req.getDateList();
+        for (XN631812ReqData data : dateList) {
+
+            TeamMaster teamMasterByCondition = teamMasterBO
+                    .getTeamMasterByProject(req.getProjectCode(),
+                            data.getCorpCode(), data.getTeamName());
+
+            if (teamMasterByCondition == null) {
+                throw new BizException("XN631812",
+                        "班组信息不存在【" + data.getTeamName() + "】");
+            }
+
+            List<ProjectWorker> workerList = projectWorkerBO.getProjectWorkers(
+                    data.getCorpCode(), data.getTeamName(), data.getWorkerName());
+            if (CollectionUtils.isEmpty(workerList)) {
+                continue;
+            }
+            ProjectWorker projectWorker = projectWorkerBO
+                    .getProjectWorker(workerList.get(0).getCode());
+            // 不存在相关工资单时相关联的工资单
+            String payRollCode = null;
+            PayRoll payRoll = payRollBO
+                    .getPayRollByCorpCodeAndTeamSysNoAndProjectCode(
+                            data.getCorpCode(), teamMasterByCondition.getCode(),
+                            req.getProjectCode(), data.getPayMonth());
+            if (payRoll == null) {
+
+                String savePayRollCode = payRollBO.savePayRoll(
+                        data.getCorpCode(), req.getProjectCode(),
+                        data.getCorpName(), teamMasterByCondition.getCode(),
+                        data.getPayMonth());
+
+                payRollCode = savePayRollCode;
+
+            }
+            payRollCode = (payRollCode == null ? payRoll.getCode()
+                    : payRollCode);
+
+            String payRollDetailCode = payRollDetailBO
+                    .savePayRollDetail(projectWorker, payRollCode, data);
+
+            operateLogBO.saveOperateLog(
+                    EOperateLogRefType.PayRollDetail.getCode(), payRollDetailCode,
+                    EOperateLogOperate.ImportPayRollDetail.getValue(), user, null);
+        }
+    }
+
+    @Override
     public void uploadPayRoll(XN631920Req req) {
         ProjectConfig projectConfig = projectConfigBO
             .getProjectConfigByProject(req.getProjectCode());
@@ -160,45 +219,7 @@ public class PayRollAOImpl implements IPayRollAO {
 
         payRollBO.doUpload(req, projectConfig);
     }
-
     @Override
-    public Paginable<PayRollDetail> queryPayRoll(XN631921Req req) {
-        ProjectConfig projectConfig = projectConfigBO
-            .getProjectConfigByProject(req.getProjectCode());
-
-        if (null == projectConfig) {
-            throw new BizException("XN631921", "该项目未配置，无法查询");
-        }
-
-        return payRollBO.doQuery(req, projectConfig);
-    }
-
-    @Override
-    public Paginable<PayRoll> queryPayRollPage(int start, int limit,
-            PayRoll condition) {
-        Paginable<PayRoll> page = payRollBO.getPaginable(start, limit,
-            condition);
-
-        List<PayRoll> payRollList = page.getList();
-        if (CollectionUtils.isNotEmpty(payRollList)) {
-            for (PayRoll payRoll : payRollList) {
-                payRoll.setPayRollDetailList(payRollDetailBO
-                    .queryListByPayRollDetail(payRoll.getCode()));
-            }
-        }
-        return page;
-    }
-
-    @Override
-    public List<PayRoll> queryPayRollList(PayRoll condition) {
-        return payRollBO.queryPayRollList(condition);
-    }
-
-    /**
-     * 
-     * <p>Title: uploadPayRollList</p>   
-     * <p>Description: 上传工资单详情 </p>   
-     */
     public void uploadPayRollList(String userId, List<String> codeList) {
         User user = userBO.getBriefUser(userId);
 
@@ -215,33 +236,102 @@ public class PayRollAOImpl implements IPayRollAO {
                     user, null);
                 continue;
             }
+            // 校验项目人员是否上传
+            ProjectWorker projectWorker = projectWorkerBO
+                    .getProjectWorkerByIdentity(payRoll.getTeamSysNo(),
+                            payRollDetail.getIdcardNumber());
+            if (!projectWorker.getUploadStatus()
+                    .equals(EProjectWorkerUploadStatus.UPLOAD_UPDATE.getCode())
+                    && !projectWorker.getUploadStatus().equals(
+                    EProjectWorkerUploadStatus.UPLOAD_UNUPDATE.getCode())) {
+                // 不是已上传的人员
+                throw new BizException("XN00000",
+                        "项目人员未上传【 " + projectWorker.getWorkerName() + " 】");
+
+            }
+            // 获取上传JSON
             String json = getRequestJsonToPlantform(payRoll, payRollDetail,
                 projectConfigByLocal);
-            String resString = GovConnecter.getGovData("Payroll.Add", json,
-                projectConfigByLocal.getProjectCode(),
-                projectConfigByLocal.getSecret());
+            // 更新上传状态
+            payRollDetailBO.refreshUploadStatus(code,
+                    EPayRollUploadStatus.UPLOADING.getCode());
+
+            String resString;
+            try {
+                resString = GovConnecter.getGovData("Payroll.Add", json,
+                        projectConfigByLocal.getProjectCode(),
+                        projectConfigByLocal.getSecret());
+            } catch (BizException e) {
+                e.printStackTrace();
+                payRollDetailBO.refreshUploadStatus(code,
+                        EPayRollUploadStatus.UPLOAD_FAIL.getCode());
+                throw e;
+            }
+
             String log = operateLogBO.saveOperateLog(
                 EOperateLogRefType.PayRollDetail.getCode(), code,
                 EOperateLogOperate.UploadPayRoll.getValue(), user, null);
 
             AsyncQueueHolder.addSerial(resString, projectConfigByLocal,
                 "payRollDetailBO", code,
-                EUploadStatus.UPLOAD_UNEDITABLE.getCode(), log);
+                    EPayRollUploadStatus.UPLOAD_UNEDITABLE.getCode(), log, userId);
         }
 
     }
 
+    @Override
+    public Paginable<PayRollDetail> queryPayRoll(XN631921Req req) {
+        ProjectConfig projectConfig = projectConfigBO
+                .getProjectConfigByProject(req.getProjectCode());
+
+        if (null == projectConfig) {
+            throw new BizException("XN631921", "该项目未配置，无法查询");
+        }
+
+        return payRollBO.doQuery(req, projectConfig);
+    }
+
+    @Override
+    public Paginable<PayRoll> queryPayRollPage(int start, int limit,
+                                               PayRoll condition) {
+        Paginable<PayRoll> page = payRollBO.getPaginable(start, limit,
+                condition);
+
+        List<PayRoll> payRollList = page.getList();
+        if (CollectionUtils.isNotEmpty(payRollList)) {
+            for (PayRoll payRoll : payRollList) {
+                payRoll.setPayRollDetailList(payRollDetailBO
+                        .queryListByPayRollDetail(payRoll.getCode()));
+            }
+        }
+        return page;
+    }
+
+    @Override
+    public List<PayRoll> queryPayRollList(PayRoll condition) {
+        return payRollBO.queryPayRollList(condition);
+    }
+
     /**
-     * 
-     * @Description: 获取请求国家平台的Json
-     * @param: @param payRoll
-     * @param: @param payRollDetail
-     * @param: @return      
-     * @return: String      
-     * @throws
+     * 获取请求国家平台的Json
      */
     private String getRequestJsonToPlantform(PayRoll payRoll,
             PayRollDetail payRollDetail, ProjectConfig projectconfig) {
+        if (StringUtils.isBlank(payRollDetail.getPayRollBankCode())) {
+            throw new BizException("XN00000", "导入信息不全,请修改后上传");
+        }
+        if (StringUtils.isBlank(payRollDetail.getPayBankName())) {
+            throw new BizException("XN00000", "导入信息不全,请修改后上传");
+        }
+        if (StringUtils.isBlank(payRollDetail.getPayRollBankName())) {
+            throw new BizException("XN00000", "导入信息不全,请修改后上传");
+        }
+        if (StringUtils.isBlank(payRollDetail.getPayBankCode())) {
+            throw new BizException("XN00000", "导入信息不全,请修改后上传");
+        }
+        if (StringUtils.isBlank(payRollDetail.getPayBankName())) {
+            throw new BizException("XN00000", "导入信息不全,请修改后上传");
+        }
         JsonObject jsonObject = new JsonObject();
         JsonArray jsonArray = new JsonArray();
         ProjectConfig projectConfigByLocal = projectConfigBO
@@ -266,21 +356,7 @@ public class PayRollAOImpl implements IPayRollAO {
         jsonObject.addProperty("PayMonth", payMonth);
         // payRoll data
         JsonObject payRollData = new JsonObject();
-        if (StringUtils.isBlank(payRollDetail.getPayRollBankCode())) {
-            throw new BizException("XN00000", "导入信息不全,请修改后上传");
-        }
-        if (StringUtils.isBlank(payRollDetail.getPayBankName())) {
-            throw new BizException("XN00000", "导入信息不全,请修改后上传");
-        }
-        if (StringUtils.isBlank(payRollDetail.getPayRollBankName())) {
-            throw new BizException("XN00000", "导入信息不全,请修改后上传");
-        }
-        if (StringUtils.isBlank(payRollDetail.getPayBankCode())) {
-            throw new BizException("XN00000", "导入信息不全,请修改后上传");
-        }
-        if (StringUtils.isBlank(payRollDetail.getPayBankName())) {
-            throw new BizException("XN00000", "导入信息不全,请修改后上传");
-        }
+
         BeanUtils.copyProperties(payRollDetail, payRollData);
         payRollData.addProperty("payBankName", payRollDetail.getPayBankName());
         payRollData.addProperty("totalPayAmount",
@@ -288,11 +364,23 @@ public class PayRollAOImpl implements IPayRollAO {
         payRollData.addProperty("actualAmount",
             payRollDetail.getActualAmount());
         payRollData.addProperty("isBackPay", payRollDetail.getIsBackPay());
+        if (payRollDetail.getIsBackPay().intValue() == Integer
+                .parseInt(EIsNotType.IS.getCode())) {
+            // 补发
+
+        }
         if (payRollDetail.getBalanceDate() != null) {
             String balanceDate = DateUtil.dateToStr(
                 payRollDetail.getBalanceDate(),
                 DateUtil.FRONT_DATE_FORMAT_STRING);
             payRollData.addProperty("balanceDate", balanceDate);
+        }
+        if (payRollDetail.getWorkHours() != null) {
+            payRollData.addProperty("balanceDate",
+                    payRollDetail.getWorkHours());
+        }
+        if (payRollDetail.getDays() != null) {
+            payRollData.addProperty("days", payRollDetail.getDays());
         }
         payRollData.addProperty("idCardType", payRollDetail.getIdcardType());
         payRollData.addProperty("idCardNumber", AesUtils.encrypt(
@@ -307,9 +395,6 @@ public class PayRollAOImpl implements IPayRollAO {
             payRollDetail.getPayBankName());
         payRollData.addProperty("payRollBankCode",
             payRollDetail.getPayRollBankCode());
-        // payRollData.addProperty("payRollBankCardNumber",
-        // AesUtils.encrypt(payRollDetail.getPayRollBankCardNumber(),
-        // projectconfig.getSecret()));
 
         jsonArray.add(payRollData);
         jsonObject.add("detailList", jsonArray);
@@ -321,90 +406,6 @@ public class PayRollAOImpl implements IPayRollAO {
     @Override
     public PayRoll getPayRoll(String code) {
         return payRollBO.getPayRoll(code);
-    }
-
-    @Override
-    public void refreshPayRollCodeByLocal(String code, String payRollCode) {
-        PayRoll payRoll = new PayRoll();
-        payRoll.setCode(code);
-        payRoll.setPayRollCode(payRollCode);
-        payRollBO.refreshPayRoll(payRoll);
-    }
-
-    @Transactional
-    @Override
-    public void importPayRollCodeList(XN631812Req req) {
-        User user = userBO.getBriefUser(req.getUpdater());
-        Project project = projectBO.getProject(req.getProjectCode());
-
-        if (project == null) {
-            throw new BizException("XN631773", "项目不存在");
-        }
-        // excel字段中有工资单信息和明细信息 两张表操作
-        List<XN631812ReqData> dateList = req.getDateList();
-        for (XN631812ReqData xn631773ReqData : dateList) {
-
-            TeamMaster teamMasterByCondition = teamMasterBO
-                .getTeamMasterByProject(req.getProjectCode(),
-                    xn631773ReqData.getCorpCode(),
-                    xn631773ReqData.getTeamName());
-
-            if (teamMasterByCondition == null) {
-                throw new BizException("XN631812",
-                    "班组信息不存在【" + xn631773ReqData.getTeamName() + "】");
-            }
-            BankCardInfo bankCardInfoByNum = bankCardBankBO
-                .getBankCardInfoByNum(
-                    xn631773ReqData.getPayRollBankCardNumber());
-            if (bankCardInfoByNum == null) {
-                throw new BizException("XN631812", "项目人员未绑定银行卡信息,银行卡账号必填");
-            }
-            ProjectWorker projectWorker = projectWorkerBO
-                .getProjectWorker(bankCardInfoByNum.getBusinessSysNo());
-            // 不存在相关工资单时相关联的工资单
-            String payRollCode = null;
-            PayRoll payRoll = payRollBO
-                .getPayRollByCorpCodeAndTeamSysNoAndProjectCode(
-                    xn631773ReqData.getCorpCode(),
-                    teamMasterByCondition.getCode(), req.getProjectCode(),
-                    xn631773ReqData.getPayMonth());
-            if (payRoll == null) {
-
-                PayRoll payRollcondition = new PayRoll();
-                payRollcondition.setCorpCode(xn631773ReqData.getCorpCode());
-                payRollcondition.setTeamSysNo(teamMasterByCondition.getCode());
-                Date toDate;
-                try {
-                    toDate = DateUtil.strToDate(xn631773ReqData.getPayMonth(),
-                        "yyyy-MM");
-
-                } catch (Exception e) {
-                    Date strToDate = DateUtil
-                        .strToDate(xn631773ReqData.getPayMonth(), "yyyy/mm");
-                    //
-                    String format = new SimpleDateFormat("yyyy-MM")
-                        .format(strToDate);
-                    toDate = DateUtil.strToDate(format, "yyyy-MM");
-                }
-                payRollcondition.setProjectCode(req.getProjectCode());
-                payRollcondition
-                    .setDeleteStatus(EDeleteStatus.NORMAL.getCode());
-                payRollcondition.setPayMonth(toDate);
-                String savePayRollCode = payRollBO
-                    .savePayRoll(payRollcondition);
-                payRollCode = savePayRollCode;
-
-            }
-            payRollCode = (payRollCode == null ? payRoll.getCode()
-                    : payRollCode);
-
-            String payRollDetailCode = payRollDetailBO
-                .savePayRollDetail(projectWorker, payRollCode, xn631773ReqData);
-
-            operateLogBO.saveOperateLog(
-                EOperateLogRefType.PayRollDetail.getCode(), payRollDetailCode,
-                EOperateLogOperate.ImportPayRollDetail.getValue(), user, null);
-        }
     }
 
 }

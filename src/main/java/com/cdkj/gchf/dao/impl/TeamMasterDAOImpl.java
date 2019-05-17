@@ -70,4 +70,9 @@ public class TeamMasterDAOImpl extends AMybatisTemplate
             data);
     }
 
+    @Override
+    public void batchInsert(List<TeamMaster> teamMasters) {
+        super.insertBatch(NAMESPACE.concat("batch_insert"),
+                teamMasters);
+    }
 }

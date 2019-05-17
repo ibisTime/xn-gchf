@@ -12,9 +12,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.alibaba.fastjson.JSONObject;
+import com.cdkj.gchf.bo.IEquipmentInfoBO;
 import com.cdkj.gchf.bo.IOperateLogBO;
 import com.cdkj.gchf.bo.IProjectBO;
-import com.cdkj.gchf.bo.IProjectConfigBO;
 import com.cdkj.gchf.bo.IProjectWorkerBO;
 import com.cdkj.gchf.bo.ITeamMasterBO;
 import com.cdkj.gchf.bo.IUserBO;
@@ -25,25 +25,27 @@ import com.cdkj.gchf.common.AesUtils;
 import com.cdkj.gchf.common.DateUtil;
 import com.cdkj.gchf.core.OrderNoGenerater;
 import com.cdkj.gchf.dao.IWorkerAttendanceDAO;
+import com.cdkj.gchf.domain.EquipmentInfo;
 import com.cdkj.gchf.domain.Project;
 import com.cdkj.gchf.domain.ProjectConfig;
 import com.cdkj.gchf.domain.ProjectWorker;
 import com.cdkj.gchf.domain.TeamMaster;
 import com.cdkj.gchf.domain.User;
 import com.cdkj.gchf.domain.WorkerAttendance;
+import com.cdkj.gchf.domain.WorkerEntryExitRecord;
 import com.cdkj.gchf.dto.req.XN631710Req;
 import com.cdkj.gchf.dto.req.XN631712Req;
 import com.cdkj.gchf.dto.req.XN631713ReqData;
 import com.cdkj.gchf.dto.req.XN631918Req;
 import com.cdkj.gchf.dto.req.XN631918ReqData;
 import com.cdkj.gchf.dto.req.XN631919Req;
+import com.cdkj.gchf.enums.EAttendanceSource;
 import com.cdkj.gchf.enums.EDeleteStatus;
 import com.cdkj.gchf.enums.EGeneratePrefix;
-import com.cdkj.gchf.enums.EOperateLogOperate;
 import com.cdkj.gchf.enums.EOperateLogRefType;
-import com.cdkj.gchf.enums.EUploadStatus;
+import com.cdkj.gchf.enums.EWorkerAttendanceUploadStatus;
+import com.cdkj.gchf.enums.EWorkerContractUploadStatus;
 import com.cdkj.gchf.exception.BizException;
-import com.cdkj.gchf.gov.AsyncQueueHolder;
 import com.cdkj.gchf.gov.GovConnecter;
 import com.cdkj.gchf.gov.GovUtil;
 import com.cdkj.gchf.gov.SerialHandler;
@@ -53,12 +55,6 @@ import com.google.gson.JsonObject;
 @Component
 public class WorkerAttendanceBOImpl extends PaginableBOImpl<WorkerAttendance>
         implements IWorkerAttendanceBO {
-
-    @Autowired
-    private IWorkerAttendanceBO workerAttendanceBO;
-
-    @Autowired
-    private IProjectConfigBO projectConfigBO;
 
     @Autowired
     private IUserBO userBO;
@@ -78,9 +74,12 @@ public class WorkerAttendanceBOImpl extends PaginableBOImpl<WorkerAttendance>
     @Autowired
     private IProjectBO projectBO;
 
+    @Autowired
+    private IEquipmentInfoBO equipmentInfoBO;
+
     @Override
     public String saveWorkerAttendance(XN631710Req data,
-            TeamMaster teamMaster) {
+                                       TeamMaster teamMaster) {
         String code = null;
         WorkerAttendance workerAttendance = new WorkerAttendance();
         BeanUtils.copyProperties(data, workerAttendance);
@@ -88,23 +87,130 @@ public class WorkerAttendanceBOImpl extends PaginableBOImpl<WorkerAttendance>
         Project project = projectBO.getProject(data.getProjectCode());
         workerAttendance.setProjectName(project.getName());
         ProjectWorker projectWorker = projectWorkerBO
-            .getProjectWorker(data.getWorkerCode());
+                .getProjectWorker(data.getWorkerCode());
         if (StringUtils.isNotBlank(data.getDate())) {
             workerAttendance.setDate(DateUtil.strToDate(data.getDate(),
-                DateUtil.DATA_TIME_PATTERN_1));
+                    DateUtil.DATA_TIME_PATTERN_1));
         }
         workerAttendance.setWorkerCode(projectWorker.getCode());
         workerAttendance.setWorkerName(projectWorker.getWorkerName());
         workerAttendance.setIdCardNumber(projectWorker.getIdcardNumber());
         workerAttendance.setIdCardType(projectWorker.getIdcardType());
-        workerAttendance.setUploadStatus(EUploadStatus.TO_UPLOAD.getCode());
-
+        workerAttendance
+                .setUploadStatus(EWorkerAttendanceUploadStatus.TO_UPLOAD.getCode());
         workerAttendance.setDeleteStatus(EDeleteStatus.NORMAL.getCode());
+
         code = OrderNoGenerater
-            .generate(EGeneratePrefix.WorkerAttendance.getCode());
+                .generate(EGeneratePrefix.WorkerAttendance.getCode());
         workerAttendance.setCode(code);
         workerAttendance.setTeamName(teamMaster.getTeamName());
+        workerAttendance.setSource(EAttendanceSource.SYSTEM.getCode());
 
+        workerAttendanceDAO.insert(workerAttendance);
+        return code;
+    }
+
+    @Override
+    public String saveWorkerAttendance(WorkerAttendance workerAttendance) {
+        String code = null;
+        if (workerAttendance == null) {
+            throw new BizException("添加考勤失败 考勤信息不能为空");
+
+        }
+        code = OrderNoGenerater
+                .generate(EGeneratePrefix.WorkerAttendance.getCode());
+        workerAttendance.setCode(code);
+        workerAttendanceDAO.insert(workerAttendance);
+        return code;
+    }
+
+    @Override
+    public String saveWorkerAttendance(String projectCode, XN631713ReqData data,
+                                       ProjectWorker projectWorker, WorkerAttendance workerAttendance) {
+        String code = null;
+        // Operate
+        BeanUtils.copyProperties(data, workerAttendance);
+        BeanUtils.copyProperties(projectWorker, workerAttendance);
+
+        TeamMaster condition = new TeamMaster();
+        condition.setCorpCode(data.getCorpCode());
+        condition.setProjectCode(projectCode);
+        condition.setTeamName(data.getTeamName());
+        TeamMaster masterByCondition = teamMasterBO
+                .getTeamMasterByCondition(condition);
+        workerAttendance.setTeamSysNo(masterByCondition.getCode());
+        if (StringUtils.isNotBlank(data.getDate())) {
+            Date strToDate = DateUtil.strToDate(data.getDate(), "yyyy/mm/dd");
+            //
+            String format = new SimpleDateFormat("yyyy-MM-dd")
+                    .format(strToDate);
+            Date toDate = DateUtil.strToDate(format, "yyyy-MM-dd");
+            workerAttendance.setDate(toDate);
+        }
+        workerAttendance
+                .setUploadStatus(EWorkerAttendanceUploadStatus.TO_UPLOAD.getCode());
+        workerAttendance.setDeleteStatus(EDeleteStatus.NORMAL.getCode());
+        code = OrderNoGenerater
+                .generate(EGeneratePrefix.WorkerAttendance.getCode());
+        workerAttendance.setCode(code);
+        workerAttendance.setSource(EAttendanceSource.SYSTEM.getCode());
+
+        return code;
+    }
+
+    @Override
+    public void deleteWorkerAttendance(String code) {
+        WorkerAttendance workerAttendance = new WorkerAttendance();
+        workerAttendance.setCode(code);
+        workerAttendanceDAO.deleteWorkerAttendance(workerAttendance);
+    }
+
+    @Override
+    public void deleteWorkerAttendaceByWorkerCode(String workerCode) {
+        WorkerAttendance workerAttendance = new WorkerAttendance();
+        workerAttendance.setWorkerCode(workerCode);
+        workerAttendanceDAO.deleteWorkerAttendanceByWorkerCode(workerAttendance);
+    }
+
+    @Override
+    public void batchDeleteWorkerAttendance(List<String> codes) {
+        workerAttendanceDAO.batchDeleteWorkerAttendacne(codes);
+    }
+
+    @Override
+    public String addWorkerAttendace(
+            WorkerEntryExitRecord workerEntryExitRecord,
+            EquipmentInfo equipmentInfo, Date time, String photoUrl,
+            String type) {
+        WorkerAttendance workerAttendance = new WorkerAttendance();
+
+        workerAttendance.setProjectCode(workerEntryExitRecord.getProjectCode());
+        workerAttendance.setProjectName(workerEntryExitRecord.getProjectName());
+        workerAttendance.setTeamSysNo(workerEntryExitRecord.getTeamCode());
+        workerAttendance.setTeamName(workerEntryExitRecord.getTeamName());
+        workerAttendance.setWorkerCode(workerEntryExitRecord.getWorkerCode());
+        workerAttendance.setWorkerName(workerEntryExitRecord.getWorkerName());
+        workerAttendance
+                .setIdCardNumber(workerEntryExitRecord.getIdcardNumber());
+        workerAttendance.setCreateDatetime(workerEntryExitRecord.getDate());
+
+        workerAttendance.setTeamSysNo(workerEntryExitRecord.getTeamCode());
+        workerAttendance.setTerminalCode(workerEntryExitRecord.getCode());
+        workerAttendance.setIdCardType("01");
+        workerAttendance
+                .setIdCardNumber(workerEntryExitRecord.getIdcardNumber());
+        workerAttendance.setDirection(workerEntryExitRecord.getDirection());
+        workerAttendance.setImage(photoUrl);
+        workerAttendance.setDate(time);
+        String code = OrderNoGenerater
+                .generate(EGeneratePrefix.WorkerAttendance.getCode());
+        workerAttendance.setCode(code);
+        workerAttendance
+                .setCreateDatetime(new Date(System.currentTimeMillis()));
+        workerAttendance.setSource(EAttendanceSource.REAL_TIME.getCode());
+        workerAttendance
+                .setUploadStatus(EWorkerAttendanceUploadStatus.TO_UPLOAD.getCode());
+        workerAttendance.setDeleteStatus(EDeleteStatus.NORMAL.getCode());
         workerAttendanceDAO.insert(workerAttendance);
         return code;
     }
@@ -130,19 +236,83 @@ public class WorkerAttendanceBOImpl extends PaginableBOImpl<WorkerAttendance>
         workerAttendance.setDate(date);
         workerAttendance.setDirection(direction);
         workerAttendance.setDeleteStatus(EDeleteStatus.NORMAL.getCode());
-        workerAttendance.setUploadStatus(EUploadStatus.TO_UPLOAD.getCode());
+        workerAttendance
+                .setUploadStatus(EWorkerContractUploadStatus.TO_UPLOAD.getCode());
+        workerAttendance.setSource(EAttendanceSource.SYSTEM.getCode());
+
         workerAttendanceDAO.insert(workerAttendance);
 
         return code;
     }
 
+    /**
+     * <p>Title: saveDeviceWorkerAttendance</p>
+     * <p>Description: 保存设备识别的人员考勤</p>
+     */
     @Override
-    public int removeWorkerAttendance(String code) {
-        int count = 0;
-        WorkerAttendance data = new WorkerAttendance();
-        data.setCode(code);
-        count = workerAttendanceDAO.delete(data);
-        return count;
+    public WorkerAttendance saveDeviceWorkerAttendance(
+            ProjectWorker projectWorker, String deviceKey, String dateTime,
+            String photoUrl, String type, String dataString, String recMode,
+            String idCardInfo) {
+        WorkerAttendance workerAttendance = new WorkerAttendance();
+        String code = OrderNoGenerater
+                .generate(EGeneratePrefix.WorkerAttendance.getCode());
+        workerAttendance.setCode(code);
+        workerAttendance.setProjectCode(projectWorker.getProjectCode());
+        workerAttendance.setProjectName(projectWorker.getProjectName());
+        workerAttendance.setDate(
+                DateUtil.strToDate(dateTime, DateUtil.DATA_TIME_PATTERN_1));
+
+        workerAttendance.setTeamSysNo(projectWorker.getTeamSysNo());
+        workerAttendance.setTeamName(projectWorker.getTeamName());
+        workerAttendance.setWorkerCode(projectWorker.getCode());
+        workerAttendance.setWorkerName(projectWorker.getWorkerName());
+        workerAttendance.setIdCardType(projectWorker.getIdcardType());
+
+        workerAttendance.setIdCardNumber(projectWorker.getIdcardNumber());
+        workerAttendance.setImage(photoUrl);
+        workerAttendance.setTerminalCode(deviceKey);
+        workerAttendance.setDirection(
+                equipmentInfoBO.getEquipmentInfoByKey(deviceKey).getDirection());
+
+        workerAttendance
+                .setUploadStatus(EWorkerAttendanceUploadStatus.TO_UPLOAD.getCode());
+
+        workerAttendance.setSource(EAttendanceSource.REAL_TIME.getCode());
+        workerAttendance.setDeleteStatus(EDeleteStatus.NORMAL.getCode());
+        workerAttendanceDAO.insert(workerAttendance);
+        return workerAttendance;
+    }
+
+
+    @Override
+    public int deleteWorkAttendanceByProject(String projectCode) {
+        WorkerAttendance workerAttendance = new WorkerAttendance();
+        workerAttendance.setProjectCode(projectCode);
+        return workerAttendanceDAO.delete(workerAttendance);
+    }
+
+    @Override
+    public int deleteWorkAttendanceByTeamMaster(String teamMasterNo) {
+        WorkerAttendance workerAttendance = new WorkerAttendance();
+        workerAttendance.setTeamSysNo(teamMasterNo);
+        return workerAttendanceDAO.delete(workerAttendance);
+    }
+
+    @Override
+    public int deleteWorkAttendanceByWorkerCode(String workerCode) {
+        WorkerAttendance workerAttendance = new WorkerAttendance();
+        workerAttendance.setWorkerCode(workerCode);
+
+        return workerAttendanceDAO.delete(workerAttendance);
+    }
+
+    @Override
+    public void refreshUploadStatus(String code, String status) {
+        WorkerAttendance workerAttendance = new WorkerAttendance();
+        workerAttendance.setCode(code);
+        workerAttendance.setUploadStatus(status);
+        workerAttendanceDAO.updateStatus(workerAttendance);
     }
 
     @Override
@@ -156,11 +326,31 @@ public class WorkerAttendanceBOImpl extends PaginableBOImpl<WorkerAttendance>
         select.setDate(data.getDate());
         select.setDirection(data.getDirection());
         select.setDeleteStatus(EDeleteStatus.NORMAL.getCode());
-        select.setUploadStatus(EUploadStatus.TO_UPLOAD.getCode());
+        select
+                .setUploadStatus(EWorkerAttendanceUploadStatus.TO_UPLOAD.getCode());
         workerAttendanceDAO.update(select);
         operateLogBO.saveOperateLog(EOperateLogRefType.WorkAttendance.getCode(),
             data.getCode(), "修改人员考勤", user, "修改人员考勤");
     }
+
+    @Override
+    public void refreshWorkerAttendance(String code, String status) {
+        WorkerAttendance workerAttendance = new WorkerAttendance();
+        workerAttendance.setCode(code);
+        workerAttendance.setUploadStatus(status);
+        workerAttendanceDAO.updateStatus(workerAttendance);
+    }
+
+    @Override
+    public void refreshWorkerAttendanceTeamName(String teamSysNo,
+                                                String teamName) {
+        WorkerAttendance workerAttendance = new WorkerAttendance();
+        workerAttendance.setTeamName(teamName);
+        workerAttendance.setTeamSysNo(teamSysNo);
+        workerAttendanceDAO.updateWorkerAttendanceTeamName(workerAttendance);
+    }
+
+    ;
 
     @Override
     public int updateWorkerAttendanceDeleteStatus(String code, String status) {
@@ -168,7 +358,7 @@ public class WorkerAttendanceBOImpl extends PaginableBOImpl<WorkerAttendance>
         workerAttendance.setCode(code);
         workerAttendance.setDeleteStatus(status);
         return workerAttendanceDAO
-            .updateWorkerAttendanceDeleteStatus(workerAttendance);
+                .updateWorkerAttendanceDeleteStatus(workerAttendance);
     }
 
     @Override
@@ -246,7 +436,6 @@ public class WorkerAttendanceBOImpl extends PaginableBOImpl<WorkerAttendance>
             new SimpleDateFormat("yyyy-MM-dd hh:mm:ss")
                 .format(workerAttendance.getDate()));
         childJson.addProperty("direction", workerAttendance.getDirection());
-        childJson.addProperty("image", workerAttendance.getImage());
         childJson.addProperty("channel", workerAttendance.getChannel());
         childJson.addProperty("attendType", workerAttendance.getAttendType());
         childJson.addProperty("lng", workerAttendance.getLng());
@@ -255,123 +444,6 @@ public class WorkerAttendanceBOImpl extends PaginableBOImpl<WorkerAttendance>
         dataList.add(childJson);
         jsonObject.add("dataList", dataList);
         return jsonObject;
-    }
-
-    @Override
-    public void saveWorkerAttendanceToPlantform(String userId,
-            List<String> codeList) {
-        User briefUser = userBO.getBriefUser(userId);
-        for (String code : codeList) {
-            WorkerAttendance workerAttendance = workerAttendanceBO
-                .getWorkerAttendance(code);
-
-            ProjectConfig projectConfigByLocal = projectConfigBO
-                .getProjectConfigByLocal(workerAttendance.getProjectCode());
-
-            if (projectConfigByLocal == null) {
-                throw new BizException("XN631714", "该项目未配置，无法查询");
-            }
-            TeamMaster teamMaster = teamMasterBO
-                .getTeamMaster(workerAttendance.getTeamSysNo());
-
-            JsonObject requestJson = getRequestJson(teamMaster,
-                workerAttendance, projectConfigByLocal);
-            System.out.println(requestJson);
-            String resString = GovConnecter.getGovData("WorkerAttendance.Add",
-                requestJson.toString(), projectConfigByLocal.getProjectCode(),
-                projectConfigByLocal.getSecret());
-            String saveOperateLog = operateLogBO.saveOperateLog(
-                EOperateLogRefType.WorkAttendance.getCode(), code,
-                EOperateLogOperate.UploadWorkAtendance.getValue(), briefUser,
-                null);
-            AsyncQueueHolder.addSerial(resString, projectConfigByLocal,
-                "workerAttendanceBO", code,
-                EUploadStatus.UPLOAD_UNEDITABLE.getCode(), saveOperateLog);
-        }
-    }
-
-    @Override
-    public String saveWorkerAttendance(WorkerAttendance workerAttendance) {
-        String code = null;
-        if (workerAttendance == null) {
-            throw new BizException("添加考勤失败 考勤信息不能为空");
-
-        }
-        code = OrderNoGenerater
-            .generate(EGeneratePrefix.WorkerAttendance.getCode());
-        workerAttendance.setCode(code);
-        workerAttendanceDAO.insert(workerAttendance);
-        return code;
-    }
-
-    @Override
-    public String saveWorkerAttendance(String projectCode, XN631713ReqData data,
-            ProjectWorker projectWorker, WorkerAttendance workerAttendance) {
-        String code = null;
-        // Operate
-        BeanUtils.copyProperties(data, workerAttendance);
-        BeanUtils.copyProperties(projectWorker, workerAttendance);
-
-        TeamMaster condition = new TeamMaster();
-        condition.setCorpCode(data.getCorpCode());
-        condition.setProjectCode(projectCode);
-        condition.setTeamName(data.getTeamName());
-        TeamMaster masterByCondition = teamMasterBO
-            .getTeamMasterByCondition(condition);
-        workerAttendance.setTeamSysNo(masterByCondition.getCode());
-        if (StringUtils.isNotBlank(data.getDate())) {
-            // Date date = DateUtil.strToDate(data.getDate(),
-            // DateUtil.FRONT_DATE_FORMAT_STRING);
-            Date strToDate = DateUtil.strToDate(data.getDate(), "yyyy/mm/dd");
-            //
-            String format = new SimpleDateFormat("yyyy-MM-dd")
-                .format(strToDate);
-            Date toDate = DateUtil.strToDate(format, "yyyy-MM-dd");
-            workerAttendance.setDate(toDate);
-        }
-        workerAttendance.setUploadStatus(EUploadStatus.TO_UPLOAD.getCode());
-        workerAttendance.setDeleteStatus(EDeleteStatus.NORMAL.getCode());
-        code = OrderNoGenerater
-            .generate(EGeneratePrefix.WorkerAttendance.getCode());
-        workerAttendance.setCode(code);
-        return code;
-    }
-
-    public void refreshUploadStatus(String code, String status) {
-        WorkerAttendance workerAttendance = new WorkerAttendance();
-        workerAttendance.setCode(code);
-        workerAttendance.setUploadStatus(status);
-        workerAttendanceDAO.updateStatus(workerAttendance);
-    }
-
-    @Override
-    public int fakeDeleteWorkAttendanceByProject(String projectCode) {
-        WorkerAttendance workerAttendance = new WorkerAttendance();
-        workerAttendance.setProjectCode(projectCode);
-        workerAttendance.setUploadStatus(EUploadStatus.TO_UPLOAD.getCode());
-        workerAttendance.setDeleteStatus(EDeleteStatus.DELETED.getCode());
-        return workerAttendanceDAO
-            .updateWorkerAttendanceDeleteStatus(workerAttendance);
-    }
-
-    @Override
-    public int fakeDeleteWorkAttendanceByTeamMaster(String teamMasterNo) {
-        WorkerAttendance workerAttendance = new WorkerAttendance();
-        workerAttendance.setTeamSysNo(teamMasterNo);
-        workerAttendance.setUploadStatus(EUploadStatus.TO_UPLOAD.getCode());
-        workerAttendance.setDeleteStatus(EDeleteStatus.DELETED.getCode());
-        return workerAttendanceDAO
-            .updateWorkerAttendanceDeleteStatus(workerAttendance);
-    }
-
-    @Override
-    public int fakeDeleteWorkAttendanceByWorkerCode(String workerCode) {
-        WorkerAttendance workerAttendance = new WorkerAttendance();
-        workerAttendance.setWorkerCode(workerCode);
-        workerAttendance.setUploadStatus(EUploadStatus.TO_UPLOAD.getCode());
-        workerAttendance.setDeleteStatus(EDeleteStatus.DELETED.getCode());
-        return workerAttendanceDAO
-            .updateWorkerAttendanceDeleteStatus(workerAttendance);
     }
 
 }

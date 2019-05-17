@@ -13,13 +13,14 @@ import com.cdkj.gchf.bo.base.PaginableBOImpl;
 import com.cdkj.gchf.core.OrderNoGenerater;
 import com.cdkj.gchf.dao.IBankCardInfoDAO;
 import com.cdkj.gchf.domain.BankCardInfo;
+import com.cdkj.gchf.domain.ProjectWorker;
 import com.cdkj.gchf.dto.req.XN631750Req;
 import com.cdkj.gchf.dto.req.XN631752Req;
+import com.cdkj.gchf.dto.req.XN631770ReqDetail;
 import com.cdkj.gchf.enums.EBankCardBussinessType;
 import com.cdkj.gchf.enums.EBankCardCodeType;
 import com.cdkj.gchf.enums.EBankCardStatus;
 import com.cdkj.gchf.enums.EGeneratePrefix;
-import com.cdkj.gchf.enums.EUploadStatus;
 
 @Component
 public class BankCardBankBOImpl extends PaginableBOImpl<BankCardInfo>
@@ -32,12 +33,12 @@ public class BankCardBankBOImpl extends PaginableBOImpl<BankCardInfo>
         String code = null;
         BankCardInfo bankCardInfo = new BankCardInfo();
         code = OrderNoGenerater
-            .generate(EGeneratePrefix.BankCardInfo.getCode());
+                .generate(EGeneratePrefix.BankCardInfo.getCode());
         bankCardInfo.setCode(code);
         BeanUtils.copyProperties(req, bankCardInfo);
         bankCardInfo.setBankName(
-            EBankCardCodeType.getBankCardType(req.getBankCode()).getValue());
-        bankCardInfo.setUploadStatus(EUploadStatus.TO_UPLOAD.getCode());
+                EBankCardCodeType.getBankCardType(req.getBankCode()).getValue());
+        // bankCardInfo.setUploadStatus(EUploadStatus.TO_UPLOAD.getCode());
         bankCardInfo.setUpdateDatetime(new Date(System.currentTimeMillis()));
         bankCardInfo.setStatus(EBankCardStatus.Normal.getCode());
         bankCardInfo.setSubranch(req.getSubranch());
@@ -47,12 +48,33 @@ public class BankCardBankBOImpl extends PaginableBOImpl<BankCardInfo>
         return code;
     }
 
+
     @Override
-    public void removeBankCardInfo(String code) {
+    public String saveBankCardInfo(XN631770ReqDetail data,
+                                   ProjectWorker projectWorker) {
         BankCardInfo bankCardInfo = new BankCardInfo();
+
+        String code = OrderNoGenerater
+                .generate(EGeneratePrefix.BankCardInfo.getCode());
+        bankCardInfo.setBankNumber(data.getPayRollBankCardNumber());
         bankCardInfo.setCode(code);
-        bankCardInfoDAO.delete(bankCardInfo);
+        bankCardInfo.setBankCode(data.getPayRollBankCode());
+        bankCardInfo.setBankName(EBankCardCodeType
+                .getBankCardType(data.getPayRollBankCode()).getValue());
+
+        bankCardInfo.setSubranch(data.getPayRollBankName());
+        bankCardInfo.setBusinessSysNo(projectWorker.getCode());
+        bankCardInfo.setBusinessType(EBankCardBussinessType.USER.getCode());
+        bankCardInfo.setBusinessName(projectWorker.getWorkerName());
+
+        bankCardInfo.setStatus(EBankCardStatus.Normal.getCode());
+        bankCardInfo.setBankLinkNumber("");
+        bankCardInfo.setCreateDatetime(new Date(System.currentTimeMillis()));
+        bankCardInfo.setUpdateDatetime(new Date(System.currentTimeMillis()));
+        bankCardInfoDAO.insert(bankCardInfo);
+        return code;
     }
+
 
     @Override
     public void refreshBankCardInfo(XN631752Req req) {
@@ -61,7 +83,7 @@ public class BankCardBankBOImpl extends PaginableBOImpl<BankCardInfo>
         if (StringUtils.isNotEmpty(req.getBankCode())) {
             condition.setBankCode(req.getBankCode());
             condition.setBankName(EBankCardCodeType
-                .getBankCardType(req.getBankCode()).getValue());
+                    .getBankCardType(req.getBankCode()).getValue());
         }
 
         if (StringUtils.isNotBlank(req.getBankNumber())) {
@@ -76,15 +98,6 @@ public class BankCardBankBOImpl extends PaginableBOImpl<BankCardInfo>
         bankCardInfoDAO.updateBankCardInfo(condition);
     }
 
-    @Override
-    public void refreshStatus(String businessSysNo, String status) {
-        BankCardInfo bankCardInfo = new BankCardInfo();
-
-        bankCardInfo.setBusinessSysNo(businessSysNo);
-        bankCardInfo.setStatus(status);
-
-        bankCardInfoDAO.updateBankCardInfoStatusByBussiness(bankCardInfo);
-    }
 
     @Override
     public BankCardInfo getBankCardInfoByNum(String payRollBankCardNumber) {
@@ -96,13 +109,47 @@ public class BankCardBankBOImpl extends PaginableBOImpl<BankCardInfo>
     }
 
     @Override
+    public BankCardInfo getBankCardByIdCardNumBankNum(String idCardNumber,
+                                                      String bankNum) {
+        BankCardInfo bankCardInfo = new BankCardInfo();
+        bankCardInfo.setBankNumber(bankNum);
+        bankCardInfo.setIdcardNumber(idCardNumber);
+
+        return bankCardInfoDAO.select(bankCardInfo);
+    }
+
+    @Override
+    public List<BankCardInfo> getOwnerBankCardInfo(String workerName,
+                                                   String status, String bussinessNo) {
+        BankCardInfo bankCardInfo = new BankCardInfo();
+        if (StringUtils.isNotBlank(workerName)) {
+            bankCardInfo.setBusinessName(workerName);
+        }
+        if (StringUtils.isNotBlank(status)) {
+            bankCardInfo.setStatus(status);
+        }
+
+        bankCardInfo.setBusinessSysNo(bussinessNo);
+
+        return bankCardInfoDAO.selectList(bankCardInfo);
+    }
+
+    @Override
     public List<BankCardInfo> queryBankCardInfoList(BankCardInfo condition) {
         return bankCardInfoDAO.selectList(condition);
     }
 
     @Override
+    public List<BankCardInfo> getBankCardByByssinessCode(String bussinessType, String bussinessCode) {
+        BankCardInfo bankCardInfo = new BankCardInfo();
+        bankCardInfo.setBusinessType(bussinessType);
+        bankCardInfo.setBusinessSysNo(bussinessCode);
+        return bankCardInfoDAO.selectList(bankCardInfo);
+    }
+
+    @Override
     public List<BankCardInfo> queryBankCardInfoList(String businessSysNo,
-            String status) {
+                                                    String status) {
         BankCardInfo bankCardInfo = new BankCardInfo();
 
         bankCardInfo.setBusinessSysNo(businessSysNo);
@@ -110,10 +157,6 @@ public class BankCardBankBOImpl extends PaginableBOImpl<BankCardInfo>
         return bankCardInfoDAO.selectList(bankCardInfo);
     }
 
-    @Override
-    public BankCardInfo getBankCardInfo(Long id) {
-        return null;
-    }
 
     @Override
     public BankCardInfo getBankCardInfo(String code) {
@@ -131,7 +174,7 @@ public class BankCardBankBOImpl extends PaginableBOImpl<BankCardInfo>
             if (select.getStatus().equals(EBankCardStatus.Normal.getCode())) {
                 select.setStatus(EBankCardStatus.Freeze.getCode());
             } else if (select.getStatus()
-                .equals(EBankCardStatus.Freeze.getCode())) {
+                    .equals(EBankCardStatus.Freeze.getCode())) {
                 select.setStatus(EBankCardStatus.Normal.getCode());
             }
         }
@@ -139,10 +182,5 @@ public class BankCardBankBOImpl extends PaginableBOImpl<BankCardInfo>
         return bankCardInfoDAO.updateBankCardInfoStatus(select);
     }
 
-    @Override
-    public List<BankCardInfo> queryBankCardInfoListByIdcardNumber(
-            List<String> idCardNumbers) {
-        return bankCardInfoDAO.selectBankCardByIdcard(idCardNumbers);
-    }
 
 }

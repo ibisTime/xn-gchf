@@ -1,5 +1,7 @@
 package com.cdkj.gchf.dto.req;
 
+import org.hibernate.validator.constraints.NotBlank;
+
 /**
  * @author old3
  * @title: XN631795Req
@@ -9,26 +11,38 @@ package com.cdkj.gchf.dto.req;
 public class XN631795Req {
 
     /**
-     * side : 身份证方向
-     * image : 身份证图片
+     * positiveImage : 正面照base64
+     * negativeImage : 反面照base64
+     * userId : 用户id
      */
+    @NotBlank(message = "正面照不能为空")
+    private String positiveImage;
+    @NotBlank(message = "反面照不能为空")
+    private String negativeImage;
+    @NotBlank(message = "用户id不能为空")
+    private String userId;
 
-    private String side;
-    private String image;
-
-    public String getSide() {
-        return side;
+    public String getPositiveImage() {
+        return positiveImage;
     }
 
-    public void setSide(String side) {
-        this.side = side;
+    public void setPositiveImage(String positiveImage) {
+        this.positiveImage = positiveImage;
     }
 
-    public String getImage() {
-        return image;
+    public String getNegativeImage() {
+        return negativeImage;
     }
 
-    public void setImage(String image) {
-        this.image = image;
+    public void setNegativeImage(String negativeImage) {
+        this.negativeImage = negativeImage;
+    }
+
+    public String getUserId() {
+        return userId;
+    }
+
+    public void setUserId(String userId) {
+        this.userId = userId;
     }
 }

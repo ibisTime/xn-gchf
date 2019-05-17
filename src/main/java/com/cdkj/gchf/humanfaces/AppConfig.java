@@ -4,10 +4,13 @@ import com.cdkj.gchf.common.DateUtil;
 import com.cdkj.gchf.common.MD5Util;
 import com.cdkj.gchf.humanfaces.res.ResultMsg;
 import com.google.gson.Gson;
+import jnr.ffi.Struct;
+import org.junit.jupiter.api.Test;
 
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.nio.charset.Charset;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -108,10 +111,9 @@ public class AppConfig {
         }
     }
 
-    //    @Test
+    //        @Test
     public void test() {
-        // getToken();
-        System.out.println(getToken());
     }
+
 
 }

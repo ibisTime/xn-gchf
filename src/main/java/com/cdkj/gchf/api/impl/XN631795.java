@@ -26,16 +26,26 @@ public class XN631795 extends AProcessor {
     @Override
     public Object doBusiness() throws BizException {
         Gson gson = new Gson();
-        String orcData = OcrConnecter.getOrcData(req.getImage().substring(req.getImage().indexOf(",") + 1), req.getSide());
-        if (StringUtils.isNotBlank(orcData)) {
-            if (req.getSide().equals(EOcrSide.FACE.getCode())) {
-                return gson.fromJson(orcData, PositiveRes.class);
-            } else {
-                return gson.fromJson(orcData, NegativeRes.class);
-            }
-
+        String positive = OcrConnecter.getOrcData(req.getPositiveImage().substring(req.getPositiveImage().indexOf(",") + 1), EOcrSide.FACE.getCode());
+        String negative = OcrConnecter.getOrcData(req.getNegativeImage().substring(req.getNegativeImage().indexOf(",") + 1), EOcrSide.BACK.getCode());
+        //一张识别失败
+        PositiveRes positiveRes = null;
+        NegativeRes negativeRes = null;
+        if (positive != null && negative == null) {
+            positiveRes = gson.fromJson(positive, PositiveRes.class);
+            return positiveRes;
+        }
+        if (negative != null && positive == null) {
+            negativeRes = gson.fromJson(negative, NegativeRes.class);
+            return negativeRes;
+        }
+        if (positive != null && negative != null) {
+            positiveRes = gson.fromJson(positive, PositiveRes.class);
+            negativeRes = gson.fromJson(negative, NegativeRes.class);
+            OcrResponse ocrResponse = new OcrResponse(positiveRes, negativeRes);
+            return ocrResponse;
         } else {
-            throw new BizException("XN00000", "识别异常，请尝试修改照片或检查身份证照片方向");
+            throw new BizException("XN000000", "识别失败，请重新上传识别");
         }
     }
 

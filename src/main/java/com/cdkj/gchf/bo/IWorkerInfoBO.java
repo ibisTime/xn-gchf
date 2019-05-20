@@ -3,14 +3,12 @@ package com.cdkj.gchf.bo;
 import java.util.List;
 
 import com.cdkj.gchf.api.impl.XN631693ReqData;
+import com.cdkj.gchf.api.impl.XN631797;
 import com.cdkj.gchf.bo.base.IPaginableBO;
 import com.cdkj.gchf.bo.base.Paginable;
 import com.cdkj.gchf.domain.ProjectConfig;
 import com.cdkj.gchf.domain.WorkerInfo;
-import com.cdkj.gchf.dto.req.XN631790Req;
-import com.cdkj.gchf.dto.req.XN631791Req;
-import com.cdkj.gchf.dto.req.XN631792Req;
-import com.cdkj.gchf.dto.req.XN631793Req;
+import com.cdkj.gchf.dto.req.*;
 
 public interface IWorkerInfoBO extends IPaginableBO<WorkerInfo> {
 
@@ -18,14 +16,27 @@ public interface IWorkerInfoBO extends IPaginableBO<WorkerInfo> {
     String saveWorkerInfo(XN631790Req req);
 
 
+    /**
+     * @param workerInfo
+     * @return
+     */
+    String saveWorkerInfo(WorkerInfo workerInfo);
+
     String saveWorkerInfoByImport(XN631693ReqData data);
 
+    String refreshWorkerInfo(XN631797Req req);
 
     int refreshWorkerInfo(XN631791Req req);
 
     int refreshWorkerInfo(XN631792Req req);
 
     int refreshWorkerInfo(XN631793Req req);
+
+
+    /**
+     * @param handIdCardImage 更新手持身份证照
+     */
+    void refreshHandIdCardImage(String code, String handIdCardImage);
 
     void refreshAttendancePic(String code, String attendancePicture,
             String workerUploadStatus, String attendancePicUploadStatus);

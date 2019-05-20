@@ -5,7 +5,6 @@ import com.cdkj.gchf.common.MD5Util;
 import com.cdkj.gchf.humanfaces.res.ResultMsg;
 import com.google.gson.Gson;
 import jnr.ffi.Struct;
-import org.junit.jupiter.api.Test;
 
 import java.io.File;
 import java.io.FileInputStream;

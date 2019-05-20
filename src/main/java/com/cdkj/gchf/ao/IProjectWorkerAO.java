@@ -2,18 +2,11 @@ package com.cdkj.gchf.ao;
 
 import java.util.List;
 
+import com.cdkj.gchf.dto.req.*;
 import org.springframework.stereotype.Component;
 
 import com.cdkj.gchf.bo.base.Paginable;
 import com.cdkj.gchf.domain.ProjectWorker;
-import com.cdkj.gchf.dto.req.XN631690Req;
-import com.cdkj.gchf.dto.req.XN631692Req;
-import com.cdkj.gchf.dto.req.XN631693Req;
-import com.cdkj.gchf.dto.req.XN631694Req;
-import com.cdkj.gchf.dto.req.XN631695Req;
-import com.cdkj.gchf.dto.req.XN631911Req;
-import com.cdkj.gchf.dto.req.XN631912Req;
-import com.cdkj.gchf.dto.req.XN631913Req;
 
 /**
  * @author old3
@@ -26,6 +19,15 @@ public interface IProjectWorkerAO {
      * 添加项目人员 
      */
     public String addProjectWorker(XN631690Req req);
+
+
+    /**
+     * H5端录入项目人员
+     *
+     * @param req
+     * @return 主键code
+     */
+    String addProjectWorker(XN631696Req req);
 
     /**
      * 删除项目人员 

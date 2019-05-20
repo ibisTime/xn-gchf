@@ -8,8 +8,16 @@ package com.cdkj.gchf.ocr;
  */
 
 public class OcrResponse {
-    private PositiveRes positiveImage;
+    /**
+     * 类型
+     */
+    private String type;
 
+    /**
+     * 正面照图片base64
+     */
+    private PositiveRes positiveImage;
+    /**反面照base64*/
     private NegativeRes negativeImage;
 
     public OcrResponse() {

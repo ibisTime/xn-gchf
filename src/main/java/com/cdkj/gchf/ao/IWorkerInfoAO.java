@@ -2,14 +2,11 @@ package com.cdkj.gchf.ao;
 
 import java.util.List;
 
+import com.cdkj.gchf.dto.req.*;
 import org.springframework.stereotype.Component;
 
 import com.cdkj.gchf.bo.base.Paginable;
 import com.cdkj.gchf.domain.WorkerInfo;
-import com.cdkj.gchf.dto.req.XN631790Req;
-import com.cdkj.gchf.dto.req.XN631791Req;
-import com.cdkj.gchf.dto.req.XN631792Req;
-import com.cdkj.gchf.dto.req.XN631793Req;
 
 @Component
 public interface IWorkerInfoAO {
@@ -20,6 +17,20 @@ public interface IWorkerInfoAO {
     int addWorkerInfoIdCardInfo(XN631791Req req);
 
     int addWorkerInfoContact(XN631792Req req);
+
+    /**
+     * @param req 身份证正反面信息
+     * @return 生成实名制code主键
+     */
+    String addWorkerInfo(XN631795Req req);
+
+    /**
+     * H5端录入基本信息
+     *
+     * @param req
+     * @return code
+     */
+    String refreshWorkerInfoH5(XN631797Req req);
 
 
     /**
@@ -33,6 +44,10 @@ public interface IWorkerInfoAO {
     void refreshAttendancePicture(String code, String attendancePicture,
                                   String userId);
 
+    /**
+     * @param handIdCardImage 手持身份证照片
+     */
+    void refreshHandIdCardImage(String code, String handIdCardImage);
     /**
      * 分页查
      * @param userId yonghuid

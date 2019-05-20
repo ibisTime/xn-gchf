@@ -24,6 +24,11 @@ public class PayRollDetail extends ABaseDO {
     // 项目编码
     private String projectCode;
 
+    /**
+     * 员工编号
+     */
+    private String workerCode;
+
     // 工人姓名
     private String workerName;
 
@@ -333,4 +338,11 @@ public class PayRollDetail extends ABaseDO {
         this.ownerProjectCode = ownerProjectCode;
     }
 
+    public String getWorkerCode() {
+        return workerCode;
+    }
+
+    public void setWorkerCode(String workerCode) {
+        this.workerCode = workerCode;
+    }
 }

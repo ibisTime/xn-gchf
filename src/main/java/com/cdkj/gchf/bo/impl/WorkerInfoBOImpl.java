@@ -7,6 +7,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import com.cdkj.gchf.common.BeanUtil;
+import com.cdkj.gchf.dto.req.*;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,10 +25,6 @@ import com.cdkj.gchf.core.OrderNoGenerater;
 import com.cdkj.gchf.dao.IWorkerInfoDAO;
 import com.cdkj.gchf.domain.ProjectConfig;
 import com.cdkj.gchf.domain.WorkerInfo;
-import com.cdkj.gchf.dto.req.XN631790Req;
-import com.cdkj.gchf.dto.req.XN631791Req;
-import com.cdkj.gchf.dto.req.XN631792Req;
-import com.cdkj.gchf.dto.req.XN631793Req;
 import com.cdkj.gchf.enums.EGender;
 import com.cdkj.gchf.enums.EGeneratePrefix;
 import com.cdkj.gchf.enums.EIsNotType;
@@ -177,6 +175,14 @@ public class WorkerInfoBOImpl extends PaginableBOImpl<WorkerInfo>
     }
 
     @Override
+    public void refreshHandIdCardImage(String code, String handIdCardImage) {
+        WorkerInfo workerInfo = new WorkerInfo();
+        workerInfo.setCode(code);
+        workerInfo.setHandIdCardImageUrl(handIdCardImage);
+        workerInfoDAO.updateWorkerInfoHandIdCardImage(workerInfo);
+    }
+
+    @Override
     public void refreshAttendancePic(String code, String attendancePicture,
             String workerUploadStatus, String attendancePicUploadStatus) {
         WorkerInfo workerInfo = new WorkerInfo();
@@ -235,6 +241,14 @@ public class WorkerInfoBOImpl extends PaginableBOImpl<WorkerInfo>
     }
 
     @Override
+    public String saveWorkerInfo(WorkerInfo workerInfo) {
+        String code = OrderNoGenerater.generate(EGeneratePrefix.WorkerInfo.getCode());
+        workerInfo.setCode(code);
+        workerInfoDAO.insert(workerInfo);
+        return code;
+    }
+
+    @Override
     public String saveWorkerInfoByImport(XN631693ReqData data) {
         WorkerInfo workerInfo = new WorkerInfo();
         String code = null;
@@ -279,4 +293,17 @@ public class WorkerInfoBOImpl extends PaginableBOImpl<WorkerInfo>
         return code;
     }
 
+    @Override
+    public String refreshWorkerInfo(XN631797Req req) {
+        WorkerInfo condition = new WorkerInfo();
+        condition.setCode(req.getCode());
+        WorkerInfo workerInfo = workerInfoDAO.selectBriefWorkerInfo(condition);
+        if (workerInfo != null) {
+            BeanUtils.copyProperties(req, condition);
+            workerInfo.setCreateDatetime(new Date(System.currentTimeMillis()));
+            workerInfoDAO.updateWorkerInfo(workerInfo);
+            return condition.getCode();
+        }
+        return null;
+    }
 }

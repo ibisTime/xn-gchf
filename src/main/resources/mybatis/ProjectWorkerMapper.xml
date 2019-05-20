@@ -35,19 +35,23 @@
 		<result column="pay_roll_top_bank_name" property="payRollTopBankName" />
 		<result column="bank_link_number" property="bankLinkNumber" />
 		<result column="bank_name" property="bankName" />
+        <result column="last_pay_month" property="lastPayMonth"/>
+        <result column="last_pay_total_amount" property="lastPayTotalAmount"/>
+        <result column="last_pay_actual_amount" property="lastPayActualAmount"/>
+        <result column="in_out_status" property="inOutStatus"/>
+        <result column="last_in_out_datetime" property="lastInOutDatetime"/>
+        <result column="attendance_status" property="attendanceStatus"/>
+        <result column="last_attendance_datetime" property="lastAttendanceDatetime"/>
 
 		<result column="pay_roll_top_bank_code" property="payRollTopBankCode" />
 		<result column="has_contract" property="hasContract" />
 		<result column="has_buy_insurance" property="hasBuyInsurance" />
-		<result column="position" property="position" />
 		<result column="salary" property="salary" />
 
 		<result column="cut_amount" property="cutAmount" />
 		<result column="status" property="status" />
 		<result column="salary_status" property="salaryStatus" />
 		<result column="work_date" property="workDate" />
-		<result column="join_datetime" property="joinDatetime" />
-		<result column="leaving_datetime" property="leavingDatetime" />
 
 		<result column="start_datetime" property="startDatetime" />
 		<result column="last_leaving_days" property="lastLeavingDays" />
@@ -165,14 +169,11 @@
 		,has_contract
 		,has_buy_insurance
 
-		,position
 		,salary
 		,cut_amount
 		,status
 		,salary_status
-		,join_datetime
 
-		,leaving_datetime
 		,start_datetime
 		,last_leaving_days
 		,end_datetime
@@ -221,14 +222,11 @@
 		,#{hasContract}
 
 		,#{hasBuyInsurance}
-		,#{position}
 		,#{salary}
 		,#{cutAmount}
 		,#{status}
 
 		,#{salaryStatus}
-		,#{joinDatetime}
-		,#{leavingDatetime}
 		,#{startDatetime}
 		,#{lastLeavingDays}
 
@@ -282,14 +280,11 @@
 		,has_contract
 		,has_buy_insurance
 
-		,position
 		,salary
 		,cut_amount
 		,status
 		,salary_status
-		,join_datetime
 
-		,leaving_datetime
 		,start_datetime
 		,last_leaving_days
 		,end_datetime
@@ -340,14 +335,11 @@
 			,#{projectWorker.hasContract}
 
 			,#{projectWorker.hasBuyInsurance}
-			,#{projectWorker.position}
 			,#{projectWorker.salary}
 			,#{projectWorker.cutAmount}
 			,#{projectWorker.status}
 
 			,#{projectWorker.salaryStatus}
-			,#{projectWorker.joinDatetime}
-			,#{projectWorker.leavingDatetime}
 			,#{projectWorker.startDatetime}
 			,#{projectWorker.lastLeavingDays}
 
@@ -444,27 +436,22 @@
 		,corp_name = #{corpName}
 		,is_team_leader = #{isTeamLeader}
 		,work_type = #{workType}
-		,work_role =
-		#{workRole}
+		,work_role = #{workRole}
 		,issue_card_date = #{issueCardDate}
-		,issue_card_pic_url =
-		#{issueCardPicUrl}
+		,issue_card_pic_url = #{issueCardPicUrl}
 
 		,team_sys_no = #{teamSysNo}
 		,team_name = #{teamName}
 		,card_number = #{cardNumber}
-		,pay_roll_bank_card_number =
-		#{payRollBankCardNumber}
+		,pay_roll_bank_card_number = #{payRollBankCardNumber}
 		,pay_roll_bank_name = #{payRollBankName}
 
 		,pay_roll_top_bank_name = #{payRollTopBankName}
-		,bank_link_number =
-		#{bankLinkNumber}
+		,bank_link_number = #{bankLinkNumber}
 		,pay_roll_top_bank_code = #{payRollTopBankCode}
 		,has_buy_insurance = #{hasBuyInsurance}
 		,work_date = #{workDate}
 
-		,join_datetime = #{joinDatetime}
 		,bank_name = #{bankName}
 		WHERE code =
 		#{code}
@@ -508,14 +495,11 @@
 		,t.has_contract
 		,t.has_buy_insurance
 
-		,t.position
 		,t.salary
 		,t.cut_amount
 		,t.status
 		,t.salary_status
 
-		,t.join_datetime
-		,t.leaving_datetime
 		,t.start_datetime
 		,t.last_leaving_days
 		,t.end_datetime

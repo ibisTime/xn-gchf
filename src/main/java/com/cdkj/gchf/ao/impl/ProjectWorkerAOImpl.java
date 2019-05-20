@@ -5,6 +5,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import com.cdkj.gchf.bo.*;
+import com.cdkj.gchf.dto.req.*;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;
@@ -27,14 +28,6 @@ import com.cdkj.gchf.domain.ProjectWorker;
 import com.cdkj.gchf.domain.TeamMaster;
 import com.cdkj.gchf.domain.User;
 import com.cdkj.gchf.domain.WorkerInfo;
-import com.cdkj.gchf.dto.req.XN631690Req;
-import com.cdkj.gchf.dto.req.XN631692Req;
-import com.cdkj.gchf.dto.req.XN631693Req;
-import com.cdkj.gchf.dto.req.XN631694Req;
-import com.cdkj.gchf.dto.req.XN631695Req;
-import com.cdkj.gchf.dto.req.XN631911Req;
-import com.cdkj.gchf.dto.req.XN631912Req;
-import com.cdkj.gchf.dto.req.XN631913Req;
 import com.cdkj.gchf.enums.EDeleteStatus;
 import com.cdkj.gchf.enums.EIsNotType;
 import com.cdkj.gchf.enums.EOperateLogOperate;
@@ -128,6 +121,30 @@ public class ProjectWorkerAOImpl implements IProjectWorkerAO {
 
         return projectWorkerBO.saveProjectWorker(req);
 
+    }
+
+    @Override
+    public String addProjectWorker(XN631696Req req) {
+
+        EWorkerRoleType.checkExists(req.getWorkRole());
+        EWorkerType.checkExists(req.getWorkType());
+        EIsNotType.checkExists(req.getHasBuyInsurance());
+
+        User briefUser = userBO.getBriefUser(req.getUserId());
+
+        Project project = projectBO.getProject(briefUser.getOrganizationCode());
+        if (project == null) {
+            throw new BizException("xn000000", "项目不存在");
+        }
+        WorkerInfo workerInfo = workerInfoBO.getWorkerInfo(req.getWorkerCode());
+        if (workerInfo == null) {
+            throw new BizException("xn00000", "人员不存在");
+        }
+        TeamMaster teamMaster = teamMasterBO.getTeamMaster(req.getTeamSysNo());
+        if (teamMaster == null) {
+            throw new BizException("XN00000", "请选择班组");
+        }
+        return projectWorkerBO.saveProjectWorker(project, teamMaster, workerInfo, req);
     }
 
     @Transactional

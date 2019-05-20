@@ -165,7 +165,7 @@ public class ProjectWorker extends ABaseDO {
     /**
      * 最近一次进出记录时间
      */
-    private String lastInOutDatetime;
+    private Date lastInOutDatetime;
     /**
      * 考勤状态（上班中/下班中
      */
@@ -173,7 +173,7 @@ public class ProjectWorker extends ABaseDO {
     /**
      * 最近一次考勤时间
      */
-    private String lastAttendanceDatetime;
+    private Date lastAttendanceDatetime;
 
     /****DB Properties****/
     // 是否关联
@@ -818,6 +818,65 @@ public class ProjectWorker extends ABaseDO {
     public void setIsLink(String isLink) {
         this.isLink = isLink;
     }
+
+
+    public Date getLastPayMonth() {
+        return lastPayMonth;
+    }
+
+    public void setLastPayMonth(Date lastPayMonth) {
+        this.lastPayMonth = lastPayMonth;
+    }
+
+    public BigDecimal getLastPayTotalAmount() {
+        return lastPayTotalAmount;
+    }
+
+    public void setLastPayTotalAmount(BigDecimal lastPayTotalAmount) {
+        this.lastPayTotalAmount = lastPayTotalAmount;
+    }
+
+    public BigDecimal getLastPayActualAmount() {
+        return lastPayActualAmount;
+    }
+
+    public void setLastPayActualAmount(BigDecimal lastPayActualAmount) {
+        this.lastPayActualAmount = lastPayActualAmount;
+    }
+
+    public String getInOutStatus() {
+        return inOutStatus;
+    }
+
+    public void setInOutStatus(String inOutStatus) {
+        this.inOutStatus = inOutStatus;
+    }
+
+    public Date getLastInOutDatetime() {
+        return lastInOutDatetime;
+    }
+
+    public void setLastInOutDatetime(Date lastInOutDatetime) {
+        this.lastInOutDatetime = lastInOutDatetime;
+    }
+
+    public Date getLastAttendanceDatetime() {
+        return lastAttendanceDatetime;
+    }
+
+    public void setLastAttendanceDatetime(Date lastAttendanceDatetime) {
+        this.lastAttendanceDatetime = lastAttendanceDatetime;
+    }
+
+    public String getAttendanceStatus() {
+        return attendanceStatus;
+    }
+
+    public void setAttendanceStatus(String attendanceStatus) {
+        this.attendanceStatus = attendanceStatus;
+    }
+
+
 
     @Override
     public int hashCode() {

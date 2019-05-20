@@ -65,9 +65,33 @@ public class ProjectWorkerDAOImpl extends AMybatisTemplate
     }
 
     @Override
-    public int updateStatus(ProjectWorker projectWorker) {
+    public int updateUploadStatus(ProjectWorker projectWorker) {
         return super.update(NAMESPACE.concat("update_projectWorker_status"),
-            projectWorker);
+                projectWorker);
+    }
+
+    @Override
+    public int updateStatus(ProjectWorker projectWorker) {
+        return super.update(NAMESPACE.concat("updateStatus"),
+                projectWorker);
+    }
+
+    @Override
+    public int updateLastPayRoll(ProjectWorker projectWorker) {
+
+        return 0;
+    }
+
+    @Override
+    public int updateLastInOutRecord(ProjectWorker projectWorker) {
+
+        return 0;
+    }
+
+    @Override
+    public int updateLastAttendance(ProjectWorker projectWorker) {
+
+        return 0;
     }
 
     @Override

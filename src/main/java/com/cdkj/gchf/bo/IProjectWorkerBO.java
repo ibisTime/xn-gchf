@@ -46,6 +46,16 @@ public interface IProjectWorkerBO extends IPaginableBO<ProjectWorker> {
             CorpBasicinfo corpBasicinfo, TeamMaster teamName,
             XN631693ReqData req);
 
+    /**
+     * 假删除项目人员
+     */
+    void fakeDeleteProjectWorker(String projectcode);
+
+    /**
+     * 根据班组编号删除项目人员
+     */
+    void fakeDeleteProjectWorkerByTeamNo(String projectCode,
+                                         String teamMasterNo);
 
     /**
      *修改项目人员 
@@ -79,16 +89,39 @@ public interface IProjectWorkerBO extends IPaginableBO<ProjectWorker> {
     public void refreshUploadStatus(String code, String status);
 
     /**
-     * 假删除项目人员 
+     * 修改员工进退场状态
+     * @param code
+     * @param status 进退场状态
      */
-    void fakeDeleteProjectWorker(String projectcode);
+    void refreshStatus(String code, String status);
+
 
     /**
-     * 根据班组编号删除项目人员 
+     * 更新员工最近一次的工资单信息
+     * @param code 主键code
+     * @param lastPayMonth 最后一次发工资的月份
+     * @param lastPayRollTotalAmount 最后一次的总发金额
+     * @param lastPayRollActualAmount 最近一次的实发金额
      */
-    void fakeDeleteProjectWorkerByTeamNo(String projectCode,
-            String teamMasterNo);
+    void refreshLastPayRoll(String code, String lastPayMonth, String lastPayRollTotalAmount, String lastPayRollActualAmount);
 
+    /**
+     * 回写员工最近一次的进出记录
+     * @param code 主键code
+     * @param status 进出状态（进场/出场）
+     * @param recordDateTime 进出场时间
+     */
+    void refreshLastInOutRecord(String code, String status, String recordDateTime);
+
+
+    /**
+     * 回写员工最近一次的考勤时间
+     *
+     * @param code               主键code
+     * @param attendanceStatus   考勤状态（进场/出场）
+     * @param attendanceDateTime 考勤时间
+     */
+    void refreshLastAttendance(String code, String attendanceStatus, String attendanceDateTime);
     public List<ProjectWorker> queryProjectWorkerList(ProjectWorker condition);
 
 

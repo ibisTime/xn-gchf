@@ -456,6 +456,36 @@
 		WHERE code =
 		#{code}
 	</update>
+
+
+	<update id="updateStatus" parameterType="projectWorker">
+		UPDATE thf_project_worker
+		SET thf_project_worker.status = #{status}
+		WHERE thf_project_worker.code = #{code}
+	</update>
+
+	<update id="updateLastPayRoll" parameterType="projectWorker">
+		UPDATE thf_project_worker
+		SET last_pay_month        = #{lastPayMonth}
+		  ,last_pay_total_amount  = #{lastPayTotalAmount}
+		  ,last_pay_actual_amount = #{lastPayActualAmount}
+		WHERE code = #{code}
+	</update>
+
+	<update id="updateLastInOutRecord" parameterType="projectWorker">
+		UPDATE thf_project_worker
+		SET in_out_status       = #{inOutStatus}
+		  ,last_in_out_datetime = #{lastInOutDatetime}
+		WHERE code = #{code}
+	</update>
+
+	<update id="updateLastAttendance" parameterType="projectWorker">
+		UPDATE thf_project_worker
+		SET attendance_status       = #{attendanceStatus}
+		  ,last_attendance_datetime = #{lastAttendanceDatetime}
+		WHERE code = #{code}
+	</update>
+
 	<select id="select_projectWorker" parameterType="projectWorker"
 		resultMap="projectWorker_DB_Result">
 		SELECT

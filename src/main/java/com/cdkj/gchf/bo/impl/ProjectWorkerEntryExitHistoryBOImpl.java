@@ -67,8 +67,6 @@ public class ProjectWorkerEntryExitHistoryBOImpl
         data.setWorkerCode(projectWorker.getCode());
         data.setIdcardNumber(projectWorker.getIdcardNumber());
         data.setIdcardType(projectWorker.getIdcardType());
-        data.setJoinDatetime(projectWorker.getJoinDatetime());
-        data.setLeavingDatetime(projectWorker.getLeavingDatetime());
         data.setUploadStatus(
             EProjectWorkerEntryExitUploadStatus.TO_UPLOAD.getCode());
         data.setDeleteStatus(EDeleteStatus.NORMAL.getCode());
@@ -149,6 +147,8 @@ public class ProjectWorkerEntryExitHistoryBOImpl
             operateLogBO.saveOperateLog(
                     EOperateLogRefType.WorkAttendance.getCode(), code, EOperateLogOperate.IMPORT_WORKER_ENTRYEXIT.getCode(),
                     user, null);
+            //回写人员进场场信息
+            projectWorkerBO.refreshStatus(projectWorker.getCode(), data.getType());
 
         }
         projectWorkerEntryExitHistoryDAO.batchInsert(projectWorkerEntryExitHistories);

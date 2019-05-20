@@ -89,9 +89,11 @@ public class ProjectWorkerEntryExitHistoryAOImpl
             }
 
         }
+        String code = projectWorkerEntryExitHistoryBO
+                .saveProjectWorkerEntryExitHistory(data);
 
-        return projectWorkerEntryExitHistoryBO
-            .saveProjectWorkerEntryExitHistory(data);
+        projectWorkerBO.refreshStatus(projectWorker.getCode(), data.getType());
+        return code;
     }
 
     @Override
@@ -102,9 +104,12 @@ public class ProjectWorkerEntryExitHistoryAOImpl
             EProjectWorkerEntryExitUploadStatus.UPLOAD_UNEDITABLE.getCode())) {
             throw new BizException("XN631732", "人员进退场已上传,不可编辑");
         }
-
+        ProjectWorkerEntryExitHistory exitHistory = projectWorkerEntryExitHistoryBO.getProjectWorkerEntryExitHistory(req.getCode());
+        //更新进退场信息
         projectWorkerEntryExitHistoryBO
             .refreshProjectWorkerEntryExitHistory(req);
+        //更新进退场时间
+        projectWorkerBO.refreshStatus(exitHistory.getWorkerCode(), req.getType());
     }
 
     @Override

@@ -202,6 +202,9 @@ public class PayRollAOImpl implements IPayRollAO {
             String payRollDetailCode = payRollDetailBO
                 .savePayRollDetail(projectWorker, payRollCode, data);
 
+            //回写工资信息到项目人员中
+            projectWorkerBO.refreshLastPayRoll(projectWorker.getCode(), data.getPayMonth(), data.getTotalPayAmount(), data.getActualAmount());
+
             operateLogBO.saveOperateLog(
                 EOperateLogRefType.PayRollDetail.getCode(), payRollDetailCode,
                 EOperateLogOperate.ImportPayRollDetail.getValue(), user, null);

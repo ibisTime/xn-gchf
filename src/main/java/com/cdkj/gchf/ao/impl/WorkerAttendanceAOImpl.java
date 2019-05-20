@@ -86,6 +86,9 @@ public class WorkerAttendanceAOImpl implements IWorkerAttendanceAO {
         if (projectWorker == null) {
             throw new BizException("XN631710", "项目人员不存在");
         }
+        //回写考勤信息到项目人员中
+        projectWorkerBO.refreshLastAttendance(data.getWorkerCode(), data.getDirection(), data.getDate());
+
         return workerAttendanceBO.saveWorkerAttendance(data, teamMaster);
     }
 
@@ -113,6 +116,10 @@ public class WorkerAttendanceAOImpl implements IWorkerAttendanceAO {
             throw new BizException("XN631712", "人员考勤已上传,无法修改");
         }
         workerAttendanceBO.refreshWorkerAttendance(data);
+
+        //回写考勤信息记录到项目人员
+        WorkerAttendance workerAttendance = workerAttendanceBO.getWorkerAttendance(data.getCode());
+        projectWorkerBO.refreshLastAttendance(workerAttendance.getWorkerCode(), data.getDirection(), DateUtil.dateToStr(data.getDate(), DateUtil.FRONT_DATE_FORMAT_STRING));
     }
 
     @Override
@@ -133,6 +140,8 @@ public class WorkerAttendanceAOImpl implements IWorkerAttendanceAO {
 
                 workerAttendanceBO.saveWorkerAttendance(project, teamMaster,
                     projectWorker, date, direction);
+
+                projectWorkerBO.refreshLastAttendance(projectWorker.getCode(), direction, DateUtil.dateToStr(date, DateUtil.FRONT_DATE_FORMAT_STRING));
             }
         }
     }
@@ -191,6 +200,10 @@ public class WorkerAttendanceAOImpl implements IWorkerAttendanceAO {
             workerAttendance.setDeleteStatus(EDeleteStatus.NORMAL.getCode());
             String code = workerAttendanceBO
                 .saveWorkerAttendance(workerAttendance);
+
+            //回写信息项目人员中
+            projectWorkerBO.refreshLastAttendance(workerByIdCardNumber.getCode(), dateReq.getDirection(), dateReq.getDate());
+
             operateLogBO.saveOperateLog(
                 EOperateLogRefType.WorkAttendance.getCode(), code, "导入人员考勤",
                 user, null);

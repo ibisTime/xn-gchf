@@ -54,7 +54,7 @@ public class PayRollDetailBOImpl extends PaginableBOImpl<PayRollDetail>
     public String savePayRollDetail(PayRollDetail payRollDetail) {
         String code = null;
         code = OrderNoGenerater
-            .generate(EGeneratePrefix.PayRollDetail.getCode());
+                .generate(EGeneratePrefix.PayRollDetail.getCode());
         payRollDetail.setCode(code);
         payRollDetail.setDeleteStatus(EDeleteStatus.NORMAL.getCode());
         payRollDetailDAO.insert(payRollDetail);
@@ -63,8 +63,8 @@ public class PayRollDetailBOImpl extends PaginableBOImpl<PayRollDetail>
 
     @Override
     public void savePayRollDetail(String payRollCode, String teamSysNo,
-            String projectCode, String getPayMonth,
-            List<XN631770ReqDetail> data) {
+                                  String projectCode, String getPayMonth,
+                                  List<XN631770ReqDetail> data) {
 
         for (XN631770ReqDetail detail : data) {
             PayRollDetail payRollDetail = new PayRollDetail();
@@ -76,12 +76,12 @@ public class PayRollDetailBOImpl extends PaginableBOImpl<PayRollDetail>
             }
 
             ProjectWorker projectWorker = projectWorkerBO
-                .getProjectWorker(detail.getWorkerCode());
+                    .getProjectWorker(detail.getWorkerCode());
 
             // 在校验项目人员银行卡信息
             BankCardInfo bankCardInfoByNum = bankCardBankBO
-                .getBankCardByIdCardNumBankNum(detail.getIdCardNumber(),
-                    detail.getPayRollBankCardNumber());
+                    .getBankCardByIdCardNumBankNum(detail.getIdCardNumber(),
+                            detail.getPayRollBankCardNumber());
             // 没有银行卡信息 新增
             if (bankCardInfoByNum == null) {
                 bankCardBankBO.saveBankCardInfo(detail, projectWorker);
@@ -90,7 +90,7 @@ public class PayRollDetailBOImpl extends PaginableBOImpl<PayRollDetail>
             BeanUtils.copyProperties(detail, payRollDetail);
             // 银行卡信息
             payRollDetail
-                .setPayRollBankCardNumber(detail.getPayRollBankCardNumber());
+                    .setPayRollBankCardNumber(detail.getPayRollBankCardNumber());
             payRollDetail.setPayRollBankCode(detail.getPayRollBankCode());
             payRollDetail.setPayRollBankName(detail.getPayRollBankName());
             payRollDetail.setPayBankCode(detail.getPayBankCode());
@@ -102,50 +102,45 @@ public class PayRollDetailBOImpl extends PaginableBOImpl<PayRollDetail>
             payRollDetail.setIdcardType("01");
             payRollDetail.setPayRollCode(payRollCode);
             payRollDetail.setCode(OrderNoGenerater
-                .generate(EGeneratePrefix.PayRollDetail.getCode()));
+                    .generate(EGeneratePrefix.PayRollDetail.getCode()));
             if (StringUtils.isNotBlank(detail.getDays())) {
                 payRollDetail.setDays(Integer.parseInt(detail.getDays()));
             }
             if (StringUtils.isNotBlank(detail.getWorkHours())) {
                 payRollDetail
-                    .setWorkHours(new BigDecimal(detail.getWorkHours()));
+                        .setWorkHours(new BigDecimal(detail.getWorkHours()));
             }
             payRollDetail
-                .setActualAmount(new BigDecimal(detail.getActualAmount()));
+                    .setActualAmount(new BigDecimal(detail.getActualAmount()));
             if (StringUtils.isNotBlank(detail.getIsBackPay())) {
 
                 if (detail.getIsBackPay().equals(EIsNotType.IS.getCode())) {
                     payRollDetail.setBackPayMonth(DateUtil
-                        .strToDate(detail.getBackPayMonth(), "yyyy-MM"));
+                            .strToDate(detail.getBackPayMonth(), "yyyy-MM"));
                 }
                 payRollDetail
-                    .setIsBackPay(Integer.parseInt(detail.getIsBackPay()));
+                        .setIsBackPay(Integer.parseInt(detail.getIsBackPay()));
             }
             payRollDetail
-                .setTotalPayAmount(new BigDecimal(detail.getTotalPayAmount()));
-            Date toDate;
-            try {
-                toDate = DateUtil.strToDate(detail.getBalanceDate(),
+                    .setTotalPayAmount(new BigDecimal(detail.getTotalPayAmount()));
+            Date toDate = DateUtil.strToDate(detail.getBalanceDate(),
                     "yyyy-MM-dd");
-
-            } catch (Exception e) {
-                Date strToDate = DateUtil.strToDate(detail.getBalanceDate(),
-                    "yyyy/mm/dd");
-                String format = new SimpleDateFormat("yyyy-MM-dd")
-                    .format(strToDate);
-                toDate = DateUtil.strToDate(format, "yyyy-MM-dd");
-            }
-            payRollDetail
-                .setUploadStatus(EPayRollUploadStatus.TO_UPLOAD.getCode());
-            payRollDetail.setDeleteStatus(EDeleteStatus.NORMAL.getCode());
             payRollDetail.setBalanceDate(toDate);
+            payRollDetail.setUploadStatus(EPayRollUploadStatus.TO_UPLOAD.getCode());
+            payRollDetail.setDeleteStatus(EDeleteStatus.NORMAL.getCode());
+
             payRollDetailDAO.insert(payRollDetail);
+
+            //回写工资信息到项目人员
+            projectWorkerBO.refreshLastPayRoll(projectWorker.getCode(), getPayMonth, detail.getTotalPayAmount(), detail.getActualAmount());
+
+
         }
     }
 
     @Override
     public String savePayRollDetail(ProjectWorker projectWorker,
-            String payRollcode, XN631812ReqData data) {
+                                    String payRollcode, XN631812ReqData data) {
         String code = null;
         PayRollDetail payRollDetail = new PayRollDetail();
         payRollDetail.setPayRollCode(payRollcode);
@@ -158,11 +153,11 @@ public class PayRollDetailBOImpl extends PaginableBOImpl<PayRollDetail>
         }
         if (StringUtils.isNotBlank(data.getTotalPayAmount())) {
             payRollDetail
-                .setTotalPayAmount(new BigDecimal(data.getTotalPayAmount()));
+                    .setTotalPayAmount(new BigDecimal(data.getTotalPayAmount()));
         }
         if (StringUtils.isNotBlank(data.getActualAmount())) {
             payRollDetail
-                .setActualAmount(new BigDecimal(data.getActualAmount()));
+                    .setActualAmount(new BigDecimal(data.getActualAmount()));
         }
         if (StringUtils.isNotBlank(data.getIsBackPay())) {
             payRollDetail.setIsBackPay(Integer.parseInt(data.getIsBackPay()));
@@ -173,23 +168,23 @@ public class PayRollDetailBOImpl extends PaginableBOImpl<PayRollDetail>
         }
         if (StringUtils.isNotBlank(data.getBackPayMonth())) {
             payRollDetail.setBackPayMonth(
-                DateUtil.strToDate(data.getBackPayMonth(), "yyyy-MM"));
+                    DateUtil.strToDate(data.getBackPayMonth(), "yyyy-MM"));
 
         }
 
         payRollDetail.setBalanceDate(DateUtil.strToDate(data.getBalanceDate(),
-            DateUtil.FRONT_DATE_FORMAT_STRING));
+                DateUtil.FRONT_DATE_FORMAT_STRING));
         payRollDetail.setIdcardType("01");
         payRollDetail.setWorkerName(projectWorker.getWorkerName());
         payRollDetail.setIdcardNumber(projectWorker.getIdcardNumber());
         if (StringUtils.isNotBlank(data.getPayRollBankCode())) {
             payRollDetail.setPayRollBankCode(data.getPayBankCode());
             payRollDetail.setPayRollBankName(EBankCardCodeType
-                .getBankCardType(data.getPayBankCode()).getValue());
+                    .getBankCardType(data.getPayBankCode()).getValue());
 
         }
         code = OrderNoGenerater
-            .generate(EGeneratePrefix.PayRollDetail.getCode());
+                .generate(EGeneratePrefix.PayRollDetail.getCode());
         payRollDetail.setUploadStatus(EPayRollUploadStatus.TO_UPLOAD.getCode());
         payRollDetail.setDeleteStatus(EDeleteStatus.NORMAL.getCode());
         payRollDetail.setCode(code);
@@ -199,7 +194,7 @@ public class PayRollDetailBOImpl extends PaginableBOImpl<PayRollDetail>
 
     @Override
     public int fakeDeletePayRollDetail(String idCardType, String idCardNumber,
-            String projectCode) {
+                                       String projectCode) {
         PayRollDetail payRollDetail = new PayRollDetail();
         payRollDetail.setProjectCode(projectCode);
         payRollDetail.setIdcardNumber(idCardNumber);
@@ -245,7 +240,7 @@ public class PayRollDetailBOImpl extends PaginableBOImpl<PayRollDetail>
         }
         if (StringUtils.isNotBlank(data.getBalanceDate())) {
             Date balanceDate = DateUtil.strToDate(data.getBalanceDate(),
-                DateUtil.FRONT_DATE_FORMAT_STRING);
+                    DateUtil.FRONT_DATE_FORMAT_STRING);
             condition.setBalanceDate(balanceDate);
         }
         if (StringUtils.isNotBlank(data.getIsBackPay())) {
@@ -253,11 +248,11 @@ public class PayRollDetailBOImpl extends PaginableBOImpl<PayRollDetail>
         }
         if (StringUtils.isNotBlank(data.getTotalPayAmount())) {
             condition
-                .setTotalPayAmount(new BigDecimal(data.getTotalPayAmount()));
+                    .setTotalPayAmount(new BigDecimal(data.getTotalPayAmount()));
         }
         if (StringUtils.isNotBlank(data.getBackPayMonth())) {
             condition.setBackPayMonth(
-                DateUtil.strToDate(data.getBackPayMonth(), "yyyy-MM"));
+                    DateUtil.strToDate(data.getBackPayMonth(), "yyyy-MM"));
         }
         if (StringUtils.isNotBlank(data.getDays())) {
             condition.setDays(Integer.parseInt(data.getDays()));
@@ -294,8 +289,8 @@ public class PayRollDetailBOImpl extends PaginableBOImpl<PayRollDetail>
 
     @Override
     public JsonObject getUploadRequestJsontoPlantform(PayRoll payRollData,
-            TeamMaster teamMasterData, ProjectConfig projectConfigData,
-            PayRollDetail payRollDetailData) {
+                                                      TeamMaster teamMasterData, ProjectConfig projectConfigData,
+                                                      PayRollDetail payRollDetailData) {
         System.out.println(projectConfigData.getSecret());
         System.out.println(projectConfigData.getProjectCode());
         System.out.println(payRollDetailData.getPayBankCardNumber());
@@ -303,56 +298,56 @@ public class PayRollDetailBOImpl extends PaginableBOImpl<PayRollDetail>
         JsonObject childJson = new JsonObject();
         childJson.addProperty("idCardType", payRollDetailData.getIdcardType());
         childJson.addProperty("idCardNumber",
-            AesUtils.encrypt(payRollDetailData.getIdcardNumber(),
-                projectConfigData.getSecret()));
+                AesUtils.encrypt(payRollDetailData.getIdcardNumber(),
+                        projectConfigData.getSecret()));
         childJson.addProperty("days", payRollDetailData.getDays());
         childJson.addProperty("workHours", payRollDetailData.getWorkHours());
         childJson.addProperty("payRollBankCardNumber",
-            AesUtils.encrypt(payRollDetailData.getPayBankCardNumber(),
-                projectConfigData.getSecret()));
+                AesUtils.encrypt(payRollDetailData.getPayBankCardNumber(),
+                        projectConfigData.getSecret()));
         childJson.addProperty("payRollBankCode",
-            payRollDetailData.getPayBankCode());
+                payRollDetailData.getPayBankCode());
         childJson.addProperty("payRollBankName",
-            payRollDetailData.getPayRollBankName());
+                payRollDetailData.getPayRollBankName());
         childJson.addProperty("payBankCardNumber",
 
-            projectConfigData.getSecret());
+                projectConfigData.getSecret());
         childJson.addProperty("payRollBankCode",
-            payRollDetailData.getPayBankCode());
+                payRollDetailData.getPayBankCode());
         childJson.addProperty("payRollBankName",
-            payRollDetailData.getPayRollBankName());
+                payRollDetailData.getPayRollBankName());
         childJson.addProperty("payBankCardNumber",
-            AesUtils.encrypt(payRollDetailData.getPayBankCardNumber(),
-                projectConfigData.getSecret()));
+                AesUtils.encrypt(payRollDetailData.getPayBankCardNumber(),
+                        projectConfigData.getSecret()));
 
         childJson.addProperty("payBankCode",
-            payRollDetailData.getPayBankCode());
+                payRollDetailData.getPayBankCode());
         childJson.addProperty("payBankName",
-            payRollDetailData.getPayBankName());
+                payRollDetailData.getPayBankName());
         childJson.addProperty("totalPayAmount",
-            payRollDetailData.getTotalPayAmount());
+                payRollDetailData.getTotalPayAmount());
         childJson.addProperty("actualAmount",
-            payRollDetailData.getActualAmount());
+                payRollDetailData.getActualAmount());
         childJson.addProperty("isBackPay", payRollDetailData.getIsBackPay());
         childJson.addProperty("balanceDate", new SimpleDateFormat("yyyy-MM-dd")
-            .format(payRollDetailData.getBalanceDate()));
+                .format(payRollDetailData.getBalanceDate()));
         if (payRollDetailData.getIsBackPay().equals("1")) {
             childJson.addProperty("backPayMonth",
-                new SimpleDateFormat("yyyy-MM-dd")
-                    .format(payRollDetailData.getBackPayMonth()));
+                    new SimpleDateFormat("yyyy-MM-dd")
+                            .format(payRollDetailData.getBackPayMonth()));
         }
 
         childJson.addProperty("thirdPayRollCode",
-            payRollDetailData.getThirdPayRollCode());
+                payRollDetailData.getThirdPayRollCode());
         JsonArray jsonArray = new JsonArray();
         jsonArray.add(childJson);
         requestJson.addProperty("projectCode",
-            projectConfigData.getProjectCode());
+                projectConfigData.getProjectCode());
         requestJson.addProperty("corpCode", payRollData.getCorpCode());
         requestJson.addProperty("corpName", payRollData.getCorpName());
         requestJson.addProperty("teamSysNo", teamMasterData.getTeamSysNo());
         requestJson.addProperty("payMonth",
-            new SimpleDateFormat("yyyy-MM").format(payRollData.getPayMonth()));
+                new SimpleDateFormat("yyyy-MM").format(payRollData.getPayMonth()));
         requestJson.add("detailList", jsonArray);
         return requestJson;
     }

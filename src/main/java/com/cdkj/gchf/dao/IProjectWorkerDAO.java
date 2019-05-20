@@ -14,7 +14,15 @@ public interface IProjectWorkerDAO extends IBaseDAO<ProjectWorker> {
 
     int updateTeamSysNoByLocal(ProjectWorker projectWorker);
 
+    int updateUploadStatus(ProjectWorker projectWorker);
+
     int updateStatus(ProjectWorker projectWorker);
+
+    int updateLastPayRoll(ProjectWorker projectWorker);
+
+    int updateLastInOutRecord(ProjectWorker projectWorker);
+
+    int updateLastAttendance(ProjectWorker projectWorker);
 
     int updateProjectWorkerDeleteStatus(ProjectWorker projectWorker);
 

@@ -163,6 +163,7 @@
 		DELETE from thf_project_worker_entry_exit_history WHERE code = #{code}
 	</delete>
 
+
 	<update id="update_projectWorkerEntryExitHistory" parameterType="projectWorkerEntryExitHistory">
 		UPDATE thf_project_worker_entry_exit_history
 		SET

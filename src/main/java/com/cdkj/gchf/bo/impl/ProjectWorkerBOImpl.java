@@ -1,5 +1,6 @@
 package com.cdkj.gchf.bo.impl;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -7,7 +8,6 @@ import java.util.List;
 import java.util.Map;
 
 import com.cdkj.gchf.dto.req.*;
-import jnr.ffi.annotations.In;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;
@@ -108,7 +108,6 @@ public class ProjectWorkerBOImpl extends PaginableBOImpl<ProjectWorker>
         projectWorkerInfo
             .setUploadStatus(EProjectWorkerUploadStatus.TO_UPLOAD.getCode());
         projectWorkerInfo.setDeleteStatus(EDeleteStatus.NORMAL.getCode());
-        projectWorkerInfo.setLocalTeamSysNo(teamMaster.getCode());
 
         if (StringUtils.isNotBlank(data.getIsTeamLeader())) {
             EIsNotType.checkExists(data.getIsTeamLeader());
@@ -141,7 +140,7 @@ public class ProjectWorkerBOImpl extends PaginableBOImpl<ProjectWorker>
         if (StringUtils.isNotBlank(data.getWorkDate())) {
             Date workDate = DateUtil.strToDate(data.getWorkDate(),
                 DateUtil.FRONT_DATE_FORMAT_STRING);
-            projectWorkerInfo.setJoinDatetime(workDate);
+            projectWorkerInfo.setWorkDate(workDate);
         }
         String code = OrderNoGenerater
             .generate(EGeneratePrefix.ProjectWorker.getCode());
@@ -271,7 +270,7 @@ public class ProjectWorkerBOImpl extends PaginableBOImpl<ProjectWorker>
         projectWorker.setTeamSysNo(teamMasterNo);
         projectWorker
             .setUploadStatus(EProjectWorkerUploadStatus.TO_UPLOAD.getCode());
-        projectWorkerDAO.updateStatus(projectWorker);
+        projectWorkerDAO.updateUploadStatus(projectWorker);
     }
 
     @Override
@@ -364,7 +363,43 @@ public class ProjectWorkerBOImpl extends PaginableBOImpl<ProjectWorker>
         ProjectWorker projectWorker = new ProjectWorker();
         projectWorker.setCode(code);
         projectWorker.setUploadStatus(status);
+        projectWorkerDAO.updateUploadStatus(projectWorker);
+    }
+
+    @Override
+    public void refreshStatus(String code, String status) {
+        ProjectWorker projectWorker = new ProjectWorker();
+        projectWorker.setCode(code);
+        projectWorker.setStatus(status);
         projectWorkerDAO.updateStatus(projectWorker);
+    }
+
+    @Override
+    public void refreshLastPayRoll(String code, String lastPayMonth, String lastPayRollTotalAmount, String lastPayRollActualAmount) {
+        ProjectWorker projectWorker = new ProjectWorker();
+        projectWorker.setCode(code);
+        projectWorker.setLastPayMonth(DateUtil.strToDate(lastPayMonth, DateUtil.FRONT_DATE_FORMAT_STRING));
+        projectWorker.setLastPayTotalAmount(new BigDecimal(lastPayRollTotalAmount));
+        projectWorker.setLastPayActualAmount(new BigDecimal(lastPayRollActualAmount));
+        projectWorkerDAO.updateLastPayRoll(projectWorker);
+    }
+
+    @Override
+    public void refreshLastInOutRecord(String code, String status, String recordDateTime) {
+        ProjectWorker projectWorker = new ProjectWorker();
+        projectWorker.setCode(code);
+        projectWorker.setInOutStatus(status);
+        projectWorker.setLastInOutDatetime(DateUtil.strToDate(recordDateTime, DateUtil.DATA_TIME_PATTERN_1));
+        projectWorkerDAO.updateLastInOutRecord(projectWorker);
+    }
+
+    @Override
+    public void refreshLastAttendance(String code, String attendanceStatus, String attendanceDateTime) {
+        ProjectWorker projectWorker = new ProjectWorker();
+        projectWorker.setCode(code);
+        projectWorker.setAttendanceStatus(attendanceStatus);
+        projectWorker.setLastAttendanceDatetime(DateUtil.strToDate(attendanceDateTime, DateUtil.FRONT_DATE_FORMAT_STRING));
+        projectWorkerDAO.updateLastAttendance(projectWorker);
     }
 
     @Override
@@ -636,7 +671,7 @@ public class ProjectWorkerBOImpl extends PaginableBOImpl<ProjectWorker>
         workerList.addProperty("politicsType",
             infoByIdCardNumber.getPoliticsType());
         workerList.addProperty("joinedTime",
-            DateUtil.dateToStr(projectWorker.getJoinDatetime(),
+                DateUtil.dateToStr(projectWorker.getWorkDate(),
                 DateUtil.FRONT_DATE_FORMAT_STRING));
         workerList.addProperty("cellPhone", infoByIdCardNumber.getCellPhone());
         workerList.addProperty("cultureLevelType",

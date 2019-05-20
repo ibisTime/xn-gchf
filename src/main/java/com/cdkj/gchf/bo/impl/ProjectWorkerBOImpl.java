@@ -6,6 +6,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import com.cdkj.gchf.dto.req.*;
+import jnr.ffi.annotations.In;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;
@@ -35,12 +37,6 @@ import com.cdkj.gchf.domain.ProjectWorker;
 import com.cdkj.gchf.domain.TeamMaster;
 import com.cdkj.gchf.domain.User;
 import com.cdkj.gchf.domain.WorkerInfo;
-import com.cdkj.gchf.dto.req.XN631690Req;
-import com.cdkj.gchf.dto.req.XN631692Req;
-import com.cdkj.gchf.dto.req.XN631911Req;
-import com.cdkj.gchf.dto.req.XN631911ReqWorker;
-import com.cdkj.gchf.dto.req.XN631912Req;
-import com.cdkj.gchf.dto.req.XN631913Req;
 import com.cdkj.gchf.enums.EBankCardCodeType;
 import com.cdkj.gchf.enums.EDeleteStatus;
 import com.cdkj.gchf.enums.EGeneratePrefix;
@@ -152,6 +148,38 @@ public class ProjectWorkerBOImpl extends PaginableBOImpl<ProjectWorker>
         projectWorkerInfo.setCode(code);
 
         projectWorkerDAO.insert(projectWorkerInfo);
+        return code;
+    }
+
+    @Override
+    public String saveProjectWorker(Project project, TeamMaster teamMaster, WorkerInfo workerInfo, XN631696Req req) {
+        //h5端添加
+        ProjectWorker projectWorker = new ProjectWorker();
+
+        String code = OrderNoGenerater.generate(EGeneratePrefix.ProjectWorker.getCode());
+        projectWorker.setCode(code);
+        projectWorker.setProjectCode(project.getCode());
+        projectWorker.setProjectName(project.getName());
+        projectWorker.setCorpCode(teamMaster.getCorpCode());
+        projectWorker.setCorpName(teamMaster.getCorpName());
+        projectWorker.setTeamSysNo(teamMaster.getCode());
+        projectWorker.setTeamName(teamMaster.getTeamName());
+        projectWorker.setWorkerCode(workerInfo.getCode());
+        projectWorker.setWorkerName(workerInfo.getName());
+        projectWorker.setWorkerMobile(workerInfo.getCellPhone());
+        if (req.getIsTeamLeader() != null) {
+            projectWorker.setIsTeamLeader(Integer.parseInt(req.getIsTeamLeader()));
+        } else {
+            projectWorker.setIsTeamLeader(0);
+        }
+        projectWorker.setIdcardType(workerInfo.getIdCardType());
+        projectWorker.setIdcardNumber(workerInfo.getIdCardNumber());
+        projectWorker.setWorkType(req.getWorkType());
+        projectWorker.setWorkRole(Integer.parseInt(req.getWorkRole()));
+        projectWorker.setDeleteStatus(EDeleteStatus.NORMAL.getCode());
+        projectWorker.setUploadStatus(EProjectWorkerUploadStatus.TO_UPLOAD.getCode());
+
+        projectWorkerDAO.insert(projectWorker);
         return code;
     }
 

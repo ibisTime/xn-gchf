@@ -725,3 +725,29 @@ CREATE TABLE `thf_worker_entry_exit_record` (
 
 ALTER TABLE `thf_equipment_info` 
 ADD COLUMN `pass_times` datetime NULL COMMENT '进退场时间' AFTER `direction`;
+
+-- 230 第一版修改
+ALTER TABLE `thf_project_worker`
+DROP COLUMN `position`,
+DROP COLUMN `join_datetime`,
+DROP COLUMN `leaving_datetime`,
+DROP COLUMN `local_team_sys_no`,
+MODIFY COLUMN `status` varchar(4) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '状态（已进场/已退场）' AFTER `cut_amount`,
+ADD COLUMN `last_pay_month` datetime(0) NULL COMMENT '最近一次工资发放月份' AFTER `delete_status`,
+ADD COLUMN `last_pay_total_amount` varchar(255) NULL COMMENT '最近一次工资应发金额' AFTER `last_pay_month`,
+ADD COLUMN `last_pay_actual_amount` varchar(255) NULL COMMENT '最近一次工资实发金额' AFTER `last_pay_total_amount`,
+ADD COLUMN `in_out_status` varchar(255) NULL COMMENT '进出状态（在场内/在场外）' AFTER `last_pay_actual_amount`,
+ADD COLUMN `last_in_out_datetime` datetime(0) NULL COMMENT '最近一次进出记录时间' AFTER `in_out_status`,
+ADD COLUMN `attendance_status` varchar(255) NULL COMMENT '考勤状态（上班中/下班中）' AFTER `last_in_out_datetime`,
+ADD COLUMN `last_attendance_datetime` datetime(0) NULL COMMENT '最近一次考勤时间' AFTER `attendance_status`;
+
+ALTER TABLE `thf_project_worker_entry_exit_history`
+DROP COLUMN `join_datetime`,
+DROP COLUMN `leaving_datetime`;
+
+ALTER TABLE `thf_pay_roll_detail`
+DROP COLUMN `employ_code`,
+DROP COLUMN `staff_name`,
+DROP COLUMN `attendance_days`,
+DROP COLUMN `should_amount`,
+CHANGE COLUMN `staff_code` `worker_code` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '员工编号' AFTER `message_code`;

@@ -14,13 +14,27 @@ public class XN631795Req {
      * positiveImage : 正面照base64
      * negativeImage : 反面照base64
      * userId : 用户id
+     * type: 类型 ：0 获取信息 、1 确认信息后录入
      */
+
+    /**
+     * 类型
+     */
+    private String type;
     @NotBlank(message = "正面照不能为空")
     private String positiveImage;
     @NotBlank(message = "反面照不能为空")
     private String negativeImage;
     @NotBlank(message = "用户id不能为空")
     private String userId;
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
+    }
 
     public String getPositiveImage() {
         return positiveImage;

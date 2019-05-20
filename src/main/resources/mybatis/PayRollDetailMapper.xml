@@ -6,22 +6,27 @@
 		<result column="code" property="code" />
 		<result column="pay_roll_code" property="payRollCode" />
 		<result column="project_code" property="projectCode" />
+		<result column="worker_code" property="workerCode"/>
 		<result column="worker_name" property="workerName" />
+
 		<result column="idcard_type" property="idcardType" />
 		<result column="idcard_number" property="idcardNumber" />
 		<result column="days" property="days" />
 		<result column="work_hours" property="workHours" />
+
 		<result column="pay_roll_bank_card_number" property="payRollBankCardNumber" />
 		<result column="pay_roll_bank_code" property="payRollBankCode" />
 		<result column="pay_roll_bank_name" property="payRollBankName" />
 		<result column="pay_bank_card_number" property="payBankCardNumber" />
 		<result column="pay_bank_code" property="payBankCode" />
 		<result column="pay_bank_name" property="payBankName" />
+
 		<result column="total_pay_amount" property="totalPayAmount" />
 		<result column="actual_amount" property="actualAmount" />
 		<result column="is_back_pay" property="isBackPay" />
 		<result column="back_pay_month" property="backPayMonth" />
 		<result column="balance_date" property="balanceDate" />
+
 		<result column="third_pay_roll_code" property="thirdPayRollCode" />
 		<result column="upload_status" property="uploadStatus" />
 		<result column="delete_status" property="deleteStatus" />
@@ -77,6 +82,7 @@
 		thf_pay_roll_detail(
 		code
 		,pay_roll_code
+		,worker_code
 		,worker_name
 		,idcard_type
 		,idcard_number
@@ -102,6 +108,7 @@
 		VALUES(
 		#{code}
 		,#{payRollCode}
+		,#{workerCode}
 		,#{workerName}
 		,#{idcardType}
 		,#{idcardNumber}
@@ -197,6 +204,7 @@
 		SELECT
 		t.code
 		,t.pay_roll_code
+		,t.worker_code
 		,t.worker_name
 		,t.idcard_type
 		,t.idcard_number

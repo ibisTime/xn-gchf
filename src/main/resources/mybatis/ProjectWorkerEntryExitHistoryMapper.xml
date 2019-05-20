@@ -12,8 +12,6 @@
 		<result column="worker_name" property="workerName" />
 
 		<result column="position" property="position" />
-		<result column="join_datetime" property="joinDatetime" />
-		<result column="leaving_datetime" property="leavingDatetime" />
 		<result column="idcard_type" property="idcardType" />
 		<result column="idcard_number" property="idcardNumber" />
 		<result column="date" property="date" />
@@ -84,8 +82,6 @@
 		,worker_name
 
 		,position
-		,join_datetime
-		,leaving_datetime
 		,idcard_type
 		,idcard_number
 		,date
@@ -105,8 +101,6 @@
 
 		,#{workerName}
 		,#{position}
-		,#{joinDatetime}
-		,#{leavingDatetime}
 		,#{idcardType}
 		,#{idcardNumber}
 
@@ -130,8 +124,6 @@
 		,worker_name
 
 		,position
-		,join_datetime
-		,leaving_datetime
 		,idcard_type
 		,idcard_number
 		,date
@@ -153,8 +145,6 @@
 
 			,#{projectWorkerEntryExitHistory.workerName}
 			,#{projectWorkerEntryExitHistory.position}
-			,#{projectWorkerEntryExitHistory.joinDatetime}
-			,#{projectWorkerEntryExitHistory.leavingDatetime}
 			,#{projectWorkerEntryExitHistory.idcardType}
 			,#{projectWorkerEntryExitHistory.idcardNumber}
 
@@ -211,8 +201,6 @@
 		,t.worker_name
 
 		,t.position
-		,t.join_datetime
-		,t.leaving_datetime
 		,t.idcard_type
 		,t.idcard_number
 		,t.date

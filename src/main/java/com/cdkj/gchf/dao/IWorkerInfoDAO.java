@@ -17,6 +17,8 @@ public interface IWorkerInfoDAO extends IBaseDAO<WorkerInfo> {
 
     WorkerInfo selectBriefWorkerInfo(WorkerInfo condition);
 
+    int updateWorkerInfoHandIdCardImage(WorkerInfo workerInfo);
+
     int updateWorkerInfoAttendance(WorkerInfo condition);
 
     int updateWorkerInfoAttendancePic(WorkerInfo condition);

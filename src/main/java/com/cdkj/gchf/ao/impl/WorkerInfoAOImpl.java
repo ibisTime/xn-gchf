@@ -2,9 +2,15 @@ package com.cdkj.gchf.ao.impl;
 
 import java.util.List;
 
+import com.cdkj.gchf.common.BeanUtil;
+import com.cdkj.gchf.common.StringUtil;
+import com.cdkj.gchf.core.OrderNoGenerater;
+import com.cdkj.gchf.dto.req.*;
+import com.cdkj.gchf.enums.*;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -20,16 +26,6 @@ import com.cdkj.gchf.common.IdCardChecker;
 import com.cdkj.gchf.domain.EquipmentInfo;
 import com.cdkj.gchf.domain.User;
 import com.cdkj.gchf.domain.WorkerInfo;
-import com.cdkj.gchf.dto.req.XN631790Req;
-import com.cdkj.gchf.dto.req.XN631791Req;
-import com.cdkj.gchf.dto.req.XN631792Req;
-import com.cdkj.gchf.dto.req.XN631793Req;
-import com.cdkj.gchf.enums.ECultureLevelType;
-import com.cdkj.gchf.enums.EGender;
-import com.cdkj.gchf.enums.EIdCardType;
-import com.cdkj.gchf.enums.EOperateLogRefType;
-import com.cdkj.gchf.enums.EPoliticsType;
-import com.cdkj.gchf.enums.EUserKind;
 import com.cdkj.gchf.exception.BizException;
 import com.cdkj.gchf.humanfaces.Device;
 import com.cdkj.gchf.humanfaces.DeviceWorker;
@@ -189,6 +185,12 @@ public class WorkerInfoAOImpl implements IWorkerInfoAO {
         }
     }
 
+
+    @Override
+    public void refreshHandIdCardImage(String code, String handIdCardImage) {
+        workerInfoBO.refreshHandIdCardImage(code, handIdCardImage);
+    }
+
     @Override
     public Paginable<WorkerInfo> queryWorkerInfoPage(String userId, int start,
             int limit, WorkerInfo condition) {
@@ -292,6 +294,28 @@ public class WorkerInfoAOImpl implements IWorkerInfoAO {
             projectWorkerBO.refreshWorkerCelephone(workerInfo.getCode(),
                 req.getCellPhone());
         }
+        return workerInfoBO.refreshWorkerInfo(req);
+    }
+
+    @Override
+    public String addWorkerInfo(XN631795Req req) {
+        WorkerInfo workerInfo = new WorkerInfo();
+        BeanUtils.copyProperties(req, workerInfo);
+        return workerInfoBO.saveWorkerInfo(workerInfo);
+    }
+
+    @Override
+    public String refreshWorkerInfoH5(XN631797Req req) {
+
+        WorkerInfo workerInfo = workerInfoBO.getWorkerInfo(req.getCode());
+        if (StringUtils.isNotBlank(workerInfo.getPositiveIdCardImageUrl())) {
+
+        }
+        if (StringUtils.isNotBlank(workerInfo.getNegativeIdCardImageUrl())) {
+
+        }
+
+
         return workerInfoBO.refreshWorkerInfo(req);
     }
 

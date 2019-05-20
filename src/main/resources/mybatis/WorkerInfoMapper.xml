@@ -244,7 +244,18 @@
 		#{code}
 	</update>
 
-	<select id="select_WorkerInfo" parameterType="workerInfo"
+    <update id="update_WorkerInfo_HandIdCardImage" parameterType="workerInfo">
+		UPDATE
+		thf_worker_info
+		SET
+		hand_id_card_image_url = #{handIdCardImageUrl}
+
+		WHERE
+		code =
+		#{code}
+	</update>
+
+    <select id="select_WorkerInfo" parameterType="workerInfo"
 		resultMap="WorkerInfo_DB_Result">
 		SELECT
 		t.code

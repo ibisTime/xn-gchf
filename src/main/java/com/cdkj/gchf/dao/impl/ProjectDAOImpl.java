@@ -61,12 +61,14 @@ public class ProjectDAOImpl extends AMybatisTemplate implements IProjectDAO {
         super.update(NAMESPACE.concat("update_contractorCorp"), project);
     }
 
+    @Override
     public void updateUsedOcrCount(Project project) {
         super.update(NAMESPACE.concat("update_usedOcrCount"), project);
     }
 
+    @Override
     public List<Map> queryProjectInfo_led(String userId) {
         return super.selectList(NAMESPACE.concat("selectProjectInfo"), userId,
-            Map.class);
+                Map.class);
     }
 }

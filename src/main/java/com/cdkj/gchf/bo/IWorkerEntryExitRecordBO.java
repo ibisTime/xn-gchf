@@ -28,4 +28,12 @@ public interface IWorkerEntryExitRecordBO
     WorkerEntryExitRecord getAfternoonEntryExitRecord(String projectCode,
             String workerCode);
 
+    /**
+     * 根据userId查询当天项目人员进出记录总数
+     *
+     * @param userId 用户id
+     * @return
+     */
+    Long selectRecordCountByUserId(String userId);
+
 }

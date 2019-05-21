@@ -100,4 +100,8 @@ public class WorkerEntryExitRecordBOImpl
             .selectAfternoonRecoder(workerEntryExitRecord);
     }
 
+    @Override
+    public Long selectRecordCountByUserId(String userId) {
+        return workerEntryExitRecordDAO.selectProjectRecordCount(userId);
+    }
 }

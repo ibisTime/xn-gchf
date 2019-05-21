@@ -271,6 +271,8 @@
         ,t.prj_plan_num
 
         ,t.area_code
+        ,t.total_ocr_count
+        ,t.used_ocr_count
         ,t.invest
         ,t.building_area
         ,t.building_length

@@ -16,6 +16,8 @@
 		<result column="prj_plan_num" property="prjPlanNum" />
 
 		<result column="area_code" property="areaCode" />
+		<result column="total_ocr_count" property="totalOcrCount" />
+		<result column="used_ocr_count" property="usedOcrCount" />
 		<result column="invest" property="invest" />
 		<result column="building_area" property="buildingArea" />
 		<result column="building_length" property="buildingLength" />
@@ -94,6 +96,7 @@
 
 		,area_code
 		,invest
+		,total_ocr_count
 		,building_area
 		,building_length
 		,start_date
@@ -142,6 +145,7 @@
 
 		,#{areaCode}
 		,#{invest}
+		,#{totalOcrCount}
 		,#{buildingArea}
 		,#{buildingLength}
 		,#{startDate}
@@ -192,6 +196,7 @@
 		,area_code = #{areaCode}
 
 		,invest = #{invest}
+		,total_ocr_count = #{totalOcrCount}
 		,building_area = #{buildingArea}
 		,building_length = #{buildingLength}
 		,start_date = #{startDate}
@@ -240,6 +245,14 @@
 		SET
 		contractor_corp_code = #{contractorCorpCode}
 		,contractor_corp_name = #{contractorCorpName}
+		WHERE code = #{code}
+	</update>
+	
+	<update id="update_usedOcrCount" parameterType="project">
+		UPDATE
+		thf_project
+		SET
+		used_ocr_count = #{usedOcrCount}
 		WHERE code = #{code}
 	</update>
 

@@ -64,6 +64,10 @@ public class ProjectBOImpl extends PaginableBOImpl<Project>
         if (StringUtils.isNotBlank(req.getLng())) {
             project.setLng(new BigDecimal(req.getLng()));
         }
+        if (StringUtils.isNotBlank(req.getTotalOcrCount())) {
+            project.setTotalOcrCount(Integer.parseInt(req.getTotalOcrCount()));
+        }
+
         project.setBuildCorpName(req.getBuildCorpName());
         project.setSecretStatus(ESecretStatus.NO.getCode());
         projectDAO.insert(project);
@@ -102,6 +106,9 @@ public class ProjectBOImpl extends PaginableBOImpl<Project>
         }
         if (StringUtils.isNotBlank(req.getLng())) {
             project.setLng(new BigDecimal(req.getLng()));
+        }
+        if (StringUtils.isNotBlank(req.getTotalOcrCount())) {
+            project.setTotalOcrCount(Integer.parseInt(req.getTotalOcrCount()));
         }
 
         project.setBuildCorpName(req.getBuildCorpName());
@@ -153,6 +160,16 @@ public class ProjectBOImpl extends PaginableBOImpl<Project>
         project.setContractorCorpName(contractorCorpName);
 
         projectDAO.updateContractorCorp(project);
+    }
+
+    @Override
+    public void refreshUsedOcrCount(String code, Integer usedOcrCount) {
+        Project project = new Project();
+
+        project.setCode(code);
+        project.setUsedOcrCount(usedOcrCount);
+
+        projectDAO.updateUsedOcrCount(project);
     }
 
 }

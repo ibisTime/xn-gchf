@@ -46,7 +46,6 @@ public class ZqznUtil {
 
             RequestBody fileBody = RequestBody
                 .create(MediaType.parse("image/png"), file);
-            System.out.println(fileBody.contentType());
             RequestBody requestBody = new MultipartBody.Builder()
                 .setType(MultipartBody.FORM)
                 .addFormDataPart("image", file.getName(), fileBody)

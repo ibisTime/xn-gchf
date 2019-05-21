@@ -7,8 +7,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import com.cdkj.gchf.common.BeanUtil;
-import com.cdkj.gchf.dto.req.*;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,12 +23,20 @@ import com.cdkj.gchf.core.OrderNoGenerater;
 import com.cdkj.gchf.dao.IWorkerInfoDAO;
 import com.cdkj.gchf.domain.ProjectConfig;
 import com.cdkj.gchf.domain.WorkerInfo;
+import com.cdkj.gchf.dto.req.XN631790Req;
+import com.cdkj.gchf.dto.req.XN631791Req;
+import com.cdkj.gchf.dto.req.XN631792Req;
+import com.cdkj.gchf.dto.req.XN631793Req;
+import com.cdkj.gchf.dto.req.XN631795Req;
+import com.cdkj.gchf.dto.req.XN631797Req;
 import com.cdkj.gchf.enums.EGender;
 import com.cdkj.gchf.enums.EGeneratePrefix;
 import com.cdkj.gchf.enums.EIsNotType;
 import com.cdkj.gchf.exception.BizException;
 import com.cdkj.gchf.gov.GovConnecter;
 import com.cdkj.gchf.gov.GovUtil;
+import com.cdkj.gchf.zqzn.ZqznInfoBack;
+import com.cdkj.gchf.zqzn.ZqznInfoFront;
 
 @Component
 public class WorkerInfoBOImpl extends PaginableBOImpl<WorkerInfo>
@@ -38,7 +44,6 @@ public class WorkerInfoBOImpl extends PaginableBOImpl<WorkerInfo>
 
     @Autowired
     private IWorkerInfoDAO workerInfoDAO;
-
 
     @Override
     public String saveWorkerInfo(XN631790Req req) {
@@ -79,6 +84,36 @@ public class WorkerInfoBOImpl extends PaginableBOImpl<WorkerInfo>
         return code;
     }
 
+    @Override
+    public String saveWorkerInfo(XN631795Req req, ZqznInfoFront front,
+            ZqznInfoBack back) {
+        String code = OrderNoGenerater
+            .generate(EGeneratePrefix.WorkerInfo.getCode());
+        WorkerInfo workerInfo = new WorkerInfo();
+
+        workerInfo.setCode(code);
+        workerInfo.setIdCardNumber(front.getIdNo());
+        workerInfo.setAddress(front.getAddress());
+        workerInfo.setGender(
+            Integer.parseInt(EGender.checkExists(front.getGender())));
+        workerInfo.setName(front.getName());
+
+        workerInfo.setBirthday(
+            DateUtil.strToDate(front.getBirth(), DateUtil.DATA_TIME_PATTERN_9));
+        workerInfo
+            .setHeadImageUrl("data:image/jpeg;base64," + front.getFaceImg());
+        workerInfo.setGrantOrg(back.getIssuedBy());
+        workerInfo.setNation(front.getRace());
+
+        String[] validDate = back.getValidDate().split("-");
+        workerInfo.setStartDate(
+            DateUtil.strToDate(validDate[0], DateUtil.DATA_TIME_PATTERN_9));
+        workerInfo.setExpiryDate(
+            DateUtil.strToDate(validDate[1], DateUtil.DATA_TIME_PATTERN_9));
+
+        workerInfoDAO.insert(workerInfo);
+        return code;
+    }
 
     @Override
     public Paginable<WorkerInfo> doQuery(String idCardNumber,
@@ -129,8 +164,6 @@ public class WorkerInfoBOImpl extends PaginableBOImpl<WorkerInfo>
         return data;
     }
 
-
-
     @Override
     public WorkerInfo getBriefWorkerInfo(String code) {
         WorkerInfo workerInfo = new WorkerInfo();
@@ -146,7 +179,6 @@ public class WorkerInfoBOImpl extends PaginableBOImpl<WorkerInfo>
         return workerInfoDAO.select(workerInfo);
     }
 
-
     @Override
     public List<WorkerInfo> queryStaffListBrief(WorkerInfo condition, int start,
             int count) {
@@ -157,7 +189,6 @@ public class WorkerInfoBOImpl extends PaginableBOImpl<WorkerInfo>
     public long queryTotalCount(WorkerInfo condition) {
         return workerInfoDAO.selectTotalCount(condition);
     }
-
 
     @Override
     public int refreshWorkerInfo(XN631791Req req) {
@@ -242,7 +273,8 @@ public class WorkerInfoBOImpl extends PaginableBOImpl<WorkerInfo>
 
     @Override
     public String saveWorkerInfo(WorkerInfo workerInfo) {
-        String code = OrderNoGenerater.generate(EGeneratePrefix.WorkerInfo.getCode());
+        String code = OrderNoGenerater
+            .generate(EGeneratePrefix.WorkerInfo.getCode());
         workerInfo.setCode(code);
         workerInfoDAO.insert(workerInfo);
         return code;
@@ -306,4 +338,5 @@ public class WorkerInfoBOImpl extends PaginableBOImpl<WorkerInfo>
         }
         return null;
     }
+
 }

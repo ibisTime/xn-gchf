@@ -49,6 +49,12 @@ public class Project extends ABaseDO {
     // 项目所在地
     private String areaCode;
 
+    // 可用OCR数量
+    private Integer totalOcrCount;
+
+    // 已用OCR数量
+    private Integer usedOcrCount;
+
     // 总投资
     private BigDecimal invest;
 
@@ -488,6 +494,22 @@ public class Project extends ABaseDO {
 
     public void setChargeEmail(String chargeEmail) {
         this.chargeEmail = chargeEmail;
+    }
+
+    public Integer getTotalOcrCount() {
+        return totalOcrCount;
+    }
+
+    public void setTotalOcrCount(Integer totalOcrCount) {
+        this.totalOcrCount = totalOcrCount;
+    }
+
+    public Integer getUsedOcrCount() {
+        return usedOcrCount;
+    }
+
+    public void setUsedOcrCount(Integer usedOcrCount) {
+        this.usedOcrCount = usedOcrCount;
     }
 
 }

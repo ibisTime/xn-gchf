@@ -32,6 +32,11 @@ public interface IProjectBO extends IPaginableBO<Project> {
      */
     public void refreshSecretStatus(String code, String secretStatus);
 
+    /**
+     * 更新已用OCR数量
+     */
+    public void refreshUsedOcrCount(String code, Integer usedOcrCount);
+
     public List<Project> queryProjectList(Project condition);
 
     public Project getProject(String code);

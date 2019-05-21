@@ -2,21 +2,20 @@ package com.cdkj.gchf.humanfaces;
 
 import java.util.List;
 
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
 import com.cdkj.gchf.bo.IEquipmentInfoBO;
+import com.cdkj.gchf.bo.IProjectBO;
 import com.cdkj.gchf.bo.IProjectConfigBO;
 import com.cdkj.gchf.bo.IProjectWorkerBO;
 import com.cdkj.gchf.bo.IUserBO;
 import com.cdkj.gchf.bo.IWorkerAttendanceBO;
 import com.cdkj.gchf.bo.IWorkerEntryExitRecordBO;
 import com.cdkj.gchf.domain.EquipmentInfo;
-import com.cdkj.gchf.domain.ProjectConfig;
+import com.cdkj.gchf.domain.Project;
 import com.cdkj.gchf.domain.ProjectWorker;
-import com.cdkj.gchf.domain.User;
 import com.cdkj.gchf.domain.WorkerEntryExitRecord;
 import com.cdkj.gchf.enums.EProjectWorkerUploadStatus;
 
@@ -48,39 +47,36 @@ public class ScheduledUploadAttendance {
     @Autowired
     private IEquipmentInfoBO equipmentInfoBO;
 
+    @Autowired
+    private IProjectBO projectBO;
+
     @Scheduled(cron = "0 0 18 * * ?")
     public void scheduleUploadAttendance() {
-        User user = new User();
-        user.setType("O");
-        List<User> queryUserList = userBO.queryUserList(user);
-        for (User tempUser : queryUserList) {
-            // 获取每个项目实时考勤
-            String projectCode = tempUser.getOrganizationCode();
-            ProjectConfig configByLocal = projectConfigBO
-                .getProjectConfigByLocal(projectCode);
-            if (configByLocal == null) {
+
+        List<Project> projects = projectBO.queryProjectList(new Project());
+
+        for (Project project : projects) {
+            if (!"P201904241633378691561".equals(project.getCode())) {
                 continue;
             }
 
+            // 项目人员
             ProjectWorker condition = new ProjectWorker();
-            condition.setProjectCode(user.getOrganizationCode());
+            condition.setProjectCode(project.getCode());
             condition.setUploadStatus(
                 EProjectWorkerUploadStatus.UPLOAD_UPDATE.getCode());
-            // 项目人员
             List<ProjectWorker> queryProjectWorkerList = projectWorkerBO
                 .queryProjectWorkerList(condition);
 
             for (ProjectWorker projectWorker : queryProjectWorkerList) {
-                String workerCode = projectWorker.getWorkerCode();
-                // 早晚考勤记录
-                if (StringUtils.isBlank(workerCode)) {
-                    continue;
-                }
+
                 WorkerEntryExitRecord morningEntryExitRecord = workerEntryExitRecordBO
-                    .getMorningEntryExitRecord(projectCode, workerCode);
+                    .getMorningEntryExitRecord(project.getCode(),
+                        projectWorker.getCode());
 
                 WorkerEntryExitRecord afternoonEntryExitRecord = workerEntryExitRecordBO
-                    .getAfternoonEntryExitRecord(projectCode, workerCode);
+                    .getAfternoonEntryExitRecord(project.getCode(),
+                        projectWorker.getCode());
                 if (morningEntryExitRecord == null
                         || afternoonEntryExitRecord == null) {
                     continue;

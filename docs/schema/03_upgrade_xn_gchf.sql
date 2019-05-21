@@ -751,3 +751,10 @@ DROP COLUMN `staff_name`,
 DROP COLUMN `attendance_days`,
 DROP COLUMN `should_amount`,
 CHANGE COLUMN `staff_code` `worker_code` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '员工编号' AFTER `message_code`;
+
+ALTER TABLE `thf_worker_attendance` 
+CHANGE COLUMN `image` `image` VARCHAR(512) NULL DEFAULT NULL COMMENT '刷卡近照' ;
+
+ALTER TABLE `thf_project` 
+ADD COLUMN `total_ocr_count` INT NULL COMMENT '可用OCR数量' AFTER `third_party_project_code`,
+ADD COLUMN `used_ocr_count` INT NULL DEFAULT 0 COMMENT '已用OCR数量' AFTER `total_ocr_count`;

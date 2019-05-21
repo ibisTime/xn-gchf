@@ -187,7 +187,12 @@
 		UPDATE thf_project_worker_entry_exit_history t
 		SET
 		delete_status = #{deleteStatus}
-		<include refid="where_condition" />
+        <trim prefix="WHERE" prefixOverrides="AND | OR">
+            <if test="code != null and code != '' ">
+                t.code = #{code}
+            </if>
+
+        </trim>
 	</update>
 
 	<select id="select_projectWorkerEntryExitHistory" parameterType="projectWorkerEntryExitHistory"

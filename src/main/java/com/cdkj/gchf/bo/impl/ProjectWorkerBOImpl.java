@@ -119,7 +119,6 @@ public class ProjectWorkerBOImpl extends PaginableBOImpl<ProjectWorker>
         String code = OrderNoGenerater
             .generate(EGeneratePrefix.ProjectWorker.getCode());
         projectWorkerInfo.setCode(code);
-
         projectWorkerDAO.insert(projectWorkerInfo);
         return projectWorkerInfo;
     }

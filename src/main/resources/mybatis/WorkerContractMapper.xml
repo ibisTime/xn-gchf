@@ -219,7 +219,16 @@
 		thf_worker_contract t
 		SET
 		t.delete_status = #{deleteStatus}
-		<include refid="where_condition"/>
+		<trim prefixOverrides="AND|OR" prefix="WHERE">
+			<if test="code != null and code != '' ">
+				AND code = #{code}
+			</if>
+
+			<if test="projectCode != null and projectCode != '' ">
+				AND project_code = #{projectCode}
+			</if>
+
+		</trim>
 
 	</update>
 

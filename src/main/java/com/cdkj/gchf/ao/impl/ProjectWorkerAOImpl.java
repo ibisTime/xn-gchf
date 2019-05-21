@@ -159,7 +159,9 @@ public class ProjectWorkerAOImpl implements IProjectWorkerAO {
         }
 
         List<EquipmentInfo> equipmentInfos = equipmentInfoBO.queryEquipmentList(projectWorker.getProjectCode());
-
+        if (CollectionUtils.isEmpty(equipmentInfos)) {
+            return;
+        }
         deviceWorker.personnelEquipmentAuthorization(equipmentInfos, workerInfo.getWorkerGuid(), null, null);
 
         equipmentWorkerBO.batchSaveEquipmentWorker(projectWorker, equipmentInfos);

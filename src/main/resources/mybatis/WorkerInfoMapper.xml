@@ -368,4 +368,5 @@
 		where worker_guid = #{0}
 	</select>
 
+
 </mapper>

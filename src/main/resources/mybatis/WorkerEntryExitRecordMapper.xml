@@ -161,4 +161,15 @@
     order by date desc LIMIT 0,1 
 	</select>
 
+	<select id="selectProjectRecordCount" parameterType="java.lang.String" resultType="java.lang.Long">
+		SELECT count(1)
+		FROM thf_worker_entry_exit_record
+		WHERE TO_DAYS(date) = TO_DAYS(now())
+		  AND project_code =
+			  (SELECT organization_code
+			   from thf_user
+			   where user_id = #{0})
+		GROUP BY project_code  ;
+	</select>
+
 </mapper>

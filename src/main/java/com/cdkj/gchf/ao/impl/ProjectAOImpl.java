@@ -1,9 +1,11 @@
 package com.cdkj.gchf.ao.impl;
 
 import java.util.List;
+import java.util.Map;
 
 import com.cdkj.gchf.bo.*;
 import com.cdkj.gchf.domain.*;
+import com.cdkj.gchf.dto.res.XN631618Res;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -41,6 +43,9 @@ public class ProjectAOImpl implements IProjectAO {
 
     @Autowired
     private ITeamMasterBO teamMasterBO;
+
+    @Autowired
+    private IWorkerEntryExitRecordBO workerEntryExitRecordBO;
 
     @Override
     @Transactional
@@ -212,6 +217,16 @@ public class ProjectAOImpl implements IProjectAO {
 
     @Override
     public Object queryProjectInfo_led(String userId) {
-        return projectBO.getProjectInfoList_led(userId);
+
+        List<Map> projectInfoList_led = projectBO.getProjectInfoList_led(userId);
+        Long totalCount = workerEntryExitRecordBO.selectRecordCountByUserId(userId);
+        XN631618Res xn631618Res = new XN631618Res();
+        xn631618Res.setData(projectInfoList_led);
+        if (null == totalCount) {
+            xn631618Res.setTotalCount(0);
+        } else {
+            xn631618Res.setTotalCount(totalCount);
+        }
+        return xn631618Res;
     }
 }

@@ -112,7 +112,7 @@ public class ProjectWorkerAOImpl implements IProjectWorkerAO {
 
         ProjectWorker projectWorker = projectWorkerBO.saveProjectWorker(req);
 
-        //关联设备人员
+        // 关联设备人员
         assignEquipmentWorker(projectWorker);
 
         return projectWorker.getCode();
@@ -141,16 +141,18 @@ public class ProjectWorkerAOImpl implements IProjectWorkerAO {
         if (teamMaster == null) {
             throw new BizException("XN00000", "请选择班组");
         }
-        ProjectWorker projectWorker = projectWorkerBO.saveProjectWorker(project, teamMaster, workerInfo, req);
+        ProjectWorker projectWorker = projectWorkerBO.saveProjectWorker(project,
+                teamMaster, workerInfo, req);
 
-        //关联设备人员
+        // 关联设备人员
         assignEquipmentWorker(projectWorker);
 
         return projectWorker.getCode();
     }
 
     private void assignEquipmentWorker(ProjectWorker projectWorker) {
-        WorkerInfo workerInfo = workerInfoBO.getWorkerInfo(projectWorker.getWorkerCode());
+        WorkerInfo workerInfo = workerInfoBO
+                .getWorkerInfo(projectWorker.getWorkerCode());
         if (!workerInfo.getWorkerPicUploadStatus()
                 .equals(EAttendancePicUploadStatus.SUCCESS.getCode())
                 && !workerInfo.getWorkerUploadStatus()
@@ -158,11 +160,14 @@ public class ProjectWorkerAOImpl implements IProjectWorkerAO {
             return;
         }
 
-        List<EquipmentInfo> equipmentInfos = equipmentInfoBO.queryEquipmentList(projectWorker.getProjectCode());
+        List<EquipmentInfo> equipmentInfos = equipmentInfoBO
+                .queryEquipmentList(projectWorker.getProjectCode());
 
-        deviceWorker.personnelEquipmentAuthorization(equipmentInfos, workerInfo.getWorkerGuid(), null, null);
+        deviceWorker.personnelEquipmentAuthorization(equipmentInfos,
+                workerInfo.getWorkerGuid(), null, null);
 
-        equipmentWorkerBO.batchSaveEquipmentWorker(projectWorker, equipmentInfos);
+        equipmentWorkerBO.batchSaveEquipmentWorker(projectWorker,
+                equipmentInfos);
     }
 
     @Transactional(rollbackFor = Exception.class)

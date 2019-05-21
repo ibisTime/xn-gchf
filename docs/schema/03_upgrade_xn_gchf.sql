@@ -758,3 +758,7 @@ CHANGE COLUMN `image` `image` VARCHAR(512) NULL DEFAULT NULL COMMENT '刷卡近�
 ALTER TABLE `thf_project` 
 ADD COLUMN `total_ocr_count` INT NULL COMMENT '可用OCR数量' AFTER `third_party_project_code`,
 ADD COLUMN `used_ocr_count` INT NULL DEFAULT 0 COMMENT '已用OCR数量' AFTER `total_ocr_count`;
+
+SET SQL_SAFE_UPDATES = 0;
+update thf_project set total_ocr_count = 10;
+update thf_project set used_ocr_count = 0;

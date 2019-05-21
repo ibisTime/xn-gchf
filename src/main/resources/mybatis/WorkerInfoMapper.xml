@@ -94,12 +94,16 @@
 		,work_type_code
 		,birth_place_code
 		,politics_type
+		
 		,create_datetime
 		,is_joined
 		,joined_time
 		,specialty
 		,marital_status
+		,positive_id_card_image_url
+		,negative_id_card_image_url
 		,hand_id_card_image_url
+		
 		,culture_level_type
 		,attendance_picture
 		,worker_guid
@@ -127,12 +131,16 @@
 		,#{workTypeCode}
 		,#{birthPlaceCode}
 		,#{politicsType}
+		
 		,#{createDatetime}
 		,#{isJoined}
 		,#{joinedTime}
 		,#{specialty}
 		,#{maritalStatus}
+		,#{positiveIdCardImageUrl}
+		,#{negativeIdCardImageUrl}
 		,#{handIdCardImageUrl}
+		
 		,#{cultureLevelType}
 		,#{attendancePicture}
 		,#{workerGuid}

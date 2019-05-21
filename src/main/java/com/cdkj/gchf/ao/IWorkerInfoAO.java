@@ -2,6 +2,7 @@ package com.cdkj.gchf.ao;
 
 import java.util.List;
 
+import com.cdkj.gchf.domain.BankCardInfo;
 import org.springframework.stereotype.Component;
 
 import com.cdkj.gchf.bo.base.Paginable;
@@ -90,5 +91,13 @@ public interface IWorkerInfoAO {
      * @return
      */
     WorkerInfo getWorkerInfoByIdCardNumber(String idCardNumber);
+
+    /**
+     * 查询项目人员银行卡信息
+     *
+     * @param workerCode 人员实名制code
+     * @return List<BankCardInfo>
+     */
+    List<BankCardInfo> selectWorkerInfoByWorkerCode(String workerCode);
 
 }

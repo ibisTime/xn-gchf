@@ -5,10 +5,7 @@ import com.cdkj.gchf.bo.*;
 import com.cdkj.gchf.bo.base.Page;
 import com.cdkj.gchf.bo.base.Paginable;
 import com.cdkj.gchf.common.IdCardChecker;
-import com.cdkj.gchf.domain.EquipmentInfo;
-import com.cdkj.gchf.domain.Project;
-import com.cdkj.gchf.domain.User;
-import com.cdkj.gchf.domain.WorkerInfo;
+import com.cdkj.gchf.domain.*;
 import com.cdkj.gchf.dto.req.*;
 import com.cdkj.gchf.enums.*;
 import com.cdkj.gchf.exception.BizException;
@@ -29,6 +26,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -64,6 +62,8 @@ public class WorkerInfoAOImpl implements IWorkerInfoAO {
     @Autowired
     private IProjectBO projectBO;
 
+    @Autowired
+    private IBankCardBankBO bankCardBankBO;
     @Override
     @Transactional
     public String addWorkerInfo(XN631790Req req) {
@@ -223,6 +223,17 @@ public class WorkerInfoAOImpl implements IWorkerInfoAO {
     @Override
     public WorkerInfo getWorkerInfoByIdCardNumber(String idCardNumber) {
         return workerInfoBO.getWorkerInfoByIdCardNumber(idCardNumber);
+    }
+
+    @Override
+    public List<BankCardInfo> selectWorkerInfoByWorkerCode(String workerCode) {
+        List<ProjectWorker> projectWorkers = projectWorkerBO.selectProjectWorkerByWorkerCode(workerCode);
+        List<BankCardInfo> bankCardInfoList = new ArrayList<>();
+        for (ProjectWorker temp : projectWorkers) {
+            List<BankCardInfo> bankCardByByssinessCode = bankCardBankBO.getBankCardByByssinessCode(EBankCardBussinessType.USER.getCode(), temp.getCode());
+            bankCardInfoList.addAll(bankCardByByssinessCode);
+        }
+        return bankCardInfoList;
     }
 
     /**

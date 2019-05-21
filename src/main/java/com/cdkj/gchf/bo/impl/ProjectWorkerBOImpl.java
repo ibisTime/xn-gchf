@@ -377,25 +377,33 @@ public class ProjectWorkerBOImpl extends PaginableBOImpl<ProjectWorker>
     }
 
     @Override
+    public List<ProjectWorker> selectProjectWorkerByWorkerCode(String workerCode) {
+        ProjectWorker projectWorker = new ProjectWorker();
+        projectWorker.setWorkerCode(workerCode);
+        List<ProjectWorker> projectWorkers = projectWorkerDAO.selectList(projectWorker);
+        return projectWorkers;
+    }
+
+    @Override
     public void doUpload(XN631911Req req, ProjectConfig projectConfig) {
 
         List<XN631911ReqWorker> workerList = req.getWorkerList();
         for (XN631911ReqWorker worker : workerList) {
             worker.setIdCardNumber(AesUtils.encrypt(worker.getIdCardNumber(),
-                projectConfig.getSecret()));
+                    projectConfig.getSecret()));
 
             if (StringUtils.isNotBlank(worker.getPayRollBankCardNumber())) {
                 worker.setPayRollBankCardNumber(
-                    AesUtils.encrypt(worker.getPayRollBankCardNumber(),
-                        projectConfig.getSecret()));
+                        AesUtils.encrypt(worker.getPayRollBankCardNumber(),
+                                projectConfig.getSecret()));
             }
         }
 
         String data = JSONObject.toJSONStringWithDateFormat(req, "yyyy-MM-dd")
-            .toString();
+                .toString();
 
         String resString = GovConnecter.getGovData("ProjectWorker.Add", data,
-            projectConfig.getProjectCode(), projectConfig.getSecret());
+                projectConfig.getProjectCode(), projectConfig.getSecret());
 
         SerialHandler.handle(resString, projectConfig);
     }

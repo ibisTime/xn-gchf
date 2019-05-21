@@ -1,10 +1,9 @@
 package com.cdkj.gchf.led;
-
 public class test {
 
     public static void main(String[] args) {
-
-        // System.out.println(led.SetBasicInfo("192.168.1.188",1,96,64));//set
+//        System.loadLibrary("lv_led");
+//         System.out.println(led.SetBasicInfo("192.168.1.188",1,96,64));//set
         // LED screen high and width and color
 
         // System.out.println(led.AdjustTime("192.168.1.188"));//adjust time

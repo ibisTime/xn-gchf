@@ -2,25 +2,16 @@ package com.cdkj.gchf.ao.impl;
 
 import java.util.List;
 
+import com.cdkj.gchf.bo.*;
+import com.cdkj.gchf.domain.*;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.cdkj.gchf.ao.IProjectAO;
-import com.cdkj.gchf.bo.ICorpBasicinfoBO;
-import com.cdkj.gchf.bo.IProjectBO;
-import com.cdkj.gchf.bo.IProjectBuilderLicenseBO;
-import com.cdkj.gchf.bo.IProjectConfigBO;
-import com.cdkj.gchf.bo.IProjectCorpInfoBO;
-import com.cdkj.gchf.bo.IUserBO;
 import com.cdkj.gchf.bo.base.Paginable;
 import com.cdkj.gchf.common.StringUtil;
-import com.cdkj.gchf.domain.CorpBasicinfo;
-import com.cdkj.gchf.domain.Project;
-import com.cdkj.gchf.domain.ProjectBuilderLicense;
-import com.cdkj.gchf.domain.ProjectConfig;
-import com.cdkj.gchf.domain.ProjectCorpInfo;
 import com.cdkj.gchf.dto.req.XN631600Req;
 import com.cdkj.gchf.dto.req.XN631602Req;
 import com.cdkj.gchf.enums.EProjectCorpType;
@@ -47,6 +38,9 @@ public class ProjectAOImpl implements IProjectAO {
 
     @Autowired
     private IProjectCorpInfoBO projectCorpInfoBO;
+
+    @Autowired
+    private ITeamMasterBO teamMasterBO;
 
     @Override
     @Transactional
@@ -84,7 +78,7 @@ public class ProjectAOImpl implements IProjectAO {
         CorpBasicinfo contractorCorpInfo = null;
         if (StringUtils.isNotBlank(req.getContractorCorpCode())) {
             contractorCorpInfo = corpBasicinfoBO
-                .getCorpBasicinfoByCorp(req.getContractorCorpCode());
+                    .getCorpBasicinfoByCorp(req.getContractorCorpCode());
         }
 
         // 添加项目
@@ -100,7 +94,7 @@ public class ProjectAOImpl implements IProjectAO {
 
         // 添加施工许可证
         projectBuilderLicenseBO.saveProjectBuilderLicense(project.getCode(),
-            req.getBuilderLicenses());
+                req.getBuilderLicenses());
 
         return project.getCode();
     }
@@ -135,7 +129,7 @@ public class ProjectAOImpl implements IProjectAO {
         }
 
         CorpBasicinfo contractorCorpInfo = corpBasicinfoBO
-            .getCorpBasicinfoByCorp(req.getContractorCorpCode());
+                .getCorpBasicinfoByCorp(req.getContractorCorpCode());
         if (null == contractorCorpInfo) {
             throw new BizException("XN631600", "总承包单位不存在");
         }
@@ -149,29 +143,29 @@ public class ProjectAOImpl implements IProjectAO {
         }
 
         if (!project.getContractorCorpCode()
-            .equals(req.getContractorCorpCode())) {
+                .equals(req.getContractorCorpCode())) {
 
             ProjectCorpInfo projectCorpInfo = projectCorpInfoBO
-                .getProjectCorpInfo(req.getCode(),
-                    project.getContractorCorpCode(),
-                    EProjectCorpType.ZONGCHENGBAO.getCode());
+                    .getProjectCorpInfo(req.getCode(),
+                            project.getContractorCorpCode(),
+                            EProjectCorpType.ZONGCHENGBAO.getCode());
 
             if (null != projectCorpInfo) {
                 if (!EProjectCorpUploadStatus.UPLOAD_FAIL.getCode()
-                    .equals(projectCorpInfo.getUploadStatus())
+                        .equals(projectCorpInfo.getUploadStatus())
                         && !EProjectCorpUploadStatus.TO_UPLOAD.getCode()
-                            .equals(projectCorpInfo.getUploadStatus())) {
+                        .equals(projectCorpInfo.getUploadStatus())) {
                     throw new BizException("XN631600", "项目总承包单位已上传，无法修改");
                 }
 
                 projectCorpInfoBO
-                    .removeProjectCorpInfo(projectCorpInfo.getCode());
+                        .removeProjectCorpInfo(projectCorpInfo.getCode());
 
                 projectCorpInfoBO.addProjectCorpInfo(contractorCorpInfo,
-                    project);
+                        project);
             } else {
                 projectCorpInfoBO.addProjectCorpInfo(contractorCorpInfo,
-                    project);
+                        project);
             }
 
         }
@@ -181,17 +175,17 @@ public class ProjectAOImpl implements IProjectAO {
 
         // 添加施工许可证
         projectBuilderLicenseBO.saveProjectBuilderLicense(req.getCode(),
-            req.getBuilderLicenses());
+                req.getBuilderLicenses());
 
         projectBO.refreshProject(req, contractorCorpInfo);
     }
 
     @Override
     public Paginable<Project> queryProjectPage(int start, int limit,
-            Project condition) {
+                                               Project condition) {
 
         Paginable<Project> page = projectBO.getPaginable(start, limit,
-            condition);
+                condition);
 
         return page;
     }
@@ -206,14 +200,18 @@ public class ProjectAOImpl implements IProjectAO {
         Project project = projectBO.getProject(code);
         // 查询项目施工许可证
         List<ProjectBuilderLicense> projectBuilderLicenseList = projectBuilderLicenseBO
-            .queryProjectBuilderLicenseList(code);
+                .queryProjectBuilderLicenseList(code);
         project.setBuilderLicenses(projectBuilderLicenseList);
         // 项目配置
         ProjectConfig projectConfig = projectConfigBO
-            .getProjectConfigByLocal(project.getCode());
+                .getProjectConfigByLocal(project.getCode());
         project.setProjectConfig(projectConfig);
 
         return project;
     }
 
+    @Override
+    public Object queryProjectInfo_led(String userId) {
+        return projectBO.getProjectInfoList_led(userId);
+    }
 }

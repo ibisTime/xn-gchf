@@ -250,9 +250,7 @@
 		SET
 		hand_id_card_image_url = #{handIdCardImageUrl}
 
-		WHERE
-		code =
-		#{code}
+		WHERE code = #{code}
 	</update>
 
     <select id="select_WorkerInfo" parameterType="workerInfo"

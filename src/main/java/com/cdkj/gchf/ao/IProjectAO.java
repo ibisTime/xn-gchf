@@ -53,4 +53,12 @@ public interface IProjectAO {
      */
     List<Project> queryProjectList(Project condition);
 
+    /**
+     * 查询项目端项目信息（LED显示屏用）
+     *
+     * @param userId 用户id
+     * @return
+     */
+    Object queryProjectInfo_led(String userId);
+
 }

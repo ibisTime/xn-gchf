@@ -14,6 +14,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import jnr.ffi.annotations.In;
 import org.apache.commons.lang3.StringUtils;
 
 /** 
@@ -125,6 +126,7 @@ public class BizException extends RuntimeException {
         this.errorProperties = errorProperties;
     }
 
+    @Override
     public String getMessage() {
         String message = super.getMessage();
         if (StringUtils.isNotEmpty(errorMessage)) {

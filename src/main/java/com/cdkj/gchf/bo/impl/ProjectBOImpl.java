@@ -2,7 +2,10 @@ package com.cdkj.gchf.bo.impl;
 
 import java.math.BigDecimal;
 import java.util.List;
+import java.util.Map;
 
+import com.cdkj.gchf.bo.IUserBO;
+import com.cdkj.gchf.domain.User;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,6 +29,9 @@ public class ProjectBOImpl extends PaginableBOImpl<Project>
 
     @Autowired
     private IProjectDAO projectDAO;
+
+    @Autowired
+    private IUserBO userBO;
 
     @Override
     public Project saveProject(XN631600Req req,
@@ -141,6 +147,12 @@ public class ProjectBOImpl extends PaginableBOImpl<Project>
         project.setFullName(fullName);
 
         return projectDAO.select(project);
+    }
+
+    @Override
+    public List<Map> getProjectInfoList_led(String userId) {
+        List<Map> maps = projectDAO.queryProjectInfo_led(userId);
+        return maps;
     }
 
     @Override

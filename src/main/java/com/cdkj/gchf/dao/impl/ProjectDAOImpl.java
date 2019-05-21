@@ -1,6 +1,7 @@
 package com.cdkj.gchf.dao.impl;
 
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.stereotype.Repository;
 
@@ -60,4 +61,8 @@ public class ProjectDAOImpl extends AMybatisTemplate implements IProjectDAO {
         super.update(NAMESPACE.concat("update_contractorCorp"), project);
     }
 
+    @Override
+    public List<Map> queryProjectInfo_led(String userId) {
+        return super.selectList(NAMESPACE.concat("selectProjectInfo"), userId, Map.class);
+    }
 }

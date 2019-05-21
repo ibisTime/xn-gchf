@@ -1,6 +1,7 @@
 package com.cdkj.gchf.bo;
 
 import java.util.List;
+import java.util.Map;
 
 import com.cdkj.gchf.bo.base.IPaginableBO;
 import com.cdkj.gchf.domain.CorpBasicinfo;
@@ -40,5 +41,14 @@ public interface IProjectBO extends IPaginableBO<Project> {
      * @Description: 根据名称详细查询项目信息
      */
     public Project getProjectByFullName(String fullName);
+
+
+    /**
+     * led 查询信息
+     *
+     * @param userId
+     * @return
+     */
+    List<Map> getProjectInfoList_led(String userId);
 
 }

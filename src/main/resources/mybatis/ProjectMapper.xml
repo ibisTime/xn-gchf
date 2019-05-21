@@ -308,4 +308,18 @@
     </select>
 
 
+	<select id="selectProjectInfo" parameterType="String" resultType="java.util.HashMap">
+		select team_name, count(1) as 'count'
+		from thf_project_worker
+		where team_sys_no in
+			  (
+				  select code
+				  from thf_team_master
+				  where project_code =
+						(select organization_code
+						 from thf_user
+						 where user_id = #{0})
+			  )
+		group by team_sys_no ;
+	</select>
 </mapper>

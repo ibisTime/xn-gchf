@@ -1,28 +1,8 @@
 package com.cdkj.gchf.bo.impl;
 
-import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-import com.cdkj.gchf.dto.req.*;
-import org.apache.commons.collections.CollectionUtils;
-import org.apache.commons.lang3.StringUtils;
-import org.springframework.beans.BeanUtils;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
-
 import com.alibaba.fastjson.JSONObject;
 import com.cdkj.gchf.api.impl.XN631693ReqData;
-import com.cdkj.gchf.bo.ICorpBasicinfoBO;
-import com.cdkj.gchf.bo.IOperateLogBO;
-import com.cdkj.gchf.bo.IProjectBO;
-import com.cdkj.gchf.bo.IProjectWorkerBO;
-import com.cdkj.gchf.bo.ITeamMasterBO;
-import com.cdkj.gchf.bo.IUserBO;
-import com.cdkj.gchf.bo.IWorkerInfoBO;
+import com.cdkj.gchf.bo.*;
 import com.cdkj.gchf.bo.base.Paginable;
 import com.cdkj.gchf.bo.base.PaginableBOImpl;
 import com.cdkj.gchf.common.AesUtils;
@@ -30,23 +10,9 @@ import com.cdkj.gchf.common.DateUtil;
 import com.cdkj.gchf.common.QiniuUtil;
 import com.cdkj.gchf.core.OrderNoGenerater;
 import com.cdkj.gchf.dao.IProjectWorkerDAO;
-import com.cdkj.gchf.domain.CorpBasicinfo;
-import com.cdkj.gchf.domain.Project;
-import com.cdkj.gchf.domain.ProjectConfig;
-import com.cdkj.gchf.domain.ProjectWorker;
-import com.cdkj.gchf.domain.TeamMaster;
-import com.cdkj.gchf.domain.User;
-import com.cdkj.gchf.domain.WorkerInfo;
-import com.cdkj.gchf.enums.EBankCardCodeType;
-import com.cdkj.gchf.enums.EDeleteStatus;
-import com.cdkj.gchf.enums.EGeneratePrefix;
-import com.cdkj.gchf.enums.EGovErrorMessage;
-import com.cdkj.gchf.enums.EIsNotType;
-import com.cdkj.gchf.enums.EOperateLogRefType;
-import com.cdkj.gchf.enums.EProjectWorkerUploadStatus;
-import com.cdkj.gchf.enums.ETeamMasterUploadStatus;
-import com.cdkj.gchf.enums.EWorkerRoleType;
-import com.cdkj.gchf.enums.EWorkerType;
+import com.cdkj.gchf.domain.*;
+import com.cdkj.gchf.dto.req.*;
+import com.cdkj.gchf.enums.*;
 import com.cdkj.gchf.exception.BizException;
 import com.cdkj.gchf.gov.AsyncQueueHolder;
 import com.cdkj.gchf.gov.GovConnecter;
@@ -54,6 +20,14 @@ import com.cdkj.gchf.gov.GovUtil;
 import com.cdkj.gchf.gov.SerialHandler;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
+import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.BeanUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+
+import java.math.BigDecimal;
+import java.util.*;
 
 @Component
 public class ProjectWorkerBOImpl extends PaginableBOImpl<ProjectWorker>
@@ -81,7 +55,7 @@ public class ProjectWorkerBOImpl extends PaginableBOImpl<ProjectWorker>
     private IUserBO userBO;
 
     @Override
-    public String saveProjectWorker(XN631690Req data) {
+    public ProjectWorker saveProjectWorker(XN631690Req data) {
         ProjectWorker projectWorkerInfo = new ProjectWorker();
         CorpBasicinfo corpBasicinfo = corpBasicinfoBO
             .getCorpBasicinfoByCorp(data.getCorpCode());
@@ -147,11 +121,11 @@ public class ProjectWorkerBOImpl extends PaginableBOImpl<ProjectWorker>
         projectWorkerInfo.setCode(code);
 
         projectWorkerDAO.insert(projectWorkerInfo);
-        return code;
+        return projectWorkerInfo;
     }
 
     @Override
-    public String saveProjectWorker(Project project, TeamMaster teamMaster, WorkerInfo workerInfo, XN631696Req req) {
+    public ProjectWorker saveProjectWorker(Project project, TeamMaster teamMaster, WorkerInfo workerInfo, XN631696Req req) {
         //h5端添加
         ProjectWorker projectWorker = new ProjectWorker();
 
@@ -179,7 +153,7 @@ public class ProjectWorkerBOImpl extends PaginableBOImpl<ProjectWorker>
         projectWorker.setUploadStatus(EProjectWorkerUploadStatus.TO_UPLOAD.getCode());
 
         projectWorkerDAO.insert(projectWorker);
-        return code;
+        return projectWorker;
     }
 
     @Override

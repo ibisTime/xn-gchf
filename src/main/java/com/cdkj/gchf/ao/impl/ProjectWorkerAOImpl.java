@@ -1,11 +1,20 @@
 package com.cdkj.gchf.ao.impl;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-
+import com.cdkj.gchf.ao.IProjectWorkerAO;
+import com.cdkj.gchf.api.impl.XN631693ReqData;
 import com.cdkj.gchf.bo.*;
+import com.cdkj.gchf.bo.base.Paginable;
+import com.cdkj.gchf.common.ImportUtil;
+import com.cdkj.gchf.domain.*;
 import com.cdkj.gchf.dto.req.*;
+import com.cdkj.gchf.enums.*;
+import com.cdkj.gchf.exception.BizException;
+import com.cdkj.gchf.gov.AsyncQueueHolder;
+import com.cdkj.gchf.gov.GovConnecter;
+import com.cdkj.gchf.humanfaces.DeviceWorker;
+import com.cdkj.gchf.humanfaces.enums.EAttendancePicUploadStatus;
+import com.cdkj.gchf.humanfaces.enums.EWorkerUploadStatus;
+import com.google.gson.JsonObject;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;
@@ -13,34 +22,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.cdkj.gchf.ao.IEquipmentWorkerAO;
-import com.cdkj.gchf.ao.IProjectWorkerAO;
-import com.cdkj.gchf.api.impl.XN631693ReqData;
-import com.cdkj.gchf.bo.base.Paginable;
-import com.cdkj.gchf.common.ImportUtil;
-import com.cdkj.gchf.domain.CorpBasicinfo;
-import com.cdkj.gchf.domain.EquipmentWorker;
-import com.cdkj.gchf.domain.PayRoll;
-import com.cdkj.gchf.domain.PayRollDetail;
-import com.cdkj.gchf.domain.Project;
-import com.cdkj.gchf.domain.ProjectConfig;
-import com.cdkj.gchf.domain.ProjectWorker;
-import com.cdkj.gchf.domain.TeamMaster;
-import com.cdkj.gchf.domain.User;
-import com.cdkj.gchf.domain.WorkerInfo;
-import com.cdkj.gchf.enums.EDeleteStatus;
-import com.cdkj.gchf.enums.EIsNotType;
-import com.cdkj.gchf.enums.EOperateLogOperate;
-import com.cdkj.gchf.enums.EOperateLogRefType;
-import com.cdkj.gchf.enums.EPoliticsType;
-import com.cdkj.gchf.enums.EProjectWorkerUploadStatus;
-import com.cdkj.gchf.enums.EUserKind;
-import com.cdkj.gchf.enums.EWorkerRoleType;
-import com.cdkj.gchf.enums.EWorkerType;
-import com.cdkj.gchf.exception.BizException;
-import com.cdkj.gchf.gov.AsyncQueueHolder;
-import com.cdkj.gchf.gov.GovConnecter;
-import com.google.gson.JsonObject;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 @Service
 public class ProjectWorkerAOImpl implements IProjectWorkerAO {
@@ -87,7 +71,14 @@ public class ProjectWorkerAOImpl implements IProjectWorkerAO {
     @Autowired
     private IEquipmentWorkerBO equipmentWorkerBO;
 
+    @Autowired
+    private IEquipmentInfoBO equipmentInfoBO;
+
+    @Autowired
+    private DeviceWorker deviceWorker;
+
     @Override
+    @Transactional
     public String addProjectWorker(XN631690Req req) {
         User user = userBO.getBriefUser(req.getUserId());
         WorkerInfo workerInfo = workerInfoBO.getWorkerInfo(req.getWorkerCode());
@@ -119,11 +110,17 @@ public class ProjectWorkerAOImpl implements IProjectWorkerAO {
                 "项目中已存在【" + workerInfo.getName() + "】的人员");
         }
 
-        return projectWorkerBO.saveProjectWorker(req);
+        ProjectWorker projectWorker = projectWorkerBO.saveProjectWorker(req);
+
+        //关联设备人员
+        assignEquipmentWorker(projectWorker);
+
+        return projectWorker.getCode();
 
     }
 
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public String addProjectWorker(XN631696Req req) {
 
         EWorkerRoleType.checkExists(req.getWorkRole());
@@ -144,10 +141,31 @@ public class ProjectWorkerAOImpl implements IProjectWorkerAO {
         if (teamMaster == null) {
             throw new BizException("XN00000", "请选择班组");
         }
-        return projectWorkerBO.saveProjectWorker(project, teamMaster, workerInfo, req);
+        ProjectWorker projectWorker = projectWorkerBO.saveProjectWorker(project, teamMaster, workerInfo, req);
+
+        //关联设备人员
+        assignEquipmentWorker(projectWorker);
+
+        return projectWorker.getCode();
     }
 
-    @Transactional
+    private void assignEquipmentWorker(ProjectWorker projectWorker) {
+        WorkerInfo workerInfo = workerInfoBO.getWorkerInfo(projectWorker.getWorkerCode());
+        if (!workerInfo.getWorkerPicUploadStatus()
+                .equals(EAttendancePicUploadStatus.SUCCESS.getCode())
+                && !workerInfo.getWorkerUploadStatus()
+                .equals(EWorkerUploadStatus.SUCCESS.getCode())) {
+            return;
+        }
+
+        List<EquipmentInfo> equipmentInfos = equipmentInfoBO.queryEquipmentList(projectWorker.getProjectCode());
+
+        deviceWorker.personnelEquipmentAuthorization(equipmentInfos, workerInfo.getWorkerGuid(), null, null);
+
+        equipmentWorkerBO.batchSaveEquipmentWorker(projectWorker, equipmentInfos);
+    }
+
+    @Transactional(rollbackFor = Exception.class)
     @Override
     public void editProjectWorker(XN631692Req req) {
 
@@ -192,7 +210,7 @@ public class ProjectWorkerAOImpl implements IProjectWorkerAO {
     }
 
     @Override
-    @Transactional
+    @Transactional(rollbackFor = Exception.class)
     public void dropProjectWorker(List<String> codeList) {
         for (String code : codeList) {
             ProjectWorker projectWorker = projectWorkerBO
@@ -261,7 +279,7 @@ public class ProjectWorkerAOImpl implements IProjectWorkerAO {
     }
 
     @Override
-    @Transactional
+    @Transactional(rollbackFor = Exception.class)
     public void importProjectWorkers(XN631693Req req) {
 
         Project project = projectBO.getProject(req.getProjectCode());

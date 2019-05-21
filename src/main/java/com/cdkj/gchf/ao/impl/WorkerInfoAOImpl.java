@@ -1,37 +1,16 @@
 package com.cdkj.gchf.ao.impl;
 
-import java.util.List;
-
-import org.apache.commons.lang3.StringUtils;
-import org.springframework.beans.BeanUtils;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-
 import com.cdkj.gchf.ao.IWorkerInfoAO;
-import com.cdkj.gchf.bo.IEquipmentInfoBO;
-import com.cdkj.gchf.bo.IOperateLogBO;
-import com.cdkj.gchf.bo.IProjectWorkerBO;
-import com.cdkj.gchf.bo.IUserBO;
-import com.cdkj.gchf.bo.IWorkerInfoBO;
+import com.cdkj.gchf.bo.*;
 import com.cdkj.gchf.bo.base.Page;
 import com.cdkj.gchf.bo.base.Paginable;
 import com.cdkj.gchf.common.IdCardChecker;
 import com.cdkj.gchf.domain.EquipmentInfo;
+import com.cdkj.gchf.domain.Project;
 import com.cdkj.gchf.domain.User;
 import com.cdkj.gchf.domain.WorkerInfo;
-import com.cdkj.gchf.dto.req.XN631790Req;
-import com.cdkj.gchf.dto.req.XN631791Req;
-import com.cdkj.gchf.dto.req.XN631792Req;
-import com.cdkj.gchf.dto.req.XN631793Req;
-import com.cdkj.gchf.dto.req.XN631795Req;
-import com.cdkj.gchf.dto.req.XN631797Req;
-import com.cdkj.gchf.enums.ECultureLevelType;
-import com.cdkj.gchf.enums.EGender;
-import com.cdkj.gchf.enums.EIdCardType;
-import com.cdkj.gchf.enums.EOperateLogRefType;
-import com.cdkj.gchf.enums.EPoliticsType;
-import com.cdkj.gchf.enums.EUserKind;
+import com.cdkj.gchf.dto.req.*;
+import com.cdkj.gchf.enums.*;
 import com.cdkj.gchf.exception.BizException;
 import com.cdkj.gchf.humanfaces.Device;
 import com.cdkj.gchf.humanfaces.DeviceWorker;
@@ -44,6 +23,13 @@ import com.cdkj.gchf.humanfaces.res.DeviceWorkerRes;
 import com.cdkj.gchf.zqzn.ZqznInfoBack;
 import com.cdkj.gchf.zqzn.ZqznInfoFront;
 import com.cdkj.gchf.zqzn.ZqznUtil;
+import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.BeanUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
 
 /**
  * @author old3
@@ -74,6 +60,9 @@ public class WorkerInfoAOImpl implements IWorkerInfoAO {
 
     @Autowired
     private IEquipmentInfoBO equipmentInfoBO;
+
+    @Autowired
+    private IProjectBO projectBO;
 
     @Override
     @Transactional
@@ -305,24 +294,26 @@ public class WorkerInfoAOImpl implements IWorkerInfoAO {
     }
 
     @Override
+    @Transactional
     public String addOcrWorkerInfo(XN631795Req req) {
+        User user = userBO.getBriefUser(req.getUserId());
+        Project project = projectBO.getProject(user.getOrganizationCode());
+
+        if (project.getTotalOcrCount() - project.getUsedOcrCount() < 1) {
+            throw new BizException("XN631794", "身份证识别次数已用完，请联系服务商");
+        }
+
         ZqznInfoFront front = ZqznUtil.getOcrFrontInfo(req.getPositiveImage());
         ZqznInfoBack back = ZqznUtil.getOcrBackInfo(req.getNegativeImage());
+
+        projectBO.refreshUsedOcrCount(project.getCode(),
+                project.getUsedOcrCount() + 1);
 
         return workerInfoBO.saveWorkerInfo(req, front, back);
     }
 
     @Override
     public String refreshWorkerInfoH5(XN631797Req req) {
-
-        WorkerInfo workerInfo = workerInfoBO.getWorkerInfo(req.getCode());
-        if (StringUtils.isNotBlank(workerInfo.getPositiveIdCardImageUrl())) {
-
-        }
-        if (StringUtils.isNotBlank(workerInfo.getNegativeIdCardImageUrl())) {
-
-        }
-
         return workerInfoBO.refreshWorkerInfo(req);
     }
 

@@ -1,25 +1,19 @@
 package com.cdkj.gchf.bo;
 
-import java.util.List;
-
 import com.cdkj.gchf.api.impl.XN631693ReqData;
 import com.cdkj.gchf.bo.base.IPaginableBO;
 import com.cdkj.gchf.bo.base.Paginable;
-import com.cdkj.gchf.domain.CorpBasicinfo;
-import com.cdkj.gchf.domain.Project;
-import com.cdkj.gchf.domain.ProjectConfig;
-import com.cdkj.gchf.domain.ProjectWorker;
-import com.cdkj.gchf.domain.TeamMaster;
-import com.cdkj.gchf.domain.WorkerInfo;
+import com.cdkj.gchf.domain.*;
 import com.cdkj.gchf.dto.req.*;
 import com.google.gson.JsonObject;
+
+import java.util.List;
 
 public interface IProjectWorkerBO extends IPaginableBO<ProjectWorker> {
     /**
      * 保存项目人员 
      */
-    String saveProjectWorker(XN631690Req req);
-
+    ProjectWorker saveProjectWorker(XN631690Req req);
 
     /**
      * 添加项目人员（H5端用）
@@ -28,9 +22,9 @@ public interface IProjectWorkerBO extends IPaginableBO<ProjectWorker> {
      * @param teamMaster
      * @param workerInfo
      * @param req
-     * @return 主键code
+     * @return ProjectWorker
      */
-    String saveProjectWorker(Project project, TeamMaster teamMaster, WorkerInfo workerInfo, XN631696Req req);
+    ProjectWorker saveProjectWorker(Project project, TeamMaster teamMaster, WorkerInfo workerInfo, XN631696Req req);
 
 
     /**

@@ -32,6 +32,12 @@ public interface DeviceWorkUrl {
             + "/Api/Device/EquipmentAP";
 
     /**
+     * 人员授权设备
+     */
+    String PERSON_EQUIPMENT_AUTHORIZATION = AppConfig.getBaseUrl()
+            + "/Api/Personnel/PersonnelEquipmentAuthorization";
+
+    /**
      *人员搜索Url
      */
     String WORKER_SEARCH_URL = AppConfig.getBaseUrl()

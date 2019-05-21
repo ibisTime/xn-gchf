@@ -1,17 +1,5 @@
 package com.cdkj.gchf.bo.impl;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-import org.apache.commons.lang3.StringUtils;
-import org.springframework.beans.BeanUtils;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
-
 import com.alibaba.fastjson.JSONObject;
 import com.cdkj.gchf.api.impl.XN631693ReqData;
 import com.cdkj.gchf.bo.IWorkerInfoBO;
@@ -23,12 +11,7 @@ import com.cdkj.gchf.core.OrderNoGenerater;
 import com.cdkj.gchf.dao.IWorkerInfoDAO;
 import com.cdkj.gchf.domain.ProjectConfig;
 import com.cdkj.gchf.domain.WorkerInfo;
-import com.cdkj.gchf.dto.req.XN631790Req;
-import com.cdkj.gchf.dto.req.XN631791Req;
-import com.cdkj.gchf.dto.req.XN631792Req;
-import com.cdkj.gchf.dto.req.XN631793Req;
-import com.cdkj.gchf.dto.req.XN631795Req;
-import com.cdkj.gchf.dto.req.XN631797Req;
+import com.cdkj.gchf.dto.req.*;
 import com.cdkj.gchf.enums.EGender;
 import com.cdkj.gchf.enums.EGeneratePrefix;
 import com.cdkj.gchf.enums.EIsNotType;
@@ -37,6 +20,17 @@ import com.cdkj.gchf.gov.GovConnecter;
 import com.cdkj.gchf.gov.GovUtil;
 import com.cdkj.gchf.zqzn.ZqznInfoBack;
 import com.cdkj.gchf.zqzn.ZqznInfoFront;
+import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.BeanUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 @Component
 public class WorkerInfoBOImpl extends PaginableBOImpl<WorkerInfo>
@@ -104,6 +98,9 @@ public class WorkerInfoBOImpl extends PaginableBOImpl<WorkerInfo>
             .setHeadImageUrl("data:image/jpeg;base64," + front.getFaceImg());
         workerInfo.setGrantOrg(back.getIssuedBy());
         workerInfo.setNation(front.getRace());
+
+        workerInfo.setPositiveIdCardImageUrl(req.getPositiveImage());
+        workerInfo.setNegativeIdCardImageUrl(req.getNegativeImage());
 
         String[] validDate = back.getValidDate().split("-");
         workerInfo.setStartDate(

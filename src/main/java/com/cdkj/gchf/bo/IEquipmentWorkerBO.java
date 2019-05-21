@@ -1,12 +1,12 @@
 package com.cdkj.gchf.bo;
 
-import java.util.List;
-
 import com.cdkj.gchf.bo.base.IPaginableBO;
 import com.cdkj.gchf.domain.EquipmentInfo;
 import com.cdkj.gchf.domain.EquipmentWorker;
 import com.cdkj.gchf.domain.ProjectWorker;
 import com.cdkj.gchf.dto.req.XN631830Req;
+
+import java.util.List;
 
 //CHECK ��鲢��ע�� 
 public interface IEquipmentWorkerBO extends IPaginableBO<EquipmentWorker> {
@@ -20,6 +20,15 @@ public interface IEquipmentWorkerBO extends IPaginableBO<EquipmentWorker> {
      */
     void batchSaveEquipmentWorker(List<ProjectWorker> projectWorkers,
             EquipmentInfo equipmentInfo, XN631830Req req);
+
+    /**
+     * 保存设备人员
+     *
+     * @param projectWorker
+     * @param equipmentInfos
+     */
+    void batchSaveEquipmentWorker(ProjectWorker projectWorker,
+                                  List<EquipmentInfo> equipmentInfos);
 
     public int removeEquipmentWorker(String code);
 

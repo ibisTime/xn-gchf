@@ -251,10 +251,16 @@ public class ProjectWorker extends ABaseDO {
     // 实名制人员guid
     private String personGuid;
 
+
     /**
      * DB properties
      */
     private String realTeamMasterName;
+
+    /**
+     * 人脸上传状态
+     */
+    private String workerPicUploadStatus;
 
     public String getCode() {
         return code;
@@ -917,4 +923,12 @@ public class ProjectWorker extends ABaseDO {
         return true;
     }
 
+
+    public String getWorkerPicUploadStatus() {
+        return workerPicUploadStatus;
+    }
+
+    public void setWorkerPicUploadStatus(String workerPicUploadStatus) {
+        this.workerPicUploadStatus = workerPicUploadStatus;
+    }
 }

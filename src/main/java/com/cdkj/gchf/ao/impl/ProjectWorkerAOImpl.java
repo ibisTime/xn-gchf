@@ -475,6 +475,7 @@ public class ProjectWorkerAOImpl implements IProjectWorkerAO {
                 if (null != workerInfo) {
                     projectWorker
                         .setArchiveDatetime(workerInfo.getCreateDatetime());
+                    projectWorker.setWorkerPicUploadStatus(workerInfo.getWorkerPicUploadStatus());
                 }
             }
         }

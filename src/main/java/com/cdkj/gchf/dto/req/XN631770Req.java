@@ -21,6 +21,12 @@ public class XN631770Req {
     @NotBlank
     private String corpCode;
 
+    /**
+     * 选择的项目人员编号
+     */
+    @NotBlank
+    private String workerCode;
+
     // 工人所属企业名称
     private String corpName;
 
@@ -108,4 +114,11 @@ public class XN631770Req {
         this.payRollCode = payRollCode;
     }
 
+    public String getWorkerCode() {
+        return workerCode;
+    }
+
+    public void setWorkerCode(String workerCode) {
+        this.workerCode = workerCode;
+    }
 }

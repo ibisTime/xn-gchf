@@ -1,5 +1,7 @@
 package com.cdkj.gchf.ao.impl;
 
+import com.cdkj.gchf.bo.IBankCardBankBO;
+import com.cdkj.gchf.domain.BankCardInfo;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -78,6 +80,9 @@ public class PayRollAOImpl implements IPayRollAO {
 
     @Autowired
     private IProjectWorkerBO projectWorkerBO;
+
+    @Autowired
+    private IBankCardBankBO bankCardBankBO;
 
     @Transactional
     @Override
@@ -180,12 +185,19 @@ public class PayRollAOImpl implements IPayRollAO {
             }
             ProjectWorker projectWorker = projectWorkerBO
                 .getProjectWorker(workerList.get(0).getCode());
+
+            // 查询excel中该人员是否保存银行卡信息。未保存则添加
+            BankCardInfo bankCardByIdCardNumBankNum = bankCardBankBO
+                    .getBankCardByIdCardNumBankNum(projectWorker.getIdcardNumber(),
+                            data.getPayRollBankCardNumber());
+            if (bankCardByIdCardNumBankNum == null) {
+                bankCardBankBO.saveWorkerBankCardInfo(projectWorker, data.getPayRollBankCode(),
+                        data.getPayRollBankCardNumber(), null, null, null);
+            }
+
             // 不存在相关工资单时相关联的工资单
             String payRollCode = null;
-            PayRoll payRoll = payRollBO
-                .getPayRollByCorpCodeAndTeamSysNoAndProjectCode(
-                    data.getCorpCode(), teamMasterByCondition.getCode(),
-                    req.getProjectCode(), data.getPayMonth());
+            PayRoll payRoll = payRollBO.getPayRollByTeamNo(teamMasterByCondition.getCode());
             if (payRoll == null) {
 
                 String savePayRollCode = payRollBO.savePayRoll(

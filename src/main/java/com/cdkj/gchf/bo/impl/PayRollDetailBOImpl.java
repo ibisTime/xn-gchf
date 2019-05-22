@@ -1,5 +1,6 @@
 package com.cdkj.gchf.bo.impl;
 
+import com.cdkj.gchf.enums.EBankCardBussinessType;
 import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -78,23 +79,28 @@ public class PayRollDetailBOImpl extends PaginableBOImpl<PayRollDetail>
             ProjectWorker projectWorker = projectWorkerBO
                     .getProjectWorker(detail.getWorkerCode());
 
-            // 在校验项目人员银行卡信息
-            BankCardInfo bankCardInfoByNum = bankCardBankBO
-                    .getBankCardByIdCardNumBankNum(detail.getIdCardNumber(),
-                            detail.getPayRollBankCardNumber());
-            // 没有银行卡信息 新增
-            if (bankCardInfoByNum == null) {
-                bankCardBankBO.saveBankCardInfo(detail, projectWorker);
+            // 校验银行卡信息
+            //参建单位的银行卡
+            BankCardInfo workerBankCard = bankCardBankBO
+                    .getBankCardInfo(detail.getWorkerBankCard());
+
+            BankCardInfo corpBankCard = bankCardBankBO.getBankCardInfo(detail.getCorpBankCard());
+
+            if (workerBankCard == null || corpBankCard == null) {
+                throw new BizException("xn000000", "所选银行卡不存在");
             }
+
             // 插入数据
             BeanUtils.copyProperties(detail, payRollDetail);
             // 银行卡信息
             payRollDetail
-                    .setPayRollBankCardNumber(detail.getPayRollBankCardNumber());
-            payRollDetail.setPayRollBankCode(detail.getPayRollBankCode());
-            payRollDetail.setPayRollBankName(detail.getPayRollBankName());
-            payRollDetail.setPayBankCode(detail.getPayBankCode());
-            payRollDetail.setPayBankName(detail.getPayBankName());
+                    .setPayRollBankCardNumber(workerBankCard.getBankNumber());
+            payRollDetail.setPayRollBankCode(workerBankCard.getBankCode());
+            payRollDetail.setPayRollBankName(workerBankCard.getBankName());
+
+            payRollDetail.setPayBankCode(corpBankCard.getBankCode());
+            payRollDetail.setPayBankName(corpBankCard.getBankNumber());
+            payRollDetail.setPayBankCardNumber(corpBankCard.getBankNumber());
 
             // 员工信息
             payRollDetail.setWorkerName(projectWorker.getWorkerName());

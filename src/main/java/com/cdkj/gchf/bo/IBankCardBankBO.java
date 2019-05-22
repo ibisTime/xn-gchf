@@ -23,14 +23,16 @@ public interface IBankCardBankBO extends IPaginableBO<BankCardInfo> {
 
 
     /**
-     * 保存银行卡信息
-     * @param data
-     * @param projectWorker
-     * @return
+     * @param projectWorker 项目人员
+     * @param bankCode 银行代码
+     * @param bankNumber 银行卡号
+     * @param subranch 支行
+     * @param bankLinkNumber 银行联号
+     * @param remark 备注
+     * @return 新增银行卡code
      */
-    String saveBankCardInfo(XN631770ReqDetail data,
-            ProjectWorker projectWorker);
-
+    String saveWorkerBankCardInfo(ProjectWorker projectWorker, String bankCode, String bankNumber,
+            String subranch, String bankLinkNumber, String remark);
 
     /**
      * 编辑银行卡

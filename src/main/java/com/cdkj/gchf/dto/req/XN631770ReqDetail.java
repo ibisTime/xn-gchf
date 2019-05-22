@@ -13,34 +13,24 @@ public class XN631770ReqDetail {
     // 人员编号
     private String workerCode;
 
+    /**
+     * 项目人员银行卡
+     */
+    @NotBlank
+    private String workerBankCard;
+
+    /**
+     * 所在企业银行卡
+     */
+    @NotBlank
+    private String corpBankCard;
+
     // 出勤天数
     private String days;
 
     // 总工时
     private String workHours;
 
-    // 工人工资卡号
-    @NotBlank(message = "项目人员银行卡号不能为空")
-    private String payRollBankCardNumber;
-
-    // 工人工资卡银行代码
-    private String payRollBankCode;
-
-    // 工人工资卡开户行名称
-    @NotBlank
-    private String payRollBankName;
-
-    // 工资代发银行卡号
-    @NotBlank
-    private String payBankCardNumber;
-
-    // 工资代发银行代码
-    @NotBlank
-    private String payBankCode;
-
-    // 工资代发开户行名称
-    @NotBlank
-    private String payBankName;
 
     // 应发金额
     @NotBlank(message = "应发金额不能为空")
@@ -93,54 +83,6 @@ public class XN631770ReqDetail {
 
     public void setWorkHours(String workHours) {
         this.workHours = workHours;
-    }
-
-    public String getPayRollBankCardNumber() {
-        return payRollBankCardNumber;
-    }
-
-    public void setPayRollBankCardNumber(String payRollBankCardNumber) {
-        this.payRollBankCardNumber = payRollBankCardNumber;
-    }
-
-    public String getPayRollBankCode() {
-        return payRollBankCode;
-    }
-
-    public void setPayRollBankCode(String payRollBankCode) {
-        this.payRollBankCode = payRollBankCode;
-    }
-
-    public String getPayRollBankName() {
-        return payRollBankName;
-    }
-
-    public void setPayRollBankName(String payRollBankName) {
-        this.payRollBankName = payRollBankName;
-    }
-
-    public String getPayBankCardNumber() {
-        return payBankCardNumber;
-    }
-
-    public void setPayBankCardNumber(String payBankCardNumber) {
-        this.payBankCardNumber = payBankCardNumber;
-    }
-
-    public String getPayBankCode() {
-        return payBankCode;
-    }
-
-    public void setPayBankCode(String payBankCode) {
-        this.payBankCode = payBankCode;
-    }
-
-    public String getPayBankName() {
-        return payBankName;
-    }
-
-    public void setPayBankName(String payBankName) {
-        this.payBankName = payBankName;
     }
 
     public String getTotalPayAmount() {
@@ -199,4 +141,19 @@ public class XN631770ReqDetail {
         this.workerCode = workerCode;
     }
 
+    public String getWorkerBankCard() {
+        return workerBankCard;
+    }
+
+    public void setWorkerBankCard(String workerBankCard) {
+        this.workerBankCard = workerBankCard;
+    }
+
+    public String getCorpBankCard() {
+        return corpBankCard;
+    }
+
+    public void setCorpBankCard(String corpBankCard) {
+        this.corpBankCard = corpBankCard;
+    }
 }

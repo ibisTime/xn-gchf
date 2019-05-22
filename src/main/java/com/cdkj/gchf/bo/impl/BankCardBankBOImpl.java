@@ -50,31 +50,26 @@ public class BankCardBankBOImpl extends PaginableBOImpl<BankCardInfo>
 
 
     @Override
-    public String saveBankCardInfo(XN631770ReqDetail data,
-                                   ProjectWorker projectWorker) {
+    public String saveWorkerBankCardInfo(ProjectWorker projectWorker, String bankCode,
+            String bankNumber, String subranch, String bankLinkNumber, String remark) {
+
         BankCardInfo bankCardInfo = new BankCardInfo();
-
-        String code = OrderNoGenerater
-                .generate(EGeneratePrefix.BankCardInfo.getCode());
-        bankCardInfo.setBankNumber(data.getPayRollBankCardNumber());
-        bankCardInfo.setCode(code);
-        bankCardInfo.setBankCode(data.getPayRollBankCode());
-        bankCardInfo.setBankName(EBankCardCodeType
-                .getBankCardType(data.getPayRollBankCode()).getValue());
-
-        bankCardInfo.setSubranch(data.getPayRollBankName());
-        bankCardInfo.setBusinessSysNo(projectWorker.getCode());
+        String code = OrderNoGenerater.generate(EGeneratePrefix.BankCardInfo.getCode());
         bankCardInfo.setBusinessType(EBankCardBussinessType.USER.getCode());
-        bankCardInfo.setBusinessName(projectWorker.getWorkerName());
-
+        bankCardInfo.setBankLinkNumber(bankNumber);
+        bankCardInfo.setBankCode(bankCode);
+        bankCardInfo.setBankName(EBankCardCodeType.getBankCardType(bankCode).getValue());
+        bankCardInfo.setBankLinkNumber(bankLinkNumber);
+        bankCardInfo.setRemark(remark);
+        bankCardInfo.setSubranch(subranch);
         bankCardInfo.setStatus(EBankCardStatus.Normal.getCode());
-        bankCardInfo.setBankLinkNumber("");
         bankCardInfo.setCreateDatetime(new Date(System.currentTimeMillis()));
+        bankCardInfo.setUpdater("admin");
         bankCardInfo.setUpdateDatetime(new Date(System.currentTimeMillis()));
+        bankCardInfo.setCode(code);
         bankCardInfoDAO.insert(bankCardInfo);
         return code;
     }
-
 
     @Override
     public void refreshBankCardInfo(XN631752Req req) {

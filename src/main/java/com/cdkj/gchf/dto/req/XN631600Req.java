@@ -137,6 +137,11 @@ public class XN631600Req {
     @NotBlank
     private String userId;
 
+    /**
+     * Ocr可用次数
+     */
+    private String ocrCount;
+
     // 施工许可证
     private List<XN631600ReqLicenses> builderLicenses;
 
@@ -468,4 +473,11 @@ public class XN631600Req {
         this.totalOcrCount = totalOcrCount;
     }
 
+    public String getOcrCount() {
+        return ocrCount;
+    }
+
+    public void setOcrCount(String ocrCount) {
+        this.ocrCount = ocrCount;
+    }
 }

@@ -26,6 +26,11 @@
 			<if test="deviceKey != null and deviceKey != '' ">
 				AND t.device_key = #{deviceKey}
 			</if>
+
+			<if test="deviceCode != null and deviceCode != '' ">
+				AND t.device_code = #{deviceCode}
+			</if>
+
 			<if test="deviceName != null and deviceName != '' ">
 				AND t.device_name like "%"#{deviceName}"%"
 			</if>

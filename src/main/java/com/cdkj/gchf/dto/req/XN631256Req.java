@@ -10,8 +10,12 @@ import org.hibernate.validator.constraints.NotBlank;
  */
 public class XN631256Req {
 
-    @NotBlank
     private String code;
+
+    /**
+     * 企业信用代码
+     */
+    private String corpCode;
 
     // 用户编号
     @NotBlank
@@ -33,4 +37,11 @@ public class XN631256Req {
         this.userId = userId;
     }
 
+    public String getCorpCode() {
+        return corpCode;
+    }
+
+    public void setCorpCode(String corpCode) {
+        this.corpCode = corpCode;
+    }
 }

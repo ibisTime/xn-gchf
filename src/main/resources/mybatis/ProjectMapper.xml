@@ -49,6 +49,8 @@
 		<result column="pay_roll_delay_days" property="payRollDelayDays" />
 		<result column="charge_email" property="chargeEmail" />
 		<result column="third_party_project_code" property="thirdPartyProjectCode" />
+		<result column="total_ocr_count" property="totalOcrCount"/>
+		<result column="used_ocr_count" property="usedOcrCount"/>
 		<result column="secretStatus" property="secret_status" />
 	</resultMap>
 

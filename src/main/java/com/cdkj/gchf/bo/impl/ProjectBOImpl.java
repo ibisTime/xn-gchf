@@ -6,6 +6,7 @@ import java.util.Map;
 
 import com.cdkj.gchf.bo.IUserBO;
 import com.cdkj.gchf.domain.User;
+import jnr.ffi.annotations.In;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -73,7 +74,7 @@ public class ProjectBOImpl extends PaginableBOImpl<Project>
         if (StringUtils.isNotBlank(req.getTotalOcrCount())) {
             project.setTotalOcrCount(Integer.parseInt(req.getTotalOcrCount()));
         }
-
+        project.setTotalOcrCount(Integer.parseInt(req.getOcrCount()));
         project.setBuildCorpName(req.getBuildCorpName());
         project.setSecretStatus(ESecretStatus.NO.getCode());
         projectDAO.insert(project);

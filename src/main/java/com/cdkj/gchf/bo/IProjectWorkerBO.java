@@ -8,6 +8,7 @@ import com.cdkj.gchf.dto.req.*;
 import com.google.gson.JsonObject;
 
 import java.util.List;
+import java.util.Map;
 
 public interface IProjectWorkerBO extends IPaginableBO<ProjectWorker> {
     /**
@@ -174,6 +175,22 @@ public interface IProjectWorkerBO extends IPaginableBO<ProjectWorker> {
      * @return
      */
     List<ProjectWorker> selectProjectWorkerByWorkerCode(String workerCode);
+
+
+    /**
+     * 根据用户id查询工种分布
+     *
+     * @param userId 用户id
+     */
+    List<Map> selectProjectWorkerWorkerTyepSpread(String userId);
+
+
+    /**
+     * 根据用户id查年龄分布
+     *
+     * @param userId 用户id
+     */
+    List<Map> selectWorkerAgeInterval(String userId);
 
     /****国家平台接口****/
     public void doUpload(XN631911Req req, ProjectConfig projectConfig);

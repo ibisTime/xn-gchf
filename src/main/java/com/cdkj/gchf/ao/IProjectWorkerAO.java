@@ -3,6 +3,7 @@ package com.cdkj.gchf.ao;
 import java.util.List;
 
 import com.cdkj.gchf.dto.req.*;
+import java.util.Map;
 import org.springframework.stereotype.Component;
 
 import com.cdkj.gchf.bo.base.Paginable;
@@ -75,6 +76,22 @@ public interface IProjectWorkerAO {
      * 根据code查 
      */
     public ProjectWorker getProjectWorker(String code);
+
+
+    /**
+     * 查询项目人员工种分布
+     *
+     * @param userId 用户id
+     */
+    List<Map> selectProjectWorkerWorkerTypeSpread(String userId);
+
+
+    /**
+     * 查询项目人员年龄分布
+     *
+     * @param userId 用户id
+     */
+    List<Map> selectWorkerAgeInterval(String userId);
 
     /****国家平台接口****/
     public void uploadProjectWorker(XN631911Req req);

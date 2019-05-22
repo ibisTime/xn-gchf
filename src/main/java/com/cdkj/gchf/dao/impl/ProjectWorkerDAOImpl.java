@@ -2,6 +2,7 @@ package com.cdkj.gchf.dao.impl;
 
 import java.util.List;
 
+import java.util.Map;
 import org.springframework.stereotype.Repository;
 
 import com.cdkj.gchf.dao.IProjectWorkerDAO;
@@ -30,38 +31,38 @@ public class ProjectWorkerDAOImpl extends AMybatisTemplate
     @Override
     public ProjectWorker select(ProjectWorker condition) {
         return super.select(NAMESPACE.concat("select_projectWorker"), condition,
-            ProjectWorker.class);
+                ProjectWorker.class);
     }
 
     @Override
     public long selectTotalCount(ProjectWorker condition) {
         return super.selectTotalCount(
-            NAMESPACE.concat("select_projectWorker_count"), condition);
+                NAMESPACE.concat("select_projectWorker_count"), condition);
     }
 
     @Override
     public List<ProjectWorker> selectList(ProjectWorker condition) {
         return super.selectList(NAMESPACE.concat("select_projectWorker"),
-            condition, ProjectWorker.class);
+                condition, ProjectWorker.class);
     }
 
     @Override
     public List<ProjectWorker> selectList(ProjectWorker condition, int start,
             int count) {
         return super.selectList(NAMESPACE.concat("select_projectWorker"), start,
-            count, condition, ProjectWorker.class);
+                count, condition, ProjectWorker.class);
     }
 
     @Override
     public int update(ProjectWorker projectWorker) {
         return super.update(NAMESPACE.concat("update_projectWorker"),
-            projectWorker);
+                projectWorker);
     }
 
     @Override
     public int updateTeamSysNoByLocal(ProjectWorker projectWorker) {
         return super.update(NAMESPACE.concat("update_teamSysNoByLocal"),
-            projectWorker);
+                projectWorker);
     }
 
     @Override
@@ -97,36 +98,46 @@ public class ProjectWorkerDAOImpl extends AMybatisTemplate
     @Override
     public int updateProjectWorkerDeleteStatus(ProjectWorker projectWorker) {
         return super.update(
-            NAMESPACE.concat("update_projectWorker_delete_status"),
-            projectWorker);
+                NAMESPACE.concat("update_projectWorker_delete_status"),
+                projectWorker);
     }
 
     @Override
     public int updateProjectWorkerUploadStatus(ProjectWorker projectWorker) {
         return super.update(
-            NAMESPACE.concat("update_projectWorker_upload_status"),
-            projectWorker);
+                NAMESPACE.concat("update_projectWorker_upload_status"),
+                projectWorker);
     }
 
     @Override
     public int updateProjectWorkerTeamName(ProjectWorker projectWorker) {
 
         return super.update(NAMESPACE.concat("update_projectWorker_team_name"),
-            projectWorker);
+                projectWorker);
     }
 
     @Override
     public int updateProjectWorkerWorkerInfo(ProjectWorker projectWorker) {
         return super.update(
-            NAMESPACE.concat("update_projectWorker_worker_info"),
-            projectWorker);
+                NAMESPACE.concat("update_projectWorker_worker_info"),
+                projectWorker);
     }
 
     @Override
     public int updateProjectWorkerWorkerPhone(ProjectWorker projectWorker) {
         return super.update(
-            NAMESPACE.concat("update_projectWorker_worker_info_phone"),
-            projectWorker);
+                NAMESPACE.concat("update_projectWorker_worker_info_phone"),
+                projectWorker);
     }
 
+    @Override
+    public List<Map> selectWorkerTypeSpread(String userId) {
+        return super.selectList(NAMESPACE.concat("selectWorkerTypeSpread"), userId, Map.class);
+    }
+
+
+    @Override
+    public List<Map> selectWorkerAgeInterval(String userId) {
+        return super.selectList(NAMESPACE.concat("selectWorkerAgeInterval"), userId, Map.class);
+    }
 }

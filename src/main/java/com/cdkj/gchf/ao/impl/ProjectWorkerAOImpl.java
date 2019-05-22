@@ -15,6 +15,7 @@ import com.cdkj.gchf.humanfaces.DeviceWorker;
 import com.cdkj.gchf.humanfaces.enums.EAttendancePicUploadStatus;
 import com.cdkj.gchf.humanfaces.enums.EWorkerUploadStatus;
 import com.google.gson.JsonObject;
+import java.util.Map;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;
@@ -539,4 +540,14 @@ public class ProjectWorkerAOImpl implements IProjectWorkerAO {
         return projectWorker;
     }
 
+    @Override
+    public List<Map> selectProjectWorkerWorkerTypeSpread(String userId) {
+        return projectWorkerBO.selectProjectWorkerWorkerTyepSpread(userId);
+    }
+
+
+    @Override
+    public List<Map> selectWorkerAgeInterval(String userId) {
+        return projectWorkerBO.selectWorkerAgeInterval(userId);
+    }
 }

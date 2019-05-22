@@ -384,6 +384,16 @@ public class ProjectWorkerBOImpl extends PaginableBOImpl<ProjectWorker>
     }
 
     @Override
+    public List<Map> selectProjectWorkerWorkerTyepSpread(String userId) {
+        return projectWorkerDAO.selectWorkerTypeSpread(userId);
+    }
+
+    @Override
+    public List<Map> selectWorkerAgeInterval(String userId) {
+        return projectWorkerDAO.selectWorkerAgeInterval(userId);
+    }
+
+    @Override
     public void doUpload(XN631911Req req, ProjectConfig projectConfig) {
 
         List<XN631911ReqWorker> workerList = req.getWorkerList();

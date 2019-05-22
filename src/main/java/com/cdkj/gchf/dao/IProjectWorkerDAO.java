@@ -4,6 +4,7 @@ import com.cdkj.gchf.dao.base.IBaseDAO;
 import com.cdkj.gchf.domain.ProjectWorker;
 
 import java.util.List;
+import java.util.Map;
 
 public interface IProjectWorkerDAO extends IBaseDAO<ProjectWorker> {
     String NAMESPACE = IProjectWorkerDAO.class.getName().concat(".");
@@ -35,5 +36,20 @@ public interface IProjectWorkerDAO extends IBaseDAO<ProjectWorker> {
 
     // 重新建档-第三步-更新项目人员手机号
     int updateProjectWorkerWorkerPhone(ProjectWorker projectWorker);
+
+    /**
+     * 查询项目端工种分布
+     *
+     * @param userId 用户id
+     */
+    List<Map> selectWorkerTypeSpread(String userId);
+
+
+    /**
+     * 查询项目端年龄分布
+     *
+     * @param userId 用户id
+     */
+    List<Map> selectWorkerAgeInterval(String userId);
 
 }

@@ -87,7 +87,9 @@ public class WorkerInfoBOImpl extends PaginableBOImpl<WorkerInfo>
 
         workerInfo.setCode(code);
         workerInfo.setIdCardNumber(front.getIdNo());
+        workerInfo.setIdCardType("01");
         workerInfo.setAddress(front.getAddress());
+
         workerInfo.setGender(
             Integer.parseInt(EGender.checkExists(front.getGender())));
         workerInfo.setName(front.getName());

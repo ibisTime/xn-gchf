@@ -36,8 +36,7 @@ public class ZqznUtil {
     public static ZqznInfoFront getOcrFrontInfo(String base64) {
 
         ZqznInfoFront zqznInfoFront = null;
-        base64 = base64.replace("data:image/jpeg;base64,", "").replace(" ",
-            "+");
+        base64 = base64.substring(base64.indexOf(",") + 1);
 
         File file = null;
         try {
@@ -79,8 +78,7 @@ public class ZqznUtil {
     public static ZqznInfoBack getOcrBackInfo(String base64) {
 
         ZqznInfoBack zqznInfoBack = null;
-        base64 = base64.replace("data:image/jpeg;base64,", "").replace(" ",
-            "+");
+        base64 = base64.substring(base64.indexOf(",") + 1);
 
         File file = null;
         try {

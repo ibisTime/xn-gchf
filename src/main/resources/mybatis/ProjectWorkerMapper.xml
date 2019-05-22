@@ -3,7 +3,7 @@
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.cdkj.gchf.dao.IProjectWorkerDAO">
 	<resultMap id="projectWorker_DB_Result" type="projectWorker">
-		<result column="code" property="code" />
+		<result column="code" property="code"/>
 		<result column="project_code" property="projectCode" />
 		<result column="project_name" property="projectName" />
 		<result column="corp_code" property="corpCode" />
@@ -558,6 +558,28 @@
 		SELECT count(1) FROM thf_project_worker t
 		<include refid="join_condition" />
 		<include refid="where_condition" />
+	</select>
+
+
+	<select id="selectWorkerTypeSpread" parameterType="java.lang.String" resultType="java.util.Map">
+		SELECT count(1) as 'count', work_type
+		FROM thf_project_worker
+		WHERE project_code =
+					(SELECT organization_code
+					 FROM thf_user
+					 WHERE user_id = #{0})
+		GROUP BY work_type;
+	</select>
+
+	<select id="selectWorkerAgeInterval" parameterType="java.lang.String" resultType="java.util.Map">
+		select interval (year(now()) - year(birthday), 18, 30, 40, 50, 55, 100) as 'ageInterval'
+				 , count(1)                                                         as 'count'
+		from thf_project_worker a
+					 left join thf_worker_info b
+										 on a.idcard_number = b.id_card_number
+		where a.project_code =
+					(select organization_code from thf_user where user_id = #{0})
+		group by ageInterval
 	</select>
 
 </mapper>

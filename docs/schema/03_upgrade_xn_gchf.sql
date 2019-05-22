@@ -535,7 +535,7 @@ ALTER TABLE `thf_project`
 ADD COLUMN `area` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '区';
 
 ## 220 v1
-DROP TABLE IF EXISTS `thf_leave`
+DROP TABLE IF EXISTS `thf_leave`;
 CREATE TABLE `thf_leave` (
   `code` varchar(32) NOT NULL COMMENT '编号',
   `employ_code` varchar(32) DEFAULT NULL COMMENT '雇佣编号',
@@ -553,7 +553,7 @@ CREATE TABLE `thf_leave` (
   PRIMARY KEY (`code`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
-DROP TABLE IF EXISTS `thf_message`
+DROP TABLE IF EXISTS `thf_message`;
 CREATE TABLE `thf_message` (
   `code` varchar(32) NOT NULL COMMENT '编号',
   `project_code` varchar(32) DEFAULT NULL COMMENT '项目编号',
@@ -581,7 +581,7 @@ CREATE TABLE `thf_message` (
   PRIMARY KEY (`code`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
-DROP TABLE IF EXISTS `thf_query_log`
+DROP TABLE IF EXISTS `thf_query_log`;
 CREATE TABLE `thf_query_log` (
   `code` varchar(32) NOT NULL COMMENT '编号',
   `user_id` varchar(32) DEFAULT NULL COMMENT '用户id',
@@ -596,7 +596,7 @@ CREATE TABLE `thf_query_log` (
   CONSTRAINT `user_id` FOREIGN KEY (`user_id`) REFERENCES `thf_user` (`user_id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
-DROP TABLE IF EXISTS `thf_report`
+DROP TABLE IF EXISTS `thf_report`;
 CREATE TABLE `thf_report` (
   `code` varchar(32) NOT NULL COMMENT '编号',
   `project_code` varchar(32) DEFAULT NULL COMMENT '项目编号',
@@ -613,7 +613,7 @@ CREATE TABLE `thf_report` (
   `remark` text COMMENT '备注',
   PRIMARY KEY (`code`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-DROP TABLE IF EXISTS `thf_skill`
+DROP TABLE IF EXISTS `thf_skill`;
 CREATE TABLE `thf_skill` (
   `code` varchar(32) NOT NULL COMMENT '编号',
   `staff_code` varchar(32) DEFAULT NULL COMMENT '员工编号',

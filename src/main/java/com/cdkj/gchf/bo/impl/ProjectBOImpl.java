@@ -74,7 +74,6 @@ public class ProjectBOImpl extends PaginableBOImpl<Project>
         if (StringUtils.isNotBlank(req.getTotalOcrCount())) {
             project.setTotalOcrCount(Integer.parseInt(req.getTotalOcrCount()));
         }
-        project.setTotalOcrCount(Integer.parseInt(req.getOcrCount()));
         project.setBuildCorpName(req.getBuildCorpName());
         project.setSecretStatus(ESecretStatus.NO.getCode());
         projectDAO.insert(project);

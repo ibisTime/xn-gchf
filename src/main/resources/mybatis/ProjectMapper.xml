@@ -198,11 +198,18 @@
 		,area_code = #{areaCode}
 
 		,invest = #{invest}
-		,total_ocr_count = #{totalOcrCount}
+    <if test="totalOcrCount != null">
+      ,total_ocr_count = #{totalOcrCount}
+    </if>
 		,building_area = #{buildingArea}
 		,building_length = #{buildingLength}
-		,start_date = #{startDate}
-		,complete_date = #{completeDate}
+    <if test="startDate != null">
+      ,start_date = #{startDate}
+    </if>
+
+    <if test="completeDate != null">
+      ,complete_date = #{completeDate}
+    </if>
 
 		,link_man = #{linkMan}
 		,link_phone = #{linkPhone}
@@ -221,14 +228,27 @@
 
 		,prj_num = #{prjNum}
 		,nation_num = #{nationNum}
-		,attendance_starttime = #{attendanceStarttime}
-		,attendance_endtime = #{attendanceEndtime}
-
-		,pay_roll_create_datetime = #{payRollCreateDatetime}
-		,pay_roll_datetime = #{payRollDatetime}
-		,pay_roll_delay_days = #{payRollDelayDays}
-		,charge_email = #{chargeEmail}
-		,third_party_project_code = #{thirdPartyProjectCode}
+    <if test="attendanceStarttime != null">
+      ,attendance_starttime = #{attendanceStarttime}
+    </if>
+    <if test="attendanceEndtime != null">
+      ,attendance_endtime = #{attendanceEndtime}
+    </if>
+    <if test="payRollCreateDatetime != null">
+      ,pay_roll_create_datetime = #{payRollCreateDatetime}
+    </if>
+    <if test="payRollDatetime != null">
+      ,pay_roll_datetime = #{payRollDatetime}
+    </if>
+    <if test="payRollDelayDays != null">
+      ,pay_roll_delay_days = #{payRollDelayDays}
+    </if>
+    <if test="chargeEmail != null">
+      ,charge_email = #{chargeEmail}
+    </if>
+    <if test="thirdPartyProjectCode != null">
+      ,third_party_project_code = #{thirdPartyProjectCode}
+    </if>
 		,secret_status = #{secretStatus}
 		WHERE code = #{code}
 	</update>

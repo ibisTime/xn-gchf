@@ -104,11 +104,12 @@ public class BankCardBankBOImpl extends PaginableBOImpl<BankCardInfo>
     }
 
     @Override
-    public BankCardInfo getBankCardByIdCardNumBankNum(String idCardNumber,
+    public BankCardInfo getBankCardByIdCardNumBankNum(String projectWorkerCode,
                                                       String bankNum) {
         BankCardInfo bankCardInfo = new BankCardInfo();
         bankCardInfo.setBankNumber(bankNum);
-        bankCardInfo.setIdcardNumber(idCardNumber);
+        bankCardInfo.setBusinessType(EBankCardBussinessType.USER.getCode());
+        bankCardInfo.setBusinessSysNo(projectWorkerCode);
 
         return bankCardInfoDAO.select(bankCardInfo);
     }

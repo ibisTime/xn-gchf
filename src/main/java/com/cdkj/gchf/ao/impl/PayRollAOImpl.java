@@ -188,11 +188,12 @@ public class PayRollAOImpl implements IPayRollAO {
 
             // 查询excel中该人员是否保存银行卡信息。未保存则添加
             BankCardInfo bankCardByIdCardNumBankNum = bankCardBankBO
-                    .getBankCardByIdCardNumBankNum(projectWorker.getIdcardNumber(),
+                    .getBankCardByIdCardNumBankNum(projectWorker.getCode(),
                             data.getPayRollBankCardNumber());
             if (bankCardByIdCardNumBankNum == null) {
-                bankCardBankBO.saveWorkerBankCardInfo(projectWorker, data.getPayRollBankCode(),
-                        data.getPayRollBankCardNumber(), null, null, null);
+                throw new BizException("XN631812",
+                        "项目人员【" + projectWorker.getWorkerName() + "】银行卡不存在" + data
+                                .getPayRollBankCardNumber());
             }
 
             // 不存在相关工资单时相关联的工资单

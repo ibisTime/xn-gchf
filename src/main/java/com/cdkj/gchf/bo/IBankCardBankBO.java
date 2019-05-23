@@ -66,9 +66,9 @@ public interface IBankCardBankBO extends IPaginableBO<BankCardInfo> {
             String bussinessNo);
 
     /**
-     * @Description: 通过身份证号和银行卡号查询银行卡信息
+     * @Description: 根据项目人员code 银行卡号查询人员银行卡信息
      */
-    BankCardInfo getBankCardByIdCardNumBankNum(String idCardNumber,
+    BankCardInfo getBankCardByIdCardNumBankNum(String projectWorkerCode,
             String bankNum);
 
 

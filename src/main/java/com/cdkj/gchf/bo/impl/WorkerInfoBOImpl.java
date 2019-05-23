@@ -15,6 +15,7 @@ import com.cdkj.gchf.dto.req.*;
 import com.cdkj.gchf.enums.EGender;
 import com.cdkj.gchf.enums.EGeneratePrefix;
 import com.cdkj.gchf.enums.EIsNotType;
+import com.cdkj.gchf.enums.EWorkerAttendanceUploadStatus;
 import com.cdkj.gchf.exception.BizException;
 import com.cdkj.gchf.gov.GovConnecter;
 import com.cdkj.gchf.gov.GovUtil;
@@ -73,6 +74,7 @@ public class WorkerInfoBOImpl extends PaginableBOImpl<WorkerInfo>
                 workerInfo.setJoinedTime(joinTime);
             }
         }
+        workerInfo.setWorkerPicUploadStatus(EWorkerAttendanceUploadStatus.TO_UPLOAD.getCode());
         workerInfo.setCode(code);
         workerInfoDAO.insert(workerInfo);
         return code;

@@ -5,6 +5,7 @@ import com.cdkj.gchf.api.impl.XN631693ReqData;
 import com.cdkj.gchf.bo.*;
 import com.cdkj.gchf.bo.base.Paginable;
 import com.cdkj.gchf.common.ImportUtil;
+import com.cdkj.gchf.common.StringUtil;
 import com.cdkj.gchf.domain.*;
 import com.cdkj.gchf.dto.req.*;
 import com.cdkj.gchf.enums.*;
@@ -97,6 +98,9 @@ public class ProjectWorkerAOImpl implements IProjectWorkerAO {
         }
         if (projectBO.getProject(req.getProjectCode()) == null) {
             throw new BizException("XN631690", "请选择项目");
+        }
+        if (StringUtils.isBlank(workerInfo.getCellPhone())) {
+            throw new BizException("XN631690", "人员手机号未录入");
         }
         // 项目端
         if (StringUtils.isBlank(req.getProjectCode())) {

@@ -212,6 +212,8 @@ public class Device {
         // String test3333 = test3333("84E0F420576700B0");
         // System.out.println(test3333);
 
+//        delCloudDevice("84E0F420576700B0");
+
     }
 
 }

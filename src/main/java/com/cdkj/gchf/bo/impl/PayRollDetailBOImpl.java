@@ -1,6 +1,5 @@
 package com.cdkj.gchf.bo.impl;
 
-import com.cdkj.gchf.enums.EBankCardBussinessType;
 import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -99,7 +98,8 @@ public class PayRollDetailBOImpl extends PaginableBOImpl<PayRollDetail>
             payRollDetail.setPayRollBankName(workerBankCard.getBankName());
 
             payRollDetail.setPayBankCode(corpBankCard.getBankCode());
-            payRollDetail.setPayBankName(corpBankCard.getBankNumber());
+            payRollDetail.setPayBankName(
+                    EBankCardCodeType.getBankCardType(corpBankCard.getBankCode()).getValue());
             payRollDetail.setPayBankCardNumber(corpBankCard.getBankNumber());
 
             // 员工信息
@@ -146,7 +146,7 @@ public class PayRollDetailBOImpl extends PaginableBOImpl<PayRollDetail>
 
     @Override
     public String savePayRollDetail(ProjectWorker projectWorker,
-                                    String payRollcode, XN631812ReqData data) {
+            String payRollcode, XN631812ReqData data, BankCardInfo bankCardInfo) {
         String code = null;
         PayRollDetail payRollDetail = new PayRollDetail();
         payRollDetail.setPayRollCode(payRollcode);
@@ -189,6 +189,11 @@ public class PayRollDetailBOImpl extends PaginableBOImpl<PayRollDetail>
                     .getBankCardType(data.getPayBankCode()).getValue());
 
         }
+        payRollDetail.setPayRollBankCode(bankCardInfo.getBankCode());
+        payRollDetail.setPayRollBankCardNumber(bankCardInfo.getBankNumber());
+        payRollDetail
+                .setPayRollBankName(EBankCardCodeType.getDictVaule(bankCardInfo.getBankCode()));
+
         code = OrderNoGenerater
                 .generate(EGeneratePrefix.PayRollDetail.getCode());
         payRollDetail.setUploadStatus(EPayRollUploadStatus.TO_UPLOAD.getCode());

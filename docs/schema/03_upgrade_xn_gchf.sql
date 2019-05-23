@@ -762,3 +762,8 @@ ADD COLUMN `used_ocr_count` INT NULL DEFAULT 0 COMMENT '已用OCR数量' AFTER `
 SET SQL_SAFE_UPDATES = 0;
 update thf_project set total_ocr_count = 10;
 update thf_project set used_ocr_count = 0;
+
+
+update thf_worker_info
+set worker_pic_upload_status = 0
+where worker_pic_upload_status is null;

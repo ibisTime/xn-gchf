@@ -1,5 +1,6 @@
 package com.cdkj.gchf.bo;
 
+import com.cdkj.gchf.domain.BankCardInfo;
 import java.util.List;
 
 import com.cdkj.gchf.bo.base.IPaginableBO;
@@ -31,7 +32,7 @@ public interface IPayRollDetailBO extends IPaginableBO<PayRollDetail> {
      * 保存工资明细 
      */
     public String savePayRollDetail(ProjectWorker projectWorker,
-            String payRollcode, XN631812ReqData xn631773ReqData);
+            String payRollcode, XN631812ReqData xn631773ReqData, BankCardInfo bankCardInfo);
 
     /**
      * 根据工资单编号删除工资单明细 

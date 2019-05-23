@@ -144,7 +144,8 @@ public class ProjectWorkerEntryExitHistoryBOImpl
             entryExitHistory.setTeamSysNo(teamMaster.getCode());
             projectWorkerEntryExitHistories.add(entryExitHistory);
             operateLogBO.saveOperateLog(
-                    EOperateLogRefType.WorkAttendance.getCode(), code, EOperateLogOperate.IMPORT_WORKER_ENTRYEXIT.getCode(),
+                    EOperateLogRefType.WorkAttendance.getCode(), code,
+                    EOperateLogOperate.IMPORT_WORKER_ENTRYEXIT.getValue(),
                     user, null);
             //回写人员进场场信息
             projectWorkerBO.refreshStatus(projectWorker.getCode(), data.getType());

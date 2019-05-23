@@ -1,7 +1,10 @@
 package com.cdkj.gchf.ao.impl;
 
 import com.cdkj.gchf.bo.IBankCardBankBO;
+import com.cdkj.gchf.bo.IProjectCorpInfoBO;
 import com.cdkj.gchf.domain.BankCardInfo;
+import com.cdkj.gchf.domain.ProjectCorpInfo;
+import com.cdkj.gchf.enums.EBankCardBussinessType;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -83,6 +86,9 @@ public class PayRollAOImpl implements IPayRollAO {
 
     @Autowired
     private IBankCardBankBO bankCardBankBO;
+
+    @Autowired
+    private IProjectCorpInfoBO projectCorpInfoBO;
 
     @Transactional
     @Override
@@ -192,8 +198,7 @@ public class PayRollAOImpl implements IPayRollAO {
                             data.getPayRollBankCardNumber());
             if (bankCardByIdCardNumBankNum == null) {
                 throw new BizException("XN631812",
-                        "项目人员【" + projectWorker.getWorkerName() + "】银行卡不存在" + data
-                                .getPayRollBankCardNumber());
+                        "项目人员【" + projectWorker.getWorkerName() + "】银行卡不存在");
             }
 
             // 不存在相关工资单时相关联的工资单
@@ -213,7 +218,8 @@ public class PayRollAOImpl implements IPayRollAO {
                     : payRollCode);
 
             String payRollDetailCode = payRollDetailBO
-                .savePayRollDetail(projectWorker, payRollCode, data);
+                    .savePayRollDetail(projectWorker, payRollCode, data,
+                            bankCardByIdCardNumBankNum);
 
             //回写工资信息到项目人员中
             projectWorkerBO.refreshLastPayRoll(projectWorker.getCode(), data.getPayMonth(), data.getTotalPayAmount(), data.getActualAmount());

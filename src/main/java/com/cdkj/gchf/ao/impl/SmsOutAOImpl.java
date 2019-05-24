@@ -25,6 +25,6 @@ public class SmsOutAOImpl implements ISmsOutAO {
     @Override
     public void sendContent(String tokenId, String mobile, String content) {
         PhoneUtil.checkMobile(mobile);
-        // smsOutBO.sendSmsOut(mobile, content, null, null, null);
+        smsOutBO.sendSmsOut(mobile, content, null);
     }
 }

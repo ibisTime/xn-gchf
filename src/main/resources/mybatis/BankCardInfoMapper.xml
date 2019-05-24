@@ -52,6 +52,21 @@
 		</trim>
 	</sql>
 
+	<sql id="join_condition_worker">
+		<if test="businessType != null and businessType == '002'">
+			LEFT JOIN thf_project_worker b
+			on t.business_sys_no = b.code
+		</if>
+	</sql>
+
+	<sql id="join_condition_corp">
+		<if test="businessType != null and businessType == '001'">
+			LEFT JOIN thf_project_corp_info b
+			on t.business_sys_no = b.code
+		</if>
+	</sql>
+
+
 	<insert id="insert_bankCardInfo" parameterType="bankCardInfo">
 		INSERT INTO
 		thf_bank_card_info(
@@ -130,7 +145,12 @@
 		,t.status
 		FROM
 		thf_bank_card_info t
+		<include refid="join_condition_worker"/>
+		<include refid="join_condition_corp"/>
 		<include refid="where_condition" />
+		<if test="businessSysNo != null and businessSysNo != '' and businessType != null">
+			AND b.code = #{businessSysNo}
+		</if>
 		<trim prefix="ORDER BY ">
 			<if test="order != null and order != '' ">
 				t.${order}

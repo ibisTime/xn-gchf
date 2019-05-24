@@ -1,5 +1,6 @@
 package com.cdkj.gchf.ao.impl;
 
+import com.cdkj.gchf.enums.EBankCardCodeType;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -137,27 +138,32 @@ public class BankCardInfoAOImpl implements IBankCardInfoAO {
                 page.setList(bankCardBankBO.queryBankCardInfoList(condition));
                 return page;
             }
-            for (ProjectWorker projectWorker : projectWorkerList) {
-                List<BankCardInfo> bankCardInfo = bankCardBankBO
-                    .getOwnerBankCardInfo(condition.getBusinessName(),
-                        condition.getStatus(), projectWorker.getCode());
-                if (bankCardInfo == null) {
-                    continue;
+            if (EBankCardBussinessType.USER.getCode().equals(req.getBusinessType())) {
+                //查询人员银行卡信息
+                if (StringUtils.isBlank(req.getBusinessSysNo())) {
+                    return null;
                 }
-
-                for (BankCardInfo temp : bankCardInfo) {
-                    temp.setProjectName(projectWorker.getProjectName());
-                    temp.setTeamName(projectWorker.getTeamName());
-                    temp.setWorkerName(projectWorker.getWorkerName());
-                    temp.setIdcardNumber(projectWorker.getIdcardNumber());
-                    workerBankCard.add(temp);
+                ProjectWorker projectWorker = projectWorkerBO
+                        .getProjectWorker(req.getBusinessSysNo());
+                BankCardInfo bankcardCondition = new BankCardInfo();
+                bankcardCondition.setBusinessSysNo(projectWorker.getCode());
+                List<BankCardInfo> bankCardInfo = bankCardBankBO
+                        .queryBankCardInfoList(bankcardCondition);
+                if (CollectionUtils.isNotEmpty(bankCardInfo)) {
+                    for (BankCardInfo temp : bankCardInfo) {
+                        temp.setProjectName(projectWorker.getProjectName());
+                        temp.setTeamName(projectWorker.getTeamName());
+                        temp.setWorkerName(projectWorker.getWorkerName());
+                        temp.setIdcardNumber(projectWorker.getIdcardNumber());
+                        workerBankCard.add(temp);
+                    }
+                    Page<BankCardInfo> page = new Page<BankCardInfo>();
+                    page.setList(workerBankCard);
+                    return page;
                 }
 
             }
 
-            Page<BankCardInfo> page = new Page<BankCardInfo>();
-            page.setList(workerBankCard);
-            return page;
         }
 
         // 平台端查询
@@ -166,8 +172,6 @@ public class BankCardInfoAOImpl implements IBankCardInfoAO {
         List<BankCardInfo> list = paginable.getList();
         for (BankCardInfo bankCardInfo : list) {
             String businessSysNo = bankCardInfo.getBusinessSysNo();
-            // ProjectWorker projectWorker = projectWorkerBO
-            // .getProjectWorker(businessSysNo);
             ProjectWorker worker = new ProjectWorker();
             worker.setCode(businessSysNo);
             List<ProjectWorker> queryProjectWorkerList = projectWorkerBO
@@ -214,6 +218,7 @@ public class BankCardInfoAOImpl implements IBankCardInfoAO {
         if (StringUtils.isNotBlank(req.getWorkerCode())) {
             BankCardInfo condition = new BankCardInfo();
             condition.setBusinessSysNo(req.getWorkerCode());
+            condition.setBusinessType(EBankCardBussinessType.USER.getCode());
             return bankCardBankBO.getPaginable(1, 20, condition);
 
         }

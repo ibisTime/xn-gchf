@@ -264,10 +264,10 @@ public class UserAOImpl implements IUserAO {
 
     @Override
     @Transactional
-    public void doResetLoginPwd(String mobile, String smsCaptcha,
+    public void doResetLoginPwd(String userId, String mobile, String smsCaptcha,
             String newLoginPwd) {
-        User user = userBO.getUser(mobile);
-        if (StringUtils.isBlank(user.getUserId())) {
+        User user = userBO.getUser(userId);
+        if (user == null) {
             throw new BizException("li01004", "用户不存在,请先注册");
         }
         if (EUserStatus.Li_Locked.getCode().equals(user.getStatus())
@@ -277,12 +277,12 @@ public class UserAOImpl implements IUserAO {
                         + "，请联系工作人员");
         }
         // 短信验证码是否正确
-        smsOutBO.checkCaptcha(mobile, smsCaptcha, "805063");
+        smsOutBO.checkCaptcha(mobile, smsCaptcha, "631080");
         userBO.refreshLoginPwd(user, newLoginPwd);
         // // 发送短信
         smsOutBO.sendSmsOut(mobile, "尊敬的" + PhoneUtil.hideMobile(mobile)
                 + "用户，您的登录密码重置成功。请妥善保管您的账户相关信息。",
-            "805063");
+                "804080");
     }
 
     @Override

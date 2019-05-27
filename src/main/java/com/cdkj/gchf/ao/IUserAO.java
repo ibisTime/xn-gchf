@@ -33,7 +33,7 @@ public interface IUserAO {
     public void doCheckMobile(String mobile);
 
     // 根据手机号修改登录密码
-    public void doResetLoginPwd(String mobile, String smsCaptcha,
+    public void doResetLoginPwd(String userId, String mobile, String smsCaptcha,
             String newLoginPwd);
 
     // 更换手机号

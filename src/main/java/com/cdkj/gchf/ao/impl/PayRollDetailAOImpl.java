@@ -67,7 +67,11 @@ public class PayRollDetailAOImpl implements IPayRollDetailAO {
 
     @Override
     public PayRollDetail getPayDetailRoll(String code) {
-        return payRollDetailBO.getPayRollDetail(code);
+        PayRollDetail payRollDetail = payRollDetailBO.getPayRollDetail(code);
+
+        PayRoll payRoll = payRollBO.getPayRoll(payRollDetail.getPayRollCode());
+        payRollDetail.setPayMonth(payRoll.getPayMonth());
+        return payRollDetail;
     }
 
     @Override

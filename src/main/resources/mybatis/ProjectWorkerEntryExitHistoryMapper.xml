@@ -247,17 +247,16 @@
 			and date_sub(curdate(), INTERVAL 30 DAY) &lt;= date(`date`)
 			and delete_status = 0
 	</select>
+	
 	<select id="selectProjectWorkerEntryHistoryComingCount30Day" resultType="int"
 		parameterType="java.lang.String">
-
 		SELECT IFNULL(COUNT(1), 0)
-		from thf_worker_attendance
+		from thf_project_worker_entry_exit_history
 		where project_code =
 					(SELECT organization_code from thf_user where user_id = #{0})
-			and direction = '01'
+			and type = '1'
 			and date_sub(curdate(), INTERVAL 30 DAY) &lt;= date(`date`)
 			and delete_status = 0
 	</select>
-
 
 </mapper>

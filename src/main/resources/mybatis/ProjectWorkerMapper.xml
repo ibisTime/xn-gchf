@@ -5,12 +5,12 @@
 	<resultMap id="projectWorker_DB_Result" type="projectWorker">
 		<result column="code" property="code"/>
 		<result column="project_code" property="projectCode" />
-		<result column="project_name" property="projectName" />
+		<result column="project_name" property="projectName"/>
 		<result column="corp_code" property="corpCode" />
 		<result column="corp_name" property="corpName" />
 
 		<result column="team_sys_no" property="teamSysNo" />
-		<result column="team_name" property="teamName" />
+		<result column="team_name" property="teamName"/>
 		<result column="worker_code" property="workerCode" />
 		<result column="worker_name" property="workerName" />
 		<result column="worker_mobile" property="workerMobile" />
@@ -581,5 +581,32 @@
 					(select organization_code from thf_user where user_id = #{0})
 		group by ageInterval
 	</select>
+	<select id="selectWorkerData" resultType="java.util.Map" parameterType="java.lang.String">
+		SELECT COUNT(1) as 'inserviceCount'
+		from (SELECT a.code
+					from thf_project_worker_entry_exit_history a
+					where type = '1'
+						and project_code =
+								(SELECT organization_code from thf_user where user_id = #{0})
+					GROUP BY a.worker_code
+					ORDER BY a.date desc) b
+		UNION
+		SELECT count(1) as 'todayWorkers'
+		from thf_worker_attendance
+		where direction = '01'
+			and TO_DAYS(date) = TO_DAYS(now())
+			and project_code =
+					(SELECT organization_code from thf_user where user_id = #{0})
+		UNION
+		SELECT SUM(actual_amount) as 'totalPayAll'
+		from thf_pay_roll_detail a
+					 LEFT JOIN thf_pay_roll b
+										 on a.pay_roll_code = b.pay_roll_code
+											 and a.project_code =
+													 (SELECT organization_code
+														from thf_user
+														where user_id = #{0})
+	</select>
+
 
 </mapper>

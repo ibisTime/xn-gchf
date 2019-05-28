@@ -52,4 +52,10 @@ public interface IProjectWorkerDAO extends IBaseDAO<ProjectWorker> {
      */
     List<Map> selectWorkerAgeInterval(String userId);
 
+
+    /**
+     * 查询在职、今日上班、总发薪
+     */
+    List<Map> selectWorkerData(String userId);
+
 }

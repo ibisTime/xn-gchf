@@ -75,6 +75,12 @@ public interface IWorkerAttendanceBO extends IPaginableBO<WorkerAttendance> {
 
     public WorkerAttendance getWorkerAttendance(String code);
 
+
+    /**
+     * 查询30天考勤人数
+     */
+    Integer selectWorkerAttendance30Day(String userId);
+
     /**
      * 获取上传国家平台json 
      */

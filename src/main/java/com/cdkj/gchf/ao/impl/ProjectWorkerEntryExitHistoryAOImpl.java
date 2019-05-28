@@ -334,6 +334,10 @@ public class ProjectWorkerEntryExitHistoryAOImpl
             .queryProjectWorkerEntryExitHistoryList(condition);
     }
 
+    @Override
+    public int selectProjectWorkerEntryExit30Day(String userId) {
+        return projectWorkerEntryExitHistoryBO.selectProjectWorkerLeavingCount(userId);
+    }
 
     @Override
     public Object queryProjectWorkerEntryExitHistory(String code) {

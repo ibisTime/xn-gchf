@@ -11,6 +11,7 @@ import com.cdkj.gchf.dto.req.XN631733ReqData;
 import com.cdkj.gchf.dto.req.XN631914Req;
 import com.cdkj.gchf.dto.req.XN631915Req;
 import com.google.gson.JsonObject;
+import jnr.ffi.annotations.In;
 
 public interface IProjectWorkerEntryExitHistoryBO
         extends IPaginableBO<ProjectWorkerEntryExitHistory> {
@@ -89,6 +90,15 @@ public interface IProjectWorkerEntryExitHistoryBO
     public void refreshUploadStatus(String code, String status);
 
 
+    /**
+     * 查询30天项目离职人数
+     */
+    Integer selectProjectWorkerLeavingCount(String userId);
+
+    /**
+     * 查询30天入职人数
+     */
+    Integer selectProjectWorkerComingCount(String userId);
     /**
      * 获取上传国家平台json
      */

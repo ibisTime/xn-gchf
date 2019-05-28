@@ -17,4 +17,12 @@ public interface IProjectWorkerEntryExitHistoryDAO
 
     int updateProjectWorkerEntryHistoryDeleteStatus(
             ProjectWorkerEntryExitHistory projectWorkerEntryExitHistory);
+
+    int selectProjectWorkerEntryHistoryLeavingCount30Day(String userId);
+
+
+    /**
+     * 查询30天入职人数
+     */
+    int selectProjectWorkerEntryHistoryComingCount30Day(String userId);
 }

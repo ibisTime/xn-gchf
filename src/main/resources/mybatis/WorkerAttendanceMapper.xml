@@ -296,6 +296,15 @@
 		DELETE FROM thf_worker_attendance
 		WHERE worker_code = #{workerCode}
 	</delete>
+	<select id="selectWorkerAttendance30Day" resultType="int" parameterType="java.lang.String">
+		SELECT count(1)
+		from thf_worker_attendance
+		where project_code =
+					(SELECT organization_code from thf_user where user_id = #{0})
+			and direction = '01'
+			and date_sub(curdate(), INTERVAL 30 DAY)
+			&lt;= date(`date`)
+	</select>
 
 
 </mapper>

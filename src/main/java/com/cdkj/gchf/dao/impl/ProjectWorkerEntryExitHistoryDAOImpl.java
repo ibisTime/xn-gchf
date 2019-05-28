@@ -86,4 +86,19 @@ public class ProjectWorkerEntryExitHistoryDAOImpl extends AMybatisTemplate
             projectWorkerEntryExitHistory);
     }
 
+    /**
+     * 查询30天离职人数
+     */
+    @Override
+    public int selectProjectWorkerEntryHistoryLeavingCount30Day(String userId) {
+        return super.select(NAMESPACE.concat("selectProjectWorkerEntryHistoryLeavingCount30Day"),
+                userId, Integer.class);
+    }
+
+    @Override
+    public int selectProjectWorkerEntryHistoryComingCount30Day(String userId) {
+        return super
+                .select(NAMESPACE.concat("selectProjectWorkerEntryHistoryComingCount30Day"), userId,
+                        Integer.class);
+    }
 }

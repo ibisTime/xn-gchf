@@ -236,4 +236,28 @@
 		<include refid="where_condition" />
 	</select>
 
+	<select id="selectProjectWorkerEntryHistoryLeavingCount30Day" resultType="int"
+		parameterType="java.lang.String">
+		SELECT count(1)
+		from thf_project_worker_entry_exit_history
+		where type = '0'
+			and project_code = (SELECT organization_code
+													from thf_user
+													where user_id = #{0})
+			and date_sub(curdate(), INTERVAL 30 DAY)
+			&lt;=
+					date(`date`)
+	</select>
+	<select id="selectProjectWorkerEntryHistoryComingCount30Day" resultType="int"
+		parameterType="java.lang.String">
+
+		SELECT IFNULL(COUNT(1), 0)
+		from thf_worker_attendance
+		where project_code =
+					(SELECT organization_code from thf_user where user_id = #{0})
+			and direction = '01'
+			and date_sub(curdate(), INTERVAL 30 DAY) &lt;= date(`date`)
+	</select>
+
+
 </mapper>

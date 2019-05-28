@@ -90,4 +90,11 @@ public class WorkerAttendanceDAOImpl extends AMybatisTemplate
             workerAttendance);
     }
 
+    @Override
+    public int selectWorkerAttendance30Day(String userId) {
+        return super.select(
+                NAMESPACE.concat("selectWorkerAttendance30Day"),
+                userId, Integer.class);
+    }
+
 }

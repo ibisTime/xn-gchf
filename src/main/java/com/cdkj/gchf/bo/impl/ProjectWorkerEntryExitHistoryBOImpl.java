@@ -221,6 +221,18 @@ public class ProjectWorkerEntryExitHistoryBOImpl
     }
 
     @Override
+    public Integer selectProjectWorkerLeavingCount(String userId) {
+        return projectWorkerEntryExitHistoryDAO
+                .selectProjectWorkerEntryHistoryLeavingCount30Day(userId);
+    }
+
+    @Override
+    public Integer selectProjectWorkerComingCount(String userId) {
+        return projectWorkerEntryExitHistoryDAO
+                .selectProjectWorkerEntryHistoryComingCount30Day(userId);
+    }
+
+    @Override
     public void updateProjectWorkerEntryExitHistoryDeleteStatus(String code,
             String status) {
         ProjectWorkerEntryExitHistory projectWorkerEntryExitHistory = new ProjectWorkerEntryExitHistory();

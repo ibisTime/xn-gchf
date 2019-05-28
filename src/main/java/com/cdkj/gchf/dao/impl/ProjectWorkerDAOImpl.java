@@ -140,4 +140,9 @@ public class ProjectWorkerDAOImpl extends AMybatisTemplate
     public List<Map> selectWorkerAgeInterval(String userId) {
         return super.selectList(NAMESPACE.concat("selectWorkerAgeInterval"), userId, Map.class);
     }
+
+    @Override
+    public List<Map> selectWorkerData(String userId) {
+        return super.selectList(NAMESPACE.concat("selectWorkerData"), userId, Map.class);
+    }
 }

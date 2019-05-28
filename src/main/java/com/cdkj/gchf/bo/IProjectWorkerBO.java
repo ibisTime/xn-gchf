@@ -192,6 +192,13 @@ public interface IProjectWorkerBO extends IPaginableBO<ProjectWorker> {
      */
     List<Map> selectWorkerAgeInterval(String userId);
 
+    /**
+     * 查询在职、今日上班、总发薪
+     */
+    List<Map> selectWorkerData(String userId);
+
+
+
     /****国家平台接口****/
     public void doUpload(XN631911Req req, ProjectConfig projectConfig);
 

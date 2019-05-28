@@ -93,6 +93,18 @@ public interface IProjectWorkerAO {
      */
     List<Map> selectWorkerAgeInterval(String userId);
 
+
+    /**
+     * 查询在职、今日上班、总发薪
+     */
+    List<Map> selectData(String userId);
+
+
+    /**
+     * 查询30天 入职 离职 考勤人数
+     */
+    Object select30DayData(String userId);
+
     /****国家平台接口****/
     public void uploadProjectWorker(XN631911Req req);
 

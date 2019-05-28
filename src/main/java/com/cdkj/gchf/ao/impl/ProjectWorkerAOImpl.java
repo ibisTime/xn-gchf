@@ -16,6 +16,7 @@ import com.cdkj.gchf.humanfaces.DeviceWorker;
 import com.cdkj.gchf.humanfaces.enums.EAttendancePicUploadStatus;
 import com.cdkj.gchf.humanfaces.enums.EWorkerUploadStatus;
 import com.google.gson.JsonObject;
+import java.util.HashMap;
 import java.util.Map;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -546,12 +547,47 @@ public class ProjectWorkerAOImpl implements IProjectWorkerAO {
 
     @Override
     public List<Map> selectProjectWorkerWorkerTypeSpread(String userId) {
-        return projectWorkerBO.selectProjectWorkerWorkerTyepSpread(userId);
+        List<Map> maps = projectWorkerBO.selectProjectWorkerWorkerTyepSpread(userId);
+        for (int i = 0; i < maps.size(); i++) {
+            HashMap map = (HashMap) maps.get(i);
+            String work_type = (String) map.get("work_type");
+            String workerTypeCode = EWorkerType.getWorkerType(work_type).getStatus();
+            map.put("work_type", workerTypeCode);
+        }
+        return maps;
     }
 
 
     @Override
     public List<Map> selectWorkerAgeInterval(String userId) {
         return projectWorkerBO.selectWorkerAgeInterval(userId);
+    }
+
+
+    @Override
+    public List<Map> selectData(String userId) {
+        return projectWorkerBO.selectWorkerData(userId);
+    }
+
+    @Override
+    public Object select30DayData(String userId) {
+        Map<String, Object> res = new HashMap<>();
+        Integer leavingCount = projectWorkerEntryExitHistoryBO
+                .selectProjectWorkerLeavingCount(userId);
+        Integer comingCount = projectWorkerEntryExitHistoryBO
+                .selectProjectWorkerComingCount(userId);
+        Integer attendanceCount = workerAttendanceBO.selectWorkerAttendance30Day(userId);
+
+        if (leavingCount != null) {
+            res.put("leavingCount", leavingCount);
+        }
+        if (comingCount != null) {
+            res.put("comingCount", comingCount);
+        }
+        if (attendanceCount != null) {
+            res.put("attendanceCount", attendanceCount);
+        }
+
+        return res;
     }
 }

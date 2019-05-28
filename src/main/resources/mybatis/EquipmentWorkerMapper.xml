@@ -38,6 +38,10 @@
 			<if test="workerName != null and workerName != '' ">
 				AND t.worker_name like "%"#{workerName}"%"
 			</if>
+			
+			<if test="workerCode != null and workerCode != '' ">
+				AND t.worker_code = #{workerCode}
+			</if>
 
 			<if test="projectCode != null and projectCode != '' ">
 				AND b.project_code = #{projectCode}

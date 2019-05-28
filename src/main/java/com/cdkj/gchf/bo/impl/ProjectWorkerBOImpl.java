@@ -1,8 +1,29 @@
 package com.cdkj.gchf.bo.impl;
 
+import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.BeanUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+
 import com.alibaba.fastjson.JSONObject;
 import com.cdkj.gchf.api.impl.XN631693ReqData;
-import com.cdkj.gchf.bo.*;
+import com.cdkj.gchf.bo.ICorpBasicinfoBO;
+import com.cdkj.gchf.bo.IEquipmentInfoBO;
+import com.cdkj.gchf.bo.IEquipmentWorkerBO;
+import com.cdkj.gchf.bo.IOperateLogBO;
+import com.cdkj.gchf.bo.IProjectBO;
+import com.cdkj.gchf.bo.IProjectWorkerBO;
+import com.cdkj.gchf.bo.ITeamMasterBO;
+import com.cdkj.gchf.bo.IUserBO;
+import com.cdkj.gchf.bo.IWorkerInfoBO;
 import com.cdkj.gchf.bo.base.Paginable;
 import com.cdkj.gchf.bo.base.PaginableBOImpl;
 import com.cdkj.gchf.common.AesUtils;
@@ -10,24 +31,41 @@ import com.cdkj.gchf.common.DateUtil;
 import com.cdkj.gchf.common.QiniuUtil;
 import com.cdkj.gchf.core.OrderNoGenerater;
 import com.cdkj.gchf.dao.IProjectWorkerDAO;
-import com.cdkj.gchf.domain.*;
-import com.cdkj.gchf.dto.req.*;
-import com.cdkj.gchf.enums.*;
+import com.cdkj.gchf.domain.CorpBasicinfo;
+import com.cdkj.gchf.domain.EquipmentInfo;
+import com.cdkj.gchf.domain.Project;
+import com.cdkj.gchf.domain.ProjectConfig;
+import com.cdkj.gchf.domain.ProjectWorker;
+import com.cdkj.gchf.domain.TeamMaster;
+import com.cdkj.gchf.domain.User;
+import com.cdkj.gchf.domain.WorkerInfo;
+import com.cdkj.gchf.dto.req.XN631690Req;
+import com.cdkj.gchf.dto.req.XN631692Req;
+import com.cdkj.gchf.dto.req.XN631696Req;
+import com.cdkj.gchf.dto.req.XN631911Req;
+import com.cdkj.gchf.dto.req.XN631911ReqWorker;
+import com.cdkj.gchf.dto.req.XN631912Req;
+import com.cdkj.gchf.dto.req.XN631913Req;
+import com.cdkj.gchf.enums.EBankCardCodeType;
+import com.cdkj.gchf.enums.EDeleteStatus;
+import com.cdkj.gchf.enums.EGeneratePrefix;
+import com.cdkj.gchf.enums.EGovErrorMessage;
+import com.cdkj.gchf.enums.EIsNotType;
+import com.cdkj.gchf.enums.EOperateLogRefType;
+import com.cdkj.gchf.enums.EProjectWorkerUploadStatus;
+import com.cdkj.gchf.enums.ETeamMasterUploadStatus;
+import com.cdkj.gchf.enums.EWorkerRoleType;
+import com.cdkj.gchf.enums.EWorkerType;
 import com.cdkj.gchf.exception.BizException;
 import com.cdkj.gchf.gov.AsyncQueueHolder;
 import com.cdkj.gchf.gov.GovConnecter;
 import com.cdkj.gchf.gov.GovUtil;
 import com.cdkj.gchf.gov.SerialHandler;
+import com.cdkj.gchf.humanfaces.DeviceWorker;
+import com.cdkj.gchf.humanfaces.enums.EAttendancePicUploadStatus;
+import com.cdkj.gchf.humanfaces.enums.EWorkerUploadStatus;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
-import org.apache.commons.collections.CollectionUtils;
-import org.apache.commons.lang3.StringUtils;
-import org.springframework.beans.BeanUtils;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
-
-import java.math.BigDecimal;
-import java.util.*;
 
 @Component
 public class ProjectWorkerBOImpl extends PaginableBOImpl<ProjectWorker>
@@ -53,6 +91,15 @@ public class ProjectWorkerBOImpl extends PaginableBOImpl<ProjectWorker>
 
     @Autowired
     private IUserBO userBO;
+
+    @Autowired
+    private IEquipmentInfoBO equipmentInfoBO;
+
+    @Autowired
+    private DeviceWorker deviceWorker;
+
+    @Autowired
+    private IEquipmentWorkerBO equipmentWorkerBO;
 
     @Override
     public ProjectWorker saveProjectWorker(XN631690Req data) {
@@ -124,11 +171,13 @@ public class ProjectWorkerBOImpl extends PaginableBOImpl<ProjectWorker>
     }
 
     @Override
-    public ProjectWorker saveProjectWorker(Project project, TeamMaster teamMaster, WorkerInfo workerInfo, XN631696Req req) {
-        //h5端添加
+    public ProjectWorker saveProjectWorker(Project project,
+            TeamMaster teamMaster, WorkerInfo workerInfo, XN631696Req req) {
+        // h5端添加
         ProjectWorker projectWorker = new ProjectWorker();
 
-        String code = OrderNoGenerater.generate(EGeneratePrefix.ProjectWorker.getCode());
+        String code = OrderNoGenerater
+            .generate(EGeneratePrefix.ProjectWorker.getCode());
         projectWorker.setCode(code);
         projectWorker.setProjectCode(project.getCode());
         projectWorker.setProjectName(project.getName());
@@ -140,7 +189,8 @@ public class ProjectWorkerBOImpl extends PaginableBOImpl<ProjectWorker>
         projectWorker.setWorkerName(workerInfo.getName());
         projectWorker.setWorkerMobile(workerInfo.getCellPhone());
         if (req.getIsTeamLeader() != null) {
-            projectWorker.setIsTeamLeader(Integer.parseInt(req.getIsTeamLeader()));
+            projectWorker
+                .setIsTeamLeader(Integer.parseInt(req.getIsTeamLeader()));
         } else {
             projectWorker.setIsTeamLeader(0);
         }
@@ -149,7 +199,8 @@ public class ProjectWorkerBOImpl extends PaginableBOImpl<ProjectWorker>
         projectWorker.setWorkType(req.getWorkType());
         projectWorker.setWorkRole(Integer.parseInt(req.getWorkRole()));
         projectWorker.setDeleteStatus(EDeleteStatus.NORMAL.getCode());
-        projectWorker.setUploadStatus(EProjectWorkerUploadStatus.TO_UPLOAD.getCode());
+        projectWorker
+            .setUploadStatus(EProjectWorkerUploadStatus.TO_UPLOAD.getCode());
 
         projectWorkerDAO.insert(projectWorker);
         return projectWorker;
@@ -222,8 +273,6 @@ public class ProjectWorkerBOImpl extends PaginableBOImpl<ProjectWorker>
         projectWorkerDAO.insert(projectWorker);
         return code;
     }
-
-
 
     @Override
     public void fakeDeleteProjectWorker(String projectcode) {
@@ -333,10 +382,48 @@ public class ProjectWorkerBOImpl extends PaginableBOImpl<ProjectWorker>
 
     @Override
     public void refreshUploadStatus(String code, String status) {
-        ProjectWorker projectWorker = new ProjectWorker();
+
+        ProjectWorker projectWorker = getProjectWorker(code);
         projectWorker.setCode(code);
         projectWorker.setUploadStatus(status);
         projectWorkerDAO.updateUploadStatus(projectWorker);
+
+        if (EProjectWorkerUploadStatus.UPLOAD_UPDATE.getCode().equals(status)) {
+            // 关联设备人员
+            assignEquipmentWorker(projectWorker);
+        }
+    }
+
+    private void assignEquipmentWorker(ProjectWorker projectWorker) {
+        WorkerInfo workerInfo = workerInfoBO
+            .getBriefWorkerInfo(projectWorker.getWorkerCode());
+        if (!workerInfo.getWorkerPicUploadStatus()
+            .equals(EAttendancePicUploadStatus.SUCCESS.getCode())
+                && !workerInfo.getWorkerUploadStatus()
+                    .equals(EWorkerUploadStatus.SUCCESS.getCode())) {
+            return;
+        }
+
+        List<EquipmentInfo> equipmentInfos = equipmentInfoBO
+            .queryEquipmentList(projectWorker.getProjectCode());
+        if (CollectionUtils.isEmpty(equipmentInfos)) {
+            return;
+        }
+
+        for (EquipmentInfo equipmentInfo : equipmentInfos) {
+            if (null != equipmentWorkerBO.getEquipmentWorker(
+                equipmentInfo.getDeviceKey(), projectWorker.getCode()))
+                equipmentInfos.remove(equipmentInfo);
+        }
+        if (CollectionUtils.isEmpty(equipmentInfos)) {
+            return;
+        }
+
+        deviceWorker.personnelEquipmentAuthorization(equipmentInfos,
+            workerInfo.getWorkerGuid(), null, null);
+
+        equipmentWorkerBO.batchSaveEquipmentWorker(projectWorker,
+            equipmentInfos);
     }
 
     @Override
@@ -348,38 +435,48 @@ public class ProjectWorkerBOImpl extends PaginableBOImpl<ProjectWorker>
     }
 
     @Override
-    public void refreshLastPayRoll(String code, String lastPayMonth, String lastPayRollTotalAmount, String lastPayRollActualAmount) {
+    public void refreshLastPayRoll(String code, String lastPayMonth,
+            String lastPayRollTotalAmount, String lastPayRollActualAmount) {
         ProjectWorker projectWorker = new ProjectWorker();
         projectWorker.setCode(code);
-        projectWorker.setLastPayMonth(DateUtil.strToDate(lastPayMonth, DateUtil.FRONT_DATE_FORMAT_STRING));
-        projectWorker.setLastPayTotalAmount(new BigDecimal(lastPayRollTotalAmount));
-        projectWorker.setLastPayActualAmount(new BigDecimal(lastPayRollActualAmount));
+        projectWorker.setLastPayMonth(DateUtil.strToDate(lastPayMonth,
+            DateUtil.FRONT_DATE_FORMAT_STRING));
+        projectWorker
+            .setLastPayTotalAmount(new BigDecimal(lastPayRollTotalAmount));
+        projectWorker
+            .setLastPayActualAmount(new BigDecimal(lastPayRollActualAmount));
         projectWorkerDAO.updateLastPayRoll(projectWorker);
     }
 
     @Override
-    public void refreshLastInOutRecord(String code, String status, String recordDateTime) {
+    public void refreshLastInOutRecord(String code, String status,
+            String recordDateTime) {
         ProjectWorker projectWorker = new ProjectWorker();
         projectWorker.setCode(code);
         projectWorker.setInOutStatus(status);
-        projectWorker.setLastInOutDatetime(DateUtil.strToDate(recordDateTime, DateUtil.DATA_TIME_PATTERN_1));
+        projectWorker.setLastInOutDatetime(
+            DateUtil.strToDate(recordDateTime, DateUtil.DATA_TIME_PATTERN_1));
         projectWorkerDAO.updateLastInOutRecord(projectWorker);
     }
 
     @Override
-    public void refreshLastAttendance(String code, String attendanceStatus, String attendanceDateTime) {
+    public void refreshLastAttendance(String code, String attendanceStatus,
+            String attendanceDateTime) {
         ProjectWorker projectWorker = new ProjectWorker();
         projectWorker.setCode(code);
         projectWorker.setAttendanceStatus(attendanceStatus);
-        projectWorker.setLastAttendanceDatetime(DateUtil.strToDate(attendanceDateTime, DateUtil.FRONT_DATE_FORMAT_STRING));
+        projectWorker.setLastAttendanceDatetime(DateUtil
+            .strToDate(attendanceDateTime, DateUtil.FRONT_DATE_FORMAT_STRING));
         projectWorkerDAO.updateLastAttendance(projectWorker);
     }
 
     @Override
-    public List<ProjectWorker> selectProjectWorkerByWorkerCode(String workerCode) {
+    public List<ProjectWorker> selectProjectWorkerByWorkerCode(
+            String workerCode) {
         ProjectWorker projectWorker = new ProjectWorker();
         projectWorker.setWorkerCode(workerCode);
-        List<ProjectWorker> projectWorkers = projectWorkerDAO.selectList(projectWorker);
+        List<ProjectWorker> projectWorkers = projectWorkerDAO
+            .selectList(projectWorker);
         return projectWorkers;
     }
 
@@ -399,27 +496,26 @@ public class ProjectWorkerBOImpl extends PaginableBOImpl<ProjectWorker>
         return projectWorkerDAO.selectWorkerData(userId);
     }
 
-
     @Override
     public void doUpload(XN631911Req req, ProjectConfig projectConfig) {
 
         List<XN631911ReqWorker> workerList = req.getWorkerList();
         for (XN631911ReqWorker worker : workerList) {
             worker.setIdCardNumber(AesUtils.encrypt(worker.getIdCardNumber(),
-                    projectConfig.getSecret()));
+                projectConfig.getSecret()));
 
             if (StringUtils.isNotBlank(worker.getPayRollBankCardNumber())) {
                 worker.setPayRollBankCardNumber(
-                        AesUtils.encrypt(worker.getPayRollBankCardNumber(),
-                                projectConfig.getSecret()));
+                    AesUtils.encrypt(worker.getPayRollBankCardNumber(),
+                        projectConfig.getSecret()));
             }
         }
 
         String data = JSONObject.toJSONStringWithDateFormat(req, "yyyy-MM-dd")
-                .toString();
+            .toString();
 
         String resString = GovConnecter.getGovData("ProjectWorker.Add", data,
-                projectConfig.getProjectCode(), projectConfig.getSecret());
+            projectConfig.getProjectCode(), projectConfig.getSecret());
 
         SerialHandler.handle(resString, projectConfig);
     }
@@ -526,7 +622,6 @@ public class ProjectWorkerBOImpl extends PaginableBOImpl<ProjectWorker>
         projectWorker.setProjectCode(projectCode);
         return projectWorkerDAO.selectList(projectWorker);
     }
-
 
     @Override
     public ProjectWorker getProjectWorker(String code) {
@@ -668,9 +763,8 @@ public class ProjectWorkerBOImpl extends PaginableBOImpl<ProjectWorker>
 
         workerList.addProperty("politicsType",
             infoByIdCardNumber.getPoliticsType());
-        workerList.addProperty("joinedTime",
-                DateUtil.dateToStr(projectWorker.getWorkDate(),
-                DateUtil.FRONT_DATE_FORMAT_STRING));
+        workerList.addProperty("joinedTime", DateUtil.dateToStr(
+            projectWorker.getWorkDate(), DateUtil.FRONT_DATE_FORMAT_STRING));
         workerList.addProperty("cellPhone", infoByIdCardNumber.getCellPhone());
         workerList.addProperty("cultureLevelType",
             infoByIdCardNumber.getCultureLevelType());

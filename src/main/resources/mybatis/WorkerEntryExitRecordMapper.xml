@@ -169,7 +169,7 @@
 			  (SELECT organization_code
 			   from thf_user
 			   where user_id = #{0})
-		GROUP BY project_code  ;
+		GROUP BY worker_code;
 	</select>
 
 </mapper>

@@ -306,5 +306,15 @@
 			&lt;= date(`date`)
 	</select>
 
+	<select id="selectWorkerAttendanceToday" resultType="int" parameterType="java.lang.String">
+		SELECT count(1) as 'totalCount'
+		from thf_worker_attendance
+		where project_code =
+					(SELECT organization_code from thf_user where user_id = #{0})
+			and direction = '01'
+			and DATE(date) = CURDATE()
+
+	</select>
+
 
 </mapper>

@@ -47,6 +47,9 @@ public class ProjectAOImpl implements IProjectAO {
     @Autowired
     private IWorkerEntryExitRecordBO workerEntryExitRecordBO;
 
+    @Autowired
+    private IWorkerAttendanceBO workerAttendanceBO;
+
     @Override
     @Transactional
     public String addProject(XN631600Req req) {
@@ -219,7 +222,8 @@ public class ProjectAOImpl implements IProjectAO {
     public Object queryProjectInfo_led(String userId) {
 
         List<Map> projectInfoList_led = projectBO.getProjectInfoList_led(userId);
-        Long totalCount = workerEntryExitRecordBO.selectRecordCountByUserId(userId);
+        Integer totalCount = workerAttendanceBO.selectWorkerAttendanceToday(userId);
+
         XN631618Res xn631618Res = new XN631618Res();
         xn631618Res.setData(projectInfoList_led);
         if (null == totalCount) {

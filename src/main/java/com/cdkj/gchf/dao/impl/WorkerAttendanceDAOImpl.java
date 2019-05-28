@@ -100,4 +100,9 @@ public class WorkerAttendanceDAOImpl extends AMybatisTemplate
             userId, Integer.class);
     }
 
+    @Override
+    public int selectWorkerAttendanceToday(String userId) {
+        return super.select(NAMESPACE.concat("selectWorkerAttendanceToday"),
+                userId, Integer.class);
+    }
 }

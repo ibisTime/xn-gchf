@@ -424,6 +424,11 @@ public class WorkerAttendanceBOImpl extends PaginableBOImpl<WorkerAttendance>
     }
 
     @Override
+    public Integer selectWorkerAttendanceToday(String userId) {
+        return workerAttendanceDAO.selectWorkerAttendanceToday(userId);
+    }
+
+    @Override
     public JsonObject getRequestJson(TeamMaster teamMaster,
             WorkerAttendance workerAttendance,
             ProjectConfig projectConfigByLocal) {

@@ -1,5 +1,13 @@
 package com.cdkj.gchf.bo.impl;
 
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+
+import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+
 import com.cdkj.gchf.bo.IEquipmentWorkerBO;
 import com.cdkj.gchf.bo.base.PaginableBOImpl;
 import com.cdkj.gchf.common.DateUtil;
@@ -11,13 +19,6 @@ import com.cdkj.gchf.domain.ProjectWorker;
 import com.cdkj.gchf.dto.req.XN631830Req;
 import com.cdkj.gchf.enums.EGeneratePrefix;
 import com.cdkj.gchf.exception.BizException;
-import org.apache.commons.lang3.StringUtils;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
-
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
 
 @Component
 public class EquipmentWorkerBOImpl extends PaginableBOImpl<EquipmentWorker>
@@ -82,13 +83,14 @@ public class EquipmentWorkerBOImpl extends PaginableBOImpl<EquipmentWorker>
     }
 
     @Override
-    public void batchSaveEquipmentWorker(ProjectWorker projectWorker, List<EquipmentInfo> equipmentInfos) {
+    public void batchSaveEquipmentWorker(ProjectWorker projectWorker,
+            List<EquipmentInfo> equipmentInfos) {
         List<EquipmentWorker> equipmentWorkers = new ArrayList<>();
 
         for (EquipmentInfo equipmentInfo : equipmentInfos) {
             EquipmentWorker equipmentWorker = new EquipmentWorker();
             String code = OrderNoGenerater
-                    .generate(EGeneratePrefix.EquipmentWorker.getCode());
+                .generate(EGeneratePrefix.EquipmentWorker.getCode());
             equipmentWorker.setCode(code);
             equipmentWorker.setDeviceKey(equipmentInfo.getDeviceKey());
             equipmentWorker.setDeviceCode(equipmentInfo.getCode());
@@ -102,8 +104,8 @@ public class EquipmentWorkerBOImpl extends PaginableBOImpl<EquipmentWorker>
 
             equipmentWorker.setPassTimes("00:00:00,23:59:59");
             equipmentWorker.setCreateTime(
-                    DateUtil.dateToStr(new Date(System.currentTimeMillis()),
-                            DateUtil.DATA_TIME_PATTERN_1));
+                DateUtil.dateToStr(new Date(System.currentTimeMillis()),
+                    DateUtil.DATA_TIME_PATTERN_1));
             equipmentWorkers.add(equipmentWorker);
         }
 
@@ -177,6 +179,17 @@ public class EquipmentWorkerBOImpl extends PaginableBOImpl<EquipmentWorker>
             }
         }
         return data;
+    }
+
+    @Override
+    public EquipmentWorker getEquipmentWorker(String deviceKey,
+            String workerCode) {
+        EquipmentWorker data = new EquipmentWorker();
+
+        data.setDeviceKey(deviceKey);
+        data.setWorkerCode(workerCode);
+
+        return equipmentWorkerDAO.select(data);
     }
 
     @Override

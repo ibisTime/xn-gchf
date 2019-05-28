@@ -767,3 +767,17 @@ update thf_project set used_ocr_count = 0;
 update thf_worker_info
 set worker_pic_upload_status = 0
 where worker_pic_upload_status is null;
+-- 230 第二版 0528
+INSERT INTO `tsys_dict`(`id`, `type`, `parent_key`, `dkey`, `dvalue`, `updater`, `update_datetime`,
+                        `remark`)
+VALUES (null, '0', NULL, 'workerPicUploadStatus', '人脸照片上传状态', 'admin', '2019-05-22 03:07:37', NULL);
+
+INSERT INTO `tsys_dict`(`id`, `type`, `parent_key`, `dkey`, `dvalue`, `updater`, `update_datetime`,
+                        `remark`)
+VALUES (null, '1', 'workerPicUploadStatus', '-1', '失败', 'admin', '2019-05-22 03:07:37', NULL);
+INSERT INTO `tsys_dict`(`id`, `type`, `parent_key`, `dkey`, `dvalue`, `updater`, `update_datetime`,
+                        `remark`)
+VALUES (null, '1', 'workerPicUploadStatus', '0', '待上传', 'admin', '2019-05-22 03:07:37', NULL);
+INSERT INTO `tsys_dict`(`id`, `type`, `parent_key`, `dkey`, `dvalue`, `updater`, `update_datetime`,
+                        `remark`)
+VALUES (null, '1', 'workerPicUploadStatus', '1', '成功', 'admin', '2019-05-22 03:07:37', NULL);

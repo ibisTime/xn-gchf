@@ -48,6 +48,12 @@
 			<if test="code != null and code != '' ">
 				AND t.code = #{code}
 			</if>
+			<if test="codeList != null and codeList != '' ">
+                AND t.code in
+                <foreach item="item" index="index" collection="codeList" open="(" separator="," close=")">
+                    #{item}
+                </foreach>
+            </if>
 			<if test="projectCode != null and projectCode != '' ">
 				AND t.project_code = #{projectCode}
 			</if>
@@ -153,21 +159,15 @@
 		)
 	</insert>
 
-
 	<delete id="delete_workerAttendance" parameterType="workerAttendance">
 		DELETE from
 		thf_worker_attendance WHERE code = #{code}
 	</delete>
 
-
-	<delete id="batch_delete_workerAttendance" parameterType="String">
-		DELETE from thf_worker_attendance
-		WHERE code IN
-		<foreach collection="list" item="workerAttendance" open="(" separator="," close=")" index="index">
-			#{index}
-		</foreach>
+	<delete id="batch_delete_workerAttendance" parameterType="workerAttendance">
+		DELETE t from thf_worker_attendance t
+		<include refid="where_condition" />
 	</delete>
-
 
 	<update id="update_workerAttendance" parameterType="workerAttendance">
 		UPDATE

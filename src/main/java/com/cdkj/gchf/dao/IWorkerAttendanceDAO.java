@@ -3,8 +3,6 @@ package com.cdkj.gchf.dao;
 import com.cdkj.gchf.dao.base.IBaseDAO;
 import com.cdkj.gchf.domain.WorkerAttendance;
 
-import java.util.List;
-
 public interface IWorkerAttendanceDAO extends IBaseDAO<WorkerAttendance> {
     String NAMESPACE = IWorkerAttendanceDAO.class.getName().concat(".");
 
@@ -17,7 +15,7 @@ public interface IWorkerAttendanceDAO extends IBaseDAO<WorkerAttendance> {
      *
      * @param codes 主键列表
      */
-    void batchDeleteWorkerAttendacne(List<String> codes);
+    void batchDeleteWorkerAttendacne(WorkerAttendance workerAttendance);
 
     int update(WorkerAttendance workerAttendance);
 

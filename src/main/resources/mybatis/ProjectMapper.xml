@@ -357,6 +357,7 @@
 						 from thf_user
 						 where user_id = #{0})
 			  )
+			  and delete_status = 0
 		group by team_sys_no ;
 	</select>
 </mapper>

@@ -1,11 +1,12 @@
 package com.cdkj.gchf.bo.impl;
 
 import java.text.SimpleDateFormat;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
-import com.cdkj.gchf.bo.IOperateLogBO;
-import com.cdkj.gchf.domain.*;
-import com.cdkj.gchf.enums.*;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;
@@ -13,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.alibaba.fastjson.JSONObject;
+import com.cdkj.gchf.bo.IOperateLogBO;
 import com.cdkj.gchf.bo.IProjectWorkerBO;
 import com.cdkj.gchf.bo.IProjectWorkerEntryExitHistoryBO;
 import com.cdkj.gchf.bo.base.Paginable;
@@ -21,12 +23,22 @@ import com.cdkj.gchf.common.AesUtils;
 import com.cdkj.gchf.common.DateUtil;
 import com.cdkj.gchf.core.OrderNoGenerater;
 import com.cdkj.gchf.dao.IProjectWorkerEntryExitHistoryDAO;
+import com.cdkj.gchf.domain.ProjectConfig;
+import com.cdkj.gchf.domain.ProjectWorker;
+import com.cdkj.gchf.domain.ProjectWorkerEntryExitHistory;
+import com.cdkj.gchf.domain.TeamMaster;
+import com.cdkj.gchf.domain.User;
 import com.cdkj.gchf.dto.req.XN631730Req;
 import com.cdkj.gchf.dto.req.XN631732Req;
 import com.cdkj.gchf.dto.req.XN631733ReqData;
 import com.cdkj.gchf.dto.req.XN631914Req;
 import com.cdkj.gchf.dto.req.XN631914ReqWorker;
 import com.cdkj.gchf.dto.req.XN631915Req;
+import com.cdkj.gchf.enums.EDeleteStatus;
+import com.cdkj.gchf.enums.EGeneratePrefix;
+import com.cdkj.gchf.enums.EOperateLogOperate;
+import com.cdkj.gchf.enums.EOperateLogRefType;
+import com.cdkj.gchf.enums.EProjectWorkerEntryExitUploadStatus;
 import com.cdkj.gchf.exception.BizException;
 import com.cdkj.gchf.gov.GovConnecter;
 import com.cdkj.gchf.gov.GovUtil;
@@ -51,7 +63,8 @@ public class ProjectWorkerEntryExitHistoryBOImpl
     @Override
     public String saveProjectWorkerEntryExitHistory(XN631730Req req) {
         ProjectWorkerEntryExitHistory data = new ProjectWorkerEntryExitHistory();
-        ProjectWorker projectWorker = projectWorkerBO.getProjectWorker(req.getWorkerCode());
+        ProjectWorker projectWorker = projectWorkerBO
+            .getProjectWorker(req.getWorkerCode());
         if (projectWorker == null) {
             throw new BizException("XN631730", "员工信息不存在");
         }
@@ -110,7 +123,9 @@ public class ProjectWorkerEntryExitHistoryBOImpl
     }
 
     @Override
-    public void batchInsertWorkerEntryExitHistory(User user,List<XN631733ReqData> dataList, List<TeamMaster> teamMasterList, List<ProjectWorker> projectWorkerList) {
+    public void batchInsertWorkerEntryExitHistory(User user,
+            List<XN631733ReqData> dataList, List<TeamMaster> teamMasterList,
+            List<ProjectWorker> projectWorkerList) {
         List<ProjectWorkerEntryExitHistory> projectWorkerEntryExitHistories = new ArrayList<>();
         for (int i = 0; i < dataList.size(); i++) {
             XN631733ReqData data = dataList.get(i);
@@ -132,26 +147,28 @@ public class ProjectWorkerEntryExitHistoryBOImpl
             entryExitHistory.setIdcardNumber(data.getIdcardNumber());
 
             entryExitHistory.setDate(DateUtil.strToDate(data.getDate(),
-                    DateUtil.FRONT_DATE_FORMAT_STRING));
+                DateUtil.FRONT_DATE_FORMAT_STRING));
             entryExitHistory.setType(Integer.parseInt(data.getType()));
             entryExitHistory.setUploadStatus(
-                    EProjectWorkerEntryExitUploadStatus.TO_UPLOAD.getCode());
+                EProjectWorkerEntryExitUploadStatus.TO_UPLOAD.getCode());
             entryExitHistory.setDeleteStatus(EDeleteStatus.NORMAL.getCode());
 
-            code = OrderNoGenerater
-                    .generate(EGeneratePrefix.ProjectWorkerEntryExitHistory.getCode());
+            code = OrderNoGenerater.generate(
+                EGeneratePrefix.ProjectWorkerEntryExitHistory.getCode());
             entryExitHistory.setCode(code);
             entryExitHistory.setTeamSysNo(teamMaster.getCode());
             projectWorkerEntryExitHistories.add(entryExitHistory);
             operateLogBO.saveOperateLog(
-                    EOperateLogRefType.WorkAttendance.getCode(), code,
-                    EOperateLogOperate.IMPORT_WORKER_ENTRYEXIT.getValue(),
-                    user, null);
-            //回写人员进场场信息
-            projectWorkerBO.refreshStatus(projectWorker.getCode(), data.getType());
+                EOperateLogRefType.WorkAttendance.getCode(), code,
+                EOperateLogOperate.IMPORT_WORKER_ENTRYEXIT.getValue(), user,
+                null);
+            // 回写人员进场场信息
+            projectWorkerBO.refreshStatus(projectWorker.getCode(),
+                data.getType());
 
         }
-        projectWorkerEntryExitHistoryDAO.batchInsert(projectWorkerEntryExitHistories);
+        projectWorkerEntryExitHistoryDAO
+            .batchInsert(projectWorkerEntryExitHistories);
     }
 
     @Override
@@ -223,13 +240,13 @@ public class ProjectWorkerEntryExitHistoryBOImpl
     @Override
     public Integer selectProjectWorkerLeavingCount(String userId) {
         return projectWorkerEntryExitHistoryDAO
-                .selectProjectWorkerEntryHistoryLeavingCount30Day(userId);
+            .selectProjectWorkerEntryHistoryLeavingCount30Day(userId);
     }
 
     @Override
     public Integer selectProjectWorkerComingCount(String userId) {
         return projectWorkerEntryExitHistoryDAO
-                .selectProjectWorkerEntryHistoryComingCount30Day(userId);
+            .selectProjectWorkerEntryHistoryComingCount30Day(userId);
     }
 
     @Override
@@ -302,13 +319,13 @@ public class ProjectWorkerEntryExitHistoryBOImpl
         return jsonObject;
     }
 
-
     @Override
     public ProjectWorkerEntryExitHistory getLastTimeEntryTime(
             String workerCode) {
         ProjectWorkerEntryExitHistory condition = new ProjectWorkerEntryExitHistory();
         condition.setWorkerCode(workerCode);
         condition.setOrder("code", false);
+        condition.setDeleteStatus(EDeleteStatus.NORMAL.getCode());
         List<ProjectWorkerEntryExitHistory> selectList = projectWorkerEntryExitHistoryDAO
             .selectList(condition);
         if (CollectionUtils.isEmpty(selectList)) {

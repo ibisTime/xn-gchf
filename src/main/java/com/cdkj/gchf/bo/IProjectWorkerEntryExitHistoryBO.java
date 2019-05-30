@@ -1,6 +1,6 @@
 package com.cdkj.gchf.bo;
 
-import com.cdkj.gchf.api.impl.XN631693ReqData;
+import com.cdkj.gchf.dto.req.XN631693ReqData;
 import java.util.List;
 
 import com.cdkj.gchf.bo.base.IPaginableBO;
@@ -12,7 +12,6 @@ import com.cdkj.gchf.dto.req.XN631733ReqData;
 import com.cdkj.gchf.dto.req.XN631914Req;
 import com.cdkj.gchf.dto.req.XN631915Req;
 import com.google.gson.JsonObject;
-import jnr.ffi.annotations.In;
 
 public interface IProjectWorkerEntryExitHistoryBO
         extends IPaginableBO<ProjectWorkerEntryExitHistory> {
@@ -32,7 +31,8 @@ public interface IProjectWorkerEntryExitHistoryBO
      *
      * @return code
      */
-    String saveProjectWorkerEntryAuto(ProjectWorker projectWorker, String teamMasterName);
+    ProjectWorkerEntryExitHistory saveProjectWorkerEntryAuto(ProjectWorker projectWorker,
+            String teamMasterName);
 
     /**
      * 导入项目人员后自动生成一条进场记录
@@ -45,7 +45,7 @@ public interface IProjectWorkerEntryExitHistoryBO
      * @param workerCode 项目人员编号
      * @return code
      */
-    String saveProjectWorkerEntryAuto(WorkerInfo infoByIdCardNumber,
+    ProjectWorkerEntryExitHistory saveProjectWorkerEntryAuto(WorkerInfo infoByIdCardNumber,
             XN631693ReqData projectWorkerData, Project project, TeamMaster teamMaster,
             CorpBasicinfo corpBasicinfo, String workerCode);
 

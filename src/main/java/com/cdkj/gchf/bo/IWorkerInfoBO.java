@@ -2,7 +2,7 @@ package com.cdkj.gchf.bo;
 
 import java.util.List;
 
-import com.cdkj.gchf.api.impl.XN631693ReqData;
+import com.cdkj.gchf.dto.req.XN631693ReqData;
 import com.cdkj.gchf.bo.base.IPaginableBO;
 import com.cdkj.gchf.bo.base.Paginable;
 import com.cdkj.gchf.domain.ProjectConfig;

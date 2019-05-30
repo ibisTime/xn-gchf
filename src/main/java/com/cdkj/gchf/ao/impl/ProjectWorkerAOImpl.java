@@ -1,5 +1,8 @@
 package com.cdkj.gchf.ao.impl;
 
+import com.cdkj.gchf.common.DateUtil;
+import com.cdkj.gchf.domain.ProjectWorkerEntryExitHistory;
+import com.cdkj.gchf.enums.EEntryExitType;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -14,7 +17,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.cdkj.gchf.ao.IProjectWorkerAO;
-import com.cdkj.gchf.api.impl.XN631693ReqData;
+import com.cdkj.gchf.dto.req.XN631693ReqData;
 import com.cdkj.gchf.bo.ICorpBasicinfoBO;
 import com.cdkj.gchf.bo.IEquipmentWorkerBO;
 import com.cdkj.gchf.bo.IOperateLogBO;
@@ -146,8 +149,13 @@ public class ProjectWorkerAOImpl implements IProjectWorkerAO {
         }
 
         ProjectWorker projectWorker = projectWorkerBO.saveProjectWorker(req);
-        projectWorkerEntryExitHistoryBO
+
+        ProjectWorkerEntryExitHistory exitHistory = projectWorkerEntryExitHistoryBO
                 .saveProjectWorkerEntryAuto(projectWorker, teamMaster.getTeamName());
+
+        projectWorkerBO.refreshStatus(projectWorker.getCode(), EEntryExitType.IN.getCode(),
+                DateUtil.dateToStr(exitHistory.getDate(), "yyyy-MM-dd"), null);
+
         return projectWorker.getCode();
 
     }
@@ -176,8 +184,10 @@ public class ProjectWorkerAOImpl implements IProjectWorkerAO {
         }
         ProjectWorker projectWorker = projectWorkerBO.saveProjectWorker(project,
                 teamMaster, workerInfo, req);
-        projectWorkerEntryExitHistoryBO
+        ProjectWorkerEntryExitHistory exitHistory = projectWorkerEntryExitHistoryBO
                 .saveProjectWorkerEntryAuto(projectWorker, teamMaster.getTeamName());
+        projectWorkerBO.refreshStatus(projectWorker.getCode(), EEntryExitType.IN.getCode(),
+                DateUtil.dateToStr(exitHistory.getDate(), "yyyy-MM-dd"), null);
         return projectWorker.getCode();
     }
 
@@ -346,17 +356,21 @@ public class ProjectWorkerAOImpl implements IProjectWorkerAO {
             if (infoByIdCardNumber != null) {
                 String workerCode = projectWorkerBO.saveProjectWorker(infoByIdCardNumber,
                         projectWorkerData, project, teamMaster, corpBasicinfo);
-                projectWorkerEntryExitHistoryBO
+                ProjectWorkerEntryExitHistory exitHistory = projectWorkerEntryExitHistoryBO
                         .saveProjectWorkerEntryAuto(infoByIdCardNumber, projectWorkerData, project,
                                 teamMaster, corpBasicinfo, workerCode);
+                projectWorkerBO.refreshStatus(workerCode, EEntryExitType.IN.getCode(),
+                        DateUtil.dateToStr(exitHistory.getDate(), "yyyy-MM-dd"), null);
             } else {
                 String workerCode = workerInfoBO
                         .saveWorkerInfoByImport(projectWorkerData);
                 ProjectWorker projectWorker = projectWorkerBO
                         .saveProjectWorkerAndGet(workerCode, project,
                                 corpBasicinfo, teamMaster, projectWorkerData);
-                projectWorkerEntryExitHistoryBO
+                ProjectWorkerEntryExitHistory exitHistory = projectWorkerEntryExitHistoryBO
                         .saveProjectWorkerEntryAuto(projectWorker, teamMaster.getTeamName());
+                projectWorkerBO.refreshStatus(projectWorker.getCode(), EEntryExitType.IN.getCode(),
+                        DateUtil.dateToStr(exitHistory.getDate(), "yyyy-MM-dd"), null);
             }
 
         }

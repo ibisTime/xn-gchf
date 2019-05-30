@@ -20,7 +20,6 @@ public interface IProjectWorkerEntryExitHistoryDAO
 
     int selectProjectWorkerEntryHistoryLeavingCount30Day(String userId);
 
-
     /**
      * 查询30天入职人数
      */

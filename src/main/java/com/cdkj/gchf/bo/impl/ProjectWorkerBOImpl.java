@@ -14,7 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.alibaba.fastjson.JSONObject;
-import com.cdkj.gchf.api.impl.XN631693ReqData;
+import com.cdkj.gchf.dto.req.XN631693ReqData;
 import com.cdkj.gchf.bo.ICorpBasicinfoBO;
 import com.cdkj.gchf.bo.IEquipmentInfoBO;
 import com.cdkj.gchf.bo.IEquipmentWorkerBO;
@@ -105,7 +105,7 @@ public class ProjectWorkerBOImpl extends PaginableBOImpl<ProjectWorker>
     public ProjectWorker saveProjectWorker(XN631690Req data) {
         ProjectWorker projectWorkerInfo = new ProjectWorker();
         CorpBasicinfo corpBasicinfo = corpBasicinfoBO
-            .getCorpBasicinfoByCorp(data.getCorpCode());
+                .getCorpBasicinfoByCorp(data.getCorpCode());
 
         Project project = projectBO.getProject(data.getProjectCode());
 
@@ -114,11 +114,11 @@ public class ProjectWorkerBOImpl extends PaginableBOImpl<ProjectWorker>
 
         projectWorkerInfo.setProjectName(project.getName());
         TeamMaster teamMaster = teamMasterBO
-            .getTeamMaster(String.valueOf(data.getTeamSysNo()));
+                .getTeamMaster(String.valueOf(data.getTeamSysNo()));
         projectWorkerInfo.setTeamName(teamMaster.getTeamName());
 
         WorkerInfo workerInfo = workerInfoBO
-            .getWorkerInfo(data.getWorkerCode());
+                .getWorkerInfo(data.getWorkerCode());
         projectWorkerInfo.setCorpName(corpBasicinfo.getCorpName());
         projectWorkerInfo.setWorkerMobile(workerInfo.getCellPhone());
         projectWorkerInfo.setIdcardType(workerInfo.getIdCardType());
@@ -127,13 +127,13 @@ public class ProjectWorkerBOImpl extends PaginableBOImpl<ProjectWorker>
         projectWorkerInfo.setWorkerName(workerInfo.getName());
         projectWorkerInfo.setBankName(data.getBankName());
         projectWorkerInfo
-            .setUploadStatus(EProjectWorkerUploadStatus.TO_UPLOAD.getCode());
+                .setUploadStatus(EProjectWorkerUploadStatus.TO_UPLOAD.getCode());
         projectWorkerInfo.setDeleteStatus(EDeleteStatus.NORMAL.getCode());
 
         if (StringUtils.isNotBlank(data.getIsTeamLeader())) {
             EIsNotType.checkExists(data.getIsTeamLeader());
             projectWorkerInfo
-                .setIsTeamLeader(Integer.parseInt(data.getIsTeamLeader()));
+                    .setIsTeamLeader(Integer.parseInt(data.getIsTeamLeader()));
         }
         if (StringUtils.isNotBlank(data.getWorkType())) {
             EWorkerType.checkExists(data.getWorkType());
@@ -146,25 +146,25 @@ public class ProjectWorkerBOImpl extends PaginableBOImpl<ProjectWorker>
         if (StringUtils.isNotBlank(data.getPayRollTopBankCode())) {
             EBankCardCodeType.checkExists(data.getPayRollTopBankCode());
             projectWorkerInfo
-                .setPayRollTopBankCode(data.getPayRollTopBankCode());
+                    .setPayRollTopBankCode(data.getPayRollTopBankCode());
         }
         if (StringUtils.isNotBlank(data.getHasBuyInsurance())) {
             EIsNotType.checkExists(data.getHasBuyInsurance());
             projectWorkerInfo.setHasBuyInsurance(
-                Integer.parseInt(data.getHasBuyInsurance()));
+                    Integer.parseInt(data.getHasBuyInsurance()));
         }
         if (StringUtils.isNotBlank(data.getIssueCardDate())) {
             Date issueCardDate = DateUtil.strToDate(data.getIssueCardDate(),
-                DateUtil.DATA_TIME_PATTERN_1);
+                    DateUtil.DATA_TIME_PATTERN_1);
             projectWorkerInfo.setIssueCardDate(issueCardDate);
         }
         if (StringUtils.isNotBlank(data.getWorkDate())) {
             Date workDate = DateUtil.strToDate(data.getWorkDate(),
-                DateUtil.FRONT_DATE_FORMAT_STRING);
+                    DateUtil.FRONT_DATE_FORMAT_STRING);
             projectWorkerInfo.setWorkDate(workDate);
         }
         String code = OrderNoGenerater
-            .generate(EGeneratePrefix.ProjectWorker.getCode());
+                .generate(EGeneratePrefix.ProjectWorker.getCode());
         projectWorkerInfo.setCode(code);
         projectWorkerDAO.insert(projectWorkerInfo);
         return projectWorkerInfo;
@@ -177,7 +177,7 @@ public class ProjectWorkerBOImpl extends PaginableBOImpl<ProjectWorker>
         ProjectWorker projectWorker = new ProjectWorker();
 
         String code = OrderNoGenerater
-            .generate(EGeneratePrefix.ProjectWorker.getCode());
+                .generate(EGeneratePrefix.ProjectWorker.getCode());
         projectWorker.setCode(code);
         projectWorker.setProjectCode(project.getCode());
         projectWorker.setProjectName(project.getName());
@@ -190,7 +190,7 @@ public class ProjectWorkerBOImpl extends PaginableBOImpl<ProjectWorker>
         projectWorker.setWorkerMobile(workerInfo.getCellPhone());
         if (req.getIsTeamLeader() != null) {
             projectWorker
-                .setIsTeamLeader(Integer.parseInt(req.getIsTeamLeader()));
+                    .setIsTeamLeader(Integer.parseInt(req.getIsTeamLeader()));
         } else {
             projectWorker.setIsTeamLeader(0);
         }
@@ -200,7 +200,7 @@ public class ProjectWorkerBOImpl extends PaginableBOImpl<ProjectWorker>
         projectWorker.setWorkRole(Integer.parseInt(req.getWorkRole()));
         projectWorker.setDeleteStatus(EDeleteStatus.NORMAL.getCode());
         projectWorker
-            .setUploadStatus(EProjectWorkerUploadStatus.TO_UPLOAD.getCode());
+                .setUploadStatus(EProjectWorkerUploadStatus.TO_UPLOAD.getCode());
 
         projectWorkerDAO.insert(projectWorker);
         return projectWorker;
@@ -211,14 +211,14 @@ public class ProjectWorkerBOImpl extends PaginableBOImpl<ProjectWorker>
             Project project, TeamMaster teamMaster, CorpBasicinfo corpBasic) {
         ProjectWorker projectWorker = new ProjectWorker();
         String code = OrderNoGenerater
-            .generate(EGeneratePrefix.ProjectWorker.getCode());
+                .generate(EGeneratePrefix.ProjectWorker.getCode());
         projectWorker.setCode(code);
         BeanUtils.copyProperties(req, projectWorker);
         projectWorker.setProjectCode(project.getCode());
         projectWorker.setProjectName(project.getName());
         if (StringUtils.isNotBlank(req.getHasBuyInsurance())) {
             projectWorker
-                .setHasBuyInsurance(Integer.parseInt(req.getHasBuyInsurance()));
+                    .setHasBuyInsurance(Integer.parseInt(req.getHasBuyInsurance()));
         }
         projectWorker.setTeamSysNo(teamMaster.getCode());
         projectWorker.setCorpName(corpBasic.getCorpName());
@@ -226,7 +226,7 @@ public class ProjectWorkerBOImpl extends PaginableBOImpl<ProjectWorker>
         projectWorker.setCellPhone(workerInfo.getCellPhone());
         projectWorker.setWorkerName(workerInfo.getName());
         projectWorker
-            .setUploadStatus(EProjectWorkerUploadStatus.TO_UPLOAD.getCode());
+                .setUploadStatus(EProjectWorkerUploadStatus.TO_UPLOAD.getCode());
         projectWorker.setDeleteStatus(EDeleteStatus.NORMAL.getCode());
         projectWorker.setIsTeamLeader(Integer.parseInt(req.getIsTeamLeader()));
         projectWorker.setIdcardNumber(req.getIdCardNumber());
@@ -241,7 +241,7 @@ public class ProjectWorkerBOImpl extends PaginableBOImpl<ProjectWorker>
             XN631693ReqData req) {
         ProjectWorker projectWorker = new ProjectWorker();
         String code = OrderNoGenerater
-            .generate(EGeneratePrefix.ProjectWorker.getCode());
+                .generate(EGeneratePrefix.ProjectWorker.getCode());
         projectWorker.setCode(code);
         projectWorker.setWorkerCode(workerCode);
         projectWorker.setCorpCode(corpBasicinfo.getCorpCode());
@@ -259,15 +259,15 @@ public class ProjectWorkerBOImpl extends PaginableBOImpl<ProjectWorker>
 
         if (StringUtils.isNotBlank(req.getIsTeamLeader())) {
             projectWorker
-                .setIsTeamLeader(Integer.parseInt(req.getIsTeamLeader()));
+                    .setIsTeamLeader(Integer.parseInt(req.getIsTeamLeader()));
         }
 
         if (StringUtils.isNotBlank(req.getHasBuyInsurance())) {
             projectWorker
-                .setHasBuyInsurance(Integer.parseInt(req.getHasBuyInsurance()));
+                    .setHasBuyInsurance(Integer.parseInt(req.getHasBuyInsurance()));
         }
         projectWorker
-            .setUploadStatus(EProjectWorkerUploadStatus.TO_UPLOAD.getCode());
+                .setUploadStatus(EProjectWorkerUploadStatus.TO_UPLOAD.getCode());
         projectWorker.setDeleteStatus(EDeleteStatus.NORMAL.getCode());
 
         projectWorkerDAO.insert(projectWorker);
@@ -331,7 +331,7 @@ public class ProjectWorkerBOImpl extends PaginableBOImpl<ProjectWorker>
         projectWorker.setProjectCode(projectCode);
         projectWorker.setTeamSysNo(teamMasterNo);
         projectWorker
-            .setUploadStatus(EProjectWorkerUploadStatus.TO_UPLOAD.getCode());
+                .setUploadStatus(EProjectWorkerUploadStatus.TO_UPLOAD.getCode());
         projectWorkerDAO.updateUploadStatus(projectWorker);
     }
 
@@ -360,26 +360,26 @@ public class ProjectWorkerBOImpl extends PaginableBOImpl<ProjectWorker>
         projectWorkerInfo.setCorpName(teamMaster.getCorpName());
         if (StringUtils.isNotBlank(req.getIsTeamLeader())) {
             projectWorkerInfo
-                .setIsTeamLeader(Integer.parseInt(req.getIsTeamLeader()));
+                    .setIsTeamLeader(Integer.parseInt(req.getIsTeamLeader()));
         }
         if (StringUtils.isNotBlank(req.getWorkRole())) {
             projectWorkerInfo.setWorkRole(Integer.parseInt(req.getWorkRole()));
         }
         if (StringUtils.isNotBlank(req.getHasBuyInsurance())) {
             projectWorkerInfo
-                .setHasBuyInsurance(Integer.parseInt(req.getHasBuyInsurance()));
+                    .setHasBuyInsurance(Integer.parseInt(req.getHasBuyInsurance()));
         }
         if (StringUtils.isNotBlank(req.getBankName())) {
             projectWorkerInfo.setBankName(req.getBankName());
         }
         if (StringUtils.isNotBlank(req.getIssueCardDate())) {
             Date issueCardDate = DateUtil.strToDate(req.getIssueCardDate(),
-                DateUtil.DATA_TIME_PATTERN_1);
+                    DateUtil.DATA_TIME_PATTERN_1);
             projectWorkerInfo.setIssueCardDate(issueCardDate);
         }
         if (StringUtils.isNotBlank(req.getWorkDate())) {
             Date workDate = DateUtil.strToDate(req.getWorkDate(),
-                DateUtil.FRONT_DATE_FORMAT_STRING);
+                    DateUtil.FRONT_DATE_FORMAT_STRING);
             projectWorkerInfo.setWorkDate(workDate);
         }
 
@@ -409,8 +409,8 @@ public class ProjectWorkerBOImpl extends PaginableBOImpl<ProjectWorker>
     }
 
     /**
-     * <p>Title: refreshProjectWorkerTeamName</p>   
-     * <p>Description: 向下刷新班组名称</p>   
+     * <p>Title: refreshProjectWorkerTeamName</p>
+     * <p>Description: 向下刷新班组名称</p>
      */
     @Override
     public void refreshProjectWorkerTeamName(String teamNO, String teamName) {
@@ -436,41 +436,53 @@ public class ProjectWorkerBOImpl extends PaginableBOImpl<ProjectWorker>
 
     private void assignEquipmentWorker(ProjectWorker projectWorker) {
         WorkerInfo workerInfo = workerInfoBO
-            .getBriefWorkerInfo(projectWorker.getWorkerCode());
+                .getBriefWorkerInfo(projectWorker.getWorkerCode());
         if (!workerInfo.getWorkerPicUploadStatus()
-            .equals(EAttendancePicUploadStatus.SUCCESS.getCode())
+                .equals(EAttendancePicUploadStatus.SUCCESS.getCode())
                 && !workerInfo.getWorkerUploadStatus()
-                    .equals(EWorkerUploadStatus.SUCCESS.getCode())) {
+                .equals(EWorkerUploadStatus.SUCCESS.getCode())) {
             return;
         }
 
         List<EquipmentInfo> equipmentInfos = equipmentInfoBO
-            .queryEquipmentList(projectWorker.getProjectCode());
+                .queryEquipmentList(projectWorker.getProjectCode());
         if (CollectionUtils.isEmpty(equipmentInfos)) {
             return;
         }
 
         for (EquipmentInfo equipmentInfo : equipmentInfos) {
             if (null != equipmentWorkerBO.getEquipmentWorker(
-                equipmentInfo.getDeviceKey(), projectWorker.getCode()))
+                    equipmentInfo.getDeviceKey(), projectWorker.getCode())) {
                 equipmentInfos.remove(equipmentInfo);
+            }
         }
         if (CollectionUtils.isEmpty(equipmentInfos)) {
             return;
         }
 
         deviceWorker.personnelEquipmentAuthorization(equipmentInfos,
-            workerInfo.getWorkerGuid(), null, null);
+                workerInfo.getWorkerGuid(), null, null);
 
         equipmentWorkerBO.batchSaveEquipmentWorker(projectWorker,
-            equipmentInfos);
+                equipmentInfos);
     }
 
     @Override
-    public void refreshStatus(String code, String status) {
+    public void refreshStatus(String code, String status, String entryTime, String exitTime) {
         ProjectWorker projectWorker = new ProjectWorker();
         projectWorker.setCode(code);
         projectWorker.setStatus(status);
+        if (StringUtils.isBlank(entryTime)) {
+            projectWorker.setEntryTime(null);
+        } else {
+            projectWorker.setEntryTime(DateUtil.strToDate(entryTime, "yyyy-MM-dd"));
+        }
+        if (StringUtils.isBlank(exitTime)) {
+            projectWorker.setExitTime(null);
+        } else {
+            projectWorker.setExitTime(DateUtil.strToDate(exitTime, "yyyy-MM-dd"));
+        }
+
         projectWorkerDAO.updateStatus(projectWorker);
     }
 
@@ -480,11 +492,11 @@ public class ProjectWorkerBOImpl extends PaginableBOImpl<ProjectWorker>
         ProjectWorker projectWorker = new ProjectWorker();
         projectWorker.setCode(code);
         projectWorker.setLastPayMonth(DateUtil.strToDate(lastPayMonth,
-            DateUtil.FRONT_DATE_FORMAT_STRING));
+                DateUtil.FRONT_DATE_FORMAT_STRING));
         projectWorker
-            .setLastPayTotalAmount(new BigDecimal(lastPayRollTotalAmount));
+                .setLastPayTotalAmount(new BigDecimal(lastPayRollTotalAmount));
         projectWorker
-            .setLastPayActualAmount(new BigDecimal(lastPayRollActualAmount));
+                .setLastPayActualAmount(new BigDecimal(lastPayRollActualAmount));
         projectWorkerDAO.updateLastPayRoll(projectWorker);
     }
 
@@ -495,7 +507,7 @@ public class ProjectWorkerBOImpl extends PaginableBOImpl<ProjectWorker>
         projectWorker.setCode(code);
         projectWorker.setInOutStatus(status);
         projectWorker.setLastInOutDatetime(
-            DateUtil.strToDate(recordDateTime, DateUtil.DATA_TIME_PATTERN_1));
+                DateUtil.strToDate(recordDateTime, DateUtil.DATA_TIME_PATTERN_1));
         projectWorkerDAO.updateLastInOutRecord(projectWorker);
     }
 
@@ -506,7 +518,7 @@ public class ProjectWorkerBOImpl extends PaginableBOImpl<ProjectWorker>
         projectWorker.setCode(code);
         projectWorker.setAttendanceStatus(attendanceStatus);
         projectWorker.setLastAttendanceDatetime(DateUtil
-            .strToDate(attendanceDateTime, DateUtil.FRONT_DATE_FORMAT_STRING));
+                .strToDate(attendanceDateTime, DateUtil.FRONT_DATE_FORMAT_STRING));
         projectWorkerDAO.updateLastAttendance(projectWorker);
     }
 
@@ -516,7 +528,7 @@ public class ProjectWorkerBOImpl extends PaginableBOImpl<ProjectWorker>
         ProjectWorker projectWorker = new ProjectWorker();
         projectWorker.setWorkerCode(workerCode);
         List<ProjectWorker> projectWorkers = projectWorkerDAO
-            .selectList(projectWorker);
+                .selectList(projectWorker);
         return projectWorkers;
     }
 
@@ -542,61 +554,60 @@ public class ProjectWorkerBOImpl extends PaginableBOImpl<ProjectWorker>
         List<XN631911ReqWorker> workerList = req.getWorkerList();
         for (XN631911ReqWorker worker : workerList) {
             worker.setIdCardNumber(AesUtils.encrypt(worker.getIdCardNumber(),
-                projectConfig.getSecret()));
+                    projectConfig.getSecret()));
 
             if (StringUtils.isNotBlank(worker.getPayRollBankCardNumber())) {
                 worker.setPayRollBankCardNumber(
-                    AesUtils.encrypt(worker.getPayRollBankCardNumber(),
-                        projectConfig.getSecret()));
+                        AesUtils.encrypt(worker.getPayRollBankCardNumber(),
+                                projectConfig.getSecret()));
             }
         }
 
         String data = JSONObject.toJSONStringWithDateFormat(req, "yyyy-MM-dd")
-            .toString();
+                .toString();
 
         String resString = GovConnecter.getGovData("ProjectWorker.Add", data,
-            projectConfig.getProjectCode(), projectConfig.getSecret());
+                projectConfig.getProjectCode(), projectConfig.getSecret());
 
         SerialHandler.handle(resString, projectConfig);
     }
 
     /**
-     * 
-     * <p>Title: doUpdate</p>   
-     * <p>Description: 国家平台修改接口</p>   
+     * <p>Title: doUpdate</p>
+     * <p>Description: 国家平台修改接口</p>
      */
     @Override
     public void doUpdate(XN631912Req req, ProjectConfig projectConfig) {
         User user = userBO.getBriefUser(req.getUserId());
         req.setIdCardNumber(
-            AesUtils.encrypt(req.getIdCardNumber(), projectConfig.getSecret()));
+                AesUtils.encrypt(req.getIdCardNumber(), projectConfig.getSecret()));
 
         if (StringUtils.isNotBlank(req.getPayRollBankCardNumber())) {
             req.setPayRollBankCardNumber(AesUtils.encrypt(
-                req.getPayRollBankCardNumber(), projectConfig.getSecret()));
+                    req.getPayRollBankCardNumber(), projectConfig.getSecret()));
         }
         req.setHeadImage(req.getHeadImage().replace("data:image/bmp;base64,",
-            "data:image/png;base64,"));
+                "data:image/png;base64,"));
         String data = JSONObject.toJSONStringWithDateFormat(req, "yyyy-MM-dd")
-            .toString();
+                .toString();
 
         String resString = null;
         try {
             resString = GovConnecter.getGovData("ProjectWorker.Update", data,
-                projectConfig.getProjectCode(), projectConfig.getSecret());
+                    projectConfig.getProjectCode(), projectConfig.getSecret());
         } catch (BizException e) {
             e.printStackTrace();
             updateProjectWorkerUploadStatus(req.getCode(),
-                ETeamMasterUploadStatus.UPLOAD_UNUPDATE.getCode());
+                    ETeamMasterUploadStatus.UPLOAD_UNUPDATE.getCode());
             throw e;
         }
 
         String operateLog = operateLogBO.saveOperateLog(
-            EOperateLogRefType.ProjectWorker.getCode(), req.getCode(),
-            "修改平台项目人员", user, "修改平台项目人员");
+                EOperateLogRefType.ProjectWorker.getCode(), req.getCode(),
+                "修改平台项目人员", user, "修改平台项目人员");
         AsyncQueueHolder.addSerial(resString, projectConfig, "projectWorkerBO",
-            req.getCode(), ETeamMasterUploadStatus.UPLOAD_UPDATE.getCode(),
-            operateLog, req.getUserId());
+                req.getCode(), ETeamMasterUploadStatus.UPLOAD_UPDATE.getCode(),
+                operateLog, req.getUserId());
 
     }
 
@@ -608,23 +619,23 @@ public class ProjectWorkerBOImpl extends PaginableBOImpl<ProjectWorker>
 
         if (StringUtils.isNotBlank(req.getIdCardNumber())) {
             projectWorker.setIdcardNumber(AesUtils
-                .encrypt(req.getIdCardNumber(), projectConfig.getSecret()));
+                    .encrypt(req.getIdCardNumber(), projectConfig.getSecret()));
         }
 
         String data = JSONObject.toJSON(projectWorker).toString();
 
         String queryString = GovConnecter.getGovData("ProjectWorker.Query",
-            data, projectConfig.getProjectCode(), projectConfig.getSecret());
+                data, projectConfig.getProjectCode(), projectConfig.getSecret());
 
         Map<String, String> replaceMap = new HashMap<>();
 
         Paginable<ProjectWorker> page = GovUtil.parseGovPage(req.getPageIndex(),
-            req.getPageSize(), queryString, replaceMap, ProjectWorker.class);
+                req.getPageSize(), queryString, replaceMap, ProjectWorker.class);
 
         if (null != page && CollectionUtils.isNotEmpty(page.getList())) {
             for (ProjectWorker worker : page.getList()) {
                 worker.setIdcardNumber(AesUtils.decrypt(
-                    worker.getIdcardNumber(), projectConfig.getSecret()));
+                        worker.getIdcardNumber(), projectConfig.getSecret()));
             }
         }
 
@@ -646,9 +657,9 @@ public class ProjectWorkerBOImpl extends PaginableBOImpl<ProjectWorker>
 
         List<String> uploadStatusList = new ArrayList<>();
         uploadStatusList
-            .add(EProjectWorkerUploadStatus.UPLOAD_UPDATE.getCode());
+                .add(EProjectWorkerUploadStatus.UPLOAD_UPDATE.getCode());
         uploadStatusList
-            .add(EProjectWorkerUploadStatus.UPLOAD_UNUPDATE.getCode());
+                .add(EProjectWorkerUploadStatus.UPLOAD_UNUPDATE.getCode());
         uploadStatusList.add(EProjectWorkerUploadStatus.UPDATEING.getCode());
         projectWorker.setUploadStatusList(uploadStatusList);
 
@@ -735,20 +746,20 @@ public class ProjectWorkerBOImpl extends PaginableBOImpl<ProjectWorker>
         JsonObject jsonObject = new JsonObject();
         JsonArray jsonArray = new JsonArray();
         WorkerInfo infoByIdCardNumber = workerInfoBO
-            .getWorkerInfoByIdCardNumber(projectWorker.getIdcardNumber());
+                .getWorkerInfoByIdCardNumber(projectWorker.getIdcardNumber());
         if (StringUtils.isBlank(infoByIdCardNumber.getCellPhone())) {
             throw new BizException("XN631694", "人员电话号码不完整，请重新建档补充信息");
         }
         if (StringUtils.isBlank(infoByIdCardNumber.getHeadImageUrl())) {
             throw new BizException("xn631694",
-                EGovErrorMessage.WorkerList.getLocalMessage());
+                    EGovErrorMessage.WorkerList.getLocalMessage());
         }
         if (StringUtils
-            .isBlank(infoByIdCardNumber.getPositiveIdCardImageUrl())) {
+                .isBlank(infoByIdCardNumber.getPositiveIdCardImageUrl())) {
             throw new BizException("xn631694", "员工身份证正面照信息无效,请重新建档补充信息");
         }
         if (StringUtils
-            .isBlank(infoByIdCardNumber.getNegativeIdCardImageUrl())) {
+                .isBlank(infoByIdCardNumber.getNegativeIdCardImageUrl())) {
             throw new BizException("xn631694", "员工身份证反面照信息无效,请重新建档补充信息");
         }
 
@@ -766,67 +777,67 @@ public class ProjectWorkerBOImpl extends PaginableBOImpl<ProjectWorker>
 
         if (StringUtils.isNotBlank(projectWorker.getIdcardNumber())) {
             workerList.addProperty("idCardNumber", AesUtils.encrypt(
-                projectWorker.getIdcardNumber(), projectConfig.getSecret()));
+                    projectWorker.getIdcardNumber(), projectConfig.getSecret()));
         }
 
         workerList.addProperty("workType", projectWorker.getWorkType());
         workerList.addProperty("workRole", projectWorker.getWorkRole());
         workerList.addProperty("issueCardDate",
-            DateUtil.dateToStr(projectWorker.getIssueCardDate(),
-                DateUtil.FRONT_DATE_FORMAT_STRING));
+                DateUtil.dateToStr(projectWorker.getIssueCardDate(),
+                        DateUtil.FRONT_DATE_FORMAT_STRING));
         workerList.addProperty("issueCardPic",
-            projectWorker.getIssueCardPicUrl());
+                projectWorker.getIssueCardPicUrl());
         workerList.addProperty("cardNumber", projectWorker.getCardNumber());
 
         if (StringUtils.isNotBlank(projectWorker.getPayRollBankCardNumber())) {
             workerList.addProperty("payRollBankCardNumber",
-                AesUtils.encrypt(projectWorker.getPayRollBankCardNumber(),
-                    projectConfig.getSecret()));
+                    AesUtils.encrypt(projectWorker.getPayRollBankCardNumber(),
+                            projectConfig.getSecret()));
         }
 
         workerList.addProperty("payRollBankName",
-            projectWorker.getPayRollBankName());
+                projectWorker.getPayRollBankName());
         workerList.addProperty("bankLinkNumber",
-            projectWorker.getBankLinkNumber());
+                projectWorker.getBankLinkNumber());
         workerList.addProperty("payRollTopBankCode",
-            projectWorker.getPayRollTopBankCode());
+                projectWorker.getPayRollTopBankCode());
         workerList.addProperty("hasBuyInsurance",
-            projectWorker.getHasBuyInsurance());
+                projectWorker.getHasBuyInsurance());
         workerList.addProperty("nation", infoByIdCardNumber.getNation());
         workerList.addProperty("address", infoByIdCardNumber.getAddress());
 
         if (StringUtils.isNotBlank(infoByIdCardNumber.getHeadImageUrl())) {
             workerList.addProperty("headImage",
-                infoByIdCardNumber.getHeadImageUrl().replace(
-                    "data:image/bmp;base64,", "data:image/png;base64,"));
+                    infoByIdCardNumber.getHeadImageUrl().replace(
+                            "data:image/bmp;base64,", "data:image/png;base64,"));
         }
 
         workerList.addProperty("politicsType",
-            infoByIdCardNumber.getPoliticsType());
+                infoByIdCardNumber.getPoliticsType());
         workerList.addProperty("joinedTime", DateUtil.dateToStr(
-            projectWorker.getWorkDate(), DateUtil.FRONT_DATE_FORMAT_STRING));
+                projectWorker.getWorkDate(), DateUtil.FRONT_DATE_FORMAT_STRING));
         workerList.addProperty("cellPhone", infoByIdCardNumber.getCellPhone());
         workerList.addProperty("cultureLevelType",
-            infoByIdCardNumber.getCultureLevelType());
+                infoByIdCardNumber.getCultureLevelType());
         workerList.addProperty("Specialty", infoByIdCardNumber.getSpecialty());
         workerList.addProperty("hasBadMedicalHistory",
-            projectWorker.getHasBadMedicalHistory());
+                projectWorker.getHasBadMedicalHistory());
         workerList.addProperty("urgentLinkMan",
-            infoByIdCardNumber.getUrgentLinkMan());
+                infoByIdCardNumber.getUrgentLinkMan());
         workerList.addProperty("urgentLinkManPhone",
-            infoByIdCardNumber.getUrgentLinkManPhone());
+                infoByIdCardNumber.getUrgentLinkManPhone());
         if (projectWorker.getWorkDate() != null) {
             workerList.addProperty("workDate",
-                DateUtil.dateToStr(projectWorker.getWorkDate(),
-                    DateUtil.FRONT_DATE_FORMAT_STRING));
+                    DateUtil.dateToStr(projectWorker.getWorkDate(),
+                            DateUtil.FRONT_DATE_FORMAT_STRING));
         }
         workerList.addProperty("maritalStatus",
-            infoByIdCardNumber.getMaritalStatus());
+                infoByIdCardNumber.getMaritalStatus());
         workerList.addProperty("grantOrg", infoByIdCardNumber.getGrantOrg());
         workerList.addProperty("positiveIDCardImage",
-            QiniuUtil.parseUrl(infoByIdCardNumber.getPositiveIdCardImageUrl()));
+                QiniuUtil.parseUrl(infoByIdCardNumber.getPositiveIdCardImageUrl()));
         workerList.addProperty("negativeIDCardImage",
-            QiniuUtil.parseUrl(infoByIdCardNumber.getNegativeIdCardImageUrl()));
+                QiniuUtil.parseUrl(infoByIdCardNumber.getNegativeIdCardImageUrl()));
         workerList.addProperty("startDate", projectWorker.getStartDate());
         workerList.addProperty("expiryDate", projectWorker.getExpiryDate());
         jsonArray.add(workerList);

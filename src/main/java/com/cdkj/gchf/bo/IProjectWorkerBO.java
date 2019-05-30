@@ -1,6 +1,6 @@
 package com.cdkj.gchf.bo;
 
-import com.cdkj.gchf.api.impl.XN631693ReqData;
+import com.cdkj.gchf.dto.req.XN631693ReqData;
 import com.cdkj.gchf.bo.base.IPaginableBO;
 import com.cdkj.gchf.bo.base.Paginable;
 import com.cdkj.gchf.domain.*;
@@ -96,7 +96,7 @@ public interface IProjectWorkerBO extends IPaginableBO<ProjectWorker> {
      * @param code
      * @param status 进退场状态
      */
-    void refreshStatus(String code, String status);
+    void refreshStatus(String code, String status, String entryTime, String exitTime);
 
 
     /**

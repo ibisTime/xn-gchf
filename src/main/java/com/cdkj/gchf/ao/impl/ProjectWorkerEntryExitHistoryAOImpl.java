@@ -91,8 +91,12 @@ public class ProjectWorkerEntryExitHistoryAOImpl
         }
         String code = projectWorkerEntryExitHistoryBO
                 .saveProjectWorkerEntryExitHistory(data);
-
-        projectWorkerBO.refreshStatus(projectWorker.getCode(), data.getType());
+        if (data.getType().equals(EEntryExitType.IN.getCode())) {
+            projectWorkerBO
+                    .refreshStatus(projectWorker.getCode(), data.getType(), data.getDate(), null);
+        }
+        projectWorkerBO
+                .refreshStatus(projectWorker.getCode(), data.getType(), null, data.getDate());
         return code;
     }
 
@@ -109,7 +113,13 @@ public class ProjectWorkerEntryExitHistoryAOImpl
         projectWorkerEntryExitHistoryBO
             .refreshProjectWorkerEntryExitHistory(req);
         //更新进退场时间
-        projectWorkerBO.refreshStatus(exitHistory.getWorkerCode(), req.getType());
+        if (req.getType().equals(EEntryExitType.IN.getCode())) {
+            projectWorkerBO
+                    .refreshStatus(exitHistory.getWorkerCode(), req.getType(), req.getDate(), null);
+        }
+        projectWorkerBO
+                .refreshStatus(exitHistory.getWorkerCode(), req.getType(), null, req.getDate());
+
     }
 
     @Override

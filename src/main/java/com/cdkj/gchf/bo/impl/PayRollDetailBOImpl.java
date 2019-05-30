@@ -268,6 +268,10 @@ public class PayRollDetailBOImpl extends PaginableBOImpl<PayRollDetail>
         if (StringUtils.isNotBlank(data.getDays())) {
             condition.setDays(Integer.parseInt(data.getDays()));
         }
+        condition.setPayRollBankName(
+                EBankCardCodeType.getBankCardType(data.getPayRollBankCode()).getValue());
+        condition.setPayBankName(
+                EBankCardCodeType.getBankCardType(data.getPayBankCode()).getValue());
         condition.setDeleteStatus(EDeleteStatus.NORMAL.getCode());
         condition.setUploadStatus(EPayRollUploadStatus.TO_UPLOAD.getCode());
         return payRollDetailDAO.update(condition);

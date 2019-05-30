@@ -1,7 +1,7 @@
 package com.cdkj.gchf.bo.impl;
 
 import com.alibaba.fastjson.JSONObject;
-import com.cdkj.gchf.api.impl.XN631693ReqData;
+import com.cdkj.gchf.dto.req.XN631693ReqData;
 import com.cdkj.gchf.bo.IWorkerInfoBO;
 import com.cdkj.gchf.bo.base.Paginable;
 import com.cdkj.gchf.bo.base.PaginableBOImpl;

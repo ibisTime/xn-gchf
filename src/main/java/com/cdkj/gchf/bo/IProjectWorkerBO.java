@@ -42,6 +42,13 @@ public interface IProjectWorkerBO extends IPaginableBO<ProjectWorker> {
                              XN631693ReqData req);
 
     /**
+     * 保存项目人员-导入 并获取对象
+     */
+    ProjectWorker saveProjectWorkerAndGet(String workerCode, Project project,
+            CorpBasicinfo corpBasicinfo, TeamMaster teamName,
+            XN631693ReqData req);
+
+    /**
      * 假删除项目人员
      */
     void fakeDeleteProjectWorker(String projectcode);

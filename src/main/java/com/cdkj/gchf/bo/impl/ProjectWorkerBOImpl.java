@@ -274,11 +274,51 @@ public class ProjectWorkerBOImpl extends PaginableBOImpl<ProjectWorker>
         return code;
     }
 
+
+    @Override
+    public ProjectWorker saveProjectWorkerAndGet(String workerCode, Project project,
+            CorpBasicinfo corpBasicinfo, TeamMaster teamMaster, XN631693ReqData req) {
+        ProjectWorker projectWorker = new ProjectWorker();
+        String code = OrderNoGenerater
+                .generate(EGeneratePrefix.ProjectWorker.getCode());
+        projectWorker.setCode(code);
+        projectWorker.setWorkerCode(workerCode);
+        projectWorker.setCorpCode(corpBasicinfo.getCorpCode());
+        projectWorker.setCorpName(corpBasicinfo.getCorpName());
+        projectWorker.setTeamName(req.getTeamName());
+        projectWorker.setProjectName(project.getName());
+        projectWorker.setProjectCode(project.getCode());
+        projectWorker.setTeamSysNo(teamMaster.getCode());
+        projectWorker.setIdcardNumber(req.getIdCardNumber());
+        projectWorker.setCellPhone(req.getCellPhone());
+        projectWorker.setWorkerName(req.getWorkerName());
+        projectWorker.setIdcardType("01");
+        projectWorker.setWorkType(req.getWorkType());
+        projectWorker.setWorkRole(req.getWorkRole());
+
+        if (StringUtils.isNotBlank(req.getIsTeamLeader())) {
+            projectWorker
+                    .setIsTeamLeader(Integer.parseInt(req.getIsTeamLeader()));
+        }
+
+        if (StringUtils.isNotBlank(req.getHasBuyInsurance())) {
+            projectWorker
+                    .setHasBuyInsurance(Integer.parseInt(req.getHasBuyInsurance()));
+        }
+        projectWorker
+                .setUploadStatus(EProjectWorkerUploadStatus.TO_UPLOAD.getCode());
+        projectWorker.setDeleteStatus(EDeleteStatus.NORMAL.getCode());
+
+        projectWorkerDAO.insert(projectWorker);
+        return projectWorker;
+
+    }
+
     @Override
     public void fakeDeleteProjectWorker(String projectcode) {
         ProjectWorker projectWorker = new ProjectWorker();
         projectWorker
-            .setUploadStatus(EProjectWorkerUploadStatus.TO_UPLOAD.getCode());
+                .setUploadStatus(EProjectWorkerUploadStatus.TO_UPLOAD.getCode());
         projectWorker.setProjectCode(projectcode);
         projectWorker.setDeleteStatus(EDeleteStatus.DELETED.getCode());
         projectWorkerDAO.updateProjectWorkerDeleteStatus(projectWorker);

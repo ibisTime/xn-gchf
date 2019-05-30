@@ -122,7 +122,7 @@ public class ProjectWorkerAOImpl implements IProjectWorkerAO {
             throw new BizException("XN631690", "班组信息不存在");
         }
         CorpBasicinfo corpBasicinfo = corpBasicinfoBO
-            .getCorpBasicinfoByCorp(req.getCorpCode());
+                .getCorpBasicinfoByCorp(req.getCorpCode());
         if (corpBasicinfo == null) {
             throw new BizException("xn631690", "企业信息不存在");
         }
@@ -137,16 +137,17 @@ public class ProjectWorkerAOImpl implements IProjectWorkerAO {
             req.setProjectCode(user.getOrganizationCode());
         }
         ProjectWorker preProjectWorker = projectWorkerBO.getProjectWorker(
-            req.getProjectCode(), workerInfo.getIdCardNumber());
+                req.getProjectCode(), workerInfo.getIdCardNumber());
 
         if (preProjectWorker != null && preProjectWorker.getDeleteStatus()
-            .equals(EDeleteStatus.NORMAL.getCode())) {
+                .equals(EDeleteStatus.NORMAL.getCode())) {
             throw new BizException("XN631690",
-                "项目中已存在【" + workerInfo.getName() + "】的人员");
+                    "项目中已存在【" + workerInfo.getName() + "】的人员");
         }
 
         ProjectWorker projectWorker = projectWorkerBO.saveProjectWorker(req);
-
+        projectWorkerEntryExitHistoryBO
+                .saveProjectWorkerEntryAuto(projectWorker, teamMaster.getTeamName());
         return projectWorker.getCode();
 
     }
@@ -174,8 +175,9 @@ public class ProjectWorkerAOImpl implements IProjectWorkerAO {
             throw new BizException("XN00000", "请选择班组");
         }
         ProjectWorker projectWorker = projectWorkerBO.saveProjectWorker(project,
-            teamMaster, workerInfo, req);
-
+                teamMaster, workerInfo, req);
+        projectWorkerEntryExitHistoryBO
+                .saveProjectWorkerEntryAuto(projectWorker, teamMaster.getTeamName());
         return projectWorker.getCode();
     }
 
@@ -188,15 +190,15 @@ public class ProjectWorkerAOImpl implements IProjectWorkerAO {
             EWorkerType.checkExists(req.getWorkType());
         }
         ProjectWorker projectWorker = projectWorkerBO
-            .getProjectWorker(req.getCode());
+                .getProjectWorker(req.getCode());
 
         if (projectWorker.getUploadStatus()
-            .equals(EProjectWorkerUploadStatus.UPLOAD_UPDATE.getCode())
+                .equals(EProjectWorkerUploadStatus.UPLOAD_UPDATE.getCode())
                 || projectWorker.getUploadStatus().equals(
-                    EProjectWorkerUploadStatus.UPLOAD_UNUPDATE.getCode())) {
+                EProjectWorkerUploadStatus.UPLOAD_UNUPDATE.getCode())) {
             // 修改本地和平台
             TeamMaster teamMaster = teamMasterBO
-                .getTeamMaster(req.getTeamSysNo());
+                    .getTeamMaster(req.getTeamSysNo());
 
             projectWorkerBO.refreshProjectWorker(req, teamMaster);
             XN631695Req editReq = new XN631695Req();
@@ -205,19 +207,19 @@ public class ProjectWorkerAOImpl implements IProjectWorkerAO {
             updatePlantformProjectWorker(editReq);
 
             operateLogBO.saveOperateLog(
-                EOperateLogRefType.ProjectWorker.getCode(), req.getCode(),
-                "修改项目人员信息", user, "修改项目人员信息");
+                    EOperateLogRefType.ProjectWorker.getCode(), req.getCode(),
+                    "修改项目人员信息", user, "修改项目人员信息");
 
         } else {
             // 修改本地
             TeamMaster teamMaster = teamMasterBO
-                .getTeamMaster(req.getTeamSysNo());
+                    .getTeamMaster(req.getTeamSysNo());
 
             projectWorkerBO.refreshProjectWorker(req, teamMaster);
 
             operateLogBO.saveOperateLog(
-                EOperateLogRefType.ProjectWorker.getCode(), req.getCode(),
-                "修改项目人员信息", user, "修改项目人员信息");
+                    EOperateLogRefType.ProjectWorker.getCode(), req.getCode(),
+                    "修改项目人员信息", user, "修改项目人员信息");
 
         }
 
@@ -228,41 +230,41 @@ public class ProjectWorkerAOImpl implements IProjectWorkerAO {
     public void dropProjectWorker(List<String> codeList) {
         for (String code : codeList) {
             ProjectWorker projectWorker = projectWorkerBO
-                .getProjectWorker(code);
+                    .getProjectWorker(code);
             if (projectWorker.getUploadStatus()
-                .equals(EProjectWorkerUploadStatus.UPLOAD_UNUPDATE.getCode())
+                    .equals(EProjectWorkerUploadStatus.UPLOAD_UNUPDATE.getCode())
                     || projectWorker.getUploadStatus().equals(
-                        EProjectWorkerUploadStatus.UPLOAD_UPDATE.getCode())) {
+                    EProjectWorkerUploadStatus.UPLOAD_UPDATE.getCode())) {
                 throw new BizException("XN631691", "班组人员已上传,无法删除");
             }
             projectWorkerBO.updateProjectWorkerDeleteStatus(code,
-                EDeleteStatus.DELETED.getCode());
+                    EDeleteStatus.DELETED.getCode());
 
             workerContractBO.fakeDeleteWorkerContract(code);
 
             workerAttendanceBO.deleteWorkAttendanceByWorkerCode(code);
 
             projectWorkerEntryExitHistoryBO
-                .fakeDeleteProjectWorkerEntryHistory(code);
+                    .fakeDeleteProjectWorkerEntryHistory(code);
 
             PayRollDetail condition = new PayRollDetail();
             condition.setIdcardType(projectWorker.getIdcardType());
             condition.setIdcardNumber(projectWorker.getIdcardNumber());
             List<PayRollDetail> queryList = payRollDetailBO
-                .queryList(condition);
+                    .queryList(condition);
             // 如果工资单下还存在未删除的工资明细 不删除
             for (PayRollDetail payRollDetail : queryList) {
                 String payRollCode = payRollDetail.getPayRollCode();
                 List<PayRoll> payRollList = payRollBO
-                    .getPayRollList(payRollCode);
+                        .getPayRollList(payRollCode);
                 if (payRollList.size() > 1) {
                     continue;
                 }
                 payRollBO.updatePayRollDeleteStatus(payRollCode);
             }
             payRollDetailBO.fakeDeletePayRollDetail(
-                projectWorker.getIdcardType(), projectWorker.getIdcardNumber(),
-                projectWorker.getProjectCode());
+                    projectWorker.getIdcardType(), projectWorker.getIdcardNumber(),
+                    projectWorker.getProjectCode());
 
         }
 
@@ -271,7 +273,7 @@ public class ProjectWorkerAOImpl implements IProjectWorkerAO {
     @Override
     public void uploadProjectWorker(XN631911Req req) {
         ProjectConfig projectConfig = projectConfigBO
-            .getProjectConfigByProject(req.getProjectCode());
+                .getProjectConfigByProject(req.getProjectCode());
 
         if (null == projectConfig) {
             throw new BizException("XN631911", "该项目未配置，无法上传");
@@ -283,7 +285,7 @@ public class ProjectWorkerAOImpl implements IProjectWorkerAO {
     @Override
     public void updateProjectWorker(XN631912Req req) {
         ProjectConfig projectConfig = projectConfigBO
-            .getProjectConfigByProject(req.getProjectCode());
+                .getProjectConfigByProject(req.getProjectCode());
 
         if (null == projectConfig) {
             throw new BizException("XN631912", "该项目未配置，无法修改");
@@ -302,10 +304,10 @@ public class ProjectWorkerAOImpl implements IProjectWorkerAO {
         }
 
         String repeatValue = ImportUtil.checkRepeat(req.getWorkerList(),
-            "idCardNumber");
+                "idCardNumber");
         if (StringUtils.isNotBlank(repeatValue)) {
             throw new BizException("XN000000",
-                "导入数据中证件号码【" + repeatValue + "】存在重复");
+                    "导入数据中证件号码【" + repeatValue + "】存在重复");
         }
 
         for (XN631693ReqData projectWorkerData : req.getWorkerList()) {
@@ -313,42 +315,48 @@ public class ProjectWorkerAOImpl implements IProjectWorkerAO {
             checkDicKey(projectWorkerData);
 
             CorpBasicinfo corpBasicinfo = corpBasicinfoBO
-                .getCorpBasicinfoByCorp(projectWorkerData.getCorpCode());
+                    .getCorpBasicinfoByCorp(projectWorkerData.getCorpCode());
             if (corpBasicinfo == null) {
                 throw new BizException("XN631793",
-                    "企业【" + projectWorkerData.getCorpCode() + "】不存在");
+                        "企业【" + projectWorkerData.getCorpCode() + "】不存在");
             }
 
             TeamMaster teamMaster = teamMasterBO.getTeamMasterByProject(
-                project.getCode(), projectWorkerData.getCorpCode(),
-                projectWorkerData.getTeamName());
+                    project.getCode(), projectWorkerData.getCorpCode(),
+                    projectWorkerData.getTeamName());
             if (teamMaster == null) {
                 throw new BizException("XN631793",
-                    "班组【" + projectWorkerData.getTeamName() + "】未录入");
+                        "班组【" + projectWorkerData.getTeamName() + "】未录入");
             }
 
             // 校验班组中是否已存在该成员
             ProjectWorker projectWorkerByIdentity = projectWorkerBO
-                .getProjectWorkerByIdentity(teamMaster.getCode(),
-                    projectWorkerData.getIdCardNumber());
+                    .getProjectWorkerByIdentity(teamMaster.getCode(),
+                            projectWorkerData.getIdCardNumber());
             if (projectWorkerByIdentity != null) {
                 throw new BizException("XN631690",
-                    teamMaster.getTeamName() + "班组中" + "已存在该人员【"
-                            + projectWorkerData.getIdCardNumber() + "】");
+                        teamMaster.getTeamName() + "班组中" + "已存在该人员【"
+                                + projectWorkerData.getIdCardNumber() + "】");
             }
 
             // 检查人员实名信息表是否存在员工信息
             WorkerInfo infoByIdCardNumber = workerInfoBO
-                .getWorkerInfoByIdCardNumber(
-                    projectWorkerData.getIdCardNumber());
+                    .getWorkerInfoByIdCardNumber(
+                            projectWorkerData.getIdCardNumber());
             if (infoByIdCardNumber != null) {
-                projectWorkerBO.saveProjectWorker(infoByIdCardNumber,
-                    projectWorkerData, project, teamMaster, corpBasicinfo);
+                String workerCode = projectWorkerBO.saveProjectWorker(infoByIdCardNumber,
+                        projectWorkerData, project, teamMaster, corpBasicinfo);
+                projectWorkerEntryExitHistoryBO
+                        .saveProjectWorkerEntryAuto(infoByIdCardNumber, projectWorkerData, project,
+                                teamMaster, corpBasicinfo, workerCode);
             } else {
                 String workerCode = workerInfoBO
-                    .saveWorkerInfoByImport(projectWorkerData);
-                projectWorkerBO.saveProjectWorker(workerCode, project,
-                    corpBasicinfo, teamMaster, projectWorkerData);
+                        .saveWorkerInfoByImport(projectWorkerData);
+                ProjectWorker projectWorker = projectWorkerBO
+                        .saveProjectWorkerAndGet(workerCode, project,
+                                corpBasicinfo, teamMaster, projectWorkerData);
+                projectWorkerEntryExitHistoryBO
+                        .saveProjectWorkerEntryAuto(projectWorker, teamMaster.getTeamName());
             }
 
         }
@@ -360,43 +368,43 @@ public class ProjectWorkerAOImpl implements IProjectWorkerAO {
         List<String> codeList = req.getCodeList();
         for (String code : codeList) {
             ProjectWorker projectWorker = projectWorkerBO
-                .getProjectWorker(code);
+                    .getProjectWorker(code);
 
             TeamMaster teamMaster = teamMasterBO
-                .getTeamMaster(projectWorker.getTeamSysNo());
+                    .getTeamMaster(projectWorker.getTeamSysNo());
 
             ProjectConfig projectConfig = projectConfigBO
-                .getProjectConfigByLocal(projectWorker.getProjectCode());
+                    .getProjectConfigByLocal(projectWorker.getProjectCode());
             if (projectConfig == null) {
                 throw new BizException("XN631690",
-                    "项目未配置" + projectWorker.getProjectName() + ",请检查项目配置");
+                        "项目未配置" + projectWorker.getProjectName() + ",请检查项目配置");
             }
 
             JsonObject json = projectWorkerBO.getProjectWorkerJson(teamMaster,
-                projectWorker, projectConfig);
+                    projectWorker, projectConfig);
             projectWorkerBO.refreshUploadStatus(code,
-                EProjectWorkerUploadStatus.UPLOADING.getCode());
+                    EProjectWorkerUploadStatus.UPLOADING.getCode());
             String resString = null;
             try {
                 // 捕捉国家平台异常
                 resString = GovConnecter.getGovData("ProjectWorker.Add",
-                    json.toString(), projectConfig.getProjectCode(),
-                    projectConfig.getSecret());
+                        json.toString(), projectConfig.getProjectCode(),
+                        projectConfig.getSecret());
             } catch (BizException e) {
                 // 国家平台抛出的异常 数据处理后再抛出
                 projectWorkerBO.refreshUploadStatus(code,
-                    EProjectWorkerUploadStatus.UPLOAD_FAIL.getCode());
+                        EProjectWorkerUploadStatus.UPLOAD_FAIL.getCode());
                 throw e;
             }
             // 保存日志
             String logCode = operateLogBO.saveOperateLog(
-                EOperateLogRefType.ProjectWorker.getCode(), code,
-                EOperateLogOperate.UploadProjectWorker.getValue(), user, null);
+                    EOperateLogRefType.ProjectWorker.getCode(), code,
+                    EOperateLogOperate.UploadProjectWorker.getValue(), user, null);
 
             AsyncQueueHolder.addSerial(resString, projectConfig,
-                "projectWorkerBO", code,
-                EProjectWorkerUploadStatus.UPLOAD_UPDATE.getCode(), logCode,
-                req.getUserId());
+                    "projectWorkerBO", code,
+                    EProjectWorkerUploadStatus.UPLOAD_UPDATE.getCode(), logCode,
+                    req.getUserId());
         }
     }
 
@@ -405,33 +413,33 @@ public class ProjectWorkerAOImpl implements IProjectWorkerAO {
         List<String> codeList = req.getCodeList();
         for (String code : codeList) {
             ProjectWorker projectWorker = projectWorkerBO
-                .getProjectWorker(code);
+                    .getProjectWorker(code);
             ProjectConfig configByLocal = projectConfigBO
-                .getProjectConfigByLocal(projectWorker.getProjectCode());
+                    .getProjectConfigByLocal(projectWorker.getProjectCode());
             if (configByLocal == null) {
                 throw new BizException("XN631695",
-                    "项目未配置：" + projectWorker.getProjectName());
+                        "项目未配置：" + projectWorker.getProjectName());
             }
             if (projectWorker.getUploadStatus()
-                .equals(EProjectWorkerUploadStatus.TO_UPLOAD.getCode())) {
+                    .equals(EProjectWorkerUploadStatus.TO_UPLOAD.getCode())) {
                 throw new BizException("XN631695", "项目人员未上传,无法修改");
             }
             XN631912Req xn631612Req = new XN631912Req();
             WorkerInfo workerInfoByIdCardNumber = workerInfoBO
-                .getWorkerInfoByIdCardNumber(projectWorker.getIdcardNumber());
+                    .getWorkerInfoByIdCardNumber(projectWorker.getIdcardNumber());
             BeanUtils.copyProperties(projectWorker, xn631612Req);
             BeanUtils.copyProperties(workerInfoByIdCardNumber, xn631612Req);
             ProjectConfig projectConfigByLocal = projectConfigBO
-                .getProjectConfigByLocal(projectWorker.getProjectCode());
+                    .getProjectConfigByLocal(projectWorker.getProjectCode());
             xn631612Req
-                .setHeadImage(workerInfoByIdCardNumber.getHeadImageUrl());
+                    .setHeadImage(workerInfoByIdCardNumber.getHeadImageUrl());
             xn631612Req.setPositiveIdCardImageUrl(
-                workerInfoByIdCardNumber.getPositiveIdCardImageUrl());
+                    workerInfoByIdCardNumber.getPositiveIdCardImageUrl());
             xn631612Req.setNegativeIdCardImageUrl(
-                workerInfoByIdCardNumber.getNegativeIdCardImageUrl());
+                    workerInfoByIdCardNumber.getNegativeIdCardImageUrl());
             xn631612Req.setProjectCode(projectConfigByLocal.getProjectCode());
             xn631612Req.setTeamSysNo(Integer.parseInt(teamMasterBO
-                .getTeamMaster(projectWorker.getTeamSysNo()).getTeamSysNo()));
+                    .getTeamMaster(projectWorker.getTeamSysNo()).getTeamSysNo()));
             xn631612Req.setUserId(req.getUserId());
             xn631612Req.setCode(code);
             projectWorkerBO.doUpdate(xn631612Req, configByLocal);
@@ -442,12 +450,12 @@ public class ProjectWorkerAOImpl implements IProjectWorkerAO {
     public void checkDicKey(XN631693ReqData projectWorkerData) {
 
         EWorkerRoleType
-            .checkExists(String.valueOf(projectWorkerData.getWorkRole()));
+                .checkExists(String.valueOf(projectWorkerData.getWorkRole()));
         EWorkerType.checkExists(projectWorkerData.getWorkType());
         EPoliticsType.checkExists(projectWorkerData.getPoliticsType());
         EIsNotType.checkExists(projectWorkerData.getIsTeamLeader());
         if (StringUtils
-            .isNotBlank(projectWorkerData.getHasBadMedicalHistory())) {
+                .isNotBlank(projectWorkerData.getHasBadMedicalHistory())) {
             EIsNotType.checkExists(projectWorkerData.getHasBadMedicalHistory());
         }
         if (StringUtils.isNotBlank(projectWorkerData.getHasBuyInsurance())) {
@@ -458,7 +466,7 @@ public class ProjectWorkerAOImpl implements IProjectWorkerAO {
     @Override
     public Paginable<ProjectWorker> queryProjectWorker(XN631913Req req) {
         ProjectConfig projectConfig = projectConfigBO
-            .getProjectConfigByProject(req.getProjectCode());
+                .getProjectConfigByProject(req.getProjectCode());
 
         if (null == projectConfig) {
             throw new BizException("XN631913", "该项目未配置，无法查询");
@@ -478,17 +486,17 @@ public class ProjectWorkerAOImpl implements IProjectWorkerAO {
         }
 
         Paginable<ProjectWorker> page = projectWorkerBO.getPaginable(start,
-            limit, condition);
+                limit, condition);
 
         if (null != page && CollectionUtils.isNotEmpty(page.getList())) {
             for (ProjectWorker projectWorker : page.getList()) {
                 WorkerInfo workerInfo = workerInfoBO
-                    .getBriefWorkerInfo(projectWorker.getWorkerCode());
+                        .getBriefWorkerInfo(projectWorker.getWorkerCode());
                 if (null != workerInfo) {
                     projectWorker
-                        .setArchiveDatetime(workerInfo.getCreateDatetime());
+                            .setArchiveDatetime(workerInfo.getCreateDatetime());
                     projectWorker.setWorkerPicUploadStatus(
-                        workerInfo.getWorkerPicUploadStatus());
+                            workerInfo.getWorkerPicUploadStatus());
                 }
             }
         }
@@ -507,7 +515,7 @@ public class ProjectWorkerAOImpl implements IProjectWorkerAO {
 
         // 查询项目端人员
         List<ProjectWorker> queryProjectWorkerList = projectWorkerBO
-            .queryProjectWorkerList(condition);
+                .queryProjectWorkerList(condition);
 
         if (StringUtils.isNotBlank(condition.getDeviceKey())) {
             // 项目端-查询人员-包含已授权和未授权
@@ -516,20 +524,20 @@ public class ProjectWorkerAOImpl implements IProjectWorkerAO {
             EquipmentWorker tempEquipMentWorker = new EquipmentWorker();
             tempEquipMentWorker.setDeviceKey(condition.getDeviceKey());
             List<EquipmentWorker> queryEquipmentWorkerList = equipmentWorkerBO
-                .queryEquipmentWorkerList(tempEquipMentWorker);
+                    .queryEquipmentWorkerList(tempEquipMentWorker);
             List<ProjectWorker> hasAuthorization = new ArrayList<>();
             List<ProjectWorker> tempList = new ArrayList<>();
             for (EquipmentWorker equipmentWorker : queryEquipmentWorkerList) {
                 ProjectWorker projectWorker = projectWorkerBO
-                    .getProjectWorker(equipmentWorker.getWorkerCode());
+                        .getProjectWorker(equipmentWorker.getWorkerCode());
                 tempList.add(projectWorker);
                 projectWorker.setIsLink(EIsNotType.IS.getCode());
                 hasAuthorization.add(projectWorker);
             }
             // 此项目下所有人员
             List<ProjectWorker> projectWorkerByProjectCode = projectWorkerBO
-                .getProjectWorkerByProjectCode(user.getOrganizationCode(),
-                    EProjectWorkerUploadStatus.UPLOAD_UPDATE.getCode());
+                    .getProjectWorkerByProjectCode(user.getOrganizationCode(),
+                            EProjectWorkerUploadStatus.UPLOAD_UPDATE.getCode());
             projectWorkerByProjectCode.removeAll(tempList);
 
             for (ProjectWorker projectWorker : projectWorkerByProjectCode) {
@@ -546,7 +554,7 @@ public class ProjectWorkerAOImpl implements IProjectWorkerAO {
         ProjectWorker projectWorker = projectWorkerBO.getProjectWorker(code);
 
         WorkerInfo workerInfo = workerInfoBO
-            .getWorkerInfo(projectWorker.getWorkerCode());
+                .getWorkerInfo(projectWorker.getWorkerCode());
         projectWorker.setWorkerInfo(workerInfo);
 
         return projectWorker;
@@ -555,12 +563,12 @@ public class ProjectWorkerAOImpl implements IProjectWorkerAO {
     @Override
     public List<Map> selectProjectWorkerWorkerTypeSpread(String userId) {
         List<Map> maps = projectWorkerBO
-            .selectProjectWorkerWorkerTyepSpread(userId);
+                .selectProjectWorkerWorkerTyepSpread(userId);
         for (int i = 0; i < maps.size(); i++) {
             HashMap map = (HashMap) maps.get(i);
             String work_type = (String) map.get("work_type");
             String workerTypeCode = EWorkerType.getWorkerType(work_type)
-                .getStatus();
+                    .getStatus();
             map.put("work_type", workerTypeCode);
         }
         return maps;
@@ -580,11 +588,11 @@ public class ProjectWorkerAOImpl implements IProjectWorkerAO {
     public Object select30DayData(String userId) {
         Map<String, Object> res = new HashMap<>();
         Integer leavingCount = projectWorkerEntryExitHistoryBO
-            .selectProjectWorkerLeavingCount(userId);
+                .selectProjectWorkerLeavingCount(userId);
         Integer comingCount = projectWorkerEntryExitHistoryBO
-            .selectProjectWorkerComingCount(userId);
+                .selectProjectWorkerComingCount(userId);
         Integer attendanceCount = workerAttendanceBO
-            .selectWorkerAttendance30Day(userId);
+                .selectWorkerAttendance30Day(userId);
 
         if (leavingCount != null) {
             res.put("leavingCount", leavingCount);

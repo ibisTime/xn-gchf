@@ -1,5 +1,10 @@
 package com.cdkj.gchf.bo.impl;
 
+import com.cdkj.gchf.api.impl.XN631693ReqData;
+import com.cdkj.gchf.domain.CorpBasicinfo;
+import com.cdkj.gchf.domain.Project;
+import com.cdkj.gchf.domain.WorkerInfo;
+import com.cdkj.gchf.enums.EEntryExitType;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -123,6 +128,60 @@ public class ProjectWorkerEntryExitHistoryBOImpl
     }
 
     @Override
+    public String saveProjectWorkerEntryAuto(ProjectWorker projectWorker, String teamMasterName) {
+        ProjectWorkerEntryExitHistory entryExitHistory = new ProjectWorkerEntryExitHistory();
+        String code = null;
+        entryExitHistory.setProjectCode(projectWorker.getProjectCode());
+        entryExitHistory.setCorpCode(projectWorker.getCorpCode());
+        entryExitHistory.setCorpName(projectWorker.getCorpName());
+        entryExitHistory.setWorkerCode(projectWorker.getCode());
+        entryExitHistory.setWorkerName(projectWorker.getWorkerName());
+        entryExitHistory.setIdcardType("01");
+        entryExitHistory.setIdcardNumber(projectWorker.getIdcardNumber());
+        entryExitHistory.setPosition(projectWorker.getWorkType());
+        entryExitHistory.setType(Integer.valueOf(EEntryExitType.IN.getCode()));
+        entryExitHistory.setUploadStatus(
+                EProjectWorkerEntryExitUploadStatus.TO_UPLOAD.getCode());
+        entryExitHistory.setDeleteStatus(EDeleteStatus.NORMAL.getCode());
+        code = OrderNoGenerater
+                .generate(EGeneratePrefix.ProjectWorkerEntryExitHistory.getCode());
+        entryExitHistory.setCode(code);
+
+        entryExitHistory.setTeamSysNo(projectWorker.getTeamSysNo());
+        entryExitHistory.setTeamName(teamMasterName);
+        projectWorkerEntryExitHistoryDAO.insert(entryExitHistory);
+        return code;
+    }
+
+
+    @Override
+    public String saveProjectWorkerEntryAuto(WorkerInfo infoByIdCardNumber,
+            XN631693ReqData projectWorkerData, Project project, TeamMaster teamMaster,
+            CorpBasicinfo corpBasicinfo, String workerCode) {
+        ProjectWorkerEntryExitHistory entryExitHistory = new ProjectWorkerEntryExitHistory();
+        String code;
+        entryExitHistory.setProjectCode(project.getCode());
+        entryExitHistory.setCorpCode(corpBasicinfo.getCorpCode());
+        entryExitHistory.setCorpName(corpBasicinfo.getCorpName());
+        entryExitHistory.setWorkerCode(workerCode);
+        entryExitHistory.setWorkerName(projectWorkerData.getWorkerName());
+        entryExitHistory.setIdcardType("01");
+        entryExitHistory.setIdcardNumber(projectWorkerData.getIdCardNumber());
+        entryExitHistory.setPosition(projectWorkerData.getWorkType());
+        entryExitHistory.setType(Integer.valueOf(EEntryExitType.IN.getCode()));
+        entryExitHistory.setUploadStatus(
+                EProjectWorkerEntryExitUploadStatus.TO_UPLOAD.getCode());
+        entryExitHistory.setDeleteStatus(EDeleteStatus.NORMAL.getCode());
+        code = OrderNoGenerater
+                .generate(EGeneratePrefix.ProjectWorkerEntryExitHistory.getCode());
+        entryExitHistory.setCode(code);
+        entryExitHistory.setTeamSysNo(teamMaster.getCode());
+        entryExitHistory.setTeamName(teamMaster.getTeamName());
+        projectWorkerEntryExitHistoryDAO.insert(entryExitHistory);
+        return code;
+    }
+
+    @Override
     public void batchInsertWorkerEntryExitHistory(User user,
             List<XN631733ReqData> dataList, List<TeamMaster> teamMasterList,
             List<ProjectWorker> projectWorkerList) {
@@ -147,28 +206,28 @@ public class ProjectWorkerEntryExitHistoryBOImpl
             entryExitHistory.setIdcardNumber(data.getIdcardNumber());
 
             entryExitHistory.setDate(DateUtil.strToDate(data.getDate(),
-                DateUtil.FRONT_DATE_FORMAT_STRING));
+                    DateUtil.FRONT_DATE_FORMAT_STRING));
             entryExitHistory.setType(Integer.parseInt(data.getType()));
             entryExitHistory.setUploadStatus(
-                EProjectWorkerEntryExitUploadStatus.TO_UPLOAD.getCode());
+                    EProjectWorkerEntryExitUploadStatus.TO_UPLOAD.getCode());
             entryExitHistory.setDeleteStatus(EDeleteStatus.NORMAL.getCode());
 
             code = OrderNoGenerater.generate(
-                EGeneratePrefix.ProjectWorkerEntryExitHistory.getCode());
+                    EGeneratePrefix.ProjectWorkerEntryExitHistory.getCode());
             entryExitHistory.setCode(code);
             entryExitHistory.setTeamSysNo(teamMaster.getCode());
             projectWorkerEntryExitHistories.add(entryExitHistory);
             operateLogBO.saveOperateLog(
-                EOperateLogRefType.WorkAttendance.getCode(), code,
-                EOperateLogOperate.IMPORT_WORKER_ENTRYEXIT.getValue(), user,
-                null);
+                    EOperateLogRefType.WorkAttendance.getCode(), code,
+                    EOperateLogOperate.IMPORT_WORKER_ENTRYEXIT.getValue(), user,
+                    null);
             // 回写人员进场场信息
             projectWorkerBO.refreshStatus(projectWorker.getCode(),
-                data.getType());
+                    data.getType());
 
         }
         projectWorkerEntryExitHistoryDAO
-            .batchInsert(projectWorkerEntryExitHistories);
+                .batchInsert(projectWorkerEntryExitHistories);
     }
 
     @Override

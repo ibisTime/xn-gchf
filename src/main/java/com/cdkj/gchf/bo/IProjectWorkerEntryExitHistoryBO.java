@@ -1,5 +1,6 @@
 package com.cdkj.gchf.bo;
 
+import com.cdkj.gchf.api.impl.XN631693ReqData;
 import java.util.List;
 
 import com.cdkj.gchf.bo.base.IPaginableBO;
@@ -25,6 +26,28 @@ public interface IProjectWorkerEntryExitHistoryBO
      */
     String saveProjectWorkerEntryExitHistory(TeamMaster master,
             ProjectWorker projectWorker, XN631733ReqData datas);
+
+    /**
+     * 人员关联项目后生成一条进场记录
+     *
+     * @return code
+     */
+    String saveProjectWorkerEntryAuto(ProjectWorker projectWorker, String teamMasterName);
+
+    /**
+     * 导入项目人员后自动生成一条进场记录
+     *
+     * @param infoByIdCardNumber 实名制信息
+     * @param projectWorkerData 导入源数据
+     * @param project 项目
+     * @param teamMaster 班组
+     * @param corpBasicinfo 企业记录
+     * @param workerCode 项目人员编号
+     * @return code
+     */
+    String saveProjectWorkerEntryAuto(WorkerInfo infoByIdCardNumber,
+            XN631693ReqData projectWorkerData, Project project, TeamMaster teamMaster,
+            CorpBasicinfo corpBasicinfo, String workerCode);
 
     /**
      * 批量插入人员进退场

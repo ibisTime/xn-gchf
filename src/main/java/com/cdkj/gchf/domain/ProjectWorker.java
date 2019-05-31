@@ -251,6 +251,10 @@ public class ProjectWorker extends ABaseDO {
     // 实名制人员guid
     private String personGuid;
 
+    /**
+     * 工资单明细数量
+     */
+    private Long payRollDetailTotal;
 
     /**
      * DB properties
@@ -930,5 +934,13 @@ public class ProjectWorker extends ABaseDO {
 
     public void setWorkerPicUploadStatus(String workerPicUploadStatus) {
         this.workerPicUploadStatus = workerPicUploadStatus;
+    }
+
+    public Long getPayRollDetailTotal() {
+        return payRollDetailTotal;
+    }
+
+    public void setPayRollDetailTotal(Long payRollDetailTotal) {
+        this.payRollDetailTotal = payRollDetailTotal;
     }
 }

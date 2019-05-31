@@ -1,6 +1,7 @@
 package com.cdkj.gchf.bo.impl;
 
 import com.alibaba.fastjson.JSONObject;
+import com.cdkj.gchf.common.StringUtil;
 import com.cdkj.gchf.dto.req.XN631693ReqData;
 import com.cdkj.gchf.bo.IWorkerInfoBO;
 import com.cdkj.gchf.bo.base.Paginable;
@@ -332,7 +333,21 @@ public class WorkerInfoBOImpl extends PaginableBOImpl<WorkerInfo>
         condition.setCode(req.getCode());
         WorkerInfo workerInfo = workerInfoDAO.selectBriefWorkerInfo(condition);
         if (workerInfo != null) {
-            BeanUtils.copyProperties(req, condition);
+            workerInfo.setCellPhone(req.getPhone());
+            workerInfo.setPoliticsType(req.getPoliticsType());
+            workerInfo.setCultureLevelType(req.getCultureLevelType());
+
+            if (StringUtils.isNotBlank(req.getIsJoined())) {
+                workerInfo.setIsJoined(Integer.parseInt(req.getIsJoined()));
+            }
+
+            workerInfo.setSpecialty(req.getSpecialty());
+            if (StringUtils.isNotBlank(req.getHasBadMedicalHistory())) {
+                workerInfo.setHasBadMedicalHistory(Integer.parseInt(req.getHasBadMedicalHistory()));
+            }
+            workerInfo.setMaritalStatus(req.getMaritalStatus());
+            workerInfo.setUrgentLinkMan(req.getUrgentLinkMan());
+            workerInfo.setUrgentLinkManPhone(req.getUrgentLinkManPhone());
             workerInfo.setCreateDatetime(new Date(System.currentTimeMillis()));
             workerInfoDAO.updateWorkerInfo(workerInfo);
             return condition.getCode();

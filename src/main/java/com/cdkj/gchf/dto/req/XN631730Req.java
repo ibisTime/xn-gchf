@@ -3,6 +3,7 @@ package com.cdkj.gchf.dto.req;
 import org.hibernate.validator.constraints.NotBlank;
 
 public class XN631730Req {
+
     // 用户id
     @NotBlank
     private String userId;
@@ -10,6 +11,9 @@ public class XN631730Req {
     // 员工编号
     @NotBlank
     private String workerCode;
+
+    //员工姓名
+    private String workerName;
 
     // 日期
     private String date;
@@ -59,4 +63,12 @@ public class XN631730Req {
         this.voucherUrl = voucherUrl;
     }
 
+
+    public String getWorkerName() {
+        return workerName;
+    }
+
+    public void setWorkerName(String workerName) {
+        this.workerName = workerName;
+    }
 }

@@ -22,5 +22,6 @@ public interface IBankCardInfoDAO extends IBaseDAO<BankCardInfo> {
 
     void updateBankCardInfoStatusByBussiness(BankCardInfo condition);
 
+
     List<BankCardInfo> selectBankCardByIdcard(List<String> idcards);
 }

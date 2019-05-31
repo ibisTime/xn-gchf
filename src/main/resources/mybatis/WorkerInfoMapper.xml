@@ -163,8 +163,7 @@
 		,id_card_type = #{idCardType}
 		,id_card_number = #{idCardNumber}
 		,gender = #{gender}
-		,nation =
-		#{nation}
+    ,nation = #{nation}
 		,edu_level = #{eduLevel}
 		,politics_type = #{politicsType}
 		,degree = #{degree}
@@ -172,34 +171,35 @@
 
 		,birthday = #{birthday}
 		,birth_place_code = #{birthPlaceCode}
-		,address =
-		#{address}
-		,head_image_url = #{headImageUrl}
-		,is_joined = #{isJoined}
-		,joined_time
-		= #{joinedTime}
-		,culture_level_type = #{cultureLevelType}
-		,specialty =
-		#{specialty}
+    ,address = #{address}
+    <if test="headImageUrl != null and headImageUrl != '' ">
+      ,head_image_url = #{headImageUrl}
+    </if>
 
-		,has_bad_medical_history =
-		#{hasBadMedicalHistory}
+    ,is_joined = #{isJoined}
+    ,cell_phone = #{cellPhone}
+    <if test="joinedTime != null">
+      ,joined_time = #{joinedTime}
+    </if>
+
+    ,culture_level_type = #{cultureLevelType}
+    ,specialty = #{specialty}
+
+    ,has_bad_medical_history = #{hasBadMedicalHistory}
 		,work_type_code = #{workTypeCode}
 		,work_corp_name = #{workCorpName}
 		,work_date = #{workDate}
 		,marital_status = #{maritalStatus}
 
-		,grant_org =
-		#{grantOrg}
-		,start_date
-		= #{startDate}
+    ,grant_org = #{grantOrg}
+    ,start_date = #{startDate}
 		,expiry_date = #{expiryDate}
-		,create_datetime =
-		#{createDatetime}
-		,attendance_picture =
-		#{attendancePicture}
-		WHERE code
-		= #{code}
+    ,create_datetime = #{createDatetime}
+    <if test="attendancePicture != null and attendancePicture != '' ">
+      ,attendance_picture = #{attendancePicture}
+    </if>
+
+    WHERE code = #{code}
 	</update>
 
 	<update id="update_WorkerInfoAboutIdcard" parameterType="workerInfo">

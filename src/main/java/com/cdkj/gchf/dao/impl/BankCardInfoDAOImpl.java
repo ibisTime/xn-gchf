@@ -64,6 +64,7 @@ public class BankCardInfoDAOImpl extends AMybatisTemplate
             condition);
     }
 
+
     @Override
     public List<BankCardInfo> selectBankCardByIdcard(List<String> idcards) {
         return super.selectList(

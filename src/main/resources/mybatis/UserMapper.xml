@@ -143,6 +143,13 @@
 		<include refid="where_condition" />
 	</select>
 
+	<resultMap id="exhanceResult" extends="user_DB_Result" type="user">
+		<association property="roleCode" column="code" javaType="sysRole"
+			select="com.cdkj.gchf.dao.ISYSRoleDAO.select_sysRole">
+			<result column="name" property="name"/>
+		</association>
+	</resultMap>
+
 	<select id="select_user_count" parameterType="user"
 		resultType="java.lang.Long">
 		SELECT count(1) FROM thf_user t
@@ -194,15 +201,14 @@
 
 	<update id="update_user" parameterType="user">
 		UPDATE thf_user
-		SET
-		,loginName = #{loginName}
-		,mobile = #{mobile}
-		,loginPwd = #{loginPwd}
+		SET loginName     = #{loginName}
+		,mobile           = #{mobile}
+		,loginPwd         = #{loginPwd}
 		,loginPwdStrength = #{loginPwdStrength}
-		,createDatetime = #{createDatetime}
-		,roleCode = #{roleCode}
-		,status = #{status}
-		,remark = #{remark}
+		,createDatetime   = #{createDatetime}
+		,roleCode         = #{roleCode}
+		,status           = #{status}
+		,remark           = #{remark}
 		WHERE code = #{code}
 	</update>
 		

@@ -512,6 +512,9 @@ public class ProjectWorkerAOImpl implements IProjectWorkerAO {
                     projectWorker.setWorkerPicUploadStatus(
                             workerInfo.getWorkerPicUploadStatus());
                 }
+                PayRollDetail payRoll = new PayRollDetail();
+                payRoll.setWorkerCode(projectWorker.getCode());
+                projectWorker.setPayRollDetailTotal(payRollDetailBO.getTotalCount(payRoll));
             }
         }
 

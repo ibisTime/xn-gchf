@@ -331,7 +331,8 @@ public class UserAOImpl implements IUserAO {
         User data = userBO.getUser(userId);
 
         initUser(data);
-
+        SYSRole sysRole = sysRoleBO.getSYSRole(data.getRoleCode());
+        data.setRoleName(sysRole.getName());
         return data;
     }
 
@@ -359,6 +360,7 @@ public class UserAOImpl implements IUserAO {
             Project project = projectBO.getProject(data.getOrganizationCode());
             data.setProjectCode(project.getCode());
             data.setProjectName(project.getName());
+
             // data.setProvince(project.getProvince());
             // data.setCity(project.getCity());
             // data.setArea(project.getArea());

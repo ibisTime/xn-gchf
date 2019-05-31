@@ -30,7 +30,7 @@ public class PayRollDetailDAOImpl extends AMybatisTemplate
 
     @Override
     public long selectTotalCount(PayRollDetail condition) {
-        return 0;
+        return super.selectTotalCount(NAMESPACE.concat("select_payRollDetail_count"), condition);
     }
 
     @Override
@@ -71,4 +71,5 @@ public class PayRollDetailDAOImpl extends AMybatisTemplate
             NAMESPACE.concat("update_PayRollDetail_delete_status"),
             payRollDetail);
     }
+
 }

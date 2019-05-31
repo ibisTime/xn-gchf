@@ -21,6 +21,9 @@ public class XN631816Req extends AListReq {
     // 上传状态
     private String uploadStatus;
 
+    //工人编号
+    private String workerCode;
+
     // 企业统一信用编码
     private String corpCode;
 
@@ -64,4 +67,11 @@ public class XN631816Req extends AListReq {
         this.corpCode = corpCode;
     }
 
+    public String getWorkerCode() {
+        return workerCode;
+    }
+
+    public void setWorkerCode(String workerCode) {
+        this.workerCode = workerCode;
+    }
 }

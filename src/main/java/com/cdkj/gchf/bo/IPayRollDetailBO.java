@@ -80,6 +80,11 @@ public interface IPayRollDetailBO extends IPaginableBO<PayRollDetail> {
             String payRollCode);
 
     /**
+     * 查询人员工资单条数
+     */
+    long selectCountByWorkerCode(String workerCode);
+
+    /**
      * 获取上传国家平台的json 
      */
     public JsonObject getUploadRequestJsontoPlantform(PayRoll payRollData,

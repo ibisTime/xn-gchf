@@ -54,6 +54,9 @@
 			<if test="deleteStatus != null and deleteStatus != '' ">
 				AND t.delete_status = #{deleteStatus}
 			</if>
+			<if test="workerCode != null and workerCode != '' ">
+				AND t.worker_code = #{workerCode}
+			</if>
 			<if test="balanceDate != null ">
 				AND t.balance_date = #{balanceDate}
 			</if>

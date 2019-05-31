@@ -20,6 +20,8 @@ public class XN631727Req extends AListReq {
     // 上传状态
     private String uploadStatus;
 
+    //人员编号
+    private String workerCode;
     // userId
     @NotBlank
     private String userId;
@@ -64,4 +66,11 @@ public class XN631727Req extends AListReq {
         this.uploadStatus = uploadStatus;
     }
 
+    public String getWorkerCode() {
+        return workerCode;
+    }
+
+    public void setWorkerCode(String workerCode) {
+        this.workerCode = workerCode;
+    }
 }

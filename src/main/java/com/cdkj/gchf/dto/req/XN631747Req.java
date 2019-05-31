@@ -15,6 +15,9 @@ public class XN631747Req extends AListReq {
     // 上传状态
     private String uploadStatus;
 
+    //工人编号
+    private String workerCode;
+
     // 工人姓名
     private String workerName;
 
@@ -40,6 +43,14 @@ public class XN631747Req extends AListReq {
 
     public void setUploadStatus(String uploadStatus) {
         this.uploadStatus = uploadStatus;
+    }
+
+    public String getWorkerCode() {
+        return workerCode;
+    }
+
+    public void setWorkerCode(String workerCode) {
+        this.workerCode = workerCode;
     }
 
     public String getWorkerName() {

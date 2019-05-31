@@ -13,4 +13,5 @@ public interface IPayRollDetailDAO extends IBaseDAO<PayRollDetail> {
     int updatePayRollCode(PayRollDetail payRollDetail);
 
     int updatePayRollDetailDeleteStatus(PayRollDetail payRollDetail);
+
 }

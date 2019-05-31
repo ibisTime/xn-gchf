@@ -106,6 +106,8 @@ public class PayRollDetail extends ABaseDO {
     // 发放月份
     private Date payMonth;
 
+    private Long workerPayRollTotal;
+
     public String getCode() {
         return code;
     }
@@ -344,5 +346,13 @@ public class PayRollDetail extends ABaseDO {
 
     public void setWorkerCode(String workerCode) {
         this.workerCode = workerCode;
+    }
+
+    public Long getWorkerPayRollTotal() {
+        return workerPayRollTotal;
+    }
+
+    public void setWorkerPayRollTotal(Long workerPayRollTotal) {
+        this.workerPayRollTotal = workerPayRollTotal;
     }
 }

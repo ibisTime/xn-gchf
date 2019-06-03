@@ -94,6 +94,12 @@ public class BankCardInfoAOImpl implements IBankCardInfoAO {
         return bankCardBankBO.saveBankCardInfo(req);
     }
 
+
+    @Override
+    public void unBindBankCard(String code) {
+        bankCardBankBO.deleteBankCardInfo(code);
+    }
+
     @Override
     public void changeBankCardStatus(XN631751Req req) {
 

@@ -42,7 +42,7 @@ public class ZqznUtil {
         try {
 
             file = Base64Util.base64ToFile(base64,
-                OrderNoGenerater.generate("Image") + ".jpg", IMAGE_FILE_DIR);
+                    OrderNoGenerater.generate("Image") + ".png", IMAGE_FILE_DIR);
 
             RequestBody fileBody = RequestBody
                 .create(MediaType.parse("image/png"), file);

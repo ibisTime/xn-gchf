@@ -29,6 +29,12 @@ public interface IBankCardInfoAO {
      */
     String addBankCardInfo(XN631750Req req);
 
+
+    /**
+     * 解除银行卡绑定
+     */
+    void unBindBankCard(String code);
+
     /**
      * @param req 改变银行卡状态 ：冻结 启用
      */

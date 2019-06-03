@@ -21,6 +21,10 @@ public interface IBankCardBankBO extends IPaginableBO<BankCardInfo> {
      */
     String saveBankCardInfo(XN631750Req req);
 
+    /**
+     * 删除银行卡
+     */
+    void deleteBankCardInfo(String code);
 
     /**
      * @param projectWorker 项目人员
@@ -33,6 +37,7 @@ public interface IBankCardBankBO extends IPaginableBO<BankCardInfo> {
      */
     String saveWorkerBankCardInfo(ProjectWorker projectWorker, String bankCode, String bankNumber,
             String subranch, String bankLinkNumber, String remark);
+
 
     /**
      * 编辑银行卡

@@ -49,6 +49,12 @@ public class BankCardBankBOImpl extends PaginableBOImpl<BankCardInfo>
         return code;
     }
 
+    @Override
+    public void deleteBankCardInfo(String code) {
+        BankCardInfo bankCardInfo = new BankCardInfo();
+        bankCardInfo.setCode(code);
+        bankCardInfoDAO.delete(bankCardInfo);
+    }
 
     @Override
     public String saveWorkerBankCardInfo(ProjectWorker projectWorker, String bankCode,

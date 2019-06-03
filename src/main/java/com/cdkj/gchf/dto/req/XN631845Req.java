@@ -9,11 +9,15 @@ public class XN631845Req extends APageReq {
     // 设备序列号
     private String deviceKey;
 
+    //人员编号
+    private String workerCode;
+
     // 员工名称
     private String workerName;
 
     // 进出方向
     private String direction;
+
 
     @NotBlank
     private String userId;
@@ -24,6 +28,14 @@ public class XN631845Req extends APageReq {
 
     public void setDeviceKey(String deviceKey) {
         this.deviceKey = deviceKey;
+    }
+
+    public String getWorkerCode() {
+        return workerCode;
+    }
+
+    public void setWorkerCode(String workerCode) {
+        this.workerCode = workerCode;
     }
 
     public String getWorkerName() {

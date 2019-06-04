@@ -107,7 +107,8 @@
 		)
 		VALUES
 		<foreach collection="list" index="index" item="equipmentWorker"
-			open="(" separator="," close=") ">
+      separator=",">
+      (
 			 #{equipmentWorker.code}
 			,#{equipmentWorker.deviceCode}   
 			,#{equipmentWorker.deviceKey}
@@ -121,6 +122,7 @@
 			,#{equipmentWorker.status}
 			,#{equipmentWorker.passTimes}
 			,#{equipmentWorker.createTime}
+      )
 		</foreach>
 	</insert>
 	<delete id="delete_EquipmentWorker" parameterType="equipmentWorker">

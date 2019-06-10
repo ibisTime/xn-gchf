@@ -199,6 +199,18 @@ public class WorkerInfoBOImpl extends PaginableBOImpl<WorkerInfo>
         return workerInfoDAO.updateWorkerInfoAboutIdcard(condition);
     }
 
+
+    @Override
+    public int updateWorkerInfoIdcardImageH5(String code, String headImage, String positiveImage,
+            String negativeImage) {
+        WorkerInfo workerInfo = new WorkerInfo();
+        workerInfo.setPositiveIdCardImageUrl(positiveImage);
+        workerInfo.setNegativeIdCardImageUrl(negativeImage);
+        workerInfo.setHeadImageUrl(headImage);
+        workerInfo.setCode(code);
+        return workerInfoDAO.updateWorkerInfoIdCardImageH5(workerInfo);
+    }
+
     @Override
     public int refreshWorkerInfo(XN631792Req req) {
         WorkerInfo workerInfo = new WorkerInfo();

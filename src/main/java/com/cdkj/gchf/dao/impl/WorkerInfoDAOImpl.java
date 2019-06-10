@@ -95,6 +95,13 @@ public class WorkerInfoDAOImpl extends AMybatisTemplate
             condition);
     }
 
+
+    @Override
+    public int updateWorkerInfoIdCardImageH5(WorkerInfo condition) {
+        return super.update(NAMESPACE.concat("updateWorkerInfoIdCardImageH5"),
+                condition);
+    }
+
     @Override
     public WorkerInfo selectWorkerInfo(String guid) {
         return super.select(NAMESPACE.concat("update_attendancePic"), guid,

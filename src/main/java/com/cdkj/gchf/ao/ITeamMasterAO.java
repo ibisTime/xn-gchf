@@ -76,7 +76,7 @@ public interface ITeamMasterAO {
     /**
      * 列表查
      */
-    List<TeamMaster> queryTeamMasterList(TeamMaster condition);
+    List<TeamMaster> queryTeamMasterList(String userId, TeamMaster condition);
 
     /**
      * code查

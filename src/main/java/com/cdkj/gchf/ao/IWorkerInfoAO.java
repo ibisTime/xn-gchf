@@ -25,6 +25,7 @@ public interface IWorkerInfoAO {
     int addWorkerInfoContact(XN631792Req req);
 
     /**
+     * 根据身份证图片信息生成实名制信息,如果入参有实名制code 则刷新人员身份证信息
      * @param req 身份证正反面信息
      * @return 生成实名制code主键
      */

@@ -82,7 +82,7 @@ public interface IBankCardBankBO extends IPaginableBO<BankCardInfo> {
      *
      * @param bussinessType 业务类型 ，参考 EBankCardBussinessType ：001 参建单位 / 002 个人用户
      * @param bussinessCode 参建单位：参建单位主键code ,个人用户：项目人员主键code
-     * @return 银行卡列表
+     * @return 银行卡
      */
     List<BankCardInfo> getBankCardByByssinessCode(String bussinessType, String bussinessCode);
 

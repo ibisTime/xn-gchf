@@ -5,6 +5,7 @@ import com.cdkj.gchf.bo.*;
 import com.cdkj.gchf.bo.base.Page;
 import com.cdkj.gchf.bo.base.Paginable;
 import com.cdkj.gchf.common.IdCardChecker;
+import com.cdkj.gchf.common.StringUtil;
 import com.cdkj.gchf.domain.*;
 import com.cdkj.gchf.dto.req.*;
 import com.cdkj.gchf.enums.*;
@@ -20,6 +21,7 @@ import com.cdkj.gchf.humanfaces.res.DeviceWorkerRes;
 import com.cdkj.gchf.zqzn.ZqznInfoBack;
 import com.cdkj.gchf.zqzn.ZqznInfoFront;
 import com.cdkj.gchf.zqzn.ZqznUtil;
+import java.awt.Font;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -64,6 +66,7 @@ public class WorkerInfoAOImpl implements IWorkerInfoAO {
 
     @Autowired
     private IBankCardBankBO bankCardBankBO;
+
     @Override
     @Transactional
     public String addWorkerInfo(XN631790Req req) {
@@ -90,13 +93,13 @@ public class WorkerInfoAOImpl implements IWorkerInfoAO {
             BeanUtils.copyProperties(req, xn631791Req);
 
             operateLogBO.saveOperateLog(EOperateLogRefType.WorkerInfo.getCode(),
-                workerInfo.getCode(), "重新建档人员实名制信息", user, null);
+                    workerInfo.getCode(), "重新建档人员实名制信息", user, null);
 
             // 存在项目人员-更新 基本基本信息
             if (!req.getIdCardNumber().equals(workerInfo.getIdCardNumber())
                     || !req.getName().equals(workerInfo.getName())) {
                 projectWorkerBO.refreshWorkerIdCardNumber(req.getCode(),
-                    req.getIdCardNumber(), req.getName());
+                        req.getIdCardNumber(), req.getName());
             }
 
             // 更新建档信息
@@ -105,7 +108,7 @@ public class WorkerInfoAOImpl implements IWorkerInfoAO {
         }
         // 身份证重复校验
         if (workerInfoBO
-            .getWorkerInfoByIdCardNumber(req.getIdCardNumber()) != null) {
+                .getWorkerInfoByIdCardNumber(req.getIdCardNumber()) != null) {
             throw new BizException("XN0000", "身份证号已存在,请修改");
         }
         String workerCode = workerInfoBO.saveWorkerInfo(req);
@@ -124,59 +127,59 @@ public class WorkerInfoAOImpl implements IWorkerInfoAO {
         if (StringUtils.isNotBlank(workerGuid)) {
             // // 人员已存在, 删除旧照片 , 添加新的 (base64 方式)
             workerPicture.picDelCloud(workerInfo.getWorkerAttendancePicGuid(),
-                workerGuid);
+                    workerGuid);
 
             DeviceWorkerPicRes picRegisterToCloud = workerPicture
-                .picRegisterToCloud(workerGuid, attendancePicture, "1", null,
-                    null);
+                    .picRegisterToCloud(workerGuid, attendancePicture, "1", null,
+                            null);
             if (picRegisterToCloud.getCode()
-                .equals(EPicResponse.TIANJIACHENG.getCode())) {
+                    .equals(EPicResponse.TIANJIACHENG.getCode())) {
                 // 照片添加成功
                 workerInfoBO.refreshAttendancePic(code, attendancePicture,
-                    EWorkerUploadStatus.SUCCESS.getCode(),
-                    EAttendancePicUploadStatus.SUCCESS.getCode());
+                        EWorkerUploadStatus.SUCCESS.getCode(),
+                        EAttendancePicUploadStatus.SUCCESS.getCode());
                 workerInfoBO.updateWorkerInfoAttendance(workerInfo.getCode(),
-                    workerGuid, picRegisterToCloud.getData().getGuid());
+                        workerGuid, picRegisterToCloud.getData().getGuid());
             } else {
                 workerInfoBO.refreshAttendancePic(code, attendancePicture,
-                    EWorkerUploadStatus.SUCCESS.getCode(),
-                    EAttendancePicUploadStatus.FAIL.getCode());
+                        EWorkerUploadStatus.SUCCESS.getCode(),
+                        EAttendancePicUploadStatus.FAIL.getCode());
                 throw new BizException("XN631794",
-                    "人脸录入云端失败:" + picRegisterToCloud.getMsg());
+                        "人脸录入云端失败:" + picRegisterToCloud.getMsg());
 
             }
         } else {
             // 添加人员到云端
             DeviceWorkerRes cloudWorkerAdd = deviceWorker.cloudWorkerAdd(
-                workerInfo.getName(), workerInfo.getCode(),
-                workerInfo.getCellPhone(), null, null);
+                    workerInfo.getName(), workerInfo.getCode(),
+                    workerInfo.getCellPhone(), null, null);
             // 添加照片信息到云端
             DeviceWorkerPicRes picRegisterToCloud = workerPicture
-                .picRegisterToCloud(cloudWorkerAdd.getData().getGuid(),
-                    attendancePicture, "1", null, null);
+                    .picRegisterToCloud(cloudWorkerAdd.getData().getGuid(),
+                            attendancePicture, "1", null, null);
             if (picRegisterToCloud.getCode()
-                .equals(EPicResponse.TIANJIACHENG.getCode())) {
+                    .equals(EPicResponse.TIANJIACHENG.getCode())) {
                 // 添加成功
                 // 更新本地人员 和图片guid
                 workerInfoBO.updateWorkerInfoAttendance(workerInfo.getCode(),
-                    cloudWorkerAdd.getData().getGuid(),
-                    picRegisterToCloud.getData().getGuid());
+                        cloudWorkerAdd.getData().getGuid(),
+                        picRegisterToCloud.getData().getGuid());
                 workerInfoBO.refreshAttendancePic(workerInfo.getCode(),
-                    attendancePicture, EWorkerUploadStatus.SUCCESS.getCode(),
-                    EAttendancePicUploadStatus.SUCCESS.getCode());
+                        attendancePicture, EWorkerUploadStatus.SUCCESS.getCode(),
+                        EAttendancePicUploadStatus.SUCCESS.getCode());
             } else {
                 workerInfoBO.updateWorkerInfoAttendance(workerInfo.getCode(),
-                    cloudWorkerAdd.getData().getGuid(), null);
+                        cloudWorkerAdd.getData().getGuid(), null);
                 workerInfoBO.refreshAttendancePic(workerInfo.getCode(),
-                    attendancePicture, EWorkerUploadStatus.SUCCESS.getCode(),
-                    EAttendancePicUploadStatus.FAIL.getCode());
+                        attendancePicture, EWorkerUploadStatus.SUCCESS.getCode(),
+                        EAttendancePicUploadStatus.FAIL.getCode());
             }
 
         }
         // 同步下设备
         List<EquipmentInfo> queryEquipmentList = equipmentInfoBO
-            .queryEquipmentList(
-                userBO.getBriefUser(userId).getOrganizationCode());
+                .queryEquipmentList(
+                        userBO.getBriefUser(userId).getOrganizationCode());
         for (EquipmentInfo equipmentInfo : queryEquipmentList) {
             device.updateCloudDevice(equipmentInfo.getDeviceKey());
         }
@@ -199,10 +202,10 @@ public class WorkerInfoAOImpl implements IWorkerInfoAO {
         long totalCount = workerInfoBO.getTotalCount(condition);
 
         Paginable<WorkerInfo> page = new Page<WorkerInfo>(start, limit,
-            totalCount);
+                totalCount);
 
         List<WorkerInfo> dataList = workerInfoBO.queryStaffListBrief(condition,
-            page.getStart(), page.getPageSize());
+                page.getStart(), page.getPageSize());
 
         page.setList(dataList);
 
@@ -227,19 +230,21 @@ public class WorkerInfoAOImpl implements IWorkerInfoAO {
 
     @Override
     public List<BankCardInfo> selectWorkerInfoByWorkerCode(String workerCode) {
-        List<ProjectWorker> projectWorkers = projectWorkerBO.selectProjectWorkerByWorkerCode(workerCode);
+        List<ProjectWorker> projectWorkers = projectWorkerBO
+                .selectProjectWorkerByWorkerCode(workerCode);
         List<BankCardInfo> bankCardInfoList = new ArrayList<>();
         for (ProjectWorker temp : projectWorkers) {
-            List<BankCardInfo> bankCardByByssinessCode = bankCardBankBO.getBankCardByByssinessCode(EBankCardBussinessType.USER.getCode(), temp.getCode());
+            List<BankCardInfo> bankCardByByssinessCode = bankCardBankBO
+                    .getBankCardByByssinessCode(EBankCardBussinessType.USER.getCode(),
+                            temp.getCode());
             bankCardInfoList.addAll(bankCardByByssinessCode);
         }
         return bankCardInfoList;
     }
 
     /**
-     * 
-     * <p>Title: addWorkerInfoIdCardInfo</p>   
-     * <p>Description: 添加身份证考勤照片</p>   
+     * <p>Title: addWorkerInfoIdCardInfo</p>
+     * <p>Description: 添加身份证考勤照片</p>
      */
     @Override
     public int addWorkerInfoIdCardInfo(XN631791Req req) {
@@ -250,42 +255,42 @@ public class WorkerInfoAOImpl implements IWorkerInfoAO {
             String workerGuid = workerInfo.getWorkerGuid();
             DeviceWorkerPicRes picRegisterToCloud = null;
             if (StringUtils
-                .isNotBlank(workerInfo.getWorkerAttendancePicGuid())) {
+                    .isNotBlank(workerInfo.getWorkerAttendancePicGuid())) {
                 // 删除重新添加
                 workerPicture.picDelCloud(
-                    workerInfo.getWorkerAttendancePicGuid(), workerGuid);
+                        workerInfo.getWorkerAttendancePicGuid(), workerGuid);
 
             }
             // 添加照片
             picRegisterToCloud = workerPicture.picRegisterToCloud(workerGuid,
-                req.getAttendancePicture(), "1", null, null);
+                    req.getAttendancePicture(), "1", null, null);
             workerInfoBO.updateWorkerInfoAttendance(req.getCode(), workerGuid,
-                picRegisterToCloud.getData().getGuid());
+                    picRegisterToCloud.getData().getGuid());
             workerInfoBO.refreshAttendancePic(workerInfo.getCode(),
-                req.getAttendancePicture(),
-                EAttendancePicUploadStatus.SUCCESS.getCode(),
-                EAttendancePicUploadStatus.SUCCESS.getCode());
+                    req.getAttendancePicture(),
+                    EAttendancePicUploadStatus.SUCCESS.getCode(),
+                    EAttendancePicUploadStatus.SUCCESS.getCode());
 
         } else {
             // 未上传
             DeviceWorkerRes cloudWorkerAdd = deviceWorker.cloudWorkerAdd(
-                workerInfo.getName(), workerInfo.getCode(),
-                workerInfo.getCellPhone(), null, null);
+                    workerInfo.getName(), workerInfo.getCode(),
+                    workerInfo.getCellPhone(), null, null);
             DeviceWorkerPicRes picRegisterToCloud = workerPicture
-                .picRegisterToCloud(cloudWorkerAdd.getData().getGuid(),
-                    req.getAttendancePicture(), "1", null, null);
+                    .picRegisterToCloud(cloudWorkerAdd.getData().getGuid(),
+                            req.getAttendancePicture(), "1", null, null);
             workerInfoBO.updateWorkerInfoAttendance(req.getCode(),
-                cloudWorkerAdd.getData().getGuid(),
-                picRegisterToCloud.getData().getGuid());
+                    cloudWorkerAdd.getData().getGuid(),
+                    picRegisterToCloud.getData().getGuid());
             workerInfoBO.refreshAttendancePic(workerInfo.getCode(),
-                req.getAttendancePicture(),
-                EAttendancePicUploadStatus.SUCCESS.getCode(),
-                EAttendancePicUploadStatus.SUCCESS.getCode());
+                    req.getAttendancePicture(),
+                    EAttendancePicUploadStatus.SUCCESS.getCode(),
+                    EAttendancePicUploadStatus.SUCCESS.getCode());
         }
         // 同步设备
         List<EquipmentInfo> queryEquipmentList = equipmentInfoBO
-            .queryEquipmentList(
-                userBO.getBriefUser(req.getUserId()).getOrganizationCode());
+                .queryEquipmentList(
+                        userBO.getBriefUser(req.getUserId()).getOrganizationCode());
         for (EquipmentInfo equipmentInfo : queryEquipmentList) {
             device.updateCloudDevice(equipmentInfo.getDeviceKey());
         }
@@ -299,7 +304,7 @@ public class WorkerInfoAOImpl implements IWorkerInfoAO {
                 || !workerInfo.getCellPhone().equals(req.getCellPhone())) {
             // 手机号改变 更新项目人员手机号码
             projectWorkerBO.refreshWorkerCelephone(workerInfo.getCode(),
-                req.getCellPhone());
+                    req.getCellPhone());
         }
         return workerInfoBO.refreshWorkerInfo(req);
     }
@@ -319,6 +324,26 @@ public class WorkerInfoAOImpl implements IWorkerInfoAO {
 
         projectBO.refreshUsedOcrCount(project.getCode(),
                 project.getUsedOcrCount() + 1);
+        if (StringUtils.isNotBlank(req.getCode())) {
+            workerInfoBO.updateWorkerInfoIdcardImageH5(req.getCode(), front.getFaceImg(),
+                    req.getPositiveImage(),
+                    req.getNegativeImage());
+            return req.getCode();
+        }
+        projectWorkerBO.getProjectWorker(user.getOrganizationCode(), front.getIdNo());
+
+        WorkerInfo workerInfoByIdCardNumber = workerInfoBO
+                .getWorkerInfoByIdCardNumber(front.getIdNo());
+
+        if (workerInfoByIdCardNumber != null) {
+            XN631791Req rs = new XN631791Req();
+            rs.setCode(workerInfoByIdCardNumber.getCode());
+            rs.setHandIdCardImageUrl(front.getFaceImg());
+            rs.setPositiveIdCardImageUrl(req.getPositiveImage());
+            rs.setNegativeIdCardImageUrl(req.getNegativeImage());
+            workerInfoBO.refreshWorkerInfo(rs);
+            return workerInfoByIdCardNumber.getCode();
+        }
 
         return workerInfoBO.saveWorkerInfo(req, front, back);
     }
@@ -338,10 +363,10 @@ public class WorkerInfoAOImpl implements IWorkerInfoAO {
         workerInfoBO.refreshWorkerInfo(req);
 
         projectWorkerBO.refreshWorkerIdCardNumber(req.getCode(),
-            req.getIdCardNumber(), req.getName());
+                req.getIdCardNumber(), req.getName());
 
         operateLogBO.saveOperateLog(EOperateLogRefType.WorkerInfo.getCode(),
-            req.getCode(), "重新建档人员实名制信息", user, null);
+                req.getCode(), "重新建档人员实名制信息", user, null);
     }
 
     private void checkIsExist(String code, String idCardNumber) {
@@ -349,10 +374,10 @@ public class WorkerInfoAOImpl implements IWorkerInfoAO {
 
         if (!idCardNumber.equals(workerInfo.getIdCardNumber())) {
             WorkerInfo workerInfoByIdCardNumber = workerInfoBO
-                .getWorkerInfoByIdCardNumber(idCardNumber);
+                    .getWorkerInfoByIdCardNumber(idCardNumber);
             if (null != workerInfoByIdCardNumber) {
                 throw new BizException("XN0000",
-                    "项目中已存在身份证号为" + idCardNumber + "的人员信息");
+                        "项目中已存在身份证号为" + idCardNumber + "的人员信息");
             }
         }
     }

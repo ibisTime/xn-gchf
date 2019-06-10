@@ -239,7 +239,16 @@
 		code = #{code}
 	</update>
 
-	<update id="update_attendancePic" parameterType="workerInfo">
+  <update id="updateWorkerInfoIdCardImageH5" parameterType="workerInfo">
+    UPDATE
+      thf_worker_info
+    SET head_image_url            = #{headImageUrl}
+      ,positive_id_card_image_url = #{positiveIdCardImageUrl}
+      ,negative_id_card_image_url = #{negativeIdCardImageUrl}
+    WHERE code = #{code}
+  </update>
+
+  <update id="update_attendancePic" parameterType="workerInfo">
 		UPDATE
 		thf_worker_info
 		SET
@@ -257,7 +266,6 @@
 		thf_worker_info
 		SET
 		hand_id_card_image_url = #{handIdCardImageUrl}
-
 		WHERE code = #{code}
 	</update>
 

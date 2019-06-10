@@ -485,7 +485,7 @@
 	<update id="updateLastAttendance" parameterType="projectWorker">
 		UPDATE thf_project_worker
 		SET attendance_status       = #{attendanceStatus}
-		  ,last_attendance_datetime = #{lastAttendanceDatetime}
+			,last_attendance_datetime = #{lastAttendanceDatetime}
 		WHERE code = #{code}
 	</update>
 
@@ -545,6 +545,13 @@
 		,t.delete_status
 		,t.work_date
 		,t.bank_name
+		,t.attendance_status
+		,t.last_attendance_datetime
+		,t.in_out_status
+		,t.last_in_out_datetime
+		,t.last_pay_month
+		,t.last_pay_total_amount
+		,t.last_pay_actual_amount
 		FROM
 		thf_project_worker t
 		<include refid="join_condition" />

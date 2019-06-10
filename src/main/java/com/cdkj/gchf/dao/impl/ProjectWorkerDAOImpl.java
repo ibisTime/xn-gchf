@@ -79,20 +79,22 @@ public class ProjectWorkerDAOImpl extends AMybatisTemplate
 
     @Override
     public int updateLastPayRoll(ProjectWorker projectWorker) {
-
-        return 0;
+        return super.update(NAMESPACE.concat("updateLastPayRoll"),
+                projectWorker);
     }
 
     @Override
     public int updateLastInOutRecord(ProjectWorker projectWorker) {
-
-        return 0;
+        return super.update(
+                NAMESPACE.concat("updateLastInOutRecord"),
+                projectWorker);
     }
 
     @Override
     public int updateLastAttendance(ProjectWorker projectWorker) {
-
-        return 0;
+        return super.update(
+                NAMESPACE.concat("updateLastAttendance"),
+                projectWorker);
     }
 
     @Override

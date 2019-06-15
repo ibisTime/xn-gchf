@@ -1,5 +1,7 @@
 package com.cdkj.gchf.ao.impl;
 
+import com.cdkj.gchf.domain.User;
+import com.cdkj.gchf.exception.BizException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -26,5 +28,13 @@ public class SmsOutAOImpl implements ISmsOutAO {
     public void sendContent(String tokenId, String mobile, String content) {
         PhoneUtil.checkMobile(mobile);
         smsOutBO.sendSmsOut(mobile, content, null);
+    }
+
+    @Override
+    public void sendSmsCaptchaCheckUser(String mobile, String bizType) {
+        boolean b = userBO.checkMobile(mobile);
+        if (!b) {
+            throw new BizException("XN000000", "用户不存在");
+        }
     }
 }

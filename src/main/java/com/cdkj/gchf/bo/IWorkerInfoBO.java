@@ -69,6 +69,7 @@ public interface IWorkerInfoBO extends IPaginableBO<WorkerInfo> {
     public List<WorkerInfo> queryStaffListBrief(WorkerInfo condition, int start,
             int count);
 
+
     public long queryTotalCount(WorkerInfo condition);
 
     /****国家平台接口****/

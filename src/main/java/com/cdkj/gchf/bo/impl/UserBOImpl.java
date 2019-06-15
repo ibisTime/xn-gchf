@@ -224,6 +224,14 @@ public class UserBOImpl extends PaginableBOImpl<User> implements IUserBO {
         return userDAO.selectList(condition);
     }
 
+    @Override
+    public User getUserByMobile(String mobile) {
+        User condition = new User();
+        condition.setMobile(mobile);
+        return userDAO.select(condition);
+
+    }
+
     private void initUser(User data) {
         // 监管用户数据
         if (EUserKind.Supervise.getCode().equals(data.getType())) {

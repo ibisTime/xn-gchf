@@ -321,11 +321,12 @@ public class WorkerInfoAOImpl implements IWorkerInfoAO {
 
         ZqznInfoFront front = ZqznUtil.getOcrFrontInfo(req.getPositiveImage());
         ZqznInfoBack back = ZqznUtil.getOcrBackInfo(req.getNegativeImage());
-
+        String base64Head = "data:image/jpeg;base64,";
         projectBO.refreshUsedOcrCount(project.getCode(),
                 project.getUsedOcrCount() + 1);
         if (StringUtils.isNotBlank(req.getCode())) {
-            workerInfoBO.updateWorkerInfoIdcardImageH5(req.getCode(), front.getFaceImg(),
+            workerInfoBO
+                    .updateWorkerInfoIdcardImageH5(req.getCode(), base64Head + front.getFaceImg(),
                     req.getPositiveImage(),
                     req.getNegativeImage());
             return req.getCode();
@@ -338,7 +339,7 @@ public class WorkerInfoAOImpl implements IWorkerInfoAO {
         if (workerInfoByIdCardNumber != null) {
             XN631791Req rs = new XN631791Req();
             rs.setCode(workerInfoByIdCardNumber.getCode());
-            rs.setHandIdCardImageUrl(front.getFaceImg());
+            rs.setHandIdCardImageUrl(base64Head + front.getFaceImg());
             rs.setPositiveIdCardImageUrl(req.getPositiveImage());
             rs.setNegativeIdCardImageUrl(req.getNegativeImage());
             workerInfoBO.refreshWorkerInfo(rs);

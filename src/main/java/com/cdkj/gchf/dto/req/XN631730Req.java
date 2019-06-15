@@ -9,7 +9,7 @@ public class XN631730Req {
     private String userId;
 
     // 员工编号
-    @NotBlank
+    @NotBlank(message = "人员编号不能为空")
     private String workerCode;
 
     //员工姓名

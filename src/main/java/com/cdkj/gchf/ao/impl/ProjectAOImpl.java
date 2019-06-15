@@ -1,5 +1,6 @@
 package com.cdkj.gchf.ao.impl;
 
+import com.cdkj.gchf.common.PhoneUtil;
 import java.util.List;
 import java.util.Map;
 
@@ -49,6 +50,9 @@ public class ProjectAOImpl implements IProjectAO {
 
     @Autowired
     private IWorkerAttendanceBO workerAttendanceBO;
+
+    @Autowired
+    private ISmsOutBO smsOutBO;
 
     @Override
     @Transactional
@@ -103,6 +107,14 @@ public class ProjectAOImpl implements IProjectAO {
         // 添加施工许可证
         projectBuilderLicenseBO.saveProjectBuilderLicense(project.getCode(),
                 req.getBuilderLicenses());
+
+        // 发送短信
+//        smsOutBO.sendSmsOut(req.getLinkPhone(),
+//                "尊敬的" + PhoneUtil.hideMobile(req.getLinkPhone()) + "，"
+//                        + req.getName() + "项目管理员账户已开设，登录名："
+//                        + req.getName().concat("管理员") + "，密码：888888"
+//                        + "，请登录鲸目项目端查看。",
+//                "804080");
 
         return project.getCode();
     }

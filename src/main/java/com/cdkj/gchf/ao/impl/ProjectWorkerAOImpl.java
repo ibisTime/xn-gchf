@@ -182,6 +182,8 @@ public class ProjectWorkerAOImpl implements IProjectWorkerAO {
         if (teamMaster == null) {
             throw new BizException("XN00000", "请选择班组");
         }
+        projectWorkerBO
+                .getProjectWorkerByIdentity(teamMaster.getCode(), workerInfo.getIdCardNumber());
         ProjectWorker projectWorker = projectWorkerBO.saveProjectWorker(project,
                 teamMaster, workerInfo, req);
         ProjectWorkerEntryExitHistory exitHistory = projectWorkerEntryExitHistoryBO
@@ -622,5 +624,10 @@ public class ProjectWorkerAOImpl implements IProjectWorkerAO {
         }
 
         return res;
+    }
+
+    @Override
+    public ProjectWorker queryProjectWorkerH5(String userId, String code) {
+        return projectWorkerBO.getProjectWorker(code);
     }
 }

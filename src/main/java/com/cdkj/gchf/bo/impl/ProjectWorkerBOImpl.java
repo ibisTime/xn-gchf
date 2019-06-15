@@ -472,16 +472,10 @@ public class ProjectWorkerBOImpl extends PaginableBOImpl<ProjectWorker>
         ProjectWorker projectWorker = new ProjectWorker();
         projectWorker.setCode(code);
         projectWorker.setStatus(status);
-        if (StringUtils.isBlank(entryTime)) {
-            projectWorker.setEntryTime(null);
-        } else {
-            projectWorker.setEntryTime(DateUtil.strToDate(entryTime, "yyyy-MM-dd"));
-        }
-        if (StringUtils.isBlank(exitTime)) {
-            projectWorker.setExitTime(null);
-        } else {
-            projectWorker.setExitTime(DateUtil.strToDate(exitTime, "yyyy-MM-dd"));
-        }
+        projectWorker.setEntryTime(
+                entryTime == null ? null : DateUtil.strToDate(entryTime, "yyyy-MM-dd"));
+        projectWorker
+                .setExitTime(exitTime == null ? null : DateUtil.strToDate(exitTime, "yyyy-MM-dd"));
 
         projectWorkerDAO.updateStatus(projectWorker);
     }
@@ -518,7 +512,7 @@ public class ProjectWorkerBOImpl extends PaginableBOImpl<ProjectWorker>
         projectWorker.setCode(code);
         projectWorker.setAttendanceStatus(attendanceStatus);
         projectWorker.setLastAttendanceDatetime(DateUtil
-                .strToDate(attendanceDateTime, DateUtil.FRONT_DATE_FORMAT_STRING));
+                .strToDate(attendanceDateTime, DateUtil.DATA_TIME_PATTERN_1));
         projectWorkerDAO.updateLastAttendance(projectWorker);
     }
 

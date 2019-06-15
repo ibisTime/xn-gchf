@@ -213,9 +213,6 @@ public class ProjectCorpInfoBOImpl extends PaginableBOImpl<ProjectCorpInfo>
             ProjectCorpInfo condition = new ProjectCorpInfo();
             condition.setCode(code);
             data = projectCorpInfoDAO.select(condition);
-            if (data == null) {
-                throw new BizException("xn0000", "项目参建单位不存在");
-            }
         }
         return data;
     }

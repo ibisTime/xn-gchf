@@ -105,6 +105,15 @@ public interface IProjectWorkerAO {
      */
     Object select30DayData(String userId);
 
+    /**
+     * H5查询项目人员信息
+     *
+     * @param userId 用户id
+     * @param code 项目人员编号
+     * @return 项目人员
+     */
+    ProjectWorker queryProjectWorkerH5(String userId, String code);
+
     /****国家平台接口****/
     public void uploadProjectWorker(XN631911Req req);
 

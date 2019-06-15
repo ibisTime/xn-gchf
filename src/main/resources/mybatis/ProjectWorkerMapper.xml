@@ -1,599 +1,579 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
-"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.cdkj.gchf.dao.IProjectWorkerDAO">
-	<resultMap id="projectWorker_DB_Result" type="projectWorker">
-		<result column="code" property="code"/>
-		<result column="project_code" property="projectCode" />
-		<result column="project_name" property="projectName"/>
-		<result column="corp_code" property="corpCode" />
-		<result column="corp_name" property="corpName" />
+  <resultMap id="projectWorker_DB_Result" type="projectWorker">
+    <result column="code" property="code"/>
+    <result column="project_code" property="projectCode"/>
+    <result column="project_name" property="projectName"/>
+    <result column="corp_code" property="corpCode"/>
+    <result column="corp_name" property="corpName"/>
 
-		<result column="team_sys_no" property="teamSysNo" />
-		<result column="team_name" property="teamName"/>
-		<result column="worker_code" property="workerCode" />
-		<result column="worker_name" property="workerName" />
-		<result column="worker_mobile" property="workerMobile" />
-		<result column="is_team_leader" property="isTeamLeader" />
+    <result column="team_sys_no" property="teamSysNo"/>
+    <result column="team_name" property="teamName"/>
+    <result column="worker_code" property="workerCode"/>
+    <result column="worker_name" property="workerName"/>
+    <result column="worker_mobile" property="workerMobile"/>
+    <result column="is_team_leader" property="isTeamLeader"/>
 
-		<result column="idcard_type" property="idcardType" />
-		<result column="idcard_number" property="idcardNumber" />
-		<result column="work_type" property="workType" />
-		<result column="work_role" property="workRole" />
-		<result column="type" property="type" />
-		<result column="entry_time" property="entryTime" />
+    <result column="idcard_type" property="idcardType"/>
+    <result column="idcard_number" property="idcardNumber"/>
+    <result column="work_type" property="workType"/>
+    <result column="work_role" property="workRole"/>
+    <result column="type" property="type"/>
+    <result column="entry_time" property="entryTime"/>
 
-		<result column="exit_time" property="exitTime" />
-		<result column="entry_attachment_url" property="entryAttachmentUrl" />
-		<result column="exit_attachment_url" property="exitAttachmentUrl" />
-		<result column="issue_card_date" property="issueCardDate" />
-		<result column="issue_card_pic_url" property="issueCardPicUrl" />
+    <result column="exit_time" property="exitTime"/>
+    <result column="entry_attachment_url" property="entryAttachmentUrl"/>
+    <result column="exit_attachment_url" property="exitAttachmentUrl"/>
+    <result column="issue_card_date" property="issueCardDate"/>
+    <result column="issue_card_pic_url" property="issueCardPicUrl"/>
 
-		<result column="card_number" property="cardNumber" />
-		<result column="pay_roll_bank_card_number" property="payRollBankCardNumber" />
-		<result column="pay_roll_bank_name" property="payRollBankName" />
-		<result column="pay_roll_top_bank_name" property="payRollTopBankName" />
-		<result column="bank_link_number" property="bankLinkNumber" />
-		<result column="bank_name" property="bankName" />
-        <result column="last_pay_month" property="lastPayMonth"/>
-        <result column="last_pay_total_amount" property="lastPayTotalAmount"/>
-        <result column="last_pay_actual_amount" property="lastPayActualAmount"/>
-        <result column="in_out_status" property="inOutStatus"/>
-        <result column="last_in_out_datetime" property="lastInOutDatetime"/>
-        <result column="attendance_status" property="attendanceStatus"/>
-        <result column="last_attendance_datetime" property="lastAttendanceDatetime"/>
+    <result column="card_number" property="cardNumber"/>
+    <result column="pay_roll_bank_card_number" property="payRollBankCardNumber"/>
+    <result column="pay_roll_bank_name" property="payRollBankName"/>
+    <result column="pay_roll_top_bank_name" property="payRollTopBankName"/>
+    <result column="bank_link_number" property="bankLinkNumber"/>
+    <result column="bank_name" property="bankName"/>
+    <result column="last_pay_month" property="lastPayMonth"/>
+    <result column="last_pay_total_amount" property="lastPayTotalAmount"/>
+    <result column="last_pay_actual_amount" property="lastPayActualAmount"/>
+    <result column="in_out_status" property="inOutStatus"/>
+    <result column="last_in_out_datetime" property="lastInOutDatetime"/>
+    <result column="attendance_status" property="attendanceStatus"/>
+    <result column="last_attendance_datetime" property="lastAttendanceDatetime"/>
 
-		<result column="pay_roll_top_bank_code" property="payRollTopBankCode" />
-		<result column="has_contract" property="hasContract" />
-		<result column="has_buy_insurance" property="hasBuyInsurance" />
-		<result column="salary" property="salary" />
+    <result column="pay_roll_top_bank_code" property="payRollTopBankCode"/>
+    <result column="has_contract" property="hasContract"/>
+    <result column="has_buy_insurance" property="hasBuyInsurance"/>
+    <result column="salary" property="salary"/>
 
-		<result column="cut_amount" property="cutAmount" />
-		<result column="status" property="status" />
-		<result column="salary_status" property="salaryStatus" />
-		<result column="work_date" property="workDate" />
+    <result column="cut_amount" property="cutAmount"/>
+    <result column="status" property="status"/>
+    <result column="salary_status" property="salaryStatus"/>
+    <result column="work_date" property="workDate"/>
 
-		<result column="start_datetime" property="startDatetime" />
-		<result column="last_leaving_days" property="lastLeavingDays" />
-		<result column="end_datetime" property="endDatetime" />
-		<result column="total_leaving_days" property="totalLeavingDays" />
-		<result column="updater" property="updater" />
+    <result column="start_datetime" property="startDatetime"/>
+    <result column="last_leaving_days" property="lastLeavingDays"/>
+    <result column="end_datetime" property="endDatetime"/>
+    <result column="total_leaving_days" property="totalLeavingDays"/>
+    <result column="updater" property="updater"/>
 
-		<result column="update_datetime" property="updateDatetime" />
-		<result column="remark" property="remark" />
-		<result column="upload_status" property="uploadStatus" />
-		<result column="delete_status" property="deleteStatus" />
-		<result column="team_name" property="realTeamMasterName" />
-	</resultMap>
+    <result column="update_datetime" property="updateDatetime"/>
+    <result column="remark" property="remark"/>
+    <result column="upload_status" property="uploadStatus"/>
+    <result column="delete_status" property="deleteStatus"/>
+    <result column="team_name" property="realTeamMasterName"/>
+  </resultMap>
 
-	<sql id="join_condition">
-		<if test=" personGuid != null and personGuid != '' ">
-			join thf_worker_info wi on t.worker_code = wi.code
-		</if>
-		<if test=" deviceKey != null and personGuid != '' ">
-			join thf_equipment_worker ew on ew.worker_code = t.code
-		</if>
-	</sql>
+  <sql id="join_condition">
+    <if test=" personGuid != null and personGuid != '' ">
+      join thf_worker_info wi on t.worker_code = wi.code
+    </if>
+    <if test=" deviceKey != null and personGuid != '' ">
+      join thf_equipment_worker ew on ew.worker_code = t.code
+    </if>
+  </sql>
 
-	<sql id="where_condition">
-		<trim prefix="WHERE" prefixOverrides="AND | OR">
-			<if test="code != null and code != '' ">
-				AND t.code = #{code}
-			</if>
-			<if test="projectCode != null and projectCode != '' ">
-				AND t.project_code = #{projectCode}
-			</if>
-			<if test="corpCode != null and corpCode != '' ">
-				AND t.corp_code = #{corpCode}
-			</if>
-			<if test="corpName != null and corpName != '' ">
-				AND t.corp_name like "%"#{corpName}"%"
-			</if>
-			<if test="teamSysNo != null and teamSysNo != '' ">
-				AND t.team_sys_no = #{teamSysNo}
-			</if>
-			<if test="workerCode != null and workerCode != '' ">
-				AND t.worker_code = #{workerCode}
-			</if>
-			<if test="idcardNumber != null and idcardNumber != '' ">
-				AND t.idcard_number = #{idcardNumber}
-			</if>
-			<if test="idcardType != null and idcardType != '' ">
-				AND t.idcard_type = #{idcardType}
-			</if>
-			<if test="workerName != null and workerName != '' ">
-				AND t.worker_name LIKE CONCAT('%',#{workerName},'%')
-			</if>
-			<if test="uploadStatus != null and uploadStatus != '' ">
-				AND t.upload_status = #{uploadStatus}
-			</if>
-			<if test="deleteStatus != null and deleteStatus != '' ">
-				AND t.delete_status = #{deleteStatus}
-			</if>
-			<if test="realTeamMasterName != null and realTeamMasterName != '' ">
-				AND t.team_name = #{realTeamMasterName}
-			</if>
-			<if test="uploadStatusList != null and uploadStatusList.size() != 0 ">
-				AND t.upload_status in
-				<foreach item="item" index="index" collection="uploadStatusList"
-					open="(" separator="," close=")">
-					#{item}
-				</foreach>
-			</if>
-			<if test=" personGuid != null and personGuid != '' ">
-				AND wi.worker_guid = #{personGuid}
-			</if>
-			<if test="deviceKey != null and deviceKey != '' ">
-				AND ew.device_key = #{deviceKey}
-			</if>
-		</trim>
-	</sql>
+  <sql id="where_condition">
+    <trim prefix="WHERE" prefixOverrides="AND | OR">
+      <if test="code != null and code != '' ">
+        AND t.code = #{code}
+      </if>
+      <if test="projectCode != null and projectCode != '' ">
+        AND t.project_code = #{projectCode}
+      </if>
+      <if test="corpCode != null and corpCode != '' ">
+        AND t.corp_code = #{corpCode}
+      </if>
+      <if test="corpName != null and corpName != '' ">
+        AND t.corp_name like "%"#{corpName}"%"
+      </if>
+      <if test="teamSysNo != null and teamSysNo != '' ">
+        AND t.team_sys_no = #{teamSysNo}
+      </if>
+      <if test="workerCode != null and workerCode != '' ">
+        AND t.worker_code = #{workerCode}
+      </if>
+      <if test="idcardNumber != null and idcardNumber != '' ">
+        AND t.idcard_number = #{idcardNumber}
+      </if>
+      <if test="idcardType != null and idcardType != '' ">
+        AND t.idcard_type = #{idcardType}
+      </if>
+      <if test="workerName != null and workerName != '' ">
+        AND t.worker_name LIKE CONCAT('%',#{workerName},'%')
+      </if>
+      <if test="uploadStatus != null and uploadStatus != '' ">
+        AND t.upload_status = #{uploadStatus}
+      </if>
+      <if test="deleteStatus != null and deleteStatus != '' ">
+        AND t.delete_status = #{deleteStatus}
+      </if>
+      <if test="realTeamMasterName != null and realTeamMasterName != '' ">
+        AND t.team_name = #{realTeamMasterName}
+      </if>
+      <if test="uploadStatusList != null and uploadStatusList.size() != 0 ">
+        AND t.upload_status in
+        <foreach item="item" index="index" collection="uploadStatusList"
+          open="(" separator="," close=")">
+          #{item}
+        </foreach>
+      </if>
+      <if test=" personGuid != null and personGuid != '' ">
+        AND wi.worker_guid = #{personGuid}
+      </if>
+      <if test="deviceKey != null and deviceKey != '' ">
+        AND ew.device_key = #{deviceKey}
+      </if>
+    </trim>
+  </sql>
 
-	<insert id="insert_projectWorker" parameterType="projectWorker">
-		INSERT INTO
-		thf_project_worker(
-		code
-		,project_code
-		,project_name
-		,corp_code
-		,corp_name
+  <insert id="insert_projectWorker" parameterType="projectWorker">
+    INSERT INTO thf_project_worker( code
+                                  , project_code
+                                  , project_name
+                                  , corp_code
+                                  , corp_name
+                                  , team_sys_no
+                                  , team_name
+                                  , worker_code
+                                  , worker_name
+                                  , worker_mobile
+                                  , is_team_leader
+                                  , idcard_type
+                                  , idcard_number
+                                  , work_type
+                                  , work_role
+                                  , type
+                                  , entry_time
+                                  , exit_time
+                                  , entry_attachment_url
+                                  , exit_attachment_url
+                                  , issue_card_date
+                                  , issue_card_pic_url
+                                  , card_number
+                                  , pay_roll_bank_card_number
+                                  , pay_roll_bank_name
+                                  , pay_roll_top_bank_name
+                                  , bank_name
+                                  , bank_link_number
+                                  , pay_roll_top_bank_code
+                                  , has_contract
+                                  , has_buy_insurance
+                                  , salary
+                                  , cut_amount
+                                  , status
+                                  , salary_status
+                                  , start_datetime
+                                  , last_leaving_days
+                                  , end_datetime
+                                  , total_leaving_days
+                                  , updater
+                                  , update_datetime
+                                  , remark
+                                  , upload_status
+                                  , delete_status)
+    VALUES ( #{code}
+           , #{projectCode}
+           , #{projectName}
+           , #{corpCode}
+           , #{corpName}
+           , #{teamSysNo}
+           , #{teamName}
+           , #{workerCode}
+           , #{workerName}
+           , #{workerMobile}
+           , #{isTeamLeader}
+           , #{idcardType}
+           , #{idcardNumber}
+           , #{workType}
+           , #{workRole}
+           , #{type}
+           , #{entryTime}
+           , #{exitTime}
+           , #{entryAttachmentUrl}
+           , #{exitAttachmentUrl}
+           , #{issueCardDate}
+           , #{issueCardPicUrl}
+           , #{cardNumber}
+           , #{payRollBankCardNumber}
+           , #{payRollBankName}
+           , #{payRollTopBankName}
+           , #{bankName}
+           , #{bankLinkNumber}
+           , #{payRollTopBankCode}
+           , #{hasContract}
+           , #{hasBuyInsurance}
+           , #{salary}
+           , #{cutAmount}
+           , #{status}
+           , #{salaryStatus}
+           , #{startDatetime}
+           , #{lastLeavingDays}
+           , #{endDatetime}
+           , #{totalLeavingDays}
+           , #{updater}
+           , #{updateDatetime}
+           , #{remark}
+           , #{uploadStatus}
+           , #{deleteStatus})
+  </insert>
 
-		,team_sys_no
-		,team_name
-		,worker_code
-		,worker_name
-		,worker_mobile
+  <insert id="batch_insert">
+    INSERT INTO
+    thf_project_worker(
+    code
+    ,project_code
+    ,project_name
+    ,corp_code
+    ,corp_name
 
-		,is_team_leader
-		,idcard_type
-		,idcard_number
-		,work_type
-		,work_role
+    ,team_sys_no
+    ,team_name
+    ,worker_code
+    ,worker_name
+    ,worker_mobile
 
-		,type
-		,entry_time
-		,exit_time
-		,entry_attachment_url
-		,exit_attachment_url
+    ,is_team_leader
+    ,idcard_type
+    ,idcard_number
+    ,work_type
+    ,work_role
 
-		,issue_card_date
-		,issue_card_pic_url
-		,card_number
-		,pay_roll_bank_card_number
-		,pay_roll_bank_name
+    ,type
+    ,entry_time
+    ,exit_time
+    ,entry_attachment_url
+    ,exit_attachment_url
 
-		,pay_roll_top_bank_name
-		,bank_name
-		,bank_link_number
-		,pay_roll_top_bank_code
-		,has_contract
-		,has_buy_insurance
+    ,issue_card_date
+    ,issue_card_pic_url
+    ,card_number
+    ,pay_roll_bank_card_number
+    ,pay_roll_bank_name
 
-		,salary
-		,cut_amount
-		,status
-		,salary_status
+    ,pay_roll_top_bank_name
+    ,bank_name
+    ,bank_link_number
+    ,pay_roll_top_bank_code
+    ,has_contract
+    ,has_buy_insurance
 
-		,start_datetime
-		,last_leaving_days
-		,end_datetime
-		,total_leaving_days
+    ,salary
+    ,cut_amount
+    ,status
+    ,salary_status
 
-		,updater
-		,update_datetime
-		,remark
-		,upload_status
-		,delete_status
-		)
-		VALUES(
-		#{code}
-		,#{projectCode}
-		,#{projectName}
-		,#{corpCode}
-		,#{corpName}
-		,#{teamSysNo}
+    ,start_datetime
+    ,last_leaving_days
+    ,end_datetime
+    ,total_leaving_days
 
-		,#{teamName}
-		,#{workerCode}
-		,#{workerName}
-		,#{workerMobile}
-		,#{isTeamLeader}
-		,#{idcardType}
-		,#{idcardNumber}
+    ,updater
+    ,update_datetime
+    ,remark
+    ,upload_status
+    ,delete_status
+    )
+    VALUES
+    <foreach collection="list" separator="," open="" item="projectWorker" close="" index="index">
+      (
+      #{projectWorker.code}
+      ,#{projectWorker.projectCode}
+      ,#{projectWorker.projectName}
+      ,#{projectWorker.corpCode}
+      ,#{projectWorker.corpName}
+      ,#{projectWorker.teamSysNo}
 
-		,#{workType}
-		,#{workRole}
-		,#{type}
-		,#{entryTime}
-		,#{exitTime}
-		,#{entryAttachmentUrl}
+      ,#{projectWorker.teamName}
+      ,#{projectWorker.workerCode}
+      ,#{projectWorker.workerName}
+      ,#{projectWorker.workerMobile}
+      ,#{projectWorker.isTeamLeader}
+      ,#{projectWorker.idcardType}
+      ,#{projectWorker.idcardNumber}
 
-		,#{exitAttachmentUrl}
-		,#{issueCardDate}
-		,#{issueCardPicUrl}
-		,#{cardNumber}
-		,#{payRollBankCardNumber}
+      ,#{projectWorker.workType}
+      ,#{projectWorker.workRole}
+      ,#{projectWorker.type}
+      ,#{projectWorker.entryTime}
+      ,#{projectWorker.exitTime}
+      ,#{projectWorker.entryAttachmentUrl}
 
-		,#{payRollBankName}
-		,#{payRollTopBankName}
-		,#{bankName}
-		,#{bankLinkNumber}
-		,#{payRollTopBankCode}
-		,#{hasContract}
+      ,#{projectWorker.exitAttachmentUrl}
+      ,#{projectWorker.issueCardDate}
+      ,#{projectWorker.issueCardPicUrl}
+      ,#{projectWorker.cardNumber}
+      ,#{projectWorker.payRollBankCardNumber}
 
-		,#{hasBuyInsurance}
-		,#{salary}
-		,#{cutAmount}
-		,#{status}
+      ,#{projectWorker.payRollBankName}
+      ,#{projectWorker.payRollTopBankName}
+      ,#{projectWorker.bankName}
+      ,#{projectWorker.bankLinkNumber}
+      ,#{projectWorker.payRollTopBankCode}
+      ,#{projectWorker.hasContract}
 
-		,#{salaryStatus}
-		,#{startDatetime}
-		,#{lastLeavingDays}
+      ,#{projectWorker.hasBuyInsurance}
+      ,#{projectWorker.salary}
+      ,#{projectWorker.cutAmount}
+      ,#{projectWorker.status}
 
-		,#{endDatetime}
-		,#{totalLeavingDays}
-		,#{updater}
-		,#{updateDatetime}
-		,#{remark}
-		,#{uploadStatus}
-		,#{deleteStatus}
-		)
-	</insert>
+      ,#{projectWorker.salaryStatus}
+      ,#{projectWorker.startDatetime}
+      ,#{projectWorker.lastLeavingDays}
 
-	<insert id="batch_insert">
-		INSERT INTO
-		thf_project_worker(
-		code
-		,project_code
-		,project_name
-		,corp_code
-		,corp_name
-
-		,team_sys_no
-		,team_name
-		,worker_code
-		,worker_name
-		,worker_mobile
-
-		,is_team_leader
-		,idcard_type
-		,idcard_number
-		,work_type
-		,work_role
-
-		,type
-		,entry_time
-		,exit_time
-		,entry_attachment_url
-		,exit_attachment_url
-
-		,issue_card_date
-		,issue_card_pic_url
-		,card_number
-		,pay_roll_bank_card_number
-		,pay_roll_bank_name
-
-		,pay_roll_top_bank_name
-		,bank_name
-		,bank_link_number
-		,pay_roll_top_bank_code
-		,has_contract
-		,has_buy_insurance
-
-		,salary
-		,cut_amount
-		,status
-		,salary_status
-
-		,start_datetime
-		,last_leaving_days
-		,end_datetime
-		,total_leaving_days
-
-		,updater
-		,update_datetime
-		,remark
-		,upload_status
-		,delete_status
-		)
-		VALUES
-		<foreach collection="list" separator="," open="" item="projectWorker" close="" index="index">
-			(
-			#{projectWorker.code}
-			,#{projectWorker.projectCode}
-			,#{projectWorker.projectName}
-			,#{projectWorker.corpCode}
-			,#{projectWorker.corpName}
-			,#{projectWorker.teamSysNo}
-
-			,#{projectWorker.teamName}
-			,#{projectWorker.workerCode}
-			,#{projectWorker.workerName}
-			,#{projectWorker.workerMobile}
-			,#{projectWorker.isTeamLeader}
-			,#{projectWorker.idcardType}
-			,#{projectWorker.idcardNumber}
-
-			,#{projectWorker.workType}
-			,#{projectWorker.workRole}
-			,#{projectWorker.type}
-			,#{projectWorker.entryTime}
-			,#{projectWorker.exitTime}
-			,#{projectWorker.entryAttachmentUrl}
-
-			,#{projectWorker.exitAttachmentUrl}
-			,#{projectWorker.issueCardDate}
-			,#{projectWorker.issueCardPicUrl}
-			,#{projectWorker.cardNumber}
-			,#{projectWorker.payRollBankCardNumber}
-
-			,#{projectWorker.payRollBankName}
-			,#{projectWorker.payRollTopBankName}
-			,#{projectWorker.bankName}
-			,#{projectWorker.bankLinkNumber}
-			,#{projectWorker.payRollTopBankCode}
-			,#{projectWorker.hasContract}
-
-			,#{projectWorker.hasBuyInsurance}
-			,#{projectWorker.salary}
-			,#{projectWorker.cutAmount}
-			,#{projectWorker.status}
-
-			,#{projectWorker.salaryStatus}
-			,#{projectWorker.startDatetime}
-			,#{projectWorker.lastLeavingDays}
-
-			,#{projectWorker.endDatetime}
-			,#{projectWorker.totalLeavingDays}
-			,#{projectWorker.updater}
-			,#{projectWorker.updateDatetime}
-			,#{projectWorker.remark}
-			,#{projectWorker.uploadStatus}
-			,#{projectWorker.deleteStatus}
-			)
-		</foreach>
+      ,#{projectWorker.endDatetime}
+      ,#{projectWorker.totalLeavingDays}
+      ,#{projectWorker.updater}
+      ,#{projectWorker.updateDatetime}
+      ,#{projectWorker.remark}
+      ,#{projectWorker.uploadStatus}
+      ,#{projectWorker.deleteStatus}
+      )
+    </foreach>
 
 
-	</insert>
-	<delete id="delete_projectWorker" parameterType="projectWorker">
-		delete from
-		thf_project_worker WHERE code = #{code}
-	</delete>
+  </insert>
+  <delete id="delete_projectWorker" parameterType="projectWorker">
+    delete
+    from thf_project_worker
+    WHERE code = #{code}
+  </delete>
 
-	<update id="update_projectWorker_status" parameterType="projectWorker">
-		UPDATE
-		thf_project_worker
-		SET upload_status = #{uploadStatus}
-		WHERE code = #{code}
-	</update>
+  <update id="update_projectWorker_status" parameterType="projectWorker">
+    UPDATE
+      thf_project_worker
+    SET upload_status = #{uploadStatus}
+    WHERE code = #{code}
+  </update>
 
-	<update id="update_projectWorker_team_name" parameterType="projectWorker">
-		UPDATE
-		thf_project_worker
-		SET team_name = #{teamName}
-		WHERE team_sys_no =
-		#{teamSysNo}
-	</update>
-
-
-	<update id="update_projectWorker_delete_status" parameterType="projectWorker">
-		UPDATE
-		thf_project_worker t
-		SET
-		t.delete_status = #{deleteStatus}
-		<trim prefix="WHERE" prefixOverrides="AND | OR">
-			<if test="teamSysNo != null and teamSysNo != '' ">
-				AND t.team_sys_no = #{teamSysNo}
-			</if>
-			<if test="workerCode != null and workerCode != '' ">
-				AND t.worker_code = #{workerCode}
-			</if>
-			<if test="code != null and code != '' ">
-				AND t.code = #{code}
-			</if>
-		</trim>
-
-	</update>
-	<update id="update_projectWorker_upload_status" parameterType="projectWorker">
-		UPDATE
-		thf_project_worker t
-		SET
-		upload_status = #{uploadStatus}
-		where
-		code
-		= #{code}
-
-	</update>
-
-	<update id="update_projectWorker_worker_info">
-		UPDATE
-		thf_project_worker
-		SET
-		worker_name =
-		#{workerName}
-		,worker_mobile = #{workerMobile}
-		,idcard_type =
-		#{idcardType}
-		,idcard_number = #{idcardNumber}
-		where worker_code =
-		#{workerCode}
-	</update>
-
-	<update id="update_projectWorker_worker_info_phone">
-		UPDATE
-		thf_project_worker
-		SET
-		worker_mobile =
-		#{workerMobile}
-		where worker_code = #{workerCode}
-	</update>
-
-	<update id="update_projectWorker" parameterType="projectWorker">
-		UPDATE
-		thf_project_worker
-		SET
-		corp_code = #{corpCode}
-		,corp_name = #{corpName}
-		,is_team_leader = #{isTeamLeader}
-		,work_type = #{workType}
-		,work_role = #{workRole}
-		,issue_card_date = #{issueCardDate}
-		,issue_card_pic_url = #{issueCardPicUrl}
-
-		,team_sys_no = #{teamSysNo}
-		,team_name = #{teamName}
-		,card_number = #{cardNumber}
-		,pay_roll_bank_card_number = #{payRollBankCardNumber}
-		,pay_roll_bank_name = #{payRollBankName}
-
-		,pay_roll_top_bank_name = #{payRollTopBankName}
-		,bank_link_number = #{bankLinkNumber}
-		,pay_roll_top_bank_code = #{payRollTopBankCode}
-		,has_buy_insurance = #{hasBuyInsurance}
-		,work_date = #{workDate}
-
-		,bank_name = #{bankName}
-		WHERE code =
-		#{code}
-	</update>
+  <update id="update_projectWorker_team_name" parameterType="projectWorker">
+    UPDATE
+      thf_project_worker
+    SET team_name = #{teamName}
+    WHERE team_sys_no =
+          #{teamSysNo}
+  </update>
 
 
-	<update id="updateStatus" parameterType="projectWorker">
+  <update id="update_projectWorker_delete_status" parameterType="projectWorker">
+    UPDATE
+    thf_project_worker t
+    SET
+    t.delete_status = #{deleteStatus}
+    <trim prefix="WHERE" prefixOverrides="AND | OR">
+      <if test="teamSysNo != null and teamSysNo != '' ">
+        AND t.team_sys_no = #{teamSysNo}
+      </if>
+      <if test="workerCode != null and workerCode != '' ">
+        AND t.worker_code = #{workerCode}
+      </if>
+      <if test="code != null and code != '' ">
+        AND t.code = #{code}
+      </if>
+    </trim>
+
+  </update>
+  <update id="update_projectWorker_upload_status" parameterType="projectWorker">
+    UPDATE
+      thf_project_worker t
+    SET upload_status = #{uploadStatus}
+    where code
+            = #{code}
+
+  </update>
+
+  <update id="update_projectWorker_worker_info">
+    UPDATE
+      thf_project_worker
+    SET worker_name  =
+      #{workerName}
+      ,worker_mobile = #{workerMobile}
+      ,idcard_type   =
+      #{idcardType}
+      ,idcard_number = #{idcardNumber}
+    where worker_code =
+          #{workerCode}
+  </update>
+
+  <update id="update_projectWorker_worker_info_phone">
+    UPDATE
+      thf_project_worker
+    SET worker_mobile =
+          #{workerMobile}
+    where worker_code = #{workerCode}
+  </update>
+
+  <update id="update_projectWorker" parameterType="projectWorker">
+    UPDATE
+      thf_project_worker
+    SET corp_code                = #{corpCode}
+      ,corp_name                 = #{corpName}
+      ,is_team_leader            = #{isTeamLeader}
+      ,work_type                 = #{workType}
+      ,work_role                 = #{workRole}
+      ,issue_card_date           = #{issueCardDate}
+      ,issue_card_pic_url        = #{issueCardPicUrl}
+
+      ,team_sys_no               = #{teamSysNo}
+      ,team_name                 = #{teamName}
+      ,card_number               = #{cardNumber}
+      ,pay_roll_bank_card_number = #{payRollBankCardNumber}
+      ,pay_roll_bank_name        = #{payRollBankName}
+
+      ,pay_roll_top_bank_name    = #{payRollTopBankName}
+      ,bank_link_number          = #{bankLinkNumber}
+      ,pay_roll_top_bank_code    = #{payRollTopBankCode}
+      ,has_buy_insurance         = #{hasBuyInsurance}
+      ,work_date                 = #{workDate}
+
+      ,bank_name                 = #{bankName}
+    WHERE code =
+          #{code}
+  </update>
+
+
+  <update id="updateStatus" parameterType="projectWorker">
     UPDATE thf_project_worker
-    SET thf_project_worker.status    = #{status}
+    SET thf_project_worker.status = #{status}
+    <if test="entryTime != null ">
       ,thf_project_worker.entry_time = #{entryTime}
-      ,thf_project_worker.exit_time  = #{exitTime}
+    </if>
+    <if test="exitTime != null ">
+      ,thf_project_worker.exit_time = #{exitTime}
+    </if>
 
     WHERE thf_project_worker.code = #{code}
-	</update>
+  </update>
 
-	<update id="updateLastPayRoll" parameterType="projectWorker">
-		UPDATE thf_project_worker
-		SET last_pay_month        = #{lastPayMonth}
-		  ,last_pay_total_amount  = #{lastPayTotalAmount}
-		  ,last_pay_actual_amount = #{lastPayActualAmount}
-		WHERE code = #{code}
-	</update>
+  <update id="updateLastPayRoll" parameterType="projectWorker">
+    UPDATE thf_project_worker
+    SET last_pay_month        = #{lastPayMonth}
+      ,last_pay_total_amount  = #{lastPayTotalAmount}
+      ,last_pay_actual_amount = #{lastPayActualAmount}
+    WHERE code = #{code}
+  </update>
 
-	<update id="updateLastInOutRecord" parameterType="projectWorker">
-		UPDATE thf_project_worker
-		SET in_out_status       = #{inOutStatus}
-		  ,last_in_out_datetime = #{lastInOutDatetime}
-		WHERE code = #{code}
-	</update>
+  <update id="updateLastInOutRecord" parameterType="projectWorker">
+    UPDATE thf_project_worker
+    SET in_out_status       = #{inOutStatus}
+      ,last_in_out_datetime = #{lastInOutDatetime}
+    WHERE code = #{code}
+  </update>
 
-	<update id="updateLastAttendance" parameterType="projectWorker">
-		UPDATE thf_project_worker
-		SET attendance_status       = #{attendanceStatus}
-			,last_attendance_datetime = #{lastAttendanceDatetime}
-		WHERE code = #{code}
-	</update>
+  <update id="updateLastAttendance" parameterType="projectWorker">
+    UPDATE thf_project_worker
+    SET attendance_status       = #{attendanceStatus}
+      ,last_attendance_datetime = #{lastAttendanceDatetime}
+    WHERE code = #{code}
+  </update>
 
-	<select id="select_projectWorker" parameterType="projectWorker"
-		resultMap="projectWorker_DB_Result">
-		SELECT
-		t.code
-		,t.project_code
-		,t.project_name
-		,t.corp_code
-		,t.corp_name
+  <select id="select_projectWorker" parameterType="projectWorker"
+    resultMap="projectWorker_DB_Result">
+    SELECT
+    t.code
+    ,t.project_code
+    ,t.project_name
+    ,t.corp_code
+    ,t.corp_name
 
-		,t.team_sys_no
-		,t.team_name
-		,t.worker_code
-		,t.worker_name
-		,t.worker_mobile
+    ,t.team_sys_no
+    ,t.team_name
+    ,t.worker_code
+    ,t.worker_name
+    ,t.worker_mobile
 
-		,t.is_team_leader
-		,t.idcard_type
-		,t.idcard_number
-		,t.work_type
-		,t.work_role
+    ,t.is_team_leader
+    ,t.idcard_type
+    ,t.idcard_number
+    ,t.work_type
+    ,t.work_role
 
-		,t.type
-		,t.entry_time
-		,t.exit_time
-		,t.entry_attachment_url
-		,t.exit_attachment_url
+    ,t.type
+    ,t.entry_time
+    ,t.exit_time
+    ,t.entry_attachment_url
+    ,t.exit_attachment_url
 
-		,t.issue_card_date
-		,t.issue_card_pic_url
-		,t.card_number
-		,t.pay_roll_bank_card_number
-		,t.pay_roll_bank_name
+    ,t.issue_card_date
+    ,t.issue_card_pic_url
+    ,t.card_number
+    ,t.pay_roll_bank_card_number
+    ,t.pay_roll_bank_name
 
-		,t.pay_roll_top_bank_name
-		,t.bank_link_number
-		,t.pay_roll_top_bank_code
-		,t.has_contract
-		,t.has_buy_insurance
+    ,t.pay_roll_top_bank_name
+    ,t.bank_link_number
+    ,t.pay_roll_top_bank_code
+    ,t.has_contract
+    ,t.has_buy_insurance
 
-		,t.salary
-		,t.cut_amount
-		,t.status
-		,t.salary_status
+    ,t.salary
+    ,t.cut_amount
+    ,t.status
+    ,t.salary_status
 
-		,t.start_datetime
-		,t.last_leaving_days
-		,t.end_datetime
+    ,t.start_datetime
+    ,t.last_leaving_days
+    ,t.end_datetime
 
-		,t.total_leaving_days
-		,t.updater
-		,t.update_datetime
-		,t.remark
-		,t.upload_status
-		,t.delete_status
-		,t.work_date
-		,t.bank_name
-		,t.attendance_status
-		,t.last_attendance_datetime
-		,t.in_out_status
-		,t.last_in_out_datetime
-		,t.last_pay_month
-		,t.last_pay_total_amount
-		,t.last_pay_actual_amount
-		FROM
-		thf_project_worker t
-		<include refid="join_condition" />
-		<include refid="where_condition" />
-		<trim prefix="ORDER BY ">
-			<if test="order != null and order != '' ">
-				t.${order}
-			</if>
-		</trim>
-	</select>
+    ,t.total_leaving_days
+    ,t.updater
+    ,t.update_datetime
+    ,t.remark
+    ,t.upload_status
+    ,t.delete_status
+    ,t.work_date
+    ,t.bank_name
+    ,t.attendance_status
+    ,t.last_attendance_datetime
+    ,t.in_out_status
+    ,t.last_in_out_datetime
+    ,t.last_pay_month
+    ,t.last_pay_total_amount
+    ,t.last_pay_actual_amount
+    FROM
+    thf_project_worker t
+    <include refid="join_condition"/>
+    <include refid="where_condition"/>
+    <trim prefix="ORDER BY ">
+      <if test="order != null and order != '' ">
+        t.${order}
+      </if>
+    </trim>
+  </select>
 
-	<select id="select_projectWorker_count" parameterType="projectWorker"
-		resultType="java.lang.Long">
-		SELECT count(1) FROM thf_project_worker t
-		<include refid="join_condition" />
-		<include refid="where_condition" />
-	</select>
+  <select id="select_projectWorker_count" parameterType="projectWorker"
+    resultType="java.lang.Long">
+    SELECT count(1) FROM thf_project_worker t
+    <include refid="join_condition"/>
+    <include refid="where_condition"/>
+  </select>
 
 
-	<select id="selectWorkerTypeSpread" parameterType="java.lang.String" resultType="java.util.Map">
-		SELECT count(1) as 'count', work_type
-		FROM thf_project_worker
-		WHERE project_code =
-					(SELECT organization_code
-					 FROM thf_user
-					 WHERE user_id = #{0})
-			and delete_status = 0
-		GROUP BY work_type;
-	</select>
+  <select id="selectWorkerTypeSpread" parameterType="java.lang.String" resultType="java.util.Map">
+    SELECT count(1) as 'count', work_type
+    FROM thf_project_worker
+    WHERE project_code =
+          (SELECT organization_code
+           FROM thf_user
+           WHERE user_id = #{0})
+      and delete_status = 0
+    GROUP BY work_type;
+  </select>
 
-	<select id="selectWorkerAgeInterval" parameterType="java.lang.String" resultType="java.util.Map">
-		select interval (year(now()) - year(birthday), 19, 31, 41, 51, 56, 100) as 'ageInterval'
-				 , count(1)                                                         as 'count'
-		from thf_project_worker a
-					 left join thf_worker_info b
-										 on a.idcard_number = b.id_card_number
-		where a.project_code =
-					(select organization_code from thf_user where user_id = #{0})
-			and a.delete_status = 0 
-		group by ageInterval
-	</select>
-	<select id="selectWorkerData" resultType="java.util.Map" parameterType="java.lang.String">
+  <select id="selectWorkerAgeInterval" parameterType="java.lang.String" resultType="java.util.Map">
+    select interval (year(now()) - year(birthday), 19, 31, 41, 51, 56, 100) as 'ageInterval'
+         , count(1)                                                         as 'count'
+    from thf_project_worker a
+           left join thf_worker_info b
+                     on a.idcard_number = b.id_card_number
+    where a.project_code =
+          (select organization_code from thf_user where user_id = #{0})
+      and a.delete_status = 0
+    group by ageInterval
+  </select>
+  <select id="selectWorkerData" resultType="java.util.Map" parameterType="java.lang.String">
     SELECT b.*,
            d.*,
            k.*
@@ -618,7 +598,7 @@
         AND b.project_code = (SELECT organization_code FROM thf_user WHERE user_id = #{0})
       WHERE a.delete_status != '1'
     ) k ON 1 = 1
-	</select>
+  </select>
 
 
 </mapper>

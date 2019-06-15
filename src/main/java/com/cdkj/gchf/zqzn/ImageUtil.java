@@ -8,6 +8,9 @@ import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
+import net.coobird.thumbnailator.Thumbnails;
+import org.apache.commons.io.FileUtils;
+import org.apache.poi.hpsf.Thumbnail;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -19,14 +22,10 @@ import org.slf4j.LoggerFactory;
 public class ImageUtil {
 
     private static final Logger logger = LoggerFactory
-        .getLogger(ImageUtil.class);
+            .getLogger(ImageUtil.class);
 
     /**
      * 从网络Url中下载文件
-     * @param urlStr
-     * @param fileName
-     * @param savePath
-     * @throws IOException
      */
     public static File downLoadFromUrl(String urlStr, String fileName,
             String savePath) throws IOException {
@@ -39,7 +38,7 @@ public class ImageUtil {
         conn.setConnectTimeout(3 * 1000);
         // 防止屏蔽程序抓取而返回403错误
         conn.setRequestProperty("User-Agent",
-            "Mozilla/4.0 (compatible; MSIE 5.0; Windows NT; DigExt)");
+                "Mozilla/4.0 (compatible; MSIE 5.0; Windows NT; DigExt)");
 
         // 得到输入流
         InputStream inputStream = conn.getInputStream();
@@ -69,9 +68,6 @@ public class ImageUtil {
 
     /**
      * 从输入流中获取字节数组
-     * @param inputStream
-     * @return
-     * @throws IOException
      */
     public static byte[] readInputStream(InputStream inputStream)
             throws IOException {
@@ -85,11 +81,19 @@ public class ImageUtil {
         return bos.toByteArray();
     }
 
+
+    public static void pressImage(String imageSource) {
+//        FileUtils.writeStringToFile();
+//        FileUtils.getFile(imageSource);
+//        Thumbnails.of()
+    }
+
+
     public static void main(String[] args) {
         try {
             downLoadFromUrl(
-                "https://picture.jm60s.com/FrkeN0CY1qy-msIw3LB49dw40Lc_?imageMogr2/auto-orient",
-                "test.jpg", "/Users/silver/Documents");
+                    "https://picture.jm60s.com/FrkeN0CY1qy-msIw3LB49dw40Lc_?imageMogr2/auto-orient",
+                    "test.jpg", "/Users/silver/Documents");
         } catch (Exception e) {
             // TODO: handle exception
         }

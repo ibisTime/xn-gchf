@@ -135,9 +135,13 @@ public class BankCardInfoAOImpl implements IBankCardInfoAO {
             int start, int limit, BankCardInfo condition) {
         User briefUser = userBO.getBriefUser(req.getUserId());
         // 根据用户类型进行查询
+        if (StringUtils.isBlank(req.getBusinessSysNo())) {
+            return null;
+        }
         // 项目端查询
         if (briefUser.getType().equals(EUserKind.Owner.getCode())) {
             // 查询项目端项目人员的银行卡信息
+
             Project project = projectBO
                     .getProject(briefUser.getOrganizationCode());
             List<ProjectWorker> projectWorkerList = projectWorkerBO
@@ -182,11 +186,15 @@ public class BankCardInfoAOImpl implements IBankCardInfoAO {
             String businessSysNo = bankCardInfo.getBusinessSysNo();
             ProjectWorker worker = new ProjectWorker();
             worker.setCode(businessSysNo);
+            //查正常人
             List<ProjectWorker> queryProjectWorkerList = projectWorkerBO
                     .queryProjectWorkerList(worker);
             if (CollectionUtils.isEmpty(queryProjectWorkerList)) {
                 ProjectCorpInfo projectCorpInfo = projectCorpInfoBO
                         .getProjectCorpInfo(businessSysNo);
+                if (projectCorpInfo == null) {
+                    continue;
+                }
                 bankCardInfo.setProjectName(projectCorpInfo.getProjectName());
                 bankCardInfo.setBusinessName(projectCorpInfo.getCorpName());
                 bankCardInfo.setWorkerName(projectCorpInfo.getCorpName());
@@ -250,4 +258,20 @@ public class BankCardInfoAOImpl implements IBankCardInfoAO {
         bankCardBankBO.getBankCardInfo(code);
     }
 
+
+    @Override
+    public List<BankCardInfo> queryProjectCorpBankcards(String userId, String workerCode) {
+        User briefUser = userBO.getBriefUser(userId);
+        ProjectWorker projectWorker = projectWorkerBO.getProjectWorker(workerCode);
+        if (projectWorker == null) {
+            throw new BizException("XN000000", "项目人员不存在");
+        }
+        ProjectCorpInfo projectCorpInfo = projectCorpInfoBO
+                .getProjectCorpInfo(projectWorker.getProjectCode(), projectWorker.getCorpCode());
+
+        List<BankCardInfo> bankCardInfoList = bankCardBankBO
+                .getBankCardByByssinessCode(EBankCardBussinessType.CORP.getCode(),
+                        projectCorpInfo.getCode());
+        return bankCardInfoList;
+    }
 }

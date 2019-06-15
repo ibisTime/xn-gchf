@@ -205,7 +205,6 @@ public interface IProjectWorkerBO extends IPaginableBO<ProjectWorker> {
     List<Map> selectWorkerData(String userId);
 
 
-
     /****国家平台接口****/
     public void doUpload(XN631911Req req, ProjectConfig projectConfig);
 

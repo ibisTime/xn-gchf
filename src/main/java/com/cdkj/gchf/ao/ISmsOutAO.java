@@ -22,4 +22,12 @@ public interface ISmsOutAO {
      */
     void sendContent(String tokenId, String userId, String content);
 
+    /**
+     * 发送验证码验证用户
+     *
+     * @param mobile 手机号
+     * @param bizType 业务编号
+     */
+    void sendSmsCaptchaCheckUser(String mobile, String bizType);
+
 }

@@ -68,7 +68,7 @@ public class UserAOImpl implements IUserAO {
         List<User> loginNameList = userBO.checkLoginName(req.getLoginName());
         if (CollectionUtils.isNotEmpty(loginNameList)) {
             throw new BizException("xn00000",
-                "登录名" + req.getLoginName() + "已经存在!");
+                    "登录名" + req.getLoginName() + "已经存在!");
         }
         User data = new User();
         String userId = OrderNoGenerater.generate("U");
@@ -83,7 +83,7 @@ public class UserAOImpl implements IUserAO {
         data.setMobile(req.getMobile());
         data.setLoginPwd(MD5Util.md5(req.getLoginPwd()));
         data.setLoginPwdStrength(
-            PwdUtil.calculateSecurityLevel(req.getLoginPwd()));
+                PwdUtil.calculateSecurityLevel(req.getLoginPwd()));
         data.setCreateDatetime(new Date());
         data.setStatus(EUserStatus.NORMAL.getCode());
 
@@ -99,10 +99,10 @@ public class UserAOImpl implements IUserAO {
         // 银行用户
         if (EUserKind.Bank.getCode().equals(req.getType())) {
             Subbranch subbranch = subbranchBO.getSubbranch(req.getBankName(),
-                req.getSubbranch());
+                    req.getSubbranch());
             if (null == subbranch) {
                 organizationCode = subbranchBO.saveSubbranch(req.getBankCode(),
-                    req.getBankName(), req.getSubbranch());
+                        req.getBankName(), req.getSubbranch());
             } else {
                 organizationCode = subbranch.getCode();
             }
@@ -111,10 +111,10 @@ public class UserAOImpl implements IUserAO {
         // 监管用户
         if (EUserKind.Supervise.getCode().equals(req.getType())) {
             Supervise supervise = superviseBO.getSupervise(req.getProvince(),
-                req.getCity(), req.getArea());
+                    req.getCity(), req.getArea());
             if (null == supervise) {
                 organizationCode = superviseBO.saveSupervise(req.getProvince(),
-                    req.getCity(), req.getArea());
+                        req.getCity(), req.getArea());
             } else {
                 organizationCode = supervise.getCode();
             }
@@ -179,7 +179,10 @@ public class UserAOImpl implements IUserAO {
     public void doChangeMoblie(String userId, String newMobile, String updater,
             String remark) {
         PhoneUtil.checkMobile(newMobile);
-        userBO.isMobileExist(newMobile);
+        User userByMobile = userBO.getUserByMobile(newMobile);
+        if (userByMobile != null) {
+            throw new BizException("改手机号已被使用");
+        }
         User user = userBO.getUser(userId);
         if (user == null) {
             throw new BizException("xn000000", "用户不存在");
@@ -267,21 +270,27 @@ public class UserAOImpl implements IUserAO {
     public void doResetLoginPwd(String userId, String mobile, String smsCaptcha,
             String newLoginPwd) {
         User user = userBO.getUser(userId);
+        boolean b = userBO.checkMobile(mobile);
+        if (!b) {
+            throw new BizException("XN00000", "用户不存在,请先注册");
+        }
+
+        User userByMobile = userBO.getUserByMobile(mobile);
         if (user == null) {
-            throw new BizException("li01004", "用户不存在,请先注册");
+            user = userByMobile;
         }
         if (EUserStatus.Li_Locked.getCode().equals(user.getStatus())
                 || EUserStatus.Ren_Locked.getCode().equals(user.getStatus())) {
             throw new BizException("xn805050",
-                "该账号" + EUserStatus.getMap().get(user.getStatus()).getValue()
-                        + "，请联系工作人员");
+                    "该账号" + EUserStatus.getMap().get(user.getStatus()).getValue()
+                            + "，请联系工作人员");
         }
         // 短信验证码是否正确
         smsOutBO.checkCaptcha(mobile, smsCaptcha, "631080");
         userBO.refreshLoginPwd(user, newLoginPwd);
         // // 发送短信
         smsOutBO.sendSmsOut(mobile, "尊敬的" + PhoneUtil.hideMobile(mobile)
-                + "用户，您的登录密码重置成功。请妥善保管您的账户相关信息。",
+                        + "用户，您的登录密码重置成功。请妥善保管您的账户相关信息。",
                 "804080");
     }
 
@@ -295,7 +304,7 @@ public class UserAOImpl implements IUserAO {
         if (condition.getCreateDatetimeStart() != null
                 && condition.getCreateDatetimeEnd() != null
                 && condition.getCreateDatetimeEnd()
-                    .before(condition.getCreateDatetimeStart())) {
+                .before(condition.getCreateDatetimeStart())) {
             throw new BizException("xn0000", "开始时间不能大于结束时间");
         }
         Paginable<User> page = userBO.getPaginable(start, limit, condition);
@@ -314,7 +323,7 @@ public class UserAOImpl implements IUserAO {
         if (condition.getCreateDatetimeStart() != null
                 && condition.getCreateDatetimeEnd() != null
                 && condition.getCreateDatetimeEnd()
-                    .before(condition.getCreateDatetimeStart())) {
+                .before(condition.getCreateDatetimeStart())) {
             throw new BizException("xn0000", "开始时间不能大于结束时间");
         }
         List<User> list = userBO.queryUserList(condition);
@@ -341,7 +350,7 @@ public class UserAOImpl implements IUserAO {
         if (EUserKind.Supervise.getCode().equals(data.getType())) {
             // 监管区域
             Supervise supervise = superviseBO
-                .getSupervise(data.getOrganizationCode());
+                    .getSupervise(data.getOrganizationCode());
             data.setProvince(supervise.getProvince());
             data.setCity(supervise.getCity());
             data.setArea(supervise.getArea());
@@ -370,7 +379,7 @@ public class UserAOImpl implements IUserAO {
         if (EUserKind.Bank.getCode().equals(data.getType())) {
             // 支行信息
             Subbranch subbranch = subbranchBO
-                .getSubbranch(data.getOrganizationCode());
+                    .getSubbranch(data.getOrganizationCode());
             data.setBankName(subbranch.getBankName());
             data.setSubbranch(subbranch.getSubbranchName());
         }

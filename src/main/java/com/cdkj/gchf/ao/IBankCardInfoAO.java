@@ -76,4 +76,13 @@ public interface IBankCardInfoAO {
      */
     Object getBankCardInfo(XN631766Req req);
 
+    /**
+     * 查询参建单位银行卡信息
+     *
+     * @param userId 用户id
+     * @param workerCode 项目人员编号
+     * @return 银行卡
+     */
+    List<BankCardInfo> queryProjectCorpBankcards(String userId, String workerCode);
+
 }

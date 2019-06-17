@@ -1,5 +1,6 @@
 package com.cdkj.gchf.ao.impl;
 
+import com.cdkj.gchf.bo.IProjectWorkerBO;
 import java.util.List;
 
 import org.apache.commons.lang3.StringUtils;
@@ -29,6 +30,7 @@ import com.cdkj.gchf.exception.BizException;
 
 @Service
 public class PayRollDetailAOImpl implements IPayRollDetailAO {
+
     @Autowired
     private IPayRollDetailBO payRollDetailBO;
 
@@ -47,11 +49,15 @@ public class PayRollDetailAOImpl implements IPayRollDetailAO {
     @Autowired
     private ICorpBasicinfoBO corpBasicinfoBO;
 
+    @Autowired
+    private IProjectWorkerBO projectWorkerBO;
+
 
     @Override
     public void dropPayRollDetail(List<String> codeList) {
         for (String code : codeList) {
-            String uploadStatus = payRollDetailBO.getPayRollDetail(code)
+            PayRollDetail payRollDetail = payRollDetailBO.getPayRollDetail(code);
+            String uploadStatus = payRollDetail
                     .getUploadStatus();
 
             if (uploadStatus
@@ -61,6 +67,7 @@ public class PayRollDetailAOImpl implements IPayRollDetailAO {
             payRollDetailBO.updatePayRollDetailDeleteStatus(code,
                     EDeleteStatus.DELETED.getCode());
 
+            projectWorkerBO.updateLastPayRollData(payRollDetail.getWorkerCode());
         }
 
     }
@@ -76,7 +83,7 @@ public class PayRollDetailAOImpl implements IPayRollDetailAO {
 
     @Override
     public Paginable<PayRollDetail> queryPayRollDetailPage(int start, int limit,
-                                                           PayRollDetail condition) {
+            PayRollDetail condition) {
 
         User user = userBO.getBriefUser(condition.getUserId());
         if (EUserKind.Owner.getCode().equals(user.getType())) {

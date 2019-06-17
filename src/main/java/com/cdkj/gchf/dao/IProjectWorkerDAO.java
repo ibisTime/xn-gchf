@@ -1,6 +1,7 @@
 package com.cdkj.gchf.dao;
 
 import com.cdkj.gchf.dao.base.IBaseDAO;
+import com.cdkj.gchf.domain.Project;
 import com.cdkj.gchf.domain.ProjectWorker;
 
 import java.util.List;
@@ -36,6 +37,12 @@ public interface IProjectWorkerDAO extends IBaseDAO<ProjectWorker> {
 
     // 重新建档-第三步-更新项目人员手机号
     int updateProjectWorkerWorkerPhone(ProjectWorker projectWorker);
+
+    /**
+     * @param projectWorker condition
+     * @return result count
+     */
+    int updateProjectWorkerBindingBank(ProjectWorker projectWorker);
 
     /**
      * 查询项目端工种分布

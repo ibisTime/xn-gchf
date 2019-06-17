@@ -357,6 +357,10 @@ public class WorkerInfoBOImpl extends PaginableBOImpl<WorkerInfo>
             if (StringUtils.isNotBlank(req.getHasBadMedicalHistory())) {
                 workerInfo.setHasBadMedicalHistory(Integer.parseInt(req.getHasBadMedicalHistory()));
             }
+            if (StringUtils.isNotBlank(req.getJoinedTime())) {
+                workerInfo.setJoinedTime(
+                        DateUtil.strToDate(req.getJoinedTime(), DateUtil.FRONT_DATE_FORMAT_STRING));
+            }
             workerInfo.setMaritalStatus(req.getMaritalStatus());
             workerInfo.setUrgentLinkMan(req.getUrgentLinkMan());
             workerInfo.setUrgentLinkManPhone(req.getUrgentLinkManPhone());

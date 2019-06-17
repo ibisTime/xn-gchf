@@ -25,7 +25,7 @@ public class PayRollDetailDAOImpl extends AMybatisTemplate
     @Override
     public PayRollDetail select(PayRollDetail condition) {
         return super.select(NAMESPACE.concat("select_PayRollDetail"), condition,
-            PayRollDetail.class);
+                PayRollDetail.class);
     }
 
     @Override
@@ -36,40 +36,47 @@ public class PayRollDetailDAOImpl extends AMybatisTemplate
     @Override
     public List<PayRollDetail> selectList(PayRollDetail condition) {
         return super.selectList(NAMESPACE.concat("select_PayRollDetail"),
-            condition, PayRollDetail.class);
+                condition, PayRollDetail.class);
     }
 
     @Override
     public List<PayRollDetail> selectList(PayRollDetail condition, int start,
             int count) {
         return super.selectList(NAMESPACE.concat("select_PayRollDetail"), start,
-            count, condition, PayRollDetail.class);
+                count, condition, PayRollDetail.class);
     }
 
     @Override
     public int update(PayRollDetail payRollDetail) {
         return super.update(NAMESPACE.concat("update_PayRollDetail"),
-            payRollDetail);
+                payRollDetail);
     }
 
     @Override
     public int updateStatus(PayRollDetail payRollDetail) {
         return super.update(NAMESPACE.concat("update_PayRollDetail_status"),
-            payRollDetail);
+                payRollDetail);
     }
 
     @Override
     public int updatePayRollCode(PayRollDetail payRollDetail) {
         return super.update(
-            NAMESPACE.concat("update_PayRollDetail_payRollCode"),
-            payRollDetail);
+                NAMESPACE.concat("update_PayRollDetail_payRollCode"),
+                payRollDetail);
     }
 
     @Override
     public int updatePayRollDetailDeleteStatus(PayRollDetail payRollDetail) {
         return super.update(
-            NAMESPACE.concat("update_PayRollDetail_delete_status"),
-            payRollDetail);
+                NAMESPACE.concat("update_PayRollDetail_delete_status"),
+                payRollDetail);
     }
 
+
+    @Override
+    public PayRollDetail selectByWorkerCode(PayRollDetail payRollDetail) {
+        return super.select(
+                NAMESPACE.concat("selectByWorkerCode"),
+                payRollDetail, PayRollDetail.class);
+    }
 }

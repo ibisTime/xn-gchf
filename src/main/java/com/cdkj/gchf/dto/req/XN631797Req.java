@@ -20,6 +20,7 @@ public class XN631797Req {
      * urgentLinkMan :  紧急联系人姓名
      * urgentLinkManPhone : 紧急联系电话
      * userId : 用户id
+     * joinedTime : 加入公会时间
      */
 
     private String code;
@@ -33,6 +34,7 @@ public class XN631797Req {
     private String urgentLinkMan;
     private String urgentLinkManPhone;
     private String userId;
+    private String joinedTime;
 
     public String getCode() {
         return code;
@@ -120,5 +122,13 @@ public class XN631797Req {
 
     public void setUserId(String userId) {
         this.userId = userId;
+    }
+
+    public String getJoinedTime() {
+        return joinedTime;
+    }
+
+    public void setJoinedTime(String joinedTime) {
+        this.joinedTime = joinedTime;
     }
 }

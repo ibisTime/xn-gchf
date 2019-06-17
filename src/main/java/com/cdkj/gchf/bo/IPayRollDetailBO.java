@@ -85,6 +85,13 @@ public interface IPayRollDetailBO extends IPaginableBO<PayRollDetail> {
     long selectCountByWorkerCode(String workerCode);
 
     /**
+     * 查询项目人员最新一条记录
+     *
+     * @param workerCode 项目人员code
+     * @return data
+     */
+    PayRollDetail getLastPayRollData(String workerCode);
+    /**
      * 获取上传国家平台的json 
      */
     public JsonObject getUploadRequestJsontoPlantform(PayRoll payRollData,

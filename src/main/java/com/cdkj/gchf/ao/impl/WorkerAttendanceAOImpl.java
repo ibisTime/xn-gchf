@@ -82,12 +82,13 @@ public class WorkerAttendanceAOImpl implements IWorkerAttendanceAO {
             throw new BizException("XN631710", "请选择项目");
         }
         ProjectWorker projectWorker = projectWorkerBO
-            .getProjectWorker(data.getWorkerCode());
+                .getProjectWorker(data.getWorkerCode());
         if (projectWorker == null) {
             throw new BizException("XN631710", "项目人员不存在");
         }
         //回写考勤信息到项目人员中
-        projectWorkerBO.refreshLastAttendance(data.getWorkerCode(), data.getDirection(), data.getDate());
+        projectWorkerBO
+                .refreshLastAttendance(data.getWorkerCode(), data.getDirection(), data.getDate());
 
         return workerAttendanceBO.saveWorkerAttendance(data, teamMaster);
     }
@@ -95,14 +96,23 @@ public class WorkerAttendanceAOImpl implements IWorkerAttendanceAO {
     @Override
     public void dropWorkerAttendance(List<String> codeList) {
         List<String> workerAttendances = new ArrayList<>();
+        List<String> projectWorkers = new ArrayList<>();
         for (String code : codeList) {
             WorkerAttendance workerAttendance = workerAttendanceBO
-                .getWorkerAttendance(code);
+                    .getWorkerAttendance(code);
             if (workerAttendance.getUploadStatus().equals(
-                EWorkerAttendanceUploadStatus.UPLOAD_UNEDITABLE.getCode())) {
+                    EWorkerAttendanceUploadStatus.UPLOAD_UNEDITABLE.getCode())) {
                 throw new BizException("XN631711", "人员考勤已上传，不可删除");
             }
-            workerAttendances.add(workerAttendance.getCode());
+            projectWorkers.add(workerAttendance.getWorkerCode());
+        }
+        for (int i = 0; i < codeList.size(); i++) {
+            workerAttendances.add(codeList.get(i));
+            //更新项目人员最新一条数据
+            ProjectWorker condition = new ProjectWorker();
+            condition.setCode(projectWorkers.get(i));
+            projectWorkerBO
+                    .updateLastAttendanceData(projectWorkers.get(i), workerAttendances.get(i));
         }
         workerAttendanceBO.batchDeleteWorkerAttendance(workerAttendances);
 
@@ -111,15 +121,16 @@ public class WorkerAttendanceAOImpl implements IWorkerAttendanceAO {
     @Override
     public void editWorkerAttendance(XN631712Req data) {
         if (workerAttendanceBO.getWorkerAttendance(data.getCode())
-            .getUploadStatus().equals(
-                EWorkerAttendanceUploadStatus.UPLOAD_UNEDITABLE.getCode())) {
+                .getUploadStatus().equals(
+                        EWorkerAttendanceUploadStatus.UPLOAD_UNEDITABLE.getCode())) {
             throw new BizException("XN631712", "人员考勤已上传,无法修改");
         }
         workerAttendanceBO.refreshWorkerAttendance(data);
 
         //回写考勤信息记录到项目人员
         WorkerAttendance workerAttendance = workerAttendanceBO.getWorkerAttendance(data.getCode());
-        projectWorkerBO.refreshLastAttendance(workerAttendance.getWorkerCode(), data.getDirection(), DateUtil.dateToStr(data.getDate(), DateUtil.FRONT_DATE_FORMAT_STRING));
+        projectWorkerBO.refreshLastAttendance(workerAttendance.getWorkerCode(), data.getDirection(),
+                DateUtil.dateToStr(data.getDate(), DateUtil.FRONT_DATE_FORMAT_STRING));
     }
 
     @Override
@@ -131,17 +142,18 @@ public class WorkerAttendanceAOImpl implements IWorkerAttendanceAO {
         TeamMaster teamMaster = teamMasterBO.getTeamMaster(teamMasterNo);
 
         List<ProjectWorker> projectWorkers = projectWorkerBO
-            .queryUploadedProjectWorkerList(teamMaster.getCode());
+                .queryUploadedProjectWorkerList(teamMaster.getCode());
 
         if (CollectionUtils.isNotEmpty(projectWorkers)) {
             for (ProjectWorker projectWorker : projectWorkers) {
                 Date date = new Date(
-                    random(startDatetime.getTime(), endDatetime.getTime()));
+                        random(startDatetime.getTime(), endDatetime.getTime()));
 
                 workerAttendanceBO.saveWorkerAttendance(project, teamMaster,
-                    projectWorker, date, direction);
+                        projectWorker, date, direction);
 
-                projectWorkerBO.refreshLastAttendance(projectWorker.getCode(), direction, DateUtil.dateToStr(date, DateUtil.FRONT_DATE_FORMAT_STRING));
+                projectWorkerBO.refreshLastAttendance(projectWorker.getCode(), direction,
+                        DateUtil.dateToStr(date, DateUtil.FRONT_DATE_FORMAT_STRING));
             }
         }
     }
@@ -164,10 +176,10 @@ public class WorkerAttendanceAOImpl implements IWorkerAttendanceAO {
             // 核实身份信息
             String idcardNumber = dateReq.getIdCardNumber();
             ProjectWorker workerByIdCardNumber = projectWorkerBO
-                .getProjectWorker(req.getProjectCode(), idcardNumber);
+                    .getProjectWorker(req.getProjectCode(), idcardNumber);
             if (workerByIdCardNumber == null) {
                 throw new BizException("XN631713",
-                    "员工信息【" + idcardNumber + "】不存在");
+                        "员工信息【" + idcardNumber + "】不存在");
             }
 
             // 录入数据
@@ -180,33 +192,35 @@ public class WorkerAttendanceAOImpl implements IWorkerAttendanceAO {
             condition.setCorpCode(dateReq.getCorpCode());
             condition.setRealTeamName(dateReq.getTeamName());
             TeamMaster masterByCondition = teamMasterBO
-                .getTeamMasterByCondition(condition);
+                    .getTeamMasterByCondition(condition);
             if (masterByCondition == null) {
                 throw new BizException("XN631713",
-                    "班组信息【" + dateReq.getTeamName() + "】不存在");
+                        "班组信息【" + dateReq.getTeamName() + "】不存在");
             }
 
             workerAttendance.setTeamSysNo(masterByCondition.getCode());
             if (StringUtils.isNotBlank(dateReq.getDate())) {
                 Date date = DateUtil.strToDate(dateReq.getDate(),
-                    DateUtil.DATA_TIME_PATTERN_1);
+                        DateUtil.DATA_TIME_PATTERN_1);
                 workerAttendance.setDate(date);
             }
             workerAttendance.setIdCardType("01");
             workerAttendance.setWorkerName(dateReq.getWorkerName());
             workerAttendance.setSource(EAttendanceSource.SYSTEM.getCode());
             workerAttendance.setUploadStatus(
-                EWorkerAttendanceUploadStatus.TO_UPLOAD.getCode());
+                    EWorkerAttendanceUploadStatus.TO_UPLOAD.getCode());
             workerAttendance.setDeleteStatus(EDeleteStatus.NORMAL.getCode());
             String code = workerAttendanceBO
-                .saveWorkerAttendance(workerAttendance);
+                    .saveWorkerAttendance(workerAttendance);
 
             //回写信息项目人员中
-            projectWorkerBO.refreshLastAttendance(workerByIdCardNumber.getCode(), dateReq.getDirection(), dateReq.getDate());
+            projectWorkerBO
+                    .refreshLastAttendance(workerByIdCardNumber.getCode(), dateReq.getDirection(),
+                            dateReq.getDate());
 
             operateLogBO.saveOperateLog(
-                EOperateLogRefType.WorkAttendance.getCode(), code, "导入人员考勤",
-                user, null);
+                    EOperateLogRefType.WorkAttendance.getCode(), code, "导入人员考勤",
+                    user, null);
         }
     }
 
@@ -218,56 +232,56 @@ public class WorkerAttendanceAOImpl implements IWorkerAttendanceAO {
         // 未上传的项目人员不能上传
         for (String code : codeList) {
             WorkerAttendance workerAttendance = workerAttendanceBO
-                .getWorkerAttendance(code);
+                    .getWorkerAttendance(code);
 
             ProjectConfig projectConfigByLocal = projectConfigBO
-                .getProjectConfigByLocal(workerAttendance.getProjectCode());
+                    .getProjectConfigByLocal(workerAttendance.getProjectCode());
 
             if (projectConfigByLocal == null) {
                 throw new BizException("XN631714",
-                    "项目【" + workerAttendance.getProjectName() + "】未配置，无法上传");
+                        "项目【" + workerAttendance.getProjectName() + "】未配置，无法上传");
             }
 
             ProjectWorker projectWorker = projectWorkerBO
-                .getProjectWorker(workerAttendance.getWorkerCode());
+                    .getProjectWorker(workerAttendance.getWorkerCode());
             if (!projectWorker.getUploadStatus()
-                .equals(EProjectWorkerUploadStatus.UPLOAD_UPDATE.getCode())
+                    .equals(EProjectWorkerUploadStatus.UPLOAD_UPDATE.getCode())
                     && !projectWorker.getUploadStatus().equals(
-                        EProjectWorkerUploadStatus.UPLOAD_UNUPDATE.getCode())) {
+                    EProjectWorkerUploadStatus.UPLOAD_UNUPDATE.getCode())) {
                 // 不是已上传的人员
                 throw new BizException("XN00000",
-                    "项目人员未上传【 " + projectWorker.getWorkerName() + " 】");
+                        "项目人员未上传【 " + projectWorker.getWorkerName() + " 】");
             }
             TeamMaster teamMaster = teamMasterBO
-                .getTeamMaster(workerAttendance.getTeamSysNo());
+                    .getTeamMaster(workerAttendance.getTeamSysNo());
             // 获取上传json
             JsonObject requestJson = workerAttendanceBO.getRequestJson(
-                teamMaster, workerAttendance, projectConfigByLocal);
+                    teamMaster, workerAttendance, projectConfigByLocal);
             // 更改上传状态为上传中
             workerAttendanceBO.refreshWorkerAttendance(code,
-                EWorkerAttendanceUploadStatus.UPLOADING.getCode());
+                    EWorkerAttendanceUploadStatus.UPLOADING.getCode());
             String resString;
             try {
                 resString = GovConnecter.getGovData("WorkerAttendance.Add",
-                    requestJson.toString(),
-                    projectConfigByLocal.getProjectCode(),
-                    projectConfigByLocal.getSecret());
+                        requestJson.toString(),
+                        projectConfigByLocal.getProjectCode(),
+                        projectConfigByLocal.getSecret());
             } catch (BizException e) {
                 // 捕捉国家平台抛出的异常,将数据状态更新为上传失败
                 e.printStackTrace();
                 workerAttendanceBO.refreshWorkerAttendance(code,
-                    EWorkerAttendanceUploadStatus.UPLOAD_FAIL.getCode());
+                        EWorkerAttendanceUploadStatus.UPLOAD_FAIL.getCode());
                 throw e;
             }
 
             String saveOperateLog = operateLogBO.saveOperateLog(
-                EOperateLogRefType.WorkAttendance.getCode(), code,
-                EOperateLogOperate.UploadWorkAtendance.getValue(), briefUser,
-                EOperateLogOperate.UploadWorkAtendance.getValue());
+                    EOperateLogRefType.WorkAttendance.getCode(), code,
+                    EOperateLogOperate.UploadWorkAtendance.getValue(), briefUser,
+                    EOperateLogOperate.UploadWorkAtendance.getValue());
             AsyncQueueHolder.addSerial(resString, projectConfigByLocal,
-                "workerAttendanceBO", code,
-                EWorkerAttendanceUploadStatus.UPLOAD_UNEDITABLE.getCode(),
-                saveOperateLog, userId);
+                    "workerAttendanceBO", code,
+                    EWorkerAttendanceUploadStatus.UPLOAD_UNEDITABLE.getCode(),
+                    saveOperateLog, userId);
         }
 
     }
@@ -275,7 +289,7 @@ public class WorkerAttendanceAOImpl implements IWorkerAttendanceAO {
     @Override
     public void uploadWorkerAttendance(XN631918Req req) {
         ProjectConfig projectConfig = projectConfigBO
-            .getProjectConfigByProject(req.getProjectCode());
+                .getProjectConfigByProject(req.getProjectCode());
 
         if (null == projectConfig) {
             throw new BizException("XN631918", "该项目未配置，无法上传");
@@ -287,37 +301,37 @@ public class WorkerAttendanceAOImpl implements IWorkerAttendanceAO {
     @Override
     public Paginable<WorkerAttendance> queryWorkerAttendance(XN631919Req req) {
         ProjectConfig projectConfig = projectConfigBO
-            .getProjectConfigByProject(req.getProjectCode());
+                .getProjectConfigByProject(req.getProjectCode());
 
         if (null == projectConfig) {
             throw new BizException("XN631919", "该项目未配置，无法查询");
         }
 
         Paginable<WorkerAttendance> page = workerAttendanceBO.doQuery(req,
-            projectConfig);
+                projectConfig);
 
         if (null != page && CollectionUtils.isNotEmpty(page.getList())) {
             for (WorkerAttendance workerAttendance : page.getList()) {
 
                 String idcardNumber = AesUtils.decrypt(
-                    workerAttendance.getIdCardNumber(),
-                    projectConfig.getSecret());
+                        workerAttendance.getIdCardNumber(),
+                        projectConfig.getSecret());
 
                 XN631913Req workerReq = new XN631913Req(req.getProjectCode(),
-                    null, idcardNumber);
+                        null, idcardNumber);
                 workerReq.setPageIndex(0);
                 workerReq.setPageSize(1);
                 Paginable<ProjectWorker> projectWorker = projectWorkerBO
-                    .doQuery(workerReq, projectConfig);
+                        .doQuery(workerReq, projectConfig);
 
                 if (null != projectWorker && CollectionUtils
-                    .isNotEmpty(projectWorker.getList())) {
+                        .isNotEmpty(projectWorker.getList())) {
                     workerAttendance.setCorpName(
-                        projectWorker.getList().get(0).getCorpName());
+                            projectWorker.getList().get(0).getCorpName());
                     workerAttendance.setTeamName(
-                        projectWorker.getList().get(0).getTeamName());
+                            projectWorker.getList().get(0).getTeamName());
                     workerAttendance.setWorkerName(
-                        projectWorker.getList().get(0).getWorkerName());
+                            projectWorker.getList().get(0).getWorkerName());
                 }
 
                 workerAttendance.setIdCardNumber(idcardNumber);
@@ -337,12 +351,12 @@ public class WorkerAttendanceAOImpl implements IWorkerAttendanceAO {
         }
 
         Paginable<WorkerAttendance> page = workerAttendanceBO
-            .getPaginable(start, limit, condition);
+                .getPaginable(start, limit, condition);
 
         if (null != page && CollectionUtils.isNotEmpty(page.getList())) {
             for (WorkerAttendance workerAttendance : page.getList()) {
                 TeamMaster teamMaster = teamMasterBO
-                    .getTeamMaster(workerAttendance.getTeamSysNo());
+                        .getTeamMaster(workerAttendance.getTeamSysNo());
                 workerAttendance.setCorpName(teamMaster.getCorpName());
             }
         }

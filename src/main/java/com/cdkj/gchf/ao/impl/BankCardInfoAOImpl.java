@@ -63,7 +63,7 @@ public class BankCardInfoAOImpl implements IBankCardInfoAO {
                             EBankCardStatus.Normal.getCode());
 
             if (CollectionUtils.isNotEmpty(bankCardInfos)
-                    && bankCardInfos.size() > 0) {
+                    && bankCardInfos.size() > 1) {
                 throw new BizException("631750", "该参建单位已存在银行卡【"
                         + bankCardInfos.get(0).getBankNumber() + "】");
             }
@@ -89,20 +89,28 @@ public class BankCardInfoAOImpl implements IBankCardInfoAO {
                 .equals(req.getBusinessType())) {
             ProjectWorker projectWorker = projectWorkerBO
                     .getProjectWorker(req.getBusinessSysNo());
+            if (StringUtils.isNotBlank(projectWorker.getPayRollBankCardNumber())) {
+                throw new BizException("Xn000000", "该项目人员已绑定银行卡,如要更换请先解绑");
+            }
             req.setBusinessName(projectWorker.getWorkerName());
-            List<BankCardInfo> bankCardByByssinessCode = bankCardBankBO
-                    .getBankCardByByssinessCode(EBankCardBussinessType.USER.getCode(),
-                            projectWorker.getCode());
-
         }
 
-        return bankCardBankBO.saveBankCardInfo(req);
+        String pkCode = bankCardBankBO.saveBankCardInfo(req);
+        if (EBankCardBussinessType.USER.getCode().equals(req.getBusinessType())) {
+            projectWorkerBO.refreshProjectWorkerBankCardInfo(req.getBusinessSysNo(), pkCode);
+        }
+        return pkCode;
     }
 
 
     @Override
     public void unBindBankCard(String code) {
-        bankCardBankBO.deleteBankCardInfo(code);
+
+        BankCardInfo bankCardInfo = bankCardBankBO.getBankCardInfo(code);
+        if (bankCardInfo.getBusinessType().equals(EBankCardBussinessType.CORP.getCode())) {
+            throw new BizException("项目人员解绑银行卡");
+        }
+        projectWorkerBO.refreshProjectWorkerBankCardInfo(bankCardInfo.getBusinessSysNo());
     }
 
     @Override
@@ -135,9 +143,9 @@ public class BankCardInfoAOImpl implements IBankCardInfoAO {
             int start, int limit, BankCardInfo condition) {
         User briefUser = userBO.getBriefUser(req.getUserId());
         // 根据用户类型进行查询
-        if (StringUtils.isBlank(req.getBusinessSysNo())) {
-            return null;
-        }
+//        if (StringUtils.isBlank(req.getBusinessSysNo())) {
+//            return null;
+//        }
         // 项目端查询
         if (briefUser.getType().equals(EUserKind.Owner.getCode())) {
             // 查询项目端项目人员的银行卡信息

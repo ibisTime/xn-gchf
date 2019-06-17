@@ -384,7 +384,7 @@
 
   </update>
 
-  <update id="update_projectWorker_worker_info">
+  <update id="update_projectWorker_worker_info" parameterType="projectWorker">
     UPDATE
       thf_project_worker
     SET worker_name  =
@@ -397,12 +397,24 @@
           #{workerCode}
   </update>
 
-  <update id="update_projectWorker_worker_info_phone">
+  <update id="update_projectWorker_worker_info_phone" parameterType="projectWorker">
     UPDATE
       thf_project_worker
     SET worker_mobile =
           #{workerMobile}
     where worker_code = #{workerCode}
+  </update>
+
+  <update id="updateProjectWorkerBindingBank" parameterType="projectWorker">
+    UPDATE
+      thf_project_worker
+    SET pay_roll_bank_card_number = #{payRollBankCardNumber}
+      ,pay_roll_bank_name         = #{payRollBankName}
+      ,pay_roll_top_bank_code     = #{payRollTopBankCode}
+      ,pay_roll_top_bank_name     = #{payRollTopBankName}
+      ,bank_name                  = #{bankName}
+      ,bank_link_number           = #{bankLinkNumber}
+    WHERE code = #{code}
   </update>
 
   <update id="update_projectWorker" parameterType="projectWorker">

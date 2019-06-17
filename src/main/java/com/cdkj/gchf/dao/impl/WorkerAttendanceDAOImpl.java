@@ -105,4 +105,10 @@ public class WorkerAttendanceDAOImpl extends AMybatisTemplate
         return super.select(NAMESPACE.concat("selectWorkerAttendanceToday"),
                 userId, Integer.class);
     }
+
+    @Override
+    public WorkerAttendance selectWorkerNewlyWorkerAttendanceData(String workerCode) {
+        return super.select(NAMESPACE.concat("selectWorkerNewlyWorkerAttendanceData"),
+                workerCode, WorkerAttendance.class);
+    }
 }

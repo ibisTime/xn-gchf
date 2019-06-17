@@ -52,7 +52,6 @@ public interface IBankCardBankBO extends IPaginableBO<BankCardInfo> {
      */
     int updateBankCardInfoStatus(String code);
 
-
     /**
      * 通过银行卡账号查询银行卡信息
      * @param payRollBankCardNumber 银行卡号

@@ -1,5 +1,15 @@
 package com.cdkj.gchf.bo.impl;
 
+import com.cdkj.gchf.bo.IBankCardBankBO;
+import com.cdkj.gchf.bo.IPayRollDetailBO;
+import com.cdkj.gchf.bo.IProjectWorkerEntryExitHistoryBO;
+import com.cdkj.gchf.bo.IWorkerAttendanceBO;
+import com.cdkj.gchf.domain.BankCardInfo;
+import com.cdkj.gchf.domain.PayRollDetail;
+import com.cdkj.gchf.domain.ProjectWorkerEntryExitHistory;
+import com.cdkj.gchf.domain.WorkerAttendance;
+import com.cdkj.gchf.enums.EEntryExitType;
+import com.cdkj.gchf.humanfaces.enums.EDirection;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Date;
@@ -100,6 +110,18 @@ public class ProjectWorkerBOImpl extends PaginableBOImpl<ProjectWorker>
 
     @Autowired
     private IEquipmentWorkerBO equipmentWorkerBO;
+
+    @Autowired
+    private IBankCardBankBO bankCardBankBO;
+
+    @Autowired
+    private IWorkerAttendanceBO workerAttendanceBO;
+
+    @Autowired
+    private IProjectWorkerEntryExitHistoryBO projectWorkerEntryExitHistoryBO;
+
+    @Autowired
+    private IPayRollDetailBO payRollDetailBO;
 
     @Override
     public ProjectWorker saveProjectWorker(XN631690Req data) {
@@ -517,6 +539,13 @@ public class ProjectWorkerBOImpl extends PaginableBOImpl<ProjectWorker>
     }
 
     @Override
+    public void refreshBankCardInfo(String code) {
+        ProjectWorker condition = new ProjectWorker();
+        condition.setCode(code);
+        projectWorkerDAO.updateProjectWorkerBindingBank(condition);
+    }
+
+    @Override
     public List<ProjectWorker> selectProjectWorkerByWorkerCode(
             String workerCode) {
         ProjectWorker projectWorker = new ProjectWorker();
@@ -540,6 +569,62 @@ public class ProjectWorkerBOImpl extends PaginableBOImpl<ProjectWorker>
     public List<Map> selectWorkerData(String userId) {
 
         return projectWorkerDAO.selectWorkerData(userId);
+    }
+
+    @Override
+    public void updateLastExitEntryData(String code) {
+
+        ProjectWorker projectWorker = new ProjectWorker();
+        projectWorker.setCode(code);
+
+        ProjectWorkerEntryExitHistory lastTimeEntryTime = projectWorkerEntryExitHistoryBO
+                .getLastTimeEntryTime(code);
+        if (lastTimeEntryTime != null) {
+            if (lastTimeEntryTime.getType().equals(Integer.valueOf(EEntryExitType.IN.getCode()))) {
+                projectWorker.setEntryTime(lastTimeEntryTime.getDate());
+            } else {
+                projectWorker.setExitTime(lastTimeEntryTime.getDate());
+            }
+            projectWorker.setStatus(String.valueOf(lastTimeEntryTime.getType()));
+        }
+        projectWorkerDAO.update(projectWorker);
+    }
+
+    @Override
+    public void updateLastAttendanceData(String code, String workerAttendanceCode) {
+
+        WorkerAttendance lastAttendance = workerAttendanceBO
+                .getLastAttendance(workerAttendanceCode);
+        ProjectWorker condition = new ProjectWorker();
+        condition.setCode(code);
+        condition.setDeleteStatus(EDeleteStatus.NORMAL.getCode());
+
+        ProjectWorker select = projectWorkerDAO.select(condition);
+        condition.setLastAttendanceDatetime(lastAttendance.getDate());
+        condition.setAttendanceStatus(lastAttendance.getDirection());
+
+        projectWorkerDAO.updateLastAttendance(select);
+
+
+    }
+
+    @Override
+    public void updateLastPayRollData(String code) {
+        PayRollDetail condition = new PayRollDetail();
+        condition.setWorkerCode(code);
+        condition.setDeleteStatus(EDeleteStatus.NORMAL.getCode());
+
+        PayRollDetail lastPayRollData = payRollDetailBO.getLastPayRollData(code);
+        ProjectWorker projectWorker = new ProjectWorker();
+        projectWorker.setCode(code);
+
+        if (lastPayRollData != null) {
+            projectWorker.setLastPayMonth(lastPayRollData.getPayMonth());
+            projectWorker.setLastPayActualAmount(lastPayRollData.getActualAmount());
+            projectWorker.setLastPayTotalAmount(lastPayRollData.getTotalPayAmount());
+            projectWorkerDAO.updateLastPayRoll(projectWorker);
+        }
+        projectWorkerDAO.updateLastPayRoll(projectWorker);
     }
 
     @Override
@@ -688,6 +773,28 @@ public class ProjectWorkerBOImpl extends PaginableBOImpl<ProjectWorker>
         condition.setDeleteStatus(EDeleteStatus.NORMAL.getCode());
         return projectWorkerDAO.selectList(condition);
     }
+
+    @Override
+    public void refreshProjectWorkerBankCardInfo(String projectWorkerCode, String bankCardCode) {
+        ProjectWorker condition = new ProjectWorker();
+        condition.setCode(projectWorkerCode);
+        BankCardInfo bankCardInfo = bankCardBankBO.getBankCardInfo(bankCardCode);
+        condition.setPayRollBankCardNumber(bankCardInfo.getBankNumber());
+        condition.setPayRollBankName(bankCardInfo.getBankName());
+        condition.setPayRollTopBankCode(bankCardInfo.getBankCode());
+        condition.setPayRollTopBankName(bankCardInfo.getBankName());
+        condition.setBankName(bankCardInfo.getSubranch());
+        condition.setBankLinkNumber(bankCardInfo.getBankLinkNumber());
+        projectWorkerDAO.updateProjectWorkerBindingBank(condition);
+    }
+
+    @Override
+    public void refreshProjectWorkerBankCardInfo(String projectWorkerCode) {
+        ProjectWorker condition = new ProjectWorker();
+        condition.setCode(projectWorkerCode);
+        projectWorkerDAO.updateProjectWorkerBindingBank(condition);
+    }
+
 
     @Override
     public ProjectWorker getProjectWorker(String projectCode,

@@ -33,4 +33,13 @@ public interface IWorkerAttendanceDAO extends IBaseDAO<WorkerAttendance> {
      * 查询今日出工人数
      */
     int selectWorkerAttendanceToday(String userId);
+
+
+    /**
+     * 查询项目人员最新一条记录
+     *
+     * @param workerCode 项目人员code
+     * @return result count
+     */
+    WorkerAttendance selectWorkerNewlyWorkerAttendanceData(String workerCode);
 }

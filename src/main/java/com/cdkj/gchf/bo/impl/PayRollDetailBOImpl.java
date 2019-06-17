@@ -391,6 +391,15 @@ public class PayRollDetailBOImpl extends PaginableBOImpl<PayRollDetail>
     }
 
     @Override
+    public PayRollDetail getLastPayRollData(String workerCode) {
+        PayRollDetail payRollDetail = new PayRollDetail();
+        payRollDetail.setWorkerCode(workerCode);
+        payRollDetail.setDeleteStatus(EDeleteStatus.NORMAL.getCode());
+        PayRollDetail data = payRollDetailDAO.selectByWorkerCode(payRollDetail);
+        return data;
+    }
+
+    @Override
     public List<PayRollDetail> queryList(PayRollDetail condition) {
         return payRollDetailDAO.selectList(condition);
     }

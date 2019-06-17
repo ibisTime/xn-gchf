@@ -132,9 +132,20 @@ public class ProjectWorkerEntryExitHistoryAOImpl
                     .getCode())) {
                 throw new BizException("XN631731", "人员进退场已上传，不可删除");
             }
+            //剩余1条回写null数据
+            ProjectWorkerEntryExitHistory condition = new ProjectWorkerEntryExitHistory();
+            condition.setWorkerCode(projectWorkerEntryExitHistory.getWorkerCode());
+            condition.setDeleteStatus(EDeleteStatus.NORMAL.getCode());
+            long totalCount = projectWorkerEntryExitHistoryBO.getTotalCount(condition);
+            if (totalCount == 1) {
+                projectWorkerBO.refreshStatus(code, null, null, null);
+            } else {
+                projectWorkerBO.updateLastExitEntryData(code);
+            }
             projectWorkerEntryExitHistoryBO
                 .updateProjectWorkerEntryExitHistoryDeleteStatus(code,
                     EDeleteStatus.DELETED.getCode());
+
         }
 
     }

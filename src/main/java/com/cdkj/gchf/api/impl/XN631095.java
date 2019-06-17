@@ -23,6 +23,8 @@ public class XN631095 extends AProcessor {
     @Override
     public Object doBusiness() throws BizException {
         smsOutAO.sendSmsCaptchaCheckUser(req.getMobile(), req.getBizType());
+        smsOutAO.sendSmsCaptcha(req.getMobile(), req.getBizType());
+
         return new BooleanRes(true);
     }
 

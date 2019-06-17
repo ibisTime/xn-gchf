@@ -87,21 +87,21 @@ public class WorkerAttendanceBOImpl extends PaginableBOImpl<WorkerAttendance>
         Project project = projectBO.getProject(data.getProjectCode());
         workerAttendance.setProjectName(project.getName());
         ProjectWorker projectWorker = projectWorkerBO
-            .getProjectWorker(data.getWorkerCode());
+                .getProjectWorker(data.getWorkerCode());
         if (StringUtils.isNotBlank(data.getDate())) {
             workerAttendance.setDate(DateUtil.strToDate(data.getDate(),
-                DateUtil.DATA_TIME_PATTERN_1));
+                    DateUtil.DATA_TIME_PATTERN_1));
         }
         workerAttendance.setWorkerCode(projectWorker.getCode());
         workerAttendance.setWorkerName(projectWorker.getWorkerName());
         workerAttendance.setIdCardNumber(projectWorker.getIdcardNumber());
         workerAttendance.setIdCardType(projectWorker.getIdcardType());
         workerAttendance
-            .setUploadStatus(EWorkerAttendanceUploadStatus.TO_UPLOAD.getCode());
+                .setUploadStatus(EWorkerAttendanceUploadStatus.TO_UPLOAD.getCode());
         workerAttendance.setDeleteStatus(EDeleteStatus.NORMAL.getCode());
 
         code = OrderNoGenerater
-            .generate(EGeneratePrefix.WorkerAttendance.getCode());
+                .generate(EGeneratePrefix.WorkerAttendance.getCode());
         workerAttendance.setCode(code);
         workerAttendance.setTeamName(teamMaster.getTeamName());
         workerAttendance.setSource(EAttendanceSource.SYSTEM.getCode());
@@ -118,7 +118,7 @@ public class WorkerAttendanceBOImpl extends PaginableBOImpl<WorkerAttendance>
 
         }
         code = OrderNoGenerater
-            .generate(EGeneratePrefix.WorkerAttendance.getCode());
+                .generate(EGeneratePrefix.WorkerAttendance.getCode());
         workerAttendance.setCode(code);
         workerAttendanceDAO.insert(workerAttendance);
         return code;
@@ -137,21 +137,21 @@ public class WorkerAttendanceBOImpl extends PaginableBOImpl<WorkerAttendance>
         condition.setProjectCode(projectCode);
         condition.setTeamName(data.getTeamName());
         TeamMaster masterByCondition = teamMasterBO
-            .getTeamMasterByCondition(condition);
+                .getTeamMasterByCondition(condition);
         workerAttendance.setTeamSysNo(masterByCondition.getCode());
         if (StringUtils.isNotBlank(data.getDate())) {
             Date strToDate = DateUtil.strToDate(data.getDate(), "yyyy/mm/dd");
             //
             String format = new SimpleDateFormat("yyyy-MM-dd")
-                .format(strToDate);
+                    .format(strToDate);
             Date toDate = DateUtil.strToDate(format, "yyyy-MM-dd");
             workerAttendance.setDate(toDate);
         }
         workerAttendance
-            .setUploadStatus(EWorkerAttendanceUploadStatus.TO_UPLOAD.getCode());
+                .setUploadStatus(EWorkerAttendanceUploadStatus.TO_UPLOAD.getCode());
         workerAttendance.setDeleteStatus(EDeleteStatus.NORMAL.getCode());
         code = OrderNoGenerater
-            .generate(EGeneratePrefix.WorkerAttendance.getCode());
+                .generate(EGeneratePrefix.WorkerAttendance.getCode());
         workerAttendance.setCode(code);
         workerAttendance.setSource(EAttendanceSource.SYSTEM.getCode());
 
@@ -166,11 +166,16 @@ public class WorkerAttendanceBOImpl extends PaginableBOImpl<WorkerAttendance>
     }
 
     @Override
+    public WorkerAttendance select(WorkerAttendance condition) {
+        return workerAttendanceDAO.select(condition);
+    }
+
+    @Override
     public void deleteWorkerAttendaceByWorkerCode(String workerCode) {
         WorkerAttendance workerAttendance = new WorkerAttendance();
         workerAttendance.setWorkerCode(workerCode);
         workerAttendanceDAO
-            .deleteWorkerAttendanceByWorkerCode(workerAttendance);
+                .deleteWorkerAttendanceByWorkerCode(workerAttendance);
     }
 
     @Override
@@ -196,25 +201,25 @@ public class WorkerAttendanceBOImpl extends PaginableBOImpl<WorkerAttendance>
         workerAttendance.setWorkerCode(workerEntryExitRecord.getWorkerCode());
         workerAttendance.setWorkerName(workerEntryExitRecord.getWorkerName());
         workerAttendance
-            .setIdCardNumber(workerEntryExitRecord.getIdcardNumber());
+                .setIdCardNumber(workerEntryExitRecord.getIdcardNumber());
         workerAttendance.setCreateDatetime(workerEntryExitRecord.getDate());
 
         workerAttendance.setTeamSysNo(workerEntryExitRecord.getTeamCode());
         workerAttendance.setTerminalCode(workerEntryExitRecord.getCode());
         workerAttendance.setIdCardType("01");
         workerAttendance
-            .setIdCardNumber(workerEntryExitRecord.getIdcardNumber());
+                .setIdCardNumber(workerEntryExitRecord.getIdcardNumber());
         workerAttendance.setDirection(workerEntryExitRecord.getDirection());
         workerAttendance.setImage(photoUrl);
         workerAttendance.setDate(time);
         String code = OrderNoGenerater
-            .generate(EGeneratePrefix.WorkerAttendance.getCode());
+                .generate(EGeneratePrefix.WorkerAttendance.getCode());
         workerAttendance.setCode(code);
         workerAttendance
-            .setCreateDatetime(new Date(System.currentTimeMillis()));
+                .setCreateDatetime(new Date(System.currentTimeMillis()));
         workerAttendance.setSource(EAttendanceSource.REAL_TIME.getCode());
         workerAttendance
-            .setUploadStatus(EWorkerAttendanceUploadStatus.TO_UPLOAD.getCode());
+                .setUploadStatus(EWorkerAttendanceUploadStatus.TO_UPLOAD.getCode());
         workerAttendance.setDeleteStatus(EDeleteStatus.NORMAL.getCode());
         workerAttendanceDAO.insert(workerAttendance);
         return code;
@@ -226,7 +231,7 @@ public class WorkerAttendanceBOImpl extends PaginableBOImpl<WorkerAttendance>
         WorkerAttendance workerAttendance = new WorkerAttendance();
 
         String code = OrderNoGenerater
-            .generate(EGeneratePrefix.WorkerAttendance.getCode());
+                .generate(EGeneratePrefix.WorkerAttendance.getCode());
         workerAttendance.setCode(code);
         workerAttendance.setProjectCode(project.getCode());
         workerAttendance.setProjectName(project.getName());
@@ -242,7 +247,7 @@ public class WorkerAttendanceBOImpl extends PaginableBOImpl<WorkerAttendance>
         workerAttendance.setDirection(direction);
         workerAttendance.setDeleteStatus(EDeleteStatus.NORMAL.getCode());
         workerAttendance
-            .setUploadStatus(EWorkerContractUploadStatus.TO_UPLOAD.getCode());
+                .setUploadStatus(EWorkerContractUploadStatus.TO_UPLOAD.getCode());
         workerAttendance.setSource(EAttendanceSource.SYSTEM.getCode());
 
         workerAttendanceDAO.insert(workerAttendance);
@@ -251,7 +256,6 @@ public class WorkerAttendanceBOImpl extends PaginableBOImpl<WorkerAttendance>
     }
 
     /**
-     *
      * <p>Title: saveDeviceWorkerAttendance</p>
      * <p>Description: 保存设备识别的人员考勤</p>
      */
@@ -262,12 +266,12 @@ public class WorkerAttendanceBOImpl extends PaginableBOImpl<WorkerAttendance>
             String idCardInfo) {
         WorkerAttendance workerAttendance = new WorkerAttendance();
         String code = OrderNoGenerater
-            .generate(EGeneratePrefix.WorkerAttendance.getCode());
+                .generate(EGeneratePrefix.WorkerAttendance.getCode());
         workerAttendance.setCode(code);
         workerAttendance.setProjectCode(projectWorker.getProjectCode());
         workerAttendance.setProjectName(projectWorker.getProjectName());
         workerAttendance.setDate(
-            DateUtil.strToDate(dateTime, DateUtil.DATA_TIME_PATTERN_1));
+                DateUtil.strToDate(dateTime, DateUtil.DATA_TIME_PATTERN_1));
 
         workerAttendance.setTeamSysNo(projectWorker.getTeamSysNo());
         workerAttendance.setTeamName(projectWorker.getTeamName());
@@ -279,10 +283,10 @@ public class WorkerAttendanceBOImpl extends PaginableBOImpl<WorkerAttendance>
         workerAttendance.setImage(photoUrl);
         workerAttendance.setTerminalCode(deviceKey);
         workerAttendance.setDirection(
-            equipmentInfoBO.getEquipmentInfoByKey(deviceKey).getDirection());
+                equipmentInfoBO.getEquipmentInfoByKey(deviceKey).getDirection());
 
         workerAttendance
-            .setUploadStatus(EWorkerAttendanceUploadStatus.TO_UPLOAD.getCode());
+                .setUploadStatus(EWorkerAttendanceUploadStatus.TO_UPLOAD.getCode());
 
         workerAttendance.setSource(EAttendanceSource.REAL_TIME.getCode());
         workerAttendance.setDeleteStatus(EDeleteStatus.NORMAL.getCode());
@@ -327,15 +331,15 @@ public class WorkerAttendanceBOImpl extends PaginableBOImpl<WorkerAttendance>
         WorkerAttendance tempWorkerAttendance = new WorkerAttendance();
         tempWorkerAttendance.setCode(data.getCode());
         WorkerAttendance select = workerAttendanceDAO
-            .select(tempWorkerAttendance);
+                .select(tempWorkerAttendance);
         select.setDate(data.getDate());
         select.setDirection(data.getDirection());
         select.setDeleteStatus(EDeleteStatus.NORMAL.getCode());
         select
-            .setUploadStatus(EWorkerAttendanceUploadStatus.TO_UPLOAD.getCode());
+                .setUploadStatus(EWorkerAttendanceUploadStatus.TO_UPLOAD.getCode());
         workerAttendanceDAO.update(select);
         operateLogBO.saveOperateLog(EOperateLogRefType.WorkAttendance.getCode(),
-            data.getCode(), "修改人员考勤", user, "修改人员考勤");
+                data.getCode(), "修改人员考勤", user, "修改人员考勤");
     }
 
     @Override
@@ -353,7 +357,9 @@ public class WorkerAttendanceBOImpl extends PaginableBOImpl<WorkerAttendance>
         workerAttendance.setTeamName(teamName);
         workerAttendance.setTeamSysNo(teamSysNo);
         workerAttendanceDAO.updateWorkerAttendanceTeamName(workerAttendance);
-    };
+    }
+
+    ;
 
     @Override
     public int updateWorkerAttendanceDeleteStatus(String code, String status) {
@@ -361,7 +367,7 @@ public class WorkerAttendanceBOImpl extends PaginableBOImpl<WorkerAttendance>
         workerAttendance.setCode(code);
         workerAttendance.setDeleteStatus(status);
         return workerAttendanceDAO
-            .updateWorkerAttendanceDeleteStatus(workerAttendance);
+                .updateWorkerAttendanceDeleteStatus(workerAttendance);
     }
 
     @Override
@@ -370,14 +376,14 @@ public class WorkerAttendanceBOImpl extends PaginableBOImpl<WorkerAttendance>
         List<XN631918ReqData> dataList = req.getDataList();
         for (XN631918ReqData data : dataList) {
             data.setIdCardNumber(AesUtils.encrypt(data.getIdCardNumber(),
-                projectConfig.getSecret()));
+                    projectConfig.getSecret()));
         }
 
         String data = JSONObject.toJSONStringWithDateFormat(req,
-            "yyyy-MM-dd HH:mm:ss");
+                "yyyy-MM-dd HH:mm:ss");
 
         String resString = GovConnecter.getGovData("WorkerAttendance.Add", data,
-            projectConfig.getProjectCode(), projectConfig.getSecret());
+                projectConfig.getProjectCode(), projectConfig.getSecret());
 
         SerialHandler.handle(resString, projectConfig);
     }
@@ -388,19 +394,19 @@ public class WorkerAttendanceBOImpl extends PaginableBOImpl<WorkerAttendance>
         WorkerAttendance workerAttendance = new WorkerAttendance();
         BeanUtils.copyProperties(req, workerAttendance);
         workerAttendance.setDate(DateUtil.strToDate(req.getDate(),
-            DateUtil.FRONT_DATE_FORMAT_STRING));
+                DateUtil.FRONT_DATE_FORMAT_STRING));
 
         String data = JSONObject.toJSONStringWithDateFormat(workerAttendance,
-            "yyyy-MM-dd");
+                "yyyy-MM-dd");
 
         String queryString = GovConnecter.getGovData("WorkerAttendance.Query",
-            data, projectConfig.getProjectCode(), projectConfig.getSecret());
+                data, projectConfig.getProjectCode(), projectConfig.getSecret());
 
         Map<String, String> replaceMap = new HashMap<>();
 
         Paginable<WorkerAttendance> page = GovUtil.parseGovPage(
-            req.getPageIndex(), req.getPageSize(), queryString, replaceMap,
-            WorkerAttendance.class);
+                req.getPageIndex(), req.getPageSize(), queryString, replaceMap,
+                WorkerAttendance.class);
 
         return page;
     }
@@ -435,19 +441,19 @@ public class WorkerAttendanceBOImpl extends PaginableBOImpl<WorkerAttendance>
         workerAttendance.setProjectCode(projectConfigByLocal.getProjectCode());
         JsonObject jsonObject = new JsonObject();
         jsonObject.addProperty("projectCode",
-            projectConfigByLocal.getProjectCode());
+                projectConfigByLocal.getProjectCode());
 
         jsonObject.addProperty("teamSysNo", teamMaster.getTeamSysNo());
         JsonArray dataList = new JsonArray();
         JsonObject childJson = new JsonObject();
         childJson.addProperty("idCardType", workerAttendance.getIdCardType());
         childJson.addProperty("idCardNumber",
-            AesUtils.encrypt(workerAttendance.getIdCardNumber(),
-                projectConfigByLocal.getSecret()));
+                AesUtils.encrypt(workerAttendance.getIdCardNumber(),
+                        projectConfigByLocal.getSecret()));
 
         childJson.addProperty("date",
-            new SimpleDateFormat("yyyy-MM-dd hh:mm:ss")
-                .format(workerAttendance.getDate()));
+                new SimpleDateFormat("yyyy-MM-dd hh:mm:ss")
+                        .format(workerAttendance.getDate()));
         childJson.addProperty("direction", workerAttendance.getDirection());
         childJson.addProperty("channel", workerAttendance.getChannel());
         childJson.addProperty("attendType", workerAttendance.getAttendType());
@@ -459,4 +465,8 @@ public class WorkerAttendanceBOImpl extends PaginableBOImpl<WorkerAttendance>
         return jsonObject;
     }
 
+    @Override
+    public WorkerAttendance getLastAttendance(String workerCode) {
+        return workerAttendanceDAO.selectWorkerNewlyWorkerAttendanceData(workerCode);
+    }
 }

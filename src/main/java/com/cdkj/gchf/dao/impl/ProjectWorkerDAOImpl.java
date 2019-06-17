@@ -133,6 +133,13 @@ public class ProjectWorkerDAOImpl extends AMybatisTemplate
     }
 
     @Override
+    public int updateProjectWorkerBindingBank(ProjectWorker projectWorker) {
+        return super.update(
+                NAMESPACE.concat("updateProjectWorkerBindingBank"),
+                projectWorker);
+    }
+
+    @Override
     public List<Map> selectWorkerTypeSpread(String userId) {
         return super.selectList(NAMESPACE.concat("selectWorkerTypeSpread"), userId, Map.class);
     }

@@ -215,6 +215,9 @@
 		,positive_id_card_image_url = #{positiveIdCardImageUrl}
 		,negative_id_card_image_url = #{negativeIdCardImageUrl}
 		,attendance_picture = #{attendancePicture}
+		<if test="headImageUrl != null and headImageUrl != '' ">
+			,head_image_url = #{headImageUrl}
+		</if>
     WHERE code = #{code}
 	</update>
 

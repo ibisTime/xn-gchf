@@ -31,6 +31,12 @@ public interface IBankCardInfoAO {
 
 
     /**
+     * @param workerCode 项目人员编号
+     * @param code 银行卡编号
+     */
+    void bindBankCard(String workerCode, String code);
+
+    /**
      * 解除银行卡绑定
      */
     void unBindBankCard(String code);

@@ -102,6 +102,15 @@ public class BankCardInfoAOImpl implements IBankCardInfoAO {
         return pkCode;
     }
 
+    @Override
+    public void bindBankCard(String workerCode, String code) {
+
+        BankCardInfo bankCardInfo = bankCardBankBO.getBankCardInfo(code);
+        if (bankCardInfo.getBusinessType().equals(EBankCardBussinessType.CORP.getCode())) {
+            throw new BizException("xn00000", "所选银行卡类型不匹配");
+        }
+        projectWorkerBO.refreshProjectWorkerBankCardInfo(workerCode, code);
+    }
 
     @Override
     public void unBindBankCard(String code) {
@@ -142,18 +151,7 @@ public class BankCardInfoAOImpl implements IBankCardInfoAO {
     public Paginable<BankCardInfo> queryBankCardInfoPage(XN631765Req req,
             int start, int limit, BankCardInfo condition) {
         User briefUser = userBO.getBriefUser(req.getUserId());
-        // 根据用户类型进行查询
-//        if (StringUtils.isBlank(req.getBusinessSysNo())) {
-//            return null;
-//        }
-        // 项目端查询
         if (briefUser.getType().equals(EUserKind.Owner.getCode())) {
-            // 查询项目端项目人员的银行卡信息
-
-            Project project = projectBO
-                    .getProject(briefUser.getOrganizationCode());
-            List<ProjectWorker> projectWorkerList = projectWorkerBO
-                    .queryProjectWorkerListByProject(project.getCode());
             List<BankCardInfo> workerBankCard = new ArrayList<>();
             if (EBankCardBussinessType.CORP.getCode()
                     .equals(req.getBusinessType())) {
@@ -175,6 +173,21 @@ public class BankCardInfoAOImpl implements IBankCardInfoAO {
                         temp.setTeamName(projectWorker.getTeamName());
                         temp.setWorkerName(projectWorker.getWorkerName());
                         temp.setIdcardNumber(projectWorker.getIdcardNumber());
+                        if (projectWorker.getPayRollBankCardNumber().equals(temp.getBankNumber())) {
+                            //已绑定银行卡
+                            temp.setBind(true);
+                            if (workerBankCard.get(0) != null) {
+
+                                BankCardInfo move = workerBankCard.get(0);
+                                workerBankCard.remove(0);
+                                workerBankCard.add(0, temp);
+                                workerBankCard.add(move);
+                                continue;
+                            } else {
+                                workerBankCard.add(0, temp);
+                                continue;
+                            }
+                        }
                         workerBankCard.add(temp);
                     }
                     Page<BankCardInfo> page = new Page<BankCardInfo>();

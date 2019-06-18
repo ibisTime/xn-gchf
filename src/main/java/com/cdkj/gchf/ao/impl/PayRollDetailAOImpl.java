@@ -111,7 +111,7 @@ public class PayRollDetailAOImpl implements IPayRollDetailAO {
             long totalCount = payRollDetailBO
                     .selectCountByWorkerCode(payRollDetail.getWorkerCode());
             payRollDetail.setWorkerPayRollTotal(totalCount);
-
+            payRollDetail.setPayMonth(payRoll.getPayMonth());
             Project project = projectBO.getProject(payRoll.getProjectCode());
             payRollDetail.setProjectName(project.getName());
             CorpBasicinfo corpBasicinfoByCorp = corpBasicinfoBO

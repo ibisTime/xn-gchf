@@ -508,7 +508,7 @@ public class ProjectWorkerBOImpl extends PaginableBOImpl<ProjectWorker>
         ProjectWorker projectWorker = new ProjectWorker();
         projectWorker.setCode(code);
         projectWorker.setLastPayMonth(DateUtil.strToDate(lastPayMonth,
-                DateUtil.FRONT_DATE_FORMAT_STRING));
+                "YYYY-MM"));
         projectWorker
                 .setLastPayTotalAmount(new BigDecimal(lastPayRollTotalAmount));
         projectWorker

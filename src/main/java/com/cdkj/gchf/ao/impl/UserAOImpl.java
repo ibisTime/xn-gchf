@@ -177,11 +177,12 @@ public class UserAOImpl implements IUserAO {
     @Override
     @Transactional
     public void doChangeMoblie(String userId, String newMobile, String updater,
-            String remark) {
+            String remark, String captcha) {
         PhoneUtil.checkMobile(newMobile);
+        smsOutBO.checkCaptcha(newMobile, captcha, "631072");
         User userByMobile = userBO.getUserByMobile(newMobile);
         if (userByMobile != null) {
-            throw new BizException("改手机号已被使用");
+            throw new BizException("xn000000", "改手机号已被使用");
         }
         User user = userBO.getUser(userId);
         if (user == null) {

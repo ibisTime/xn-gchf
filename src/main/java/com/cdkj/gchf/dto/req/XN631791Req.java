@@ -1,5 +1,6 @@
 package com.cdkj.gchf.dto.req;
 
+import com.cdkj.gchf.common.StringUtil;
 import org.hibernate.validator.constraints.NotBlank;
 
 public class XN631791Req {
@@ -22,6 +23,9 @@ public class XN631791Req {
     // 反面照 URL
     @NotBlank
     private String negativeIdCardImageUrl;
+
+    //头像
+    private String headImageUrl;
 
     // 考勤照片
     private String attendancePicture;
@@ -74,4 +78,11 @@ public class XN631791Req {
         this.attendancePicture = attendancePicture;
     }
 
+    public String getHeadImageUrl() {
+        return headImageUrl;
+    }
+
+    public void setHeadImageUrl(String headImageUrl) {
+        this.headImageUrl = headImageUrl;
+    }
 }

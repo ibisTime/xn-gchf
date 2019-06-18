@@ -182,6 +182,12 @@ public class ProjectWorkerEntryExitHistoryBOImpl
         code = OrderNoGenerater
                 .generate(EGeneratePrefix.ProjectWorkerEntryExitHistory.getCode());
         entryExitHistory.setCode(code);
+        try {
+            entryExitHistory.setDate(new SimpleDateFormat("yyyy-MM-dd")
+                    .parse(DateUtil.dateToStr(new Date(System.currentTimeMillis()), "yyyy-MM-dd")));
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
         entryExitHistory.setTeamSysNo(teamMaster.getCode());
         entryExitHistory.setTeamName(teamMaster.getTeamName());
         projectWorkerEntryExitHistoryDAO.insert(entryExitHistory);

@@ -38,7 +38,7 @@ public interface IUserAO {
 
     // 更换手机号
     public void doChangeMoblie(String userId, String newMobile, String updater,
-            String remark);
+            String remark, String captcha);
 
     // 修改登录密码
     public void doModifyLoginPwd(String userId, String oldLoginPwd,

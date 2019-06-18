@@ -339,7 +339,8 @@ public class WorkerInfoAOImpl implements IWorkerInfoAO {
         if (workerInfoByIdCardNumber != null) {
             XN631791Req rs = new XN631791Req();
             rs.setCode(workerInfoByIdCardNumber.getCode());
-            rs.setHandIdCardImageUrl(base64Head + front.getFaceImg());
+//            rs.setHandIdCardImageUrl(base64Head + front.getFaceImg());
+            rs.setHeadImageUrl(base64Head + front.getFaceImg());
             rs.setPositiveIdCardImageUrl(req.getPositiveImage());
             rs.setNegativeIdCardImageUrl(req.getNegativeImage());
             workerInfoBO.refreshWorkerInfo(rs);

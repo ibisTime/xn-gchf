@@ -173,10 +173,13 @@ public class BankCardInfoAOImpl implements IBankCardInfoAO {
                         temp.setTeamName(projectWorker.getTeamName());
                         temp.setWorkerName(projectWorker.getWorkerName());
                         temp.setIdcardNumber(projectWorker.getIdcardNumber());
-                        if (projectWorker.getPayRollBankCardNumber().equals(temp.getBankNumber())) {
+                        if (StringUtils.isNotBlank(projectWorker.getPayRollBankCardNumber())
+                                && projectWorker.getPayRollBankCardNumber()
+                                .equals(temp.getBankNumber())) {
                             //已绑定银行卡
                             temp.setBind(true);
-                            if (workerBankCard.get(0) != null) {
+                            if (CollectionUtils.isNotEmpty(workerBankCard)
+                                    && workerBankCard.get(0) != null) {
 
                                 BankCardInfo move = workerBankCard.get(0);
                                 workerBankCard.remove(0);

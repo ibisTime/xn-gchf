@@ -126,6 +126,15 @@
       <if test="deviceKey != null and deviceKey != '' ">
         AND ew.device_key = #{deviceKey}
       </if>
+      <if test="status != null and status != '' ">
+        AND t.status= #{status}
+      </if>
+      <if test="entryTime != null ">
+        AND t.entry_time= #{entryTime}
+      </if>
+      <if test="exitTime != null ">
+        AND t.exit_time= #{exitTime}
+      </if>
     </trim>
   </sql>
 
@@ -439,8 +448,8 @@
       ,pay_roll_top_bank_code    = #{payRollTopBankCode}
       ,has_buy_insurance         = #{hasBuyInsurance}
       ,work_date                 = #{workDate}
-
       ,bank_name                 = #{bankName}
+
     WHERE code =
           #{code}
   </update>

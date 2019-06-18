@@ -137,8 +137,10 @@ public class ProjectWorkerEntryExitHistoryAOImpl
             condition.setWorkerCode(projectWorkerEntryExitHistory.getWorkerCode());
             condition.setDeleteStatus(EDeleteStatus.NORMAL.getCode());
             long totalCount = projectWorkerEntryExitHistoryBO.getTotalCount(condition);
-            if (totalCount == 1) {
-                projectWorkerBO.refreshStatus(code, null, null, null);
+            if (totalCount == 1L) {
+                projectWorkerBO
+                        .refreshStatus(projectWorkerEntryExitHistory.getWorkerCode(), null, null,
+                                null);
             } else {
                 projectWorkerBO.updateLastExitEntryData(code);
             }

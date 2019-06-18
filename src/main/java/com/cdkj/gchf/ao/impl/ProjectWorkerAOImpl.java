@@ -1,6 +1,7 @@
 package com.cdkj.gchf.ao.impl;
 
 import com.cdkj.gchf.common.DateUtil;
+import com.cdkj.gchf.common.StringUtil;
 import com.cdkj.gchf.domain.ProjectWorkerEntryExitHistory;
 import com.cdkj.gchf.enums.EEntryExitType;
 import java.util.ArrayList;
@@ -166,7 +167,9 @@ public class ProjectWorkerAOImpl implements IProjectWorkerAO {
 
         EWorkerRoleType.checkExists(req.getWorkRole());
         EWorkerType.checkExists(req.getWorkType());
-        EIsNotType.checkExists(req.getHasBuyInsurance());
+        if (StringUtils.isNotBlank(req.getHasBuyInsurance())) {
+            EIsNotType.checkExists(req.getHasBuyInsurance());
+        }
 
         User briefUser = userBO.getBriefUser(req.getUserId());
 

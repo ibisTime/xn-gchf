@@ -397,7 +397,7 @@ public class ProjectWorkerEntryExitHistoryBOImpl
             String workerCode) {
         ProjectWorkerEntryExitHistory condition = new ProjectWorkerEntryExitHistory();
         condition.setWorkerCode(workerCode);
-        condition.setOrder("code", false);
+        condition.setOrder("date", false);
         condition.setDeleteStatus(EDeleteStatus.NORMAL.getCode());
         List<ProjectWorkerEntryExitHistory> selectList = projectWorkerEntryExitHistoryDAO
                 .selectList(condition);
@@ -446,4 +446,18 @@ public class ProjectWorkerEntryExitHistoryBOImpl
         return page;
     }
 
+    @Override
+    public ProjectWorkerEntryExitHistory selectLastestExitEntryData(String workerCode) {
+        ProjectWorkerEntryExitHistory projectWorkerEntryExitHistory = new ProjectWorkerEntryExitHistory();
+        projectWorkerEntryExitHistory.setDeleteStatus(EDeleteStatus.NORMAL.getCode());
+        projectWorkerEntryExitHistory.setWorkerCode(workerCode);
+        projectWorkerEntryExitHistory.setOrder("date ", false);
+        List<ProjectWorkerEntryExitHistory> projectWorkerEntryExitHistories = projectWorkerEntryExitHistoryDAO
+                .selectList(projectWorkerEntryExitHistory);
+        if (CollectionUtils.isNotEmpty(projectWorkerEntryExitHistories)) {
+            return projectWorkerEntryExitHistories.get(0);
+        }
+        return null;
+
+    }
 }

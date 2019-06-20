@@ -330,7 +330,8 @@
          ,t.delete_status
     FROM thf_worker_attendance t
     WHERE t.worker_code = #{workerCode}
-    order by code desc
+      AND delete_status = #{deleteStatus}
+    order by date desc
     LIMIT
     1
   </select>

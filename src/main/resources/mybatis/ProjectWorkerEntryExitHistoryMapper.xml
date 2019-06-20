@@ -230,7 +230,8 @@
 		</trim>
 	</select>
 
-	<select id="select_projectWorkerEntryExitHistory_count"
+
+  <select id="select_projectWorkerEntryExitHistory_count"
 		parameterType="projectWorkerEntryExitHistory" resultType="java.lang.Long">
 		SELECT count(1) FROM thf_project_worker_entry_exit_history t
 		<include refid="where_condition" />

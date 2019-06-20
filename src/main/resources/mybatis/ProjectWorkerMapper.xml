@@ -457,13 +457,9 @@
 
   <update id="updateStatus" parameterType="projectWorker">
     UPDATE thf_project_worker
-    SET thf_project_worker.status = #{status}
-    <if test="entryTime != null ">
+    SET thf_project_worker.status    = #{status}
       ,thf_project_worker.entry_time = #{entryTime}
-    </if>
-    <if test="exitTime != null ">
-      ,thf_project_worker.exit_time = #{exitTime}
-    </if>
+      ,thf_project_worker.exit_time  = #{exitTime}
 
     WHERE thf_project_worker.code = #{code}
   </update>

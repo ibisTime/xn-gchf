@@ -467,6 +467,12 @@ public class WorkerAttendanceBOImpl extends PaginableBOImpl<WorkerAttendance>
 
     @Override
     public WorkerAttendance getLastAttendance(String workerCode) {
-        return workerAttendanceDAO.selectWorkerNewlyWorkerAttendanceData(workerCode);
+        // :D
+        WorkerAttendance condition = new WorkerAttendance();
+        condition.setWorkerCode(workerCode);
+        condition.setOrder("date", false);
+        condition.setDeleteStatus(EDeleteStatus.NORMAL.getCode());
+        return workerAttendanceDAO.selectList(condition).get(1);
+//        return workerAttendanceDAO.selectWorkerNewlyWorkerAttendanceData(workerCode);
     }
 }

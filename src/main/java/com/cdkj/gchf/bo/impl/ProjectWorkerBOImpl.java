@@ -1,6 +1,7 @@
 package com.cdkj.gchf.bo.impl;
 
 import com.cdkj.gchf.bo.IBankCardBankBO;
+import com.cdkj.gchf.bo.IPayRollBO;
 import com.cdkj.gchf.bo.IPayRollDetailBO;
 import com.cdkj.gchf.bo.IProjectWorkerEntryExitHistoryBO;
 import com.cdkj.gchf.bo.IWorkerAttendanceBO;
@@ -123,6 +124,8 @@ public class ProjectWorkerBOImpl extends PaginableBOImpl<ProjectWorker>
     @Autowired
     private IPayRollDetailBO payRollDetailBO;
 
+    @Autowired
+    private IPayRollBO payRollBO;
     @Override
     public ProjectWorker saveProjectWorker(XN631690Req data) {
         ProjectWorker projectWorkerInfo = new ProjectWorker();
@@ -508,7 +511,7 @@ public class ProjectWorkerBOImpl extends PaginableBOImpl<ProjectWorker>
         ProjectWorker projectWorker = new ProjectWorker();
         projectWorker.setCode(code);
         projectWorker.setLastPayMonth(DateUtil.strToDate(lastPayMonth,
-                "YYYY-MM"));
+                "yyyy-MM"));
         projectWorker
                 .setLastPayTotalAmount(new BigDecimal(lastPayRollTotalAmount));
         projectWorker
@@ -592,8 +595,10 @@ public class ProjectWorkerBOImpl extends PaginableBOImpl<ProjectWorker>
                 projectWorker.setExitTime(lastTimeEntryTime.getDate());
             }
             projectWorker.setStatus(String.valueOf(lastTimeEntryTime.getType()));
+            projectWorkerDAO.updateLastestData(projectWorker);
+            return;
         }
-        projectWorkerDAO.updateLastestData(projectWorker);
+        projectWorkerDAO.updateStatus(projectWorker);
     }
 
     @Override
@@ -603,32 +608,38 @@ public class ProjectWorkerBOImpl extends PaginableBOImpl<ProjectWorker>
         condition.setDeleteStatus(EDeleteStatus.NORMAL.getCode());
         condition.setWorkerCode(code);
         long totalCount = workerAttendanceBO.getTotalCount(condition);
-        if (totalCount == 1L) {
+        if (totalCount < 1L) {
             refreshLastAttendance(code, null, null);
         } else {
             WorkerAttendance lastAttendance = workerAttendanceBO.getLastAttendance(code);
             ProjectWorker projectWorker = new ProjectWorker();
-            BeanUtils.copyProperties(lastAttendance, projectWorker);
-            refreshLastestDate(projectWorker);
+            projectWorker.setCode(code);
+            projectWorker.setAttendanceStatus(lastAttendance.getDirection());
+            projectWorker.setLastAttendanceDatetime(lastAttendance.getDate());
+            projectWorkerDAO.updateLastestData(projectWorker);
         }
     }
 
     @Override
     public void updateLastPayRollData(String code) {
         PayRollDetail condition = new PayRollDetail();
-        condition.setWorkerCode(code);
-        condition.setDeleteStatus(EDeleteStatus.NORMAL.getCode());
 
         PayRollDetail lastPayRollData = payRollDetailBO.getLastPayRollData(code);
         ProjectWorker projectWorker = new ProjectWorker();
         projectWorker.setCode(code);
 
         if (lastPayRollData != null) {
-            projectWorker.setLastPayMonth(lastPayRollData.getPayMonth());
+            Date payMonth = payRollBO.getPayRoll(lastPayRollData.getPayRollCode()).getPayMonth();
+            if (payMonth != null) {
+                projectWorker.setLastPayMonth(payMonth);
+            } else {
+                projectWorker.setLastPayMonth(lastPayRollData.getPayMonth());
+            }
+
             projectWorker.setLastPayActualAmount(lastPayRollData.getActualAmount());
             projectWorker.setLastPayTotalAmount(lastPayRollData.getTotalPayAmount());
-            projectWorker.setCode(lastPayRollData.getWorkerCode());
             projectWorkerDAO.updateLastestData(projectWorker);
+            return;
         }
         projectWorkerDAO.updateLastPayRoll(projectWorker);
     }

@@ -151,7 +151,13 @@ public class PayRollDetailAOImpl implements IPayRollDetailAO {
                 && !StringUtil.isNumber(req.getActualAmount())) {
             throw new BizException("XN631810", "【实发金额】为数字类型,请重新填写");
         }
-
+        if (StringUtils.isNotBlank(req.getBackPayMonth())) {
+            projectWorkerBO.refreshLastPayRoll(payRollDetail.getWorkerCode(), req.getBackPayMonth(),
+                    req.getTotalPayAmount(), req.getActualAmount());
+        } else {
+            projectWorkerBO.refreshLastPayRoll(payRollDetail.getWorkerCode(), req.getBalanceDate(),
+                    req.getTotalPayAmount(), req.getActualAmount());
+        }
         return payRollDetailBO.updatePayRollDetail(req);
     }
 

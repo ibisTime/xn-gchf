@@ -182,7 +182,7 @@ public class UserAOImpl implements IUserAO {
         smsOutBO.checkCaptcha(newMobile, captcha, "631072");
         User userByMobile = userBO.getUserByMobile(newMobile);
         if (userByMobile != null) {
-            throw new BizException("xn000000", "改手机号已被使用");
+            throw new BizException("xn000000", "该手机号已被使用");
         }
         User user = userBO.getUser(userId);
         if (user == null) {

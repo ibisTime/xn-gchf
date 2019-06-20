@@ -163,41 +163,114 @@ public class BankCardInfoAOImpl implements IBankCardInfoAO {
                 //查询人员银行卡信息
                 ProjectWorker projectWorker = projectWorkerBO
                         .getProjectWorker(req.getBusinessSysNo());
-                BankCardInfo bankcardCondition = new BankCardInfo();
-                bankcardCondition.setBusinessSysNo(projectWorker.getCode());
-                List<BankCardInfo> bankCardInfo = bankCardBankBO
-                        .queryBankCardInfoList(bankcardCondition);
-                if (CollectionUtils.isNotEmpty(bankCardInfo)) {
-                    for (BankCardInfo temp : bankCardInfo) {
-                        temp.setProjectName(projectWorker.getProjectName());
-                        temp.setTeamName(projectWorker.getTeamName());
-                        temp.setWorkerName(projectWorker.getWorkerName());
-                        temp.setIdcardNumber(projectWorker.getIdcardNumber());
-                        if (StringUtils.isNotBlank(projectWorker.getPayRollBankCardNumber())
-                                && projectWorker.getPayRollBankCardNumber()
-                                .equals(temp.getBankNumber())) {
-                            //已绑定银行卡
-                            temp.setBind(true);
-                            if (CollectionUtils.isNotEmpty(workerBankCard)
-                                    && workerBankCard.get(0) != null) {
+//                BankCardInfo bankcardCondition = new BankCardInfo();
+//                bankcardCondition.setBusinessSysNo(projectWorker.getCode());
+//                List<BankCardInfo> bankCardInfo = bankCardBankBO
+//                        .queryBankCardInfoList(bankcardCondition);
 
-                                BankCardInfo move = workerBankCard.get(0);
-                                workerBankCard.remove(0);
-                                workerBankCard.add(0, temp);
-                                workerBankCard.add(move);
-                                continue;
-                            } else {
-                                workerBankCard.add(0, temp);
-                                continue;
+                List<ProjectWorker> projectWorkers = projectWorkerBO
+                        .selectProjectWorkerByWorkerCode(projectWorker.getWorkerCode());
+                List<BankCardInfo> bankCardInfoList = new ArrayList<>();
+                for (ProjectWorker temp : projectWorkers) {
+                    List<BankCardInfo> bankCardByByssinessCode = bankCardBankBO
+                            .getBankCardByByssinessCode(EBankCardBussinessType.USER.getCode(),
+                                    temp.getCode());
+                    if (CollectionUtils.isNotEmpty(bankCardByByssinessCode)) {
+                        //这个人员所有的银行卡 包括不同i行囊u下的
+                        for (BankCardInfo bankCardInfo : bankCardByByssinessCode) {
+                            bankCardInfo.setProjectName(temp.getProjectName());
+                            bankCardInfo.setTeamName(temp.getTeamName());
+                            bankCardInfo.setWorkerName(temp.getWorkerName());
+                            bankCardInfo.setIdcardNumber(temp.getIdcardNumber());
+                            //这个项目所绑定的银行卡
+                            if (StringUtils.isNotBlank(projectWorker.getPayRollBankCardNumber())
+                                    && projectWorker.getPayRollBankCardNumber()
+                                    .equals(bankCardInfo.getBankNumber())) {
+                                //已绑定银行卡
+                                bankCardInfo.setBind(true);
+                                if (CollectionUtils.isNotEmpty(workerBankCard)
+                                        && workerBankCard.get(0) != null) {
+
+                                    BankCardInfo move = workerBankCard.get(0);
+                                    workerBankCard.remove(0);
+                                    workerBankCard.add(0, bankCardInfo);
+                                    workerBankCard.add(move);
+                                    continue;
+                                } else {
+                                    workerBankCard.add(0, bankCardInfo);
+                                    continue;
+                                }
                             }
-                        }
-                        workerBankCard.add(temp);
-                    }
-                    Page<BankCardInfo> page = new Page<BankCardInfo>();
-                    page.setList(workerBankCard);
-                    return page;
-                }
 
+                        }
+                    }
+                    bankCardInfoList.addAll(bankCardByByssinessCode);
+                }
+//                if (CollectionUtils.isNotEmpty(bankCardInfo)) {
+//                    for (BankCardInfo temp : bankCardInfo) {
+//                        temp.setProjectName(projectWorker.getProjectName());
+//                        temp.setTeamName(projectWorker.getTeamName());
+//                        temp.setWorkerName(projectWorker.getWorkerName());
+//                        temp.setIdcardNumber(projectWorker.getIdcardNumber());
+//                        if (StringUtils.isNotBlank(projectWorker.getPayRollBankCardNumber())
+//                                && projectWorker.getPayRollBankCardNumber()
+//                                .equals(temp.getBankNumber())) {
+//                            //已绑定银行卡
+//                            temp.setBind(true);
+//                            if (CollectionUtils.isNotEmpty(workerBankCard)
+//                                    && workerBankCard.get(0) != null) {
+//
+//                                BankCardInfo move = workerBankCard.get(0);
+//                                workerBankCard.remove(0);
+//                                workerBankCard.add(0, temp);
+//                                workerBankCard.add(move);
+//                                continue;
+//                            } else {
+//                                workerBankCard.add(0, temp);
+//                                continue;
+//                            }
+//                        }
+//                        workerBankCard.add(temp);
+//                    }
+//                    Page<BankCardInfo> page = new Page<BankCardInfo>();
+//                    page.setList(workerBankCard);
+//                    return page;
+//                }
+
+//                if (CollectionUtils.isNotEmpty(bankCardInfo)) {
+//                    for (BankCardInfo temp : bankCardInfo) {
+//                        temp.setProjectName(projectWorker.getProjectName());
+//                        temp.setTeamName(projectWorker.getTeamName());
+//                        temp.setWorkerName(projectWorker.getWorkerName());
+//                        temp.setIdcardNumber(projectWorker.getIdcardNumber());
+//                        if (StringUtils.isNotBlank(projectWorker.getPayRollBankCardNumber())
+//                                && projectWorker.getPayRollBankCardNumber()
+//                                .equals(temp.getBankNumber())) {
+//                            //已绑定银行卡
+//                            temp.setBind(true);
+//                            if (CollectionUtils.isNotEmpty(workerBankCard)
+//                                    && workerBankCard.get(0) != null) {
+//
+//                                BankCardInfo move = workerBankCard.get(0);
+//                                workerBankCard.remove(0);
+//                                workerBankCard.add(0, temp);
+//                                workerBankCard.add(move);
+//                                continue;
+//                            } else {
+//                                workerBankCard.add(0, temp);
+//                                continue;
+//                            }
+//                        }
+//                        workerBankCard.add(temp);
+//                    }
+//                    Page<BankCardInfo> page = new Page<BankCardInfo>();
+//                    page.setList(workerBankCard);
+//                    return page;
+//                }
+                //ypdo
+                Page<BankCardInfo> page = new Page<BankCardInfo>();
+                page.setList(bankCardInfoList);
+                    return page;
             }
 
         }

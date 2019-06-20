@@ -260,7 +260,7 @@
 		SELECT count(1) FROM thf_pay_roll_detail t
 		<include refid="where_condition" />
 	</select>
-	<select id="selectByWorkerCode" resultType="payRollDetail">
+	<select id="selectByWorkerCode" resultMap="payRollDetail_DB_Result" parameterType="payRollDetail">
 		SELECT t.code
 				 ,t.pay_roll_code
 				 ,t.worker_code
@@ -286,7 +286,7 @@
 				 ,t.upload_status
 				 ,t.delete_status
 		FROM thf_pay_roll_detail t
-		where worker_code = #{workerCode}
+		where t.worker_code = #{workerCode}
 			and t.delete_status = #{deleteStatus}
 		order by code
 		desc

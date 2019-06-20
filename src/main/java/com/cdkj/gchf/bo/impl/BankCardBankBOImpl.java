@@ -146,6 +146,7 @@ public class BankCardBankBOImpl extends PaginableBOImpl<BankCardInfo>
     public List<BankCardInfo> getBankCardByByssinessCode(String bussinessType, String bussinessCode) {
         BankCardInfo bankCardInfo = new BankCardInfo();
         bankCardInfo.setBusinessType(bussinessType);
+        bankCardInfo.setStatus(EBankCardStatus.Normal.getCode());
         bankCardInfo.setBusinessSysNo(bussinessCode);
         return bankCardInfoDAO.selectList(bankCardInfo);
     }

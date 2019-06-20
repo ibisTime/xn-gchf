@@ -129,8 +129,9 @@ public class WorkerAttendanceAOImpl implements IWorkerAttendanceAO {
 
         //回写考勤信息记录到项目人员
         WorkerAttendance workerAttendance = workerAttendanceBO.getWorkerAttendance(data.getCode());
+
         projectWorkerBO.refreshLastAttendance(workerAttendance.getWorkerCode(), data.getDirection(),
-                DateUtil.dateToStr(data.getDate(), DateUtil.FRONT_DATE_FORMAT_STRING));
+                DateUtil.dateToStr(data.getDate(), DateUtil.DATA_TIME_PATTERN_1));
     }
 
     @Override

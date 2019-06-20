@@ -137,4 +137,12 @@ public interface IProjectWorkerEntryExitHistoryBO
      */
     public Paginable<ProjectWorkerEntryExitHistory> doQuery(XN631915Req req,
             ProjectConfig projectConfig);
+
+
+    /**
+     * 查询项目人员最近一次进退场时间
+     *
+     * @param workerCode 项目人员code
+     */
+    ProjectWorkerEntryExitHistory selectLastestExitEntryData(String workerCode);
 }

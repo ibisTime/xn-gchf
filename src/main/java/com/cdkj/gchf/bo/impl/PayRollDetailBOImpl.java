@@ -41,6 +41,7 @@ import com.google.gson.JsonObject;
 @Service(value = "payRollDetailBO")
 public class PayRollDetailBOImpl extends PaginableBOImpl<PayRollDetail>
         implements IPayRollDetailBO {
+
     @Autowired
     private PayRollDetailDAOImpl payRollDetailDAO;
 
@@ -63,8 +64,8 @@ public class PayRollDetailBOImpl extends PaginableBOImpl<PayRollDetail>
 
     @Override
     public void savePayRollDetail(String payRollCode, String teamSysNo,
-                                  String projectCode, String getPayMonth,
-                                  List<XN631770ReqDetail> data) {
+            String projectCode, String getPayMonth,
+            List<XN631770ReqDetail> data) {
 
         for (XN631770ReqDetail detail : data) {
             PayRollDetail payRollDetail = new PayRollDetail();
@@ -138,7 +139,15 @@ public class PayRollDetailBOImpl extends PaginableBOImpl<PayRollDetail>
             payRollDetailDAO.insert(payRollDetail);
 
             //回写工资信息到项目人员
-            projectWorkerBO.refreshLastPayRoll(projectWorker.getCode(), getPayMonth, detail.getTotalPayAmount(), detail.getActualAmount());
+            if (StringUtils.isNotBlank(detail.getBackPayMonth())) {
+                projectWorkerBO.refreshLastPayRoll(projectWorker.getCode(),
+                        detail.getBackPayMonth(),
+                        detail.getTotalPayAmount(), detail.getActualAmount());
+            } else {
+                projectWorkerBO.refreshLastPayRoll(projectWorker.getCode(),
+                        getPayMonth,
+                        detail.getTotalPayAmount(), detail.getActualAmount());
+            }
 
 
         }
@@ -205,7 +214,7 @@ public class PayRollDetailBOImpl extends PaginableBOImpl<PayRollDetail>
 
     @Override
     public int fakeDeletePayRollDetail(String idCardType, String idCardNumber,
-                                       String projectCode) {
+            String projectCode) {
         PayRollDetail payRollDetail = new PayRollDetail();
         payRollDetail.setProjectCode(projectCode);
         payRollDetail.setIdcardNumber(idCardNumber);
@@ -304,8 +313,8 @@ public class PayRollDetailBOImpl extends PaginableBOImpl<PayRollDetail>
 
     @Override
     public JsonObject getUploadRequestJsontoPlantform(PayRoll payRollData,
-                                                      TeamMaster teamMasterData, ProjectConfig projectConfigData,
-                                                      PayRollDetail payRollDetailData) {
+            TeamMaster teamMasterData, ProjectConfig projectConfigData,
+            PayRollDetail payRollDetailData) {
         System.out.println(projectConfigData.getSecret());
         System.out.println(projectConfigData.getProjectCode());
         System.out.println(payRollDetailData.getPayBankCardNumber());
@@ -395,6 +404,7 @@ public class PayRollDetailBOImpl extends PaginableBOImpl<PayRollDetail>
         PayRollDetail payRollDetail = new PayRollDetail();
         payRollDetail.setWorkerCode(workerCode);
         payRollDetail.setDeleteStatus(EDeleteStatus.NORMAL.getCode());
+
         PayRollDetail data = payRollDetailDAO.selectByWorkerCode(payRollDetail);
         return data;
     }

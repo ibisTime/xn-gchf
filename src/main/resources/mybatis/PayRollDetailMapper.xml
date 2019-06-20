@@ -286,9 +286,10 @@
 				 ,t.upload_status
 				 ,t.delete_status
 		FROM thf_pay_roll_detail t
-		where worker_code = #{workerCode} t.delete_status = #{deleteStatus}
+		where worker_code = #{workerCode}
+			and t.delete_status = #{deleteStatus}
 		order by code
 		desc
-			LIMIT 1,1
+		LIMIT 1
 	</select>
 </mapper>

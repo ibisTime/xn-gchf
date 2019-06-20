@@ -218,6 +218,12 @@
 		<if test="headImageUrl != null and headImageUrl != '' ">
 			,head_image_url = #{headImageUrl}
 		</if>
+		<if test="startDate != null">
+			,start_date =#{startDate}
+		</if>
+		<if test="expiryDate != null">
+			,expiry_date = #{expiryDate}
+		</if>
     WHERE code = #{code}
 	</update>
 
@@ -251,6 +257,12 @@
     SET head_image_url            = #{headImageUrl}
       ,positive_id_card_image_url = #{positiveIdCardImageUrl}
       ,negative_id_card_image_url = #{negativeIdCardImageUrl}
+		<if test="startDate !=null ">
+			,start_date = #{startDate}
+		</if>
+		<if test="expiryDate != null ">
+			,expiry_date = #{expiryDate}
+		</if>
     WHERE code = #{code}
   </update>
 

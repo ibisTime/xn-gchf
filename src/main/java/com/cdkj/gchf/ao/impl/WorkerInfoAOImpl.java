@@ -4,6 +4,7 @@ import com.cdkj.gchf.ao.IWorkerInfoAO;
 import com.cdkj.gchf.bo.*;
 import com.cdkj.gchf.bo.base.Page;
 import com.cdkj.gchf.bo.base.Paginable;
+import com.cdkj.gchf.common.DateUtil;
 import com.cdkj.gchf.common.IdCardChecker;
 import com.cdkj.gchf.common.StringUtil;
 import com.cdkj.gchf.domain.*;
@@ -325,10 +326,11 @@ public class WorkerInfoAOImpl implements IWorkerInfoAO {
         projectBO.refreshUsedOcrCount(project.getCode(),
                 project.getUsedOcrCount() + 1);
         if (StringUtils.isNotBlank(req.getCode())) {
+            String[] validDate = back.getValidDate().split("-");
             workerInfoBO
                     .updateWorkerInfoIdcardImageH5(req.getCode(), base64Head + front.getFaceImg(),
-                    req.getPositiveImage(),
-                    req.getNegativeImage());
+                            req.getPositiveImage(),
+                            req.getNegativeImage(), validDate[0], validDate[1]);
             return req.getCode();
         }
         projectWorkerBO.getProjectWorker(user.getOrganizationCode(), front.getIdNo());
@@ -339,9 +341,11 @@ public class WorkerInfoAOImpl implements IWorkerInfoAO {
         if (workerInfoByIdCardNumber != null) {
             XN631791Req rs = new XN631791Req();
             rs.setCode(workerInfoByIdCardNumber.getCode());
-//            rs.setHandIdCardImageUrl(base64Head + front.getFaceImg());
             rs.setHeadImageUrl(base64Head + front.getFaceImg());
             rs.setPositiveIdCardImageUrl(req.getPositiveImage());
+            String[] validDate = back.getValidDate().split("-");
+            rs.setStartDate(validDate[0]);
+            rs.setExpiryDate(validDate[1]);
             rs.setNegativeIdCardImageUrl(req.getNegativeImage());
             workerInfoBO.refreshWorkerInfo(rs);
             return workerInfoByIdCardNumber.getCode();

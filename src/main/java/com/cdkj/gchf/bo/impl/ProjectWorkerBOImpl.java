@@ -545,6 +545,12 @@ public class ProjectWorkerBOImpl extends PaginableBOImpl<ProjectWorker>
         projectWorkerDAO.updateProjectWorkerBindingBank(condition);
     }
 
+
+    @Override
+    public void refreshLastestDate(ProjectWorker projectWorker) {
+        projectWorkerDAO.updateLastestData(projectWorker);
+    }
+
     @Override
     public List<ProjectWorker> selectProjectWorkerByWorkerCode(
             String workerCode) {
@@ -587,25 +593,24 @@ public class ProjectWorkerBOImpl extends PaginableBOImpl<ProjectWorker>
             }
             projectWorker.setStatus(String.valueOf(lastTimeEntryTime.getType()));
         }
-        projectWorkerDAO.update(projectWorker);
+        projectWorkerDAO.updateLastestData(projectWorker);
     }
 
     @Override
     public void updateLastAttendanceData(String code, String workerAttendanceCode) {
 
-        WorkerAttendance lastAttendance = workerAttendanceBO
-                .getLastAttendance(workerAttendanceCode);
-        ProjectWorker condition = new ProjectWorker();
-        condition.setCode(code);
+        WorkerAttendance condition = new WorkerAttendance();
         condition.setDeleteStatus(EDeleteStatus.NORMAL.getCode());
-
-        ProjectWorker select = projectWorkerDAO.select(condition);
-        condition.setLastAttendanceDatetime(lastAttendance.getDate());
-        condition.setAttendanceStatus(lastAttendance.getDirection());
-
-        projectWorkerDAO.updateLastAttendance(select);
-
-
+        condition.setWorkerCode(code);
+        long totalCount = workerAttendanceBO.getTotalCount(condition);
+        if (totalCount == 1L) {
+            refreshLastAttendance(code, null, null);
+        } else {
+            WorkerAttendance lastAttendance = workerAttendanceBO.getLastAttendance(code);
+            ProjectWorker projectWorker = new ProjectWorker();
+            BeanUtils.copyProperties(lastAttendance, projectWorker);
+            refreshLastestDate(projectWorker);
+        }
     }
 
     @Override
@@ -622,7 +627,8 @@ public class ProjectWorkerBOImpl extends PaginableBOImpl<ProjectWorker>
             projectWorker.setLastPayMonth(lastPayRollData.getPayMonth());
             projectWorker.setLastPayActualAmount(lastPayRollData.getActualAmount());
             projectWorker.setLastPayTotalAmount(lastPayRollData.getTotalPayAmount());
-            projectWorkerDAO.updateLastPayRoll(projectWorker);
+            projectWorker.setCode(lastPayRollData.getWorkerCode());
+            projectWorkerDAO.updateLastestData(projectWorker);
         }
         projectWorkerDAO.updateLastPayRoll(projectWorker);
     }

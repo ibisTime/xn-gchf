@@ -41,7 +41,7 @@ public interface IWorkerInfoBO extends IPaginableBO<WorkerInfo> {
      * @param negativeImage 反面照
      */
     int updateWorkerInfoIdcardImageH5(String code, String headImage, String positiveImage,
-            String negativeImage);
+            String negativeImage, String startDate, String enpiryDate);
 
     int refreshWorkerInfo(XN631792Req req);
 

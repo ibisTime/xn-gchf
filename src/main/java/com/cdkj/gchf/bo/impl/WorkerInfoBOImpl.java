@@ -196,18 +196,33 @@ public class WorkerInfoBOImpl extends PaginableBOImpl<WorkerInfo>
     public int refreshWorkerInfo(XN631791Req req) {
         WorkerInfo condition = new WorkerInfo();
         BeanUtils.copyProperties(req, condition);
+        if (StringUtils.isNotBlank(req.getStartDate())) {
+            condition.setStartDate(
+                    DateUtil.strToDate(req.getStartDate(), DateUtil.DATA_TIME_PATTERN_9));
+        }
+        if (StringUtils.isNotBlank(req.getExpiryDate())) {
+            condition.setStartDate(
+                    DateUtil.strToDate(req.getExpiryDate(), DateUtil.DATA_TIME_PATTERN_9));
+        }
         return workerInfoDAO.updateWorkerInfoAboutIdcard(condition);
     }
 
 
     @Override
     public int updateWorkerInfoIdcardImageH5(String code, String headImage, String positiveImage,
-            String negativeImage) {
+            String negativeImage, String startDate, String enpiryDate) {
         WorkerInfo workerInfo = new WorkerInfo();
         workerInfo.setPositiveIdCardImageUrl(positiveImage);
         workerInfo.setNegativeIdCardImageUrl(negativeImage);
         workerInfo.setHeadImageUrl(headImage);
+        if (StringUtils.isNotBlank(startDate)) {
+            workerInfo.setStartDate(DateUtil.strToDate(startDate, DateUtil.DATA_TIME_PATTERN_9));
+        }
+        if (StringUtils.isNotBlank(enpiryDate)) {
+            workerInfo.setExpiryDate(DateUtil.strToDate(enpiryDate, DateUtil.DATA_TIME_PATTERN_9));
+        }
         workerInfo.setCode(code);
+
         return workerInfoDAO.updateWorkerInfoIdCardImageH5(workerInfo);
     }
 

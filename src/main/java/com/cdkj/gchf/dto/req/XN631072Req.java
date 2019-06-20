@@ -25,7 +25,7 @@ public class XN631072Req {
     private String remark;
 
     //验证码
-    private String SmsCaptcha;
+    private String smsCaptcha;
 
     public String getUserId() {
         return userId;
@@ -60,10 +60,10 @@ public class XN631072Req {
     }
 
     public String getSmsCaptcha() {
-        return SmsCaptcha;
+        return smsCaptcha;
     }
 
     public void setSmsCaptcha(String smsCaptcha) {
-        SmsCaptcha = smsCaptcha;
+        this.smsCaptcha = smsCaptcha;
     }
 }

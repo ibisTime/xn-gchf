@@ -490,6 +490,43 @@
     WHERE code = #{code}
   </update>
 
+  <update id="updateLastestData" parameterType="projectWorker">
+    UPDATE thf_project_worker
+    SET
+    code = #{code}
+    <if test="status != null and status !=  '' ">
+      ,status = #{status}
+    </if>
+    <if test="entryTime != null  ">
+      ,entry_time = #{entryTime}
+    </if>
+    <if test="exitTime != null ">
+      ,entry_time = #{exitTime}
+    </if>
+    <if test="attendanceStatus != null and attendanceStatus != ''  ">
+      ,attendance_status = #{attendanceStatus}
+    </if>
+    <if test="lastAttendanceDatetime != null ">
+      ,last_attendance_datetime = #{lastAttendanceDatetime}
+    </if>
+    <if test="inOutStatus != null and inOutStatus  != '' ">
+      ,in_out_status = #{inOutStatus}
+    </if>
+    <if test="lastInOutDatetime != null  ">
+      ,last_in_out_datetime = #{lastInOutDatetime}
+    </if>
+    <if test="lastPayMonth != null  ">
+      ,last_pay_month = #{lastPayMonth}
+    </if>
+    <if test="lastPayTotalAmount != null and lastPayTotalAmount != ''  ">
+      ,last_pay_total_amount = #{lastPayTotalAmount}
+    </if>
+    <if test="lastPayActualAmount != null and lastPayActualAmount != ''  ">
+      ,last_pay_actual_amount = #{lastPayActualAmount}
+    </if>
+    WHERE code = #{code}
+  </update>
+
   <select id="select_projectWorker" parameterType="projectWorker"
     resultMap="projectWorker_DB_Result">
     SELECT

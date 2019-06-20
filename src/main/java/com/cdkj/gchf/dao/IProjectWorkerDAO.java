@@ -44,6 +44,8 @@ public interface IProjectWorkerDAO extends IBaseDAO<ProjectWorker> {
      */
     int updateProjectWorkerBindingBank(ProjectWorker projectWorker);
 
+    int updateLastestData(ProjectWorker projectWorker);
+
     /**
      * 查询项目端工种分布
      *

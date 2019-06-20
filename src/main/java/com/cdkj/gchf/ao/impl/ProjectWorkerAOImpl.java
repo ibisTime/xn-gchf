@@ -519,6 +519,7 @@ public class ProjectWorkerAOImpl implements IProjectWorkerAO {
                 }
                 PayRollDetail payRoll = new PayRollDetail();
                 payRoll.setWorkerCode(projectWorker.getCode());
+                payRoll.setDeleteStatus(EDeleteStatus.NORMAL.getCode());
                 projectWorker.setPayRollDetailTotal(payRollDetailBO.getTotalCount(payRoll));
             }
         }

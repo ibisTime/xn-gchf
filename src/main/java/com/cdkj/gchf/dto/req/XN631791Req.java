@@ -30,6 +30,11 @@ public class XN631791Req {
     // 考勤照片
     private String attendancePicture;
 
+    //身份证开始时间
+    private String startDate;
+    //身份证结束时间
+    private String expiryDate;
+
     public String getUserId() {
         return userId;
     }
@@ -84,5 +89,21 @@ public class XN631791Req {
 
     public void setHeadImageUrl(String headImageUrl) {
         this.headImageUrl = headImageUrl;
+    }
+
+    public String getStartDate() {
+        return startDate;
+    }
+
+    public void setStartDate(String startDate) {
+        this.startDate = startDate;
+    }
+
+    public String getExpiryDate() {
+        return expiryDate;
+    }
+
+    public void setExpiryDate(String expiryDate) {
+        this.expiryDate = expiryDate;
     }
 }

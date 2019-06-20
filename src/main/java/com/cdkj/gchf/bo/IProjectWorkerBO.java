@@ -131,6 +131,14 @@ public interface IProjectWorkerBO extends IPaginableBO<ProjectWorker> {
      */
     void refreshBankCardInfo(String code);
 
+
+    /**
+     * 更新最近一次的数据 ： 进出 考勤 进退场 工资单 状态与时间
+     *
+     * @param projectWorker condition
+     */
+    void refreshLastestDate(ProjectWorker projectWorker);
+
     public List<ProjectWorker> queryProjectWorkerList(ProjectWorker condition);
 
 

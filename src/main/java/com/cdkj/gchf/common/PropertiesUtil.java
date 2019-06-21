@@ -41,10 +41,15 @@ public class PropertiesUtil {
 
         public static String OCR_APP_KEY = props.getProperty("OCR_APP_KEY");
 
-        public static String OCR_APP_SECRET = props.getProperty("OCR_APP_SECRET");
+        public static String ZQZN_APP_KEY = props.getProperty("ZQZN_APP_KEY");
+
+        public static String OCR_APP_SECRET = props
+                .getProperty("OCR_APP_SECRET");
 
         public static String OCR_APP_CODE = props.getProperty("OCR_APP_CODE");
 
+        public static String IMAGE_FILE_DIR = props
+                .getProperty("IMAGE_FILE_DIR");
 
         public static String KEY_STORE_PATH = props
             .getProperty("KEY_STORE_PATH");

@@ -5,8 +5,6 @@ import java.util.List;
 import org.hibernate.validator.constraints.NotBlank;
 import org.hibernate.validator.constraints.NotEmpty;
 
-import com.cdkj.gchf.api.impl.XN631693ReqData;
-
 public class XN631693Req {
     @NotBlank
     private String updater;

@@ -71,7 +71,7 @@ public interface ICorpBasicinfoAO {
      * @param code 主键code
      * @return
      */
-    CorpBasicinfo getCorpBasicinfo(String code);
+    CorpBasicinfo getCorpBasicinfo(String corpCode, String code);
 
 
     /****国家平台接口****/

@@ -100,4 +100,8 @@ public class XN631913Req extends APIRequestBase {
         this.idCardNumber = idCardNumber;
     }
 
+    public XN631913Req(String projectCode, String corpCode) {
+        this.projectCode = projectCode;
+        this.corpCode = corpCode;
+    }
 }

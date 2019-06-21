@@ -14,7 +14,7 @@ public class QiniuUtil {
         if (token.startsWith("data:image")) {
             return token;
         } else {
-            qiniuUrl = "http://picture.jm60s.com/" + token
+            qiniuUrl = "https://picture.jm60s.com/" + token
                     + "?imageMogr2/auto-orient";
         }
 

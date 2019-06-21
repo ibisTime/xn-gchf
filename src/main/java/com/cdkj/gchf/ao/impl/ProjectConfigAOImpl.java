@@ -71,7 +71,10 @@ public class ProjectConfigAOImpl implements IProjectConfigAO {
             ProjectConfig configByProject = projectConfigBO
                     .getProjectConfigByProject(req.getProjectCode());
             if (null != configByProject) {
-                throw new BizException("XN631620", "该项目配置已添加,无法再次添加");
+                projectConfigBO.refreshProjectConfig(configByProject.getCode(), req);
+                projectBO.refreshSecretStatus(req.getLocalProjectCode(),
+                        ESecretStatus.YES.getCode());
+                return;
             }
 
             Project project = projectBO.getProject(req.getLocalProjectCode());
@@ -84,14 +87,9 @@ public class ProjectConfigAOImpl implements IProjectConfigAO {
 
             ProjectConfig configByProject = projectConfigBO
                     .getProjectConfigByProject(req.getProjectCode());
-            if (null != configByProject && !req.getProjectCode()
-                    .equals(configByProject.getProjectCode())) {
-                throw new BizException("XN631620", "该项目配置已添加,无法再次添加");
-            }
-
-            if (!projectConfig.getSecret().equals(req.getSecret())) {
-                projectConfigBO.checkProjectConfigBySecret(req.getProjectCode(),
-                        req.getSecret());
+            if (null != configByProject) {
+                projectConfigBO.refreshProjectConfig(configByProject.getCode(), req);
+                return;
             }
 
             projectConfigBO.refreshProjectConfig(projectConfig.getCode(), req);

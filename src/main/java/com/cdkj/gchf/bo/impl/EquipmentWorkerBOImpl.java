@@ -83,6 +83,36 @@ public class EquipmentWorkerBOImpl extends PaginableBOImpl<EquipmentWorker>
     }
 
     @Override
+    public void batchSaveEquipmentWorker(ProjectWorker projectWorker,
+            List<EquipmentInfo> equipmentInfos) {
+        List<EquipmentWorker> equipmentWorkers = new ArrayList<>();
+
+        for (EquipmentInfo equipmentInfo : equipmentInfos) {
+            EquipmentWorker equipmentWorker = new EquipmentWorker();
+            String code = OrderNoGenerater
+                    .generate(EGeneratePrefix.EquipmentWorker.getCode());
+            equipmentWorker.setCode(code);
+            equipmentWorker.setDeviceKey(equipmentInfo.getDeviceKey());
+            equipmentWorker.setDeviceCode(equipmentInfo.getCode());
+            equipmentWorker.setDeviceName(equipmentInfo.getName());
+
+            equipmentWorker.setWorkerCode(projectWorker.getCode());
+            equipmentWorker.setWorkerName(projectWorker.getWorkerName());
+            equipmentWorker.setTeamCode(projectWorker.getTeamSysNo());
+            equipmentWorker.setTeamName(projectWorker.getTeamName());
+            equipmentWorker.setIdCardNumber(projectWorker.getIdcardNumber());
+
+            equipmentWorker.setPassTimes("00:00:00,23:59:59");
+            equipmentWorker.setCreateTime(
+                    DateUtil.dateToStr(new Date(System.currentTimeMillis()),
+                            DateUtil.DATA_TIME_PATTERN_1));
+            equipmentWorkers.add(equipmentWorker);
+        }
+
+        equipmentWorkerDAO.batchInsert(equipmentWorkers);
+    }
+
+    @Override
     public String saveEquipmentWorker(XN631830Req req,
                                       EquipmentInfo equipmentInfo, ProjectWorker projectWorker) {
         EquipmentWorker equipmentWorker = new EquipmentWorker();
@@ -149,6 +179,17 @@ public class EquipmentWorkerBOImpl extends PaginableBOImpl<EquipmentWorker>
             }
         }
         return data;
+    }
+
+    @Override
+    public EquipmentWorker getEquipmentWorker(String deviceKey,
+            String workerCode) {
+        EquipmentWorker data = new EquipmentWorker();
+
+        data.setDeviceKey(deviceKey);
+        data.setWorkerCode(workerCode);
+
+        return equipmentWorkerDAO.select(data);
     }
 
     @Override

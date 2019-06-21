@@ -2,7 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.cdkj.gchf.dao.IWorkerEntryExitRecordDAO">
-    <resultMap id="workerEntryExitRecord_DB_Result" type="workerEntryExitRecord">
+  <resultMap id="workerEntryExitRecord_DB_Result" type="workerEntryExitRecord">
         <result column="code" property="code"/>
         <result column="project_code" property="projectCode"/>
         <result column="project_name" property="projectName"/>
@@ -163,5 +163,17 @@
 	AND direction = '02'
     order by date desc LIMIT 0,1 
 	</select>
+
+  <select id="selectProjectRecordCount" parameterType="java.lang.String"
+    resultType="java.lang.Long">
+    SELECT count(1)
+    FROM thf_worker_entry_exit_record
+    WHERE TO_DAYS(date) = TO_DAYS(now())
+      AND project_code =
+          (SELECT organization_code
+           from thf_user
+           where user_id = #{0})
+    GROUP BY worker_code;
+  </select>
 
 </mapper>

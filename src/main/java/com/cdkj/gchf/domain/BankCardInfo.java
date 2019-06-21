@@ -66,6 +66,8 @@ public class BankCardInfo extends ABaseDO {
     private String workerName;
 
     private String idcardNumber;
+    //是否绑定
+    private boolean bind;
 
     public String getCode() {
         return code;
@@ -219,4 +221,11 @@ public class BankCardInfo extends ABaseDO {
         this.subranch = subranch;
     }
 
+    public boolean isBind() {
+        return bind;
+    }
+
+    public void setBind(boolean bind) {
+        this.bind = bind;
+    }
 }

@@ -535,7 +535,7 @@ ALTER TABLE `thf_project`
 ADD COLUMN `area` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '区';
 
 ## 220 v1
-DROP TABLE IF EXISTS `thf_leave`
+DROP TABLE IF EXISTS `thf_leave`;
 CREATE TABLE `thf_leave` (
   `code` varchar(32) NOT NULL COMMENT '编号',
   `employ_code` varchar(32) DEFAULT NULL COMMENT '雇佣编号',
@@ -553,7 +553,7 @@ CREATE TABLE `thf_leave` (
   PRIMARY KEY (`code`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
-DROP TABLE IF EXISTS `thf_message`
+DROP TABLE IF EXISTS `thf_message`;
 CREATE TABLE `thf_message` (
   `code` varchar(32) NOT NULL COMMENT '编号',
   `project_code` varchar(32) DEFAULT NULL COMMENT '项目编号',
@@ -581,7 +581,7 @@ CREATE TABLE `thf_message` (
   PRIMARY KEY (`code`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
-DROP TABLE IF EXISTS `thf_query_log`
+DROP TABLE IF EXISTS `thf_query_log`;
 CREATE TABLE `thf_query_log` (
   `code` varchar(32) NOT NULL COMMENT '编号',
   `user_id` varchar(32) DEFAULT NULL COMMENT '用户id',
@@ -596,7 +596,7 @@ CREATE TABLE `thf_query_log` (
   CONSTRAINT `user_id` FOREIGN KEY (`user_id`) REFERENCES `thf_user` (`user_id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
-DROP TABLE IF EXISTS `thf_report`
+DROP TABLE IF EXISTS `thf_report`;
 CREATE TABLE `thf_report` (
   `code` varchar(32) NOT NULL COMMENT '编号',
   `project_code` varchar(32) DEFAULT NULL COMMENT '项目编号',
@@ -613,7 +613,7 @@ CREATE TABLE `thf_report` (
   `remark` text COMMENT '备注',
   PRIMARY KEY (`code`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-DROP TABLE IF EXISTS `thf_skill`
+DROP TABLE IF EXISTS `thf_skill`;
 CREATE TABLE `thf_skill` (
   `code` varchar(32) NOT NULL COMMENT '编号',
   `staff_code` varchar(32) DEFAULT NULL COMMENT '员工编号',
@@ -725,3 +725,72 @@ CREATE TABLE `thf_worker_entry_exit_record` (
 
 ALTER TABLE `thf_equipment_info` 
 ADD COLUMN `pass_times` datetime NULL COMMENT '进退场时间' AFTER `direction`;
+
+-- 230 第一版修改
+ALTER TABLE `thf_project_worker`
+  DROP COLUMN `position`,
+  DROP COLUMN `join_datetime`,
+  DROP COLUMN `leaving_datetime`,
+  DROP COLUMN `local_team_sys_no`,
+  MODIFY COLUMN `status` varchar(4) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '状态（已进场/已退场）' AFTER `cut_amount`,
+  ADD COLUMN `last_pay_month` datetime(0) NULL COMMENT '最近一次工资发放月份' AFTER `delete_status`,
+  ADD COLUMN `last_pay_total_amount` varchar(255) NULL COMMENT '最近一次工资应发金额' AFTER `last_pay_month`,
+  ADD COLUMN `last_pay_actual_amount` varchar(255) NULL COMMENT '最近一次工资实发金额' AFTER `last_pay_total_amount`,
+  ADD COLUMN `in_out_status` varchar(255) NULL COMMENT '进出状态（在场内/在场外）' AFTER `last_pay_actual_amount`,
+  ADD COLUMN `last_in_out_datetime` datetime(0) NULL COMMENT '最近一次进出记录时间' AFTER `in_out_status`,
+  ADD COLUMN `attendance_status` varchar(255) NULL COMMENT '考勤状态（上班中/下班中）' AFTER `last_in_out_datetime`,
+  ADD COLUMN `last_attendance_datetime` datetime(0) NULL COMMENT '最近一次考勤时间' AFTER `attendance_status`;
+
+ALTER TABLE `thf_project_worker_entry_exit_history`
+  DROP COLUMN `join_datetime`,
+  DROP COLUMN `leaving_datetime`;
+
+ALTER TABLE `thf_pay_roll_detail`
+  DROP COLUMN `employ_code`,
+  DROP COLUMN `staff_name`,
+  DROP COLUMN `attendance_days`,
+  DROP COLUMN `should_amount`,
+  CHANGE COLUMN `staff_code` `worker_code` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '员工编号' AFTER `message_code`;
+
+ALTER TABLE `thf_worker_attendance`
+  CHANGE COLUMN `image` `image` VARCHAR(512) NULL DEFAULT NULL COMMENT '刷卡近照';
+
+ALTER TABLE `thf_project`
+  ADD COLUMN `total_ocr_count` INT NULL COMMENT '可用OCR数量' AFTER `third_party_project_code`,
+  ADD COLUMN `used_ocr_count` INT NULL DEFAULT 0 COMMENT '已用OCR数量' AFTER `total_ocr_count`;
+
+SET SQL_SAFE_UPDATES = 0;
+update thf_project
+set total_ocr_count = 10;
+update thf_project
+set used_ocr_count = 0;
+
+
+update thf_worker_info
+set worker_pic_upload_status = 0
+where worker_pic_upload_status is null;
+-- 230 第二版 0528
+INSERT INTO `tsys_dict`(`id`, `type`, `parent_key`, `dkey`, `dvalue`, `updater`, `update_datetime`,
+                        `remark`)
+VALUES (null, '0', NULL, 'workerPicUploadStatus', '人脸照片上传状态', 'admin', '2019-05-22 03:07:37', NULL);
+
+INSERT INTO `tsys_dict`(`id`, `type`, `parent_key`, `dkey`, `dvalue`, `updater`, `update_datetime`,
+                        `remark`)
+VALUES (null, '1', 'workerPicUploadStatus', '-1', '失败', 'admin', '2019-05-22 03:07:37', NULL);
+INSERT INTO `tsys_dict`(`id`, `type`, `parent_key`, `dkey`, `dvalue`, `updater`, `update_datetime`,
+                        `remark`)
+VALUES (null, '1', 'workerPicUploadStatus', '0', '待上传', 'admin', '2019-05-22 03:07:37', NULL);
+INSERT INTO `tsys_dict`(`id`, `type`, `parent_key`, `dkey`, `dvalue`, `updater`, `update_datetime`,
+                        `remark`)
+VALUES (null, '1', 'workerPicUploadStatus', '1', '成功', 'admin', '2019-05-22 03:07:37', NULL);
+
+-- 230 undo
+INSERT INTO `tsys_dict`(`id`, `type`, `parent_key`, `dkey`, `dvalue`, `updater`, `update_datetime`,
+                        `remark`)
+VALUES (null, '0', NULL, 'bit_stream_type', '码流', 'admin', '2018-07-27 03:07:37', NULL);
+INSERT INTO `tsys_dict`(`id`, `type`, `parent_key`, `dkey`, `dvalue`, `updater`, `update_datetime`,
+                        `remark`)
+VALUES (null, '1', 'bit_stream_type', '1', '主码流', 'admin', '2018-07-27 03:07:37', NULL);
+INSERT INTO `tsys_dict`(`id`, `type`, `parent_key`, `dkey`, `dvalue`, `updater`, `update_datetime`,
+                        `remark`)
+VALUES (null, '1', 'bit_stream_type', '2', '副码流', 'admin', '2018-07-27 03:07:37', NULL);

@@ -29,6 +29,18 @@ public interface IBankCardInfoAO {
      */
     String addBankCardInfo(XN631750Req req);
 
+
+    /**
+     * @param workerCode 项目人员编号
+     * @param code 银行卡编号
+     */
+    void bindBankCard(String workerCode, String code);
+
+    /**
+     * 解除银行卡绑定
+     */
+    void unBindBankCard(String code);
+
     /**
      * @param req 改变银行卡状态 ：冻结 启用
      */
@@ -70,5 +82,22 @@ public interface IBankCardInfoAO {
      * @param req 根据code查银行卡
      */
     Object getBankCardInfo(XN631766Req req);
+
+    /**
+     * 查询参建单位银行卡信息
+     *
+     * @param userId 用户id
+     * @param workerCode 项目人员编号
+     * @return 银行卡
+     */
+    List<BankCardInfo> queryProjectCorpBankcards(String userId, String workerCode);
+
+
+    /**
+     * 查询人员所有银行卡
+     *
+     * @param projectWorkerCode 项目人员code
+     */
+    List<BankCardInfo> selectWorkerBankCards(String projectWorkerCode);
 
 }

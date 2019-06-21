@@ -4,10 +4,8 @@ import com.cdkj.gchf.humanfaces.res.DeviceQuery;
 import com.cdkj.gchf.humanfaces.res.DeviceRes;
 import com.cdkj.gchf.humanfaces.res.ResultMsg;
 import com.google.gson.Gson;
-
 import java.util.HashMap;
 import java.util.Map;
-
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Component;
 
@@ -43,7 +41,6 @@ public class Device {
     }
 
     /**
-     * @throws
      * @Description: 更新设备
      * @param: @param deviceKey 设备序列号
      * @param: @param name 设备名
@@ -52,7 +49,7 @@ public class Device {
      * @return: DeviceRes
      */
     public DeviceRes EquipmentUpdate(String deviceKey, String name,
-                                     String tag) {
+            String tag) {
         String token = AppConfig.getToken();
         Map<String, String> req = new HashMap<>();
         req.put("appid", AppConfig.getAppid());
@@ -68,7 +65,6 @@ public class Device {
     }
 
     /**
-     * @throws
      * @Description: 查询设备信息
      * @param: @param deviceKey 设备序列号
      * @param: @return
@@ -88,7 +84,6 @@ public class Device {
     }
 
     /**
-     * @throws
      * @Description: 同步设备到云端：保持设备端数据与云端数据的一致。
      * @param: @param deviceKey
      * @param: @return
@@ -107,7 +102,6 @@ public class Device {
     }
 
     /**
-     * @throws
      * @Description: 从云端删除设备
      * @param: @param deviceKey
      * @param: @return
@@ -124,7 +118,6 @@ public class Device {
     }
 
     /**
-     * @throws
      * @Description: 清空某台机器授权人员 若人员guid为空 则清空所有授权人员
      * @param: @param deviceKey 设备序列号
      * @param: @param personGuid 人员guid
@@ -147,7 +140,6 @@ public class Device {
     ;
 
     /**
-     * @throws
      * @Description: 禁用设备
      * @param: @param deviceKey  设备序列号
      * @param: @return
@@ -182,9 +174,9 @@ public class Device {
     //    @Test
     public void test1() {
         // 添加设备
-        // DeviceRes deviceCreation = deviceCreation("84E0F420576700B0", "test",
-        // null);
-        // System.out.println(deviceCreation);
+//         DeviceRes deviceCreation = deviceCreation("84E0F420576700B0", "test",
+//         null);
+//         System.out.println(deviceCreation);
 
         // 修改设备
         // DeviceRes equipmentUpdate = EquipmentUpdate("84E0F420576700B0",
@@ -192,7 +184,8 @@ public class Device {
         // System.out.println(equipmentUpdate.toString());
 
         // 查询设备
-        // DeviceQuery deviceQuery = deviceQuery("84E0F420576700B0");
+//         DeviceQuery deviceQuery = deviceQuery("84E0F420576700B0");
+//        System.out.println("deviceQuery = " + deviceQuery);
         // DeviceQuery deviceQuery2 = deviceQuery("84E0F420576700B0");
         // System.out.println(deviceQuery.toString());
 
@@ -210,6 +203,9 @@ public class Device {
         // "84E0F420576700B0"
         // String test3333 = test3333("84E0F420576700B0");
         // System.out.println(test3333);
+
+//        String s = delCloudDevice("84E0F420576700B0");
+//        System.out.println("s = " + s);
 
     }
 

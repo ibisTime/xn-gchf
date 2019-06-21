@@ -1,27 +1,32 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
-"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.cdkj.gchf.dao.IPayRollDetailDAO">
 	<resultMap id="payRollDetail_DB_Result" type="payRollDetail">
 		<result column="code" property="code" />
-		<result column="pay_roll_code" property="payRollCode" />
+		<result column="pay_roll_code" property="payRollCode"/>
 		<result column="project_code" property="projectCode" />
-		<result column="worker_name" property="workerName" />
+		<result column="worker_code" property="workerCode"/>
+		<result column="worker_name" property="workerName"/>
+
 		<result column="idcard_type" property="idcardType" />
 		<result column="idcard_number" property="idcardNumber" />
 		<result column="days" property="days" />
 		<result column="work_hours" property="workHours" />
+
 		<result column="pay_roll_bank_card_number" property="payRollBankCardNumber" />
 		<result column="pay_roll_bank_code" property="payRollBankCode" />
 		<result column="pay_roll_bank_name" property="payRollBankName" />
 		<result column="pay_bank_card_number" property="payBankCardNumber" />
 		<result column="pay_bank_code" property="payBankCode" />
 		<result column="pay_bank_name" property="payBankName" />
+
 		<result column="total_pay_amount" property="totalPayAmount" />
 		<result column="actual_amount" property="actualAmount" />
 		<result column="is_back_pay" property="isBackPay" />
         <result column="back_pay_month" property="backPayMonth"/>
 		<result column="balance_date" property="balanceDate" />
+
 		<result column="third_pay_roll_code" property="thirdPayRollCode" />
 		<result column="upload_status" property="uploadStatus" />
 		<result column="delete_status" property="deleteStatus" />
@@ -43,11 +48,17 @@
 			<if test="uploadStatus != null and uploadStatus != '' ">
 				AND t.upload_status = #{uploadStatus}
 			</if>
+			<if test="idcardNumber != null and idcardNumber != '' ">
+				AND t.idcard_number = #{idcardNumber}
+			</if>
 			<if test="workerName != null and workerName != '' ">
                 AND t.worker_name like "%"#{workerName}"%"
 			</if>
 			<if test="deleteStatus != null and deleteStatus != '' ">
 				AND t.delete_status = #{deleteStatus}
+			</if>
+			<if test="workerCode != null and workerCode != '' ">
+				AND t.worker_code = #{workerCode}
 			</if>
 			<if test="balanceDate != null ">
 				AND t.balance_date = #{balanceDate}
@@ -75,54 +86,56 @@
 	<insert id="insert_PayRollDetail" parameterType="payRollDetail">
 		INSERT INTO
 		thf_pay_roll_detail(
-		code
-		,pay_roll_code
-		,worker_name
-		,idcard_type
-		,idcard_number
-		,days
+												 code
+											 , pay_roll_code
+											 , worker_code
+											 , worker_name
+											 , idcard_type
+											 , idcard_number
+											 , days
 
-		,work_hours
-		,pay_roll_bank_card_number
-		,pay_roll_bank_code
-		,pay_roll_bank_name
-		,pay_bank_card_number
-		,pay_bank_code
+											 , work_hours
+											 , pay_roll_bank_card_number
+											 , pay_roll_bank_code
+											 , pay_roll_bank_name
+											 , pay_bank_card_number
+											 , pay_bank_code
 
-		,pay_bank_name
-		,total_pay_amount
-		,actual_amount
-		,is_back_pay
-		,back_pay_month
-		,balance_date
-		,third_pay_roll_code
-		,upload_status
-		,delete_status
+											 , pay_bank_name
+											 , total_pay_amount
+											 , actual_amount
+											 , is_back_pay
+											 , back_pay_month
+											 , balance_date
+											 , third_pay_roll_code
+											 , upload_status
+											 , delete_status
 		)
-		VALUES(
-		#{code}
-		,#{payRollCode}
-		,#{workerName}
-		,#{idcardType}
-		,#{idcardNumber}
-		,#{days}
+		VALUES (
+						 #{code}
+					 , #{payRollCode}
+					 , #{workerCode}
+					 , #{workerName}
+					 , #{idcardType}
+					 , #{idcardNumber}
+					 , #{days}
 
-		,#{workHours}
-		,#{payRollBankCardNumber}
-		,#{payRollBankCode}
-		,#{payRollBankName}
-		,#{payBankCardNumber}
-		,#{payBankCode}
-		,#{payBankName}
+					 , #{workHours}
+					 , #{payRollBankCardNumber}
+					 , #{payRollBankCode}
+					 , #{payRollBankName}
+					 , #{payBankCardNumber}
+					 , #{payBankCode}
+					 , #{payBankName}
 
-		,#{totalPayAmount}
-		,#{actualAmount}
-		,#{isBackPay}
-		,#{backPayMonth}
-		,#{balanceDate}
-		,#{thirdPayRollCode}
-		,#{uploadStatus}
-		,#{deleteStatus}
+					 , #{totalPayAmount}
+					 , #{actualAmount}
+					 , #{isBackPay}
+					 , #{backPayMonth}
+					 , #{balanceDate}
+					 , #{thirdPayRollCode}
+					 , #{uploadStatus}
+					 , #{deleteStatus}
 		)
 	</insert>
 
@@ -197,6 +210,7 @@
 		SELECT
 		t.code
 		,t.pay_roll_code
+		,t.worker_code
 		,t.worker_name
 		,t.idcard_type
 		,t.idcard_number
@@ -245,5 +259,37 @@
 		resultType="java.lang.Long">
 		SELECT count(1) FROM thf_pay_roll_detail t
 		<include refid="where_condition" />
+	</select>
+	<select id="selectByWorkerCode" resultMap="payRollDetail_DB_Result" parameterType="payRollDetail">
+		SELECT t.code
+				 ,t.pay_roll_code
+				 ,t.worker_code
+				 ,t.worker_name
+				 ,t.idcard_type
+				 ,t.idcard_number
+				 ,t.days
+				 ,t.work_hours
+
+				 ,t.pay_roll_bank_card_number
+				 ,t.pay_roll_bank_code
+				 ,t.pay_roll_bank_name
+				 ,t.pay_bank_card_number
+				 ,t.pay_bank_code
+
+				 ,t.pay_bank_name
+				 ,t.total_pay_amount
+				 ,t.actual_amount
+				 ,t.is_back_pay
+				 ,t.back_pay_month
+				 ,t.balance_date
+				 ,t.third_pay_roll_code
+				 ,t.upload_status
+				 ,t.delete_status
+		FROM thf_pay_roll_detail t
+		where t.worker_code = #{workerCode}
+			and t.delete_status = #{deleteStatus}
+		order by code
+			desc
+		LIMIT 1
 	</select>
 </mapper>

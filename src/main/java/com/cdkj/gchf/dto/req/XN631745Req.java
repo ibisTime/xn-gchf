@@ -17,6 +17,9 @@ public class XN631745Req extends APageReq {
     // 类型
     private String type;
 
+    //班组编号
+    private String teamSysNo;
+
     // 上传状态
     private String uploadStatus;
 
@@ -96,4 +99,12 @@ public class XN631745Req extends APageReq {
         this.corpName = corpName;
     }
 
+
+    public String getTeamSysNo() {
+        return teamSysNo;
+    }
+
+    public void setTeamSysNo(String teamSysNo) {
+        this.teamSysNo = teamSysNo;
+    }
 }

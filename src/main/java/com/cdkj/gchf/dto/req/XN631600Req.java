@@ -34,6 +34,10 @@ public class XN631600Req {
     @NotBlank
     private String prjStatus;
 
+    // 可用OCR数量
+    @NotBlank
+    private String totalOcrCount;
+
     // 项目简介
     private String description;
 
@@ -133,6 +137,7 @@ public class XN631600Req {
     // 操作用户
     @NotBlank
     private String userId;
+
 
     // 施工许可证
     private List<XN631600ReqLicenses> builderLicenses;
@@ -456,5 +461,14 @@ public class XN631600Req {
     public void setPayRollDelayDays(String payRollDelayDays) {
         this.payRollDelayDays = payRollDelayDays;
     }
+
+    public String getTotalOcrCount() {
+        return totalOcrCount;
+    }
+
+    public void setTotalOcrCount(String totalOcrCount) {
+        this.totalOcrCount = totalOcrCount;
+    }
+
 
 }

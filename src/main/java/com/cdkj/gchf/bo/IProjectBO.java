@@ -1,6 +1,7 @@
 package com.cdkj.gchf.bo;
 
 import java.util.List;
+import java.util.Map;
 
 import com.cdkj.gchf.bo.base.IPaginableBO;
 import com.cdkj.gchf.domain.CorpBasicinfo;
@@ -32,6 +33,11 @@ public interface IProjectBO extends IPaginableBO<Project> {
      */
     public void refreshSecretStatus(String code, String secretStatus);
 
+    /**
+     * 更新已用OCR数量
+     */
+    public void refreshUsedOcrCount(String code, Integer usedOcrCount);
+
     public List<Project> queryProjectList(Project condition);
 
     public Project getProject(String code);
@@ -40,5 +46,11 @@ public interface IProjectBO extends IPaginableBO<Project> {
      * @Description: 根据名称详细查询项目信息
      */
     public Project getProjectByFullName(String fullName);
+
+
+    /**
+     * led 查询信息
+     */
+    List<Map> getProjectInfoList_led(String userId);
 
 }

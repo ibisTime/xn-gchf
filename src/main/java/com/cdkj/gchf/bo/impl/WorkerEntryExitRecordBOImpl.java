@@ -2,6 +2,7 @@ package com.cdkj.gchf.bo.impl;
 
 import java.util.List;
 
+import com.cdkj.gchf.bo.IProjectWorkerBO;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -22,6 +23,9 @@ import com.cdkj.gchf.exception.BizException;
 public class WorkerEntryExitRecordBOImpl
         extends PaginableBOImpl<WorkerEntryExitRecord>
         implements IWorkerEntryExitRecordBO {
+
+    @Autowired
+    private IProjectWorkerBO projectWorkerBO;
 
     @Autowired
     private IWorkerEntryExitRecordDAO workerEntryExitRecordDAO;
@@ -57,6 +61,8 @@ public class WorkerEntryExitRecordBOImpl
         workerEntryExitRecord.setDeleteStatus(EDeleteStatus.NORMAL.getCode());
 
         workerEntryExitRecordDAO.insert(workerEntryExitRecord);
+        //回写人员进出记录到项目人员中
+        projectWorkerBO.refreshLastInOutRecord(projectWorker.getCode(), direction, date);
         return code;
     }
 
@@ -100,4 +106,8 @@ public class WorkerEntryExitRecordBOImpl
                 .selectAfternoonRecoder(workerEntryExitRecord);
     }
 
+    @Override
+    public Long selectRecordCountByUserId(String userId) {
+        return workerEntryExitRecordDAO.selectProjectRecordCount(userId);
+    }
 }

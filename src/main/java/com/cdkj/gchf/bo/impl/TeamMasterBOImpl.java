@@ -154,7 +154,8 @@ public class TeamMasterBOImpl extends PaginableBOImpl<TeamMaster>
             teamMaster.setDeleteStatus(EDeleteStatus.NORMAL.getCode());
             teamMaster.setCode(code);
             teamMasters.add(teamMaster);
-            operateLogBO.saveOperateLog(EOperateLogRefType.TeamMaster.getCode(), code, EOperateLogOperate.IMPORT_TEAMMASTER.getCode(), user, null);
+            operateLogBO.saveOperateLog(EOperateLogRefType.TeamMaster.getCode(), code,
+                    EOperateLogOperate.IMPORT_TEAMMASTER.getValue(), user, null);
         }
         //批量插入
         teamMasterDAO.batchInsert(teamMasters);

@@ -4,7 +4,7 @@ import org.hibernate.validator.constraints.NotBlank;
 
 public class XN631815Req extends APageReq {
 
-    /**   
+    /**
      * @Fields serialVersionUID : TODO
      */
     private static final long serialVersionUID = 2983636164275176497L;
@@ -33,6 +33,9 @@ public class XN631815Req extends APageReq {
 
     // 发放时间
     private String balanceDate;
+
+    //证件号
+    private String idcardNumber;
 
     public String getUserId() {
         return userId;
@@ -98,4 +101,12 @@ public class XN631815Req extends APageReq {
         this.balanceDate = balanceDate;
     }
 
+
+    public String getIdcardNumber() {
+        return idcardNumber;
+    }
+
+    public void setIdcardNumber(String idcardNumber) {
+        this.idcardNumber = idcardNumber;
+    }
 }

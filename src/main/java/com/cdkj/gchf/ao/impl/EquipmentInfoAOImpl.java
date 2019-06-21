@@ -161,6 +161,16 @@ public class EquipmentInfoAOImpl implements IEquipmentInfoAO {
     }
 
     @Override
+    public void delEquipment(String code, String deviceKey) {
+        EquipmentInfo equipmentInfo = equipmentInfoBO.getEquipmentInfo(code);
+        if (equipmentInfo == null) {
+            throw new BizException("XN000000", "设备不存在");
+        }
+        device.delCloudDevice(deviceKey);
+        equipmentInfoBO.removeEquipmentInfo(code);
+    }
+
+    @Override
     public Paginable<EquipmentInfo> queryEquipmentInfoPage(int start, int limit,
                                                            EquipmentInfo condition) {
         User user = userBO.getBriefUser(condition.getUserId());

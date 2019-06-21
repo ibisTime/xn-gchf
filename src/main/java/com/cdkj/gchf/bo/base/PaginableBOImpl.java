@@ -58,7 +58,7 @@ public abstract class PaginableBOImpl<T extends ABaseDO>
     }
 
     /*
-     * public void setPaginableDAO(IBaseDAO<T> paginableDAO) { this.paginableDAO
+     * public void setPaginableDAO(IBaseDAO<XN88990099> paginableDAO) { this.paginableDAO
      * = paginableDAO; }
      */
 

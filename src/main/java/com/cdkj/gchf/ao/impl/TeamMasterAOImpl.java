@@ -436,7 +436,9 @@ public class TeamMasterAOImpl implements ITeamMasterAO {
     }
 
     @Override
-    public List<TeamMaster> queryTeamMasterList(TeamMaster condition) {
+    public List<TeamMaster> queryTeamMasterList(String userId, TeamMaster condition) {
+        User briefUser = userBO.getBriefUser(userId);
+        condition.setProjectCode(briefUser.getOrganizationCode());
         return teamMasterBO.queryTeamMasterList(condition);
     }
 

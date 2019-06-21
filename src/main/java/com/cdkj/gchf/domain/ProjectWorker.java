@@ -1,5 +1,6 @@
 package com.cdkj.gchf.domain;
 
+import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
 
@@ -111,26 +112,17 @@ public class ProjectWorker extends ABaseDO {
     // 有无购买工伤或意外伤害保险
     private Integer hasBuyInsurance;
 
-    // 所在职位
-    private String position;
-
     // 日薪
     private Long salary;
 
     // 扣款规则
     private Long cutAmount;
 
-    // 状态
+    // 状态(已进场/已出场)
     private String status;
 
     // 工资发放状态
     private String salaryStatus;
-
-    // 入职时间
-    private Date joinDatetime;
-
-    // 离职时间
-    private Date leavingDatetime;
 
     // 最近一次请假开始时间
     private Date startDatetime;
@@ -152,6 +144,36 @@ public class ProjectWorker extends ABaseDO {
 
     // 备注
     private String remark;
+
+
+    /**
+     * 最近一次工资发放月份
+     */
+    private Date lastPayMonth;
+    /**
+     * 最近一次工资应发金额
+     */
+    private BigDecimal lastPayTotalAmount;
+    /**
+     * 最近一次工资实发金额
+     */
+    private BigDecimal lastPayActualAmount;
+    /**
+     * 进出状态（在场内/在场外）
+     */
+    private String inOutStatus;
+    /**
+     * 最近一次进出记录时间
+     */
+    private Date lastInOutDatetime;
+    /**
+     * 考勤状态（上班中/下班中
+     */
+    private String attendanceStatus;
+    /**
+     * 最近一次考勤时间
+     */
+    private Date lastAttendanceDatetime;
 
     /****DB Properties****/
     // 是否关联
@@ -211,8 +233,6 @@ public class ProjectWorker extends ABaseDO {
     // 状态
     private String uploadStatus;
 
-    // 本地班组编号
-    private String localTeamSysNo;
 
     // 删除状态
     private String deleteStatus;
@@ -232,9 +252,19 @@ public class ProjectWorker extends ABaseDO {
     private String personGuid;
 
     /**
+     * 工资单明细数量
+     */
+    private Long payRollDetailTotal;
+
+    /**
      * DB properties
      */
     private String realTeamMasterName;
+
+    /**
+     * 人脸上传状态
+     */
+    private String workerPicUploadStatus;
 
     public String getCode() {
         return code;
@@ -476,13 +506,7 @@ public class ProjectWorker extends ABaseDO {
         this.hasBuyInsurance = hasBuyInsurance;
     }
 
-    public String getPosition() {
-        return position;
-    }
 
-    public void setPosition(String position) {
-        this.position = position;
-    }
 
     public Long getSalary() {
         return salary;
@@ -514,22 +538,6 @@ public class ProjectWorker extends ABaseDO {
 
     public void setSalaryStatus(String salaryStatus) {
         this.salaryStatus = salaryStatus;
-    }
-
-    public Date getJoinDatetime() {
-        return joinDatetime;
-    }
-
-    public void setJoinDatetime(Date joinDatetime) {
-        this.joinDatetime = joinDatetime;
-    }
-
-    public Date getLeavingDatetime() {
-        return leavingDatetime;
-    }
-
-    public void setLeavingDatetime(Date leavingDatetime) {
-        this.leavingDatetime = leavingDatetime;
     }
 
     public Date getStartDatetime() {
@@ -740,13 +748,6 @@ public class ProjectWorker extends ABaseDO {
         this.uploadStatus = uploadStatus;
     }
 
-    public String getLocalTeamSysNo() {
-        return localTeamSysNo;
-    }
-
-    public void setLocalTeamSysNo(String localTeamSysNo) {
-        this.localTeamSysNo = localTeamSysNo;
-    }
 
     public String getDeleteStatus() {
         return deleteStatus;
@@ -828,6 +829,65 @@ public class ProjectWorker extends ABaseDO {
         this.isLink = isLink;
     }
 
+
+    public Date getLastPayMonth() {
+        return lastPayMonth;
+    }
+
+    public void setLastPayMonth(Date lastPayMonth) {
+        this.lastPayMonth = lastPayMonth;
+    }
+
+    public BigDecimal getLastPayTotalAmount() {
+        return lastPayTotalAmount;
+    }
+
+    public void setLastPayTotalAmount(BigDecimal lastPayTotalAmount) {
+        this.lastPayTotalAmount = lastPayTotalAmount;
+    }
+
+    public BigDecimal getLastPayActualAmount() {
+        return lastPayActualAmount;
+    }
+
+    public void setLastPayActualAmount(BigDecimal lastPayActualAmount) {
+        this.lastPayActualAmount = lastPayActualAmount;
+    }
+
+    public String getInOutStatus() {
+        return inOutStatus;
+    }
+
+    public void setInOutStatus(String inOutStatus) {
+        this.inOutStatus = inOutStatus;
+    }
+
+    public Date getLastInOutDatetime() {
+        return lastInOutDatetime;
+    }
+
+    public void setLastInOutDatetime(Date lastInOutDatetime) {
+        this.lastInOutDatetime = lastInOutDatetime;
+    }
+
+    public Date getLastAttendanceDatetime() {
+        return lastAttendanceDatetime;
+    }
+
+    public void setLastAttendanceDatetime(Date lastAttendanceDatetime) {
+        this.lastAttendanceDatetime = lastAttendanceDatetime;
+    }
+
+    public String getAttendanceStatus() {
+        return attendanceStatus;
+    }
+
+    public void setAttendanceStatus(String attendanceStatus) {
+        this.attendanceStatus = attendanceStatus;
+    }
+
+
+
     @Override
     public int hashCode() {
         final int prime = 31;
@@ -867,4 +927,20 @@ public class ProjectWorker extends ABaseDO {
         return true;
     }
 
+
+    public String getWorkerPicUploadStatus() {
+        return workerPicUploadStatus;
+    }
+
+    public void setWorkerPicUploadStatus(String workerPicUploadStatus) {
+        this.workerPicUploadStatus = workerPicUploadStatus;
+    }
+
+    public Long getPayRollDetailTotal() {
+        return payRollDetailTotal;
+    }
+
+    public void setPayRollDetailTotal(Long payRollDetailTotal) {
+        this.payRollDetailTotal = payRollDetailTotal;
+    }
 }

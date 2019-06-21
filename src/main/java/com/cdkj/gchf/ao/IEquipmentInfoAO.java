@@ -48,6 +48,12 @@ public interface IEquipmentInfoAO {
      */
     void disableEquipment(String deviceKey, String userId);
 
+
+    /**
+     * @param deviceKey 设备序列号
+     * @param code 设备code
+     */
+    void delEquipment(String code, String deviceKey);
     /**
      * 分页查询设备信息，同时查询云端设备。返回
      *

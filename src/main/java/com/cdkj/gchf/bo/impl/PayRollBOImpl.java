@@ -296,6 +296,13 @@ public class PayRollBOImpl extends PaginableBOImpl<PayRoll>
     }
 
     @Override
+    public PayRoll getPayRollByTeamNo(String teamNo) {
+        PayRoll payRoll = new PayRoll();
+        payRoll.setTeamSysNo(teamNo);
+        return payRollDAO.select(payRoll);
+    }
+
+    @Override
     public int updatePayRollDeleteStatus(String projectCode,
             String teamMasterNo, String corpCode) {
         PayRoll payRoll = new PayRoll();

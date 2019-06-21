@@ -30,6 +30,8 @@ public interface IWorkerAttendanceBO extends IPaginableBO<WorkerAttendance> {
 
     void deleteWorkerAttendance(String code);
 
+    WorkerAttendance select(WorkerAttendance condition);
+
 
     void deleteWorkerAttendaceByWorkerCode(String workerCode);
 
@@ -76,12 +78,33 @@ public interface IWorkerAttendanceBO extends IPaginableBO<WorkerAttendance> {
 
     public WorkerAttendance getWorkerAttendance(String code);
 
+
+    /**
+     * 查询30天考勤人数
+     */
+    Integer selectWorkerAttendance30Day(String userId);
+
+
+    /**
+     * 查询当天考勤人数
+     */
+    Integer selectWorkerAttendanceToday(String userId);
+
     /**
      * 获取上传国家平台json
      */
     public JsonObject getRequestJson(TeamMaster teamMaster,
                                      WorkerAttendance workerAttendance,
                                      ProjectConfig projectConfigByLocal);
+
+
+    /**
+     * 查询项目人员最新一条记录
+     *
+     * @param workerCode 项目人员code
+     * @return data
+     */
+    WorkerAttendance getLastAttendance(String workerCode);
 
     /****国家平台接口****/
     public void doUpload(XN631918Req req, ProjectConfig projectConfig);

@@ -33,6 +33,9 @@ public class XN631602Req {
     @NotBlank
     private String category;
 
+    // 可用OCR数量
+    private String totalOcrCount;
+
     // 建设单位统一社会信用代码
     private String buildCorpCode;
 
@@ -445,6 +448,14 @@ public class XN631602Req {
 
     public void setArea(String area) {
         this.area = area;
+    }
+
+    public String getTotalOcrCount() {
+        return totalOcrCount;
+    }
+
+    public void setTotalOcrCount(String totalOcrCount) {
+        this.totalOcrCount = totalOcrCount;
     }
 
 }

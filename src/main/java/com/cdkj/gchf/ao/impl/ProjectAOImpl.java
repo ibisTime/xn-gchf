@@ -1,26 +1,20 @@
 package com.cdkj.gchf.ao.impl;
 
+import com.cdkj.gchf.common.PhoneUtil;
 import java.util.List;
+import java.util.Map;
 
+import com.cdkj.gchf.bo.*;
+import com.cdkj.gchf.domain.*;
+import com.cdkj.gchf.dto.res.XN631618Res;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.cdkj.gchf.ao.IProjectAO;
-import com.cdkj.gchf.bo.ICorpBasicinfoBO;
-import com.cdkj.gchf.bo.IProjectBO;
-import com.cdkj.gchf.bo.IProjectBuilderLicenseBO;
-import com.cdkj.gchf.bo.IProjectConfigBO;
-import com.cdkj.gchf.bo.IProjectCorpInfoBO;
-import com.cdkj.gchf.bo.IUserBO;
 import com.cdkj.gchf.bo.base.Paginable;
 import com.cdkj.gchf.common.StringUtil;
-import com.cdkj.gchf.domain.CorpBasicinfo;
-import com.cdkj.gchf.domain.Project;
-import com.cdkj.gchf.domain.ProjectBuilderLicense;
-import com.cdkj.gchf.domain.ProjectConfig;
-import com.cdkj.gchf.domain.ProjectCorpInfo;
 import com.cdkj.gchf.dto.req.XN631600Req;
 import com.cdkj.gchf.dto.req.XN631602Req;
 import com.cdkj.gchf.enums.EProjectCorpType;
@@ -47,6 +41,18 @@ public class ProjectAOImpl implements IProjectAO {
 
     @Autowired
     private IProjectCorpInfoBO projectCorpInfoBO;
+
+    @Autowired
+    private ITeamMasterBO teamMasterBO;
+
+    @Autowired
+    private IWorkerEntryExitRecordBO workerEntryExitRecordBO;
+
+    @Autowired
+    private IWorkerAttendanceBO workerAttendanceBO;
+
+    @Autowired
+    private ISmsOutBO smsOutBO;
 
     @Override
     @Transactional
@@ -100,7 +106,15 @@ public class ProjectAOImpl implements IProjectAO {
 
         // 添加施工许可证
         projectBuilderLicenseBO.saveProjectBuilderLicense(project.getCode(),
-            req.getBuilderLicenses());
+                req.getBuilderLicenses());
+
+        // 发送短信
+//        smsOutBO.sendSmsOut(req.getLinkPhone(),
+//                "尊敬的" + PhoneUtil.hideMobile(req.getLinkPhone()) + "，"
+//                        + req.getName() + "项目管理员账户已开设，登录名："
+//                        + req.getName().concat("管理员") + "，密码：888888"
+//                        + "，请登录鲸目项目端查看。",
+//                "804080");
 
         return project.getCode();
     }
@@ -181,7 +195,7 @@ public class ProjectAOImpl implements IProjectAO {
 
         // 添加施工许可证
         projectBuilderLicenseBO.saveProjectBuilderLicense(req.getCode(),
-            req.getBuilderLicenses());
+                req.getBuilderLicenses());
 
         projectBO.refreshProject(req, contractorCorpInfo);
     }
@@ -191,7 +205,7 @@ public class ProjectAOImpl implements IProjectAO {
             Project condition) {
 
         Paginable<Project> page = projectBO.getPaginable(start, limit,
-            condition);
+                condition);
 
         return page;
     }
@@ -206,14 +220,29 @@ public class ProjectAOImpl implements IProjectAO {
         Project project = projectBO.getProject(code);
         // 查询项目施工许可证
         List<ProjectBuilderLicense> projectBuilderLicenseList = projectBuilderLicenseBO
-            .queryProjectBuilderLicenseList(code);
+                .queryProjectBuilderLicenseList(code);
         project.setBuilderLicenses(projectBuilderLicenseList);
         // 项目配置
         ProjectConfig projectConfig = projectConfigBO
-            .getProjectConfigByLocal(project.getCode());
+                .getProjectConfigByLocal(project.getCode());
         project.setProjectConfig(projectConfig);
 
         return project;
     }
 
+    @Override
+    public Object queryProjectInfo_led(String userId) {
+
+        List<Map> projectInfoList_led = projectBO.getProjectInfoList_led(userId);
+        Integer totalCount = workerAttendanceBO.selectWorkerAttendanceToday(userId);
+
+        XN631618Res xn631618Res = new XN631618Res();
+        xn631618Res.setData(projectInfoList_led);
+        if (null == totalCount) {
+            xn631618Res.setTotalCount(0);
+        } else {
+            xn631618Res.setTotalCount(totalCount);
+        }
+        return xn631618Res;
+    }
 }

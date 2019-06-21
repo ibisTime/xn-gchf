@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
-"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.cdkj.gchf.dao.IProjectDAO">
 	<resultMap id="project_DB_Result" type="project">
 		<result column="code" property="code" />
@@ -16,6 +16,8 @@
 		<result column="prj_plan_num" property="prjPlanNum" />
 
 		<result column="area_code" property="areaCode" />
+    <result column="total_ocr_count" property="totalOcrCount"/>
+    <result column="used_ocr_count" property="usedOcrCount"/>
 		<result column="invest" property="invest" />
 		<result column="building_area" property="buildingArea" />
 		<result column="building_length" property="buildingLength" />
@@ -47,6 +49,8 @@
 		<result column="pay_roll_delay_days" property="payRollDelayDays" />
 		<result column="charge_email" property="chargeEmail" />
 		<result column="third_party_project_code" property="thirdPartyProjectCode" />
+    <result column="total_ocr_count" property="totalOcrCount"/>
+    <result column="used_ocr_count" property="usedOcrCount"/>
 		<result column="secretStatus" property="secret_status" />
 	</resultMap>
 
@@ -80,99 +84,101 @@
 	<insert id="insert_project" parameterType="project">
 		INSERT INTO
 		thf_project(
-		code
-		,contractor_corp_code
-		,contractor_corp_name
-		,name
-		,description
+                 code
+               , contractor_corp_code
+               , contractor_corp_name
+               , name
+               , description
 
-		,category
-		,build_corp_name
-		,build_corp_code
-		,build_plan_num
-		,prj_plan_num
+               , category
+               , build_corp_name
+               , build_corp_code
+               , build_plan_num
+               , prj_plan_num
 
-		,area_code
-		,invest
-		,building_area
-		,building_length
-		,start_date
+               , area_code
+               , invest
+               , total_ocr_count
+               , building_area
+               , building_length
+               , start_date
 
-		,complete_date
-		,link_man
-		,link_phone
-		,prj_status
-		,lng
-		,lat
+               , complete_date
+               , link_man
+               , link_phone
+               , prj_status
+               , lng
+               , lat
 
-		,province
-		,city
-		,area
-		,address
-		,approval_num
+               , province
+               , city
+               , area
+               , address
+               , approval_num
 
-		,approval_level_num
-		,prj_size
-		,property_num
-		,prj_num
-		,nation_num
+               , approval_level_num
+               , prj_size
+               , property_num
+               , prj_num
+               , nation_num
 
-		,attendance_starttime
-		,attendance_endtime
-		,pay_roll_create_datetime
-		,pay_roll_datetime
-		,pay_roll_delay_days
+               , attendance_starttime
+               , attendance_endtime
+               , pay_roll_create_datetime
+               , pay_roll_datetime
+               , pay_roll_delay_days
 
-		,charge_email
-		,third_party_project_code
-		,secret_status
+               , charge_email
+               , third_party_project_code
+               , secret_status
 		)
-		VALUES(
-		#{code}
-		,#{contractorCorpCode}
-		,#{contractorCorpName}
-		,#{name}
-		,#{description}
+		VALUES (
+             #{code}
+           , #{contractorCorpCode}
+           , #{contractorCorpName}
+           , #{name}
+           , #{description}
 
-		,#{category}
-		,#{buildCorpName}
-		,#{buildCorpCode}
-		,#{buildPlanNum}
-		,#{prjPlanNum}
+           , #{category}
+           , #{buildCorpName}
+           , #{buildCorpCode}
+           , #{buildPlanNum}
+           , #{prjPlanNum}
 
-		,#{areaCode}
-		,#{invest}
-		,#{buildingArea}
-		,#{buildingLength}
-		,#{startDate}
+           , #{areaCode}
+           , #{invest}
+           , #{totalOcrCount}
+           , #{buildingArea}
+           , #{buildingLength}
+           , #{startDate}
 
-		,#{completeDate}
-		,#{linkMan}
-		,#{linkPhone}
-		,#{prjStatus}
-		,#{lng}
-		,#{lat}
+           , #{completeDate}
+           , #{linkMan}
+           , #{linkPhone}
+           , #{prjStatus}
+           , #{lng}
+           , #{lat}
 
-		,#{province}
-		,#{city}
-		,#{area}
-		,#{address}
-		,#{approvalNum}
-		,#{approvalLevelNum}
+           , #{province}
+           , #{city}
+           , #{area}
+           , #{address}
+           , #{approvalNum}
+           , #{approvalLevelNum}
 
-		,#{prjSize}
-		,#{propertyNum}
-		,#{prjNum}
-		,#{nationNum}
-		,#{attendanceStarttime}
-		,#{attendanceEndtime}
+           , #{prjSize}
+           , #{propertyNum}
+           , #{prjNum}
+           , #{nationNum}
+           , #{attendanceStarttime}
+           , #{attendanceEndtime}
 
-		,#{payRollCreateDatetime}
-		,#{payRollDatetime}
-		,#{payRollDelayDays}
-		,#{chargeEmail}
-		,#{thirdPartyProjectCode}
-		,#{secretStatus}
+           , #{payRollCreateDatetime}
+           , #{payRollDatetime}
+           , #{payRollDelayDays}
+           , #{chargeEmail}
+           , #{thirdPartyProjectCode}
+           , #{secretStatus}
 		)
 	</insert>
 
@@ -192,10 +198,18 @@
 		,area_code = #{areaCode}
 
 		,invest = #{invest}
+    <if test="totalOcrCount != null">
+      ,total_ocr_count = #{totalOcrCount}
+    </if>
 		,building_area = #{buildingArea}
 		,building_length = #{buildingLength}
-		,start_date = #{startDate}
-		,complete_date = #{completeDate}
+    <if test="startDate != null">
+      ,start_date = #{startDate}
+    </if>
+
+    <if test="completeDate != null">
+      ,complete_date = #{completeDate}
+    </if>
 
 		,link_man = #{linkMan}
 		,link_phone = #{linkPhone}
@@ -214,14 +228,27 @@
 
 		,prj_num = #{prjNum}
 		,nation_num = #{nationNum}
-		,attendance_starttime = #{attendanceStarttime}
-		,attendance_endtime = #{attendanceEndtime}
-
-		,pay_roll_create_datetime = #{payRollCreateDatetime}
-		,pay_roll_datetime = #{payRollDatetime}
-		,pay_roll_delay_days = #{payRollDelayDays}
-		,charge_email = #{chargeEmail}
-		,third_party_project_code = #{thirdPartyProjectCode}
+    <if test="attendanceStarttime != null">
+      ,attendance_starttime = #{attendanceStarttime}
+    </if>
+    <if test="attendanceEndtime != null">
+      ,attendance_endtime = #{attendanceEndtime}
+    </if>
+    <if test="payRollCreateDatetime != null">
+      ,pay_roll_create_datetime = #{payRollCreateDatetime}
+    </if>
+    <if test="payRollDatetime != null">
+      ,pay_roll_datetime = #{payRollDatetime}
+    </if>
+    <if test="payRollDelayDays != null">
+      ,pay_roll_delay_days = #{payRollDelayDays}
+    </if>
+    <if test="chargeEmail != null">
+      ,charge_email = #{chargeEmail}
+    </if>
+    <if test="thirdPartyProjectCode != null">
+      ,third_party_project_code = #{thirdPartyProjectCode}
+    </if>
 		,secret_status = #{secretStatus}
 		WHERE code = #{code}
 	</update>
@@ -243,6 +270,13 @@
 		WHERE code = #{code}
 	</update>
 
+  <update id="update_usedOcrCount" parameterType="project">
+    UPDATE
+      thf_project
+    SET used_ocr_count = #{usedOcrCount}
+    WHERE code = #{code}
+  </update>
+
     <select id="select_project" parameterType="project" resultMap="project_DB_Result">
         SELECT
         t.code
@@ -258,6 +292,8 @@
         ,t.prj_plan_num
 
         ,t.area_code
+      ,t.total_ocr_count
+      ,t.used_ocr_count
         ,t.invest
         ,t.building_area
         ,t.building_length
@@ -308,4 +344,19 @@
     </select>
 
 
+  <select id="selectProjectInfo" parameterType="String" resultType="java.util.HashMap">
+    select team_name, count(1) as 'count'
+    from thf_project_worker
+    where team_sys_no in
+          (
+            select code
+            from thf_team_master
+            where project_code =
+                  (select organization_code
+                   from thf_user
+                   where user_id = #{0})
+          )
+      and delete_status = 0
+    group by team_sys_no;
+  </select>
 </mapper>

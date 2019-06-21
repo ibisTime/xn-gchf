@@ -21,6 +21,7 @@ public class XN631770Req {
     @NotBlank
     private String corpCode;
 
+
     // 工人所属企业名称
     private String corpName;
 
@@ -107,5 +108,4 @@ public class XN631770Req {
     public void setPayRollCode(String payRollCode) {
         this.payRollCode = payRollCode;
     }
-
 }

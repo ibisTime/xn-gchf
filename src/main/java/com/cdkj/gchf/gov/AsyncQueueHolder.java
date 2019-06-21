@@ -49,8 +49,8 @@ public class AsyncQueueHolder {
      * @history:
      */
     public static void addSerial(String resString, ProjectConfig projectConfig,
-                                 String boClass, String code, String status, String logCode,
-                                 String userId) {
+            String boClass, String code, String status, String logCode,
+            String userId) {
         QueueBean queueBean = null;
         String requestSerialCode = null;
 
@@ -130,13 +130,23 @@ public class AsyncQueueHolder {
                 }
                 if (queueBean.getBoClass().equals("teamMasterBO")) {
                     // 同步国家平台数据
+                    //国家平台班组编号
+                    String teamMasterCode = asyncRes.getResult()
+                            .substring(asyncRes.getResult().indexOf("已存在班组编号为:") + 9,
+                                    asyncRes.getResult().indexOf("已存在班组编号为:") + 19);
+                    queueBean.getBoClass();
+                    ITeamMasterBO bean = SpringContextHolder.getBean(queueBean.getBoClass());
+                    bean.refreshTeamSysNoByLocal(queueBean.getCode(), teamMasterCode);
+                    bean.refreshUploadStatus(queueBean.getCode(),
+                            ETeamMasterUploadStatus.UPLOAD_UPDATE.getCode());
                     // syncTeamSysNo(queueBean.getCode(), asyncRes);
-                    ITeamMasterAO ao = SpringContextHolder
-                            .getBean(ITeamMasterAO.class);
-                    XN631655Req req = new XN631655Req();
-                    req.setCodeList(Arrays.asList(queueBean.getCode()));
-                    req.setUserId(queueBean.getUserId());
-                    ao.updatePlantformTeamMaster(req);
+//                    ITeamMasterAO ao = SpringContextHolder
+//                        .getBean(ITeamMasterAO.class);
+//                    XN631655Req req = new XN631655Req();
+//                    req.setCodeList(Arrays.asList(queueBean.getCode()));
+//                    req.setUserId(queueBean.getUserId());
+//                    ao.updatePlantformTeamMaster(req);
+                    queueBean.setStatus(EGovAsyncStatus.SUCCESS.getCode());
                 }
                 if (queueBean.getBoClass().equals("projectWorkerBO")) {
                     // 同步国家平台数据
@@ -146,6 +156,7 @@ public class AsyncQueueHolder {
                     req.setCodeList(Arrays.asList(queueBean.getCode()));
                     req.setUserId(queueBean.getUserId());
                     ao.updatePlantformProjectWorker(req);
+                    queueBean.setStatus(EGovAsyncStatus.SUCCESS.getCode());
                 }
 
             } else if (asyncRes.getCode().equals("1001")) {

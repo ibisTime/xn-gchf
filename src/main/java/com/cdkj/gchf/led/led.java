@@ -330,6 +330,8 @@ public class led {
                                                           String NewIp, String NewNetMask, String NewGateway, String NewMac);
 
     static {
+        System.out.println("123：" + System.getProperty("java.library.path"));
         System.loadLibrary("lv_led");
+
     }
 }

@@ -166,15 +166,25 @@ public class WorkerAttendanceBOImpl extends PaginableBOImpl<WorkerAttendance>
     }
 
     @Override
+    public WorkerAttendance select(WorkerAttendance condition) {
+        return workerAttendanceDAO.select(condition);
+    }
+
+    @Override
     public void deleteWorkerAttendaceByWorkerCode(String workerCode) {
         WorkerAttendance workerAttendance = new WorkerAttendance();
         workerAttendance.setWorkerCode(workerCode);
-        workerAttendanceDAO.deleteWorkerAttendanceByWorkerCode(workerAttendance);
+        workerAttendanceDAO
+                .deleteWorkerAttendanceByWorkerCode(workerAttendance);
     }
 
     @Override
     public void batchDeleteWorkerAttendance(List<String> codes) {
-        workerAttendanceDAO.batchDeleteWorkerAttendacne(codes);
+        WorkerAttendance workerAttendance = new WorkerAttendance();
+
+        workerAttendance.setCodeList(codes);
+
+        workerAttendanceDAO.batchDeleteWorkerAttendacne(workerAttendance);
     }
 
     @Override
@@ -221,7 +231,7 @@ public class WorkerAttendanceBOImpl extends PaginableBOImpl<WorkerAttendance>
         WorkerAttendance workerAttendance = new WorkerAttendance();
 
         String code = OrderNoGenerater
-            .generate(EGeneratePrefix.WorkerAttendance.getCode());
+                .generate(EGeneratePrefix.WorkerAttendance.getCode());
         workerAttendance.setCode(code);
         workerAttendance.setProjectCode(project.getCode());
         workerAttendance.setProjectName(project.getName());
@@ -284,7 +294,6 @@ public class WorkerAttendanceBOImpl extends PaginableBOImpl<WorkerAttendance>
         return workerAttendance;
     }
 
-
     @Override
     public int deleteWorkAttendanceByProject(String projectCode) {
         WorkerAttendance workerAttendance = new WorkerAttendance();
@@ -322,7 +331,7 @@ public class WorkerAttendanceBOImpl extends PaginableBOImpl<WorkerAttendance>
         WorkerAttendance tempWorkerAttendance = new WorkerAttendance();
         tempWorkerAttendance.setCode(data.getCode());
         WorkerAttendance select = workerAttendanceDAO
-            .select(tempWorkerAttendance);
+                .select(tempWorkerAttendance);
         select.setDate(data.getDate());
         select.setDirection(data.getDirection());
         select.setDeleteStatus(EDeleteStatus.NORMAL.getCode());
@@ -330,7 +339,7 @@ public class WorkerAttendanceBOImpl extends PaginableBOImpl<WorkerAttendance>
                 .setUploadStatus(EWorkerAttendanceUploadStatus.TO_UPLOAD.getCode());
         workerAttendanceDAO.update(select);
         operateLogBO.saveOperateLog(EOperateLogRefType.WorkAttendance.getCode(),
-            data.getCode(), "修改人员考勤", user, "修改人员考勤");
+                data.getCode(), "修改人员考勤", user, "修改人员考勤");
     }
 
     @Override
@@ -367,14 +376,14 @@ public class WorkerAttendanceBOImpl extends PaginableBOImpl<WorkerAttendance>
         List<XN631918ReqData> dataList = req.getDataList();
         for (XN631918ReqData data : dataList) {
             data.setIdCardNumber(AesUtils.encrypt(data.getIdCardNumber(),
-                projectConfig.getSecret()));
+                    projectConfig.getSecret()));
         }
 
         String data = JSONObject.toJSONStringWithDateFormat(req,
-            "yyyy-MM-dd HH:mm:ss");
+                "yyyy-MM-dd HH:mm:ss");
 
         String resString = GovConnecter.getGovData("WorkerAttendance.Add", data,
-            projectConfig.getProjectCode(), projectConfig.getSecret());
+                projectConfig.getProjectCode(), projectConfig.getSecret());
 
         SerialHandler.handle(resString, projectConfig);
     }
@@ -385,19 +394,19 @@ public class WorkerAttendanceBOImpl extends PaginableBOImpl<WorkerAttendance>
         WorkerAttendance workerAttendance = new WorkerAttendance();
         BeanUtils.copyProperties(req, workerAttendance);
         workerAttendance.setDate(DateUtil.strToDate(req.getDate(),
-            DateUtil.FRONT_DATE_FORMAT_STRING));
+                DateUtil.FRONT_DATE_FORMAT_STRING));
 
         String data = JSONObject.toJSONStringWithDateFormat(workerAttendance,
-            "yyyy-MM-dd");
+                "yyyy-MM-dd");
 
         String queryString = GovConnecter.getGovData("WorkerAttendance.Query",
-            data, projectConfig.getProjectCode(), projectConfig.getSecret());
+                data, projectConfig.getProjectCode(), projectConfig.getSecret());
 
         Map<String, String> replaceMap = new HashMap<>();
 
         Paginable<WorkerAttendance> page = GovUtil.parseGovPage(
-            req.getPageIndex(), req.getPageSize(), queryString, replaceMap,
-            WorkerAttendance.class);
+                req.getPageIndex(), req.getPageSize(), queryString, replaceMap,
+                WorkerAttendance.class);
 
         return page;
     }
@@ -416,25 +425,35 @@ public class WorkerAttendanceBOImpl extends PaginableBOImpl<WorkerAttendance>
     }
 
     @Override
+    public Integer selectWorkerAttendance30Day(String userId) {
+        return workerAttendanceDAO.selectWorkerAttendance30Day(userId);
+    }
+
+    @Override
+    public Integer selectWorkerAttendanceToday(String userId) {
+        return workerAttendanceDAO.selectWorkerAttendanceToday(userId);
+    }
+
+    @Override
     public JsonObject getRequestJson(TeamMaster teamMaster,
             WorkerAttendance workerAttendance,
             ProjectConfig projectConfigByLocal) {
         workerAttendance.setProjectCode(projectConfigByLocal.getProjectCode());
         JsonObject jsonObject = new JsonObject();
         jsonObject.addProperty("projectCode",
-            projectConfigByLocal.getProjectCode());
+                projectConfigByLocal.getProjectCode());
 
         jsonObject.addProperty("teamSysNo", teamMaster.getTeamSysNo());
         JsonArray dataList = new JsonArray();
         JsonObject childJson = new JsonObject();
         childJson.addProperty("idCardType", workerAttendance.getIdCardType());
         childJson.addProperty("idCardNumber",
-            AesUtils.encrypt(workerAttendance.getIdCardNumber(),
-                projectConfigByLocal.getSecret()));
+                AesUtils.encrypt(workerAttendance.getIdCardNumber(),
+                        projectConfigByLocal.getSecret()));
 
         childJson.addProperty("date",
-            new SimpleDateFormat("yyyy-MM-dd hh:mm:ss")
-                .format(workerAttendance.getDate()));
+                new SimpleDateFormat("yyyy-MM-dd hh:mm:ss")
+                        .format(workerAttendance.getDate()));
         childJson.addProperty("direction", workerAttendance.getDirection());
         childJson.addProperty("channel", workerAttendance.getChannel());
         childJson.addProperty("attendType", workerAttendance.getAttendType());
@@ -446,4 +465,20 @@ public class WorkerAttendanceBOImpl extends PaginableBOImpl<WorkerAttendance>
         return jsonObject;
     }
 
+    @Override
+    public WorkerAttendance getLastAttendance(String workerCode) {
+        // :D
+        WorkerAttendance condition = new WorkerAttendance();
+        condition.setWorkerCode(workerCode);
+        condition.setOrder("date", false);
+        condition.setDeleteStatus(EDeleteStatus.NORMAL.getCode());
+        List<WorkerAttendance> workerAttendances = workerAttendanceDAO.selectList(condition);
+        if (workerAttendances.size() > 1) {
+            return workerAttendances.get(1);
+        } else {
+            return workerAttendances.get(0);
+        }
+
+//        return workerAttendanceDAO.selectWorkerNewlyWorkerAttendanceData(workerCode);
+    }
 }

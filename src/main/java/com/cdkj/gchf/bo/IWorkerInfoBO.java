@@ -2,7 +2,7 @@ package com.cdkj.gchf.bo;
 
 import java.util.List;
 
-import com.cdkj.gchf.api.impl.XN631693ReqData;
+import com.cdkj.gchf.dto.req.XN631693ReqData;
 import com.cdkj.gchf.bo.base.IPaginableBO;
 import com.cdkj.gchf.bo.base.Paginable;
 import com.cdkj.gchf.domain.ProjectConfig;
@@ -11,33 +11,54 @@ import com.cdkj.gchf.dto.req.XN631790Req;
 import com.cdkj.gchf.dto.req.XN631791Req;
 import com.cdkj.gchf.dto.req.XN631792Req;
 import com.cdkj.gchf.dto.req.XN631793Req;
+import com.cdkj.gchf.dto.req.XN631795Req;
+import com.cdkj.gchf.dto.req.XN631797Req;
+import com.cdkj.gchf.zqzn.ZqznInfoBack;
+import com.cdkj.gchf.zqzn.ZqznInfoFront;
 
 public interface IWorkerInfoBO extends IPaginableBO<WorkerInfo> {
 
-
     String saveWorkerInfo(XN631790Req req);
 
+    /**
+     *
+     */
+    String saveWorkerInfo(WorkerInfo workerInfo);
+
+    String saveWorkerInfo(XN631795Req req, ZqznInfoFront front,
+            ZqznInfoBack back);
 
     String saveWorkerInfoByImport(XN631693ReqData data);
 
+    String refreshWorkerInfo(XN631797Req req);
 
     int refreshWorkerInfo(XN631791Req req);
+
+    /**
+     * @param code 人员实名制code
+     * @param positiveImage 正面照
+     * @param negativeImage 反面照
+     */
+    int updateWorkerInfoIdcardImageH5(String code, String headImage, String positiveImage,
+            String negativeImage, String startDate, String enpiryDate);
 
     int refreshWorkerInfo(XN631792Req req);
 
     int refreshWorkerInfo(XN631793Req req);
 
-    void refreshAttendancePic(String code, String attendancePicture,
-                              String workerUploadStatus, String attendancePicUploadStatus);
+    /**
+     * @param handIdCardImage 更新手持身份证照
+     */
+    void refreshHandIdCardImage(String code, String handIdCardImage);
 
+    void refreshAttendancePic(String code, String attendancePicture,
+            String workerUploadStatus, String attendancePicUploadStatus);
 
     public WorkerInfo getWorkerInfo(String code);
 
     public WorkerInfo getBriefWorkerInfo(String code);
 
-
     public WorkerInfo getWorkerInfoByIdCardNumber(String idCardNumber);
-
 
     public List<WorkerInfo> queryWorkerInfoList(WorkerInfo condition);
 
@@ -46,6 +67,7 @@ public interface IWorkerInfoBO extends IPaginableBO<WorkerInfo> {
 
     public List<WorkerInfo> queryStaffListBrief(WorkerInfo condition, int start,
                                                 int count);
+
 
     public long queryTotalCount(WorkerInfo condition);
 

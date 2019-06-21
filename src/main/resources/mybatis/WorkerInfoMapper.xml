@@ -2,7 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.cdkj.gchf.dao.IWorkerInfoDAO">
-    <resultMap id="WorkerInfo_DB_Result" type="workerInfo">
+	<resultMap id="WorkerInfo_DB_Result" type="workerInfo">
 		<result column="code" property="code" />
 		<result column="name" property="name" />
 		<result column="id_card_type" property="idCardType" />
@@ -36,13 +36,13 @@
 		<result column="start_date" property="startDate" />
 		<result column="expiry_date" property="expiryDate" />
 		<result column="create_datetime" property="createDatetime" />
-        <result column="attendance_picture" property="attendancePicture"/>
-        <result column="worker_guid" property="workerGuid"/>
-        <result column="worker_attendance_pic_guid" property="workerAttendancePicGuid"/>
-        <result column="worker_pic_upload_status" property="workerPicUploadStatus"/>
-        <result column="worker_upload_status" property="workerUploadStatus"/>
+		<result column="attendance_picture" property="attendancePicture"/>
+		<result column="worker_guid" property="workerGuid"/>
+		<result column="worker_attendance_pic_guid" property="workerAttendancePicGuid"/>
+		<result column="worker_pic_upload_status" property="workerPicUploadStatus"/>
+		<result column="worker_upload_status" property="workerUploadStatus"/>
 
-        <result column="id_card_number" property="businessIdCardNumber"/>
+		<result column="id_card_number" property="businessIdCardNumber"/>
 	</resultMap>
 	<sql id="where_condition">
 		<trim prefix="WHERE" prefixOverrides="AND | OR">
@@ -50,15 +50,15 @@
 				AND t.code = #{code}
 			</if>
 			<if test="idCardNumber != null and idCardNumber != '' ">
-                AND t.id_card_number like "%"#{idCardNumber}"%"
+				AND t.id_card_number like "%"#{idCardNumber}"%"
 			</if>
 			<if test="idCardType != null and idCardType != '' ">
 				AND t.id_card_type = #{idCardType}
 			</if>
 
-            <if test="businessIdCardNumber != null and businessIdCardNumber != '' ">
-                AND t.id_card_number = #{businessIdCardNumber}
-            </if>
+			<if test="businessIdCardNumber != null and businessIdCardNumber != '' ">
+				AND t.id_card_number = #{businessIdCardNumber}
+			</if>
 			<if test="cellPhone != null and cellPhone != '' ">
 				AND t.cell_phone = #{cellPhone}
 			</if>
@@ -75,70 +75,74 @@
 	<insert id="insert_WorkerInfo" parameterType="workerInfo">
 		INSERT INTO
 		thf_worker_info(
-		code
-		,name
-		,id_card_type
-		,id_card_number
-		,gender
-		,nation
+										 code
+									 , name
+									 , id_card_type
+									 , id_card_number
+									 , gender
+									 , nation
 
-		,birthday
-		,address
-		,start_date
-		,expiry_date
-		,grant_org
-		,head_image_url
+									 , birthday
+									 , address
+									 , start_date
+									 , expiry_date
+									 , grant_org
+									 , head_image_url
 
-		,cell_phone
-		,has_bad_medical_history
-		,work_type_code
-		,birth_place_code
-		,politics_type
-		,create_datetime
-		,is_joined
-		,joined_time
-		,specialty
-		,marital_status
-		,hand_id_card_image_url
-		,culture_level_type
-		,attendance_picture
-		,worker_guid
-		,worker_attendance_pic_guid
-		,worker_pic_upload_status
-		,worker_upload_status
+									 , cell_phone
+									 , has_bad_medical_history
+									 , work_type_code
+									 , birth_place_code
+									 , politics_type
+									 , create_datetime
+									 , is_joined
+									 , joined_time
+									 , specialty
+									 , marital_status
+									 , positive_id_card_image_url
+									 , negative_id_card_image_url
+									 , hand_id_card_image_url
+									 , culture_level_type
+									 , attendance_picture
+									 , worker_guid
+									 , worker_attendance_pic_guid
+									 , worker_pic_upload_status
+									 , worker_upload_status
 		)
-		VALUES(
-		#{code}
-		,#{name}
-		,#{idCardType}
-		,#{idCardNumber}
-		,#{gender}
-		,#{nation}
+		VALUES (
+						 #{code}
+					 , #{name}
+					 , #{idCardType}
+					 , #{idCardNumber}
+					 , #{gender}
+					 , #{nation}
 
-		,#{birthday}
-		,#{address}
-		,#{startDate}
-		,#{expiryDate}
-		,#{grantOrg}
-		,#{headImageUrl}
+					 , #{birthday}
+					 , #{address}
+					 , #{startDate}
+					 , #{expiryDate}
+					 , #{grantOrg}
+					 , #{headImageUrl}
 
-		,#{cellPhone}
-		,#{hasBadMedicalHistory}
-		,#{workTypeCode}
-		,#{birthPlaceCode}
-		,#{politicsType}
-		,#{createDatetime}
-		,#{isJoined}
-		,#{joinedTime}
-		,#{specialty}
-		,#{maritalStatus}
-		,#{handIdCardImageUrl}
-		,#{cultureLevelType}
-		,#{attendancePicture}
-		,#{workerGuid}
-		,#{workerAttendancePicGuid}
-		,#{workerPicUploadStatus}
-		,#{workerUploadStatus}
+					 , #{cellPhone}
+					 , #{hasBadMedicalHistory}
+					 , #{workTypeCode}
+					 , #{birthPlaceCode}
+					 , #{politicsType}
+					 , #{createDatetime}
+					 , #{isJoined}
+					 , #{joinedTime}
+					 , #{specialty}
+					 , #{maritalStatus}
+					 , #{positiveIdCardImageUrl}
+					 , #{negativeIdCardImageUrl}
+					 , #{handIdCardImageUrl}
+					 , #{cultureLevelType}
+					 , #{attendancePicture}
+					 , #{workerGuid}
+					 , #{workerAttendancePicGuid}
+					 , #{workerPicUploadStatus}
+					 , #{workerUploadStatus}
 		)
 	</insert>
 
@@ -155,8 +159,7 @@
 		,id_card_type = #{idCardType}
 		,id_card_number = #{idCardNumber}
 		,gender = #{gender}
-		,nation =
-		#{nation}
+		,nation = #{nation}
 		,edu_level = #{eduLevel}
 		,politics_type = #{politicsType}
 		,degree = #{degree}
@@ -164,34 +167,40 @@
 
 		,birthday = #{birthday}
 		,birth_place_code = #{birthPlaceCode}
-		,address =
-		#{address}
-		,head_image_url = #{headImageUrl}
-		,is_joined = #{isJoined}
-		,joined_time
-		= #{joinedTime}
-		,culture_level_type = #{cultureLevelType}
-		,specialty =
-		#{specialty}
+		,address = #{address}
+		<if test="headImageUrl != null and headImageUrl != '' ">
+			,head_image_url = #{headImageUrl}
+		</if>
 
-		,has_bad_medical_history =
-		#{hasBadMedicalHistory}
+		,is_joined = #{isJoined}
+		,cell_phone = #{cellPhone}
+		<if test="joinedTime != null">
+			,joined_time = #{joinedTime}
+		</if>
+
+		,culture_level_type = #{cultureLevelType}
+		,specialty = #{specialty}
+
+		,has_bad_medical_history = #{hasBadMedicalHistory}
 		,work_type_code = #{workTypeCode}
 		,work_corp_name = #{workCorpName}
 		,work_date = #{workDate}
 		,marital_status = #{maritalStatus}
 
-		,grant_org =
-		#{grantOrg}
-		,start_date
-		= #{startDate}
+		,grant_org = #{grantOrg}
+		,start_date = #{startDate}
 		,expiry_date = #{expiryDate}
-		,create_datetime =
-		#{createDatetime}
-		,attendance_picture =
-		#{attendancePicture}
-		WHERE code
-		= #{code}
+		,create_datetime = #{createDatetime}
+		<if test="attendancePicture != null and attendancePicture != '' ">
+			,attendance_picture = #{attendancePicture}
+		</if>
+		<if test="urgentLinkMan != null and urgentLinkMan != '' ">
+			,urgent_link_man = #{urgentLinkMan}
+		</if>
+		<if test="urgentLinkManPhone != null and urgentLinkManPhone != '' ">
+			,urgent_link_man_phone = #{urgentLinkManPhone}
+		</if>
+		WHERE code = #{code}
 	</update>
 
 	<update id="update_WorkerInfoAboutIdcard" parameterType="workerInfo">
@@ -202,19 +211,26 @@
 		,positive_id_card_image_url = #{positiveIdCardImageUrl}
 		,negative_id_card_image_url = #{negativeIdCardImageUrl}
 		,attendance_picture = #{attendancePicture}
-		WHERE code =
-		#{code}
+		<if test="headImageUrl != null and headImageUrl != '' ">
+			,head_image_url = #{headImageUrl}
+		</if>
+		<if test="startDate != null">
+			,start_date =#{startDate}
+		</if>
+		<if test="expiryDate != null">
+			,expiry_date = #{expiryDate}
+		</if>
+		WHERE code = #{code}
 	</update>
 
-    <update id="update_WorkerInfoAboutAttendance" parameterType="workerInfo">
+	<update id="update_WorkerInfoAboutAttendance" parameterType="workerInfo">
 		UPDATE
 		thf_worker_info
 		SET
 		worker_guid = #{workerGuid}
 		,worker_attendance_pic_guid = #{workerAttendancePicGuid}
 
-		WHERE code =
-		#{code}
+		WHERE code = #{code}
 	</update>
 
 	<update id="update_WorkerInfoAboutPhone" parameterType="workerInfo">
@@ -231,17 +247,37 @@
 		code = #{code}
 	</update>
 
-    <update id="update_attendancePic" parameterType="workerInfo">
+	<update id="updateWorkerInfoIdCardImageH5" parameterType="workerInfo">
+		UPDATE
+		thf_worker_info
+		SET head_image_url = #{headImageUrl}
+		,positive_id_card_image_url = #{positiveIdCardImageUrl}
+		,negative_id_card_image_url = #{negativeIdCardImageUrl}
+		<if test="startDate !=null ">
+			,start_date = #{startDate}
+		</if>
+		<if test="expiryDate != null ">
+			,expiry_date = #{expiryDate}
+		</if>
+		WHERE code = #{code}
+	</update>
+
+	<update id="update_attendancePic" parameterType="workerInfo">
 		UPDATE
 		thf_worker_info
 		SET
 		attendance_picture = #{attendancePicture}
 		,worker_upload_status = #{workerUploadStatus}
 		,worker_pic_upload_status = #{workerPicUploadStatus}
-		
-		WHERE
-		code =
-		#{code}
+
+		WHERE code = #{code}
+	</update>
+
+	<update id="update_WorkerInfo_HandIdCardImage" parameterType="workerInfo">
+		UPDATE
+			thf_worker_info
+		SET hand_id_card_image_url = #{handIdCardImageUrl}
+		WHERE code = #{code}
 	</update>
 
     <select id="select_WorkerInfo" parameterType="workerInfo"
@@ -286,15 +322,69 @@
 		,t.create_datetime
 
 
-        ,t.attendance_picture
-        ,t.worker_guid
-        ,t.worker_attendance_pic_guid
-        ,t.worker_pic_upload_status
-        ,t.worker_upload_status
+			,t.attendance_picture
+			,t.worker_guid
+			,t.worker_attendance_pic_guid
+			,t.worker_pic_upload_status
+			,t.worker_upload_status
 		FROM
-        thf_worker_info
-        t
+			thf_worker_info
+			t
 		<include refid="where_condition" />
+		<trim prefix="ORDER BY ">
+			<if test="order != null and order != '' ">
+				t.${order}
+			</if>
+		</trim>
+	</select>
+
+
+	<select id="select_WorkerInfo_basic" parameterType="workerInfo"
+		resultMap="WorkerInfo_DB_Result">
+		SELECT
+		t.code
+		,t.name
+		,t.id_card_type
+		,t.id_card_number
+		,t.gender
+		,t.nation
+		,t.edu_level
+		,t.degree
+
+		,t.worker_type
+		,t.birthday
+		,t.birth_place_code
+		,t.address
+		,t.head_image_url
+		,t.politics_type
+
+		,t.is_joined
+		,t.joined_time
+		,t.cell_phone
+		,t.culture_level_type
+		,t.specialty
+		,t.has_bad_medical_history
+
+		,t.urgent_link_man
+		,t.urgent_link_man_phone
+		,t.work_type_code
+		,t.work_corp_name
+		,t.work_date
+		,t.marital_status
+
+		,t.grant_org
+		,t.start_date
+		,t.expiry_date
+		,t.create_datetime
+
+		,t.worker_guid
+		,t.worker_attendance_pic_guid
+		,t.worker_pic_upload_status
+		,t.worker_upload_status
+		FROM
+		thf_worker_info
+		t
+		<include refid="where_condition"/>
 		<trim prefix="ORDER BY ">
 			<if test="order != null and order != '' ">
 				t.${order}
@@ -307,41 +397,41 @@
 		SELECT
 		t.code
 		,t.name
-        ,t.id_card_type
+		,t.id_card_type
 		,t.id_card_number
-        ,t.gender
-        ,t.nation
-        ,t.edu_level
-        ,t.degree
+		,t.gender
+		,t.nation
+		,t.edu_level
+		,t.degree
 
-        ,t.worker_type
-        ,t.birthday
-        ,t.birth_place_code
-        ,t.address
-        ,t.politics_type
+		,t.worker_type
+		,t.birthday
+		,t.birth_place_code
+		,t.address
+		,t.politics_type
 
-        ,t.is_joined
-        ,t.joined_time
-        ,t.cell_phone
-        ,t.culture_level_type
-        ,t.specialty
-        ,t.has_bad_medical_history
+		,t.is_joined
+		,t.joined_time
+		,t.cell_phone
+		,t.culture_level_type
+		,t.specialty
+		,t.has_bad_medical_history
 
-        ,t.urgent_link_man
-        ,t.urgent_link_man_phone
-        ,t.work_type_code
-        ,t.work_corp_name
-        ,t.work_date
-        ,t.marital_status
+		,t.urgent_link_man
+		,t.urgent_link_man_phone
+		,t.work_type_code
+		,t.work_corp_name
+		,t.work_date
+		,t.marital_status
 
-        ,t.grant_org
-        ,t.start_date
-        ,t.expiry_date
+		,t.grant_org
+		,t.start_date
+		,t.expiry_date
 		,t.create_datetime
-        ,t.worker_guid
-        ,t.worker_attendance_pic_guid
-        ,t.worker_pic_upload_status
-        ,t.worker_upload_status
+		,t.worker_guid
+		,t.worker_attendance_pic_guid
+		,t.worker_pic_upload_status
+		,t.worker_upload_status
 		FROM
 		thf_worker_info t
 		<include refid="where_condition" />
@@ -353,10 +443,11 @@
 		<include refid="where_condition" />
 	</select>
 
-    <select id="select_WorkerInfo_guid" parameterType="java.lang.String"
-            resultMap="WorkerInfo_DB_Result">
+	<select id="select_WorkerInfo_guid" parameterType="java.lang.String"
+		resultMap="WorkerInfo_DB_Result">
 		SELECT * from thf_worker_info t
 		where worker_guid = #{0}
 	</select>
+
 
 </mapper>

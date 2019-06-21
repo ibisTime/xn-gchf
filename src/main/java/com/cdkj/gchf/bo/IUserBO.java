@@ -51,4 +51,11 @@ public interface IUserBO extends IPaginableBO<User> {
 
     public List<User> checkLoginName(String loginName);
 
+    /**
+     * 根据手机号查询用户列表
+     *
+     * @param mobile 手机号
+     */
+    User getUserByMobile(String mobile);
+
 }

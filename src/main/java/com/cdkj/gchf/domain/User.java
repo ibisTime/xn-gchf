@@ -92,6 +92,9 @@ public class User extends ABaseDO {
     // 登录名等模糊查询
     private String keyword;
 
+    //角色名称
+    private String RoleName;
+
     // 监管用户项目编号列表
     private List<String> projectCodeList;
 
@@ -311,4 +314,11 @@ public class User extends ABaseDO {
         this.employCount = employCount;
     }
 
+    public String getRoleName() {
+        return RoleName;
+    }
+
+    public void setRoleName(String roleName) {
+        RoleName = roleName;
+    }
 }

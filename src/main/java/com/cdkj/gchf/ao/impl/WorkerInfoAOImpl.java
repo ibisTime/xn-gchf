@@ -1,35 +1,15 @@
 package com.cdkj.gchf.ao.impl;
 
-import java.util.List;
-
-import org.apache.commons.lang3.StringUtils;
-import org.springframework.beans.BeanUtils;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-
 import com.cdkj.gchf.ao.IWorkerInfoAO;
-import com.cdkj.gchf.bo.IEquipmentInfoBO;
-import com.cdkj.gchf.bo.IOperateLogBO;
-import com.cdkj.gchf.bo.IProjectWorkerBO;
-import com.cdkj.gchf.bo.IUserBO;
-import com.cdkj.gchf.bo.IWorkerInfoBO;
+import com.cdkj.gchf.bo.*;
 import com.cdkj.gchf.bo.base.Page;
 import com.cdkj.gchf.bo.base.Paginable;
+import com.cdkj.gchf.common.DateUtil;
 import com.cdkj.gchf.common.IdCardChecker;
-import com.cdkj.gchf.domain.EquipmentInfo;
-import com.cdkj.gchf.domain.User;
-import com.cdkj.gchf.domain.WorkerInfo;
-import com.cdkj.gchf.dto.req.XN631790Req;
-import com.cdkj.gchf.dto.req.XN631791Req;
-import com.cdkj.gchf.dto.req.XN631792Req;
-import com.cdkj.gchf.dto.req.XN631793Req;
-import com.cdkj.gchf.enums.ECultureLevelType;
-import com.cdkj.gchf.enums.EGender;
-import com.cdkj.gchf.enums.EIdCardType;
-import com.cdkj.gchf.enums.EOperateLogRefType;
-import com.cdkj.gchf.enums.EPoliticsType;
-import com.cdkj.gchf.enums.EUserKind;
+import com.cdkj.gchf.common.StringUtil;
+import com.cdkj.gchf.domain.*;
+import com.cdkj.gchf.dto.req.*;
+import com.cdkj.gchf.enums.*;
 import com.cdkj.gchf.exception.BizException;
 import com.cdkj.gchf.humanfaces.Device;
 import com.cdkj.gchf.humanfaces.DeviceWorker;
@@ -39,6 +19,18 @@ import com.cdkj.gchf.humanfaces.enums.EPicResponse;
 import com.cdkj.gchf.humanfaces.enums.EWorkerUploadStatus;
 import com.cdkj.gchf.humanfaces.res.DeviceWorkerPicRes;
 import com.cdkj.gchf.humanfaces.res.DeviceWorkerRes;
+import com.cdkj.gchf.zqzn.ZqznInfoBack;
+import com.cdkj.gchf.zqzn.ZqznInfoFront;
+import com.cdkj.gchf.zqzn.ZqznUtil;
+import java.awt.Font;
+import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.BeanUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @author old3
@@ -70,6 +62,12 @@ public class WorkerInfoAOImpl implements IWorkerInfoAO {
     @Autowired
     private IEquipmentInfoBO equipmentInfoBO;
 
+    @Autowired
+    private IProjectBO projectBO;
+
+    @Autowired
+    private IBankCardBankBO bankCardBankBO;
+
     @Override
     @Transactional
     public String addWorkerInfo(XN631790Req req) {
@@ -87,10 +85,10 @@ public class WorkerInfoAOImpl implements IWorkerInfoAO {
 
         if (StringUtils.isNotBlank(req.getCode())) {
             // 重新建档
+            checkIsExist(req.getCode(), req.getIdCardNumber());
+
             WorkerInfo workerInfo = workerInfoBO.getWorkerInfo(req.getCode());
             XN631793Req xn631791Req = new XN631793Req();
-
-            checkIsExist(req);
 
             xn631791Req.setCode(req.getCode());
             BeanUtils.copyProperties(req, xn631791Req);
@@ -118,7 +116,6 @@ public class WorkerInfoAOImpl implements IWorkerInfoAO {
 
         return workerCode;
     }
-
 
     @Override
     public void refreshAttendancePicture(String code, String attendancePicture,
@@ -190,6 +187,11 @@ public class WorkerInfoAOImpl implements IWorkerInfoAO {
     }
 
     @Override
+    public void refreshHandIdCardImage(String code, String handIdCardImage) {
+        workerInfoBO.refreshHandIdCardImage(code, handIdCardImage);
+    }
+
+    @Override
     public Paginable<WorkerInfo> queryWorkerInfoPage(String userId, int start,
                                                      int limit, WorkerInfo condition) {
         User user = userBO.getBriefUser(userId);
@@ -225,6 +227,20 @@ public class WorkerInfoAOImpl implements IWorkerInfoAO {
     @Override
     public WorkerInfo getWorkerInfoByIdCardNumber(String idCardNumber) {
         return workerInfoBO.getWorkerInfoByIdCardNumber(idCardNumber);
+    }
+
+    @Override
+    public List<BankCardInfo> selectWorkerInfoByWorkerCode(String workerCode) {
+        List<ProjectWorker> projectWorkers = projectWorkerBO
+                .selectProjectWorkerByWorkerCode(workerCode);
+        List<BankCardInfo> bankCardInfoList = new ArrayList<>();
+        for (ProjectWorker temp : projectWorkers) {
+            List<BankCardInfo> bankCardByByssinessCode = bankCardBankBO
+                    .getBankCardByByssinessCode(EBankCardBussinessType.USER.getCode(),
+                            temp.getCode());
+            bankCardInfoList.addAll(bankCardByByssinessCode);
+        }
+        return bankCardInfoList;
     }
 
     /**
@@ -295,11 +311,60 @@ public class WorkerInfoAOImpl implements IWorkerInfoAO {
     }
 
     @Override
-    public void readdWorkerInfo(XN631793Req req) {
+    @Transactional
+    public String addOcrWorkerInfo(XN631795Req req) {
         User user = userBO.getBriefUser(req.getUserId());
+        Project project = projectBO.getProject(user.getOrganizationCode());
 
-        checkIsExist(req);
+        if (project.getTotalOcrCount() - project.getUsedOcrCount() < 1) {
+            throw new BizException("XN631794", "身份证识别次数已用完，请联系服务商");
+        }
 
+        ZqznInfoFront front = ZqznUtil.getOcrFrontInfo(req.getPositiveImage());
+        ZqznInfoBack back = ZqznUtil.getOcrBackInfo(req.getNegativeImage());
+        String base64Head = "data:image/jpeg;base64,";
+        projectBO.refreshUsedOcrCount(project.getCode(),
+                project.getUsedOcrCount() + 1);
+        if (StringUtils.isNotBlank(req.getCode())) {
+            String[] validDate = back.getValidDate().split("-");
+            workerInfoBO
+                    .updateWorkerInfoIdcardImageH5(req.getCode(), base64Head + front.getFaceImg(),
+                            req.getPositiveImage(),
+                            req.getNegativeImage(), validDate[0], validDate[1]);
+            return req.getCode();
+        }
+        projectWorkerBO.getProjectWorker(user.getOrganizationCode(), front.getIdNo());
+
+        WorkerInfo workerInfoByIdCardNumber = workerInfoBO
+                .getWorkerInfoByIdCardNumber(front.getIdNo());
+
+        if (workerInfoByIdCardNumber != null) {
+            XN631791Req rs = new XN631791Req();
+            rs.setCode(workerInfoByIdCardNumber.getCode());
+            rs.setHeadImageUrl(base64Head + front.getFaceImg());
+            rs.setPositiveIdCardImageUrl(req.getPositiveImage());
+            String[] validDate = back.getValidDate().split("-");
+            rs.setStartDate(validDate[0]);
+            rs.setExpiryDate(validDate[1]);
+            rs.setNegativeIdCardImageUrl(req.getNegativeImage());
+            workerInfoBO.refreshWorkerInfo(rs);
+            return workerInfoByIdCardNumber.getCode();
+        }
+
+        return workerInfoBO.saveWorkerInfo(req, front, back);
+    }
+
+    @Override
+    public String refreshWorkerInfoH5(XN631797Req req) {
+        return workerInfoBO.refreshWorkerInfo(req);
+    }
+
+    @Override
+    public void readdWorkerInfo(XN631793Req req) {
+
+        checkIsExist(req.getCode(), req.getIdCardNumber());
+
+        User user = userBO.getBriefUser(req.getUserId());
 
         workerInfoBO.refreshWorkerInfo(req);
 
@@ -310,17 +375,16 @@ public class WorkerInfoAOImpl implements IWorkerInfoAO {
                 req.getCode(), "重新建档人员实名制信息", user, null);
     }
 
-    private void checkIsExist(XN631793Req req) {
-        WorkerInfo workerInfoByIdCardNumber = workerInfoBO.getWorkerInfoByIdCardNumber(req.getIdCardNumber());
-        if (workerInfoByIdCardNumber != null && !req.getIdCardNumber().equals(workerInfoByIdCardNumber.getIdCardNumber())) {
-            throw new BizException("XN0000", "项目中已存在身份证号为" + req.getIdCardNumber() + "的人员信息");
-        }
-    }
+    private void checkIsExist(String code, String idCardNumber) {
+        WorkerInfo workerInfo = workerInfoBO.getBriefWorkerInfo(code);
 
-    private void checkIsExist(XN631790Req req) {
-        WorkerInfo workerInfoByIdCardNumber = workerInfoBO.getWorkerInfoByIdCardNumber(req.getIdCardNumber());
-        if (workerInfoByIdCardNumber != null && !req.getIdCardNumber().equals(workerInfoByIdCardNumber.getIdCardNumber())) {
-            throw new BizException("XN0000", "项目中已存在身份证号为" + req.getIdCardNumber() + "的人员信息");
+        if (!idCardNumber.equals(workerInfo.getIdCardNumber())) {
+            WorkerInfo workerInfoByIdCardNumber = workerInfoBO
+                    .getWorkerInfoByIdCardNumber(idCardNumber);
+            if (null != workerInfoByIdCardNumber) {
+                throw new BizException("XN0000",
+                        "项目中已存在身份证号为" + idCardNumber + "的人员信息");
+            }
         }
     }
 

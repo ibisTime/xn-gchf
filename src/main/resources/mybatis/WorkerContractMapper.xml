@@ -42,9 +42,9 @@
 			<if test="corpCode != null and corpCode != '' ">
 				AND t.corp_code = #{corpCode}
 			</if>
-            <if test="corpName != null and corpName != '' ">
-                AND t.corp_name like "%"#{corpName}"%"
-            </if>
+      <if test="corpName != null and corpName != '' ">
+        AND t.corp_name like "%"#{corpName}"%"
+      </if>
 			<if test="contractCode != null and contractCode != '' ">
 				AND t.contract_code = #{contractCode}
 			</if>
@@ -61,7 +61,7 @@
 			<if test="contentPic != null and contentPic != '' ">
 				AND t.content_pic = #{contentPic}
 			</if>
-            <if test="workerCode != null and workerCode != '' ">
+      <if test="workerCode != null and workerCode != '' ">
                 AND t.worker_code = #{workerCode}
             </if>
 			<if test="workerName != null and workerName != '' ">
@@ -138,68 +138,68 @@
 		)
 	</insert>
 
-    <insert id="batch_insert">
+  <insert id="batch_insert">
 
-        INSERT INTO
-        thf_worker_contract(
-        code
-        ,project_code
-        ,project_name
-        ,corp_code
-        ,corp_name
+    INSERT INTO
+    thf_worker_contract(
+    code
+    ,project_code
+    ,project_name
+    ,corp_code
+    ,corp_name
 
-        ,idcard_type
-        ,idcard_number
-        ,worker_code
-        ,worker_name
-        ,worker_mobile
-        ,contract_code
+    ,idcard_type
+    ,idcard_number
+    ,worker_code
+    ,worker_name
+    ,worker_mobile
+    ,contract_code
 
-        ,contract_period_type
-        ,start_date
-        ,end_date
-        ,unit
-        ,unit_price
-        ,content_pic
-        ,updater
-        ,update_datetime
+    ,contract_period_type
+    ,start_date
+    ,end_date
+    ,unit
+    ,unit_price
+    ,content_pic
+    ,updater
+    ,update_datetime
 
-        ,remark
-        ,upload_status
-        ,delete_status
-        )
-        VALUES
-        <foreach collection="list" index="index" open="" separator="," close="" item="workerContract">
-            (
-            #{workerContract.code}
-            ,#{workerContract.projectCode}
-            ,#{workerContract.projectName}
-            ,#{workerContract.corpCode}
-            ,#{workerContract.corpName}
-            ,#{workerContract.idcardType}
+    ,remark
+    ,upload_status
+    ,delete_status
+    )
+    VALUES
+    <foreach collection="list" index="index" open="" separator="," close="" item="workerContract">
+      (
+      #{workerContract.code}
+      ,#{workerContract.projectCode}
+      ,#{workerContract.projectName}
+      ,#{workerContract.corpCode}
+      ,#{workerContract.corpName}
+      ,#{workerContract.idcardType}
 
-            ,#{workerContract.idcardNumber}
-            ,#{workerContract.workerCode}
-            ,#{workerContract.workerName}
-            ,#{workerContract.workerMobile}
-            ,#{workerContract.contractCode}
-            ,#{workerContract.contractPeriodType}
+      ,#{workerContract.idcardNumber}
+      ,#{workerContract.workerCode}
+      ,#{workerContract.workerName}
+      ,#{workerContract.workerMobile}
+      ,#{workerContract.contractCode}
+      ,#{workerContract.contractPeriodType}
 
-            ,#{workerContract.startDate}
-            ,#{workerContract.endDate}
-            ,#{workerContract.unit}
-            ,#{workerContract.unitPrice}
-            ,#{workerContract.contentPic}
-            ,#{workerContract.updater}
+      ,#{workerContract.startDate}
+      ,#{workerContract.endDate}
+      ,#{workerContract.unit}
+      ,#{workerContract.unitPrice}
+      ,#{workerContract.contentPic}
+      ,#{workerContract.updater}
 
-            ,#{workerContract.updateDatetime}
-            ,#{workerContract.remark}
-            ,#{workerContract.uploadStatus}
-            ,#{workerContract.deleteStatus}
-            )
-        </foreach>
+      ,#{workerContract.updateDatetime}
+      ,#{workerContract.remark}
+      ,#{workerContract.uploadStatus}
+      ,#{workerContract.deleteStatus}
+      )
+    </foreach>
 
-    </insert>
+  </insert>
 	<delete id="delete_workerContract" parameterType="workerContract">
 		DELETE from
 		thf_worker_contract WHERE code = #{code}
@@ -219,7 +219,16 @@
 		thf_worker_contract t
 		SET
 		t.delete_status = #{deleteStatus}
-        <include refid="where_condition"/>
+    <trim prefixOverrides="AND|OR" prefix="WHERE">
+      <if test="code != null and code != '' ">
+        AND code = #{code}
+      </if>
+
+      <if test="projectCode != null and projectCode != '' ">
+        AND project_code = #{projectCode}
+      </if>
+
+    </trim>
 
 	</update>
 

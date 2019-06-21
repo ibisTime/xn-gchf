@@ -72,6 +72,12 @@ public class WorkerInfoDAOImpl extends AMybatisTemplate
     }
 
     @Override
+    public int updateWorkerInfoHandIdCardImage(WorkerInfo workerInfo) {
+        return super.update(NAMESPACE.concat("update_WorkerInfo_HandIdCardImage"),
+                workerInfo);
+    }
+
+    @Override
     public WorkerInfo selectBriefWorkerInfo(WorkerInfo condition) {
         return super.select(NAMESPACE.concat("select_BrifeWorkerInfo"),
             condition, WorkerInfo.class);
@@ -86,6 +92,13 @@ public class WorkerInfoDAOImpl extends AMybatisTemplate
     @Override
     public int updateWorkerInfoAttendancePic(WorkerInfo condition) {
         return super.update(NAMESPACE.concat("update_attendancePic"),
+                condition);
+    }
+
+
+    @Override
+    public int updateWorkerInfoIdCardImageH5(WorkerInfo condition) {
+        return super.update(NAMESPACE.concat("updateWorkerInfoIdCardImageH5"),
                 condition);
     }
 

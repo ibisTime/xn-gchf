@@ -10,11 +10,11 @@
 
 <log4j:configuration xmlns:log4j='http://jakarta.apache.org/log4j/'>
 
-	<appender name="STDOUT" class="org.apache.log4j.ConsoleAppender">
-		<layout class="org.apache.log4j.PatternLayout">
-			<param name="ConversionPattern" value="%-d{yyyy-MM-dd HH:mm:ss,SSS} %t [%c]-[%p] %m%n" />
-		</layout>
-	</appender>
+  <!-- 	<appender name="STDOUT" class="org.apache.log4j.ConsoleAppender"> -->
+  <!-- 		<layout class="org.apache.log4j.PatternLayout"> -->
+  <!-- 			<param name="ConversionPattern" value="%-d{yyyy-MM-dd HH:mm:ss,SSS} %t [%c]-[%p] %m%n" /> -->
+  <!-- 		</layout> -->
+  <!-- 	</appender> -->
 	<!--<appender name="logfile" class="org.apache.log4j.RollingFileAppender">
 		<param name="File" value="${catalina.home}/logs/ihoms-biz.log" />
 		<param name="MaxFileSize" value="512KB" />

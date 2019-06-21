@@ -2,10 +2,10 @@ package com.cdkj.gchf.dao;
 
 import com.cdkj.gchf.dao.base.IBaseDAO;
 import com.cdkj.gchf.domain.WorkerAttendance;
-
-import java.util.List;
+import org.apache.ibatis.annotations.Param;
 
 public interface IWorkerAttendanceDAO extends IBaseDAO<WorkerAttendance> {
+
     String NAMESPACE = IWorkerAttendanceDAO.class.getName().concat(".");
 
     void deleteWorkerAttendance(WorkerAttendance workerAttendance);
@@ -17,7 +17,7 @@ public interface IWorkerAttendanceDAO extends IBaseDAO<WorkerAttendance> {
      *
      * @param codes 主键列表
      */
-    void batchDeleteWorkerAttendacne(List<String> codes);
+    void batchDeleteWorkerAttendacne(WorkerAttendance workerAttendance);
 
     int update(WorkerAttendance workerAttendance);
 
@@ -26,4 +26,20 @@ public interface IWorkerAttendanceDAO extends IBaseDAO<WorkerAttendance> {
     int updateWorkerAttendanceDeleteStatus(WorkerAttendance workerAttendance);
 
     int updateWorkerAttendanceTeamName(WorkerAttendance workerAttendance);
+
+    int selectWorkerAttendance30Day(String userId);
+
+    /**
+     * 查询今日出工人数
+     */
+    int selectWorkerAttendanceToday(String userId);
+
+
+    /**
+     * 查询项目人员最新一条记录
+     *
+     * @param workerCode 项目人员code
+     * @return result count
+     */
+    WorkerAttendance selectWorkerNewlyWorkerAttendanceData(String workerCode);
 }

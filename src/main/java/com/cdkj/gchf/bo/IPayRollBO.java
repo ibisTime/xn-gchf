@@ -54,6 +54,11 @@ public interface IPayRollBO extends IPaginableBO<PayRoll> {
     PayRoll getPayRollByCorpCodeAndTeamSysNoAndProjectCode(String corpCode,
             String teamMasterSysNo, String projectCode, String payMonth);
 
+    /**
+     * 根据班组编号查询工资单信息
+     */
+    PayRoll getPayRollByTeamNo(String teamNo);
+
     /****国家平台接口****/
     public void doUpload(XN631920Req req, ProjectConfig projectConfig);
 

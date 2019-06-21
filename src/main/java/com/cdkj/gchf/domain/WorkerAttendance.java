@@ -2,6 +2,7 @@ package com.cdkj.gchf.domain;
 
 import java.math.BigDecimal;
 import java.util.Date;
+import java.util.List;
 
 import com.cdkj.gchf.dao.base.ABaseDO;
 
@@ -103,6 +104,8 @@ public class WorkerAttendance extends ABaseDO {
     private String deleteStatus;
 
     private String userId;
+
+    private List<String> codeList;
 
     public String getCode() {
         return code;
@@ -342,6 +345,14 @@ public class WorkerAttendance extends ABaseDO {
 
     public void setSource(String source) {
         this.source = source;
+    }
+
+    public List<String> getCodeList() {
+        return codeList;
+    }
+
+    public void setCodeList(List<String> codeList) {
+        this.codeList = codeList;
     }
 
 }

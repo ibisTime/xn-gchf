@@ -1,6 +1,8 @@
 package com.cdkj.gchf.ao.impl;
 
+import com.cdkj.gchf.common.DateUtil;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import org.apache.commons.collections.CollectionUtils;
@@ -74,52 +76,108 @@ public class ProjectWorkerEntryExitHistoryAOImpl
     @Override
     public String addProjectWorkerEntryExitHistory(XN631730Req data) {
         ProjectWorker projectWorker = projectWorkerBO
-            .getProjectWorker(data.getWorkerCode());
+                .getProjectWorker(data.getWorkerCode());
         if (projectWorker == null) {
             throw new BizException("XN631730", "员工信息不存在");
         }
         if (EEntryExitType.IN.getCode().equals(data.getType())) {
             ProjectWorkerEntryExitHistory lastTimeEntryTime = projectWorkerEntryExitHistoryBO
-                .getLastTimeEntryTime(data.getWorkerCode());
+                    .getLastTimeEntryTime(data.getWorkerCode());
             if (lastTimeEntryTime != null) {
                 if (lastTimeEntryTime.getType() == Integer
-                    .parseInt(EEntryExitType.IN.getCode())) {
+                        .parseInt(EEntryExitType.IN.getCode())) {
                     throw new BizException("XN631730", "项目人员未退场无法添加进场信息");
                 }
             }
+            projectWorkerBO
+                    .refreshStatus(projectWorker.getCode(), data.getType(), data.getDate(), null);
+        }
+        if (EEntryExitType.OUT.getCode().equals(data.getType())) {
+            //退场
+            ProjectWorkerEntryExitHistory lastTimeEntryTime = projectWorkerEntryExitHistoryBO
+                    .selectLastestExitEntryData(data.getWorkerCode());
 
+            if (lastTimeEntryTime != null) {
+                Date date = lastTimeEntryTime.getDate();
+                if (date.getTime() >= DateUtil
+                        .strToDate(data.getDate(), DateUtil.FRONT_DATE_FORMAT_STRING).getTime()) {
+                    throw new BizException("XN631730", "退场时间不能小于进场时间");
+                }
+                //校验是否有重复 添加
+                if (lastTimeEntryTime.getType()
+                        .equals(Integer.valueOf(EEntryExitType.OUT.getCode()))) {
+                    //最新一条是退场
+                    throw new BizException("XN631730", "请勿重复添加退场信息");
+                }
+                projectWorkerBO
+                        .refreshStatus(projectWorker.getCode(), data.getType(), null,
+                                data.getDate());
+            }
         }
 
         return projectWorkerEntryExitHistoryBO
-            .saveProjectWorkerEntryExitHistory(data);
+                .saveProjectWorkerEntryExitHistory(data);
     }
 
     @Override
     public void editProjectWorkerEntryExitHistory(XN631732Req req) {
         ProjectWorkerEntryExitHistory projectWorkerEntryExitHistory = projectWorkerEntryExitHistoryBO
-            .getProjectWorkerEntryExitHistory(req.getCode());
+                .getProjectWorkerEntryExitHistory(req.getCode());
         if (projectWorkerEntryExitHistory.getUploadStatus().equals(
                 EProjectWorkerEntryExitUploadStatus.UPLOAD_UNEDITABLE.getCode())) {
             throw new BizException("XN631732", "人员进退场已上传,不可编辑");
         }
-
+        ProjectWorkerEntryExitHistory exitHistory = projectWorkerEntryExitHistoryBO
+                .getProjectWorkerEntryExitHistory(req.getCode());
+        //更新进退场信息
         projectWorkerEntryExitHistoryBO
-            .refreshProjectWorkerEntryExitHistory(req);
+                .refreshProjectWorkerEntryExitHistory(req);
+        //更新进退场时间
+
+        //获取最新一条数据
+        ProjectWorkerEntryExitHistory exitHistoryData = projectWorkerEntryExitHistoryBO
+                .selectLastestExitEntryData(projectWorkerEntryExitHistory.getWorkerCode());
+
+        if (exitHistoryData.getType().equals(Integer.valueOf(EEntryExitType.IN.getCode()))) {
+            projectWorkerBO
+                    .refreshStatus(exitHistory.getWorkerCode(),
+                            String.valueOf(exitHistoryData.getType()), req.getDate(), null);
+        }
+        projectWorkerBO
+                .refreshStatus(exitHistory.getWorkerCode(),
+                        String.valueOf(exitHistoryData.getType()), null, req.getDate());
+
     }
 
     @Override
     public void dropProjectWorkerEntryExitHistory(List<String> codeList) {
         for (String code : codeList) {
             ProjectWorkerEntryExitHistory projectWorkerEntryExitHistory = projectWorkerEntryExitHistoryBO
-                .getProjectWorkerEntryExitHistory(code);
+                    .getProjectWorkerEntryExitHistory(code);
             if (projectWorkerEntryExitHistory.getUploadStatus()
                     .equals(EProjectWorkerEntryExitUploadStatus.UPLOAD_UNEDITABLE
                             .getCode())) {
                 throw new BizException("XN631731", "人员进退场已上传，不可删除");
             }
+            //剩余1条回写null数据
             projectWorkerEntryExitHistoryBO
-                .updateProjectWorkerEntryExitHistoryDeleteStatus(code,
-                    EDeleteStatus.DELETED.getCode());
+                    .updateProjectWorkerEntryExitHistoryDeleteStatus(code,
+                            EDeleteStatus.DELETED.getCode());
+
+            ProjectWorkerEntryExitHistory condition = new ProjectWorkerEntryExitHistory();
+            condition.setWorkerCode(projectWorkerEntryExitHistory.getWorkerCode());
+            condition.setDeleteStatus(EDeleteStatus.NORMAL.getCode());
+            long totalCount = projectWorkerEntryExitHistoryBO.getTotalCount(condition);
+            if (totalCount < 1L) {
+                projectWorkerBO
+                        .refreshStatus(projectWorkerEntryExitHistory.getWorkerCode(), null, null,
+                                null);
+            } else {
+                projectWorkerBO
+                        .updateLastExitEntryData(projectWorkerEntryExitHistory.getWorkerCode());
+            }
+
+
         }
 
     }
@@ -156,13 +214,15 @@ public class ProjectWorkerEntryExitHistoryAOImpl
             projectWorkers.add(infoByIdCardNumber);
         }
 
-        projectWorkerEntryExitHistoryBO.batchInsertWorkerEntryExitHistory(user, req.getDateList(), teamMasters, projectWorkers);
+        projectWorkerEntryExitHistoryBO
+                .batchInsertWorkerEntryExitHistory(user, req.getDateList(), teamMasters,
+                        projectWorkers);
     }
 
     @Transactional
     @Override
     public void uploadProjectWorkerEntryExitHistoryList(String userId,
-                                                        List<String> codeList) {
+            List<String> codeList) {
         User briefUser = userBO.getBriefUser(userId);
         for (String code : codeList) {
             ProjectWorkerEntryExitHistory projectWorkerEntryExitHistory = projectWorkerEntryExitHistoryBO
@@ -232,7 +292,7 @@ public class ProjectWorkerEntryExitHistoryAOImpl
     @Override
     public void uploadProjectWorkerEntryExitHistory(XN631914Req req) {
         ProjectConfig projectConfig = projectConfigBO
-            .getProjectConfigByProject(req.getProjectCode());
+                .getProjectConfigByProject(req.getProjectCode());
 
         if (null == projectConfig) {
             throw new BizException("XN631914", "该项目未配置，无法上传");
@@ -240,13 +300,13 @@ public class ProjectWorkerEntryExitHistoryAOImpl
         List<XN631914ReqWorker> workerList = req.getWorkerList();
         for (XN631914ReqWorker worker : workerList) {
             worker.setIdCardNumber(AesUtils.encrypt(worker.getIdCardNumber(),
-                projectConfig.getSecret()));
+                    projectConfig.getSecret()));
         }
         String data = JSONObject.toJSONStringWithDateFormat(req, "yyyy-MM-dd")
-            .toString();
+                .toString();
 
         String resString = GovConnecter.getGovData("WorkerEntryExit.Add", data,
-            projectConfig.getProjectCode(), projectConfig.getSecret());
+                projectConfig.getProjectCode(), projectConfig.getSecret());
 
         SerialHandler.handle(resString, projectConfig);
     }
@@ -255,33 +315,33 @@ public class ProjectWorkerEntryExitHistoryAOImpl
     public Paginable<ProjectWorkerEntryExitHistory> queryProjectWorkerEntryExitHistory(
             XN631915Req req) {
         ProjectConfig projectConfig = projectConfigBO
-            .getProjectConfigByProject(req.getProjectCode());
+                .getProjectConfigByProject(req.getProjectCode());
 
         if (null == projectConfig) {
             throw new BizException("XN631915", "该项目未配置，无法查询");
         }
 
         Paginable<ProjectWorkerEntryExitHistory> page = projectWorkerEntryExitHistoryBO
-            .doQuery(req, projectConfig);
+                .doQuery(req, projectConfig);
 
         if (null != page && CollectionUtils.isNotEmpty(page.getList())) {
             for (ProjectWorkerEntryExitHistory projectWorkerEntryExitHistory : page
-                .getList()) {
+                    .getList()) {
 
                 String idcardNumber = AesUtils.decrypt(
-                    projectWorkerEntryExitHistory.getIdcardNumber(),
-                    projectConfig.getSecret());
+                        projectWorkerEntryExitHistory.getIdcardNumber(),
+                        projectConfig.getSecret());
 
                 XN631913Req workerReq = new XN631913Req(req.getProjectCode(),
-                    projectWorkerEntryExitHistory.getCorpCode(), idcardNumber);
+                        projectWorkerEntryExitHistory.getCorpCode(), idcardNumber);
                 workerReq.setPageIndex(0);
                 workerReq.setPageSize(1);
                 Paginable<ProjectWorker> projectWorker = projectWorkerBO
-                    .doQuery(workerReq, projectConfig);
+                        .doQuery(workerReq, projectConfig);
                 if (null != projectWorker && CollectionUtils
-                    .isNotEmpty(projectWorker.getList())) {
+                        .isNotEmpty(projectWorker.getList())) {
                     projectWorkerEntryExitHistory.setWorkerName(
-                        projectWorker.getList().get(0).getWorkerName());
+                            projectWorker.getList().get(0).getWorkerName());
                 }
 
                 projectWorkerEntryExitHistory.setIdcardNumber(idcardNumber);
@@ -302,19 +362,19 @@ public class ProjectWorkerEntryExitHistoryAOImpl
         }
 
         Paginable<ProjectWorkerEntryExitHistory> page = projectWorkerEntryExitHistoryBO
-            .getPaginable(start, limit, condition);
+                .getPaginable(start, limit, condition);
 
         if (null != page && CollectionUtils.isNotEmpty(page.getList())) {
             for (ProjectWorkerEntryExitHistory projectWorkerEntryExitHistory : page
-                .getList()) {
+                    .getList()) {
                 TeamMaster teamMaster = teamMasterBO.getTeamMaster(
-                    projectWorkerEntryExitHistory.getTeamSysNo());
+                        projectWorkerEntryExitHistory.getTeamSysNo());
                 if (teamMaster != null) {
                     projectWorkerEntryExitHistory
-                        .setTeamName(teamMaster.getTeamName());
+                            .setTeamName(teamMaster.getTeamName());
                 }
                 Project project = projectBO
-                    .getProject(teamMaster.getProjectCode());
+                        .getProject(teamMaster.getProjectCode());
                 projectWorkerEntryExitHistory.setProjectName(project.getName());
             }
         }
@@ -326,9 +386,13 @@ public class ProjectWorkerEntryExitHistoryAOImpl
     public List<ProjectWorkerEntryExitHistory> queryProjectWorkerEntryExitHistoryList(
             ProjectWorkerEntryExitHistory condition) {
         return projectWorkerEntryExitHistoryBO
-            .queryProjectWorkerEntryExitHistoryList(condition);
+                .queryProjectWorkerEntryExitHistoryList(condition);
     }
 
+    @Override
+    public int selectProjectWorkerEntryExit30Day(String userId) {
+        return projectWorkerEntryExitHistoryBO.selectProjectWorkerLeavingCount(userId);
+    }
 
     @Override
     public Object queryProjectWorkerEntryExitHistory(String code) {

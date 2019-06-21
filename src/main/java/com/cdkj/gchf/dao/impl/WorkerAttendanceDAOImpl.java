@@ -49,17 +49,21 @@ public class WorkerAttendanceDAOImpl extends AMybatisTemplate
 
     @Override
     public void deleteWorkerAttendance(WorkerAttendance workerAttendance) {
-        super.delete(NAMESPACE.concat("delete_workerAttendance"), workerAttendance);
+        super.delete(NAMESPACE.concat("delete_workerAttendance"),
+                workerAttendance);
     }
 
     @Override
-    public void deleteWorkerAttendanceByWorkerCode(WorkerAttendance workerAttendance) {
-        super.delete(NAMESPACE.concat("deleteWorkerAttendanceByWorkerCode"), workerAttendance);
+    public void deleteWorkerAttendanceByWorkerCode(
+            WorkerAttendance workerAttendance) {
+        super.delete(NAMESPACE.concat("deleteWorkerAttendanceByWorkerCode"),
+                workerAttendance);
     }
 
     @Override
-    public void batchDeleteWorkerAttendacne(List<String> codes) {
-        super.deleteBatch(NAMESPACE.concat("batch_delete_workerAttendance"), codes);
+    public void batchDeleteWorkerAttendacne(WorkerAttendance workerAttendance) {
+        super.delete(NAMESPACE.concat("batch_delete_workerAttendance"),
+                workerAttendance);
     }
 
     @Override
@@ -90,4 +94,21 @@ public class WorkerAttendanceDAOImpl extends AMybatisTemplate
                 workerAttendance);
     }
 
+    @Override
+    public int selectWorkerAttendance30Day(String userId) {
+        return super.select(NAMESPACE.concat("selectWorkerAttendance30Day"),
+                userId, Integer.class);
+    }
+
+    @Override
+    public int selectWorkerAttendanceToday(String userId) {
+        return super.select(NAMESPACE.concat("selectWorkerAttendanceToday"),
+                userId, Integer.class);
+    }
+
+    @Override
+    public WorkerAttendance selectWorkerNewlyWorkerAttendanceData(String workerCode) {
+        return super.select(NAMESPACE.concat("selectWorkerNewlyWorkerAttendanceData"),
+                workerCode, WorkerAttendance.class);
+    }
 }

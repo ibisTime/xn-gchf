@@ -11,6 +11,9 @@ public interface IEquipmentWorkerDAO extends IBaseDAO<EquipmentWorker> {
 
     int update(EquipmentWorker equipmentWorker);
 
+    /**
+     * @param equipmentWorker 人员添加成功信息符合、授权人脸设备
+     */
     void batchInsert(List<EquipmentWorker> equipmentWorker);
 
 }

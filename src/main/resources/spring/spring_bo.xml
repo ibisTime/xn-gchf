@@ -120,4 +120,8 @@
     <bean id="workerEntryExitRecordBO" class="com.cdkj.gchf.bo.impl.WorkerEntryExitRecordBOImpl">
         <property name="paginableDAO" ref="workerEntryExitRecordDAOImpl"/>
     </bean>
+
+  <bean id="projectCameraBO" class="com.cdkj.gchf.bo.impl.ProjectCameraBOImpl">
+    <property name="paginableDAO" ref="projectCameraDAOImpl"/>
+  </bean>
 </beans>

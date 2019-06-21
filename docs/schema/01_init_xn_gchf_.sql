@@ -926,6 +926,16 @@ INSERT INTO `tsys_dict`(`id`, `type`, `parent_key`, `dkey`, `dvalue`, `updater`,
 INSERT INTO `tsys_dict`(`id`, `type`, `parent_key`, `dkey`, `dvalue`, `updater`, `update_datetime`, `remark`) VALUES (1709, '1', 'attend_type', '0', '时间段内', 'admin', '2018-07-27 03:07:37', NULL);
 INSERT INTO `tsys_dict`(`id`, `type`, `parent_key`, `dkey`, `dvalue`, `updater`, `update_datetime`, `remark`) VALUES (1710, '1', 'attend_type', '1', '时间段外', 'admin', '2018-07-27 03:07:37', NULL);
 INSERT INTO `tsys_dict`(`id`, `type`, `parent_key`, `dkey`, `dvalue`, `updater`, `update_datetime`, `remark`) VALUES (1711, '1', 'attend_type', '2', '陌生人', 'admin', '2018-07-27 03:07:37', NULL);
+INSERT INTO `tsys_dict`(`id`, `type`, `parent_key`, `dkey`, `dvalue`, `updater`, `update_datetime`,
+                        `remark`)
+VALUES (1708, '0', NULL, 'ocr_id_card_side', 'ocr识别身份证方向', 'admin', '2018-07-27 03:07:37', NULL);
+INSERT INTO `tsys_dict`(`id`, `type`, `parent_key`, `dkey`, `dvalue`, `updater`, `update_datetime`,
+                        `remark`)
+VALUES (1709, '1', 'ocr_id_card_side', 'face', '正面', 'admin', '2018-07-27 03:07:37', NULL);
+INSERT INTO `tsys_dict`(`id`, `type`, `parent_key`, `dkey`, `dvalue`, `updater`, `update_datetime`,
+                        `remark`)
+VALUES (1710, '1', 'ocr_id_card_side', 'back', '反面', 'admin', '2018-07-27 03:07:37', NULL);
+
 /*
 -- Query: SELECT * FROM dev_xn_gchf_gov.tsys_menu
 LIMIT 0, 2000

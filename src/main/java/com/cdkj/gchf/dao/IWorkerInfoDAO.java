@@ -17,9 +17,19 @@ public interface IWorkerInfoDAO extends IBaseDAO<WorkerInfo> {
 
     WorkerInfo selectBriefWorkerInfo(WorkerInfo condition);
 
+    int updateWorkerInfoHandIdCardImage(WorkerInfo workerInfo);
+
     int updateWorkerInfoAttendance(WorkerInfo condition);
 
     int updateWorkerInfoAttendancePic(WorkerInfo condition);
+
+    /**
+     * 更新 H5端身份证信息
+     *
+     * @param condition 条件
+     * @return 影响条数
+     */
+    int updateWorkerInfoIdCardImageH5(WorkerInfo condition);
 
     public List<WorkerInfo> selectBrifeList(WorkerInfo condition, int start,
                                             int count);

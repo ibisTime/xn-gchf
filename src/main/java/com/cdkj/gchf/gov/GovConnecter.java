@@ -6,6 +6,9 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.alibaba.fastjson.JSONObject;
 import com.cdkj.gchf.common.PropertiesUtil;
 import com.cdkj.gchf.enums.EGovErrorMessage;
@@ -22,6 +25,8 @@ public class GovConnecter {
     public static String APPSECRET = "24484b262dd63dd584902a266bdbdca0";
 
     // public static String TESTCORPSECRET = "3e43e64832ea4d298c277e52a96e407e";
+
+    static final Logger logger = LoggerFactory.getLogger(GovConnecter.class);
 
     public static String getGovData(String method, String data) {
 
@@ -58,7 +63,7 @@ public class GovConnecter {
             String res = request.postData(GOV_URL, null, dataMap);
             dataMap.put("appsecret", APPSECRET);
 
-            System.out.println("****res****" + res);
+            logger.info("调用国家平台结果为：{}", res);
 
             JSONObject resJson = JSONObject.parseObject(res);
             if (0 != Integer.parseInt(resJson.getString("code"))) {
@@ -121,7 +126,8 @@ public class GovConnecter {
 
             res = request.postData(GOV_URL, null, dataMap);
             dataMap.put("appsecret", appSecert);
-            System.out.println("****res****" + res);
+
+            logger.info("调用国家平台结果为：{}", res);
 
             JSONObject resJson = JSONObject.parseObject(res);
             if (0 != Integer.parseInt(resJson.getString("code"))) {

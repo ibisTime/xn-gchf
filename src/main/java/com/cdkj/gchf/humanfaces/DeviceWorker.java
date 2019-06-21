@@ -8,10 +8,12 @@ import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Component;
 
+import com.cdkj.gchf.domain.EquipmentInfo;
 import com.cdkj.gchf.humanfaces.res.DeviceWorkerRes;
 import com.cdkj.gchf.humanfaces.res.ResultMsg;
 
 /**
+ * 
  * @Description:设备相关人员
  * @author: Old3
  * @date: 2019年4月29日 下午4:20:32
@@ -20,16 +22,17 @@ import com.cdkj.gchf.humanfaces.res.ResultMsg;
 public class DeviceWorker {
 
     /**
-     * @throws
+     * 
      * @Description: 人员录入到云端
      * @param: @param name 员工名称
      * @param: @param icNo ic卡 /身份证 (身份证处若使用其他编号标记，限制 32 个字符 )
      * @param: @param phone 手机号
      * @param: @param tag 人员标签 (可自定义)
      * @param: @param type 人员类型 可自定义 0无意义
+     * @throws
      */
     public DeviceWorkerRes cloudWorkerAdd(String name, String icNo,
-                                          String phone, String tag, String type) {
+            String phone, String tag, String type) {
         String token = AppConfig.getToken();
         Map<String, String> req = new HashMap<>();
         req.put("appid", AppConfig.getAppid());
@@ -46,11 +49,11 @@ public class DeviceWorker {
         String request = HttpRequest.doRequest(DeviceWorkUrl.WORKER_ADD_URL,
                 "POST", req);
 
-        return AppConfig.gson.fromJson(request,
-                DeviceWorkerRes.class);
+        return AppConfig.gson.fromJson(request, DeviceWorkerRes.class);
     }
 
     /**
+     * 
      * @Description: 删除云端人员
      * @param: @param guid 人员guid
      */
@@ -60,8 +63,7 @@ public class DeviceWorker {
         req.put("appid", AppConfig.getAppid());
         req.put("token", token);
         req.put("guid", guid);
-        return HttpRequest.doRequest(DeviceWorkUrl.WORKER_DEL_URL,
-                "POST", req);
+        return HttpRequest.doRequest(DeviceWorkUrl.WORKER_DEL_URL, "POST", req);
     }
 
     /**
@@ -73,7 +75,7 @@ public class DeviceWorker {
      * @param: @param type 人员类型 可自定义 0无意义
      */
     public String cloudWorkerUpdate(String guid, String name, String idNo,
-                                    String phone, String tag, String type) {
+            String phone, String tag, String type) {
         String token = AppConfig.getToken();
         Map<String, String> req = new HashMap<>();
         req.put("appid", AppConfig.getAppid());
@@ -90,6 +92,7 @@ public class DeviceWorker {
     }
 
     /**
+     * 
      * @Description: 查询云端已保存人员
      * @param: @param guid 人员查询guid
      */
@@ -106,10 +109,10 @@ public class DeviceWorker {
     }
 
     /**
-     * @Description: 人员设备授权接口
+     * @Description: 人员设备授权接口  
      */
     public ResultMsg cloudWorkerAuthorizationEuipment(String deviceKey,
-                                                      List<String> personGuids, String startTime, String endTime) {
+            List<String> personGuids, String startTime, String endTime) {
         ResultMsg resultMsg = null;
         String token = AppConfig.getToken();
         Map<String, String> req = new HashMap<>();
@@ -136,29 +139,60 @@ public class DeviceWorker {
         return resultMsg;
     }
 
+    public ResultMsg personnelEquipmentAuthorization(
+            List<EquipmentInfo> deviceKeyList, String personGuids,
+            String startTime, String endTime) {
+        if (CollectionUtils.isEmpty(deviceKeyList)) {
+            return null;
+        }
+
+        ResultMsg resultMsg = null;
+        String token = AppConfig.getToken();
+        Map<String, String> req = new HashMap<>();
+        req.put("appid", AppConfig.getAppid());
+        req.put("token", token);
+        req.put("guid", personGuids);
+
+        StringBuilder deviceKeys = new StringBuilder();
+        for (EquipmentInfo equipmentInfo : deviceKeyList) {
+            deviceKeys.append(equipmentInfo.getDeviceKey()).append(",");
+        }
+        req.put("deviceKeys", deviceKeys.substring(0, deviceKeys.length() - 1));
+
+        if (StringUtils.isNotBlank(startTime)
+                && StringUtils.isNotBlank(endTime)) {
+            req.put("passTimes", startTime + "," + endTime);
+        }
+        String response = HttpRequest.doRequest(
+                DeviceWorkUrl.PERSON_EQUIPMENT_AUTHORIZATION, "POST", req);
+        resultMsg = AppConfig.gson.fromJson(response, ResultMsg.class);
+        return resultMsg;
+    }
+
     /**
      * @Description: 搜索云端人员 id为空默认查询、全部
      */
     public String workerSearch(String name, String tag, String idNo,
-                               String phone, String startTime, String endTime, String index,
-                               String length, String type, String guid, String userGuid,
-                               String orderFieldKey, String orderTypeKey) {
+            String phone, String startTime, String endTime, String index,
+            String length, String type, String guid, String userGuid,
+            String orderFieldKey, String orderTypeKey) {
         String token = AppConfig.getToken();
         Map<String, String> req = new HashMap<>();
         req.put("appid", AppConfig.getAppid());
         req.put("token", token);
         req.put("length", "77");
-        String doRequest = HttpRequest.doRequest(DeviceWorkUrl.WORKER_SEARCH_URL,
-                "POST", req);
+        String doRequest = HttpRequest
+                .doRequest(DeviceWorkUrl.WORKER_SEARCH_URL, "POST", req);
         System.out.println(doRequest);
         return doRequest;
     }
 
     /**
-     * @return
+     * 
      * @Description: 人员授权查询
      * @param: guid 人员guid
-     * @return: String
+     * @return
+     * @return: String      
      */
     public String workerAuthorizationQuery(String guid) {
         String token = AppConfig.getToken();
@@ -173,12 +207,13 @@ public class DeviceWorker {
     }
 
     /**
-     * @throws
+     * 
      * @Description: 清空设备人员
      * @param: @param deviceKey
      * @param: @param personGuid
-     * @param: @return
+     * @param: @return      
      * @return: String
+     * @throws
      */
     public String workerClear(String deviceKey, String personGuid) {
         String token = AppConfig.getToken();
@@ -189,16 +224,17 @@ public class DeviceWorker {
         if (StringUtils.isNotBlank(personGuid)) {
             req.put("personGuid", personGuid);
         }
-        String doRequest = HttpRequest.doRequest(DeviceWorkUrl.CLEAR_WORKERS_URL,
-                "POST", req);
+        String doRequest = HttpRequest
+                .doRequest(DeviceWorkUrl.CLEAR_WORKERS_URL, "POST", req);
         return doRequest;
     }
 
     /**
-     * @throws
+     * 
      * @Description: 取消人员授权  取消人员授权  全部设备或某台设备
-     * @param: @return
+     * @param: @return      
      * @return: String
+     * @throws
      */
     public String workerBatchElimination(String guid, String deviceKey) {
         String token = AppConfig.getToken();
@@ -210,10 +246,11 @@ public class DeviceWorker {
             req.put("deviceKeys", deviceKey);
         }
         return HttpRequest.doRequest(
-                DeviceWorkUrl.BATCH_ELIMINATION_OF_PERSONNEL_EQUIPMENT_URL, "POST", req);
+                DeviceWorkUrl.BATCH_ELIMINATION_OF_PERSONNEL_EQUIPMENT_URL, "POST",
+                req);
     }
 
-    //    @Test
+    // @Test
     public void test22() {
         // 人员录入
         // String device = cloudWorkerAdd("84E0F420576700B0", "老三", "002532123",
@@ -229,9 +266,9 @@ public class DeviceWorker {
         // E73D7C4277A540018D6E90AA6595A182
 
         // 人员查询
-//        String cloudWorkerQuery = cloudWorkerQuery(
-//            "9CB3F6AF244D499BA0EE6786CAC5AA44");
-//        System.out.println(cloudWorkerQuery);
+        // String cloudWorkerQuery = cloudWorkerQuery(
+        // "9CB3F6AF244D499BA0EE6786CAC5AA44");
+        // System.out.println(cloudWorkerQuery);
         // JSONObject parse = JSONObject.parseObject(cloudWorkerQuery);
         // System.out.println(parse.getString("code")
         // .equals(EEquipmentWorkerResponse.CHAXUNCHENGGONG.getCode())

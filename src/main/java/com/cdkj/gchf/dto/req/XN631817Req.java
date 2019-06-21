@@ -8,6 +8,8 @@ public class XN631817Req {
 
     @NotBlank
     private String code;
+    //员工编号
+    private String workerCode;
 
     public String getUserId() {
         return userId;
@@ -25,4 +27,11 @@ public class XN631817Req {
         this.code = code;
     }
 
+    public String getWorkerCode() {
+        return workerCode;
+    }
+
+    public void setWorkerCode(String workerCode) {
+        this.workerCode = workerCode;
+    }
 }

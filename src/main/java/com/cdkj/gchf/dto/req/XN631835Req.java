@@ -3,6 +3,7 @@ package com.cdkj.gchf.dto.req;
 import org.hibernate.validator.constraints.NotBlank;
 
 public class XN631835Req extends APageReq {
+
     /**
      * @Fields serialVersionUID : TODO
      */
@@ -14,6 +15,11 @@ public class XN631835Req extends APageReq {
     // 用户id
     @NotBlank
     private String userId;
+
+    /**
+     * 设备code
+     */
+    private String deviceCode;
 
     // 工人姓名
     private String workerName;
@@ -42,4 +48,11 @@ public class XN631835Req extends APageReq {
         this.workerName = workerName;
     }
 
+    public String getDeviceCode() {
+        return deviceCode;
+    }
+
+    public void setDeviceCode(String deviceCode) {
+        this.deviceCode = deviceCode;
+    }
 }

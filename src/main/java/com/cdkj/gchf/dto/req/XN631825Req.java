@@ -7,6 +7,9 @@ public class XN631825Req extends APageReq {
      */
     private static final long serialVersionUID = 1059948583642115264L;
 
+    private String code;
+
+
     // 项目编号
     private String projectCode;
 
@@ -23,6 +26,14 @@ public class XN631825Req extends APageReq {
     private String source;
 
     private String deviceName;
+
+    public String getCode() {
+        return code;
+    }
+
+    public void setCode(String code) {
+        this.code = code;
+    }
 
     public String getProjectCode() {
         return projectCode;

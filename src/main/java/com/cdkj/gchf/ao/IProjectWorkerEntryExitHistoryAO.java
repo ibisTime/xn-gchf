@@ -64,6 +64,11 @@ public interface IProjectWorkerEntryExitHistoryAO {
             ProjectWorkerEntryExitHistory condition);
 
 
+    /**
+     * 查询30天离职人数
+     */
+    int selectProjectWorkerEntryExit30Day(String userId);
+
     /****国家平台接口****/
     void uploadProjectWorkerEntryExitHistory(XN631914Req data);
 

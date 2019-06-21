@@ -66,4 +66,9 @@ public class WorkerEntryExitRecordDAOImpl extends AMybatisTemplate
                 workerEntryExitRecord, WorkerEntryExitRecord.class);
     }
 
+    @Override
+    public Long selectProjectRecordCount(String userId) {
+        return super.select(NAMESPACE.concat("selectProjectRecordCount"),
+                userId, Long.class);
+    }
 }

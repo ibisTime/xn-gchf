@@ -23,7 +23,7 @@ public class XN631256 extends AProcessor {
 
     @Override
     public Object doBusiness() throws BizException {
-        return corpBasicinfoAO.getCorpBasicinfo(req.getCode());
+        return corpBasicinfoAO.getCorpBasicinfo(req.getCorpCode(), req.getCode());
     }
 
     @Override

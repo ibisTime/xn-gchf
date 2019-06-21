@@ -2,7 +2,11 @@ package com.cdkj.gchf.bo.impl;
 
 import java.math.BigDecimal;
 import java.util.List;
+import java.util.Map;
 
+import com.cdkj.gchf.bo.IUserBO;
+import com.cdkj.gchf.domain.User;
+import jnr.ffi.annotations.In;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,6 +30,9 @@ public class ProjectBOImpl extends PaginableBOImpl<Project>
 
     @Autowired
     private IProjectDAO projectDAO;
+
+    @Autowired
+    private IUserBO userBO;
 
     @Override
     public Project saveProject(XN631600Req req,
@@ -63,6 +70,9 @@ public class ProjectBOImpl extends PaginableBOImpl<Project>
         }
         if (StringUtils.isNotBlank(req.getLng())) {
             project.setLng(new BigDecimal(req.getLng()));
+        }
+        if (StringUtils.isNotBlank(req.getTotalOcrCount())) {
+            project.setTotalOcrCount(Integer.parseInt(req.getTotalOcrCount()));
         }
         project.setBuildCorpName(req.getBuildCorpName());
         project.setSecretStatus(ESecretStatus.NO.getCode());
@@ -102,6 +112,9 @@ public class ProjectBOImpl extends PaginableBOImpl<Project>
         }
         if (StringUtils.isNotBlank(req.getLng())) {
             project.setLng(new BigDecimal(req.getLng()));
+        }
+        if (StringUtils.isNotBlank(req.getTotalOcrCount())) {
+            project.setTotalOcrCount(Integer.parseInt(req.getTotalOcrCount()));
         }
 
         project.setBuildCorpName(req.getBuildCorpName());
@@ -144,6 +157,12 @@ public class ProjectBOImpl extends PaginableBOImpl<Project>
     }
 
     @Override
+    public List<Map> getProjectInfoList_led(String userId) {
+        List<Map> maps = projectDAO.queryProjectInfo_led(userId);
+        return maps;
+    }
+
+    @Override
     public void refreshContractorCorp(String code, String contractorCorpCode,
                                       String contractorCorpName) {
         Project project = new Project();
@@ -153,6 +172,16 @@ public class ProjectBOImpl extends PaginableBOImpl<Project>
         project.setContractorCorpName(contractorCorpName);
 
         projectDAO.updateContractorCorp(project);
+    }
+
+    @Override
+    public void refreshUsedOcrCount(String code, Integer usedOcrCount) {
+        Project project = new Project();
+
+        project.setCode(code);
+        project.setUsedOcrCount(usedOcrCount);
+
+        projectDAO.updateUsedOcrCount(project);
     }
 
 }

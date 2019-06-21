@@ -1,301 +1,340 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
-"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.cdkj.gchf.dao.IWorkerAttendanceDAO">
-	<resultMap id="workerAttendance_DB_Result" type="workerAttendance">
-		<result column="code" property="code" />
-		<result column="project_code" property="projectCode" />
-		<result column="project_name" property="projectName" />
-		<result column="team_sys_no" property="teamSysNo" />
-		<result column="team_name" property="teamName" />
+  <resultMap id="workerAttendance_DB_Result" type="workerAttendance">
+    <result column="code" property="code"/>
+    <result column="project_code" property="projectCode"/>
+    <result column="project_name" property="projectName"/>
+    <result column="team_sys_no" property="teamSysNo"/>
+    <result column="team_name" property="teamName"/>
 
-		<result column="worker_code" property="workerCode" />
-		<result column="worker_name" property="workerName" />
-		<result column="idcard_type" property="idCardType" />
-		<result column="idcard_number" property="idCardNumber" />
-		<result column="status" property="status" />
+    <result column="worker_code" property="workerCode"/>
+    <result column="worker_name" property="workerName"/>
+    <result column="idcard_type" property="idCardType"/>
+    <result column="idcard_number" property="idCardNumber"/>
+    <result column="status" property="status"/>
 
-		<result column="date" property="date" />
-		<result column="direction" property="direction" />
-		<result column="image" property="image" />
-		<result column="channel" property="channel" />
-		<result column="attend_type" property="attendType" />
+    <result column="date" property="date"/>
+    <result column="direction" property="direction"/>
+    <result column="image" property="image"/>
+    <result column="channel" property="channel"/>
+    <result column="attend_type" property="attendType"/>
 
-		<result column="lng" property="lng" />
-		<result column="lat" property="lat" />
-		<result column="create_datetime" property="createDatetime" />
-        <result column="source" property="source"/>
-		<result column="start_datetime" property="startDatetime" />
-		<result column="end_datetime" property="endDatetime" />
+    <result column="lng" property="lng"/>
+    <result column="lat" property="lat"/>
+    <result column="create_datetime" property="createDatetime"/>
+    <result column="source" property="source"/>
+    <result column="start_datetime" property="startDatetime"/>
+    <result column="end_datetime" property="endDatetime"/>
 
-		<result column="settle_datetime" property="settleDatetime" />
-		<result column="sim" property="sim" />
-		<result column="terminal_code" property="terminalCode" />
-		<result column="remark" property="remark" />
-		<result column="upload_status" property="uploadStatus" />
-		<result column="delete_status" property="deleteStatus" />
-        <result column="corp_name" property="corpName"/>
-	</resultMap>
+    <result column="settle_datetime" property="settleDatetime"/>
+    <result column="sim" property="sim"/>
+    <result column="terminal_code" property="terminalCode"/>
+    <result column="remark" property="remark"/>
+    <result column="upload_status" property="uploadStatus"/>
+    <result column="delete_status" property="deleteStatus"/>
+    <result column="corp_name" property="corpName"/>
+  </resultMap>
 
-    <sql id="join_condition">
-        <if test="corpName != null and corpName != '' ">
-            join thf_team_master tm on tm.code = t.team_sys_no
-        </if>
-    </sql>
+  <sql id="join_condition">
+    <if test="corpName != null and corpName != '' ">
+      join thf_team_master tm on tm.code = t.team_sys_no
+    </if>
+  </sql>
 
-    <sql id="where_condition">
-		<trim prefix="WHERE" prefixOverrides="AND | OR">
-			<if test="code != null and code != '' ">
-				AND t.code = #{code}
-			</if>
-			<if test="projectCode != null and projectCode != '' ">
-				AND t.project_code = #{projectCode}
-			</if>
-			<if test="teamSysNo != null and teamSysNo != '' ">
-				AND t.team_sys_no = #{teamSysNo}
-			</if>
-			<if test="status != null and status != '' ">
-				AND t.status = #{status}
-            </if>
-            <if test="workerCode != null and workerCode != '' ">
-                AND t.worker_code = #{workerCode}
-            </if>
-			<if test="workerName != null and workerName != '' ">
-                AND t.worker_name like "%"#{workerName}"%"
-			</if>
-            <if test="date != null  ">
-				AND t.date = #{date}
-			</if>
-			<if test="uploadStatus != null and uploadStatus != '' ">
-				AND t.upload_status = #{uploadStatus}
-			</if>
-			<if test="deleteStatus != null and deleteStatus != '' ">
-				AND t.delete_status = #{deleteStatus}
-			</if>
-			<if test="corpCode != null and corpCode != '' ">
-                AND tm.corp_code = #{corpCode}
-            </if>
-            <if test="source != null and source != '' ">
-                AND t.source = #{source}
-            </if>
-            <if test="teamSysNo != null and teamSysNo != '' ">
-                AND t.team_sys_no = #{teamSysNo}
-            </if>
-		</trim>
-	</sql>
-
-	<insert id="insert_workerAttendance" parameterType="workerAttendance">
-		INSERT INTO
-		thf_worker_attendance(
-		code
-		,project_code
-		,project_name
-		,team_sys_no
-		,team_name
-		,worker_code
-		,worker_name
-
-		,idcard_type
-		,idcard_number
-		,status
-		,date
-		,direction
-		,image
-		,channel
-
-		,attend_type
-		,lng
-		,lat
-		,create_datetime
-		,source
-		,start_datetime
-		,end_datetime
-
-		,settle_datetime
-		,sim
-		,terminal_code
-		,remark
-		,upload_status
-		,delete_status
-		)
-		VALUES(
-		#{code}
-		,#{projectCode}
-		,#{projectName}
-		,#{teamSysNo}
-		,#{teamName}
-		,#{workerCode}
-
-		,#{workerName}
-		,#{idCardType}
-		,#{idCardNumber}
-		,#{status}
-		,#{date}
-
-		,#{direction}
-		,#{image}
-		,#{channel}
-		,#{attendType}
-		,#{lng}
-		,#{lat}
-
-		,#{createDatetime}
-		,#{source}
-		,#{startDatetime}
-		,#{endDatetime}
-		,#{settleDatetime}
-		,#{sim}
-
-		,#{terminalCode}
-		,#{remark}
-		,#{uploadStatus}
-		,#{deleteStatus}
-		)
-	</insert>
-
-
-    <delete id="delete_workerAttendance" parameterType="workerAttendance">
-		DELETE from
-		thf_worker_attendance WHERE code = #{code}
-	</delete>
-
-
-    <delete id="batch_delete_workerAttendance" parameterType="String">
-        DELETE from thf_worker_attendance
-        WHERE code IN
-        <foreach collection="list" item="workerAttendance" open="(" separator="," close=")" index="index">
-            #{index}
+  <sql id="where_condition">
+    <trim prefix="WHERE" prefixOverrides="AND | OR">
+      <if test="code != null and code != '' ">
+        AND t.code = #{code}
+      </if>
+      <if test="codeList != null and codeList != '' ">
+        AND t.code in
+        <foreach item="item" index="index" collection="codeList" open="(" separator="," close=")">
+          #{item}
         </foreach>
-    </delete>
+      </if>
+      <if test="projectCode != null and projectCode != '' ">
+        AND t.project_code = #{projectCode}
+      </if>
+      <if test="teamSysNo != null and teamSysNo != '' ">
+        AND t.team_sys_no = #{teamSysNo}
+      </if>
+      <if test="status != null and status != '' ">
+        AND t.status = #{status}
+      </if>
+      <if test="workerCode != null and workerCode != '' ">
+        AND t.worker_code = #{workerCode}
+      </if>
+      <if test="workerName != null and workerName != '' ">
+        AND t.worker_name like "%"#{workerName}"%"
+      </if>
+      <if test="date != null  ">
+        AND t.date = #{date}
+      </if>
+      <if test="uploadStatus != null and uploadStatus != '' ">
+        AND t.upload_status = #{uploadStatus}
+      </if>
+      <if test="deleteStatus != null and deleteStatus != '' ">
+        AND t.delete_status = #{deleteStatus}
+      </if>
+      <if test="corpCode != null and corpCode != '' ">
+        AND tm.corp_code = #{corpCode}
+      </if>
+      <if test="source != null and source != '' ">
+        AND t.source = #{source}
+      </if>
+      <if test="teamSysNo != null and teamSysNo != '' ">
+        AND t.team_sys_no = #{teamSysNo}
+      </if>
+    </trim>
+  </sql>
 
+  <insert id="insert_workerAttendance" parameterType="workerAttendance">
+    INSERT INTO thf_worker_attendance( code
+                                     , project_code
+                                     , project_name
+                                     , team_sys_no
+                                     , team_name
+                                     , worker_code
+                                     , worker_name
+                                     , idcard_type
+                                     , idcard_number
+                                     , status
+                                     , date
+                                     , direction
+                                     , image
+                                     , channel
+                                     , attend_type
+                                     , lng
+                                     , lat
+                                     , create_datetime
+                                     , source
+                                     , start_datetime
+                                     , end_datetime
+                                     , settle_datetime
+                                     , sim
+                                     , terminal_code
+                                     , remark
+                                     , upload_status
+                                     , delete_status)
+    VALUES ( #{code}
+           , #{projectCode}
+           , #{projectName}
+           , #{teamSysNo}
+           , #{teamName}
+           , #{workerCode}
+           , #{workerName}
+           , #{idCardType}
+           , #{idCardNumber}
+           , #{status}
+           , #{date}
+           , #{direction}
+           , #{image}
+           , #{channel}
+           , #{attendType}
+           , #{lng}
+           , #{lat}
+           , #{createDatetime}
+           , #{source}
+           , #{startDatetime}
+           , #{endDatetime}
+           , #{settleDatetime}
+           , #{sim}
+           , #{terminalCode}
+           , #{remark}
+           , #{uploadStatus}
+           , #{deleteStatus})
+  </insert>
 
-    <update id="update_workerAttendance" parameterType="workerAttendance">
-		UPDATE
-		thf_worker_attendance
-		SET
-		project_code = #{projectCode}
-		,project_name =
-		#{projectName}
-		,team_sys_no = #{teamSysNo}
-		,team_name = #{teamName}
+  <delete id="delete_workerAttendance" parameterType="workerAttendance">
+    DELETE
+    from thf_worker_attendance
+    WHERE code = #{code}
+  </delete>
 
-		,worker_code = #{workerCode}
-		,worker_name = #{workerName}
-		,idcard_type =
-		#{idCardType}
-		,idcard_number = #{idCardNumber}
-		,status = #{status}
+  <delete id="batch_delete_workerAttendance" parameterType="workerAttendance">
+    DELETE t from thf_worker_attendance t
+    <include refid="where_condition"/>
+  </delete>
 
-		,date
-		= #{date}
-		,direction = #{direction}
-		,image = #{image}
-		,channel =
-		#{channel}
-		,attend_type = #{attendType}
+  <update id="update_workerAttendance" parameterType="workerAttendance">
+    UPDATE
+      thf_worker_attendance
+    SET project_code   = #{projectCode}
+      ,project_name    =
+      #{projectName}
+      ,team_sys_no     = #{teamSysNo}
+      ,team_name       = #{teamName}
 
-		,lng = #{lng}
-		,lat = #{lat}
-		,create_datetime = #{createDatetime}
-		,start_datetime = #{startDatetime}
-		,end_datetime = #{endDatetime}
+      ,worker_code     = #{workerCode}
+      ,worker_name     = #{workerName}
+      ,idcard_type     =
+      #{idCardType}
+      ,idcard_number   = #{idCardNumber}
+      ,status          = #{status}
 
-		,settle_datetime = #{settleDatetime}
-		,sim = #{sim}
-		,terminal_code =
-		#{terminalCode}
-		,remark = #{remark}
-		,upload_status = #{uploadStatus}
-		WHERE
-		code = #{code}
-	</update>
+      ,date
+                       = #{date}
+      ,direction       = #{direction}
+      ,image           = #{image}
+      ,channel         =
+      #{channel}
+      ,attend_type     = #{attendType}
 
-	<update id="update_workerAttendance_status" parameterType="workerAttendance">
-		UPDATE
-		thf_worker_attendance
-		SET
-		upload_status = #{uploadStatus}
-		WHERE
-		code = #{code}
-	</update>
+      ,lng             = #{lng}
+      ,lat             = #{lat}
+      ,create_datetime = #{createDatetime}
+      ,start_datetime  = #{startDatetime}
+      ,end_datetime    = #{endDatetime}
 
-    <update id="update_workerAttendance_team_name" parameterType="workerAttendance">
-		UPDATE
-		thf_worker_attendance
-		SET
-		team_name = #{teamName}
-		WHERE
-		team_sys_no
-		= #{teamSysNo}
-	</update>
+      ,settle_datetime = #{settleDatetime}
+      ,sim             = #{sim}
+      ,terminal_code   =
+      #{terminalCode}
+      ,remark          = #{remark}
+      ,upload_status   = #{uploadStatus}
+    WHERE code = #{code}
+  </update>
 
-	<update id="update_workerAttendance_delete_status"
-		parameterType="workerAttendance">
-		UPDATE
-		thf_worker_attendance t
-		SET
-		t.delete_status = #{deleteStatus}
-        <include refid="join_condition"/>
-	</update>
+  <update id="update_workerAttendance_status" parameterType="workerAttendance">
+    UPDATE
+      thf_worker_attendance
+    SET upload_status = #{uploadStatus}
+    WHERE code = #{code}
+  </update>
 
-	<select id="select_workerAttendance" parameterType="workerAttendance"
-		resultMap="workerAttendance_DB_Result">
-		SELECT
-		t.code
-		,t.project_code
-		,t.project_name
-		,t.team_sys_no
-		,t.team_name
-		,t.worker_code
+  <update id="update_workerAttendance_team_name" parameterType="workerAttendance">
+    UPDATE
+      thf_worker_attendance
+    SET team_name = #{teamName}
+    WHERE team_sys_no
+            = #{teamSysNo}
+  </update>
 
-		,t.worker_name
-		,t.idcard_type
-		,t.idcard_number
-		,t.status
-		,t.date
-		,t.direction
+  <update id="update_workerAttendance_delete_status"
+    parameterType="workerAttendance">
+    UPDATE
+    thf_worker_attendance t
+    SET
+    t.delete_status = #{deleteStatus}
+    <include refid="join_condition"/>
+  </update>
 
-		,t.image
-		,t.channel
-		,t.attend_type
-		,t.lng
-		,t.lat
+  <select id="select_workerAttendance" parameterType="workerAttendance"
+    resultMap="workerAttendance_DB_Result">
+    SELECT
+    t.code
+    ,t.project_code
+    ,t.project_name
+    ,t.team_sys_no
+    ,t.team_name
+    ,t.worker_code
 
-		,t.create_datetime
-        ,t.source
-		,t.start_datetime
-		,t.end_datetime
-		,t.settle_datetime
-		,t.sim
+    ,t.worker_name
+    ,t.idcard_type
+    ,t.idcard_number
+    ,t.status
+    ,t.date
+    ,t.direction
 
-		,t.terminal_code
-		,t.remark
-		,t.upload_status
-		,t.delete_status
-		FROM
-		thf_worker_attendance t
-		<include refid="join_condition" />
-		<include refid="where_condition" />
-        <if test="corpName != null and corpName != '' ">
-            AND tm.corp_name like "%"#{corpName}"%"
-        </if>
-		<trim prefix="ORDER BY ">
-			<if test="order != null and order != '' ">
-				t.${order}
-			</if>
-		</trim>
-	</select>
+    ,t.image
+    ,t.channel
+    ,t.attend_type
+    ,t.lng
+    ,t.lat
 
-	<select id="select_workerAttendance_count" parameterType="workerAttendance"
-		resultType="java.lang.Long">
-		SELECT count(1) FROM thf_worker_attendance t
-		<include refid="join_condition" />
-		<include refid="where_condition" />
-	</select>
-    <delete id="deleteWorkerAttendanceByWorkerCode" parameterType="workerAttendance">
-		DELETE FROM thf_worker_attendance
-		WHERE worker_code = #{workerCode}
-	</delete>
+    ,t.create_datetime
+    ,t.source
+    ,t.start_datetime
+    ,t.end_datetime
+    ,t.settle_datetime
+    ,t.sim
+
+    ,t.terminal_code
+    ,t.remark
+    ,t.upload_status
+    ,t.delete_status
+    FROM
+    thf_worker_attendance t
+    <include refid="join_condition"/>
+    <include refid="where_condition"/>
+    <if test="corpName != null and corpName != '' ">
+      AND tm.corp_name like "%"#{corpName}"%"
+    </if>
+    <trim prefix="ORDER BY ">
+      <if test="order != null and order != '' ">
+        t.${order}
+      </if>
+    </trim>
+  </select>
+
+  <select id="select_workerAttendance_count" parameterType="workerAttendance"
+    resultType="java.lang.Long">
+    SELECT count(1) FROM thf_worker_attendance t
+    <include refid="join_condition"/>
+    <include refid="where_condition"/>
+  </select>
+  <delete id="deleteWorkerAttendanceByWorkerCode" parameterType="workerAttendance">
+    DELETE
+    FROM thf_worker_attendance
+    WHERE worker_code = #{workerCode}
+  </delete>
+  <select id="selectWorkerAttendance30Day" resultType="int" parameterType="java.lang.String">
+    SELECT count(1)
+    from thf_worker_attendance
+    where project_code =
+          (SELECT organization_code from thf_user where user_id = #{0})
+      and direction = '01'
+      and date_sub(curdate(), INTERVAL 30 DAY)
+      &lt;= date(`date`)
+  </select>
+
+  <select id="selectWorkerAttendanceToday" resultType="int" parameterType="java.lang.String">
+    SELECT count(1) as 'totalCount'
+    from thf_worker_attendance
+    where project_code =
+          (SELECT organization_code from thf_user where user_id = #{0})
+      and direction = '01'
+      and DATE(date) = CURDATE()
+
+  </select>
+  <select id="selectWorkerNewlyWorkerAttendanceData" resultType="workerAttendance">
+    SELECT t.code
+         ,t.project_code
+         ,t.project_name
+         ,t.team_sys_no
+         ,t.team_name
+         ,t.worker_code
+
+         ,t.worker_name
+         ,t.idcard_type
+         ,t.idcard_number
+         ,t.status
+         ,t.date
+         ,t.direction
+         ,t.image
+         ,t.channel
+         ,t.attend_type
+         ,t.lng
+         ,t.lat
+         ,t.create_datetime
+         ,t.source
+         ,t.start_datetime
+         ,t.end_datetime
+         ,t.settle_datetime
+         ,t.sim
+         ,t.terminal_code
+         ,t.remark
+         ,t.upload_status
+         ,t.delete_status
+    FROM thf_worker_attendance t
+    WHERE t.worker_code = #{workerCode}
+      AND delete_status = #{deleteStatus}
+    order by date desc
+    LIMIT
+      1
+  </select>
 
 
 </mapper>

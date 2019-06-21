@@ -12,4 +12,9 @@ public interface IWorkerEntryExitRecordDAO
 
     WorkerEntryExitRecord selectAfternoonRecoder(
             WorkerEntryExitRecord workerEntryExitRecord);
+
+    /**
+     * @return 根据userId查询当天项目进出人数
+     */
+    Long selectProjectRecordCount(String userId);
 }

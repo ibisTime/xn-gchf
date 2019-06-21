@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cdkj.gchf.dao.IProjectCameraDAO">
+  <resultMap id="ProjectCamera_DB_Result" type="projectCamera">
+    <result column="code" property="code"/>
+    <result column="project_code" property="projectCode"/>
+    <result column="project_name" property="projectName"/>
+    <result column="camera_name" property="cameraName"/>
+    <result column="camera_username" property="cameraUsername"/>
+    <result column="camera_password" property="cameraPassword"/>
+    <result column="camera_ip" property="cameraIp"/>
+    <result column="camera_ip_port" property="cameraIpPort"/>
+    <result column="camera_channel" property="cameraChannel"/>
+    <result column="camera_bit_stream" property="cameraBitStream"/>
+    <result column="cvr_host_username" property="cvrHostUsername"/>
+    <result column="cvr_host_password" property="cvrHostPassword"/>
+    <result column="updater" property="updater"/>
+    <result column="update_datetime" property="updateDatetime"/>
+    <result column="remark" property="remark"/>
+  </resultMap>
+  <sql id="where_condition">
+    <trim prefix="WHERE" prefixOverrides="AND | OR">
+      <if test="code != null and code != '' ">
+        AND t.code = #{code}
+      </if>
+      <if test="cameraIp != null and cameraIp != '' ">
+        AND camera_ip = #{cameraIp}
+      </if>
+      <if test="cameraName != null and cameraName != '' ">
+        AND camera_name = #{cameraName}
+      </if>
+    </trim>
+  </sql>
+  <select id="select_ProjectCamera" parameterType="ProjectCamera"
+    resultMap="ProjectCamera_DB_Result">
+    SELECT
+    t.code
+    ,t.project_code
+    ,t.project_name
+    ,t.camera_name
+    ,t.camera_username
+    ,t.camera_password
+    ,t.camera_ip
+    ,t.camera_ip_port
+    ,t.camera_channel
+    ,t.camera_bit_stream
+    ,t.cvr_host_username
+    ,t.cvr_host_password
+    ,t.updater
+    ,t.update_datetime
+    ,t.remark
+    FROM
+    thf_project_camera t
+    <include refid="where_condition"/>
+    <trim prefix="ORDER BY ">
+      <if test="order != null and order != '' ">
+        t.${order}
+      </if>
+    </trim>
+  </select>
+
+  <select id="select_ProjectCamera_count" parameterType="ProjectCamera"
+    resultType="java.lang.Long">
+    SELECT count(1) FROM thf_project_camera t
+    <include refid="where_condition"/>
+  </select>
+
+  <insert id="insert_ProjectCamera" parameterType="ProjectCamera">
+    INSERT INTO thf_project_camera( code
+                                  , project_code
+                                  , project_name
+                                  , camera_name
+                                  , camera_username
+                                  , camera_password
+                                  , camera_ip
+                                  , camera_ip_port
+                                  , camera_channel
+                                  , camera_bit_stream
+                                  , cvr_host_username
+                                  , cvr_host_password
+                                  , updater
+                                  , update_datetime
+                                  , remark)
+    VALUES ( #{code}
+           , #{projectCode}
+           , #{projectName}
+           , #{cameraName}
+           , #{cameraUsername}
+           , #{cameraPassword}
+           , #{cameraIp}
+           , #{cameraIpPort}
+           , #{cameraChannel}
+           , #{cameraBitStream}
+           , #{cvrHostUsername}
+           , #{cvrHostPassword}
+           , #{updater}
+           , #{updateDatetime}
+           , #{remark})
+  </insert>
+
+  <delete id="delete_ProjectCamera" parameterType="ProjectCamera">
+    DELETE
+    from thf_project_camera
+    WHERE code = #{code}
+  </delete>
+
+  <update id="update_ProjectCamera" parameterType="ProjectCamera">
+    UPDATE thf_project_camera
+    SET project_code     = #{projectCode}
+      ,project_name      = #{projectName}
+      ,camera_name       = #{cameraName}
+      ,camera_username   = #{cameraUsername}
+      ,camera_password   = #{cameraPassword}
+      ,camera_ip         = #{cameraIp}
+      ,camera_ip_port    = #{cameraIpPort}
+      ,camera_channel    = #{cameraChannel}
+      ,camera_bit_stream = #{cameraBitStream}
+      ,cvr_host_username = #{cvrHostUsername}
+      ,cvr_host_password = #{cvrHostPassword}
+      ,updater           = #{updater}
+      ,update_datetime   = #{updateDatetime}
+      ,remark            = #{remark}
+    WHERE code = #{code}
+  </update>
+
+
+</mapper>

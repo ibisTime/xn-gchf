@@ -8,39 +8,39 @@ import java.io.IOException;
 import com.cdkj.gchf.common.DateUtil;
 
 public class SCDM_IDAO {
-//    // 实体
-//    private static String key = "EquipmentWorker";
-//
-//    // 实体名称
-//    private static String keyName = "考勤设备信息";
-//
-//    // 包路径
+////    // 实体
+//    private static String key = "ProjectCamera";
+////
+////    // 实体名称
+//    private static String keyName = "摄像机";
+////
+////    // 包路径
 //    private static String packge = "com.cdkj.gchf.";
-//
-//    // 表名
-//    private static String dbname = "thf_equipment_worker";
-//
-//    private static String[] DBwords = { "code", "device_code", "device_key",
-//            "device_name", "worker_code", "worker_name", "team_code",
-//            "team_name", "id_card_number", "status", "pass_times",
-//            "create_time" };
-//
-//    private static String[] DBwordsName = { "编号", "人脸识别设备编号", "人脸识别设备序列号",
-//            "人脸识别设备名称", "项目人员编号", "项目人员姓名", "班组编号", "班组名称 ", "员工身份证件号", "状态",
-//            "每日允许进入", "添加时间", "考勤设备人员表" };
-//
+////
+////    // 表名
+//    private static String dbname = "thf_project_camera";
+////
+//    private static String[] DBwords = { "code", "project_code", "project_name",
+//            "camera_name", "camera_username", "camera_password", "camera_ip",
+//            "camera_ip_port", "camera_channel", "camera_bit_stream", "cvr_host_username",
+//            "cvr_host_password","updater","update_datetime","remark" };
+////
+//    private static String[] DBwordsName = { "编号", "项目编号", "项目名称",
+//            "摄像头名称", "摄像机账号", "摄像机密码", "摄像头ip", "摄像机ip端口 ", "摄像头频道", "摄像头码流",
+//            "cvr主机账号", "cvr主机密码", "更新人","更新时间","备注"};
+////
 //    public void testname() throws Exception {
 //    }
-//
+////
 //    private static String[] DOwords = getDOwords();
-//
+////
 //    private static String Key = key.substring(0, 1).toUpperCase()
 //            + key.substring(1);
-//
+////
 //    public static void main(String[] args) {
-//
+////
 //        System.out.println("*********开始打印*********");
-//        String path = "D:\\Temp\\modelWorker";
+//        String path = "C:\\Users\\old3\\Downloads\\user";
 //
 //        File DOMAINfile = new File(path, Key + ".java");
 //

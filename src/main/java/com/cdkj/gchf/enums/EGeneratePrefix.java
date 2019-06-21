@@ -52,7 +52,9 @@ public enum EGeneratePrefix {
 
     EquipmentWorker("EW", "考勤设备人员"),
 
-    WorkerEntryExitRecord("WEER", "人员进出场记录");
+    WorkerEntryExitRecord("WEER", "人员进出场记录"),
+
+    ProjectCamera("PCE", "项目摄像头");
 
     public static Map<String, EGeneratePrefix> getMap() {
         Map<String, EGeneratePrefix> map = new HashMap<String, EGeneratePrefix>();

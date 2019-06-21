@@ -591,7 +591,8 @@ public class ProjectWorkerBOImpl extends PaginableBOImpl<ProjectWorker>
         if (lastTimeEntryTime != null) {
             if (lastTimeEntryTime.getType().equals(Integer.valueOf(EEntryExitType.IN.getCode()))) {
                 projectWorker.setEntryTime(lastTimeEntryTime.getDate());
-            } else {
+            } else if (lastTimeEntryTime.getType()
+                    .equals(Integer.valueOf(EEntryExitType.OUT.getCode()))) {
                 projectWorker.setExitTime(lastTimeEntryTime.getDate());
             }
             projectWorker.setStatus(String.valueOf(lastTimeEntryTime.getType()));
@@ -608,15 +609,22 @@ public class ProjectWorkerBOImpl extends PaginableBOImpl<ProjectWorker>
         condition.setDeleteStatus(EDeleteStatus.NORMAL.getCode());
         condition.setWorkerCode(code);
         long totalCount = workerAttendanceBO.getTotalCount(condition);
-        if (totalCount < 1L) {
+        if (totalCount <= 1L) {
             refreshLastAttendance(code, null, null);
         } else {
             WorkerAttendance lastAttendance = workerAttendanceBO.getLastAttendance(code);
             ProjectWorker projectWorker = new ProjectWorker();
             projectWorker.setCode(code);
-            projectWorker.setAttendanceStatus(lastAttendance.getDirection());
-            projectWorker.setLastAttendanceDatetime(lastAttendance.getDate());
-            projectWorkerDAO.updateLastestData(projectWorker);
+            if (lastAttendance != null) {
+
+                projectWorker.setAttendanceStatus(lastAttendance.getDirection());
+                projectWorker.setLastAttendanceDatetime(lastAttendance.getDate());
+                projectWorkerDAO.updateLastestData(projectWorker);
+            } else {
+                projectWorkerDAO.updateLastAttendance(projectWorker);
+            }
+
+
         }
     }
 

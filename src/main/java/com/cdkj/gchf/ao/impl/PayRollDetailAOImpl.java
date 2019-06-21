@@ -1,6 +1,8 @@
 package com.cdkj.gchf.ao.impl;
 
 import com.cdkj.gchf.bo.IProjectWorkerBO;
+import com.cdkj.gchf.common.DateUtil;
+import java.util.Date;
 import java.util.List;
 
 import org.apache.commons.lang3.StringUtils;
@@ -134,7 +136,7 @@ public class PayRollDetailAOImpl implements IPayRollDetailAO {
     }
 
     @Override
-    public int editPayRollDetail(XN631810Req req) {
+    public void editPayRollDetail(XN631810Req req) {
         PayRollDetail payRollDetail = payRollDetailBO
                 .getPayRollDetail(req.getCode());
 
@@ -151,14 +153,27 @@ public class PayRollDetailAOImpl implements IPayRollDetailAO {
                 && !StringUtil.isNumber(req.getActualAmount())) {
             throw new BizException("XN631810", "【实发金额】为数字类型,请重新填写");
         }
-        if (StringUtils.isNotBlank(req.getBackPayMonth())) {
-            projectWorkerBO.refreshLastPayRoll(payRollDetail.getWorkerCode(), req.getBackPayMonth(),
-                    req.getTotalPayAmount(), req.getActualAmount());
-        } else {
-            projectWorkerBO.refreshLastPayRoll(payRollDetail.getWorkerCode(), req.getBalanceDate(),
-                    req.getTotalPayAmount(), req.getActualAmount());
+        payRollDetailBO.updatePayRollDetail(req);
+
+        PayRollDetail lastPayRollData = payRollDetailBO
+                .getLastPayRollData(payRollDetail.getWorkerCode());
+        if (lastPayRollData == null) {
+            projectWorkerBO.refreshLastPayRoll(payRollDetail.getWorkerCode(), null, null, null);
+            return;
         }
-        return payRollDetailBO.updatePayRollDetail(req);
+        Date payMonth = payRollBO.getPayRoll(lastPayRollData.getPayRollCode()).getPayMonth();
+        if (lastPayRollData.getBackPayMonth() != null) {
+            projectWorkerBO
+                    .refreshLastPayRoll(payRollDetail.getWorkerCode(),
+                            DateUtil.dateToStr(lastPayRollData.getBackPayMonth(), "yyyy-MM"),
+                            req.getTotalPayAmount(), req.getActualAmount());
+        } else if (payMonth != null) {
+            projectWorkerBO
+                    .refreshLastPayRoll(payRollDetail.getWorkerCode(),
+                            DateUtil.dateToStr(payMonth, "yyyy-MM"),
+                            req.getTotalPayAmount(), req.getActualAmount());
+        }
+
     }
 
 }

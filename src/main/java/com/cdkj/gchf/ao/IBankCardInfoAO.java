@@ -91,4 +91,12 @@ public interface IBankCardInfoAO {
      */
     List<BankCardInfo> queryProjectCorpBankcards(String userId, String workerCode);
 
+
+    /**
+     * 查询人员所有银行卡
+     *
+     * @param projectWorkerCode 项目人员code
+     */
+    List<BankCardInfo> selectWorkerBankCards(String projectWorkerCode);
+
 }

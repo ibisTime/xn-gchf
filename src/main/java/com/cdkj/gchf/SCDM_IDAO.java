@@ -1,11 +1,14 @@
 package com.cdkj.gchf;
 
+import com.sun.org.apache.regexp.internal.RE;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 
 import com.cdkj.gchf.common.DateUtil;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class SCDM_IDAO {
 ////    // 实体
@@ -463,4 +466,11 @@ public class SCDM_IDAO {
 //                + "(code);\n\t}\n}";
 //        return str;
 //    }
+public static void main(String[] args) {
+    String regex = "^(1\\d{2}|2[0-4]\\d|25[0-5]|[1-9]\\d|[1-9])\\.(1\\d{2}|2[0-4]\\d|25[0-5]|[1-9]\\d|\\d)\\.(1\\d{2}|2[0-4]\\d|25[0-5]|[1-9]\\d|\\d)\\.(1\\d{2}|2[0-4]\\d|25[0-5]|[1-9]\\d|\\d)$";
+    Pattern pattern = Pattern.compile(regex);
+    Matcher matcher =
+            pattern.matcher("115.236.183.70");
+    System.out.println("matcher = " + matcher.find());
+}
 }

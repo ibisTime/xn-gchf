@@ -472,7 +472,13 @@ public class WorkerAttendanceBOImpl extends PaginableBOImpl<WorkerAttendance>
         condition.setWorkerCode(workerCode);
         condition.setOrder("date", false);
         condition.setDeleteStatus(EDeleteStatus.NORMAL.getCode());
-        return workerAttendanceDAO.selectList(condition).get(1);
+        List<WorkerAttendance> workerAttendances = workerAttendanceDAO.selectList(condition);
+        if (workerAttendances.size() > 1) {
+            return workerAttendances.get(1);
+        } else {
+            return workerAttendances.get(0);
+        }
+
 //        return workerAttendanceDAO.selectWorkerNewlyWorkerAttendanceData(workerCode);
     }
 }

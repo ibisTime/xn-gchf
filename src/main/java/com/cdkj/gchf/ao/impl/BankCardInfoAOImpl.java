@@ -114,12 +114,7 @@ public class BankCardInfoAOImpl implements IBankCardInfoAO {
 
     @Override
     public void unBindBankCard(String code) {
-
-        BankCardInfo bankCardInfo = bankCardBankBO.getBankCardInfo(code);
-        if (bankCardInfo.getBusinessType().equals(EBankCardBussinessType.CORP.getCode())) {
-            throw new BizException("项目人员解绑银行卡");
-        }
-        projectWorkerBO.refreshProjectWorkerBankCardInfo(bankCardInfo.getBusinessSysNo());
+        projectWorkerBO.refreshProjectWorkerBankCardInfo(code);
     }
 
     @Override
@@ -185,7 +180,9 @@ public class BankCardInfoAOImpl implements IBankCardInfoAO {
                             //这个项目所绑定的银行卡
                             if (StringUtils.isNotBlank(projectWorker.getPayRollBankCardNumber())
                                     && projectWorker.getPayRollBankCardNumber()
-                                    .equals(bankCardInfo.getBankNumber())) {
+                                    .equals(bankCardInfo.getBankNumber()) && projectWorker
+                                    .getProjectCode().equals(userBO.getBriefUser(req.getUserId())
+                                            .getOrganizationCode())) {
                                 //已绑定银行卡
                                 bankCardInfo.setBind(true);
                                 if (CollectionUtils.isNotEmpty(workerBankCard)
@@ -200,6 +197,8 @@ public class BankCardInfoAOImpl implements IBankCardInfoAO {
                                     workerBankCard.add(0, bankCardInfo);
                                     continue;
                                 }
+                            } else {
+                                workerBankCard.add(bankCardInfo);
                             }
 
                         }
@@ -369,6 +368,21 @@ public class BankCardInfoAOImpl implements IBankCardInfoAO {
         List<BankCardInfo> bankCardInfoList = bankCardBankBO
                 .getBankCardByByssinessCode(EBankCardBussinessType.CORP.getCode(),
                         projectCorpInfo.getCode());
+        return bankCardInfoList;
+    }
+
+    @Override
+    public List<BankCardInfo> selectWorkerBankCards(String projectWorkerCode) {
+        ProjectWorker projectWorker = projectWorkerBO.getProjectWorker(projectWorkerCode);
+        List<ProjectWorker> projectWorkers = projectWorkerBO
+                .selectProjectWorkerByWorkerCode(projectWorker.getWorkerCode());
+        List<BankCardInfo> bankCardInfoList = new ArrayList<>();
+        for (ProjectWorker temp : projectWorkers) {
+            List<BankCardInfo> bankCardByByssinessCode = bankCardBankBO
+                    .getBankCardByByssinessCode(EBankCardBussinessType.USER.getCode(),
+                            temp.getCode());
+            bankCardInfoList.addAll(bankCardByByssinessCode);
+        }
         return bankCardInfoList;
     }
 }

@@ -24,7 +24,7 @@ public interface IPayRollDetailAO {
      * @param req req
      * @return int
      */
-    int editPayRollDetail(XN631810Req req);
+    void editPayRollDetail(XN631810Req req);
 
     /**
      * 分页查工资单明细

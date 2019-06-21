@@ -497,7 +497,7 @@
       ,entry_time = #{entryTime}
     </if>
     <if test="exitTime != null ">
-      ,entry_time = #{exitTime}
+      ,exit_time = #{exitTime}
     </if>
     <if test="attendanceStatus != null and attendanceStatus != ''  ">
       ,attendance_status = #{attendanceStatus}

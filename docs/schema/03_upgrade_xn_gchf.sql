@@ -782,7 +782,7 @@ INSERT INTO `tsys_dict`(`id`, `type`, `parent_key`, `dkey`, `dvalue`, `updater`,
                         `remark`)
 VALUES (null, '1', 'workerPicUploadStatus', '1', '成功', 'admin', '2019-05-22 03:07:37', NULL);
 
--- 230
+-- 230 undo
 INSERT INTO `tsys_dict`(`id`, `type`, `parent_key`, `dkey`, `dvalue`, `updater`, `update_datetime`,
                         `remark`)
 VALUES (null, '0', NULL, 'bit_stream_type', '码流', 'admin', '2018-07-27 03:07:37', NULL);

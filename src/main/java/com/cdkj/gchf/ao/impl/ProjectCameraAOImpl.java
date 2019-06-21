@@ -3,6 +3,7 @@ package com.cdkj.gchf.ao.impl;
 import com.cdkj.gchf.bo.IProjectBO;
 import com.cdkj.gchf.bo.IUserBO;
 import com.cdkj.gchf.common.DateUtil;
+import com.cdkj.gchf.common.IpUtils;
 import com.cdkj.gchf.domain.Project;
 import com.cdkj.gchf.domain.User;
 import com.cdkj.gchf.dto.req.XN631850Req;
@@ -57,6 +58,9 @@ public class ProjectCameraAOImpl implements IProjectCameraAO {
         if (b) {
             throw new BizException("XN00000", "已存在ip为:" + req.getCameraIp() + "的摄像头,请更改摄像头ip"
                     + "地址");
+        }
+        if (!IpUtils.checkIpValidation(req.getCameraIp())) {
+            throw new BizException("XN00000", "Ip地址无效,请检查");
         }
 
         return projectCameraBO.saveProjectCamera(project, req, briefUser.getUserId());

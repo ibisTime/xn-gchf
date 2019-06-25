@@ -83,13 +83,9 @@ public class ProjectCameraBOImpl extends PaginableBOImpl<ProjectCamera> implemen
 
     @Override
     public int removeProjectCamera(String code) {
-        int count = 0;
-        if (StringUtils.isNotBlank(code)) {
-            ProjectCamera data = new ProjectCamera();
-            data.setCode(code);
-            count = projectCameraDAO.delete(data);
-        }
-        return count;
+        ProjectCamera projectCamera = new ProjectCamera();
+        projectCamera.setCode(code);
+        return projectCameraDAO.delete(projectCamera);
     }
 
     @Override

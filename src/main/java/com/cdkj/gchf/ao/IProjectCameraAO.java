@@ -1,6 +1,7 @@
 package com.cdkj.gchf.ao;
 
 import com.cdkj.gchf.dto.req.XN631850Req;
+import com.cdkj.gchf.dto.req.XN631852Req;
 import com.cdkj.gchf.dto.res.XN631852Res;
 import java.util.List;
 
@@ -27,12 +28,12 @@ public interface IProjectCameraAO {
     /***
      * @author old3
      * @date 2019-06-21
-     * @param  code 编号
+     * @param  codeList 编号
      * @return int
      */
-    public int dropProjectCamera(String code);
+    public int dropProjectCamera(List<String> codeList);
 
-    public int editProjectCamera(ProjectCamera data);
+    public int editProjectCamera(XN631852Req req);
 
     /**
      * 用户项目端摄像头rtsp地址

@@ -185,8 +185,13 @@ public class ProjectWorkerAOImpl implements IProjectWorkerAO {
         if (teamMaster == null) {
             throw new BizException("XN00000", "请选择班组");
         }
-        projectWorkerBO
-                .getProjectWorkerByIdentity(teamMaster.getCode(), workerInfo.getIdCardNumber());
+        ProjectWorker projectWorker1 = projectWorkerBO
+                .getProjectWorker(briefUser.getOrganizationCode(), workerInfo.getIdCardNumber());
+        if (projectWorker1 != null) {
+            throw new BizException("XN000000", "项目人员已存在");
+        }
+
+
         ProjectWorker projectWorker = projectWorkerBO.saveProjectWorker(project,
                 teamMaster, workerInfo, req);
         ProjectWorkerEntryExitHistory exitHistory = projectWorkerEntryExitHistoryBO

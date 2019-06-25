@@ -107,9 +107,7 @@
 
   <update id="update_ProjectCamera" parameterType="ProjectCamera">
     UPDATE thf_project_camera
-    SET project_code     = #{projectCode}
-      ,project_name      = #{projectName}
-      ,camera_name       = #{cameraName}
+    SET camera_name      = #{cameraName}
       ,camera_username   = #{cameraUsername}
       ,camera_password   = #{cameraPassword}
       ,camera_ip         = #{cameraIp}
@@ -118,9 +116,7 @@
       ,camera_bit_stream = #{cameraBitStream}
       ,cvr_host_username = #{cvrHostUsername}
       ,cvr_host_password = #{cvrHostPassword}
-      ,updater           = #{updater}
-      ,update_datetime   = #{updateDatetime}
-      ,remark            = #{remark}
+
     WHERE code = #{code}
   </update>
 

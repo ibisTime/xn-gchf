@@ -1,5 +1,6 @@
 package com.cdkj.gchf.ao.impl;
 
+import com.cdkj.gchf.common.StringUtil;
 import com.cdkj.gchf.enums.EBankCardCodeType;
 import java.util.ArrayList;
 import java.util.List;
@@ -162,6 +163,9 @@ public class BankCardInfoAOImpl implements IBankCardInfoAO {
 //                bankcardCondition.setBusinessSysNo(projectWorker.getCode());
 //                List<BankCardInfo> bankCardInfo = bankCardBankBO
 //                        .queryBankCardInfoList(bankcardCondition);
+                if (StringUtils.isBlank(req.getBusinessSysNo())) {
+                    return null;
+                }
 
                 List<ProjectWorker> projectWorkers = projectWorkerBO
                         .selectProjectWorkerByWorkerCode(projectWorker.getWorkerCode());
@@ -269,7 +273,7 @@ public class BankCardInfoAOImpl implements IBankCardInfoAO {
                 //ypdo
                 Page<BankCardInfo> page = new Page<BankCardInfo>();
                 page.setList(bankCardInfoList);
-                    return page;
+                return page;
             }
 
         }

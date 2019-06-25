@@ -8,7 +8,6 @@ import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
-import net.coobird.thumbnailator.Thumbnails;
 import org.apache.commons.io.FileUtils;
 import org.apache.poi.hpsf.Thumbnail;
 import org.slf4j.Logger;

@@ -22,7 +22,7 @@ public class XN631851 extends AProcessor {
 
     @Override
     public Object doBusiness() throws BizException {
-        projectCameraAO.dropProjectCamera(req.getCode());
+        projectCameraAO.dropProjectCamera(req.getCodeList());
         return new BooleanRes(true);
     }
 

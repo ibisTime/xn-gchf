@@ -1,30 +1,28 @@
 package com.cdkj.gchf.ao.impl;
 
+import com.cdkj.gchf.ao.IProjectCameraAO;
 import com.cdkj.gchf.bo.IProjectBO;
+import com.cdkj.gchf.bo.IProjectCameraBO;
 import com.cdkj.gchf.bo.IUserBO;
-import com.cdkj.gchf.common.DateUtil;
+import com.cdkj.gchf.bo.base.Paginable;
 import com.cdkj.gchf.common.IpUtils;
 import com.cdkj.gchf.domain.Project;
+import com.cdkj.gchf.domain.ProjectCamera;
 import com.cdkj.gchf.domain.User;
 import com.cdkj.gchf.dto.req.XN631850Req;
+import com.cdkj.gchf.dto.req.XN631852Req;
 import com.cdkj.gchf.dto.res.XN631852Res;
 import com.cdkj.gchf.enums.ECameraBitStream;
 import com.cdkj.gchf.enums.EUserKind;
+import com.cdkj.gchf.exception.BizException;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
-
 import org.apache.commons.lang3.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import com.cdkj.gchf.ao.IProjectCameraAO;
-import com.cdkj.gchf.bo.IProjectCameraBO;
-import com.cdkj.gchf.bo.base.Paginable;
-import com.cdkj.gchf.domain.ProjectCamera;
-import com.cdkj.gchf.exception.BizException;
-
 
 //CHECK ��鲢��ע��
 @Service
@@ -38,6 +36,8 @@ public class ProjectCameraAOImpl implements IProjectCameraAO {
 
     @Autowired
     private IProjectBO projectBO;
+
+    private Logger logger = LoggerFactory.getLogger(this.getClass());
 
     @Override
     public String addProjectCamera(XN631850Req req) {
@@ -67,11 +67,21 @@ public class ProjectCameraAOImpl implements IProjectCameraAO {
     }
 
     @Override
-    public int editProjectCamera(ProjectCamera data) {
-        if (!projectCameraBO.isProjectCameraExist(data.getCode())) {
-            throw new BizException("xn0000", "记录编号不存在");
+    public int editProjectCamera(XN631852Req req) {
+        String userId = req.getUserId();
+        User briefUser = userBO.getBriefUser(userId);
+        String organizationCode = briefUser.getOrganizationCode();
+        Project project = projectBO.getProject(organizationCode);
+        if (project == null) {
+            throw new BizException("XN000000", "项目不存在");
         }
-        return projectCameraBO.refreshProjectCamera(data);
+
+        ProjectCamera projectCamera = new ProjectCamera();
+        BeanUtils.copyProperties(req, projectCamera);
+        projectCamera.setProjectCode(project.getCode());
+        projectCamera.setProjectName(project.getName());
+
+        return projectCameraBO.refreshProjectCamera(projectCamera);
     }
 
     @Override
@@ -86,14 +96,15 @@ public class ProjectCameraAOImpl implements IProjectCameraAO {
                     .selectProjectCamera(briefUser.getOrganizationCode());
             List<XN631852Res> res = new ArrayList<>();
             for (int i = 0; i < projectCameras.size(); i++) {
+                logger.info("--- start transfer ---");
                 ProjectCamera projectCamera = projectCameras.get(i);
                 XN631852Res xn631852Res = new XN631852Res();
                 xn631852Res.setCameraName(projectCamera.getCameraName());
                 StringBuffer sb = new StringBuffer();
                 sb.append(baseUrl)
-                        .append(projectCamera.getCvrHostUsername())
+                        .append(projectCamera.getCameraUsername())
                         .append(":")
-                        .append(projectCamera.getCvrHostPassword())
+                        .append(projectCamera.getCameraPassword())
                         .append("@")
                         .append(projectCamera.getCameraIp());
 
@@ -102,6 +113,7 @@ public class ProjectCameraAOImpl implements IProjectCameraAO {
                 }
                 sb.append("/").append(projectCamera.getCameraChannel());
                 sb.append("/").append(projectCamera.getCameraBitStream());
+
                 xn631852Res.setRpstpStreamAddress(sb.toString());
                 res.add(xn631852Res);
             }
@@ -110,12 +122,13 @@ public class ProjectCameraAOImpl implements IProjectCameraAO {
         return null;
     }
 
+
     @Override
-    public int dropProjectCamera(String code) {
-        if (!projectCameraBO.isProjectCameraExist(code)) {
-            throw new BizException("xn0000", "记录编号不存在");
+    public int dropProjectCamera(List<String> codeList) {
+        for (String code : codeList) {
+            projectCameraBO.removeProjectCamera(code);
         }
-        return projectCameraBO.removeProjectCamera(code);
+        return 1;
     }
 
     @Override

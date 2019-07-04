@@ -1,10 +1,18 @@
 package com.cdkj.gchf.ao.impl;
 
-import com.cdkj.gchf.common.StringUtil;
-import com.cdkj.gchf.enums.EBankCardCodeType;
-import java.util.ArrayList;
-import java.util.List;
-
+import com.cdkj.gchf.ao.IBankCardInfoAO;
+import com.cdkj.gchf.bo.*;
+import com.cdkj.gchf.bo.base.Page;
+import com.cdkj.gchf.bo.base.Paginable;
+import com.cdkj.gchf.domain.BankCardInfo;
+import com.cdkj.gchf.domain.ProjectCorpInfo;
+import com.cdkj.gchf.domain.ProjectWorker;
+import com.cdkj.gchf.domain.User;
+import com.cdkj.gchf.dto.req.*;
+import com.cdkj.gchf.enums.EBankCardBussinessType;
+import com.cdkj.gchf.enums.EBankCardStatus;
+import com.cdkj.gchf.enums.EUserKind;
+import com.cdkj.gchf.exception.BizException;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;
@@ -12,29 +20,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.cdkj.gchf.ao.IBankCardInfoAO;
-import com.cdkj.gchf.bo.IBankCardBankBO;
-import com.cdkj.gchf.bo.IProjectBO;
-import com.cdkj.gchf.bo.IProjectCorpInfoBO;
-import com.cdkj.gchf.bo.IProjectWorkerBO;
-import com.cdkj.gchf.bo.IUserBO;
-import com.cdkj.gchf.bo.base.Page;
-import com.cdkj.gchf.bo.base.Paginable;
-import com.cdkj.gchf.domain.BankCardInfo;
-import com.cdkj.gchf.domain.Project;
-import com.cdkj.gchf.domain.ProjectCorpInfo;
-import com.cdkj.gchf.domain.ProjectWorker;
-import com.cdkj.gchf.domain.User;
-import com.cdkj.gchf.dto.req.XN631750Req;
-import com.cdkj.gchf.dto.req.XN631751Req;
-import com.cdkj.gchf.dto.req.XN631752Req;
-import com.cdkj.gchf.dto.req.XN631765Req;
-import com.cdkj.gchf.dto.req.XN631766Req;
-import com.cdkj.gchf.dto.req.XN631767Req;
-import com.cdkj.gchf.enums.EBankCardBussinessType;
-import com.cdkj.gchf.enums.EBankCardStatus;
-import com.cdkj.gchf.enums.EUserKind;
-import com.cdkj.gchf.exception.BizException;
+import java.util.ArrayList;
+import java.util.List;
 
 @Service(value = "bankCardInfoAOImpl")
 public class BankCardInfoAOImpl implements IBankCardInfoAO {
@@ -159,10 +146,6 @@ public class BankCardInfoAOImpl implements IBankCardInfoAO {
                 //查询人员银行卡信息
                 ProjectWorker projectWorker = projectWorkerBO
                         .getProjectWorker(req.getBusinessSysNo());
-//                BankCardInfo bankcardCondition = new BankCardInfo();
-//                bankcardCondition.setBusinessSysNo(projectWorker.getCode());
-//                List<BankCardInfo> bankCardInfo = bankCardBankBO
-//                        .queryBankCardInfoList(bankcardCondition);
                 if (StringUtils.isBlank(req.getBusinessSysNo())) {
                     return null;
                 }
@@ -209,68 +192,6 @@ public class BankCardInfoAOImpl implements IBankCardInfoAO {
                     }
                     bankCardInfoList.addAll(bankCardByByssinessCode);
                 }
-//                if (CollectionUtils.isNotEmpty(bankCardInfo)) {
-//                    for (BankCardInfo temp : bankCardInfo) {
-//                        temp.setProjectName(projectWorker.getProjectName());
-//                        temp.setTeamName(projectWorker.getTeamName());
-//                        temp.setWorkerName(projectWorker.getWorkerName());
-//                        temp.setIdcardNumber(projectWorker.getIdcardNumber());
-//                        if (StringUtils.isNotBlank(projectWorker.getPayRollBankCardNumber())
-//                                && projectWorker.getPayRollBankCardNumber()
-//                                .equals(temp.getBankNumber())) {
-//                            //已绑定银行卡
-//                            temp.setBind(true);
-//                            if (CollectionUtils.isNotEmpty(workerBankCard)
-//                                    && workerBankCard.get(0) != null) {
-//
-//                                BankCardInfo move = workerBankCard.get(0);
-//                                workerBankCard.remove(0);
-//                                workerBankCard.add(0, temp);
-//                                workerBankCard.add(move);
-//                                continue;
-//                            } else {
-//                                workerBankCard.add(0, temp);
-//                                continue;
-//                            }
-//                        }
-//                        workerBankCard.add(temp);
-//                    }
-//                    Page<BankCardInfo> page = new Page<BankCardInfo>();
-//                    page.setList(workerBankCard);
-//                    return page;
-//                }
-
-//                if (CollectionUtils.isNotEmpty(bankCardInfo)) {
-//                    for (BankCardInfo temp : bankCardInfo) {
-//                        temp.setProjectName(projectWorker.getProjectName());
-//                        temp.setTeamName(projectWorker.getTeamName());
-//                        temp.setWorkerName(projectWorker.getWorkerName());
-//                        temp.setIdcardNumber(projectWorker.getIdcardNumber());
-//                        if (StringUtils.isNotBlank(projectWorker.getPayRollBankCardNumber())
-//                                && projectWorker.getPayRollBankCardNumber()
-//                                .equals(temp.getBankNumber())) {
-//                            //已绑定银行卡
-//                            temp.setBind(true);
-//                            if (CollectionUtils.isNotEmpty(workerBankCard)
-//                                    && workerBankCard.get(0) != null) {
-//
-//                                BankCardInfo move = workerBankCard.get(0);
-//                                workerBankCard.remove(0);
-//                                workerBankCard.add(0, temp);
-//                                workerBankCard.add(move);
-//                                continue;
-//                            } else {
-//                                workerBankCard.add(0, temp);
-//                                continue;
-//                            }
-//                        }
-//                        workerBankCard.add(temp);
-//                    }
-//                    Page<BankCardInfo> page = new Page<BankCardInfo>();
-//                    page.setList(workerBankCard);
-//                    return page;
-//                }
-                //ypdo
                 Page<BankCardInfo> page = new Page<BankCardInfo>();
                 page.setList(bankCardInfoList);
                 return page;

@@ -2,6 +2,8 @@ package com.cdkj.gchf.dto.req;
 
 import org.hibernate.validator.constraints.NotBlank;
 
+import java.util.Date;
+
 public class XN631725Req extends APageReq {
     /**   
      * @Fields serialVersionUID : TODO
@@ -35,6 +37,10 @@ public class XN631725Req extends APageReq {
     // 用户id
     @NotBlank
     private String userId;
+
+    private Date dateStartDatetime;
+
+    private Date dateEndDatetime;
 
     public String getCode() {
         return code;
@@ -108,4 +114,23 @@ public class XN631725Req extends APageReq {
         this.source = source;
     }
 
+    public static long getSerialVersionUID() {
+        return serialVersionUID;
+    }
+
+    public Date getDateStartDatetime() {
+        return dateStartDatetime;
+    }
+
+    public void setDateStartDatetime(Date dateStartDatetime) {
+        this.dateStartDatetime = dateStartDatetime;
+    }
+
+    public Date getDateEndDatetime() {
+        return dateEndDatetime;
+    }
+
+    public void setDateEndDatetime(Date dateEndDatetime) {
+        this.dateEndDatetime = dateEndDatetime;
+    }
 }

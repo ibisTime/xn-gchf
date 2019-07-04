@@ -87,6 +87,13 @@
       <if test="teamSysNo != null and teamSysNo != '' ">
         AND t.team_sys_no = #{teamSysNo}
       </if>
+
+        <if test="dateStartDatetime != null and dateStartDatetime != '' ">
+            <![CDATA[AND t.date > #{dateStartDatetime}]]>
+        </if>
+        <if test="dateEndDatetime != null and dateEndDatetime != '' ">
+            <![CDATA[AND t.date < #{dateEndDatetime}]]>
+        </if>
     </trim>
   </sql>
 

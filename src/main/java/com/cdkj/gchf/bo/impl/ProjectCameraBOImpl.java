@@ -1,24 +1,21 @@
 package com.cdkj.gchf.bo.impl;
 
-import com.cdkj.gchf.common.DateUtil;
+import com.cdkj.gchf.bo.IProjectCameraBO;
+import com.cdkj.gchf.bo.base.PaginableBOImpl;
+import com.cdkj.gchf.core.OrderNoGenerater;
+import com.cdkj.gchf.dao.IProjectCameraDAO;
 import com.cdkj.gchf.domain.Project;
+import com.cdkj.gchf.domain.ProjectCamera;
 import com.cdkj.gchf.dto.req.XN631850Req;
 import com.cdkj.gchf.enums.EGeneratePrefix;
-import java.util.Date;
-import java.util.List;
-
-import org.apache.commons.collections.CollectionUtils;
+import com.cdkj.gchf.exception.BizException;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import com.cdkj.gchf.bo.IProjectCameraBO;
-import com.cdkj.gchf.bo.base.PaginableBOImpl;
-import com.cdkj.gchf.core.OrderNoGenerater;
-import com.cdkj.gchf.dao.IProjectCameraDAO;
-import com.cdkj.gchf.domain.ProjectCamera;
-import com.cdkj.gchf.exception.BizException;
+import java.util.Date;
+import java.util.List;
 
 
 //CHECK ��鲢��ע��
@@ -40,10 +37,11 @@ public class ProjectCameraBOImpl extends PaginableBOImpl<ProjectCamera> implemen
     }
 
     @Override
-    public boolean checkCameraIpExist(String projectCode, String ip) {
+    public boolean checkCameraIpExist(String projectCode, String ip, String port) {
         ProjectCamera projectCamera = new ProjectCamera();
         projectCamera.setCameraIp(ip);
         projectCamera.setProjectCode(projectCode);
+        projectCamera.setCameraIpPort(port);
         long l = projectCameraDAO.selectTotalCount(projectCamera);
         if (l > 1L) {
             return true;

@@ -1,52 +1,27 @@
 package com.cdkj.gchf.ao.impl;
 
-import com.cdkj.gchf.common.DateUtil;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-
-import org.apache.commons.collections.CollectionUtils;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-
 import com.alibaba.fastjson.JSONObject;
 import com.cdkj.gchf.ao.IProjectWorkerEntryExitHistoryAO;
-import com.cdkj.gchf.bo.IOperateLogBO;
-import com.cdkj.gchf.bo.IProjectBO;
-import com.cdkj.gchf.bo.IProjectConfigBO;
-import com.cdkj.gchf.bo.IProjectWorkerBO;
-import com.cdkj.gchf.bo.IProjectWorkerEntryExitHistoryBO;
-import com.cdkj.gchf.bo.ITeamMasterBO;
-import com.cdkj.gchf.bo.IUserBO;
+import com.cdkj.gchf.bo.*;
 import com.cdkj.gchf.bo.base.Paginable;
 import com.cdkj.gchf.common.AesUtils;
-import com.cdkj.gchf.domain.Project;
-import com.cdkj.gchf.domain.ProjectConfig;
-import com.cdkj.gchf.domain.ProjectWorker;
-import com.cdkj.gchf.domain.ProjectWorkerEntryExitHistory;
-import com.cdkj.gchf.domain.TeamMaster;
-import com.cdkj.gchf.domain.User;
-import com.cdkj.gchf.dto.req.XN631730Req;
-import com.cdkj.gchf.dto.req.XN631732Req;
-import com.cdkj.gchf.dto.req.XN631733Req;
-import com.cdkj.gchf.dto.req.XN631733ReqData;
-import com.cdkj.gchf.dto.req.XN631913Req;
-import com.cdkj.gchf.dto.req.XN631914Req;
-import com.cdkj.gchf.dto.req.XN631914ReqWorker;
-import com.cdkj.gchf.dto.req.XN631915Req;
-import com.cdkj.gchf.enums.EDeleteStatus;
-import com.cdkj.gchf.enums.EEntryExitType;
-import com.cdkj.gchf.enums.EOperateLogOperate;
-import com.cdkj.gchf.enums.EOperateLogRefType;
-import com.cdkj.gchf.enums.EProjectWorkerEntryExitUploadStatus;
-import com.cdkj.gchf.enums.EProjectWorkerUploadStatus;
-import com.cdkj.gchf.enums.EUserKind;
+import com.cdkj.gchf.common.DateUtil;
+import com.cdkj.gchf.domain.*;
+import com.cdkj.gchf.dto.req.*;
+import com.cdkj.gchf.enums.*;
 import com.cdkj.gchf.exception.BizException;
 import com.cdkj.gchf.gov.AsyncQueueHolder;
 import com.cdkj.gchf.gov.GovConnecter;
 import com.cdkj.gchf.gov.SerialHandler;
 import com.google.gson.JsonObject;
+import org.apache.commons.collections.CollectionUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
 
 @Service
 public class ProjectWorkerEntryExitHistoryAOImpl
@@ -142,10 +117,11 @@ public class ProjectWorkerEntryExitHistoryAOImpl
             projectWorkerBO
                     .refreshStatus(exitHistory.getWorkerCode(),
                             String.valueOf(exitHistoryData.getType()), req.getDate(), null);
+        } else {
+            projectWorkerBO
+                    .refreshStatus(exitHistory.getWorkerCode(),
+                            String.valueOf(exitHistoryData.getType()), null, req.getDate());
         }
-        projectWorkerBO
-                .refreshStatus(exitHistory.getWorkerCode(),
-                        String.valueOf(exitHistoryData.getType()), null, req.getDate());
 
     }
 

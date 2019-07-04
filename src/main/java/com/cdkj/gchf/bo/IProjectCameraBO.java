@@ -1,14 +1,13 @@
 package com.cdkj.gchf.bo;
 
+import com.cdkj.gchf.bo.base.IPaginableBO;
 import com.cdkj.gchf.domain.Project;
+import com.cdkj.gchf.domain.ProjectCamera;
 import com.cdkj.gchf.dto.req.XN631850Req;
+
 import java.util.List;
 
-import com.cdkj.gchf.bo.base.IPaginableBO;
-import com.cdkj.gchf.domain.ProjectCamera;
 
-
-//CHECK ��鲢��ע��
 public interface IProjectCameraBO extends IPaginableBO<ProjectCamera> {
 
 
@@ -17,7 +16,7 @@ public interface IProjectCameraBO extends IPaginableBO<ProjectCamera> {
     /**
      * 校验ip是否重复
      */
-    boolean checkCameraIpExist(String projectCode, String ip);
+    boolean checkCameraIpExist(String projectCode, String ip, String port);
 
     /**
      * 校验名称是否存在

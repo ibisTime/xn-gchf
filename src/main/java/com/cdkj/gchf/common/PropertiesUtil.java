@@ -35,6 +35,8 @@ public class PropertiesUtil {
 
         public static String GOV_URL = props.getProperty("GOV_URL");
 
+        public static String HLS_STREAM_DIR = props.getProperty("HLS_STREAM_DIR");
+
         public static String OCR_HOST = props.getProperty("OCR_HOST");
 
         public static String OCR_PATH = props.getProperty("OCR_PATH");
@@ -42,6 +44,10 @@ public class PropertiesUtil {
         public static String OCR_APP_KEY = props.getProperty("OCR_APP_KEY");
 
         public static String ZQZN_APP_KEY = props.getProperty("ZQZN_APP_KEY");
+
+        public static String HLS_IP = props.getProperty("HLS_IP");
+
+        public static String HLS_PORT = props.getProperty("HLS_PORT");
 
         public static String OCR_APP_SECRET = props
             .getProperty("OCR_APP_SECRET");

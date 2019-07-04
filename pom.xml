@@ -244,6 +244,7 @@
 				<version>${jackson.version}</version>
 			</dependency>
 			<!-- Jackson end -->
+
 		</dependencies>
 	</dependencyManagement>
 	<dependencies>
@@ -515,7 +516,6 @@
 			<artifactId>javax-websocket-client-impl</artifactId>
 			<version>9.4.12.v20180830</version>
 		</dependency>
-
 
 	</dependencies>
 	<!-- 解决每次更新maven自动更改jdk1.5办法 -->

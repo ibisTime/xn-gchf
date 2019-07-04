@@ -1,16 +1,15 @@
 package com.cdkj.gchf.ao;
 
+import com.cdkj.gchf.bo.base.Paginable;
+import com.cdkj.gchf.domain.ProjectCamera;
 import com.cdkj.gchf.dto.req.XN631850Req;
 import com.cdkj.gchf.dto.req.XN631852Req;
 import com.cdkj.gchf.dto.res.XN631852Res;
-import java.util.List;
-
-import com.cdkj.gchf.bo.base.Paginable;
-import com.cdkj.gchf.domain.ProjectCamera;
 import org.springframework.stereotype.Component;
 
+import java.util.List;
 
-//CHECK ��鲢��ע��
+
 @Component
 public interface IProjectCameraAO {
 
@@ -38,9 +37,16 @@ public interface IProjectCameraAO {
     /**
      * 用户项目端摄像头rtsp地址
      *
-     * @param userId 用户id
      */
-    List<XN631852Res> getAllCameraRtspAddr(String userId);
+    Paginable<XN631852Res> getAllCameraRtspAddr(int start, int limit,
+                                                ProjectCamera condition);
+
+    /**
+     * 释放hls资源
+     *
+     * @param userId
+     */
+    void releaseHlsResource(String userId);
 
     public Paginable<ProjectCamera> queryProjectCameraPage(int start, int limit,
             ProjectCamera condition);

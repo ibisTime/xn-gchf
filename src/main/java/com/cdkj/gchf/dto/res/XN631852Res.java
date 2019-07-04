@@ -25,6 +25,11 @@ public class XN631852Res {
     public void setRpstpStreamAddress(String rpstpStreamAddress) {
         this.rpstpStreamAddress = rpstpStreamAddress;
     }
+
+    public XN631852Res(String cameraName, String rpstpStreamAddress) {
+        this.cameraName = cameraName;
+        this.rpstpStreamAddress = rpstpStreamAddress;
+    }
 }
 
     

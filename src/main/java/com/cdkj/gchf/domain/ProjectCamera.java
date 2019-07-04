@@ -1,6 +1,7 @@
 package com.cdkj.gchf.domain;
 
 import com.cdkj.gchf.dao.base.ABaseDO;
+
 import java.util.Date;
 
 /**
@@ -58,6 +59,9 @@ public class ProjectCamera extends ABaseDO {
 
     // 备注
     private String remark;
+
+    /****DB Properties****/
+    private String userId;
 
     public void setCode(String code) {
         this.code = code;
@@ -179,4 +183,11 @@ public class ProjectCamera extends ABaseDO {
         return remark;
     }
 
+    public String getUserId() {
+        return userId;
+    }
+
+    public void setUserId(String userId) {
+        this.userId = userId;
+    }
 }

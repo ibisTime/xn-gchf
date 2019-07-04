@@ -26,9 +26,7 @@ public class XN631852Req {
     private String cameraChannel;
     @NotBlank
     private String cameraBitStream;
-    @NotBlank
     private String cvrHostUsername;
-    @NotBlank
     private String cvrHostPassword;
     @NotBlank
     private String userId;

@@ -1,8 +1,5 @@
 package com.cdkj.gchf.api.impl;
 
-import org.apache.commons.lang3.StringUtils;
-import org.springframework.beans.BeanUtils;
-
 import com.cdkj.gchf.ao.IWorkerAttendanceAO;
 import com.cdkj.gchf.api.AProcessor;
 import com.cdkj.gchf.common.JsonUtil;
@@ -14,6 +11,8 @@ import com.cdkj.gchf.enums.EDeleteStatus;
 import com.cdkj.gchf.exception.BizException;
 import com.cdkj.gchf.exception.ParaException;
 import com.cdkj.gchf.spring.SpringContextHolder;
+import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.BeanUtils;
 
 /**
  * 
@@ -33,9 +32,12 @@ public class XN631725 extends AProcessor {
     public Object doBusiness() throws BizException {
         WorkerAttendance condition = new WorkerAttendance();
         BeanUtils.copyProperties(req, condition);
+
         condition.setDeleteStatus(EDeleteStatus.NORMAL.getCode());
+
         int start = StringValidater.toInteger(req.getStart());
         int limit = StringValidater.toInteger(req.getLimit());
+
         String column = req.getOrderColumn();
         if (StringUtils.isBlank(column)) {
             column = IWorkerAttendanceAO.DEFAULT_ORDER_COLUMN;

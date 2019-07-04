@@ -1,8 +1,8 @@
 package com.cdkj.gchf.dto.req;
 
-import java.util.Date;
-
 import org.hibernate.validator.constraints.NotBlank;
+
+import java.util.Date;
 
 public class XN631750Req {
     // 用户id
@@ -30,7 +30,6 @@ public class XN631750Req {
     private String subranch;
 
     // 银行联号
-    @NotBlank
     private String bankLinkNumber;
 
     // 创建时间

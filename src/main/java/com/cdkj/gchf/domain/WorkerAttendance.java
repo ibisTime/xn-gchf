@@ -1,10 +1,10 @@
 package com.cdkj.gchf.domain;
 
+import com.cdkj.gchf.dao.base.ABaseDO;
+
 import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
-
-import com.cdkj.gchf.dao.base.ABaseDO;
 
 /**
 * 人员考勤
@@ -106,6 +106,11 @@ public class WorkerAttendance extends ABaseDO {
     private String userId;
 
     private List<String> codeList;
+
+    /****DB Properties****/
+    private Date dateStartDatetime;
+
+    private Date dateEndDatetime;
 
     public String getCode() {
         return code;
@@ -355,4 +360,23 @@ public class WorkerAttendance extends ABaseDO {
         this.codeList = codeList;
     }
 
+    public static long getSerialVersionUID() {
+        return serialVersionUID;
+    }
+
+    public Date getDateStartDatetime() {
+        return dateStartDatetime;
+    }
+
+    public void setDateStartDatetime(Date dateStartDatetime) {
+        this.dateStartDatetime = dateStartDatetime;
+    }
+
+    public Date getDateEndDatetime() {
+        return dateEndDatetime;
+    }
+
+    public void setDateEndDatetime(Date dateEndDatetime) {
+        this.dateEndDatetime = dateEndDatetime;
+    }
 }

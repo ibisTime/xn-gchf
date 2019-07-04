@@ -30,6 +30,9 @@
       <if test="cameraName != null and cameraName != '' ">
         AND camera_name = #{cameraName}
       </if>
+        <if test="projectCode != null and projectCode != '' ">
+            AND project_code = #{projectCode}
+        </if>
     </trim>
   </sql>
   <select id="select_ProjectCamera" parameterType="ProjectCamera"

@@ -3,11 +3,15 @@ package com.cdkj.gchf.api.impl;
 import com.cdkj.gchf.ao.IProjectCameraAO;
 import com.cdkj.gchf.api.AProcessor;
 import com.cdkj.gchf.core.ObjValidater;
+import com.cdkj.gchf.core.StringValidater;
+import com.cdkj.gchf.domain.ProjectCamera;
 import com.cdkj.gchf.dto.req.XN631853Req;
 import com.cdkj.gchf.exception.BizException;
 import com.cdkj.gchf.exception.ParaException;
 import com.cdkj.gchf.http.JsonUtils;
 import com.cdkj.gchf.spring.SpringContextHolder;
+import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.BeanUtils;
 
 /**
  * @author : old3
@@ -21,7 +25,19 @@ public class XN631853 extends AProcessor {
 
     @Override
     public Object doBusiness() throws BizException {
-        return projectCameraAO.getAllCameraRtspAddr(req.getUserId());
+        ProjectCamera condition = new ProjectCamera();
+        int start = StringValidater.toInteger(req.getStart());
+        int limit = StringValidater.toInteger(req.getLimit());
+        BeanUtils.copyProperties(req, condition);
+
+        String order = req.getOrderColumn();
+
+        if (StringUtils.isBlank(order)) {
+            order = IProjectCameraAO.DEFAULT_ORDER_COLUMN;
+        }
+        condition.setOrder(order, req.getOrderDir());
+
+        return projectCameraAO.getAllCameraRtspAddr(start, limit, condition);
     }
 
     @Override

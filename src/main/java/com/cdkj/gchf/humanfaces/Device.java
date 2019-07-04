@@ -4,10 +4,11 @@ import com.cdkj.gchf.humanfaces.res.DeviceQuery;
 import com.cdkj.gchf.humanfaces.res.DeviceRes;
 import com.cdkj.gchf.humanfaces.res.ResultMsg;
 import com.google.gson.Gson;
-import java.util.HashMap;
-import java.util.Map;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Component;
+
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * @ClassName: Device
@@ -204,8 +205,8 @@ public class Device {
         // String test3333 = test3333("84E0F420576700B0");
         // System.out.println(test3333);
 
-//        String s = delCloudDevice("84E0F420576700B0");
-//        System.out.println("s = " + s);
+        String s = delCloudDevice("84e0f421584206b2");
+        System.out.println("s = " + s);
 
     }
 

@@ -26,9 +26,7 @@ public class XN631850Req {
     @NotBlank(message = "摄像头频道必填")
     private String cameraChannel;
     private String cameraBitStream;
-    @NotBlank(message = "CVR主机账号不能为空")
     private String cvrHostUsername;
-    @NotBlank(message = "CVR主机密码不能为空")
     private String cvrHostPassword;
     @NotBlank(message = "用户id不能为空")
     private String userId;

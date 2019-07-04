@@ -6,7 +6,7 @@ import org.hibernate.validator.constraints.NotBlank;
  * @author : old3
  * @since : 2019-06-21 2:04
  */
-public class XN631853Req {
+public class XN631853Req extends APageReq {
 
     @NotBlank(message = "用户id不能为空")
     private String userId;

@@ -792,3 +792,23 @@ VALUES (null, '1', 'bit_stream_type', '1', '主码流', 'admin', '2018-07-27 03:
 INSERT INTO `tsys_dict`(`id`, `type`, `parent_key`, `dkey`, `dvalue`, `updater`, `update_datetime`,
                         `remark`)
 VALUES (null, '1', 'bit_stream_type', '2', '副码流', 'admin', '2018-07-27 03:07:37', NULL);
+
+CREATE TABLE `thf_project_camera` (
+  `code` varchar(32) NOT NULL COMMENT '编号',
+  `project_code` varchar(32) NOT NULL COMMENT '项目编号',
+  `project_name` varchar(512) DEFAULT NULL COMMENT '项目名称',
+  `camera_name` varchar(255) NOT NULL COMMENT '摄像头名称',
+  `camera_username` varchar(32) NOT NULL COMMENT '摄像机账号',
+  `camera_password` varchar(32) NOT NULL COMMENT '摄像机密码',
+  `camera_ip` varchar(16) NOT NULL COMMENT '摄像头ip',
+  `camera_ip_port` varchar(10) DEFAULT NULL COMMENT '摄像机ip端口',
+  `camera_channel` varchar(32) NOT NULL COMMENT '摄像头频道',
+  `camera_bit_stream` varchar(32) CHARACTER SET utf8mb4 NOT NULL COMMENT '摄像头码流',
+  `cvr_host_username` varchar(255) DEFAULT NULL COMMENT 'cvr主机账号',
+  `cvr_host_password` varchar(32) DEFAULT NULL COMMENT 'cvr主机密码',
+  `updater` varchar(32) DEFAULT NULL COMMENT '更新人',
+  `update_datetime` datetime DEFAULT NULL COMMENT '更新时间',
+  `remark` varchar(4) DEFAULT NULL COMMENT '备注',
+  PRIMARY KEY (`code`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8
+

@@ -11,12 +11,22 @@ public class XN631855Req extends APageReq {
      */
     private String cameraName;
 
+    private String userId;
+
     public String getCameraName() {
         return cameraName;
     }
 
     public void setCameraName(String cameraName) {
         this.cameraName = cameraName;
+    }
+
+    public String getUserId() {
+        return userId;
+    }
+
+    public void setUserId(String userId) {
+        this.userId = userId;
     }
 }
 

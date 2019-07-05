@@ -19,6 +19,7 @@ import com.cdkj.gchf.dto.res.XN631852Res;
 import com.cdkj.gchf.enums.ECameraBitStream;
 import com.cdkj.gchf.exception.BizException;
 import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -48,9 +49,10 @@ public class ProjectCameraAOImpl implements IProjectCameraAO {
 
     private String HLS_STREAM_DIR = PropertiesUtil.Config.HLS_STREAM_DIR;
 
-    private String HLS_IP = PropertiesUtil.Config.HLS_IP;
 
-    private String HLS_PORT = PropertiesUtil.Config.HLS_PORT;
+    private String HLS_HOST = PropertiesUtil.Config.HLS_HOST;
+
+    private String HLS_ENV = PropertiesUtil.Config.HLS_ENV;
 
     private Logger logger = LoggerFactory.getLogger(this.getClass());
 
@@ -108,6 +110,7 @@ public class ProjectCameraAOImpl implements IProjectCameraAO {
             throw new BizException("XN00000", "用户不存在");
         }
 
+        condition.setProjectCode(briefUser.getOrganizationCode());
         Paginable<ProjectCamera> page = projectCameraBO.getPaginable(start, limit, condition);
 
         if (null != page && CollectionUtils.isNotEmpty(page.getList())) {
@@ -140,12 +143,7 @@ public class ProjectCameraAOImpl implements IProjectCameraAO {
         String rtspUrl = wrapRtspUrl(projectCamera);
 
         String folderName = projectCamera.getCameraIp() + "." + projectCamera.getCameraIpPort();
-        String folderPath = HLS_STREAM_DIR + File.separator + folderName;
-
-        File file = new File(folderPath);
-        if (!file.exists()) {
-            file.mkdir();
-        }
+        String folderPath = HLS_STREAM_DIR + "/" + HLS_ENV + File.separator + folderName;
 
         String ffmpegCommand = wrapFfmpegCommand(rtspUrl, folderPath);
 
@@ -154,8 +152,19 @@ public class ProjectCameraAOImpl implements IProjectCameraAO {
             logger.info("ffmpeg命令：" + ffmpegCommand);
 
             try {
+
+                File file = new File(folderPath);
+                File m3u8File = new File(folderPath + File.separator + "test.m3u8");
+                if (m3u8File.exists()) {
+                    FileUtils.deleteDirectory(file);
+                }
+                file.mkdir();
+
                 Runtime.getRuntime().exec("touch " + folderPath + File.separator + "test.m3u8");
                 Process process = Runtime.getRuntime().exec(ffmpegCommand);
+
+                ffmpegCache.handleOutputStream(process);
+
                 ffmpegCache.storeFfmpegCommand(userId, PidUtil.getPid(process), ffmpegCommand);
             } catch (IOException e) {
                 logger.error("摄像头转码失败", e);
@@ -165,7 +174,7 @@ public class ProjectCameraAOImpl implements IProjectCameraAO {
             ffmpegCache.storeFfmpegCommand(userId, ffmpegCommand);
         }
 
-        return "http://" + HLS_IP + ":" + HLS_PORT + "/" + folderName + "/test.m3u8";
+        return HLS_HOST + "/" + HLS_ENV + "/" + folderName + "/test.m3u8";
     }
 
     @Override
@@ -217,6 +226,12 @@ public class ProjectCameraAOImpl implements IProjectCameraAO {
     @Override
     public Paginable<ProjectCamera> queryProjectCameraPage(int start, int limit,
             ProjectCamera condition) {
+
+        User briefUser = userBO.getBriefUser(condition.getUserId());
+        if (briefUser != null) {
+            condition.setProjectCode(briefUser.getOrganizationCode());
+        }
+
         return projectCameraBO.getPaginable(start, limit, condition);
     }
 

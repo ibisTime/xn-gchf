@@ -28,7 +28,7 @@
         AND camera_ip = #{cameraIp}
       </if>
       <if test="cameraName != null and cameraName != '' ">
-        AND camera_name = #{cameraName}
+          AND camera_name like "%"#{cameraName}"%"
       </if>
         <if test="projectCode != null and projectCode != '' ">
             AND project_code = #{projectCode}

@@ -14,6 +14,7 @@ public class XN631750Req {
     private String businessType;
 
     // 业务编号
+    @NotBlank(message = "业务编号不能为空")
     private String businessSysNo;
 
     // 银行支行名称

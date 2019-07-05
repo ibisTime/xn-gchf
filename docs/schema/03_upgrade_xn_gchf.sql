@@ -810,5 +810,7 @@ CREATE TABLE `thf_project_camera` (
   `update_datetime` datetime DEFAULT NULL COMMENT '更新时间',
   `remark` varchar(4) DEFAULT NULL COMMENT '备注',
   PRIMARY KEY (`code`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
+ALTER TABLE `thf_bank_card_info`
+CHANGE COLUMN `bank_link_number` `bank_link_number` VARCHAR(30) NULL COMMENT '银行联号' ;

@@ -1,5 +1,7 @@
 package com.cdkj.gchf.common;
 
+import java.io.IOException;
+import java.net.InetAddress;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -15,6 +17,21 @@ public class IpUtils {
         Matcher matcher =
                 pattern.matcher(ip);
         return matcher.find();
+    }
+
+    public static boolean checkIpReachable(String ip) {
+        boolean status = false;
+        try {
+            status = InetAddress.getByName(ip).isReachable(300);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        return status;
+    }
+
+    public static void main(String args[]) {
+        System.out.println(checkIpReachable("115.236.183.71"));
     }
 }
 

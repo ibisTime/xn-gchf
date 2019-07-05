@@ -1,15 +1,17 @@
 package com.cdkj.gchf.ao.impl;
 
+import com.cdkj.gchf.ao.IProjectWorkerAO;
+import com.cdkj.gchf.bo.*;
+import com.cdkj.gchf.bo.base.Paginable;
 import com.cdkj.gchf.common.DateUtil;
-import com.cdkj.gchf.common.StringUtil;
-import com.cdkj.gchf.domain.ProjectWorkerEntryExitHistory;
-import com.cdkj.gchf.enums.EEntryExitType;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
+import com.cdkj.gchf.common.ImportUtil;
+import com.cdkj.gchf.domain.*;
+import com.cdkj.gchf.dto.req.*;
+import com.cdkj.gchf.enums.*;
+import com.cdkj.gchf.exception.BizException;
+import com.cdkj.gchf.gov.AsyncQueueHolder;
+import com.cdkj.gchf.gov.GovConnecter;
+import com.google.gson.JsonObject;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;
@@ -17,56 +19,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.cdkj.gchf.ao.IProjectWorkerAO;
-import com.cdkj.gchf.dto.req.XN631693ReqData;
-import com.cdkj.gchf.bo.ICorpBasicinfoBO;
-import com.cdkj.gchf.bo.IEquipmentWorkerBO;
-import com.cdkj.gchf.bo.IOperateLogBO;
-import com.cdkj.gchf.bo.IPayRollBO;
-import com.cdkj.gchf.bo.IPayRollDetailBO;
-import com.cdkj.gchf.bo.IProjectBO;
-import com.cdkj.gchf.bo.IProjectConfigBO;
-import com.cdkj.gchf.bo.IProjectWorkerBO;
-import com.cdkj.gchf.bo.IProjectWorkerEntryExitHistoryBO;
-import com.cdkj.gchf.bo.ITeamMasterBO;
-import com.cdkj.gchf.bo.IUserBO;
-import com.cdkj.gchf.bo.IWorkerAttendanceBO;
-import com.cdkj.gchf.bo.IWorkerContractBO;
-import com.cdkj.gchf.bo.IWorkerInfoBO;
-import com.cdkj.gchf.bo.base.Paginable;
-import com.cdkj.gchf.common.ImportUtil;
-import com.cdkj.gchf.domain.CorpBasicinfo;
-import com.cdkj.gchf.domain.EquipmentWorker;
-import com.cdkj.gchf.domain.PayRoll;
-import com.cdkj.gchf.domain.PayRollDetail;
-import com.cdkj.gchf.domain.Project;
-import com.cdkj.gchf.domain.ProjectConfig;
-import com.cdkj.gchf.domain.ProjectWorker;
-import com.cdkj.gchf.domain.TeamMaster;
-import com.cdkj.gchf.domain.User;
-import com.cdkj.gchf.domain.WorkerInfo;
-import com.cdkj.gchf.dto.req.XN631690Req;
-import com.cdkj.gchf.dto.req.XN631692Req;
-import com.cdkj.gchf.dto.req.XN631693Req;
-import com.cdkj.gchf.dto.req.XN631694Req;
-import com.cdkj.gchf.dto.req.XN631695Req;
-import com.cdkj.gchf.dto.req.XN631696Req;
-import com.cdkj.gchf.dto.req.XN631911Req;
-import com.cdkj.gchf.dto.req.XN631912Req;
-import com.cdkj.gchf.dto.req.XN631913Req;
-import com.cdkj.gchf.enums.EDeleteStatus;
-import com.cdkj.gchf.enums.EIsNotType;
-import com.cdkj.gchf.enums.EOperateLogOperate;
-import com.cdkj.gchf.enums.EOperateLogRefType;
-import com.cdkj.gchf.enums.EPoliticsType;
-import com.cdkj.gchf.enums.EProjectWorkerUploadStatus;
-import com.cdkj.gchf.enums.EUserKind;
-import com.cdkj.gchf.enums.EWorkerRoleType;
-import com.cdkj.gchf.enums.EWorkerType;
-import com.cdkj.gchf.exception.BizException;
-import com.cdkj.gchf.gov.AsyncQueueHolder;
-import com.cdkj.gchf.gov.GovConnecter;
-import com.google.gson.JsonObject;
+import java.util.*;
 
 @Service
 public class ProjectWorkerAOImpl implements IProjectWorkerAO {
@@ -595,9 +548,13 @@ public class ProjectWorkerAOImpl implements IProjectWorkerAO {
         for (int i = 0; i < maps.size(); i++) {
             HashMap map = (HashMap) maps.get(i);
             String work_type = (String) map.get("work_type");
-            String workerTypeCode = EWorkerType.getWorkerType(work_type)
-                    .getStatus();
-            map.put("work_type", workerTypeCode);
+
+            if (StringUtils.isNotBlank(work_type)) {
+                String workerTypeCode = EWorkerType.getWorkerType(work_type)
+                        .getStatus();
+                map.put("work_type", workerTypeCode);
+            }
+
         }
         return maps;
     }

@@ -2,6 +2,7 @@ package com.cdkj.gchf.api.impl;
 
 import com.cdkj.gchf.ao.IWorkerAttendanceAO;
 import com.cdkj.gchf.api.AProcessor;
+import com.cdkj.gchf.common.DateUtil;
 import com.cdkj.gchf.common.JsonUtil;
 import com.cdkj.gchf.core.ObjValidater;
 import com.cdkj.gchf.core.StringValidater;
@@ -34,6 +35,9 @@ public class XN631725 extends AProcessor {
         BeanUtils.copyProperties(req, condition);
 
         condition.setDeleteStatus(EDeleteStatus.NORMAL.getCode());
+
+        condition.setDateStartDatetime(DateUtil.getStartDatetime(req.getDateStartDatetime()));
+        condition.setDateEndDatetime(DateUtil.getEndDatetime(req.getDateEndDatetime()));
 
         int start = StringValidater.toInteger(req.getStart());
         int limit = StringValidater.toInteger(req.getLimit());

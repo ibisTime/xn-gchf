@@ -45,9 +45,9 @@ public class PropertiesUtil {
 
         public static String ZQZN_APP_KEY = props.getProperty("ZQZN_APP_KEY");
 
-        public static String HLS_IP = props.getProperty("HLS_IP");
+        public static String HLS_ENV = props.getProperty("HLS_ENV");
 
-        public static String HLS_PORT = props.getProperty("HLS_PORT");
+        public static String HLS_HOST = props.getProperty("HLS_HOST");
 
         public static String OCR_APP_SECRET = props
             .getProperty("OCR_APP_SECRET");

@@ -46,7 +46,7 @@ public interface IProjectCameraAO {
      *
      * @param userId
      */
-    void releaseHlsResource(String userId);
+    void releaseHlsResource(String userId, String uuid);
 
     public Paginable<ProjectCamera> queryProjectCameraPage(int start, int limit,
             ProjectCamera condition);

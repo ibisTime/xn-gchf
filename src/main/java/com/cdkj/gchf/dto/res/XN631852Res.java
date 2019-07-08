@@ -10,6 +10,8 @@ public class XN631852Res {
 
     private String rpstpStreamAddress;
 
+    private String uuid;
+
     public String getCameraName() {
         return cameraName;
     }
@@ -26,11 +28,17 @@ public class XN631852Res {
         this.rpstpStreamAddress = rpstpStreamAddress;
     }
 
-    public XN631852Res(String cameraName, String rpstpStreamAddress) {
+    public String getUuid() {
+        return uuid;
+    }
+
+    public void setUuid(String uuid) {
+        this.uuid = uuid;
+    }
+
+    public XN631852Res(String cameraName, String rpstpStreamAddress, String uuid) {
         this.cameraName = cameraName;
         this.rpstpStreamAddress = rpstpStreamAddress;
+        this.uuid = uuid;
     }
 }
-
-    
-    

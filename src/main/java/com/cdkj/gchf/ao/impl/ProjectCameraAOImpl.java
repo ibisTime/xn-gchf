@@ -8,7 +8,6 @@ import com.cdkj.gchf.bo.base.Page;
 import com.cdkj.gchf.bo.base.Paginable;
 import com.cdkj.gchf.common.FfmpegCache;
 import com.cdkj.gchf.common.IpUtils;
-import com.cdkj.gchf.common.PidUtil;
 import com.cdkj.gchf.common.PropertiesUtil;
 import com.cdkj.gchf.domain.Project;
 import com.cdkj.gchf.domain.ProjectCamera;
@@ -31,6 +30,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 @Service
 public class ProjectCameraAOImpl implements IProjectCameraAO {
@@ -120,8 +120,10 @@ public class ProjectCameraAOImpl implements IProjectCameraAO {
 
             List<XN631852Res> res = new ArrayList<>();
 
+            String uuid = UUID.randomUUID().toString().replaceAll("-", "");
+
             for (ProjectCamera projectCamera : projectCameras) {
-                res.add(new XN631852Res(projectCamera.getCameraName(), getHlsStream(briefUser.getUserId(), projectCamera)));
+                res.add(new XN631852Res(projectCamera.getCameraName(), getHlsStream(briefUser.getUserId(), uuid, projectCamera), uuid));
             }
 
             resPaginable.setList(res);
@@ -134,22 +136,20 @@ public class ProjectCameraAOImpl implements IProjectCameraAO {
     }
 
     @Override
-    public void releaseHlsResource(String userId) {
-        ffmpegCache.releaseFfmpegResource(userId);
+    public void releaseHlsResource(String userId, String uuid) {
+        ffmpegCache.releaseFfmpegResource(userId, uuid);
     }
 
-    private String getHlsStream(String userId, ProjectCamera projectCamera) {
+    private String getHlsStream(String userId, String uuid, ProjectCamera projectCamera) {
 
         String rtspUrl = wrapRtspUrl(projectCamera);
 
         String folderName = projectCamera.getCameraIp() + "." + projectCamera.getCameraIpPort();
-        String folderPath = HLS_STREAM_DIR + "/" + HLS_ENV + File.separator + folderName;
+        String folderPath = HLS_STREAM_DIR + File.separator + HLS_ENV + File.separator + folderName;
 
         String ffmpegCommand = wrapFfmpegCommand(rtspUrl, folderPath);
 
         if (null == ffmpegCache.checkFfmpegCommand(ffmpegCommand)) {
-
-            logger.info("ffmpeg命令：" + ffmpegCommand);
 
             try {
 
@@ -165,13 +165,16 @@ public class ProjectCameraAOImpl implements IProjectCameraAO {
 
                 ffmpegCache.handleOutputStream(process);
 
-                ffmpegCache.storeFfmpegCommand(userId, PidUtil.getPid(process), ffmpegCommand);
+                ffmpegCache.storeFfmpegCommand(userId, uuid, process, ffmpegCommand);
+
+                logger.info("ffmpeg命令：" + ffmpegCommand);
+
             } catch (IOException e) {
                 logger.error("摄像头转码失败", e);
             }
 
         } else {
-            ffmpegCache.storeFfmpegCommand(userId, ffmpegCommand);
+            ffmpegCache.storeFfmpegCommand(userId, uuid, ffmpegCommand);
         }
 
         return HLS_HOST + "/" + HLS_ENV + "/" + folderName + "/test.m3u8";

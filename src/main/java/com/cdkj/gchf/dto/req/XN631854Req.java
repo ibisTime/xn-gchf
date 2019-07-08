@@ -11,6 +11,16 @@ public class XN631854Req {
     @NotBlank(message = "用户id不能为空")
     private String userId;
 
+    private String uuid;
+
+    public String getUuid() {
+        return uuid;
+    }
+
+    public void setUuid(String uuid) {
+        this.uuid = uuid;
+    }
+
     public String getUserId() {
         return userId;
     }

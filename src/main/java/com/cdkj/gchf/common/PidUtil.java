@@ -9,7 +9,7 @@ import java.lang.reflect.Field;
  * @since : 2019-07-03 11:11
  */
 public class PidUtil {
-    public static long getPid(Process process){
+    public static Long getPid(Process process) {
         long pid = -1;
         Field field = null;
         if (Platform.isWindows()) {

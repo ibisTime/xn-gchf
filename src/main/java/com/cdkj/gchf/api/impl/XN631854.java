@@ -22,7 +22,7 @@ public class XN631854 extends AProcessor {
 
     @Override
     public Object doBusiness() throws BizException {
-         projectCameraAO.releaseHlsResource(req.getUserId());
+        projectCameraAO.releaseHlsResource(req.getUserId(), req.getUuid());
          return new BooleanRes(true);
     }
 

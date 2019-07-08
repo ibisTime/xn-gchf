@@ -42,39 +42,36 @@ public class FfmpegCache {
         return ffmpegInfo;
     }
 
-    public void storeFfmpegCommand(String userId, Long pid, String command){
-        ffmpegInfoSet.add(new FfmpegInfo(userId, pid, command));
+    public void storeFfmpegCommand(String userId, String uuid, Process process, String command) {
+        ffmpegInfoSet.add(new FfmpegInfo(userId, uuid, process, command));
     }
 
-    public void storeFfmpegCommand(String userId, String command){
+    public void storeFfmpegCommand(String userId, String uuid, String command) {
         for(FfmpegInfo ffmpegInfo : ffmpegInfoSet){
             if(ffmpegInfo.getCommand().equals(command)){
-                ffmpegInfo.getUserIdSet().add(userId);
+                ffmpegInfo.getUserSet().add(new HlsUser(userId, uuid));
             }
         }
     }
 
-    public void releaseFfmpegResource(String userId){
+    public void releaseFfmpegResource(String userId, String uuid) {
         if(CollectionUtils.isEmpty(ffmpegInfoSet)){
             return;
         }
 
         Iterator<FfmpegInfo> infos = ffmpegInfoSet.iterator();
+        HlsUser hlsUser = new HlsUser(userId, uuid);
 
         while(infos.hasNext()){
             FfmpegInfo ffmpegInfo = infos.next();
 
-            if(ffmpegInfo.getUserIdSet().contains(userId)){
-                ffmpegInfo.getUserIdSet().remove(userId);
+            if (ffmpegInfo.getUserSet().contains(hlsUser)) {
+                ffmpegInfo.getUserSet().remove(hlsUser);
 
-                if(CollectionUtils.isEmpty(ffmpegInfo.getUserIdSet())){
-                    try {
-                        infos.remove();
-                        Runtime.getRuntime().exec("kill -9 " + ffmpegInfo.getPid());
-                        logger.info("释放ffmpeg资源:{"+ffmpegInfo.getPid()+"}成功");
-                    } catch (IOException e) {
-                        logger.error("释放ffmpeg资源:{0}失败", ffmpegInfo.getPid(), e);
-                    }
+                if (CollectionUtils.isEmpty(ffmpegInfo.getUserSet())) {
+                    infos.remove();
+                    ffmpegInfo.getProcess().destroy();
+                    logger.info("释放ffmpeg资源:{" + ffmpegInfo.getPid() + "}成功");
                 }
             }
         }
@@ -137,27 +134,16 @@ public class FfmpegCache {
 class FfmpegInfo{
 
     //获取流的用户
-    private Set<String> userIdSet;
+    private Set<HlsUser> userSet;
+
+    //进程
+    private Process process;
 
     //进程PID
     private Long pid;
 
     //命令行
     private String command;
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        FfmpegInfo that = (FfmpegInfo) o;
-        return Objects.equals(pid, that.pid) &&
-                Objects.equals(command, that.command);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(pid, command);
-    }
 
     Long getPid() {
         return pid;
@@ -175,42 +161,98 @@ class FfmpegInfo{
         this.command = command;
     }
 
-    Set<String> getUserIdSet() {
-        return userIdSet;
+    Set<HlsUser> getUserSet() {
+        return userSet;
     }
 
-    public void setUserIdSet(Set<String> userIdSet) {
-        this.userIdSet = userIdSet;
+    public void setUserSet(Set<HlsUser> userSet) {
+        this.userSet = userSet;
     }
 
-    FfmpegInfo(String userId, Long pid, String command) {
-        this.userIdSet = new HashSet<>();
-        this.userIdSet.add(userId);
-        this.pid = pid;
+    Process getProcess() {
+        return process;
+    }
+
+    public void setProcess(Process process) {
+        this.process = process;
+    }
+
+    FfmpegInfo(String userId, String uuid, Process process, String command) {
+        this.userSet = new HashSet<>();
+        this.userSet.add(new HlsUser(userId, uuid));
+        this.process = process;
+        this.pid = PidUtil.getPid(process);
         this.command = command;
+    }
+}
+
+class HlsUser {
+
+    //用户编号
+    private String userId;
+
+    //UUID
+    private String uuid;
+
+    public HlsUser(String userId, String uuid) {
+        this.userId = userId;
+        this.uuid = uuid;
+    }
+
+    public String getUserId() {
+        return userId;
+    }
+
+    public void setUserId(String userId) {
+        this.userId = userId;
+    }
+
+    public String getUuid() {
+        return uuid;
+    }
+
+    public void setUuid(String uuid) {
+        this.uuid = uuid;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        HlsUser hlsUser = (HlsUser) o;
+        return Objects.equals(userId, hlsUser.userId) &&
+                Objects.equals(uuid, hlsUser.uuid);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(userId, uuid);
     }
 }
 
 class PrintStream extends Thread {
     java.io.InputStream __is = null;
 
-    public PrintStream(java.io.InputStream is) {
+    PrintStream(java.io.InputStream is) {
         __is = is;
     }
 
     @Override
     public void run() {
         try {
-            while (this != null) {
-                int _ch = __is.read();
-                if (_ch != -1) {
-                    System.out.print((char) _ch);
-                } else {
-                    break;
-                }
+            BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(__is));
+            String line;
+            while ((line = bufferedReader.readLine()) != null) {
+//                System.out.print(line + "\n");
             }
         } catch (Exception e) {
             e.printStackTrace();
+        } finally {
+            try {
+                __is.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
     }
 }

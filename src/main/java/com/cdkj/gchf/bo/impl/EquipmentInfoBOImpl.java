@@ -131,20 +131,25 @@ public class EquipmentInfoBOImpl extends PaginableBOImpl<EquipmentInfo>
     public EquipmentInfo refreshEquipment(String deviceKey, String projectCode,
             DeviceInfo info) {
         EquipmentInfo equipmentInfoByKey = getEquipmentInfoByKey(deviceKey);
-        // 更新设备信息
-        equipmentInfoByKey.setCreateTime(new Date(info.getCreateTime()));
-        equipmentInfoByKey.setNeedUpgrade(info.getNeedUpgrade() ? 1 : 0);
-        equipmentInfoByKey.setNeedUpgradeApp(info.getNeedUpgradeApp() ? 1 : 0);
-        equipmentInfoByKey.setRegNum(info.getRegNum());
-        equipmentInfoByKey.setSceneGuid(info.getSceneGuid());
-        equipmentInfoByKey.setSystemVersionNo(info.getSystemVersionNo());
-        equipmentInfoByKey.setState(info.getState());
-        equipmentInfoByKey.setTagEncreapt(info.getTag());
-        equipmentInfoByKey.setStatus(info.getStatus());
-        equipmentInfoByKey.setcId(info.getCid());
-        equipmentInfoByKey.setClientId(info.getClientId());
-        equipmentInfoByKey.setExpired(info.getExpired() ? 1 : 0);
-        EquipmentInfoDAO.updateEquipment(equipmentInfoByKey);
+
+        if (null != info) {
+            // 更新设备信息
+            equipmentInfoByKey.setCreateTime(new Date(info.getCreateTime()));
+            equipmentInfoByKey.setNeedUpgrade(info.getNeedUpgrade() ? 1 : 0);
+            equipmentInfoByKey
+                .setNeedUpgradeApp(info.getNeedUpgradeApp() ? 1 : 0);
+            equipmentInfoByKey.setRegNum(info.getRegNum());
+            equipmentInfoByKey.setSceneGuid(info.getSceneGuid());
+            equipmentInfoByKey.setSystemVersionNo(info.getSystemVersionNo());
+            equipmentInfoByKey.setState(info.getState());
+            equipmentInfoByKey.setTagEncreapt(info.getTag());
+            equipmentInfoByKey.setStatus(info.getStatus());
+            equipmentInfoByKey.setcId(info.getCid());
+            equipmentInfoByKey.setClientId(info.getClientId());
+            equipmentInfoByKey.setExpired(info.getExpired() ? 1 : 0);
+            EquipmentInfoDAO.updateEquipment(equipmentInfoByKey);
+        }
+
         return equipmentInfoByKey;
     }
 

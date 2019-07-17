@@ -56,9 +56,6 @@ public class ScheduledUploadAttendance {
         List<Project> projects = projectBO.queryProjectList(new Project());
 
         for (Project project : projects) {
-            if (!"P201904241633378691561".equals(project.getCode())) {
-                continue;
-            }
 
             // 项目人员
             ProjectWorker condition = new ProjectWorker();

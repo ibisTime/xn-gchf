@@ -177,7 +177,9 @@
     </if>
 
     ,is_joined = #{isJoined}
-    ,cell_phone = #{cellPhone}
+    <if test="cellPhone != null">
+    	,cell_phone = #{cellPhone}
+    </if>
     <if test="joinedTime != null">
       ,joined_time = #{joinedTime}
     </if>

@@ -58,6 +58,12 @@ public interface DeviceWorkUrl {
     /**
      *人员清空url （清空人员和照片）
      */
-    String CLEAR_WORKERS_URL = AppConfig.getBaseUrl() + "/Api/Device/EquipmentEP";
+    String CLEAR_WORKERS_URL = AppConfig.getBaseUrl()
+            + "/Api/Device/EquipmentEP";
 
+    /**
+     * 照片查询
+     */
+    String PersonnelPhotoQuery = AppConfig.getBaseUrl()
+            + "/Api/Photo/PersonnelPhotoQuery";
 }

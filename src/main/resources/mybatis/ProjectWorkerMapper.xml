@@ -398,7 +398,9 @@
       thf_project_worker
     SET worker_name  =
       #{workerName}
-      ,worker_mobile = #{workerMobile}
+      <if test="workerMobile != null">
+      	,worker_mobile = #{workerMobile}
+      </if>
       ,idcard_type   =
       #{idcardType}
       ,idcard_number = #{idcardNumber}
@@ -646,9 +648,9 @@
         AND thf_worker_attendance.delete_status = 0
     ) d ON 1 = 1
            LEFT JOIN (
-      SELECT sum(actual_amount) AS 'totalActualPayRoll'
+      SELECT ifnull(sum(actual_amount),0) AS 'totalActualPayRoll'
       FROM thf_pay_roll_detail a
-             LEFT JOIN thf_pay_roll b ON a.pay_roll_code = b.code
+             JOIN thf_pay_roll b ON a.pay_roll_code = b.code
         AND b.project_code = (SELECT organization_code FROM thf_user WHERE user_id = #{0})
       WHERE a.delete_status != '1'
     ) k ON 1 = 1

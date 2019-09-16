@@ -10,6 +10,7 @@ public interface DeviceUrl {
      *更新设备信息Url
      */
     String UPDATE_URL = AppConfig.getBaseUrl() + "/Api/Device/EquipmentUpdate";
+
     /**
      *查询设备信息Url
      */
@@ -23,7 +24,8 @@ public interface DeviceUrl {
     /**
      * 删除设备信息
      */
-    String DEL_DEVICE_URL = AppConfig.getBaseUrl() + "/Api/Device/DeviceDeletion";
+    String DEL_DEVICE_URL = AppConfig.getBaseUrl()
+            + "/Api/Device/DeviceDeletion";
 
     /**
      *设备销权人员Url
@@ -33,11 +35,18 @@ public interface DeviceUrl {
     /**
      *设备禁用Url
      */
-    String BAN_DEVICE_URL = AppConfig.getBaseUrl() + "/Api/Device/DeviceDisable";
+    String BAN_DEVICE_URL = AppConfig.getBaseUrl()
+            + "/Api/Device/DeviceDisable";
 
     /**
      *设备启动Url
      */
     String ENABLE_DEVICE_URL = AppConfig.getBaseUrl()
             + "/Api/Device/DeviceEnabled";
+
+    /**
+     * 设备授权人员查询接口
+     */
+    String DeviceAPQ = AppConfig.getBaseUrl() + "/Api/Device/DeviceAPQ";
+
 }

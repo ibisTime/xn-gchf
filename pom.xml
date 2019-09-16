@@ -516,8 +516,18 @@
 			<artifactId>javax-websocket-client-impl</artifactId>
 			<version>9.4.12.v20180830</version>
 		</dependency>
+    <dependency>
+      <groupId>org.projectlombok</groupId>
+      <artifactId>lombok</artifactId>
+      <version>1.16.22</version>
+    </dependency>
+    <dependency>
+      <groupId>net.java.dev.jna</groupId>
+      <artifactId>jna</artifactId>
+      <version>4.1.0</version>
+    </dependency>
 
-	</dependencies>
+  </dependencies>
 	<!-- 解决每次更新maven自动更改jdk1.5办法 -->
 	<build>
 		<finalName>xn-gchf</finalName>

@@ -1,11 +1,6 @@
 package com.cdkj.gchf.humanfaces;
 
-import java.util.List;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.scheduling.annotation.Scheduled;
-import org.springframework.stereotype.Component;
-
+import com.cdkj.gchf.ao.IWorkerAttendanceAO;
 import com.cdkj.gchf.bo.IEquipmentInfoBO;
 import com.cdkj.gchf.bo.IProjectBO;
 import com.cdkj.gchf.bo.IProjectConfigBO;
@@ -18,6 +13,11 @@ import com.cdkj.gchf.domain.Project;
 import com.cdkj.gchf.domain.ProjectWorker;
 import com.cdkj.gchf.domain.WorkerEntryExitRecord;
 import com.cdkj.gchf.enums.EProjectWorkerUploadStatus;
+import java.util.ArrayList;
+import java.util.List;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Scheduled;
+import org.springframework.stereotype.Component;
 
 /**
  * 
@@ -50,8 +50,11 @@ public class ScheduledUploadAttendance {
     @Autowired
     private IProjectBO projectBO;
 
-    @Scheduled(cron = "0 0 18 * * ?")
-    public void scheduleUploadAttendance() {
+    @Autowired
+    private IWorkerAttendanceAO workerAttendanceAO;
+
+    @Scheduled(cron = "0 0 12 * * ?")
+    public void scheduleUploadMorningAttendance() {
 
         List<Project> projects = projectBO.queryProjectList(new Project());
 
@@ -71,28 +74,62 @@ public class ScheduledUploadAttendance {
                     .getMorningEntryExitRecord(project.getCode(),
                         projectWorker.getCode());
 
-                WorkerEntryExitRecord afternoonEntryExitRecord = workerEntryExitRecordBO
-                    .getAfternoonEntryExitRecord(project.getCode(),
-                        projectWorker.getCode());
-                if (morningEntryExitRecord == null
-                        || afternoonEntryExitRecord == null) {
+                if (morningEntryExitRecord == null) {
                     continue;
                 }
                 EquipmentInfo morningEquipmentInfo = equipmentInfoBO
                     .getEquipmentInfoByKey(
                         morningEntryExitRecord.getDeviceKey());
-                EquipmentInfo afternoonEquipmentInfo = equipmentInfoBO
-                    .getEquipmentInfoByKey(
-                        afternoonEntryExitRecord.getDeviceKey());
 
-                workerAttendanceBO.addWorkerAttendace(morningEntryExitRecord,
+                String code = workerAttendanceBO.addWorkerAttendace(morningEntryExitRecord,
                     morningEquipmentInfo, morningEntryExitRecord.getDate(),
                     morningEntryExitRecord.getImage(),
                     morningEntryExitRecord.getAttendType());
-                workerAttendanceBO.addWorkerAttendace(afternoonEntryExitRecord,
-                    afternoonEquipmentInfo, afternoonEntryExitRecord.getDate(),
-                    afternoonEntryExitRecord.getImage(),
-                    afternoonEntryExitRecord.getAttendType());
+
+                List<String> codeList = new ArrayList<>();
+                codeList.add(code);
+                workerAttendanceAO.uploadWorkerAttendanceList("USYS201800000000001", codeList);
+            }
+
+        }
+
+    }
+
+    @Scheduled(cron = "0 0 19 * * ?")
+    public void scheduleUploadNoonAttendance() {
+
+        List<Project> projects = projectBO.queryProjectList(new Project());
+
+        for (Project project : projects) {
+
+            // 项目人员
+            ProjectWorker condition = new ProjectWorker();
+            condition.setProjectCode(project.getCode());
+            condition.setUploadStatus(
+                    EProjectWorkerUploadStatus.UPLOAD_UPDATE.getCode());
+            List<ProjectWorker> queryProjectWorkerList = projectWorkerBO
+                    .queryProjectWorkerList(condition);
+
+            for (ProjectWorker projectWorker : queryProjectWorkerList) {
+
+                WorkerEntryExitRecord afternoonEntryExitRecord = workerEntryExitRecordBO
+                        .getAfternoonEntryExitRecord(project.getCode(),
+                                projectWorker.getCode());
+                if (afternoonEntryExitRecord == null) {
+                    continue;
+                }
+                EquipmentInfo afternoonEquipmentInfo = equipmentInfoBO
+                        .getEquipmentInfoByKey(
+                                afternoonEntryExitRecord.getDeviceKey());
+
+                String code = workerAttendanceBO.addWorkerAttendace(afternoonEntryExitRecord,
+                        afternoonEquipmentInfo, afternoonEntryExitRecord.getDate(),
+                        afternoonEntryExitRecord.getImage(),
+                        afternoonEntryExitRecord.getAttendType());
+
+                List<String> codeList = new ArrayList<>();
+                codeList.add(code);
+                workerAttendanceAO.uploadWorkerAttendanceList("USYS201800000000001", codeList);
             }
 
         }

@@ -1,16 +1,5 @@
 package com.cdkj.gchf.bo.impl;
 
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-import org.apache.commons.lang3.StringUtils;
-import org.springframework.beans.BeanUtils;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
-
 import com.alibaba.fastjson.JSONObject;
 import com.cdkj.gchf.bo.IEquipmentInfoBO;
 import com.cdkj.gchf.bo.IOperateLogBO;
@@ -51,6 +40,15 @@ import com.cdkj.gchf.gov.GovUtil;
 import com.cdkj.gchf.gov.SerialHandler;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.BeanUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 @Component
 public class WorkerAttendanceBOImpl extends PaginableBOImpl<WorkerAttendance>

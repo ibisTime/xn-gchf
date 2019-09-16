@@ -1,8 +1,5 @@
 package com.cdkj.gchf.bo;
 
-import java.util.Date;
-import java.util.List;
-
 import com.cdkj.gchf.bo.base.IPaginableBO;
 import com.cdkj.gchf.bo.base.Paginable;
 import com.cdkj.gchf.domain.EquipmentInfo;
@@ -18,6 +15,8 @@ import com.cdkj.gchf.dto.req.XN631713ReqData;
 import com.cdkj.gchf.dto.req.XN631918Req;
 import com.cdkj.gchf.dto.req.XN631919Req;
 import com.google.gson.JsonObject;
+import java.util.Date;
+import java.util.List;
 
 public interface IWorkerAttendanceBO extends IPaginableBO<WorkerAttendance> {
 

@@ -4,11 +4,10 @@ import com.cdkj.gchf.humanfaces.res.DeviceQuery;
 import com.cdkj.gchf.humanfaces.res.DeviceRes;
 import com.cdkj.gchf.humanfaces.res.ResultMsg;
 import com.google.gson.Gson;
-import org.apache.commons.lang3.StringUtils;
-import org.springframework.stereotype.Component;
-
 import java.util.HashMap;
 import java.util.Map;
+import org.apache.commons.lang3.StringUtils;
+import org.springframework.stereotype.Component;
 
 /**
  * @ClassName: Device
@@ -79,8 +78,7 @@ public class Device {
         req.put("deviceKey", deviceKey);
         String doRequest = HttpRequest.doRequest(DeviceUrl.QUERY_URL, "GET",
                 req);
-        return AppConfig.gson.fromJson(doRequest,
-                DeviceQuery.class);
+        return AppConfig.gson.fromJson(doRequest, DeviceQuery.class);
 
     }
 
@@ -98,8 +96,7 @@ public class Device {
         req.put("deviceKey", deviceKey);
         String doRequest = HttpRequest.doRequest(DeviceUrl.UPDATE_CLOUD_URL,
                 "POST", req);
-        return AppConfig.gson.fromJson(doRequest,
-                ResultMsg.class);
+        return AppConfig.gson.fromJson(doRequest, ResultMsg.class);
     }
 
     /**
@@ -114,8 +111,7 @@ public class Device {
         req.put("appid", AppConfig.getAppid());
         req.put("token", token);
         req.put("deviceKey", deviceKey);
-        return HttpRequest.doRequest(DeviceUrl.DEL_DEVICE_URL, "POST",
-                req);
+        return HttpRequest.doRequest(DeviceUrl.DEL_DEVICE_URL, "POST", req);
     }
 
     /**
@@ -134,8 +130,7 @@ public class Device {
         if (StringUtils.isNotEmpty(personGuid)) {
             req.put("deviceKey", deviceKey);
         }
-        return HttpRequest.doRequest(DeviceUrl.TRANCATE_URL, "POST",
-                req);
+        return HttpRequest.doRequest(DeviceUrl.TRANCATE_URL, "POST", req);
     }
 
     ;
@@ -152,10 +147,9 @@ public class Device {
         req.put("appid", AppConfig.getAppid());
         req.put("token", token);
         req.put("deviceKey", deviceKey);
-        String doRequest = HttpRequest.doRequest(DeviceUrl.BAN_DEVICE_URL, "POST",
-                req);
-        return AppConfig.gson.fromJson(doRequest,
-                ResultMsg.class);
+        String doRequest = HttpRequest.doRequest(DeviceUrl.BAN_DEVICE_URL,
+                "POST", req);
+        return AppConfig.gson.fromJson(doRequest, ResultMsg.class);
     }
 
     public ResultMsg ennableDevice(String deviceKey) {
@@ -166,27 +160,60 @@ public class Device {
         req.put("deviceKey", deviceKey);
         String doRequest = HttpRequest.doRequest(DeviceUrl.ENABLE_DEVICE_URL,
                 "POST", req);
-        return AppConfig.gson.fromJson(doRequest,
-                ResultMsg.class);
+        return AppConfig.gson.fromJson(doRequest, ResultMsg.class);
     }
 
-    ;
+    /**
+     * 设备授权人员查询
+     *
+     * @create: Jul 23, 2019 11:15:58 AM silver
+     * @history:
+     */
+    public ResultMsg deviceWorkerQuery(String deviceKey) {
+        String token = AppConfig.getToken();
+        Map<String, String> req = new HashMap<>();
+        req.put("appid", AppConfig.getAppid());
+        req.put("token", token);
+        req.put("deviceKey", deviceKey);
+        String doRequest = HttpRequest.doRequest(DeviceUrl.DeviceAPQ, "GET",
+                req);
+        return AppConfig.gson.fromJson(doRequest, ResultMsg.class);
+    }
 
 //    @Test
     public void test1() {
         // 添加设备
-//         DeviceRes deviceCreation = deviceCreation("84E0F420576700B0", "test",
-//         null);
-//         System.out.println(deviceCreation);
+        // DeviceRes deviceCreation = deviceCreation("84E0F420576700B0", "test",
+        // null);
+        // System.out.println(deviceCreation);
 
         // 修改设备
         // DeviceRes equipmentUpdate = EquipmentUpdate("84E0F420576700B0",
         // "!@#$%%^&**()", null);
         // System.out.println(equipmentUpdate.toString());
 
+        delCloudDevice("84E0F420576700B0");
+
         // 查询设备
-//         DeviceQuery deviceQuery = deviceQuery("84E0F420576700B0");
-//        System.out.println("deviceQuery = " + deviceQuery);
+        DeviceQuery deviceQuery = deviceQuery("84E0F420576700B0");
+        System.out.println("deviceQuery1 = " + deviceQuery.getData());
+        //
+        // deviceQuery = deviceQuery("84E0F421871706B2");
+        // System.out.println("deviceQuery2 = " + deviceQuery);
+        //
+        // deviceQuery = deviceQuery("84E0F421356E06B2");
+        // System.out.println("deviceQuery3 = " + deviceQuery);
+        //
+        // deviceQuery = deviceQuery("84E0F42155D306B2");
+        // System.out.println("deviceQuery4 = " + deviceQuery);
+
+        // 查询设备人员
+        // ResultMsg resultMsg = deviceWorkerQuery("84E0F42154B606B2");
+        // deviceWorkerQuery("84E0F421871706B2");
+        // deviceWorkerQuery("84E0F421356E06B2");
+        // deviceWorkerQuery("84E0F42155D306B2");
+        // System.out.println(resultMsg.getData());
+
         // DeviceQuery deviceQuery2 = deviceQuery("84E0F420576700B0");
         // System.out.println(deviceQuery.toString());
 
@@ -205,8 +232,8 @@ public class Device {
         // String test3333 = test3333("84E0F420576700B0");
         // System.out.println(test3333);
 
-        String s = delCloudDevice("84e0f421584206b2");
-        System.out.println("s = " + s);
+        // String s = delCloudDevice("84E0F42154B606B2");
+        // System.out.println("s = " + s);
 
     }
 

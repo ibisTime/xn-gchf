@@ -1,10 +1,5 @@
 package com.cdkj.gchf.ao;
 
-import java.util.Date;
-import java.util.List;
-
-import org.springframework.stereotype.Component;
-
 import com.cdkj.gchf.bo.base.Paginable;
 import com.cdkj.gchf.domain.WorkerAttendance;
 import com.cdkj.gchf.dto.req.XN631710Req;
@@ -12,11 +7,12 @@ import com.cdkj.gchf.dto.req.XN631712Req;
 import com.cdkj.gchf.dto.req.XN631713Req;
 import com.cdkj.gchf.dto.req.XN631918Req;
 import com.cdkj.gchf.dto.req.XN631919Req;
+import java.util.Date;
+import java.util.List;
 
 /**
  * @author old3
  */
-@Component
 public interface IWorkerAttendanceAO {
     String DEFAULT_ORDER_COLUMN = "code";
 

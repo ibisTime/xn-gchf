@@ -6,6 +6,7 @@ import java.util.Map;
 
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.junit.Test;
 import org.springframework.stereotype.Component;
 
 import com.cdkj.gchf.domain.EquipmentInfo;
@@ -250,7 +251,26 @@ public class DeviceWorker {
             req);
     }
 
-    // @Test
+    /**
+     * 照片查询
+     * @param guid
+     * @return 
+     * @create: Jul 23, 2019 11:48:39 AM silver
+     * @history:
+     */
+    public String PersonnelPhotoQuery(String guid) {
+        String token = AppConfig.getToken();
+        Map<String, String> req = new HashMap<>();
+        req.put("appid", AppConfig.getAppid());
+        req.put("token", token);
+        req.put("guid", guid);
+        String doRequest = HttpRequest
+            .doRequest(DeviceWorkUrl.PersonnelPhotoQuery, "GET", req);
+        System.out.println(doRequest);
+        return doRequest;
+    }
+
+    @Test
     public void test22() {
         // 人员录入
         // String device = cloudWorkerAdd("84E0F420576700B0", "老三", "002532123",
@@ -267,7 +287,7 @@ public class DeviceWorker {
 
         // 人员查询
         // String cloudWorkerQuery = cloudWorkerQuery(
-        // "9CB3F6AF244D499BA0EE6786CAC5AA44");
+        // "756013584F8F4D0DAA3585C9F5A0993D");
         // System.out.println(cloudWorkerQuery);
         // JSONObject parse = JSONObject.parseObject(cloudWorkerQuery);
         // System.out.println(parse.getString("code")
@@ -309,6 +329,11 @@ public class DeviceWorker {
 
         // workerAuthorizationQuery("422585696F4E405A854D92EAE17174A9");
         // 人员授权销毁
+
+        // 人员照片查询
+        String cloudWorkerQuery = PersonnelPhotoQuery(
+            "756013584F8F4D0DAA3585C9F5A0993D");
+        System.out.println(cloudWorkerQuery);
 
     }
 }

@@ -4,15 +4,13 @@ import com.cdkj.gchf.common.DateUtil;
 import com.cdkj.gchf.common.MD5Util;
 import com.cdkj.gchf.humanfaces.res.ResultMsg;
 import com.google.gson.Gson;
-import jnr.ffi.Struct;
-
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
-import java.nio.charset.Charset;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
+
 /**
  * @author old3
  */
@@ -26,7 +24,7 @@ public class AppConfig {
 
     private static String timestamp = "2019-04-13 09:34:04";
 
-    private static String baseUrl = "https://smz.lesun-idea.com";
+    private static String baseUrl = "http://smz.lesun-idea.com:9096";
 
     protected static Gson gson = new Gson();
 
@@ -86,8 +84,8 @@ public class AppConfig {
         Date time = DateUtil.strToDate(AppConfig.getTimestamp(),
             DateUtil.DATA_TIME_PATTERN_1);
         reqParameter.put("timestamp", String.valueOf(time.getTime()));
-        String md5 = MD5Util.md5(AppConfig.getAppKey()
-                + time.getTime() + AppConfig.getAppSecret());
+        String md5 = MD5Util.md5(
+                AppConfig.getAppKey() + time.getTime() + AppConfig.getAppSecret());
         reqParameter.put("sign", md5.toLowerCase());
         String json = HttpRequest.doRequest(url, "POST", reqParameter);
         ResultMsg fromJson = new Gson().fromJson(json, ResultMsg.class);
@@ -110,9 +108,9 @@ public class AppConfig {
         }
     }
 
-    //        @Test
+    //    @Test
     public void test() {
+        System.out.print(getToken());
     }
-
 
 }

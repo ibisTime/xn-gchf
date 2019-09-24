@@ -1,11 +1,9 @@
 package com.cdkj.gchf.gov;
 
+import com.alibaba.fastjson.JSONObject;
 import java.util.HashMap;
 import java.util.Map;
-
 import org.junit.Test;
-
-import com.alibaba.fastjson.JSONObject;
 
 public class Team {
 
@@ -61,14 +59,14 @@ public class Team {
         Map<String, String> dataMap = new HashMap<String, String>();
         dataMap.put("pageIndex", "0");
         dataMap.put("pageSize", "10");
-        dataMap.put("projectCode", "3311222019080003");
+        dataMap.put("projectCode", "3311222019090002");
 
         String data = JSONObject.toJSON(dataMap).toString();
 
         System.out.println(data);
 
         System.out.println(GovConnecter.getGovData("Team.Query", data,
-            "3311222019080003", "bd1016da20140562fbe4f69bf4601996"));
+                "3311222019090002", "4c24e205d184386c3a71d91eb3226a1a"));
 
         // team-add-2019031411-1-0262
         // teamSysNo : 100156750

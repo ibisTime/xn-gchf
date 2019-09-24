@@ -1,18 +1,16 @@
 package com.cdkj.gchf.gov;
 
+import com.alibaba.fastjson.JSONObject;
+import com.cdkj.gchf.common.PropertiesUtil;
+import com.cdkj.gchf.enums.EGovErrorMessage;
+import com.cdkj.gchf.exception.BizException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import com.alibaba.fastjson.JSONObject;
-import com.cdkj.gchf.common.PropertiesUtil;
-import com.cdkj.gchf.enums.EGovErrorMessage;
-import com.cdkj.gchf.exception.BizException;
 
 public class GovConnecter {
 
@@ -63,7 +61,7 @@ public class GovConnecter {
             String res = request.postData(GOV_URL, null, dataMap);
             dataMap.put("appsecret", APPSECRET);
 
-            logger.info("调用国家平台结果为：{}", res);
+//            logger.info("调用国家平台结果为：{}", res);
 
             JSONObject resJson = JSONObject.parseObject(res);
             if (0 != Integer.parseInt(resJson.getString("code"))) {
@@ -72,16 +70,7 @@ public class GovConnecter {
             }
 
         } catch (Exception ex) {
-            String errorMsg = "";
-            if (ex.getMessage().contains("ClientProtocolException")) {
-                errorMsg = "ClientProtocolException";
-            } else if (ex.getMessage().contains("UnknownHostException")
-                    || ex.getMessage().contains("unreachable")) {
-                errorMsg = "UnknownHostException";
-            } else if (ex instanceof BizException) {
-                throw ex;
-            }
-            System.out.println(errorMsg);
+            logger.error(ex.getMessage());
         }
         return null;
     }
@@ -127,7 +116,7 @@ public class GovConnecter {
             res = request.postData(GOV_URL, null, dataMap);
             dataMap.put("appsecret", appSecert);
 
-            logger.info("调用国家平台结果为：{}", res);
+//            logger.info("调用国家平台结果为：{}", res);
 
             JSONObject resJson = JSONObject.parseObject(res);
             if (0 != Integer.parseInt(resJson.getString("code"))) {
@@ -142,16 +131,7 @@ public class GovConnecter {
             }
 
         } catch (Exception ex) {
-            String errorMsg = "";
-            if (ex.getMessage().contains("ClientProtocolException")) {
-                errorMsg = "ClientProtocolException";
-            } else if (ex.getMessage().contains("UnknownHostException")
-                    || ex.getMessage().contains("unreachable")) {
-                errorMsg = "UnknownHostException";
-            } else if (ex instanceof BizException) {
-                throw ex;
-            }
-            System.out.println(errorMsg);
+            logger.error(ex.getMessage());
         }
         return res;
     }

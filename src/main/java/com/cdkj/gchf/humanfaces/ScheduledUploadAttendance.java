@@ -8,6 +8,7 @@ import com.cdkj.gchf.bo.IProjectWorkerBO;
 import com.cdkj.gchf.bo.IUserBO;
 import com.cdkj.gchf.bo.IWorkerAttendanceBO;
 import com.cdkj.gchf.bo.IWorkerEntryExitRecordBO;
+import com.cdkj.gchf.common.DateUtil;
 import com.cdkj.gchf.domain.EquipmentInfo;
 import com.cdkj.gchf.domain.Project;
 import com.cdkj.gchf.domain.ProjectWorker;
@@ -15,8 +16,8 @@ import com.cdkj.gchf.domain.WorkerEntryExitRecord;
 import com.cdkj.gchf.enums.EProjectWorkerUploadStatus;
 import java.util.ArrayList;
 import java.util.List;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
 /**
@@ -28,6 +29,7 @@ import org.springframework.stereotype.Component;
  * @Copyright:
  */
 @Component
+@Slf4j
 public class ScheduledUploadAttendance {
     @Autowired
     private IUserBO userBO;
@@ -53,10 +55,11 @@ public class ScheduledUploadAttendance {
     @Autowired
     private IWorkerAttendanceAO workerAttendanceAO;
 
-    @Scheduled(cron = "0 0 12 * * ?")
     public void scheduleUploadMorningAttendance() {
 
         List<Project> projects = projectBO.queryProjectList(new Project());
+
+        log.info("开始生成上午考勤数据,日期:" + DateUtil.getToday(DateUtil.FRONT_DATE_FORMAT_STRING) + ".");
 
         for (Project project : projects) {
 
@@ -95,10 +98,11 @@ public class ScheduledUploadAttendance {
 
     }
 
-    @Scheduled(cron = "0 0 19 * * ?")
     public void scheduleUploadNoonAttendance() {
 
         List<Project> projects = projectBO.queryProjectList(new Project());
+
+        log.info("开始生成下午考勤数据,日期:" + DateUtil.getToday(DateUtil.FRONT_DATE_FORMAT_STRING) + ".");
 
         for (Project project : projects) {
 

@@ -1,18 +1,8 @@
 package com.cdkj.gchf.gov;
 
-import java.lang.reflect.Method;
-import java.util.Arrays;
-import java.util.Iterator;
-import java.util.LinkedList;
-
-import org.springframework.scheduling.annotation.Scheduled;
-import org.springframework.stereotype.Component;
-import org.springframework.util.StringUtils;
-
 import com.alibaba.fastjson.JSONObject;
 import com.cdkj.gchf.ao.IProjectCorpInfoAO;
 import com.cdkj.gchf.ao.IProjectWorkerAO;
-import com.cdkj.gchf.ao.ITeamMasterAO;
 import com.cdkj.gchf.bo.IProjectCorpInfoBO;
 import com.cdkj.gchf.bo.IProjectWorkerBO;
 import com.cdkj.gchf.bo.ITeamMasterBO;
@@ -21,7 +11,6 @@ import com.cdkj.gchf.domain.ProjectCorpInfo;
 import com.cdkj.gchf.domain.ProjectWorker;
 import com.cdkj.gchf.domain.TeamMaster;
 import com.cdkj.gchf.dto.req.XN631635Req;
-import com.cdkj.gchf.dto.req.XN631655Req;
 import com.cdkj.gchf.dto.req.XN631695Req;
 import com.cdkj.gchf.enums.EGovAsyncStatus;
 import com.cdkj.gchf.enums.EProjectCorpUploadStatus;
@@ -29,8 +18,15 @@ import com.cdkj.gchf.enums.EProjectWorkerUploadStatus;
 import com.cdkj.gchf.enums.ETeamMasterUploadStatus;
 import com.cdkj.gchf.enums.EUploadStatus;
 import com.cdkj.gchf.spring.SpringContextHolder;
+import java.lang.reflect.Method;
+import java.util.Arrays;
+import java.util.LinkedList;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.stereotype.Component;
+import org.springframework.util.StringUtils;
 
 @Component
+@Slf4j
 public class AsyncQueueHolder {
 
     private static class serialMQHolder {
@@ -67,15 +63,21 @@ public class AsyncQueueHolder {
 
     }
 
-    @Scheduled(cron = "0/30 * * * * ? ")
-    private void syncSerial() {
+    public void syncSerial() {
 
         synchronized (serialMQHolder.serialMQ) {
-            Iterator<QueueBean> iterator = serialMQHolder.serialMQ.iterator();
-            while (iterator.hasNext()) {
-                if (!EGovAsyncStatus.TO_HANDLE.getCode()
-                    .equals(handleQueueBean(iterator.next()))) {
-                    iterator.remove();
+            for (int i = 0; i < serialMQHolder.serialMQ.size(); i++) {
+                QueueBean queueBean = serialMQHolder.serialMQ.get(i);
+                if (!EGovAsyncStatus.TO_HANDLE.getCode().equals(handleQueueBean(queueBean))) {
+                    try {
+                        serialMQHolder.serialMQ.remove(queueBean);
+                        log.info("[" + queueBean.getBoClass() + "]类型数据[" + queueBean.getCode()
+                                + "]上传成功");
+                    } catch (Exception e) {
+                        log.error("同步数据{}移除失败:{}", serialMQHolder.serialMQ.get(i).getCode(),
+                                e.getMessage());
+                    }
+
                 }
             }
         }
@@ -133,7 +135,8 @@ public class AsyncQueueHolder {
                     //国家平台班组编号
                     String teamMasterCode = asyncRes.getResult()
                             .substring(asyncRes.getResult().indexOf("已存在班组编号为:") + 9,
-                                    asyncRes.getResult().indexOf("已存在班组编号为:") + 19);
+                                    asyncRes.getResult().indexOf("已存在班组编号为:") + asyncRes.getResult()
+                                            .length());
                     queueBean.getBoClass();
                     ITeamMasterBO bean = SpringContextHolder.getBean(queueBean.getBoClass());
                     bean.refreshTeamSysNoByLocal(queueBean.getCode(), teamMasterCode);

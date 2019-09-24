@@ -1,15 +1,5 @@
 package com.cdkj.gchf.bo.impl;
 
-import java.math.BigDecimal;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.List;
-
-import org.apache.commons.lang3.StringUtils;
-import org.springframework.beans.BeanUtils;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
 import com.cdkj.gchf.bo.IBankCardBankBO;
 import com.cdkj.gchf.bo.IPayRollDetailBO;
 import com.cdkj.gchf.bo.IProjectWorkerBO;
@@ -37,6 +27,14 @@ import com.cdkj.gchf.enums.EPayRollUploadStatus;
 import com.cdkj.gchf.exception.BizException;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
+import java.math.BigDecimal;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.List;
+import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.BeanUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 @Service(value = "payRollDetailBO")
 public class PayRollDetailBOImpl extends PaginableBOImpl<PayRollDetail>
@@ -315,9 +313,9 @@ public class PayRollDetailBOImpl extends PaginableBOImpl<PayRollDetail>
     public JsonObject getUploadRequestJsontoPlantform(PayRoll payRollData,
             TeamMaster teamMasterData, ProjectConfig projectConfigData,
             PayRollDetail payRollDetailData) {
-        System.out.println(projectConfigData.getSecret());
-        System.out.println(projectConfigData.getProjectCode());
-        System.out.println(payRollDetailData.getPayBankCardNumber());
+//        System.out.println(projectConfigData.getSecret());
+//        System.out.println(projectConfigData.getProjectCode());
+//        System.out.println(payRollDetailData.getPayBankCardNumber());
         JsonObject requestJson = new JsonObject();
         JsonObject childJson = new JsonObject();
         childJson.addProperty("idCardType", payRollDetailData.getIdcardType());

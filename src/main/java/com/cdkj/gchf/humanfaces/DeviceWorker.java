@@ -1,17 +1,15 @@
 package com.cdkj.gchf.humanfaces;
 
+import com.cdkj.gchf.domain.EquipmentInfo;
+import com.cdkj.gchf.humanfaces.res.DeviceWorkerRes;
+import com.cdkj.gchf.humanfaces.res.ResultMsg;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.junit.Test;
 import org.springframework.stereotype.Component;
-
-import com.cdkj.gchf.domain.EquipmentInfo;
-import com.cdkj.gchf.humanfaces.res.DeviceWorkerRes;
-import com.cdkj.gchf.humanfaces.res.ResultMsg;
 
 /**
  * 
@@ -184,7 +182,7 @@ public class DeviceWorker {
         req.put("length", "77");
         String doRequest = HttpRequest
             .doRequest(DeviceWorkUrl.WORKER_SEARCH_URL, "POST", req);
-        System.out.println(doRequest);
+//        System.out.println(doRequest);
         return doRequest;
     }
 
@@ -203,7 +201,7 @@ public class DeviceWorker {
         req.put("guid", guid);
         String doRequest = HttpRequest
             .doRequest(DeviceWorkUrl.AUTHORIZATION_QUERY_URL, "GET", req);
-        System.out.println(doRequest);
+//        System.out.println(doRequest);
         return doRequest;
     }
 
@@ -266,7 +264,7 @@ public class DeviceWorker {
         req.put("guid", guid);
         String doRequest = HttpRequest
             .doRequest(DeviceWorkUrl.PersonnelPhotoQuery, "GET", req);
-        System.out.println(doRequest);
+//        System.out.println(doRequest);
         return doRequest;
     }
 

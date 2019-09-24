@@ -1,13 +1,11 @@
 package com.cdkj.gchf.humanfaces;
 
-import java.util.HashMap;
-import java.util.Map;
-
-import org.apache.commons.lang3.StringUtils;
-import org.springframework.stereotype.Component;
-
 import com.cdkj.gchf.humanfaces.res.DeviceWorkerPicRes;
 import com.cdkj.gchf.humanfaces.res.ResultMsg;
+import java.util.HashMap;
+import java.util.Map;
+import org.apache.commons.lang3.StringUtils;
+import org.springframework.stereotype.Component;
 
 /**
  * 
@@ -50,7 +48,7 @@ public class WorkerPicture {
         }
         String doRequest = HttpRequest.doRequest(WorkerUrl.PIC_ADD_BASE64_URL,
             "POST", req);
-        System.out.println(doRequest);
+//        System.out.println(doRequest);
         DeviceWorkerPicRes fromJson = AppConfig.gson.fromJson(doRequest,
             DeviceWorkerPicRes.class);
         return fromJson;

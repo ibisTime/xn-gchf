@@ -1,35 +1,21 @@
 package com.cdkj.gchf.ao.impl;
 
-import com.cdkj.gchf.bo.IBankCardBankBO;
-import com.cdkj.gchf.bo.IProjectCorpInfoBO;
-import com.cdkj.gchf.common.StringUtil;
-import com.cdkj.gchf.domain.BankCardInfo;
-import com.cdkj.gchf.domain.ProjectCorpInfo;
-import com.cdkj.gchf.enums.EBankCardBussinessType;
-import java.util.ArrayList;
-import java.util.List;
-
-import org.apache.commons.collections.CollectionUtils;
-import org.apache.commons.lang3.StringUtils;
-import org.apache.http.client.utils.DateUtils;
-import org.springframework.beans.BeanUtils;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-
 import com.cdkj.gchf.ao.IPayRollAO;
+import com.cdkj.gchf.bo.IBankCardBankBO;
 import com.cdkj.gchf.bo.ICorpBasicinfoBO;
 import com.cdkj.gchf.bo.IOperateLogBO;
 import com.cdkj.gchf.bo.IPayRollBO;
 import com.cdkj.gchf.bo.IPayRollDetailBO;
 import com.cdkj.gchf.bo.IProjectBO;
 import com.cdkj.gchf.bo.IProjectConfigBO;
+import com.cdkj.gchf.bo.IProjectCorpInfoBO;
 import com.cdkj.gchf.bo.IProjectWorkerBO;
 import com.cdkj.gchf.bo.ITeamMasterBO;
 import com.cdkj.gchf.bo.IUserBO;
 import com.cdkj.gchf.bo.base.Paginable;
 import com.cdkj.gchf.common.AesUtils;
 import com.cdkj.gchf.common.DateUtil;
+import com.cdkj.gchf.domain.BankCardInfo;
 import com.cdkj.gchf.domain.CorpBasicinfo;
 import com.cdkj.gchf.domain.PayRoll;
 import com.cdkj.gchf.domain.PayRollDetail;
@@ -55,6 +41,14 @@ import com.cdkj.gchf.gov.GovConnecter;
 import com.cdkj.gchf.http.JsonUtils;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
+import java.util.ArrayList;
+import java.util.List;
+import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.BeanUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class PayRollAOImpl implements IPayRollAO {
@@ -426,7 +420,7 @@ public class PayRollAOImpl implements IPayRollAO {
 
         jsonArray.add(payRollData);
         jsonObject.add("detailList", jsonArray);
-        System.out.println(jsonObject.toString());
+//        System.out.println(jsonObject.toString());
         return jsonObject.toString();
 
     }

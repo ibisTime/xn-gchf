@@ -1,11 +1,5 @@
 package com.cdkj.gchf.ao.impl;
 
-import java.util.List;
-
-import org.apache.commons.lang3.StringUtils;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
 import com.alibaba.fastjson.JSONObject;
 import com.cdkj.gchf.ao.ICorpBasicinfoAO;
 import com.cdkj.gchf.bo.ICorpBasicinfoBO;
@@ -27,6 +21,10 @@ import com.cdkj.gchf.enums.EOperateLogRefType;
 import com.cdkj.gchf.exception.BizException;
 import com.cdkj.gchf.gov.AsyncQueueHolder;
 import com.cdkj.gchf.gov.GovConnecter;
+import java.util.List;
+import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 @Service
 public class CorpBasicinfoAOImpl implements ICorpBasicinfoAO {
@@ -109,7 +107,7 @@ public class CorpBasicinfoAOImpl implements ICorpBasicinfoAO {
             corpBasicinfo.setLegalManIdcardNumber(
                 AesUtils.encrypt(corpBasicinfo.getLegalManIdcardNumber(),
                     defaultProjectConfig.getSecret()));
-            System.out.println(corpBasicinfo.getLegalManIdcardNumber());
+//            System.out.println(corpBasicinfo.getLegalManIdcardNumber());
             // 上传企业信息
             corpBasicinfoBO.refreshUploadStatus(codeReq,
                 ECorpBasicUploadStatus.UPLOADING.getCode());

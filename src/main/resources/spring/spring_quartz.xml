@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xmlns:context="http://www.springframework.org/schema/context"
+  xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.0.xsd
+
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.0.xsd">
+
+  <context:component-scan base-package="com.cdkj">
+    <context:exclude-filter type="annotation"
+      expression="org.springframework.stereotype.Controller"/>
+  </context:component-scan>
+
+  <bean class="org.springframework.scheduling.quartz.SchedulerFactoryBean">
+    <property name="triggers">
+      <list>
+
+        <!-- 上传上午考勤 -->
+        <ref bean="doUploadMorningAttendanceTrigger"/>
+
+        <!-- 上传下午考勤 -->
+        <ref bean="doUploadNoonAttendanceTrigger"/>
+
+        <!-- 上传国家平台 -->
+        <ref bean="doUploadGroveTrigger"/>
+
+      </list>
+    </property>
+    <property name="autoStartup" value="true"/>
+  </bean>
+
+  <!-- 上传上午考勤 -->
+  <bean id="doUploadMorningAttendanceTrigger"
+    class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
+    <property name="jobDetail" ref="doUploadMorningAttendance"/>
+    <property name="cronExpression" value="0 0 9 * * ?"/>
+  </bean>
+  <bean id="doUploadMorningAttendance"
+    class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+    <property name="targetObject" ref="scheduledUploadAttendance"/>
+    <property name="targetMethod" value="scheduleUploadMorningAttendance"/>
+    <property name="concurrent" value="false"/>
+    <!-- 是否允许任务并发执行。当值为false时，表示必须等到前一个线程处理完毕后才再启一个新的线程 -->
+  </bean>
+
+  <!-- 上传下午考勤 -->
+  <bean id="doUploadNoonAttendanceTrigger"
+    class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
+    <property name="jobDetail" ref="doUploadNoonAttendance"/>
+    <property name="cronExpression" value="0 0 19 * * ?"/>
+  </bean>
+  <bean id="doUploadNoonAttendance"
+    class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+    <property name="targetObject" ref="scheduledUploadAttendance"/>
+    <property name="targetMethod" value="scheduleUploadNoonAttendance"/>
+    <property name="concurrent" value="false"/>
+    <!-- 是否允许任务并发执行。当值为false时，表示必须等到前一个线程处理完毕后才再启一个新的线程 -->
+  </bean>
+
+  <!-- 上传国家平台 -->
+  <bean id="doUploadGroveTrigger"
+    class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
+    <property name="jobDetail" ref="doUploadGrove"/>
+    <property name="cronExpression" value="0/30 * * * * ? *"/>
+  </bean>
+  <bean id="doUploadGrove"
+    class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+    <property name="targetObject" ref="asyncQueueHolder"/>
+    <property name="targetMethod" value="syncSerial"/>
+    <property name="concurrent" value="false"/>
+    <!-- 是否允许任务并发执行。当值为false时，表示必须等到前一个线程处理完毕后才再启一个新的线程 -->
+  </bean>
+
+</beans>

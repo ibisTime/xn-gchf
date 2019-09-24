@@ -17,8 +17,9 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
-//import org.junit.jupiter.api.Test;
 import org.springframework.web.bind.annotation.RequestMethod;
+
+//import org.junit.jupiter.api.Test;
 /**
  * @author old3
  */
@@ -47,7 +48,7 @@ public class HttpRequest {
                     url += entry.getKey() + "=" + entry.getValue() + "&";
                 }
                 url.substring(0, url.length() - 1);
-                System.out.println(url);
+//                System.out.println(url);
             }
             localURL = new URL(url);
             URLConnection connection = (URLConnection) localURL

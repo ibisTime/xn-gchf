@@ -1,24 +1,5 @@
 package com.cdkj.gchf.bo.impl;
 
-import com.cdkj.gchf.dto.req.XN631693ReqData;
-import com.cdkj.gchf.domain.CorpBasicinfo;
-import com.cdkj.gchf.domain.Project;
-import com.cdkj.gchf.domain.WorkerInfo;
-import com.cdkj.gchf.enums.EEntryExitType;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-import org.apache.commons.collections.CollectionUtils;
-import org.apache.commons.lang3.StringUtils;
-import org.springframework.beans.BeanUtils;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
-
 import com.alibaba.fastjson.JSONObject;
 import com.cdkj.gchf.bo.IOperateLogBO;
 import com.cdkj.gchf.bo.IProjectWorkerBO;
@@ -29,11 +10,15 @@ import com.cdkj.gchf.common.AesUtils;
 import com.cdkj.gchf.common.DateUtil;
 import com.cdkj.gchf.core.OrderNoGenerater;
 import com.cdkj.gchf.dao.IProjectWorkerEntryExitHistoryDAO;
+import com.cdkj.gchf.domain.CorpBasicinfo;
+import com.cdkj.gchf.domain.Project;
 import com.cdkj.gchf.domain.ProjectConfig;
 import com.cdkj.gchf.domain.ProjectWorker;
 import com.cdkj.gchf.domain.ProjectWorkerEntryExitHistory;
 import com.cdkj.gchf.domain.TeamMaster;
 import com.cdkj.gchf.domain.User;
+import com.cdkj.gchf.domain.WorkerInfo;
+import com.cdkj.gchf.dto.req.XN631693ReqData;
 import com.cdkj.gchf.dto.req.XN631730Req;
 import com.cdkj.gchf.dto.req.XN631732Req;
 import com.cdkj.gchf.dto.req.XN631733ReqData;
@@ -41,6 +26,7 @@ import com.cdkj.gchf.dto.req.XN631914Req;
 import com.cdkj.gchf.dto.req.XN631914ReqWorker;
 import com.cdkj.gchf.dto.req.XN631915Req;
 import com.cdkj.gchf.enums.EDeleteStatus;
+import com.cdkj.gchf.enums.EEntryExitType;
 import com.cdkj.gchf.enums.EGeneratePrefix;
 import com.cdkj.gchf.enums.EOperateLogOperate;
 import com.cdkj.gchf.enums.EOperateLogRefType;
@@ -51,6 +37,18 @@ import com.cdkj.gchf.gov.GovUtil;
 import com.cdkj.gchf.gov.SerialHandler;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.BeanUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 @Component
 public class ProjectWorkerEntryExitHistoryBOImpl
@@ -388,7 +386,7 @@ public class ProjectWorkerEntryExitHistoryBOImpl
         childJson.addProperty("type", projectWorkerEntryExitHistory.getType());
         jsonArray.add(childJson);
         jsonObject.add("workerList", jsonArray);
-        System.out.println(jsonObject.toString());
+//        System.out.println(jsonObject.toString());
         return jsonObject;
     }
 
